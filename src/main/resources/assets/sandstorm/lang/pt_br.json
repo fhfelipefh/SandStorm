@@ -8,9 +8,18 @@
   "item.sandstorm.brackish_water_bottle": "Frasco de Água Salobra Não Tratada",
   "block.sandstorm.brackish_aquifer": "Aquífero de Água Salobra",
   "block.sandstorm.thumper": "Emissor Sísmico (Thumper)",
+  "block.sandstorm.printer_3d": "Impressora 3D Básica",
+  "block.sandstorm.desalination_filter": "Filtro de Dessalinização",
+  "block.sandstorm.nanite_fabricator": "Fabricador de Nanorobôs",
   "entity.sandstorm.sandworm": "Verme de Areia",
   "item.sandstorm.sandworm_chitin": "Quitina de Verme de Areia",
   "item.sandstorm.sandworm_tooth": "Presa de Verme de Areia",
+  "item.sandstorm.raw_silicon": "Silício Bruto",
+  "item.sandstorm.silicon_wafer": "Wafer de Silício",
+  "item.sandstorm.mineral_salt": "Sal Mineral Residual",
+  "item.sandstorm.potable_water_bottle": "Frasco de Água Potável Purificada",
+  "item.sandstorm.circuit_board": "Placa de Circuito Integrado",
+  "item.sandstorm.nano_actuator": "Nano-Atuador Mecânico",
   "warning.sandstorm.worm_rumble": "Tremor detectado no subsolo! Mantenha a cadência de passos baixa!",
   "warning.sandstorm.worm_emerge": "ALERTA SÍSMICO: Um Verme de Areia está emergindo!"
 }

@@ -8,9 +8,18 @@
   "item.sandstorm.brackish_water_bottle": "Botella de Agua Salobre No Tratada",
   "block.sandstorm.brackish_aquifer": "Acuífero de Agua Salobre",
   "block.sandstorm.thumper": "Emisor Sísmico (Thumper)",
+  "block.sandstorm.printer_3d": "Impresora 3D Básica",
+  "block.sandstorm.desalination_filter": "Filtro de Desalinización",
+  "block.sandstorm.nanite_fabricator": "Fabricador de Nanobots",
   "entity.sandstorm.sandworm": "Gusano de Arena",
   "item.sandstorm.sandworm_chitin": "Quitina de Gusano de Arena",
   "item.sandstorm.sandworm_tooth": "Diente de Gusano de Arena",
+  "item.sandstorm.raw_silicon": "Silicio Bruto",
+  "item.sandstorm.silicon_wafer": "Oblea de Silicio",
+  "item.sandstorm.mineral_salt": "Sal Mineral Residual",
+  "item.sandstorm.potable_water_bottle": "Botella de Agua Potable Purificada",
+  "item.sandstorm.circuit_board": "Placa de Circuito Integrado",
+  "item.sandstorm.nano_actuator": "Nanoactuador Mecánico",
   "warning.sandstorm.worm_rumble": "¡Temblor subterráneo detectado! ¡Rompe el ritmo de pasos para evitar detección!",
   "warning.sandstorm.worm_emerge": "¡ALERTA SÍSMICA: Un Gusano de Arena está emergiendo!"
 }

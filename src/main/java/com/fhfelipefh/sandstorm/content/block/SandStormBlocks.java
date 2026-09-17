@@ -24,6 +24,24 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(3.0f)
                     .sound(SoundType.ANVIL)));
+    public static final Printer3DBlock PRINTER_3D = register("printer_3d",
+            new Printer3DBlock(BlockBehaviour.Properties.of()
+                    .setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, SandStormMod.id("printer_3d")))
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(3.5f)
+                    .sound(SoundType.METAL)));
+    public static final DesalinationFilterBlock DESALINATION_FILTER = register("desalination_filter",
+            new DesalinationFilterBlock(BlockBehaviour.Properties.of()
+                    .setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, SandStormMod.id("desalination_filter")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(3.0f)
+                    .sound(SoundType.COPPER)));
+    public static final NaniteFabricatorBlock NANITE_FABRICATOR = register("nanite_fabricator",
+            new NaniteFabricatorBlock(BlockBehaviour.Properties.of()
+                    .setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, SandStormMod.id("nanite_fabricator")))
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(4.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)));
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);

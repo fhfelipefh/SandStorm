@@ -8,9 +8,18 @@
   "item.sandstorm.brackish_water_bottle": "Untreated Brackish Water Bottle",
   "block.sandstorm.brackish_aquifer": "Brackish Water Aquifer",
   "block.sandstorm.thumper": "Seismic Thumper",
+  "block.sandstorm.printer_3d": "Basic 3D Printer",
+  "block.sandstorm.desalination_filter": "Desalination Filter",
+  "block.sandstorm.nanite_fabricator": "Nanite Fabricator",
   "entity.sandstorm.sandworm": "Sandworm",
   "item.sandstorm.sandworm_chitin": "Sandworm Chitin",
   "item.sandstorm.sandworm_tooth": "Sandworm Tooth",
+  "item.sandstorm.raw_silicon": "Raw Silicon",
+  "item.sandstorm.silicon_wafer": "Silicon Wafer",
+  "item.sandstorm.mineral_salt": "Residual Mineral Salt",
+  "item.sandstorm.potable_water_bottle": "Purified Potable Water Bottle",
+  "item.sandstorm.circuit_board": "Integrated Circuit Board",
+  "item.sandstorm.nano_actuator": "Mechanical Nano-Actuator",
   "warning.sandstorm.worm_rumble": "Subsurface rumble detected! Break your rhythm to avoid detection!",
   "warning.sandstorm.worm_emerge": "SEISMIC BREACH: A Sandworm is emerging!"
 }

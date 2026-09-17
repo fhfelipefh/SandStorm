@@ -24,7 +24,8 @@ class ArchitectureTest {
             SuitPowerComponent.class,
             com.fhfelipefh.sandstorm.component.SandstormWeatherComponent.class,
             com.fhfelipefh.sandstorm.component.BrackishWaterComponent.class,
-            com.fhfelipefh.sandstorm.component.SeismicTrackerComponent.class
+            com.fhfelipefh.sandstorm.component.SeismicTrackerComponent.class,
+            com.fhfelipefh.sandstorm.component.RecipeProcessorComponent.class
     );
 
     private static final List<Class<?>> METRICS_CLASSES = List.of(
