@@ -1,9 +1,9 @@
 {
 	"required": true,
-	"package": "com.example.client.mixin",
+	"package": "com.fhfelipefh.sandstorm.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin"
+		"SandStormClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

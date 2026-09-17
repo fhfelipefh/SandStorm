@@ -1,31 +1,31 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "sandstorm",
 	"version": "${version}",
-	"name": "Example Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "SandStorm",
+	"description": "Survive in a desolate desert planet and terraform it back to life.",
 	"authors": [
-		"Me!"
+		"fhfelipefh"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/fhfelipefh/SandStorm",
+		"sources": "https://github.com/fhfelipefh/SandStorm"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+	"icon": "assets/sandstorm/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"com.fhfelipefh.sandstorm.core.SandStormMod"
 		],
 		"client": [
-			"com.example.client.ExampleModClient"
+			"com.fhfelipefh.sandstorm.client.SandStormClient"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
+		"sandstorm.mixins.json",
 		{
-			"config": "modid.client.mixins.json",
+			"config": "sandstorm.client.mixins.json",
 			"environment": "client"
 		}
 	],
