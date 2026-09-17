@@ -67,6 +67,12 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_BLACK)
                     .strength(4.5f)
                     .sound(SoundType.NETHERITE_BLOCK)));
+    public static final AtmosphericTerraformerBlock ATMOSPHERIC_TERRAFORMER = register("atmospheric_terraformer",
+            new AtmosphericTerraformerBlock(BlockBehaviour.Properties.of()
+                    .setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, SandStormMod.id("atmospheric_terraformer")))
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(5.0f)
+                    .sound(SoundType.GLASS)));
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);

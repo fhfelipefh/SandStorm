@@ -15,6 +15,7 @@
   "block.sandstorm.ancient_data_core": "Núcleo de Dados Ancestral",
   "block.sandstorm.drone_dock": "Doca de Drones de Carga",
   "block.sandstorm.assembly_bay": "Pátio de Montagem Industrial",
+  "block.sandstorm.atmospheric_terraformer": "Processador Atmosférico Planetário",
   "entity.sandstorm.sandworm": "Verme de Areia",
   "entity.sandstorm.cargo_drone": "Drone de Carga Aérea",
   "entity.sandstorm.excavator_vehicle": "Veículo de Escavação Terrestre",
@@ -31,6 +32,7 @@
   "item.sandstorm.tech_disc": "Disco Óptico de Tecnologia Ancestral",
   "item.sandstorm.scrap_metal": "Sucata Metálica Resistente",
   "item.sandstorm.sonic_cannon": "Canhão Sônico de Pulso",
+  "item.sandstorm.atmospheric_analyzer": "Analisador Atmosférico e Biosférico",
   "warning.sandstorm.worm_rumble": "Tremor detectado no subsolo! Mantenha a cadência de passos baixa!",
   "warning.sandstorm.worm_emerge": "ALERTA SÍSMICO: Um Verme de Areia está emergindo!",
   "telemetry.sandstorm.radar_signal": "SINAL DETECTADO: Anomalia a %s blocos rumo a %s",
@@ -43,5 +45,9 @@
   "telemetry.sandstorm.bay_assembled_drone": "Pátio de Montagem: Nova unidade montada com sucesso!",
   "telemetry.sandstorm.excavator_mounted": "Escavadeira Operacional: Bateria %s / %s J",
   "telemetry.sandstorm.megazord_cockpit": "Cockpit do Megazord Ativado: Energia %s / %s J | Sistemas Sônicos Prontos",
-  "telemetry.sandstorm.sonic_blast": "Pulso Sônico Disparado! %s alvos hostis repelidos"
+  "telemetry.sandstorm.sonic_blast": "Pulso Sônico Disparado! %s alvos hostis repelidos",
+  "telemetry.sandstorm.terraformer_cycle": "Processador Atmosférico: Progresso %s%% | Umidade %s%% | Temperatura %s°C",
+  "telemetry.sandstorm.terraformer_no_energy": "Processador Atmosférico: Energia insuficiente (%s / %s J)",
+  "telemetry.sandstorm.analyzer_active_signal": "Analisador: Campo de terraformação ativo detectado no raio de %s blocos",
+  "telemetry.sandstorm.analyzer_no_signal": "Analisador: Nenhum processador atmosférico ativo no raio de alcance"
 }

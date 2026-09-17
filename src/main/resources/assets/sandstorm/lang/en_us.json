@@ -15,6 +15,7 @@
   "block.sandstorm.ancient_data_core": "Ancient Data Core",
   "block.sandstorm.drone_dock": "Cargo Drone Dock",
   "block.sandstorm.assembly_bay": "Industrial Assembly Bay",
+  "block.sandstorm.atmospheric_terraformer": "Planetary Atmospheric Terraformer",
   "entity.sandstorm.sandworm": "Sandworm",
   "entity.sandstorm.cargo_drone": "Aerial Cargo Drone",
   "entity.sandstorm.excavator_vehicle": "Mining Excavator Vehicle",
@@ -31,6 +32,7 @@
   "item.sandstorm.tech_disc": "Ancient Tech Optical Disc",
   "item.sandstorm.scrap_metal": "Hardened Scrap Metal",
   "item.sandstorm.sonic_cannon": "Sonic Pulse Cannon",
+  "item.sandstorm.atmospheric_analyzer": "Atmospheric and Biosphere Analyzer",
   "warning.sandstorm.worm_rumble": "Subterranean tremor detected! Keep your footsteps quiet!",
   "warning.sandstorm.worm_emerge": "SEISMIC ALERT: A Sandworm is emerging!",
   "telemetry.sandstorm.radar_signal": "SIGNAL DETECTED: Anomaly %s blocks away heading %s",
@@ -43,5 +45,9 @@
   "telemetry.sandstorm.bay_assembled_drone": "Assembly Bay: Unit synthesized successfully!",
   "telemetry.sandstorm.excavator_mounted": "Excavator Operational: Battery %s / %s J",
   "telemetry.sandstorm.megazord_cockpit": "Megazord Cockpit Online: Energy %s / %s J | Sonic Systems Primed",
-  "telemetry.sandstorm.sonic_blast": "Sonic Shockwave Released! %s hostile targets repelled"
+  "telemetry.sandstorm.sonic_blast": "Sonic Shockwave Released! %s hostile targets repelled",
+  "telemetry.sandstorm.terraformer_cycle": "Atmospheric Terraformer: Progress %s%% | Humidity %s%% | Temperature %s°C",
+  "telemetry.sandstorm.terraformer_no_energy": "Atmospheric Terraformer: Insufficient energy (%s / %s J)",
+  "telemetry.sandstorm.analyzer_active_signal": "Analyzer: Active terraforming field detected within %s blocks",
+  "telemetry.sandstorm.analyzer_no_signal": "Analyzer: No active atmospheric processor within scan range"
 }

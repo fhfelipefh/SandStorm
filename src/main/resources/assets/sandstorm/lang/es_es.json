@@ -15,6 +15,7 @@
   "block.sandstorm.ancient_data_core": "Núcleo de Datos Ancestral",
   "block.sandstorm.drone_dock": "Muelle de Drones de Carga",
   "block.sandstorm.assembly_bay": "Bahía de Montaje Industrial",
+  "block.sandstorm.atmospheric_terraformer": "Procesador Atmosférico Planetario",
   "entity.sandstorm.sandworm": "Gusano de Arena",
   "entity.sandstorm.cargo_drone": "Dron de Carga Aéreo",
   "entity.sandstorm.excavator_vehicle": "Vehículo Excavador Minero",
@@ -31,6 +32,7 @@
   "item.sandstorm.tech_disc": "Disco Óptico de Tecnología Ancestral",
   "item.sandstorm.scrap_metal": "Chatarra Metálica Reforzada",
   "item.sandstorm.sonic_cannon": "Cañón Sónico de Choque",
+  "item.sandstorm.atmospheric_analyzer": "Analizador Atmosférico y Biosférico",
   "warning.sandstorm.worm_rumble": "¡Temblor detectado en el subsuelo! ¡Mantén tus pasos silenciosos!",
   "warning.sandstorm.worm_emerge": "¡ALERTA SÍSMICA: Un Gusano de Arena está emergiendo!",
   "telemetry.sandstorm.radar_signal": "SEÑAL DETECTADA: Anomalía a %s bloques rumbo a %s",
@@ -43,5 +45,9 @@
   "telemetry.sandstorm.bay_assembled_drone": "Bahía de Montaje: ¡Nueva unidad ensamblada!",
   "telemetry.sandstorm.excavator_mounted": "Excavadora Operativa: Batería %s / %s J",
   "telemetry.sandstorm.megazord_cockpit": "Cabina del Megazord Activada: Energía %s / %s J | Sistemas Sónicos Listos",
-  "telemetry.sandstorm.sonic_blast": "¡Onda Sónica Liberada! %s objetivos hostiles repelidos"
+  "telemetry.sandstorm.sonic_blast": "¡Onda Sónica Liberada! %s objetivos hostiles repelidos",
+  "telemetry.sandstorm.terraformer_cycle": "Procesador Atmosférico: Progreso %s%% | Humedad %s%% | Temperatura %s°C",
+  "telemetry.sandstorm.terraformer_no_energy": "Procesador Atmosférico: Energía insuficiente (%s / %s J)",
+  "telemetry.sandstorm.analyzer_active_signal": "Analizador: Campo de terraformación activo detectado a %s bloques",
+  "telemetry.sandstorm.analyzer_no_signal": "Analizador: Ningún procesador atmosférico activo en el radio de escaneo"
 }

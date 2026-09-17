@@ -29,6 +29,7 @@ public class SandStormItems {
     public static final Item TECH_DISC = register("tech_disc", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)));
     public static final Item SCRAP_METAL = register("scrap_metal", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
     public static final SonicCannonItem SONIC_CANNON = register("sonic_cannon", new SonicCannonItem());
+    public static final AtmosphericAnalyzerItem ATMOSPHERIC_ANALYZER = register("atmospheric_analyzer", new AtmosphericAnalyzerItem());
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -53,6 +54,7 @@ public class SandStormItems {
                         entries.accept(TECH_DISC);
                         entries.accept(SCRAP_METAL);
                         entries.accept(SONIC_CANNON);
+                        entries.accept(ATMOSPHERIC_ANALYZER);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.BRACKISH_AQUIFER);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.THUMPER);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.PRINTER_3D);
@@ -62,6 +64,7 @@ public class SandStormItems {
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.ANCIENT_DATA_CORE);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.DRONE_DOCK);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.ASSEMBLY_BAY);
+                        entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.ATMOSPHERIC_TERRAFORMER);
                         entries.accept(SANDWORM_CHITIN);
                         entries.accept(SANDWORM_TOOTH);
                     })
