@@ -4,5 +4,7 @@
   "item.sandstorm.space_suit_helmet": "Pressurized Space Helmet",
   "item.sandstorm.space_suit_chestplate": "Solar Space Suit",
   "item.sandstorm.space_suit_leggings": "Thermal Space Leggings",
-  "item.sandstorm.space_suit_boots": "Magnetic Space Boots"
+  "item.sandstorm.space_suit_boots": "Magnetic Space Boots",
+  "item.sandstorm.brackish_water_bottle": "Untreated Brackish Water Bottle",
+  "block.sandstorm.brackish_aquifer": "Brackish Water Aquifer"
 }

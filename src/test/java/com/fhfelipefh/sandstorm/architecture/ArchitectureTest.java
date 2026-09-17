@@ -21,12 +21,16 @@ class ArchitectureTest {
             EnergyStorageComponent.class,
             ThermalComponent.class,
             VibrationEmitterComponent.class,
-            SuitPowerComponent.class
+            SuitPowerComponent.class,
+            com.fhfelipefh.sandstorm.component.SandstormWeatherComponent.class,
+            com.fhfelipefh.sandstorm.component.BrackishWaterComponent.class
     );
 
     private static final List<Class<?>> METRICS_CLASSES = List.of(
             GameMetricsTracker.class
     );
+
+
 
     @Test
     void componentsMustBePublic() {

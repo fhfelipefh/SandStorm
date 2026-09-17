@@ -15,7 +15,10 @@ public class SandStormMod implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Initializing SandStorm mod");
         SandStormItems.initialize();
+        com.fhfelipefh.sandstorm.content.block.SandStormBlocks.initialize();
         SuitSurvivalHandler.initialize();
+        com.fhfelipefh.sandstorm.content.world.VanillaMonsterSuppressionHandler.initialize();
+        com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.initialize();
     }
 
     public static Identifier id(String path) {

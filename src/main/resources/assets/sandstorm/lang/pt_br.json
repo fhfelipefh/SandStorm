@@ -4,5 +4,7 @@
   "item.sandstorm.space_suit_helmet": "Capacete Espacial Pressurizado",
   "item.sandstorm.space_suit_chestplate": "Traje Espacial Solar",
   "item.sandstorm.space_suit_leggings": "Perneiras Espaciais Térmicas",
-  "item.sandstorm.space_suit_boots": "Botas Espaciais Magnéticas"
+  "item.sandstorm.space_suit_boots": "Botas Espaciais Magnéticas",
+  "item.sandstorm.brackish_water_bottle": "Frasco de Água Salobra Não Tratada",
+  "block.sandstorm.brackish_aquifer": "Aquífero de Água Salobra"
 }

@@ -30,8 +30,13 @@ public class SuitPowerComponent {
     }
 
     public void tick(boolean exposedToSunlight, double ambientTemperature, boolean underground) {
+        tick(exposedToSunlight, ambientTemperature, underground, 1.0);
+    }
+
+    public void tick(boolean exposedToSunlight, double ambientTemperature, boolean underground, double solarEfficiencyMultiplier) {
         if (exposedToSunlight && !underground) {
-            energyStorage.receiveEnergy(solarRechargePerTick);
+            long effectiveSolar = Math.round(solarRechargePerTick * Math.clamp(solarEfficiencyMultiplier, 0.0, 1.0));
+            energyStorage.receiveEnergy(effectiveSolar);
         }
 
         if (equippedArmorCount > 0) {

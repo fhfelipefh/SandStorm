@@ -30,14 +30,26 @@ public class SurvivalHudOverlay implements HudElement {
         int screenWidth = extractor.guiWidth();
         int screenHeight = extractor.guiHeight();
 
-        int x = screenWidth - 110;
-        int y = screenHeight - 40;
+        com.fhfelipefh.sandstorm.component.SandstormWeatherComponent weather = com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.getWeather();
+        if (weather.isActive()) {
+            int alpha = (int) Math.clamp(weather.getIntensity() * 140, 0, 160);
+            int sandColor = (alpha << 24) | 0xC29B62;
+            extractor.fill(0, 0, screenWidth, screenHeight, sandColor);
+        }
+
+        int x = screenWidth - 120;
+        int y = screenHeight - 45;
 
         String energyText = "BAT: " + (storedEnergy * 100 / Math.max(1, capacity)) + "%";
         String tempText = "TEMP: " + String.format("%.1f", temperature) + " C";
 
         extractor.text(client.font, Component.literal(energyText), x, y, 0x55FF55);
-        extractor.text(client.font, Component.literal(tempText), x, y + 12, 0xFFA500);
+        extractor.text(client.font, Component.literal(tempText), x, y + 11, 0xFFA500);
+
+        if (weather.isActive()) {
+            String stormText = "STORM: " + (int) (weather.getIntensity() * 100) + "%";
+            extractor.text(client.font, Component.literal(stormText), x, y + 22, 0xFF5555);
+        }
     }
 
     public static SuitPowerComponent getClientSuit() {

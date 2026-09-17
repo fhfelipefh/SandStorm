@@ -34,8 +34,16 @@ public class SuitSurvivalHandler {
         boolean exposedToSunlight = isDay && canSeeSky;
         boolean underground = !canSeeSky || pos.getY() < 50;
         double ambientTemperature = calculateAmbientTemperature(player);
+        com.fhfelipefh.sandstorm.component.SandstormWeatherComponent weather = com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.getWeather();
+        double solarMultiplier = weather.getSolarEfficiencyMultiplier();
 
-        suit.tick(exposedToSunlight, ambientTemperature, underground);
+        suit.tick(exposedToSunlight, ambientTemperature, underground, solarMultiplier);
+
+        if (weather.canCauseSandDamage() && canSeeSky && !suit.isFullSuitEquipped()) {
+            if (player.tickCount % 40 == 0) {
+                player.hurtServer(player.level(), player.damageSources().dryOut(), 1.0f);
+            }
+        }
     }
 
     public static int countEquippedSuitPieces(ServerPlayer player) {
