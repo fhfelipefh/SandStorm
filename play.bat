@@ -23,7 +23,7 @@ if not exist "%MODS_DIR%" (
 )
 
 if not exist "%JAR_SOURCE%" (
-    echo [*] Compilando versao atualizada do SandStorm...
+    echo [*] Compilando versao inicial do SandStorm...
     call "%SCRIPT_DIR%gradlew.bat" build -x test
     if errorlevel 1 (
         echo [!] Erro ao compilar o mod. Verifique os logs.
@@ -32,13 +32,8 @@ if not exist "%JAR_SOURCE%" (
     )
 )
 
-echo [*] Atualizando sandstorm-1.0.0.jar na pasta de mods...
-copy /Y "%JAR_SOURCE%" "%MODS_DIR%\sandstorm-1.0.0.jar" >nul
-if errorlevel 1 (
-    echo [!] Falha ao copiar o mod para %MODS_DIR%.
-) else (
-    echo [OK] Mod copiado com sucesso para:
-    echo      %MODS_DIR%\sandstorm-1.0.0.jar
+if exist "%JAR_SOURCE%" (
+    copy /Y "%JAR_SOURCE%" "%MODS_DIR%\sandstorm-1.0.0.jar" >nul
 )
 
 set "ARG=%~1"
@@ -59,11 +54,11 @@ echo ===================================================
 echo  [1] Iniciar jogo direto com SandStorm (Recomendado)
 echo  [2] Abrir o Launcher do Minecraft
 echo  [3] Apenas atualizar mod e fechar
-echo  [4] Modo Dev - Log ao vivo no terminal + salvar arquivo
+echo  [4] Modo Dev - Recompilar + Log ao vivo no terminal
 echo ===================================================
 echo.
 
-set /p CHOICE="Selecione uma opcao [1-3] (Padrao: 1): "
+set /p CHOICE="Selecione uma opcao [1-4] (Padrao: 1): "
 if "%CHOICE%"=="" set CHOICE=1
 
 if "%CHOICE%"=="1" goto opt_run
@@ -100,19 +95,43 @@ exit /b 0
 
 :opt_sync
 echo.
+echo [*] Recompilando versao atualizada do SandStorm...
+call "%SCRIPT_DIR%gradlew.bat" build -x test
+if errorlevel 1 (
+    echo [!] Erro ao compilar o mod.
+    pause
+    exit /b 1
+)
+copy /Y "%JAR_SOURCE%" "%MODS_DIR%\sandstorm-1.0.0.jar" >nul
 echo [OK] Mod sincronizado com sucesso. Bom jogo!
 exit /b 0
 
 :opt_dev
 echo.
-echo [*] Modo Dev - Iniciando cliente com logs ao vivo...
+echo [*] Modo Dev selecionado.
+echo [*] Recompilando o mod para garantir a versao mais atualizada...
+call "%SCRIPT_DIR%gradlew.bat" build -x test
+if errorlevel 1 (
+    echo [!] Erro ao recompilar o mod. Abortando.
+    pause
+    exit /b 1
+)
+
+copy /Y "%JAR_SOURCE%" "%MODS_DIR%\sandstorm-1.0.0.jar" >nul
+if errorlevel 1 (
+    echo [!] Falha ao copiar o mod compilado para %MODS_DIR%.
+) else (
+    echo [OK] Mod recompilado e atualizado em:
+    echo      %MODS_DIR%\sandstorm-1.0.0.jar
+)
+
+echo.
+echo [*] Iniciando cliente com logs ao vivo...
 echo [*] Pressione Ctrl+C no terminal para encerrar o jogo.
 echo.
 
-rem Cria a pasta de logs se nao existir
 if not exist "%SCRIPT_DIR%run\logs" mkdir "%SCRIPT_DIR%run\logs"
 
-rem Gera nome de arquivo com timestamp
 for /f "tokens=1-6 delims=/:. " %%a in ("%DATE% %TIME%") do (
     set "LOG_DATE=%%c-%%b-%%a"
     set "LOG_TIME=%%d-%%e"
@@ -122,7 +141,6 @@ set "LOG_FILE=%SCRIPT_DIR%run\logs\dev-session-%LOG_DATE%_%LOG_TIME%.log"
 echo [*] Salvando log em: %LOG_FILE%
 echo.
 
-rem Roda runClient no terminal atual, capturando output com PowerShell Tee-Object
 powershell -Command "& { $env:JAVA_HOME='%JAVA_HOME%'; & '%SCRIPT_DIR%gradlew.bat' runClient 2>&1 | Tee-Object -FilePath '%LOG_FILE%' }"
 
 echo.
