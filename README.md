@@ -144,40 +144,135 @@ O código do mod **SandStorm** foi desenvolvido seguindo critérios industriais 
 
 ---
 
-## 🚀 Como Instalar e Jogar
+---
 
-### Requisitos:
-* **Minecraft**: 26.2 (ou snapshot compatível).
-* **Java**: Oracle JDK / OpenJDK 25 ou superior.
-* **Fabric Loader**: Versão 0.19.5 ou superior ([fabricmc.net](https://fabricmc.net/)).
-* **Fabric API**: Versão correspondente.
+## 🛠️ Matriz de Compatibilidade e Dependências
 
-### Passo a Passo:
-1. Baixe e instale o **Fabric Loader** para o Minecraft.
-2. Baixe o arquivo `.jar` do mod **SandStorm** em [Releases](https://github.com/fhfelipefh/SandStorm/releases).
-3. Adicione `sandstorm-1.0.0.jar` e a `Fabric API` na pasta `.minecraft/mods`.
-4. Inicie o jogo pelo perfil Fabric!
+| Componente / Dependência | Versão Homologada | Requisito Mínimo | Link Oficial |
+|---|---|---|---|
+| **Minecraft** | `26.2` | `26.2` | [minecraft.net](https://www.minecraft.net/) |
+| **Java Development Kit (JDK)** | `Java 25` (Oracle / OpenJDK) | `Java 25` | [adoptium.net](https://adoptium.net/) / [oracle.com](https://www.oracle.com/java/) |
+| **Fabric Loader** | `0.19.5` | `>= 0.19.5` | [fabricmc.net](https://fabricmc.net/) |
+| **Fabric API** | `0.160.0+26.2` | Compatível com 26.2 | [modrinth.com/mod/fabric-api](https://modrinth.com/mod/fabric-api) |
+| **Fabric Loom (Gradle)** | `1.17-SNAPSHOT` | `1.17+` | [github.com/FabricMC/fabric-loom](https://github.com/FabricMC/fabric-loom) |
+| **JUnit 5 Platform** | `5.11.4` | `5.10+` | [junit.org](https://junit.org/junit5/) |
 
 ---
 
-## 💻 Ambiente de Desenvolvimento (Build e Testes)
+## 🚀 Guia de Instalação para Jogadores
 
-Para compilar o projeto localmente:
+Se você deseja apenas jogar o mod no seu cliente Minecraft, siga o passo a passo abaixo:
 
+### Passo 1: Instalar o Java 25
+O mod utiliza recursos modernos de compilação da JVM 25.
+1. Baixe e instale o **JDK 25** (ou JRE 25) em [Oracle Java 25](https://www.oracle.com/java/technologies/downloads/) ou [Adoptium Temurin](https://adoptium.net/).
+2. Verifique a instalação abrindo um terminal e digitando:
+   ```bash
+   java -version
+   ```
+
+### Passo 2: Preparar a Versão do Minecraft no Launcher Oficial
+1. Abra o **Minecraft Launcher** oficial.
+2. Na aba **Instalações**, crie ou inicie ao menos uma vez a versão oficial do **Minecraft 26.2** para que os arquivos base sejam baixados pela Mojang.
+3. Feche o jogo após carregar o menu principal.
+
+### Passo 3: Instalar o Fabric Loader
+1. Acesse a página oficial de download do Fabric: [fabricmc.net/use/installer](https://fabricmc.net/use/installer/).
+2. Baixe o instalador universal (.jar ou .exe).
+3. Execute o instalador e preencha as opções:
+   * **Minecraft Version**: selecione `26.2`.
+   * **Loader Version**: selecione `0.19.5` (ou a versão estável mais recente).
+   * Marque a opção **Create profile**.
+4. Clique em **Install**. Uma nova instalação chamada `fabric-loader-26.2` será adicionada ao seu inicializador.
+
+### Passo 4: Instalar a Fabric API e o SandStorm
+1. Baixe a **Fabric API** compatível com o Minecraft 26.2 (`0.160.0+26.2` ou superior) no [Modrinth](https://modrinth.com/mod/fabric-api) ou [CurseForge](https://www.curseforge.com/minecraft/mc-mods/fabric-api).
+2. Baixe o arquivo binário do mod **`sandstorm-1.0.0.jar`** na aba de [Releases do GitHub](https://github.com/fhfelipefh/SandStorm/releases) (ou compile via código fonte conforme o guia abaixo).
+3. Copie ambos os arquivos `.jar` (`fabric-api-*.jar` e `sandstorm-1.0.0.jar`) para a pasta `mods` do seu Minecraft:
+   * **Windows**: Pressione `Win + R`, digite `%appdata%\.minecraft\mods` e pressione Enter.
+   * **Linux**: `~/.minecraft/mods/`
+   * **macOS**: `~/Library/Application Support/minecraft/mods/`
+   *(Se a pasta `mods` não existir, crie-a manualmente).*
+
+### Passo 5: Iniciar e Jogar
+1. Abra o **Minecraft Launcher**.
+2. No menu suspenso de versões ao lado do botão "Jogar", selecione a instalação **fabric-loader-26.2**.
+3. Clique em **Jogar** e aproveite a experiência de sobrevivência e engenharia no planeta deserto!
+
+---
+
+## 💻 Guia Completo de Construção e Desenvolvimento (Build & Dev)
+
+Se você é desenvolvedor e deseja compilar o mod a partir do código fonte, executar a suíte de testes ou contribuir com novas mecânicas:
+
+### 1. Pré-requisitos
+* **Git**: instalado e configurado no PATH do sistema.
+* **JDK 25**: com a variável de ambiente `JAVA_HOME` apontando para o diretório de instalação do JDK 25.
+
+### 2. Configuração do Ambiente Local (`gradle.properties`)
+No arquivo `gradle.properties`, certifique-se de que a propriedade `org.gradle.java.home` aponte para o caminho correto do seu Java 25 local caso não esteja no PATH global:
+```properties
+org.gradle.jvmargs=-Xmx2G
+org.gradle.parallel=true
+org.gradle.java.home=C:/Program Files/Java/jdk-25
+minecraft_version=26.2
+loader_version=0.19.5
+loom_version=1.17-SNAPSHOT
+fabric_api_version=0.160.0+26.2
+```
+
+### 3. Clonando o Repositório
 ```bash
-# Clonar o repositório
 git clone https://github.com/fhfelipefh/SandStorm.git
 cd SandStorm
-
-# Executar todas as suítes de testes unitários e arquiteturais
-./gradlew test
-
-# Compilar e gerar o jar de produção
-./gradlew build
-
-# Iniciar o cliente de desenvolvimento
-./gradlew runClient
 ```
+
+### 4. Gerando Código Fonte Mapeado do Minecraft (Loom genSources)
+Para descompilar e mapear o código nativo do Minecraft 26.2 com as definições de nomes oficiais da Mojang para desenvolvimento e navegação em IDEs:
+```bash
+# Windows (PowerShell / CMD)
+.\gradlew genSources
+
+# Linux / macOS
+./gradlew genSources
+```
+
+### 5. Executando os Testes Automatizados
+O projeto conta com suítes rigorosas de testes unitários e de arquitetura (JUnit 5):
+```bash
+.\gradlew test --info
+```
+> Os relatórios detalhados de execução dos testes são gerados em `build/reports/tests/test/index.html`.
+
+### 6. Compilando o Pacote de Produção (Build JAR)
+Para gerar o arquivo `.jar` otimizado e remapeado para distribuição:
+```bash
+.\gradlew build
+```
+Após o término com `BUILD SUCCESSFUL`, o artefato final estará disponível em:
+* `build/libs/sandstorm-1.0.0.jar` (arquivo compilado pronto para colocar na pasta `.minecraft/mods`)
+* `build/libs/sandstorm-1.0.0-sources.jar` (código fonte remapeado)
+
+### 7. Executando o Cliente ou Servidor de Testes Diretamente
+Você pode iniciar um cliente Minecraft isolado com o mod carregado sem precisar instalá-lo no seu launcher principal:
+```bash
+# Iniciar o cliente do jogo em ambiente de desenvolvimento:
+.\gradlew runClient
+
+# Iniciar um servidor dedicado local para testes multiplayer:
+.\gradlew runServer
+```
+
+---
+
+## ❓ Resolução de Problemas Comuns (Troubleshooting)
+
+* **Erro de versão incompatível do Java (`class file has wrong version 69.0, should be...`):**
+  * Certifique-se de que o Gradle está usando o **Java 25**. Configure `org.gradle.java.home` no `gradle.properties` apontando diretamente para o caminho do seu JDK 25.
+* **Memória insuficiente durante a compilação do Loom (`OutOfMemoryError`):**
+  * Aumente a memória no `gradle.properties`: altere `org.gradle.jvmargs=-Xmx2G` para `-Xmx3G` ou `-Xmx4G`.
+* **Crash no Launcher oficial (`Missing or incompatible Fabric API`):**
+  * Verifique se colocou a Fabric API compatível com a versão `26.2` dentro de `.minecraft/mods`. O mod SandStorm requer a Fabric API como dependência de runtime.
 
 ---
 
