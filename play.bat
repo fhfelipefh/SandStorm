@@ -49,6 +49,8 @@ if /i "%ARG%"=="launcher" goto opt_launcher
 if /i "%ARG%"=="2" goto opt_launcher
 if /i "%ARG%"=="sync" goto opt_sync
 if /i "%ARG%"=="3" goto opt_sync
+if /i "%ARG%"=="dev" goto opt_dev
+if /i "%ARG%"=="4" goto opt_dev
 
 echo.
 echo ===================================================
@@ -57,6 +59,7 @@ echo ===================================================
 echo  [1] Iniciar jogo direto com SandStorm (Recomendado)
 echo  [2] Abrir o Launcher do Minecraft
 echo  [3] Apenas atualizar mod e fechar
+echo  [4] Modo Dev - Log ao vivo no terminal + salvar arquivo
 echo ===================================================
 echo.
 
@@ -66,6 +69,7 @@ if "%CHOICE%"=="" set CHOICE=1
 if "%CHOICE%"=="1" goto opt_run
 if "%CHOICE%"=="2" goto opt_launcher
 if "%CHOICE%"=="3" goto opt_sync
+if "%CHOICE%"=="4" goto opt_dev
 
 echo [!] Opcao invalida. Encerrando.
 exit /b 0
@@ -97,4 +101,39 @@ exit /b 0
 :opt_sync
 echo.
 echo [OK] Mod sincronizado com sucesso. Bom jogo!
+exit /b 0
+
+:opt_dev
+echo.
+echo [*] Modo Dev - Iniciando cliente com logs ao vivo...
+echo [*] Pressione Ctrl+C no terminal para encerrar o jogo.
+echo.
+
+rem Cria a pasta de logs se nao existir
+if not exist "%SCRIPT_DIR%run\logs" mkdir "%SCRIPT_DIR%run\logs"
+
+rem Gera nome de arquivo com timestamp
+for /f "tokens=1-6 delims=/:. " %%a in ("%DATE% %TIME%") do (
+    set "LOG_DATE=%%c-%%b-%%a"
+    set "LOG_TIME=%%d-%%e"
+)
+set "LOG_FILE=%SCRIPT_DIR%run\logs\dev-session-%LOG_DATE%_%LOG_TIME%.log"
+
+echo [*] Salvando log em: %LOG_FILE%
+echo.
+
+rem Roda runClient no terminal atual, capturando output com PowerShell Tee-Object
+powershell -Command "& { $env:JAVA_HOME='%JAVA_HOME%'; & '%SCRIPT_DIR%gradlew.bat' runClient 2>&1 | Tee-Object -FilePath '%LOG_FILE%' }"
+
+echo.
+echo ===================================================
+echo  Sessao encerrada. Log salvo em:
+echo  %LOG_FILE%
+echo ===================================================
+echo.
+
+set /p OPEN_LOG="Deseja abrir o log no Notepad? [S/N]: "
+if /i "%OPEN_LOG%"=="S" start notepad "%LOG_FILE%"
+
+pause
 exit /b 0

@@ -29,11 +29,13 @@ public class SuitSurvivalHandler {
         suit.updateEquippedArmorCount(armorCount);
 
         BlockPos pos = player.blockPosition();
-        boolean canSeeSky = player.level().canSeeSkyFromBelowWater(pos);
+        boolean canSeeSky = (player.tickCount % 10 == 0)
+                ? player.level().canSeeSkyFromBelowWater(pos)
+                : player.level().canSeeSky(pos);
         boolean isDay = player.level().getSkyDarken() < 4;
         boolean exposedToSunlight = isDay && canSeeSky;
         boolean underground = !canSeeSky || pos.getY() < 50;
-        double ambientTemperature = calculateAmbientTemperature(player);
+        double ambientTemperature = (isDay && canSeeSky) ? 48.0 : 22.0;
         com.fhfelipefh.sandstorm.component.SandstormWeatherComponent weather = com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.getWeather();
         double solarMultiplier = weather.getSolarEfficiencyMultiplier();
 
@@ -80,7 +82,7 @@ public class SuitSurvivalHandler {
 
     private static double calculateAmbientTemperature(ServerPlayer player) {
         BlockPos pos = player.blockPosition();
-        if (player.level().getSkyDarken() < 4 && player.level().canSeeSkyFromBelowWater(pos)) {
+        if (player.level().getSkyDarken() < 4 && player.level().canSeeSky(pos)) {
             return 48.0;
         }
         return 22.0;

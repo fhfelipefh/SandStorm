@@ -45,17 +45,23 @@ public class AnomalyRadarItem extends Item {
             BlockPos playerPos = serverPlayer.blockPosition();
             List<RadarComponent.AnomalyTarget> targets = new ArrayList<>();
 
-            BlockPos.betweenClosedStream(
-                    playerPos.offset(-48, -24, -48),
-                    playerPos.offset(48, 24, 48)
-            ).forEach(pos -> {
-                BlockState state = level.getBlockState(pos);
-                if (state.is(SandStormBlocks.BURIED_TECH_RUINS)) {
-                    targets.add(new RadarComponent.AnomalyTarget(pos.getX(), pos.getY(), pos.getZ(), "buried_ruins"));
-                } else if (state.is(SandStormBlocks.ANCIENT_DATA_CORE)) {
-                    targets.add(new RadarComponent.AnomalyTarget(pos.getX(), pos.getY(), pos.getZ(), "ancient_data_core"));
-                }
-            });
+            BlockPos min = playerPos.offset(-32, -16, -32);
+            BlockPos max = playerPos.offset(32, 16, 32);
+
+            BlockPos.betweenClosedStream(min, max)
+                    .filter(pos -> {
+                        BlockState s = level.getBlockState(pos);
+                        return s.is(SandStormBlocks.BURIED_TECH_RUINS)
+                                || s.is(SandStormBlocks.ANCIENT_DATA_CORE);
+                    })
+                    .limit(32)
+                    .forEach(pos -> {
+                        BlockState s = level.getBlockState(pos);
+                        String type = s.is(SandStormBlocks.BURIED_TECH_RUINS)
+                                ? "buried_ruins" : "ancient_data_core";
+                        targets.add(new RadarComponent.AnomalyTarget(
+                                pos.getX(), pos.getY(), pos.getZ(), type));
+                    });
 
             Optional<RadarComponent.ScanResult> scanResult = radar.findClosestAnomaly(
                     playerPos.getX(),

@@ -15,7 +15,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class AtmosphericAnalyzerItem extends Item {
     public static final int COOLDOWN_TICKS = 20;
@@ -34,22 +34,12 @@ public class AtmosphericAnalyzerItem extends Item {
 
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
             BlockPos playerPos = serverPlayer.blockPosition();
-            AtomicBoolean found = new AtomicBoolean(false);
-
-            BlockPos.betweenClosedStream(
+            boolean found = BlockPos.betweenClosedStream(
                     playerPos.offset(-32, -16, -32),
                     playerPos.offset(32, 16, 32)
-            ).forEach(pos -> {
-                if (found.get()) {
-                    return;
-                }
-                BlockState state = level.getBlockState(pos);
-                if (state.is(SandStormBlocks.ATMOSPHERIC_TERRAFORMER)) {
-                    found.set(true);
-                }
-            });
+            ).anyMatch(pos -> level.getBlockState(pos).is(SandStormBlocks.ATMOSPHERIC_TERRAFORMER));
 
-            if (found.get()) {
+            if (found) {
                 serverPlayer.sendSystemMessage(Component.translatable(
                         "telemetry.sandstorm.analyzer_active_signal",
                         (int) SCAN_RADIUS
