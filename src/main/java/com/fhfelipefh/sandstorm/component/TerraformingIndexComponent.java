@@ -45,6 +45,19 @@ public class TerraformingIndexComponent {
         return Stage.LUSH_BIOSPHERE;
     }
 
+    public int getDomeRadius() {
+        if (progress < 25.0) {
+            return 6;
+        }
+        if (progress < 50.0) {
+            return 10;
+        }
+        if (progress < 75.0) {
+            return 14;
+        }
+        return 18;
+    }
+
     public double getHumidity() {
         return 5.0 + (progress / 100.0) * 80.0;
     }

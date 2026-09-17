@@ -1,6 +1,6 @@
 # SandStorm 🏜️
 
-**SandStorm** é um mod de sobrevivência planetária, engenharia industrial e terraformação climática para Minecraft (Fabric), ambientado em um planeta deserto e inóspito. O objetivo final do jogador é sobreviver à hostilidade biológica e ambiental e purificar o planeta, transformando suas infinitas dunas de areia em um ecossistema fértil, verdejante e habitável.
+**SandStorm** é um mod de sobrevivência planetária, engenharia industrial e terraformação climática para Minecraft (Fabric), ambientado em um planeta deserto e inóspito. O objetivo do jogador é sobreviver à hostilidade biológica e ambiental, construindo usinas de terraformação setorial que criam oásis verdejantes e habitáveis em meio às dunas infinitas.
 
 ---
 
@@ -25,7 +25,7 @@ No entanto, há um revés: os sistemas da nave acusam falha crítica nos motores
 * **Arqueologia e Radar de Anomalias (Fase 5):** Dispositivos de varredura direcional detectam **Ruínas Tecnológicas Soterradas** e **Núcleos de Dados Ancestrais** sob as dunas para resgatar esquemas ópticos (`TECH_DISC`) e ligas pesadas (`SCRAP_METAL`).
 * **Logística Aérea Sem Vibração Sísmica (Fase 5):** **Drones de Carga Aérea** realizam transporte automatizado entre **Docas de Drones**, operando com ruído sísmico estritamente nulo (`0.0f`) para navegação 100% segura.
 * **Maquinário Pesado e Megazord (Fase 6):** Pátios de montagem industrial sintetizam **Veículos de Escavação Terrestre** e o titânico **Megazord de Combate**, equipado com **Canhões de Onda de Choque Sônica** capazes de conter vermes sem danificar fábricas.
-* **Endgame: Processador Atmosférico e Terraformação (Fase 7):** Edificação de mega-escala que consome 250.000 J para restaurar a umidade global, transformar areia em solo fértil e grama verde, e provocar a dispersão permanente dos vermes de areia.
+* **Endgame: Processadores Atmosféricos e Cúpulas de Oásis (Fase 7):** Em consonância com a lógica do Minecraft de **mundo infinito**, não existe um contador planetário global irrealista. A terraformação opera de forma setorial e cumulativa por máquina: cada **Processador Atmosférico** gera uma cúpula de microclima local em expansão (raio de até 18 blocos), convertendo areia em grama e solo fértil, reduzindo o calor e repelindo vermes da área da base. Fora das cúpulas, o mundo infinito permanece selvagem e inóspito.
 
 ---
 
@@ -79,17 +79,18 @@ graph TD;
 </details>
 
 <details>
-<summary><b>4. Fluxo de Terraformação Planetária (Endgame)</b></summary>
+<summary><b>4. Fluxo de Terraformação por Cúpula de Oásis (Endgame Setorial)</b></summary>
 
 ```mermaid
 graph TD;
-    A[Processador Atmosférico Planetário] -->|Consumo de 250.000 J| B[Índice de Terraformação 0 a 100%]
-    B -->|Estágio 1: 0-25%| C[Deserto Árido Severo]
-    B -->|Estágio 2: 25-50%| D[Condensação Atmosférica Inicial]
-    B -->|Estágio 3: 50-75%| E[Precipitação e Umidade Ativa]
-    B -->|Estágio 4: 75-100%| F[Biosfera Luxuosa Completa]
-    E & F -->|Conversão de Solo| G[Areia -> Grama e Terra Fértil]
-    E & F -->|Efeito de Banimento| H[Dispersão Permanente dos Vermes]
+    A[Processador Atmosférico] -->|Consumo de 2.000 J/ciclo| B[Cúpula Ecológica Local: 0 a 100%]
+    B -->|Estágio 1: 0-25%| C[Área Inicial: Raio de 6 Blocos]
+    B -->|Estágio 2: 25-50%| D[Condensação e Queda Térmica: Raio de 10 Blocos]
+    B -->|Estágio 3: 50-75%| E[Precipitação e Dispersão de Vermes: Raio de 14 Blocos]
+    B -->|Estágio 4: 75-100%| F[Oásis Fértil Pleno e Solo Verdejante: Raio de 18 Blocos]
+    E & F -->|Regeneração Local de Solo| G[Areia -> Grama e Solo Fértil no Raio]
+    E & F -->|Proteção da Cúpula| H[Área Segura e Habitável Local]
+    I[Mundo Infinito Além da Cúpula] -.->|Preservação Ecológica| J[Deserto e Vermes Continuam Ativos nas Regiões Selvagens]
 ```
 </details>
 
@@ -115,7 +116,7 @@ graph TD;
 | **Bloco**    | `ancient_data_core`    | Núcleo de Dados Ancestral | Fonte garantida de discos e esquemas |
 | **Bloco**    | `drone_dock`           | Doca de Drones | Estação de ancoragem e recarga de drones |
 | **Bloco**    | `assembly_bay`         | Pátio de Montagem | Plataforma de fabricação de veículos pesados |
-| **Bloco**    | `atmospheric_terraformer`| Processador Atmosférico| Usina planetária de terraformação |
+| **Bloco**    | `atmospheric_terraformer`| Processador Atmosférico| Usina de terraformação e cúpula de oásis local |
 | **Item**     | `raw_silicon`          | Silício Bruto | Mineral extraído da areia desértica |
 | **Item**     | `silicon_wafer`        | Wafer de Silício | Pastilha para eletrônica avançada |
 | **Item**     | `mineral_salt`         | Sal Mineral | Subproduto mineral purificado |
@@ -125,7 +126,7 @@ graph TD;
 | **Item**     | `tech_disc`            | Disco de Tecnologia | Esquemas ópticos para mechas e veículos |
 | **Item**     | `scrap_metal`          | Sucata Metálica | Liga reforçada resistente a dunas |
 | **Item**     | `sonic_cannon`         | Canhão Sônico de Pulso | Emissor de ondas acústicas de choque |
-| **Item**     | `atmospheric_analyzer` | Analisador Atmosférico | Leitor diagnóstico de clima e terraformação |
+| **Item**     | `atmospheric_analyzer` | Analisador Atmosférico | Leitor diagnóstico de microclima e cúpula local |
 | **Entidade** | `sandworm`             | Verme de Areia | Predador apex (300 HP, 18 dano) |
 | **Entidade** | `cargo_drone`          | Drone de Carga Aérea | Transporte aéreo com ruído sísmico zero |
 | **Entidade** | `excavator_vehicle`    | Veículo de Escavação | Escavadeira industrial pilotável (120 HP) |
@@ -137,7 +138,7 @@ graph TD;
 
 O código do mod **SandStorm** foi desenvolvido seguindo critérios industriais rigorosos de engenharia de software:
 1. **Clean Code com Zero Comentários:** O código fonte Java de produção e de testes possui **0 linhas de comentários**. O design é 100% autoexplicativo por meio de nomenclatura semântica, responsabilidade única e desacoplamento.
-2. **Camadas Desacopladas (Component-Driven):** Componentes como `EnergyStorageComponent`, `ThermalComponent`, `VibrationEmitterComponent`, `RadarComponent`, `RecipeProcessorComponent` e `TerraformingIndexComponent` são classes puras e reutilizáveis, desacopladas de classes de cliente gráfico.
+2. **Camadas Desacopladas (Component-Driven):** Componentes como `EnergyStorageComponent`, `ThermalComponent`, `VibrationEmitterComponent`, `RadarComponent`, `RecipeProcessorComponent` e `TerraformingIndexComponent` (microclima e cúpula de oásis local) são classes puras e reutilizáveis, desacopladas de classes de cliente gráfico.
 3. **Testes Unitários e de Arquitetura Automatizados:** Todas as regras arquiteturais, isolamento de camadas, limites de transferência energética e cálculos espaciais são validados por suítes de testes com JUnit 5.
 4. **Localização Nativa Multilíngue (i18n):** Paridade total de 100% das chaves em Português (`pt_br.json`), Inglês (`en_us.json`) e Espanhol (`es_es.json`).
 

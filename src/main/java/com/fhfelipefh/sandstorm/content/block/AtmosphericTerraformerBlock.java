@@ -43,8 +43,9 @@ public class AtmosphericTerraformerBlock extends Block {
             if (energyStorage.hasEnergy(ENERGY_PER_CYCLE)) {
                 energyStorage.extractEnergy(ENERGY_PER_CYCLE);
                 terraformingIndex.addProgress(2.5);
+                int radius = terraformingIndex.getDomeRadius();
 
-                BlockPos.betweenClosedStream(pos.offset(-6, -2, -6), pos.offset(6, 2, 6)).forEach(targetPos -> {
+                BlockPos.betweenClosedStream(pos.offset(-radius, -2, -radius), pos.offset(radius, 2, radius)).forEach(targetPos -> {
                     BlockState targetState = level.getBlockState(targetPos);
                     if (targetState.is(Blocks.SAND)) {
                         level.setBlockAndUpdate(targetPos, Blocks.GRASS_BLOCK.defaultBlockState());
@@ -55,6 +56,7 @@ public class AtmosphericTerraformerBlock extends Block {
                     serverPlayer.sendSystemMessage(Component.translatable(
                             "telemetry.sandstorm.terraformer_cycle",
                             (int) terraformingIndex.getProgress(),
+                            radius,
                             (int) terraformingIndex.getHumidity(),
                             (int) terraformingIndex.getTemperatureCelsius()
                     ), true);

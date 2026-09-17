@@ -15,11 +15,11 @@
   "block.sandstorm.ancient_data_core": "Núcleo de Datos Ancestral",
   "block.sandstorm.drone_dock": "Muelle de Drones de Carga",
   "block.sandstorm.assembly_bay": "Bahía de Montaje Industrial",
-  "block.sandstorm.atmospheric_terraformer": "Procesador Atmosférico Planetario",
+  "block.sandstorm.atmospheric_terraformer": "Procesador Atmosférico",
   "entity.sandstorm.sandworm": "Gusano de Arena",
   "entity.sandstorm.cargo_drone": "Dron de Carga Aéreo",
   "entity.sandstorm.excavator_vehicle": "Vehículo Excavador Minero",
-  "entity.sandstorm.megazord": "Megazord de Combate Planetario",
+  "entity.sandstorm.megazord": "Megazord de Combate Industrial",
   "item.sandstorm.sandworm_chitin": "Quitina de Gusano de Arena",
   "item.sandstorm.sandworm_tooth": "Diente de Gusano de Arena",
   "item.sandstorm.raw_silicon": "Silicio Bruto",
@@ -46,8 +46,8 @@
   "telemetry.sandstorm.excavator_mounted": "Excavadora Operativa: Batería %s / %s J",
   "telemetry.sandstorm.megazord_cockpit": "Cabina del Megazord Activada: Energía %s / %s J | Sistemas Sónicos Listos",
   "telemetry.sandstorm.sonic_blast": "¡Onda Sónica Liberada! %s objetivos hostiles repelidos",
-  "telemetry.sandstorm.terraformer_cycle": "Procesador Atmosférico: Progreso %s%% | Humedad %s%% | Temperatura %s°C",
+  "telemetry.sandstorm.terraformer_cycle": "Cúpula de Oasis: Progreso %s%% | Radio %sm | Humedad %s%% | Temperatura %s°C",
   "telemetry.sandstorm.terraformer_no_energy": "Procesador Atmosférico: Energía insuficiente (%s / %s J)",
-  "telemetry.sandstorm.analyzer_active_signal": "Analizador: Campo de terraformación activo detectado a %s bloques",
-  "telemetry.sandstorm.analyzer_no_signal": "Analizador: Ningún procesador atmosférico activo en el radio de escaneo"
+  "telemetry.sandstorm.analyzer_active_signal": "Analizador: Cúpula local de terraformación detectada a %s bloques",
+  "telemetry.sandstorm.analyzer_no_signal": "Analizador: Sector desértico natural (ninguna cúpula de terraformación al alcance)"
 }
