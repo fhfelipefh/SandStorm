@@ -150,10 +150,10 @@ O código do mod **SandStorm** foi desenvolvido seguindo critérios industriais 
 
 | Componente / Dependência | Versão Homologada | Requisito Mínimo | Link Oficial |
 |---|---|---|---|
-| **Minecraft** | `26.2` | `26.2` | [minecraft.net](https://www.minecraft.net/) |
+| **Minecraft** | `26.3` (estável) | `>= 26.2` | [minecraft.net](https://www.minecraft.net/) |
 | **Java Development Kit (JDK)** | `Java 25` (Oracle / OpenJDK) | `Java 25` | [adoptium.net](https://adoptium.net/) / [oracle.com](https://www.oracle.com/java/) |
 | **Fabric Loader** | `0.19.5` | `>= 0.19.5` | [fabricmc.net](https://fabricmc.net/) |
-| **Fabric API** | `0.160.0+26.2` | Compatível com 26.2 | [modrinth.com/mod/fabric-api](https://modrinth.com/mod/fabric-api) |
+| **Fabric API** | `0.160.7+26.3` | Compatível com 26.3 | [modrinth.com/mod/fabric-api](https://modrinth.com/mod/fabric-api) |
 | **Fabric Loom (Gradle)** | `1.17-SNAPSHOT` | `1.17+` | [github.com/FabricMC/fabric-loom](https://github.com/FabricMC/fabric-loom) |
 | **JUnit 5 Platform** | `5.11.4` | `5.10+` | [junit.org](https://junit.org/junit5/) |
 
@@ -161,7 +161,7 @@ O código do mod **SandStorm** foi desenvolvido seguindo critérios industriais 
 
 ## 🚀 Guia de Instalação para Jogadores
 
-Se você deseja apenas jogar o mod no seu cliente Minecraft, siga o passo a passo abaixo:
+Se você deseja jogar o mod no seu cliente Minecraft, siga o passo a passo abaixo:
 
 ### Passo 1: Instalar o Java 25
 O mod utiliza recursos modernos de compilação da JVM 25.
@@ -173,31 +173,30 @@ O mod utiliza recursos modernos de compilação da JVM 25.
 
 ### Passo 2: Preparar a Versão do Minecraft no Launcher Oficial
 1. Abra o **Minecraft Launcher** oficial.
-2. Na aba **Instalações**, crie ou inicie ao menos uma vez a versão oficial do **Minecraft 26.2** para que os arquivos base sejam baixados pela Mojang.
+2. Na aba **Instalações**, selecione ou inicie a versão oficial do **Minecraft 26.3** ("Última versão") para que os arquivos base sejam baixados pela Mojang.
 3. Feche o jogo após carregar o menu principal.
 
 ### Passo 3: Instalar o Fabric Loader
 1. Acesse a página oficial de download do Fabric: [fabricmc.net/use/installer](https://fabricmc.net/use/installer/).
 2. Baixe o instalador universal (.jar ou .exe).
 3. Execute o instalador e preencha as opções:
-   * **Minecraft Version**: selecione `26.2`.
+   * **Minecraft Version**: selecione `26.3`.
    * **Loader Version**: selecione `0.19.5` (ou a versão estável mais recente).
    * Marque a opção **Create profile**.
-4. Clique em **Install**. Uma nova instalação chamada `fabric-loader-26.2` será adicionada ao seu inicializador.
+4. Clique em **Install**. Uma nova instalação chamada `fabric-loader-0.19.5-26.3` será adicionada ao seu inicializador.
 
 ### Passo 4: Instalar a Fabric API e o SandStorm
-1. Baixe a **Fabric API** compatível com o Minecraft 26.2 (`0.160.0+26.2` ou superior) no [Modrinth](https://modrinth.com/mod/fabric-api) ou [CurseForge](https://www.curseforge.com/minecraft/mc-mods/fabric-api).
-2. Baixe o arquivo binário do mod **`sandstorm-1.0.0.jar`** na aba de [Releases do GitHub](https://github.com/fhfelipefh/SandStorm/releases) (ou compile via código fonte conforme o guia abaixo).
+1. Baixe a **Fabric API** compatível com o Minecraft 26.3 (`0.160.7+26.3`) no [Modrinth](https://modrinth.com/mod/fabric-api) ou [Maven oficial do Fabric](https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/0.160.7+26.3/fabric-api-0.160.7+26.3.jar).
+2. Baixe o arquivo binário do mod **`sandstorm-1.0.0.jar`** na aba de [Releases do GitHub](https://github.com/fhfelipefh/SandStorm/releases) (ou pegue de `build/libs/sandstorm-1.0.0.jar`).
 3. Copie ambos os arquivos `.jar` (`fabric-api-*.jar` e `sandstorm-1.0.0.jar`) para a pasta `mods` do seu Minecraft:
-   * **Windows**: Pressione `Win + R`, digite `%appdata%\.minecraft\mods` e pressione Enter.
+   * **Windows**: `C:\Users\<SeuUsuario>\AppData\Roaming\.minecraft\mods\`
    * **Linux**: `~/.minecraft/mods/`
    * **macOS**: `~/Library/Application Support/minecraft/mods/`
-   *(Se a pasta `mods` não existir, crie-a manualmente).*
 
 ### Passo 5: Iniciar e Jogar
 1. Abra o **Minecraft Launcher**.
-2. No menu suspenso de versões ao lado do botão "Jogar", selecione a instalação **fabric-loader-26.2**.
-3. Clique em **Jogar** e aproveite a experiência de sobrevivência e engenharia no planeta deserto!
+2. No menu suspenso de versões ao lado do botão verde "Jogar", selecione a instalação **fabric-loader-0.19.5-26.3**.
+3. Clique em **Jogar** e aproveite a sobrevivência espacial no planeta deserto!
 
 ---
 
@@ -210,15 +209,15 @@ Se você é desenvolvedor e deseja compilar o mod a partir do código fonte, exe
 * **JDK 25**: com a variável de ambiente `JAVA_HOME` apontando para o diretório de instalação do JDK 25.
 
 ### 2. Configuração do Ambiente Local (`gradle.properties`)
-No arquivo `gradle.properties`, certifique-se de que a propriedade `org.gradle.java.home` aponte para o caminho correto do seu Java 25 local caso não esteja no PATH global:
+No arquivo `gradle.properties`, certifique-se de que a propriedade `org.gradle.java.home` aponte para o caminho correto do seu Java 25 local:
 ```properties
 org.gradle.jvmargs=-Xmx2G
 org.gradle.parallel=true
 org.gradle.java.home=C:/Program Files/Java/jdk-25
-minecraft_version=26.2
+minecraft_version=26.3
 loader_version=0.19.5
 loom_version=1.17-SNAPSHOT
-fabric_api_version=0.160.0+26.2
+fabric_api_version=0.160.7+26.3
 ```
 
 ### 3. Clonando o Repositório
