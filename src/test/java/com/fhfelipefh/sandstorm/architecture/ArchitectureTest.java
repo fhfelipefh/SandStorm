@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.architecture;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
+import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.component.ThermalComponent;
 import com.fhfelipefh.sandstorm.component.VibrationEmitterComponent;
 import com.fhfelipefh.sandstorm.metrics.GameMetricsTracker;
@@ -19,7 +20,8 @@ class ArchitectureTest {
     private static final List<Class<?>> COMPONENT_CLASSES = List.of(
             EnergyStorageComponent.class,
             ThermalComponent.class,
-            VibrationEmitterComponent.class
+            VibrationEmitterComponent.class,
+            SuitPowerComponent.class
     );
 
     private static final List<Class<?>> METRICS_CLASSES = List.of(

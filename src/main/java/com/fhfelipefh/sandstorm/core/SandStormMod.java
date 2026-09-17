@@ -1,5 +1,7 @@
 package com.fhfelipefh.sandstorm.core;
 
+import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -12,6 +14,8 @@ public class SandStormMod implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("Initializing SandStorm mod");
+        SandStormItems.initialize();
+        SuitSurvivalHandler.initialize();
     }
 
     public static Identifier id(String path) {
