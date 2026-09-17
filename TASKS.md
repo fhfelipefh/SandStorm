@@ -11,11 +11,12 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **180 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **187 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
 | **Receitas Data-Driven (JEI/REI)** | 20 receitas oficiais | Cobertura total | ✅ Concluído |
-| **Progresso Estimado do MVP** | **~75%** | **100%** | 🟡 Em Andamento |
+| **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
+| **Progresso Estimado do MVP** | **~82%** | **100%** | 🟡 Em Andamento |
 
 ---
 
@@ -68,9 +69,50 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [x] `JeiCompatibilityTest`: Validação estrutural de compatibilidade do JEI/REI.
 - [x] `ZeroCommentsArchitectureTest`: Garantia contínua de zero comentários em todo o código Java.
 
+### Fase 6: Geração de Mundo / Worldgen (Concluída - 100%)
+- [x] Configuração de aquíferos subterrâneos salobros nos desertos (`sandstorm:brackish_aquifer`):
+  - Configured feature: `data/sandstorm/worldgen/configured_feature/brackish_aquifer.json`
+  - Placed feature: `data/sandstorm/worldgen/placed_feature/brackish_aquifer.json` (Y: 25 a 60).
+- [x] Configuração de ruínas tecnológicas soterradas nos desertos (`sandstorm:buried_tech_ruins`):
+  - Configured feature: `data/sandstorm/worldgen/configured_feature/buried_tech_ruins.json`
+  - Placed feature: `data/sandstorm/worldgen/placed_feature/buried_tech_ruins.json` (Y: 48 a 72).
+- [x] Configuração de núcleos de dados ancestrais (`sandstorm:ancient_data_core`):
+  - Configured feature: `data/sandstorm/worldgen/configured_feature/ancient_data_core.json`
+  - Placed feature: `data/sandstorm/worldgen/placed_feature/ancient_data_core.json` (Y: 45 a 68).
+- [x] Handler de injeção em biomas via Fabric Biome API (`SandStormWorldGen.java`).
+- [x] Testes automatizados de Worldgen (`SandStormWorldGenTest.java`).
+
 ---
 
-## 🎯 O Que Falta para Concluir o MVP (Pendências)
+## 🎧 Catálogo Completo de Efeitos Sonoros Necessários (SFX)
+
+A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão completa do mod. Os arquivos devem ser fornecidos no formato **Ogg Vorbis (`.ogg`)**, taxa de amostragem **44.1 kHz**, e colocados no diretório `src/main/resources/assets/sandstorm/sounds/`.
+
+| Identificador do Som | Arquivo `.ogg` | Categoria | Duração | Descrição Tímbrica & Referência Sonora |
+| :--- | :--- | :--- | :--- | :--- |
+| `item.sonic_cannon.blast` | `sonic_cannon_blast.ogg` | `players` | 1.5s | Disparo de pulso acústico de alta energia. Transiente rápido com decay ressonante metálico e sub-bass comprimido (estilo railgun/EMP). |
+| `entity.megazord.shockwave` | `megazord_shockwave.ogg` | `hostile` | 2.5s | Pulso colossal defensivo emitido pelo mecha. Estrondo sísmico grave que dispersa e dissipa com eco atmosférico distante. |
+| `entity.sandworm.rumble` | `sandworm_rumble.ogg` | `hostile` | 3.5s (loop) | Tremor subterrâneo contínuo e abafado. Sub-bass rítmico simulando movimentação massiva de areia sob os pés do jogador. |
+| `entity.sandworm.emerge` | `sandworm_emerge.ogg` | `hostile` | 2.5s | O verme irrompendo violentamente pelas dunas. Erupção de areia cascalhenta misturada a um rugido estridente insectóide/titânico. |
+| `entity.sandworm.attack` | `sandworm_attack.ogg` | `hostile` | 1.0s | Mordida voraz. Fechamento de mandíbulas de quitina pesada com estalo seco e impacto de ar de alta pressão. |
+| `block.thumper.thump` | `thumper_thump.ogg` | `blocks` | 1.0s | Batimento sísmico do pistão do Thumper contra a rocha/areia. Impacto mecânico denso e sordo, gerando onda sísmica audível em 64 blocos. |
+| `item.anomaly_radar.ping` | `anomaly_radar_ping.ogg` | `players` | 0.4s | Beep sintetizado analógico de sonar portátil. Som limpo e agudo de detecção direcional (pitch adaptativo por distância). |
+| `item.atmospheric_analyzer.scan` | `atmospheric_analyzer_scan.ogg` | `players` | 0.8s | Chirp sequencial de varredura eletrônica. Sons de processamento de microprocessador e telemetria de sensores de gás. |
+| `block.printer_3d.craft` | `printer_3d_craft.ogg` | `blocks` | 1.5s | Laser litográfico e micro-motores de passo. Zumbido harmônico com passos mecânicos precisos de montagem de wafer. |
+| `block.desalination_filter.process` | `desalination_process.ogg` | `blocks` | 1.8s | Filtragem osmótica. Sucção de líquido em tubos pressurizados, condensação e sibilo de liberação de vapor térmico. |
+| `block.nanite_fabricator.activate` | `nanite_activate.ogg` | `blocks` | 2.0s | Síntese de nanorobôs. Ressonância eletromagnética ascendente com descarga estática suave e clique de contenção de plasma. |
+| `block.atmospheric_terraformer.hum` | `terraformer_hum.ogg` | `blocks` | 4.0s (loop) | Reator central de cúpula ativa. Zumbido eletrostático contínuo, circulação suave de ar e dispersão de partículas ionizadas. |
+| `block.assembly_bay.construct` | `assembly_construct.ogg` | `blocks` | 2.2s | Manufatura pesada de veículos. Ruído de solda a ponto por arco elétrico, atuação hidráulica e travamento mecânico de chassis. |
+| `entity.cargo_drone.flight` | `cargo_drone_flight.ogg` | `neutral` | 3.0s (loop) | Voo suave de rotores elétricos de drone quadricóptero. Som limpo e contínuo de rotação sem vibração ou contato com o solo. |
+| `entity.excavator.engine` | `excavator_engine.ogg` | `neutral` | 3.0s (loop) | Motor elétrico de alta tração e esteiras mecânicas triturando cascalho e areia durante locomoção e escavação. |
+| `entity.megazord.step` | `megazord_step.ogg` | `players` | 1.2s | Passada pesada de 5 metros de altura. Impacto de placa metálica com amortecedores hidráulicos comprimindo com força bruta. |
+| `suit.battery.low` | `suit_battery_low.ogg` | `ambient` | 0.6s | Alarme de advertência de bateria fraca no capacete do traje espacial. Dois tons curtos eletrônicos de prioridade médica. |
+| `suit.solar.charge` | `suit_solar_charge.ogg` | `ambient` | 0.8s | Sinal suave de ativação dos painéis fotovoltaicos ao ser exposto à luz solar direta. Acorde ascendente harmônico sutil. |
+| `weather.sandstorm.wind` | `sandstorm_wind.ogg` | `weather` | 6.0s (loop) | Vento uivante e violento de tempestade de areia. Ruído de milhões de partículas abrasivas colidindo contra o visor do traje. |
+
+---
+
+## 🎯 O Que Falta para o Fechamento do MVP (Pendências)
 
 ### 1. Modelagem 3D no Blockbench & Texturas Pixel Art (Foco Visual)
 - [x] `raw_silicon`: Modelo Blockbench (.bbmodel) + Modelo Item (.json) + Textura 16x16 (.png).
@@ -104,13 +146,6 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [ ] `excavator_vehicle.bbmodel`: Rover industrial de esteiras com pá/furadeira frontal.
   - [ ] `megazord.bbmodel`: Mecha bipedal titan com cockpit duplo.
 
-### 2. Geração de Mundo (Worldgen)
-- [ ] Configuração de colocação de estruturas para Ruínas Tecnológicas Enterradas nos desertos (`sandstorm:buried_tech_ruins`).
-- [ ] Configuração de aquíferos subterrâneos salobros nos desertos (`sandstorm:brackish_aquifer`).
-
-### 3. Sons e Áudios Ambientais
-- [ ] Definição de `sounds.json` dedicado para canhão sônico, pulso do thumper, alerta de tempestade e zumbido do reator de terraformação.
-
 ---
 
 ## 📈 Histórico de Commits e Marcos
@@ -123,3 +158,4 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 6. `655fb84`: Adição da suíte de testes de integridade de assets, chaves, armaduras e arquitetura zero comentários.
 7. `537c4a8`: Adição de 20 receitas oficiais data-driven e suíte de testes de compatibilidade JEI/REI/EMI.
 8. `0e630cb`: Restrição tecnológica de ferramentas (exclusividade de robôs para mineração de pedra, liberação de pás para areia).
+9. `72e3dd1`: Criação do TASKS.md inicial com métricas e roadmap.

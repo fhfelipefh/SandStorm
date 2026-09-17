@@ -26,6 +26,7 @@ public class SandStormMod implements ModInitializer {
         com.fhfelipefh.sandstorm.content.entity.SandStormEntities.initialize();
         com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler.initialize();
         com.fhfelipefh.sandstorm.content.survival.TechnologyToolRestrictionHandler.initialize();
+        com.fhfelipefh.sandstorm.content.world.SandStormWorldGen.initialize();
     }
 
     public static Identifier id(String path) {
