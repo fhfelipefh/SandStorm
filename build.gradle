@@ -28,6 +28,7 @@ dependencies {
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
+	testImplementation "com.tngtech.archunit:archunit-junit5:1.4.1"
 	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 

@@ -21,6 +21,7 @@ class SandStormWorldGenTest {
 
     private static final Path WORLDGEN_DIR = Path.of("src", "main", "resources", "data", "sandstorm", "worldgen");
     private static final Path CONFIGURED_DIR = WORLDGEN_DIR.resolve("configured_feature");
+    private static final Path FEATURE_DIR = WORLDGEN_DIR.resolve("feature");
     private static final Path PLACED_DIR = WORLDGEN_DIR.resolve("placed_feature");
 
     @Test
@@ -46,6 +47,25 @@ class SandStormWorldGenTest {
     void shouldHaveValidConfiguredFeatureJson(String featureName) throws IOException {
         Path jsonPath = CONFIGURED_DIR.resolve(featureName + ".json");
         assertTrue(Files.exists(jsonPath), "Missing configured feature: " + jsonPath);
+
+        try (FileReader reader = new FileReader(jsonPath.toFile())) {
+            JsonElement parsed = JsonParser.parseReader(reader);
+            assertTrue(parsed.isJsonObject());
+            JsonObject json = parsed.getAsJsonObject();
+            assertTrue(json.has("type"));
+            assertEquals("minecraft:ore", json.get("type").getAsString());
+            assertTrue(json.has("config"));
+            JsonObject config = json.getAsJsonObject("config");
+            assertTrue(config.has("targets"));
+            assertTrue(config.getAsJsonArray("targets").size() > 0);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"brackish_aquifer", "buried_tech_ruins", "ancient_data_core"})
+    void shouldHaveValidFeatureJson(String featureName) throws IOException {
+        Path jsonPath = FEATURE_DIR.resolve(featureName + ".json");
+        assertTrue(Files.exists(jsonPath), "Missing feature: " + jsonPath);
 
         try (FileReader reader = new FileReader(jsonPath.toFile())) {
             JsonElement parsed = JsonParser.parseReader(reader);
