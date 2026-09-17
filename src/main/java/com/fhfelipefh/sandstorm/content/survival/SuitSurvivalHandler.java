@@ -39,6 +39,17 @@ public class SuitSurvivalHandler {
 
         suit.tick(exposedToSunlight, ambientTemperature, underground, solarMultiplier);
 
+        if (suit.isFullSuitEquipped()) {
+            boolean lowBattery = suit.getEnergyStorage().getStoredEnergy() > 0 &&
+                    suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity() * 0.15;
+            if (lowBattery && player.tickCount % 120 == 0) {
+                player.level().playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SUIT_BATTERY_LOW, net.minecraft.sounds.SoundSource.PLAYERS, 0.8f, 1.0f);
+            }
+            if (exposedToSunlight && !underground && player.tickCount % 200 == 0 && suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity()) {
+                player.level().playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SUIT_SOLAR_CHARGE, net.minecraft.sounds.SoundSource.PLAYERS, 0.6f, 1.1f);
+            }
+        }
+
         if (weather.canCauseSandDamage() && canSeeSky && !suit.isFullSuitEquipped()) {
             if (player.tickCount % 40 == 0) {
                 player.hurtServer(player.level(), player.damageSources().dryOut(), 1.0f);

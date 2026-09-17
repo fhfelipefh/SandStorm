@@ -72,7 +72,7 @@ public class MegazordEntity extends PathfinderMob {
                 target.setDeltaMovement(push.x, 0.5, push.z);
             }
 
-            serverLevel.playSound(null, this.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 1.5f, 1.0f);
+            serverLevel.playSound(null, this.blockPosition(), com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.MEGAZORD_SHOCKWAVE, SoundSource.PLAYERS, 1.5f, 1.0f);
         }
 
         return true;
@@ -102,7 +102,7 @@ public class MegazordEntity extends PathfinderMob {
                             energyStorage.getCapacity()
                     ), true);
                 }
-                this.level().playSound(null, this.blockPosition(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 0.7f);
+                this.level().playSound(null, this.blockPosition(), com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.MEGAZORD_STEP, SoundSource.PLAYERS, 1.0f, 0.7f);
             }
             return InteractionResult.SUCCESS;
         }

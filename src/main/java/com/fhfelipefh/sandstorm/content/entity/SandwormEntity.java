@@ -68,4 +68,19 @@ public class SandwormEntity extends PathfinderMob {
         this.spawnAtLocation(level, new ItemStack(SandStormItems.SANDWORM_CHITIN, 2 + this.random.nextInt(3)));
         this.spawnAtLocation(level, new ItemStack(SandStormItems.SANDWORM_TOOTH, 1 + this.random.nextInt(2)));
     }
+
+    @Override
+    protected net.minecraft.sounds.SoundEvent getAmbientSound() {
+        return com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SANDWORM_RUMBLE;
+    }
+
+    @Override
+    protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
+        return com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SANDWORM_ATTACK;
+    }
+
+    @Override
+    protected net.minecraft.sounds.SoundEvent getDeathSound() {
+        return com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SANDWORM_EMERGE;
+    }
 }

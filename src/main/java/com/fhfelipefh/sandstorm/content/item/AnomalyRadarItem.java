@@ -72,7 +72,7 @@ public class AnomalyRadarItem extends Item {
                         (int) res.horizontalDistance(),
                         res.cardinalDirection()
                 ), true);
-                level.playSound(null, playerPos, SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 0.9f, 1.8f);
+                level.playSound(null, playerPos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.ANOMALY_RADAR_PING, SoundSource.PLAYERS, 0.9f, 1.8f);
             } else {
                 serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.radar_none"), true);
                 level.playSound(null, playerPos, SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.6f, 0.8f);

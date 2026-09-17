@@ -26,7 +26,7 @@ public class DesalinationFilterBlock extends Block {
                 stack.shrink(1);
                 player.getInventory().add(new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE));
                 player.getInventory().add(new ItemStack(SandStormItems.MINERAL_SALT, 2));
-                level.playSound(null, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1.0f, 1.0f);
+                level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.DESALINATION_PROCESS, SoundSource.BLOCKS, 1.0f, 1.0f);
             }
             return InteractionResult.SUCCESS;
         }

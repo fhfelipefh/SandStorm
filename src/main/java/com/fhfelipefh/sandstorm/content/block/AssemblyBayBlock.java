@@ -49,8 +49,7 @@ public class AssemblyBayBlock extends Block {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.bay_assembled_drone"), true);
                 }
-                level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
-                level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0f, 1.5f);
+                level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 1.0f, 1.0f);
             }
             return InteractionResult.SUCCESS;
         }

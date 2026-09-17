@@ -108,7 +108,14 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 | `entity.megazord.step` | `megazord_step.ogg` | `players` | 1.2s | Passada pesada de 5 metros de altura. Impacto de placa metálica com amortecedores hidráulicos comprimindo com força bruta. |
 | `suit.battery.low` | `suit_battery_low.ogg` | `ambient` | 0.6s | Alarme de advertência de bateria fraca no capacete do traje espacial. Dois tons curtos eletrônicos de prioridade médica. |
 | `suit.solar.charge` | `suit_solar_charge.ogg` | `ambient` | 0.8s | Sinal suave de ativação dos painéis fotovoltaicos ao ser exposto à luz solar direta. Acorde ascendente harmônico sutil. |
-| `weather.sandstorm.wind` | `sandstorm_wind.ogg` | `weather` | 6.0s (loop) | Vento uivante e violento de tempestade de areia. Ruído de milhões de partículas abrasivas colidindo contra o visor do traje. |
+| `weather.sandstorm.wind` | `sandstorm_wind.ogg` | `weather` | 6.0s (loop) | Variação 1: Vento uivante e rajadas repentinas de areia abrasiva. |
+| `weather.sandstorm.wind.light` | `sandstorm_wind_2.ogg` | `weather` | 6.0s (loop) | Variação 2: Brisa arenosa leve para início e fim de tempestade (< 35% de intensidade). |
+| `weather.sandstorm.wind.medium` | `sandstorm_wind_3.ogg` | `weather` | 6.0s (loop) | Variação 3: Ventania intermediária em aceleração contínua (35% a 70% de intensidade). |
+| `weather.sandstorm.wind.heavy` | `sandstorm_wind_4.ogg` | `weather` | 6.0s (loop) | Variação 4: Tempestade violenta e ensurdecedora no pico sísmico/climático (> 70% de intensidade). |
+
+> [!NOTE]
+> **Status dos Efeitos Sonoros**: Todos os 20 arquivos `.mp3` foram convertidos com sucesso para Vorbis `.ogg` (mantendo os `.mp3` originais preservados).
+> As 4 variações de vento foram integradas em um pool randômico de reprodução contínua e em despachos dinâmicos graduais baseados na intensidade climática em `SandstormWeatherHandler`. Todos os blocos, armas, trajes, veículos e o Verme de Areia agora contam com áudio proprietário imersivo.
 
 ---
 

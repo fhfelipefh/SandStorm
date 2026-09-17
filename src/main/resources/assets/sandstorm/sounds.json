@@ -62,7 +62,7 @@
   "block.nanite_fabricator.activate": {
     "category": "blocks",
     "sounds": [
-      "sandstorm:nanite_activate"
+      "sandstorm:printer_3d_craft"
     ]
   },
   "block.atmospheric_terraformer.hum": {
@@ -80,7 +80,7 @@
   "entity.cargo_drone.flight": {
     "category": "neutral",
     "sounds": [
-      "sandstorm:cargo_drone_flight"
+      "sandstorm:excavator_engine"
     ]
   },
   "entity.excavator.engine": {
@@ -108,6 +108,33 @@
     ]
   },
   "weather.sandstorm.wind": {
+    "category": "weather",
+    "sounds": [
+      "sandstorm:sandstorm_wind",
+      "sandstorm:sandstorm_wind_2",
+      "sandstorm:sandstorm_wind_3",
+      "sandstorm:sandstorm_wind_4"
+    ]
+  },
+  "weather.sandstorm.wind.light": {
+    "category": "weather",
+    "sounds": [
+      "sandstorm:sandstorm_wind_2"
+    ]
+  },
+  "weather.sandstorm.wind.medium": {
+    "category": "weather",
+    "sounds": [
+      "sandstorm:sandstorm_wind_3"
+    ]
+  },
+  "weather.sandstorm.wind.heavy": {
+    "category": "weather",
+    "sounds": [
+      "sandstorm:sandstorm_wind_4"
+    ]
+  },
+  "weather.sandstorm.wind.howl": {
     "category": "weather",
     "sounds": [
       "sandstorm:sandstorm_wind"

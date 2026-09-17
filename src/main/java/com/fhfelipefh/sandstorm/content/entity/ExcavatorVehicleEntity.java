@@ -67,7 +67,7 @@ public class ExcavatorVehicleEntity extends PathfinderMob {
                             energyStorage.getCapacity()
                     ), true);
                 }
-                this.level().playSound(null, this.blockPosition(), SoundEvents.MINECART_RIDING, SoundSource.PLAYERS, 0.8f, 1.0f);
+                this.level().playSound(null, this.blockPosition(), com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.EXCAVATOR_ENGINE, SoundSource.PLAYERS, 0.8f, 1.0f);
             }
             return InteractionResult.SUCCESS;
         }

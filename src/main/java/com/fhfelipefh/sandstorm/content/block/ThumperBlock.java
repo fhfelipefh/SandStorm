@@ -31,7 +31,7 @@ public class ThumperBlock extends Block {
         if (!level.isClientSide()) {
             boolean nextState = !state.getValue(POWERED);
             level.setBlock(pos, state.setValue(POWERED, nextState), 3);
-            level.playSound(null, pos, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.6f, 0.6f);
+            level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.THUMPER_THUMP, SoundSource.BLOCKS, 0.6f, 0.6f);
         }
         return InteractionResult.SUCCESS;
     }

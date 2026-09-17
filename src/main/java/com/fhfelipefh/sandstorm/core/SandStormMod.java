@@ -17,7 +17,7 @@ public class SandStormMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("Initializing SandStorm mod");
+        com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.initialize();
         SandStormItems.initialize();
         com.fhfelipefh.sandstorm.content.block.SandStormBlocks.initialize();
         SuitSurvivalHandler.initialize();

@@ -25,7 +25,7 @@ public class Printer3DBlock extends Block {
             if (!level.isClientSide()) {
                 stack.shrink(1);
                 player.getInventory().add(new ItemStack(SandStormItems.CIRCUIT_BOARD));
-                level.playSound(null, pos, SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
+                level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.PRINTER_3D_CRAFT, SoundSource.BLOCKS, 1.0f, 1.0f);
             }
             return InteractionResult.SUCCESS;
         }

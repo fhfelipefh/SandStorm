@@ -61,7 +61,7 @@ public class AtmosphericTerraformerBlock extends Block {
                             (int) terraformingIndex.getTemperatureCelsius()
                     ), true);
                 }
-                level.playSound(null, pos, SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 1.0f, 1.2f);
+                level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.TERRAFORMER_HUM, SoundSource.BLOCKS, 1.0f, 1.2f);
             } else {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable(

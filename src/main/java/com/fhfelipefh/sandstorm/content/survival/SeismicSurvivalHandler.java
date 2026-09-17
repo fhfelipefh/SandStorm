@@ -54,6 +54,7 @@ public class SeismicSurvivalHandler {
         if (vibration >= 60.0 && vibration < 100.0) {
             if (player.tickCount % 60 == 0) {
                 player.sendSystemMessage(Component.translatable("warning.sandstorm.worm_rumble"), true);
+                player.level().playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SANDWORM_RUMBLE, net.minecraft.sounds.SoundSource.HOSTILE, 1.0f, 0.8f);
             }
         } else if (vibration >= 100.0) {
             spawnWormEncounter(player);
@@ -74,6 +75,7 @@ public class SeismicSurvivalHandler {
             worm.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             level.addFreshEntity(worm);
             player.sendSystemMessage(Component.translatable("warning.sandstorm.worm_emerge"), true);
+            level.playSound(null, spawnPos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SANDWORM_EMERGE, net.minecraft.sounds.SoundSource.HOSTILE, 1.2f, 0.9f);
         }
     }
 
