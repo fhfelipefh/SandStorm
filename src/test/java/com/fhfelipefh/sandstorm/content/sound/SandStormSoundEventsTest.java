@@ -9,6 +9,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,7 +47,7 @@ class SandStormSoundEventsTest {
     }
 
     @Test
-    void shouldHaveBothMp3AndConvertedOggFiles() {
+    void shouldHaveConvertedOggFilesAndNoProvisionalMp3Remaining() {
         Path soundsDir = Path.of("src/main/resources/assets/sandstorm/sounds");
         assertTrue(Files.exists(soundsDir));
 
@@ -77,7 +78,7 @@ class SandStormSoundEventsTest {
             Path mp3 = soundsDir.resolve(base + ".mp3");
             Path ogg = soundsDir.resolve(base + ".ogg");
 
-            assertTrue(Files.exists(mp3), "MP3 file must be preserved: " + base);
+            assertFalse(Files.exists(mp3), "Provisional MP3 should not remain in repository: " + base);
             assertTrue(Files.exists(ogg), "OGG file must be generated: " + base);
             assertTrue(new File(ogg.toUri()).length() > 0, "OGG file must not be empty: " + base);
         }
