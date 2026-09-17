@@ -26,8 +26,8 @@ public class AnomalyRadarItem extends Item {
 
     private final RadarComponent radar = new RadarComponent();
 
-    public AnomalyRadarItem() {
-        super(new Item.Properties()
+    public AnomalyRadarItem(Properties properties) {
+        super(properties
                 .stacksTo(1)
                 .rarity(Rarity.RARE));
     }

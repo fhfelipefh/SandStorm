@@ -4,32 +4,42 @@ import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.ArmorType;
 
 public class SandStormItems {
-    public static final SpaceRationItem SPACE_RATION = register("space_ration", new SpaceRationItem());
-    public static final SpaceSuitItem SPACE_SUIT_HELMET = register("space_suit_helmet", new SpaceSuitItem(ArmorType.HELMET));
-    public static final SpaceSuitItem SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new SpaceSuitItem(ArmorType.CHESTPLATE));
-    public static final SpaceSuitItem SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(ArmorType.LEGGINGS));
-    public static final SpaceSuitItem SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(ArmorType.BOOTS));
-    public static final BrackishWaterBottleItem BRACKISH_WATER_BOTTLE = register("brackish_water_bottle", new BrackishWaterBottleItem());
-    public static final Item SANDWORM_CHITIN = register("sandworm_chitin", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
-    public static final Item SANDWORM_TOOTH = register("sandworm_tooth", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)));
-    public static final Item RAW_SILICON = register("raw_silicon", new Item(new Item.Properties()));
-    public static final Item SILICON_WAFER = register("silicon_wafer", new Item(new Item.Properties()));
-    public static final Item MINERAL_SALT = register("mineral_salt", new Item(new Item.Properties()));
-    public static final PotableWaterBottleItem POTABLE_WATER_BOTTLE = register("potable_water_bottle", new PotableWaterBottleItem());
-    public static final Item CIRCUIT_BOARD = register("circuit_board", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
-    public static final Item NANO_ACTUATOR = register("nano_actuator", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)));
-    public static final AnomalyRadarItem ANOMALY_RADAR = register("anomaly_radar", new AnomalyRadarItem());
-    public static final Item TECH_DISC = register("tech_disc", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)));
-    public static final Item SCRAP_METAL = register("scrap_metal", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
-    public static final SonicCannonItem SONIC_CANNON = register("sonic_cannon", new SonicCannonItem());
-    public static final AtmosphericAnalyzerItem ATMOSPHERIC_ANALYZER = register("atmospheric_analyzer", new AtmosphericAnalyzerItem());
+    public static ResourceKey<Item> itemKey(String path) {
+        return ResourceKey.create(Registries.ITEM, SandStormMod.id(path));
+    }
+
+    public static Item.Properties properties(String path) {
+        return new Item.Properties().setId(itemKey(path));
+    }
+
+    public static final SpaceRationItem SPACE_RATION = register("space_ration", new SpaceRationItem(properties("space_ration")));
+    public static final SpaceSuitItem SPACE_SUIT_HELMET = register("space_suit_helmet", new SpaceSuitItem(ArmorType.HELMET, properties("space_suit_helmet")));
+    public static final SpaceSuitItem SPACE_SUIT_CHESTPLATE = register("space_suit_chestplate", new SpaceSuitItem(ArmorType.CHESTPLATE, properties("space_suit_chestplate")));
+    public static final SpaceSuitItem SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(ArmorType.LEGGINGS, properties("space_suit_leggings")));
+    public static final SpaceSuitItem SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(ArmorType.BOOTS, properties("space_suit_boots")));
+    public static final BrackishWaterBottleItem BRACKISH_WATER_BOTTLE = register("brackish_water_bottle", new BrackishWaterBottleItem(properties("brackish_water_bottle")));
+    public static final Item SANDWORM_CHITIN = register("sandworm_chitin", new Item(properties("sandworm_chitin").rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
+    public static final Item SANDWORM_TOOTH = register("sandworm_tooth", new Item(properties("sandworm_tooth").rarity(net.minecraft.world.item.Rarity.RARE)));
+    public static final Item RAW_SILICON = register("raw_silicon", new Item(properties("raw_silicon")));
+    public static final Item SILICON_WAFER = register("silicon_wafer", new Item(properties("silicon_wafer")));
+    public static final Item MINERAL_SALT = register("mineral_salt", new Item(properties("mineral_salt")));
+    public static final PotableWaterBottleItem POTABLE_WATER_BOTTLE = register("potable_water_bottle", new PotableWaterBottleItem(properties("potable_water_bottle")));
+    public static final Item CIRCUIT_BOARD = register("circuit_board", new Item(properties("circuit_board").rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
+    public static final Item NANO_ACTUATOR = register("nano_actuator", new Item(properties("nano_actuator").rarity(net.minecraft.world.item.Rarity.RARE)));
+    public static final AnomalyRadarItem ANOMALY_RADAR = register("anomaly_radar", new AnomalyRadarItem(properties("anomaly_radar")));
+    public static final Item TECH_DISC = register("tech_disc", new Item(properties("tech_disc").rarity(net.minecraft.world.item.Rarity.RARE)));
+    public static final Item SCRAP_METAL = register("scrap_metal", new Item(properties("scrap_metal").rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
+    public static final SonicCannonItem SONIC_CANNON = register("sonic_cannon", new SonicCannonItem(properties("sonic_cannon")));
+    public static final AtmosphericAnalyzerItem ATMOSPHERIC_ANALYZER = register("atmospheric_analyzer", new AtmosphericAnalyzerItem(properties("atmospheric_analyzer")));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,

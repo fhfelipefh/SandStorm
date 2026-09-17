@@ -11,8 +11,8 @@ import net.minecraft.world.level.Level;
 public class PotableWaterBottleItem extends Item {
     public static final FoodProperties POTABLE_FOOD = new FoodProperties(6, 8.0f, true);
 
-    public PotableWaterBottleItem() {
-        super(new Item.Properties()
+    public PotableWaterBottleItem(Properties properties) {
+        super(properties
                 .food(POTABLE_FOOD)
                 .stacksTo(16));
     }

@@ -25,8 +25,8 @@ public class SonicCannonItem extends Item {
     public static final double CANNON_RANGE = 24.0;
     public static final float DAMAGE_AMOUNT = 20.0f;
 
-    public SonicCannonItem() {
-        super(new Item.Properties()
+    public SonicCannonItem(Properties properties) {
+        super(properties
                 .stacksTo(1)
                 .rarity(Rarity.EPIC));
     }

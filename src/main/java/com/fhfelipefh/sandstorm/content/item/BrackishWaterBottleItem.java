@@ -13,8 +13,8 @@ import net.minecraft.world.level.Level;
 public class BrackishWaterBottleItem extends Item {
     public static final FoodProperties BRACKISH_FOOD = new FoodProperties(1, 0.1f, true);
 
-    public BrackishWaterBottleItem() {
-        super(new Item.Properties()
+    public BrackishWaterBottleItem(Properties properties) {
+        super(properties
                 .food(BRACKISH_FOOD)
                 .stacksTo(16));
     }

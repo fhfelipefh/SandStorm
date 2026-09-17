@@ -21,8 +21,8 @@ public class AtmosphericAnalyzerItem extends Item {
     public static final int COOLDOWN_TICKS = 20;
     public static final double SCAN_RADIUS = 64.0;
 
-    public AtmosphericAnalyzerItem() {
-        super(new Item.Properties()
+    public AtmosphericAnalyzerItem(Properties properties) {
+        super(properties
                 .stacksTo(1)
                 .rarity(Rarity.RARE));
     }
