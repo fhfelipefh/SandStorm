@@ -17,6 +17,7 @@ No entanto, há um revés: os sistemas da nave acusam falha crítica nos motores
 ## ⚙️ Mecânicas Principais
 
 * **Traje Espacial de Suporte à Vida (Fase 1):** Esqueça monstros vanilla (zumbis e esqueletos são suprimidos). A verdadeira ameaça é o ambiente térmico. O traje é energizado por luz solar direta e regula sua temperatura corporal. No subsolo, a energia solar não chega e a bateria é consumida continuamente.
+* **Sem Camas e Ciclo Temporal Ininterrupto (Lore & Sobrevivência):** Camas do Minecraft vanilla são completamente desativadas e não podem ser colocadas nem utilizadas para dormir ou pular a noite. O traje espacial de suporte à vida mantém os parâmetros vitais do explorador operantes 24 horas por dia, eliminando qualquer necessidade biológica de repouso. O ciclo circadiano do planeta é implacável: não há atalho temporal para escapar do frio noturno ou de tempestades de areia, garantindo uma jogabilidade visceral onde a adaptação tecnológica é a única salvaguarda.
 * **A Ameaça Sísmica dos Vermes de Areia (Fase 3):** Movimentações rápidas e corridas acumulam vibrações na areia. Ao atingir o limiar sísmico, um Verme de Areia colossal emerge das profundezas.
   * **Regra de Ouro da Indústria:** Os vermes caçam apenas alvos biológicos/jogadores. **Eles nunca destroem ou danificam suas máquinas e blocos industriais.**
 * **Emissores Sísmicos / Thumpers (Fase 3):** Pilares rítmicos posicionáveis no solo que emitem batimentos no solo para desviar vermes para posições controladas.

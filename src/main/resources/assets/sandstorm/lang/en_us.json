@@ -49,5 +49,8 @@
   "telemetry.sandstorm.terraformer_cycle": "Local Oasis Dome: Progress %s%% | Radius %sm | Humidity %s%% | Temperature %s°C",
   "telemetry.sandstorm.terraformer_no_energy": "Atmospheric Terraformer: Insufficient energy (%s / %s J)",
   "telemetry.sandstorm.analyzer_active_signal": "Analyzer: Active local terraforming dome detected within %s blocks",
-  "telemetry.sandstorm.analyzer_no_signal": "Analyzer: Natural desert sector (no active terraforming dome within range)"
+  "telemetry.sandstorm.analyzer_no_signal": "Analyzer: Natural desert sector (no active terraforming dome within range)",
+  "telemetry.sandstorm.bed_disabled": "The life support suit regulates vital functions. Sleep is obsolete and time cycle cannot be skipped.",
+  "telemetry.sandstorm.tool_restricted": "Rudimentary tool incompatible with planetary survival protocols.",
+  "telemetry.sandstorm.mining_requires_robot": "Mining consolidated rocks requires operating heavy robotic machinery."
 }

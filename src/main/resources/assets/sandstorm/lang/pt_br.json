@@ -49,5 +49,8 @@
   "telemetry.sandstorm.terraformer_cycle": "Cúpula de Oásis: Progresso %s%% | Raio %sm | Umidade %s%% | Temperatura %s°C",
   "telemetry.sandstorm.terraformer_no_energy": "Processador Atmosférico: Energia insuficiente (%s / %s J)",
   "telemetry.sandstorm.analyzer_active_signal": "Analisador: Cúpula local de terraformação detectada no raio de %s blocos",
-  "telemetry.sandstorm.analyzer_no_signal": "Analisador: Setor desértico natural (nenhuma cúpula de terraformação no alcance)"
+  "telemetry.sandstorm.analyzer_no_signal": "Analisador: Setor desértico natural (nenhuma cúpula de terraformação no alcance)",
+  "telemetry.sandstorm.bed_disabled": "O traje de suporte à vida regula suas funções vitais. O sono é obsoleto e o ciclo temporal não pode ser alterado.",
+  "telemetry.sandstorm.tool_restricted": "Tecnologia rudimentar incompatível com os protocolos de sobrevivência do planeta.",
+  "telemetry.sandstorm.mining_requires_robot": "Mineração de rochas consolidadas requer pilotagem de maquinário robótico."
 }
