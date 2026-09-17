@@ -6,5 +6,11 @@
   "item.sandstorm.space_suit_leggings": "Perneiras Espaciais Térmicas",
   "item.sandstorm.space_suit_boots": "Botas Espaciais Magnéticas",
   "item.sandstorm.brackish_water_bottle": "Frasco de Água Salobra Não Tratada",
-  "block.sandstorm.brackish_aquifer": "Aquífero de Água Salobra"
+  "block.sandstorm.brackish_aquifer": "Aquífero de Água Salobra",
+  "block.sandstorm.thumper": "Emissor Sísmico (Thumper)",
+  "entity.sandstorm.sandworm": "Verme de Areia",
+  "item.sandstorm.sandworm_chitin": "Quitina de Verme de Areia",
+  "item.sandstorm.sandworm_tooth": "Presa de Verme de Areia",
+  "warning.sandstorm.worm_rumble": "Tremor detectado no subsolo! Mantenha a cadência de passos baixa!",
+  "warning.sandstorm.worm_emerge": "ALERTA SÍSMICO: Um Verme de Areia está emergindo!"
 }

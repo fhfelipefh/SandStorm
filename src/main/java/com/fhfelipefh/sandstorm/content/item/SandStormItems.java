@@ -17,6 +17,8 @@ public class SandStormItems {
     public static final SpaceSuitItem SPACE_SUIT_LEGGINGS = register("space_suit_leggings", new SpaceSuitItem(ArmorType.LEGGINGS));
     public static final SpaceSuitItem SPACE_SUIT_BOOTS = register("space_suit_boots", new SpaceSuitItem(ArmorType.BOOTS));
     public static final BrackishWaterBottleItem BRACKISH_WATER_BOTTLE = register("brackish_water_bottle", new BrackishWaterBottleItem());
+    public static final Item SANDWORM_CHITIN = register("sandworm_chitin", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
+    public static final Item SANDWORM_TOOTH = register("sandworm_tooth", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -32,6 +34,9 @@ public class SandStormItems {
                         entries.accept(SPACE_SUIT_BOOTS);
                         entries.accept(BRACKISH_WATER_BOTTLE);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.BRACKISH_AQUIFER);
+                        entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.THUMPER);
+                        entries.accept(SANDWORM_CHITIN);
+                        entries.accept(SANDWORM_TOOTH);
                     })
                     .build()
     );

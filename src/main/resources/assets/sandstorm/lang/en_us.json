@@ -6,5 +6,11 @@
   "item.sandstorm.space_suit_leggings": "Thermal Space Leggings",
   "item.sandstorm.space_suit_boots": "Magnetic Space Boots",
   "item.sandstorm.brackish_water_bottle": "Untreated Brackish Water Bottle",
-  "block.sandstorm.brackish_aquifer": "Brackish Water Aquifer"
+  "block.sandstorm.brackish_aquifer": "Brackish Water Aquifer",
+  "block.sandstorm.thumper": "Seismic Thumper",
+  "entity.sandstorm.sandworm": "Sandworm",
+  "item.sandstorm.sandworm_chitin": "Sandworm Chitin",
+  "item.sandstorm.sandworm_tooth": "Sandworm Tooth",
+  "warning.sandstorm.worm_rumble": "Subsurface rumble detected! Break your rhythm to avoid detection!",
+  "warning.sandstorm.worm_emerge": "SEISMIC BREACH: A Sandworm is emerging!"
 }

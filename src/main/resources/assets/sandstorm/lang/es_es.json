@@ -6,5 +6,11 @@
   "item.sandstorm.space_suit_leggings": "Pantalones Espaciales Térmicos",
   "item.sandstorm.space_suit_boots": "Botas Espaciales Magnéticas",
   "item.sandstorm.brackish_water_bottle": "Botella de Agua Salobre No Tratada",
-  "block.sandstorm.brackish_aquifer": "Acuífero de Agua Salobre"
+  "block.sandstorm.brackish_aquifer": "Acuífero de Agua Salobre",
+  "block.sandstorm.thumper": "Emisor Sísmico (Thumper)",
+  "entity.sandstorm.sandworm": "Gusano de Arena",
+  "item.sandstorm.sandworm_chitin": "Quitina de Gusano de Arena",
+  "item.sandstorm.sandworm_tooth": "Diente de Gusano de Arena",
+  "warning.sandstorm.worm_rumble": "¡Temblor subterráneo detectado! ¡Rompe el ritmo de pasos para evitar detección!",
+  "warning.sandstorm.worm_emerge": "¡ALERTA SÍSMICA: Un Gusano de Arena está emergiendo!"
 }
