@@ -1,162 +1,183 @@
 # SandStorm 🏜️
 
-**SandStorm** é um mod de sobrevivência e automação para Minecraft (Fabric), ambientado em um planeta deserto e inóspito. O objetivo principal do jogador é purificar o planeta, transformando suas infinitas dunas de areia em um ecossistema fértil e habitável.
-
-## 📖 História
-
-Você é um explorador espacial que aterrissou em um planeta completamente desertificado, coberto por dunas seculares. O que as sondagens iniciais não revelaram, no entanto, é que o planeta não está morto: ele é habitado por colossais Vermes de Areia.
-
-Por sorte, sua aterrissagem inicial foi em um local seguro. Ao desligar os motores da sua nave, você escapou da percepção sísmica dessas criaturas. Os *chunks* iniciais ao redor de sua nave formam sua zona de segurança. 
-
-No entanto, há um revés: a sua nave não pode mais voar. Os sistemas acusam que esta foi uma viagem só de ida. Agora, o planeta é o seu novo lar, e a sua única opção é conquistá-lo ou perecer tentando.
-
-## ⚙️ Mecânicas Principais
-
-* **Sobrevivência Solar:** Esqueça zumbis, esqueletos e creepers. A verdadeira ameaça é o ambiente. Você possui um **Traje Espacial de Suporte à Vida**, movido a energia solar que regula sua temperatura. Ficar muito tempo no subsolo descarregará seu traje, forçando-o a buscar luz ou recarregar na nave.
-* **A Ameaça Silenciosa e as Tempestades:** Escavar gera vibrações que atraem os **Vermes de Areia**. Porém, o planeta sofre com esporádicas **Tempestades de Areia**. Durante uma tempestade, a visibilidade e a energia solar despencam, mas o som do vento abafa suas vibrações, criando uma arriscada janela de oportunidade para escavar no subsolo com menor risco.
-* **Emissores Sísmicos (Iscas):** Para minerar em segurança na superfície ou durante o clima limpo, você poderá fabricar "Thumpers", máquinas que geram vibrações fortes no solo para atrair os vermes para longe da sua área de trabalho.
-* **Hidratação:** Não há água na superfície. Você precisa escavar atrás de depósitos subterrâneos de água salobra e construir sistemas de filtragem. No início, a fome é resolvida por estoques de **Rações Espaciais** da nave, que fornecem altíssima saciedade.
-* **Exploração Arqueológica:** O radar da sua armadura e de suas máquinas poderá detectar anomalias enterradas pelo mapa. Escavar essas áreas revelará **Ruínas Soterradas** e carcaças de naves antigas, essenciais para coletar sucatas e dados tecnológicos raros.
-
-## 🏭 Progressão e Automação (Terraformação)
-
-Para gerar terra e vida, você dependerá de tecnologia pesada. Como os vermes são formas de vida biológicas que caçam presas, eles **ignoram e não destroem suas máquinas**, permitindo expansão fabril segura:
-
-1. **Impressão 3D e Silício:** Usando areia e minerais, você criará "Impressoras 3D" para fabricar peças mecânicas básicas.
-2. **Robótica e Logística:** Com nanobôs e placas de circuito, você construirá robôs operários e **Drones de Carga Aérea**, que são perfeitos para transportar recursos entre postos avançados e a Nave-Base, evitando a logística perigosa no chão das dunas.
-3. **Escala Industrial e Megazords:** A montagem avançada produzirá veículos de exploração pesados e, eventualmente, **Megazords** armados para combater os gigantescos Vermes de Areia.
-4. **O Processador Atmosférico:** O ápice do end-game. Um edifício colossal que demanda níveis insanos de energia. Ao ser ligado, ele mudará lentamente a cor do céu (de poeira alaranjada para azul claro) e trará as primeiras **Chuvas**. A chuva limpa a atmosfera, faz a grama crescer naturalmente na terra processada e bane a presença dos vermes daquela região para sempre.
+**SandStorm** é um mod de sobrevivência planetária, engenharia industrial e terraformação climática para Minecraft (Fabric), ambientado em um planeta deserto e inóspito. O objetivo final do jogador é sobreviver à hostilidade biológica e ambiental e purificar o planeta, transformando suas infinitas dunas de areia em um ecossistema fértil, verdejante e habitável.
 
 ---
 
-## 🗺️ Diagramas e Fluxogramas
+## 📖 História e Premissa
+
+Você é um astronauta explorador que aterrissou em um planeta completamente desertificado, coberto por dunas seculares. O que as sondagens orbitais não revelaram é que o planeta não está desabitado: sob as areias espreitam colossais e vorazes **Vermes de Areia**.
+
+Por sorte, sua aterrissagem inicial foi em uma área onde você desligou os motores a tempo. Os *chunks* iniciais ao redor de sua nave formam uma **Safe Zone** protegida da percepção sísmica.
+
+No entanto, há um revés: os sistemas da nave acusam falha crítica nos motores de propulsão. Esta foi uma viagem só de ida. Agora, o planeta é o seu novo lar, e a sua única opção é conquistá-lo ou perecer tentando.
+
+---
+
+## ⚙️ Mecânicas Principais
+
+* **Traje Espacial de Suporte à Vida (Fase 1):** Esqueça monstros vanilla (zumbis e esqueletos são suprimidos). A verdadeira ameaça é o ambiente térmico. O traje é energizado por luz solar direta e regula sua temperatura corporal. No subsolo, a energia solar não chega e a bateria é consumida continuamente.
+* **A Ameaça Sísmica dos Vermes de Areia (Fase 3):** Movimentações rápidas e corridas acumulam vibrações na areia. Ao atingir o limiar sísmico, um Verme de Areia colossal emerge das profundezas.
+  * **Regra de Ouro da Indústria:** Os vermes caçam apenas alvos biológicos/jogadores. **Eles nunca destroem ou danificam suas máquinas e blocos industriais.**
+* **Emissores Sísmicos / Thumpers (Fase 3):** Pilares rítmicos posicionáveis no solo que emitem batimentos no solo para desviar vermes para posições controladas.
+* **Aquíferos e Dessalinização (Fase 2 e 4):** O subsolo arenoso abriga aquíferos de água salobra. A água bruta é tóxica se consumida sem tratamento, devendo ser purificada em **Filtros de Dessalinização** para produzir **Água Potável** e sal mineral.
+* **Tempestades de Areia (Fase 2):** Eventos climáticos periódicos que reduzem drasticamente a radiação solar (85%), mas abafam os ruídos do solo pela metade, criando janelas estratégicas de escavação.
+* **Arqueologia e Radar de Anomalias (Fase 5):** Dispositivos de varredura direcional detectam **Ruínas Tecnológicas Soterradas** e **Núcleos de Dados Ancestrais** sob as dunas para resgatar esquemas ópticos (`TECH_DISC`) e ligas pesadas (`SCRAP_METAL`).
+* **Logística Aérea Sem Vibração Sísmica (Fase 5):** **Drones de Carga Aérea** realizam transporte automatizado entre **Docas de Drones**, operando com ruído sísmico estritamente nulo (`0.0f`) para navegação 100% segura.
+* **Maquinário Pesado e Megazord (Fase 6):** Pátios de montagem industrial sintetizam **Veículos de Escavação Terrestre** e o titânico **Megazord de Combate**, equipado com **Canhões de Onda de Choque Sônica** capazes de conter vermes sem danificar fábricas.
+* **Endgame: Processador Atmosférico e Terraformação (Fase 7):** Edificação de mega-escala que consome 250.000 J para restaurar a umidade global, transformar areia em solo fértil e grama verde, e provocar a dispersão permanente dos vermes de areia.
+
+---
+
+## 🗺️ Diagramas de Arquitetura e Engenharia
 
 <details>
-<summary><b>Fluxo de Sobrevivência (Água, Energia e Clima)</b></summary>
+<summary><b>1. Fluxo de Sobrevivência (Energia, Água e Clima)</b></summary>
 
 ```mermaid
 graph TD;
-    A[Superfície / Sol] -->|Recarrega| B(Armadura Espacial)
-    N[Nave Espacial] -->|Energia Sem Fio| B
-    C[Exploração no Subsolo] -->|Drena Bateria| B
-    C -->|Gera Vibração| D[Risco de Ataque do Verme]
-    T[Tempestade de Areia] -->|Abafa Vibrações| C
-    T -->|Bloqueia o Sol| A
-    I[Emissor Sísmico / Isca] -->|Atrai Verme para longe| D
-    C -->|Mineração| E(Água Salobra Subterrânea)
-    E -->|Sistemas de Filtração| F[Água Potável]
-    F --> G[Sobrevivência do Jogador]
+    A[Luz Solar Direta] -->|Recarrega| B(Traje de Suporte à Vida)
+    N[Safe Zone da Nave] -->|Área Imune| B
+    C[Exploração Subterrânea] -->|Drena Energia| B
+    C -->|Acúmulo de Passos| D[Alerta Sísmico: Verme]
+    T[Tempestade de Areia] -->|Abafa Vibrações em 50%| C
+    T -->|Atenua Luz Solar em 85%| A
+    I[Thumper / Emissor Sísmico] -->|Desvia Criatura| D
+    C -->|Mineração Aquífera| E(Água Salobra Subterrânea)
+    E -->|Filtro de Dessalinização| F[Água Potável Purificada]
+    F --> G[Nutrição e Saciedade Ótima]
 ```
 </details>
 
 <details>
-<summary><b>Fluxo de Automação (Máquinas e Logística)</b></summary>
+<summary><b>2. Fluxo Industrial e Logística Aérea</b></summary>
 
 ```mermaid
 graph TD;
-    A[Areia do Deserto] -->|Processamento| B[Silício]
-    R[Ruínas Soterradas] -->|Sucatas e Dados| F
-    B --> C[Impressora 3D Básica]
-    C --> D[Peças Brutas / Mecânicas]
-    D --> E[Máquina de Nanorobôs]
-    E --> F[Eletrônicos Avançados]
-    D & F --> G[Robôs Operários]
-    F --> L[Drones de Carga Aérea]
-    L -->|Transporte entre Bases| M[Logística Segura]
-    G --> H[Pátio de Montagem]
-    H --> I[Veículos de Exploração pesada]
-    H --> J[Megazords e Robôs de Combate]
+    A[Areia do Deserto] -->|Purificação| B[Silício Bruto]
+    B -->|Litografia| C[Wafer de Silício]
+    C -->|Impressora 3D| D[Placa de Circuito Integrado]
+    D -->|Fabricador de Nanites| E[Nano-Atuador Mecânico]
+    E -->|Pátio de Montagem| F[Drones de Carga Aérea]
+    F -->|Voo Aéreo: Zero Vibração no Solo| G[Logística Segura Entre Bases]
+    E -->|Construção Pesada| H[Veículo de Escavação & Megazord]
 ```
 </details>
 
 <details>
-<summary><b>Fluxo de Terraformação (End-game)</b></summary>
+<summary><b>3. Fluxo de Combate Sônico & Megazord</b></summary>
 
 ```mermaid
 graph TD;
-    A[Areia do Deserto] --> B[Máquinas de Terraformação]
-    C[Água Filtrada] --> B
-    D[Biomassa / Minerais] --> B
-    B --> E[Terra Fértil Seca]
-    E -->|Construção Massiva| P[Processador Atmosférico]
-    P -->|Alto Consumo de Energia| CL[Mudança Climática e Chuva]
-    CL -->|Umidifica o Solo| E
-    CL --> F[Grama e Vegetação Natural]
-    F --> G[Bioma 100% Habitável]
-    CL -->|Água espanta a criatura| V[Fim da Ameaça dos Vermes]
+    A[Verme de Areia Emerge] --> B{Jogador Protegido?}
+    B -- Fora do Mecha --> C[Canhão Sônico Portátil]
+    B -- No Cockpit --> D[Megazord Titânico: 500 HP]
+    D -->|Bateria 100.000 J| E[Onda de Choque Acústica de 16m]
+    C & E -->|Atordoa e Repele Criatura| F[Verme Dispersado]
+    E -.->|Garantia Absoluta| G[Zero Dano a Máquinas do Jogador]
 ```
 </details>
 
 <details>
-<summary><b>Fluxo de Exploração Arqueológica (Ruínas e Sucata)</b></summary>
+<summary><b>4. Fluxo de Terraformação Planetária (Endgame)</b></summary>
 
 ```mermaid
 graph TD;
-    A[Radar da Armadura ou Máquinas] -->|Escaneamento Direcional| B{Anomalia Detectada?}
-    B -- Sim --> C[Marcador no HUD]
-    C --> D[Escavação Cuidadosa]
-    D --> E[Ruínas Soterradas / Naves Caídas]
-    E --> F[Sucata Metálica]
-    E --> G[Discos de Dados / Chips Antigos]
-    F --> H[Material para Veículos e Megazords]
-    G --> I[Desbloqueio de Tecnologias Avançadas]
+    A[Processador Atmosférico Planetário] -->|Consumo de 250.000 J| B[Índice de Terraformação 0 a 100%]
+    B -->|Estágio 1: 0-25%| C[Deserto Árido Severo]
+    B -->|Estágio 2: 25-50%| D[Condensação Atmosférica Inicial]
+    B -->|Estágio 3: 50-75%| E[Precipitação e Umidade Ativa]
+    B -->|Estágio 4: 75-100%| F[Biosfera Luxuosa Completa]
+    E & F -->|Conversão de Solo| G[Areia -> Grama e Terra Fértil]
+    E & F -->|Efeito de Banimento| H[Dispersão Permanente dos Vermes]
 ```
 </details>
 
-<details>
-<summary><b>Dinâmica de Ameaça (Tempestades, Vermes e Iscas)</b></summary>
+---
 
-```mermaid
-graph TD;
-    A[Mineração no Subsolo] -->|Gera Ruído| B(Vibração no Solo)
-    B --> C{Clima na Superfície}
-    C -- Tempo Aberto --> D[Vibração se propaga longe]
-    C -- Tempestade de Areia --> E[Vento abafa vibrações]
-    D --> F[Atrai Vermes de Areia]
-    E --> G[Janela Segura para Mineração]
-    H[Construção de 'Thumper' / Isca] -->|Ativação| I[Gera Pulso Sísmico Extremo]
-    I -->|Atrai os Vermes para a isca| J[Área do Jogador fica segura temporariamente]
-```
-</details>
+## 📦 Itens, Blocos e Entidades do Mod
+
+| Categoria | Identificador | Nome em Português | Função / Aplicação |
+|---|---|---|---|
+| **Armadura** | `space_suit_helmet` | Capacete Espacial | Pressurização e isolamento atmosférico |
+| **Armadura** | `space_suit_chestplate`| Traje Espacial Solar | Célula fotovoltaica de recarga solar |
+| **Armadura** | `space_suit_leggings`  | Perneiras Térmicas | Regulação térmica contra calor extremo |
+| **Armadura** | `space_suit_boots`     | Botas Magnéticas | Redução de abrasão e estabilização |
+| **Consumível**| `space_ration`        | Ração Espacial | Nutrição concentrada de emergência |
+| **Consumível**| `brackish_water_bottle`| Água Salobra | Líquido bruto aquífero (tóxico sem tratamento)|
+| **Consumível**| `potable_water_bottle` | Água Potável | Hidratação pura dessalinizada |
+| **Bloco**    | `brackish_aquifer`     | Aquífero de Água Salobra | Depósito mineral subterrâneo |
+| **Bloco**    | `thumper`              | Emissor Sísmico (Thumper)| Isca vibratória para atrair vermes |
+| **Bloco**    | `printer_3d`           | Impressora 3D Básica | Transforma wafer de silício em circuitos |
+| **Bloco**    | `desalination_filter`  | Filtro de Dessalinização | Dessaliniza água salobra e gera sal |
+| **Bloco**    | `nanite_fabricator`    | Fabricador de Nanorobôs | Produz nano-atuadores para maquinário |
+| **Bloco**    | `buried_tech_ruins`    | Ruínas Tecnológicas | Estruturas soterradas ricas em sucata |
+| **Bloco**    | `ancient_data_core`    | Núcleo de Dados Ancestral | Fonte garantida de discos e esquemas |
+| **Bloco**    | `drone_dock`           | Doca de Drones | Estação de ancoragem e recarga de drones |
+| **Bloco**    | `assembly_bay`         | Pátio de Montagem | Plataforma de fabricação de veículos pesados |
+| **Bloco**    | `atmospheric_terraformer`| Processador Atmosférico| Usina planetária de terraformação |
+| **Item**     | `raw_silicon`          | Silício Bruto | Mineral extraído da areia desértica |
+| **Item**     | `silicon_wafer`        | Wafer de Silício | Pastilha para eletrônica avançada |
+| **Item**     | `mineral_salt`         | Sal Mineral | Subproduto mineral purificado |
+| **Item**     | `circuit_board`        | Placa de Circuito | Base de processamento microeletrônico |
+| **Item**     | `nano_actuator`        | Nano-Atuador Mecânico | Articulação motora robótica |
+| **Item**     | `anomaly_radar`        | Radar de Anomalias | Scanner direcional com telemetria sonora |
+| **Item**     | `tech_disc`            | Disco de Tecnologia | Esquemas ópticos para mechas e veículos |
+| **Item**     | `scrap_metal`          | Sucata Metálica | Liga reforçada resistente a dunas |
+| **Item**     | `sonic_cannon`         | Canhão Sônico de Pulso | Emissor de ondas acústicas de choque |
+| **Item**     | `atmospheric_analyzer` | Analisador Atmosférico | Leitor diagnóstico de clima e terraformação |
+| **Entidade** | `sandworm`             | Verme de Areia | Predador apex (300 HP, 18 dano) |
+| **Entidade** | `cargo_drone`          | Drone de Carga Aérea | Transporte aéreo com ruído sísmico zero |
+| **Entidade** | `excavator_vehicle`    | Veículo de Escavação | Escavadeira industrial pilotável (120 HP) |
+| **Entidade** | `megazord`             | Megazord de Combate | Mecha titânico pilotável (500 HP, choque sônico)|
+
+---
+
+## 🏛️ Padrões de Engenharia e Arquitetura
+
+O código do mod **SandStorm** foi desenvolvido seguindo critérios industriais rigorosos de engenharia de software:
+1. **Clean Code com Zero Comentários:** O código fonte Java de produção e de testes possui **0 linhas de comentários**. O design é 100% autoexplicativo por meio de nomenclatura semântica, responsabilidade única e desacoplamento.
+2. **Camadas Desacopladas (Component-Driven):** Componentes como `EnergyStorageComponent`, `ThermalComponent`, `VibrationEmitterComponent`, `RadarComponent`, `RecipeProcessorComponent` e `TerraformingIndexComponent` são classes puras e reutilizáveis, desacopladas de classes de cliente gráfico.
+3. **Testes Unitários e de Arquitetura Automatizados:** Todas as regras arquiteturais, isolamento de camadas, limites de transferência energética e cálculos espaciais são validados por suítes de testes com JUnit 5.
+4. **Localização Nativa Multilíngue (i18n):** Paridade total de 100% das chaves em Português (`pt_br.json`), Inglês (`en_us.json`) e Espanhol (`es_es.json`).
 
 ---
 
 ## 🚀 Como Instalar e Jogar
 
 ### Requisitos:
-* **Minecraft**: Versão compatível configurada (26.2 / Fabric Loader >= 0.19.5).
-* **Java**: JDK / JRE versão 25 ou superior.
-* **Fabric Loader**: Instalador oficial disponível em [fabricmc.net](https://fabricmc.net/).
-* **Fabric API**: Obrigatório na pasta `mods`.
+* **Minecraft**: 26.2 (ou snapshot compatível).
+* **Java**: Oracle JDK / OpenJDK 25 ou superior.
+* **Fabric Loader**: Versão 0.19.5 ou superior ([fabricmc.net](https://fabricmc.net/)).
+* **Fabric API**: Versão correspondente.
 
-### Passo a Passo para Jogadores:
-1. Instale o **Fabric Loader** para a versão correta do Minecraft através do instalador do Fabric.
-2. Baixe o arquivo `.jar` mais recente do **SandStorm** na aba de [Releases](https://github.com/fhfelipefh/SandStorm/releases).
-3. Baixe a versão correspondente da **Fabric API** (via Modrinth ou CurseForge).
-4. Copie ambos os arquivos `.jar` (`SandStorm` e `Fabric API`) para a pasta `.minecraft/mods`.
-5. Abra o inicializador do Minecraft, selecione o perfil **Fabric Loader** e inicie o jogo!
+### Passo a Passo:
+1. Baixe e instale o **Fabric Loader** para o Minecraft.
+2. Baixe o arquivo `.jar` do mod **SandStorm** em [Releases](https://github.com/fhfelipefh/SandStorm/releases).
+3. Adicione `sandstorm-1.0.0.jar` e a `Fabric API` na pasta `.minecraft/mods`.
+4. Inicie o jogo pelo perfil Fabric!
 
 ---
 
-## 💻 Ambiente de Desenvolvimento (Compilando o Projeto)
+## 💻 Ambiente de Desenvolvimento (Build e Testes)
 
-Caso queira clonar, compilar ou contribuir com o desenvolvimento:
+Para compilar o projeto localmente:
 
 ```bash
-# Clone o repositório
+# Clonar o repositório
 git clone https://github.com/fhfelipefh/SandStorm.git
 cd SandStorm
 
-# Execute a suíte de testes unitários e testes de arquitetura
+# Executar todas as suítes de testes unitários e arquiteturais
 ./gradlew test
 
-# Compile o mod gerando o arquivo .jar em build/libs
+# Compilar e gerar o jar de produção
 ./gradlew build
 
-# Inicie o cliente de desenvolvimento do Minecraft
+# Iniciar o cliente de desenvolvimento
 ./gradlew runClient
 ```
 
 ---
 
-*Mod com suporte nativo para os idiomas: pt-BR (Português), en-US (Inglês) e es-ES (Espanhol).*
+*Desenvolvido por Felipe Fernandes (@fhfelipefh) — Código limpo, testável e escalável.*

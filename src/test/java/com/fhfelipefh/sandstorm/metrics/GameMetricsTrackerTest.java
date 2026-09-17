@@ -47,4 +47,21 @@ class GameMetricsTrackerTest {
         assertEquals(1, tracker.getWormAttacksEncountered());
         assertEquals(1, tracker.getAncientRuinsDiscovered());
     }
+
+    @Test
+    void shouldTrackDronesAndShockwavesAndReset() {
+        GameMetricsTracker tracker = new GameMetricsTracker();
+
+        tracker.recordDroneDispatched();
+        tracker.recordDroneDispatched();
+        tracker.recordSonicShockwave();
+
+        assertEquals(2, tracker.getDronesDispatched());
+        assertEquals(1, tracker.getSonicShockwavesTriggered());
+
+        tracker.reset();
+        assertEquals(0, tracker.getDronesDispatched());
+        assertEquals(0, tracker.getSonicShockwavesTriggered());
+        assertEquals(0, tracker.getTotalEnergyGenerated());
+    }
 }

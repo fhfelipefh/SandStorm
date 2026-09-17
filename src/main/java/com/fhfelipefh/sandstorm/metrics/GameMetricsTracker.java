@@ -76,7 +76,37 @@ public class GameMetricsTracker {
         return wormAttacksEncountered.get();
     }
 
+    private final AtomicLong dronesDispatched = new AtomicLong(0);
+    private final AtomicLong sonicShockwavesTriggered = new AtomicLong(0);
+
+    public void recordDroneDispatched() {
+        dronesDispatched.incrementAndGet();
+    }
+
+    public void recordSonicShockwave() {
+        sonicShockwavesTriggered.incrementAndGet();
+    }
+
+    public long getDronesDispatched() {
+        return dronesDispatched.get();
+    }
+
+    public long getSonicShockwavesTriggered() {
+        return sonicShockwavesTriggered.get();
+    }
+
     public long getAncientRuinsDiscovered() {
         return ancientRuinsDiscovered.get();
+    }
+
+    public void reset() {
+        totalEnergyGenerated.set(0);
+        totalEnergyConsumed.set(0);
+        totalWaterFilteredMillibuckets.set(0);
+        totalSandBlocksTerraformed.set(0);
+        wormAttacksEncountered.set(0);
+        ancientRuinsDiscovered.set(0);
+        dronesDispatched.set(0);
+        sonicShockwavesTriggered.set(0);
     }
 }
