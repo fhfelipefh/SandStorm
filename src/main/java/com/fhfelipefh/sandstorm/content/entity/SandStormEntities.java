@@ -36,8 +36,36 @@ public class SandStormEntities {
                     .build(CARGO_DRONE_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> EXCAVATOR_VEHICLE_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("excavator_vehicle")
+    );
+
+    public static final EntityType<ExcavatorVehicleEntity> EXCAVATOR_VEHICLE = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("excavator_vehicle"),
+            EntityType.Builder.of(ExcavatorVehicleEntity::new, MobCategory.MISC)
+                    .sized(2.4f, 1.8f)
+                    .build(EXCAVATOR_VEHICLE_KEY)
+    );
+
+    public static final ResourceKey<EntityType<?>> MEGAZORD_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("megazord")
+    );
+
+    public static final EntityType<MegazordEntity> MEGAZORD = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("megazord"),
+            EntityType.Builder.of(MegazordEntity::new, MobCategory.MISC)
+                    .sized(3.5f, 5.0f)
+                    .build(MEGAZORD_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(EXCAVATOR_VEHICLE, ExcavatorVehicleEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(MEGAZORD, MegazordEntity.createAttributes());
     }
 }

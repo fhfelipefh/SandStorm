@@ -61,6 +61,12 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(3.5f)
                     .sound(SoundType.HEAVY_CORE)));
+    public static final AssemblyBayBlock ASSEMBLY_BAY = register("assembly_bay",
+            new AssemblyBayBlock(BlockBehaviour.Properties.of()
+                    .setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, SandStormMod.id("assembly_bay")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(4.5f)
+                    .sound(SoundType.NETHERITE_BLOCK)));
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);

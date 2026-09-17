@@ -14,8 +14,11 @@
   "block.sandstorm.buried_tech_ruins": "Ruínas Tecnológicas Soterradas",
   "block.sandstorm.ancient_data_core": "Núcleo de Dados Ancestral",
   "block.sandstorm.drone_dock": "Doca de Drones de Carga",
+  "block.sandstorm.assembly_bay": "Pátio de Montagem Industrial",
   "entity.sandstorm.sandworm": "Verme de Areia",
   "entity.sandstorm.cargo_drone": "Drone de Carga Aérea",
+  "entity.sandstorm.excavator_vehicle": "Veículo de Escavação Terrestre",
+  "entity.sandstorm.megazord": "Megazord de Combate Planetário",
   "item.sandstorm.sandworm_chitin": "Quitina de Verme de Areia",
   "item.sandstorm.sandworm_tooth": "Presa de Verme de Areia",
   "item.sandstorm.raw_silicon": "Silício Bruto",
@@ -27,6 +30,7 @@
   "item.sandstorm.anomaly_radar": "Radar de Anomalias Subterrâneas",
   "item.sandstorm.tech_disc": "Disco Óptico de Tecnologia Ancestral",
   "item.sandstorm.scrap_metal": "Sucata Metálica Resistente",
+  "item.sandstorm.sonic_cannon": "Canhão Sônico de Pulso",
   "warning.sandstorm.worm_rumble": "Tremor detectado no subsolo! Mantenha a cadência de passos baixa!",
   "warning.sandstorm.worm_emerge": "ALERTA SÍSMICO: Um Verme de Areia está emergindo!",
   "telemetry.sandstorm.radar_signal": "SINAL DETECTADO: Anomalia a %s blocos rumo a %s",
@@ -34,5 +38,10 @@
   "telemetry.sandstorm.dock_status": "Doca de Drones: Energia %s / %s J",
   "telemetry.sandstorm.drone_loaded": "Drone de Carga: Item carregado [%s]",
   "telemetry.sandstorm.drone_unloaded": "Drone de Carga: Item descarregado no inventário",
-  "telemetry.sandstorm.drone_status": "Drone de Carga: Bateria %s / %s J | Voo Sísmico Zero"
+  "telemetry.sandstorm.drone_status": "Drone de Carga: Bateria %s / %s J | Voo Sísmico Zero",
+  "telemetry.sandstorm.bay_status": "Pátio de Montagem: Energia %s / %s J | Pronto para Construção",
+  "telemetry.sandstorm.bay_assembled_drone": "Pátio de Montagem: Nova unidade montada com sucesso!",
+  "telemetry.sandstorm.excavator_mounted": "Escavadeira Operacional: Bateria %s / %s J",
+  "telemetry.sandstorm.megazord_cockpit": "Cockpit do Megazord Ativado: Energia %s / %s J | Sistemas Sônicos Prontos",
+  "telemetry.sandstorm.sonic_blast": "Pulso Sônico Disparado! %s alvos hostis repelidos"
 }
