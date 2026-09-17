@@ -14,7 +14,7 @@ import net.minecraft.world.item.equipment.ArmorType;
 
 public class SandStormItems {
     public static ResourceKey<Item> itemKey(String path) {
-        return ResourceKey.create(Registries.ITEM, SandStormMod.id(path));
+        return SandStormMod.itemKey(path);
     }
 
     public static Item.Properties properties(String path) {

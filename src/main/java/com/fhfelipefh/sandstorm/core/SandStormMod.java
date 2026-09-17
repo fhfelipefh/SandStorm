@@ -3,7 +3,11 @@ package com.fhfelipefh.sandstorm.core;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,5 +29,13 @@ public class SandStormMod implements ModInitializer {
 
     public static Identifier id(String path) {
         return Identifier.fromNamespaceAndPath(MOD_ID, path);
+    }
+
+    public static ResourceKey<Item> itemKey(String path) {
+        return ResourceKey.create(Registries.ITEM, id(path));
+    }
+
+    public static ResourceKey<Block> blockKey(String path) {
+        return ResourceKey.create(Registries.BLOCK, id(path));
     }
 }
