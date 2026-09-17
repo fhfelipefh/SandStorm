@@ -1,0 +1,116 @@
+{
+  "item.sonic_cannon.blast": {
+    "category": "players",
+    "sounds": [
+      "sandstorm:sonic_cannon_blast"
+    ]
+  },
+  "entity.megazord.shockwave": {
+    "category": "hostile",
+    "sounds": [
+      "sandstorm:megazord_shockwave"
+    ]
+  },
+  "entity.sandworm.rumble": {
+    "category": "hostile",
+    "sounds": [
+      "sandstorm:sandworm_rumble"
+    ]
+  },
+  "entity.sandworm.emerge": {
+    "category": "hostile",
+    "sounds": [
+      "sandstorm:sandworm_emerge"
+    ]
+  },
+  "entity.sandworm.attack": {
+    "category": "hostile",
+    "sounds": [
+      "sandstorm:sandworm_attack"
+    ]
+  },
+  "block.thumper.thump": {
+    "category": "blocks",
+    "sounds": [
+      "sandstorm:thumper_thump"
+    ]
+  },
+  "item.anomaly_radar.ping": {
+    "category": "players",
+    "sounds": [
+      "sandstorm:anomaly_radar_ping"
+    ]
+  },
+  "item.atmospheric_analyzer.scan": {
+    "category": "players",
+    "sounds": [
+      "sandstorm:atmospheric_analyzer_scan"
+    ]
+  },
+  "block.printer_3d.craft": {
+    "category": "blocks",
+    "sounds": [
+      "sandstorm:printer_3d_craft"
+    ]
+  },
+  "block.desalination_filter.process": {
+    "category": "blocks",
+    "sounds": [
+      "sandstorm:desalination_process"
+    ]
+  },
+  "block.nanite_fabricator.activate": {
+    "category": "blocks",
+    "sounds": [
+      "sandstorm:nanite_activate"
+    ]
+  },
+  "block.atmospheric_terraformer.hum": {
+    "category": "blocks",
+    "sounds": [
+      "sandstorm:terraformer_hum"
+    ]
+  },
+  "block.assembly_bay.construct": {
+    "category": "blocks",
+    "sounds": [
+      "sandstorm:assembly_construct"
+    ]
+  },
+  "entity.cargo_drone.flight": {
+    "category": "neutral",
+    "sounds": [
+      "sandstorm:cargo_drone_flight"
+    ]
+  },
+  "entity.excavator.engine": {
+    "category": "neutral",
+    "sounds": [
+      "sandstorm:excavator_engine"
+    ]
+  },
+  "entity.megazord.step": {
+    "category": "players",
+    "sounds": [
+      "sandstorm:megazord_step"
+    ]
+  },
+  "suit.battery.low": {
+    "category": "ambient",
+    "sounds": [
+      "sandstorm:suit_battery_low"
+    ]
+  },
+  "suit.solar.charge": {
+    "category": "ambient",
+    "sounds": [
+      "sandstorm:suit_solar_charge"
+    ]
+  },
+  "weather.sandstorm.wind": {
+    "category": "weather",
+    "sounds": [
+      "sandstorm:sandstorm_wind"
+    ]
+  }
+}
