@@ -25,6 +25,9 @@ public class SandStormItems {
     public static final PotableWaterBottleItem POTABLE_WATER_BOTTLE = register("potable_water_bottle", new PotableWaterBottleItem());
     public static final Item CIRCUIT_BOARD = register("circuit_board", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
     public static final Item NANO_ACTUATOR = register("nano_actuator", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)));
+    public static final AnomalyRadarItem ANOMALY_RADAR = register("anomaly_radar", new AnomalyRadarItem());
+    public static final Item TECH_DISC = register("tech_disc", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE)));
+    public static final Item SCRAP_METAL = register("scrap_metal", new Item(new Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -45,11 +48,17 @@ public class SandStormItems {
                         entries.accept(SILICON_WAFER);
                         entries.accept(CIRCUIT_BOARD);
                         entries.accept(NANO_ACTUATOR);
+                        entries.accept(ANOMALY_RADAR);
+                        entries.accept(TECH_DISC);
+                        entries.accept(SCRAP_METAL);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.BRACKISH_AQUIFER);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.THUMPER);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.PRINTER_3D);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.DESALINATION_FILTER);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.NANITE_FABRICATOR);
+                        entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.BURIED_TECH_RUINS);
+                        entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.ANCIENT_DATA_CORE);
+                        entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.DRONE_DOCK);
                         entries.accept(SANDWORM_CHITIN);
                         entries.accept(SANDWORM_TOOTH);
                     })

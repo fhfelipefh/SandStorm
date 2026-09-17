@@ -23,7 +23,21 @@ public class SandStormEntities {
                     .build(SANDWORM_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> CARGO_DRONE_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("cargo_drone")
+    );
+
+    public static final EntityType<CargoDroneEntity> CARGO_DRONE = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("cargo_drone"),
+            EntityType.Builder.of(CargoDroneEntity::new, MobCategory.MISC)
+                    .sized(1.2f, 0.8f)
+                    .build(CARGO_DRONE_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
     }
 }

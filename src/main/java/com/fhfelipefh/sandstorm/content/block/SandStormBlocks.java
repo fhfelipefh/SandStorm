@@ -42,6 +42,25 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(4.0f)
                     .sound(SoundType.NETHERITE_BLOCK)));
+    public static final BuriedTechRuinsBlock BURIED_TECH_RUINS = register("buried_tech_ruins",
+            new BuriedTechRuinsBlock(BlockBehaviour.Properties.of()
+                    .setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, SandStormMod.id("buried_tech_ruins")))
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(3.0f, 6.0f)
+                    .sound(SoundType.NETHER_BRICKS)));
+    public static final AncientDataCoreBlock ANCIENT_DATA_CORE = register("ancient_data_core",
+            new AncientDataCoreBlock(BlockBehaviour.Properties.of()
+                    .setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, SandStormMod.id("ancient_data_core")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(2.5f, 4.0f)
+                    .lightLevel(state -> 7)
+                    .sound(SoundType.AMETHYST)));
+    public static final DroneDockBlock DRONE_DOCK = register("drone_dock",
+            new DroneDockBlock(BlockBehaviour.Properties.of()
+                    .setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, SandStormMod.id("drone_dock")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.5f)
+                    .sound(SoundType.HEAVY_CORE)));
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
