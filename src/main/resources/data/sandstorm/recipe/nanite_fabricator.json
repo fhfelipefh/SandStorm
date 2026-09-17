@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "B": "sandstorm:circuit_board",
+    "N": "minecraft:netherite_ingot",
+    "O": "minecraft:obsidian",
+    "T": "sandstorm:tech_disc"
+  },
+  "pattern": [
+    "OTO",
+    "BNB",
+    "OAO"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:nanite_fabricator"
+  }
+}

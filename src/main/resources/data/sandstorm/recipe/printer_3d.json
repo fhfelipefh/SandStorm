@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "B": "sandstorm:circuit_board",
+    "D": "minecraft:dispenser",
+    "G": "minecraft:glass",
+    "I": "minecraft:iron_ingot",
+    "S": "minecraft:smooth_stone"
+  },
+  "pattern": [
+    "GDG",
+    "IBI",
+    "SAS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:printer_3d"
+  }
+}

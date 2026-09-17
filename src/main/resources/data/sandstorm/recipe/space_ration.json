@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bread",
+    "minecraft:cooked_beef",
+    "minecraft:dried_kelp",
+    "sandstorm:mineral_salt"
+  ],
+  "result": {
+    "count": 2,
+    "id": "sandstorm:space_ration"
+  }
+}

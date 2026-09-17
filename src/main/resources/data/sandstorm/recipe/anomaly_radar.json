@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "C": "minecraft:compass",
+    "I": "minecraft:iron_ingot",
+    "O": "minecraft:copper_ingot",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "ICI",
+    "OBO",
+    "IRI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:anomaly_radar"
+  }
+}

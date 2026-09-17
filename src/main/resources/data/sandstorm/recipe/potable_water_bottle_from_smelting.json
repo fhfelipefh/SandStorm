@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.1,
+  "ingredient": "sandstorm:brackish_water_bottle",
+  "result": {
+    "count": 1,
+    "id": "sandstorm:potable_water_bottle"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.25,
+  "ingredient": "minecraft:red_sand",
+  "result": {
+    "count": 1,
+    "id": "sandstorm:raw_silicon"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "B": "sandstorm:circuit_board",
+    "G": "minecraft:tinted_glass",
+    "I": "minecraft:iron_block",
+    "N": "minecraft:netherite_block",
+    "X": "minecraft:beacon"
+  },
+  "pattern": [
+    "XGX",
+    "BNB",
+    "IAI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:atmospheric_terraformer"
+  }
+}

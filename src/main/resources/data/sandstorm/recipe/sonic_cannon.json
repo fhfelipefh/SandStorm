@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "E": "minecraft:echo_shard",
+    "I": "minecraft:iron_ingot",
+    "L": "minecraft:lever",
+    "T": "sandstorm:sandworm_tooth"
+  },
+  "pattern": [
+    "ETE",
+    "IBI",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:sonic_cannon"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "C": "sandstorm:sandworm_chitin",
+    "G": "minecraft:glass_pane",
+    "I": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    "CCC",
+    "CGC",
+    "IBI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:space_suit_helmet"
+  }
+}
