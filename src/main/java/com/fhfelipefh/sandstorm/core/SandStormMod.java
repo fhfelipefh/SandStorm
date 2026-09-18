@@ -20,6 +20,7 @@ public class SandStormMod implements ModInitializer {
         com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.initialize();
         SandStormItems.initialize();
         com.fhfelipefh.sandstorm.content.block.SandStormBlocks.initialize();
+        com.fhfelipefh.sandstorm.content.gui.SandStormMenus.initialize();
         SuitSurvivalHandler.initialize();
         com.fhfelipefh.sandstorm.content.world.VanillaMonsterSuppressionHandler.initialize();
         com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.initialize();

@@ -1,5 +1,8 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.minecraft.core.Registry;
@@ -7,8 +10,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+
+import java.util.Set;
 
 public class SandStormBlocks {
     public static final BrackishWaterBlock BRACKISH_AQUIFER = register("brackish_aquifer",
@@ -86,6 +92,22 @@ public class SandStormBlocks {
                     .strength(4.5f)
                     .lightLevel(state -> 8)
                     .sound(SoundType.HEAVY_CORE), 2));
+
+    public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("printer_3d"),
+            new BlockEntityType<>(Printer3DBlockEntity::new, Set.of(PRINTER_3D))
+    );
+    public static final BlockEntityType<NaniteFabricatorBlockEntity> NANITE_FABRICATOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("nanite_fabricator"),
+            new BlockEntityType<>(NaniteFabricatorBlockEntity::new, Set.of(NANITE_FABRICATOR))
+    );
+    public static final BlockEntityType<DesalinationFilterBlockEntity> DESALINATION_FILTER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("desalination_filter"),
+            new BlockEntityType<>(DesalinationFilterBlockEntity::new, Set.of(DESALINATION_FILTER))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);

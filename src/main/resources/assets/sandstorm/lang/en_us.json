@@ -174,5 +174,8 @@
   "quest.sandstorm.planet_terraformer.note": "I.A.T.I.: Creates a protected biosphere immune to extreme heat and sandstorms.",
   "quest.sandstorm.planetary_genesis.title": "The New Genesis: Restored Biosphere",
   "quest.sandstorm.planetary_genesis.task": "Expand the terraforming field until barren sand transforms into lush grass and flora.",
-  "quest.sandstorm.planetary_genesis.note": "I.A.T.I.: Mission accomplished. The hostile desert blooms into humanity's new home."
+  "quest.sandstorm.planetary_genesis.note": "I.A.T.I.: Mission accomplished. The hostile desert blooms into humanity's new home.",
+  "container.sandstorm.printer_3d": "Precision 3D Printer",
+  "container.sandstorm.nanite_fabricator": "Robotic Nanite Fabricator",
+  "container.sandstorm.desalination_filter": "Desalination Filter Unit"
 }

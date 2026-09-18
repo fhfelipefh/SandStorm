@@ -174,5 +174,8 @@
   "quest.sandstorm.planet_terraformer.note": "I.A.T.I.: Cria um microclima protegido contra calor escaldante e tempestades de areia.",
   "quest.sandstorm.planetary_genesis.title": "A Nova Gênese: Bioma Restaurado",
   "quest.sandstorm.planetary_genesis.task": "Expanda o campo de terraformação até converter a areia estéril em grama e flora fértil.",
-  "quest.sandstorm.planetary_genesis.note": "I.A.T.I.: Missão cumprida. O deserto hostil floresce como o novo lar da civilização."
+  "quest.sandstorm.planetary_genesis.note": "I.A.T.I.: Missão cumprida. O deserto hostil floresce como o novo lar da civilização.",
+  "container.sandstorm.printer_3d": "Impressora 3D de Precisão",
+  "container.sandstorm.nanite_fabricator": "Fabricador de Nanitas Robóticas",
+  "container.sandstorm.desalination_filter": "Unidade de Filtro Dessalinizador"
 }

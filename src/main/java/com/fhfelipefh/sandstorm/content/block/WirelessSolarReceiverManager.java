@@ -49,6 +49,37 @@ public class WirelessSolarReceiverManager {
         return RECEIVER_MAP.getOrDefault(dim, Map.of());
     }
 
+    public static long getWptChargeAt(Level level, BlockPos pos) {
+        Map<BlockPos, Integer> map = RECEIVER_MAP.get(level.dimension());
+        if (map == null || map.isEmpty()) {
+            return 0;
+        }
+        double weather = com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.getWeather().getSolarEfficiencyMultiplier();
+        boolean isDay = level.getSkyDarken() < 4;
+        int skyDarken = level.getSkyDarken();
+        long maxCharge = 0;
+
+        for (Map.Entry<BlockPos, Integer> entry : map.entrySet()) {
+            BlockPos rPos = entry.getKey();
+            int tier = entry.getValue();
+            if (!level.isLoaded(rPos)) {
+                continue;
+            }
+            boolean canSeeSky = level.canSeeSky(rPos.above());
+            WirelessChargerComponent charger = new WirelessChargerComponent(tier);
+            double effectiveRadius = charger.calculateEffectiveRadius(canSeeSky, isDay, skyDarken, weather);
+            long rate = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, weather);
+            if (effectiveRadius > 0 && rate > 0) {
+                if (pos.distSqr(rPos) <= effectiveRadius * effectiveRadius) {
+                    if (rate > maxCharge) {
+                        maxCharge = rate;
+                    }
+                }
+            }
+        }
+        return maxCharge;
+    }
+
     public static void tickLevel(ServerLevel level) {
         Map<BlockPos, Integer> map = RECEIVER_MAP.get(level.dimension());
         if (map == null || map.isEmpty()) {
