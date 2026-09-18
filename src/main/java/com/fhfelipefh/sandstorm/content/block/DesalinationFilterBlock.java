@@ -2,7 +2,6 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
