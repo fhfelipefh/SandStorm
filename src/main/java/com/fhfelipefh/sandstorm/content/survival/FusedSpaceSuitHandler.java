@@ -84,8 +84,6 @@ public class FusedSpaceSuitHandler {
                 if (targetSlot != null && !isMatchingSuitPiece(player.getItemBySlot(targetSlot), targetSlot)) {
                     player.setItemSlot(targetSlot, stack);
                     player.getInventory().setItem(i, ItemStack.EMPTY);
-                } else if (i < 36) {
-                    player.getInventory().setItem(i, ItemStack.EMPTY);
                 }
             }
         }

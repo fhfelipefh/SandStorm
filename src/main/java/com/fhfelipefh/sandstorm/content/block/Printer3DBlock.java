@@ -23,7 +23,12 @@ public class Printer3DBlock extends Block {
         if (stack.is(SandStormItems.SILICON_WAFER)) {
             if (!level.isClientSide()) {
                 stack.shrink(1);
-                player.getInventory().add(new ItemStack(SandStormItems.CIRCUIT_BOARD));
+                ItemStack result = new ItemStack(SandStormItems.CIRCUIT_BOARD);
+                if (stack.isEmpty()) {
+                    player.setItemInHand(hand, result);
+                } else if (!player.getInventory().add(result)) {
+                    popResource(level, pos, result);
+                }
                 level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.PRINTER_3D_CRAFT, SoundSource.BLOCKS, 1.0f, 1.0f);
             }
             return InteractionResult.SUCCESS;

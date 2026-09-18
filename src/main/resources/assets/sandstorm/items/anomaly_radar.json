@@ -1,0 +1,6 @@
+{
+  "model": {
+    "model": "sandstorm:item/anomaly_radar",
+    "type": "minecraft:model"
+  }
+}

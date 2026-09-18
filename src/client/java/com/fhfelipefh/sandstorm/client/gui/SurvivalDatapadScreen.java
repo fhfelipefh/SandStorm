@@ -6,7 +6,10 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
@@ -39,9 +42,23 @@ public class SurvivalDatapadScreen extends Screen {
         extractor.fill(left, top, left + 1, bottom, 0xFF00E5FF);
         extractor.fill(right - 1, top, right, bottom, 0xFF00E5FF);
 
-        extractor.text(font, Component.literal("I.A.T.I. OS // TERMINAL DE TERRAFORMAÇÃO // ARRAKIS-IX"), left + 10, top + 8, 0x00E5FF);
-        extractor.text(font, Component.translatable("gui.sandstorm.datapad.chapter." + currentChapter), left + 10, top + 20, 0xFFD54F);
-        extractor.text(font, Component.literal("ONLINE // CONEXAO ORBITAL ESTAVEL"), right - 220, top + 8, 0x76FF03);
+        Component titleComp = Component.literal("I.A.T.I. OS // TERMINAL DE TERRAFORMAÇÃO // ARRAKIS-IX");
+        Component statusComp = Component.literal("ONLINE // CONEXAO ORBITAL ESTAVEL");
+        int statusWidth = font.width(statusComp);
+        int statusX = right - statusWidth - 10;
+        float maxHeaderTitleWidth = statusX - (left + 10) - 12;
+
+        if (maxHeaderTitleWidth < 140) {
+            float halfWidth = (right - left - 24) / 2f;
+            drawScaledText(extractor, titleComp, left + 10, top + 8, halfWidth, 0xFF00E5FF);
+            drawScaledText(extractor, statusComp, left + 10 + halfWidth + 4, top + 8, halfWidth, 0xFF76FF03);
+        } else {
+            drawScaledText(extractor, titleComp, left + 10, top + 8, maxHeaderTitleWidth, 0xFF00E5FF);
+            extractor.text(font, statusComp, statusX, top + 8, 0xFF76FF03);
+        }
+
+        Component chapterComp = Component.translatable("gui.sandstorm.datapad.chapter." + currentChapter);
+        drawScaledText(extractor, chapterComp, left + 10, top + 20, right - left - 20, 0xFFFFD54F);
 
         extractor.fill(left + 6, top + 32, right - 6, top + 33, 0x5500E5FF);
 
@@ -54,7 +71,7 @@ public class SurvivalDatapadScreen extends Screen {
 
             extractor.fill(tx + 1, ty, tx + tabWidth - 2, ty + 16, isSelected ? 0xFF005B66 : 0x88152233);
             extractor.fill(tx + 1, ty + 15, tx + tabWidth - 2, ty + 16, isSelected ? 0xFF00E5FF : 0x4400E5FF);
-            extractor.centeredText(font, Component.translatable("gui.sandstorm.datapad.tab." + ch), tx + tabWidth / 2, ty + 4, isSelected ? 0xFFFFFF : 0x90A4AE);
+            drawScaledCenteredText(extractor, Component.translatable("gui.sandstorm.datapad.tab." + ch), tx + tabWidth / 2f, ty + 4, tabWidth - 6, isSelected ? 0xFFFFFFFF : 0xFF90A4AE);
         }
 
         int questAreaTop = top + 58;
@@ -91,17 +108,21 @@ public class SurvivalDatapadScreen extends Screen {
 
             extractor.item(quest.getIconItem().getDefaultInstance(), cardLeft + 8, cy + 14);
 
-            int titleColor = completed ? 0x69F0AE : (available ? 0xE0F7FA : 0xB0BEC5);
-            extractor.text(font, Component.translatable(quest.titleKey()), cardLeft + 32, cy + 5, titleColor);
-
             Component badge = completed ? Component.translatable("gui.sandstorm.datapad.status.completed")
                     : (available ? Component.translatable("gui.sandstorm.datapad.status.available")
                     : Component.translatable("gui.sandstorm.datapad.status.locked"));
-            int badgeColor = completed ? 0x69F0AE : (available ? 0xFFD54F : 0x78909C);
-            extractor.text(font, badge, cardRight - font.width(badge) - 8, cy + 5, badgeColor);
+            int badgeColor = completed ? 0xFF69F0AE : (available ? 0xFFFFD54F : 0xFF78909C);
+            int badgeWidth = font.width(badge);
+            int badgeX = cardRight - badgeWidth - 8;
+            extractor.text(font, badge, badgeX, cy + 5, badgeColor);
 
-            extractor.text(font, Component.translatable(quest.taskKey()), cardLeft + 32, cy + 18, 0xCFD8DC);
-            extractor.text(font, Component.translatable(quest.noteKey()), cardLeft + 32, cy + 29, 0x80DEEA);
+            int titleColor = completed ? 0xFF69F0AE : (available ? 0xFFE0F7FA : 0xFFB0BEC5);
+            float maxTitleWidth = badgeX - (cardLeft + 32) - 8;
+            drawScaledText(extractor, Component.translatable(quest.titleKey()), cardLeft + 32, cy + 5, maxTitleWidth, titleColor);
+
+            float maxLineWidth = cardRight - (cardLeft + 32) - 8;
+            drawScaledText(extractor, Component.translatable(quest.taskKey()), cardLeft + 32, cy + 18, maxLineWidth, 0xFFCFD8DC);
+            drawScaledText(extractor, Component.translatable(quest.noteKey()), cardLeft + 32, cy + 29, maxLineWidth, 0xFF80DEEA);
         }
     }
 
@@ -146,7 +167,20 @@ public class SurvivalDatapadScreen extends Screen {
         if (data == null || data.getRequiredItem() == null) {
             return false;
         }
-        return player.getInventory().contains(data.getRequiredItem().getDefaultInstance());
+        Item req = data.getRequiredItem();
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack equipped = player.getItemBySlot(slot);
+            if (!equipped.isEmpty() && equipped.is(req)) {
+                return true;
+            }
+        }
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (!stack.isEmpty() && stack.is(req)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isQuestAvailable(Player player, QuestData quest) {
@@ -159,5 +193,35 @@ public class SurvivalDatapadScreen extends Screen {
             }
         }
         return true;
+    }
+
+    private void drawScaledText(GuiGraphicsExtractor extractor, Component text, float x, float y, float maxPixelWidth, int color) {
+        int textWidth = font.width(text);
+        if (textWidth <= maxPixelWidth || maxPixelWidth <= 0) {
+            extractor.text(font, text, (int) x, (int) y, color);
+        } else {
+            float scale = maxPixelWidth / (float) textWidth;
+            float offsetY = (9f - 9f * scale) / 2f;
+            extractor.pose().pushMatrix();
+            extractor.pose().translate(x, y + offsetY);
+            extractor.pose().scale(scale, scale);
+            extractor.text(font, text, 0, 0, color);
+            extractor.pose().popMatrix();
+        }
+    }
+
+    private void drawScaledCenteredText(GuiGraphicsExtractor extractor, Component text, float centerX, float y, float maxPixelWidth, int color) {
+        int textWidth = font.width(text);
+        if (textWidth <= maxPixelWidth || maxPixelWidth <= 0) {
+            extractor.centeredText(font, text, (int) centerX, (int) y, color);
+        } else {
+            float scale = maxPixelWidth / (float) textWidth;
+            float offsetY = (9f - 9f * scale) / 2f;
+            extractor.pose().pushMatrix();
+            extractor.pose().translate(centerX - (maxPixelWidth / 2f), y + offsetY);
+            extractor.pose().scale(scale, scale);
+            extractor.text(font, text, 0, 0, color);
+            extractor.pose().popMatrix();
+        }
     }
 }

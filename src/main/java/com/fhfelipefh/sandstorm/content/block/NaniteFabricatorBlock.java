@@ -24,7 +24,12 @@ public class NaniteFabricatorBlock extends Block {
         if (stack.is(SandStormItems.CIRCUIT_BOARD)) {
             if (!level.isClientSide()) {
                 stack.shrink(1);
-                player.getInventory().add(new ItemStack(SandStormItems.NANO_ACTUATOR));
+                ItemStack result = new ItemStack(SandStormItems.NANO_ACTUATOR);
+                if (stack.isEmpty()) {
+                    player.setItemInHand(hand, result);
+                } else if (!player.getInventory().add(result)) {
+                    popResource(level, pos, result);
+                }
                 level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0f, 1.2f);
             }
             return InteractionResult.SUCCESS;

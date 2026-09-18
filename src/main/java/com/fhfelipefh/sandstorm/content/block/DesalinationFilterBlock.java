@@ -23,8 +23,16 @@ public class DesalinationFilterBlock extends Block {
         if (stack.is(SandStormItems.BRACKISH_WATER_BOTTLE)) {
             if (!level.isClientSide()) {
                 stack.shrink(1);
-                player.getInventory().add(new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE));
-                player.getInventory().add(new ItemStack(SandStormItems.MINERAL_SALT, 2));
+                ItemStack waterResult = new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE);
+                ItemStack saltResult = new ItemStack(SandStormItems.MINERAL_SALT, 2);
+                if (stack.isEmpty()) {
+                    player.setItemInHand(hand, waterResult);
+                } else if (!player.getInventory().add(waterResult)) {
+                    popResource(level, pos, waterResult);
+                }
+                if (!player.getInventory().add(saltResult)) {
+                    popResource(level, pos, saltResult);
+                }
                 level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.DESALINATION_PROCESS, SoundSource.BLOCKS, 1.0f, 1.0f);
             }
             return InteractionResult.SUCCESS;

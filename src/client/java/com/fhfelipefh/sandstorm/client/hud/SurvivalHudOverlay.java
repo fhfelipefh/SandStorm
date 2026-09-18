@@ -43,12 +43,12 @@ public class SurvivalHudOverlay implements HudElement {
         String energyText = "BAT: " + (storedEnergy * 100 / Math.max(1, capacity)) + "%";
         String tempText = "TEMP: " + String.format("%.1f", temperature) + " C";
 
-        extractor.text(client.font, Component.literal(energyText), x, y, 0x55FF55);
-        extractor.text(client.font, Component.literal(tempText), x, y + 11, 0xFFA500);
+        extractor.text(client.font, Component.literal(energyText), x, y, 0xFF55FF55);
+        extractor.text(client.font, Component.literal(tempText), x, y + 11, 0xFFFFA500);
 
         if (weather.isActive()) {
             String stormText = "STORM: " + (int) (weather.getIntensity() * 100) + "%";
-            extractor.text(client.font, Component.literal(stormText), x, y + 22, 0xFF5555);
+            extractor.text(client.font, Component.literal(stormText), x, y + 22, 0xFFFF5555);
         }
     }
 

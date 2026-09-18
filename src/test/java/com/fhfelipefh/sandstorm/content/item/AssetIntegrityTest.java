@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -23,6 +24,7 @@ class AssetIntegrityTest {
     private static final Path BLOCKSTATES_DIR = ASSETS_ROOT.resolve("blockstates");
     private static final Path MODELS_BLOCK_DIR = ASSETS_ROOT.resolve("models").resolve("block");
     private static final Path MODELS_ITEM_DIR = ASSETS_ROOT.resolve("models").resolve("item");
+    private static final Path ITEMS_DIR = ASSETS_ROOT.resolve("items");
     private static final Path TEXTURES_DIR = ASSETS_ROOT.resolve("textures");
     private static final Path BLOCKBENCH_DIR = Path.of("models", "blockbench");
 
@@ -174,6 +176,33 @@ class AssetIntegrityTest {
                 assertTrue(json.has("elements"), "Blockbench model must have elements: " + modelName);
                 assertTrue(json.getAsJsonArray("elements").size() > 0, "Model must have elements: " + modelName);
             }
+        }
+    }
+
+    @Test
+    void shouldHaveValidItemAssetDefinitions() throws IOException {
+        assertTrue(Files.exists(ITEMS_DIR));
+
+        try (Stream<Path> itemFiles = Files.list(ITEMS_DIR)) {
+            itemFiles.filter(p -> p.toString().endsWith(".json")).forEach(itemPath -> {
+                try (FileReader reader = new FileReader(itemPath.toFile())) {
+                    JsonElement parsed = JsonParser.parseReader(reader);
+                    assertTrue(parsed.isJsonObject(), "Item definition must be a JsonObject: " + itemPath);
+                    JsonObject root = parsed.getAsJsonObject();
+                    assertTrue(root.has("model"), "Item definition must have model property: " + itemPath);
+                    JsonObject modelObj = root.getAsJsonObject("model");
+                    assertTrue(modelObj.has("type"), "Model must specify type: " + itemPath);
+                    assertEquals("minecraft:model", modelObj.get("type").getAsString());
+                    assertTrue(modelObj.has("model"), "Model must specify target model: " + itemPath);
+                    String modelRef = modelObj.get("model").getAsString();
+                    assertTrue(modelRef.startsWith("sandstorm:item/"));
+                    String modelFile = modelRef.substring("sandstorm:item/".length()) + ".json";
+                    Path resolvedModel = MODELS_ITEM_DIR.resolve(modelFile);
+                    assertTrue(Files.exists(resolvedModel), "Referenced item model must exist on disk: " + resolvedModel);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
     }
 }

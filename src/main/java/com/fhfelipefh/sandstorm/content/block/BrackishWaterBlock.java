@@ -25,7 +25,12 @@ public class BrackishWaterBlock extends Block {
         if (stack.is(Items.GLASS_BOTTLE)) {
             if (!level.isClientSide()) {
                 stack.shrink(1);
-                player.getInventory().add(new ItemStack(SandStormItems.BRACKISH_WATER_BOTTLE));
+                ItemStack result = new ItemStack(SandStormItems.BRACKISH_WATER_BOTTLE);
+                if (stack.isEmpty()) {
+                    player.setItemInHand(hand, result);
+                } else if (!player.getInventory().add(result)) {
+                    popResource(level, pos, result);
+                }
                 level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0f, 1.0f);
             }
             return InteractionResult.SUCCESS;
