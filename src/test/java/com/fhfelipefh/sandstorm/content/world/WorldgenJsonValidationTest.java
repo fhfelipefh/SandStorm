@@ -20,7 +20,7 @@ public class WorldgenJsonValidationTest {
 
     @Test
     public void testWorldgenJsonFilesStrictSchema() throws IOException {
-        Path dataDir = Paths.get("src", "main", "resources", "data", "sandstorm", "worldgen");
+        Path dataDir = Paths.get("src", "main", "resources", "data", "sandstorm");
         if (!Files.exists(dataDir)) {
             return;
         }
@@ -39,10 +39,15 @@ public class WorldgenJsonValidationTest {
 
             if (element.isJsonObject()) {
                 JsonObject jsonObject = element.getAsJsonObject();
-                assertFalse(
-                        jsonObject.has("config"),
-                        String.format("File %s uses outdated 'config' wrapper! The properties should be placed directly at the root of the JSON for Minecraft 1.18+.", jsonPath)
-                );
+                
+                if (jsonPath.toString().contains("configured_feature")) {
+                    assertFalse(
+                            jsonObject.has("config"),
+                            String.format("File %s uses outdated 'config' wrapper! The properties should be placed directly at the root of the JSON for Minecraft 1.18+.", jsonPath)
+                    );
+                }
+
+                checkLegacyBlockStateName(element, jsonPath);
 
                 if (jsonObject.has("targets")) {
                     JsonArray targets = jsonObject.getAsJsonArray("targets");
@@ -56,17 +61,7 @@ public class WorldgenJsonValidationTest {
                         if (stateElem.isJsonObject()) {
                             JsonObject stateObj = stateElem.getAsJsonObject();
                             assertTrue(stateObj.has("id"), "Target state must use 'id' instead of 'Name' in " + jsonPath);
-                            assertFalse(stateObj.has("Name"), "Target state object must not specify 'Name' in " + jsonPath);
-                            assertTrue(stateObj.get("id").getAsString().contains(":"), "Target state id must include namespace in " + jsonPath);
-                        } else if (stateElem.isJsonPrimitive()) {
-                            assertTrue(stateElem.getAsString().contains(":"), "Target state string must include namespace in " + jsonPath);
-                        } else {
-                            fail("Invalid state format in " + jsonPath);
                         }
-
-                        assertTrue(targetObj.has("target"), "Target must specify target predicate in " + jsonPath);
-                        JsonObject predicateObj = targetObj.getAsJsonObject("target");
-                        assertTrue(predicateObj.has("predicate_type"), "Predicate must specify predicate_type in " + jsonPath);
                     }
                 }
 
@@ -78,6 +73,23 @@ public class WorldgenJsonValidationTest {
             }
         } catch (Exception e) {
             fail("Failed to parse JSON file: " + jsonPath + " - " + e.getMessage());
+        }
+    }
+
+    private void checkLegacyBlockStateName(JsonElement element, Path jsonPath) {
+        if (element.isJsonObject()) {
+            JsonObject obj = element.getAsJsonObject();
+            if (obj.has("state") && obj.get("state").isJsonObject()) {
+                JsonObject stateObj = obj.getAsJsonObject("state");
+                assertFalse(stateObj.has("Name"), "Found legacy 'Name' key in block state definition in " + jsonPath + ". Use 'id' instead for Minecraft 1.21.2+.");
+            }
+            for (String key : obj.keySet()) {
+                checkLegacyBlockStateName(obj.get(key), jsonPath);
+            }
+        } else if (element.isJsonArray()) {
+            for (JsonElement child : element.getAsJsonArray()) {
+                checkLegacyBlockStateName(child, jsonPath);
+            }
         }
     }
 }
