@@ -23,9 +23,9 @@ class SandStormWorldGenTest {
 
     private static final Path DATA_DIR = Path.of("src", "main", "resources", "data");
     private static final Path WORLDGEN_DIR = DATA_DIR.resolve("sandstorm").resolve("worldgen");
-    private static final Path CONFIGURED_DIR = WORLDGEN_DIR.resolve("configured_feature");
+    private static final Path FEATURE_DIR = WORLDGEN_DIR.resolve("feature");
     private static final Path PLACED_DIR = WORLDGEN_DIR.resolve("placed_feature");
-    private static final Path LEGACY_FEATURE_DIR = WORLDGEN_DIR.resolve("feature");
+    private static final Path LEGACY_CONFIGURED_FEATURE_DIR = WORLDGEN_DIR.resolve("configured_feature");
 
     private static final Path OVERWORLD_DIMENSION_JSON =
             DATA_DIR.resolve("minecraft").resolve("dimension").resolve("overworld.json");
@@ -51,15 +51,52 @@ class SandStormWorldGenTest {
     }
 
     @Test
-    void shouldInitializeWorldGenWithoutException() {
+    void shouldInitializeWorldGenWithoutException() throws Exception {
+        try {
+            net.minecraft.SharedConstants.getCurrentVersion();
+        } catch (IllegalStateException e) {
+            net.minecraft.SharedConstants.setVersion(net.minecraft.DetectedVersion.BUILT_IN);
+        }
+        net.minecraft.server.Bootstrap.bootStrap();
+        
+        com.mojang.serialization.Codec<?> featureCodec = null;
+        for (net.minecraft.resources.RegistryDataLoader.RegistryData<?> rd : net.minecraft.resources.RegistryDataLoader.WORLD_REGISTRIES) {
+            if (rd.key().identifier().getPath().equals("worldgen/feature")) {
+                featureCodec = rd.elementCodec();
+                break;
+            }
+        }
+        assertNotNull(featureCodec, "featureCodec for worldgen/feature must exist");
+
+        String testValidWithId = """
+        {
+          "type": "minecraft:ore",
+          "discard_chance_on_air_exposure": 0.0,
+          "size": 4,
+          "targets": [
+            {
+              "state": {
+                "id": "minecraft:stone"
+              },
+              "target": {
+                "block": "minecraft:sand",
+                "predicate_type": "minecraft:block_match"
+              }
+            }
+          ]
+        }
+        """;
+
+        com.mojang.serialization.DataResult<?> res = featureCodec.parse(com.mojang.serialization.JsonOps.INSTANCE, JsonParser.parseString(testValidWithId));
+        assertTrue(res.result().isPresent(), "Parsing should succeed with valid vanilla block: " + res);
         assertDoesNotThrow(SandStormWorldGen::initialize);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"brackish_aquifer", "buried_tech_ruins", "ancient_data_core"})
-    void shouldHaveValidConfiguredFeatureJson(String featureName) throws IOException {
-        Path jsonPath = CONFIGURED_DIR.resolve(featureName + ".json");
-        assertTrue(Files.exists(jsonPath), "Missing configured feature: " + jsonPath);
+    void shouldHaveValidFeatureJson(String featureName) throws IOException {
+        Path jsonPath = FEATURE_DIR.resolve(featureName + ".json");
+        assertTrue(Files.exists(jsonPath), "Missing feature: " + jsonPath);
 
         try (FileReader reader = new FileReader(jsonPath.toFile())) {
             JsonElement parsed = JsonParser.parseReader(reader);
@@ -67,16 +104,21 @@ class SandStormWorldGenTest {
             JsonObject json = parsed.getAsJsonObject();
             assertTrue(json.has("type"));
             assertEquals("minecraft:ore", json.get("type").getAsString());
-            assertTrue(json.has("config"));
-            JsonObject config = json.getAsJsonObject("config");
-            assertTrue(config.has("targets"));
-            assertTrue(config.getAsJsonArray("targets").size() > 0);
-            config.getAsJsonArray("targets").forEach(targetElem -> {
+            assertFalse(json.has("config"), "Feature JSON in Minecraft 26.3 must not have a 'config' wrapper");
+            assertTrue(json.has("size"));
+            assertTrue(json.has("discard_chance_on_air_exposure"));
+            assertTrue(json.has("targets"));
+            assertTrue(json.getAsJsonArray("targets").size() > 0);
+            json.getAsJsonArray("targets").forEach(targetElem -> {
                 assertTrue(targetElem.isJsonObject());
                 JsonObject target = targetElem.getAsJsonObject();
                 assertTrue(target.has("state"));
                 JsonObject state = target.getAsJsonObject("state");
-                assertTrue(state.has("Name"));
+                assertTrue(state.has("id"), "Block state must specify 'id'");
+                assertFalse(state.has("Name"), "Block state must not use legacy 'Name'");
+                assertTrue(target.has("target"));
+                JsonObject targetCondition = target.getAsJsonObject("target");
+                assertTrue(targetCondition.has("predicate_type"));
             });
         }
     }
@@ -99,8 +141,9 @@ class SandStormWorldGenTest {
     }
 
     @Test
-    void shouldNotContainConflictingLegacyFeatureDirectory() {
-        assertFalse(Files.exists(LEGACY_FEATURE_DIR), "Legacy worldgen/feature directory causes crash and must not exist");
+    void shouldNotContainLegacyConfiguredFeatureDirectory() {
+        assertFalse(Files.exists(LEGACY_CONFIGURED_FEATURE_DIR), "Legacy worldgen/configured_feature directory is not loaded in 26.3 and must not exist");
+        assertTrue(Files.exists(FEATURE_DIR), "worldgen/feature directory is required in Minecraft 26.3");
     }
 
     @Test

@@ -71,13 +71,13 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 
 ### Fase 6: Geração de Mundo / Worldgen (Concluída - 100%)
 - [x] Configuração de aquíferos subterrâneos salobros nos desertos (`sandstorm:brackish_aquifer`):
-  - Configured feature: `data/sandstorm/worldgen/configured_feature/brackish_aquifer.json`
+  - Worldgen feature: `data/sandstorm/worldgen/feature/brackish_aquifer.json`
   - Placed feature: `data/sandstorm/worldgen/placed_feature/brackish_aquifer.json` (Y: 25 a 60).
 - [x] Configuração de ruínas tecnológicas soterradas nos desertos (`sandstorm:buried_tech_ruins`):
-  - Configured feature: `data/sandstorm/worldgen/configured_feature/buried_tech_ruins.json`
+  - Worldgen feature: `data/sandstorm/worldgen/feature/buried_tech_ruins.json`
   - Placed feature: `data/sandstorm/worldgen/placed_feature/buried_tech_ruins.json` (Y: 48 a 72).
 - [x] Configuração de núcleos de dados ancestrais (`sandstorm:ancient_data_core`):
-  - Configured feature: `data/sandstorm/worldgen/configured_feature/ancient_data_core.json`
+  - Worldgen feature: `data/sandstorm/worldgen/feature/ancient_data_core.json`
   - Placed feature: `data/sandstorm/worldgen/placed_feature/ancient_data_core.json` (Y: 45 a 68).
 - [x] Handler de injeção em biomas via Fabric Biome API (`SandStormWorldGen.java`).
 - [x] Testes automatizados de Worldgen (`SandStormWorldGenTest.java`).

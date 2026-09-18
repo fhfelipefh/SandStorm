@@ -40,11 +40,14 @@ public class WorldgenJsonValidationTest {
                 JsonObject jsonObject = element.getAsJsonObject();
                 
                 if (jsonPath.toString().contains("configured_feature")) {
+                    fail(String.format("File %s is located in legacy 'configured_feature' directory, which is not loaded in Minecraft 26.3! Use 'worldgen/feature' instead.", jsonPath));
+                }
+
+                if (jsonPath.toString().contains("worldgen") && jsonPath.toString().contains("feature") && !jsonPath.toString().contains("placed_feature")) {
                     assertTrue(
-                            jsonObject.has("config"),
-                            String.format("File %s is missing the 'config' wrapper! Configured features must have properties inside 'config'.", jsonPath)
+                            !jsonObject.has("config"),
+                            String.format("File %s must NOT have a 'config' wrapper in Minecraft 26.3. Properties must be at the root.", jsonPath)
                     );
-                    jsonObject = jsonObject.getAsJsonObject("config");
                 }
 
                 if (jsonObject.has("targets")) {
@@ -58,7 +61,8 @@ public class WorldgenJsonValidationTest {
                         JsonElement stateElem = targetObj.get("state");
                         if (stateElem.isJsonObject()) {
                             JsonObject stateObj = stateElem.getAsJsonObject();
-                            assertTrue(stateObj.has("Name"), "Target state must specify 'Name' in " + jsonPath);
+                            assertTrue(stateObj.has("id"), "Target state must specify 'id' in " + jsonPath);
+                            assertTrue(!stateObj.has("Name"), "Target state must not use legacy 'Name' in " + jsonPath);
                         }
                     }
                 }
