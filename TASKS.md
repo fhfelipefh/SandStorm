@@ -223,5 +223,6 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 13. `v1.2.0`: Incremento de versão para 1.2.0, build do jar final sandstorm-1.2.0.jar e sincronização com Minecraft.
 14. `855ccb3`: Correção da geração de mundo para o formato do Minecraft 26.3 (`worldgen/feature/`), eliminando crash do registry loader.
 15. `MVP-100%`: Paridade total de legendas de acessibilidade (i18n) em 3 idiomas e atenuação sísmica dinâmica em tempestades de areia.
+16. `v1.3.0`: Incremento de versão para 1.3.0, eliminação total de oceanos e corpos d'água superficiais, desativação de vilas/golens/aldeões e remoção de animais e vegetação vanilla para imersão em mundo árido, silencioso e estéril.
 
 
