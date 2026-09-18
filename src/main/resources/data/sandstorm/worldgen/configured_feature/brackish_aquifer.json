@@ -5,7 +5,7 @@
   "targets": [
     {
       "state": {
-        "Name": "sandstorm:brackish_aquifer"
+        "id": "sandstorm:brackish_aquifer"
       },
       "target": {
         "block": "minecraft:sandstone",
@@ -14,7 +14,7 @@
     },
     {
       "state": {
-        "Name": "sandstorm:brackish_aquifer"
+        "id": "sandstorm:brackish_aquifer"
       },
       "target": {
         "block": "minecraft:sand",
@@ -23,7 +23,7 @@
     },
     {
       "state": {
-        "Name": "sandstorm:brackish_aquifer"
+        "id": "sandstorm:brackish_aquifer"
       },
       "target": {
         "predicate_type": "minecraft:tag_match",

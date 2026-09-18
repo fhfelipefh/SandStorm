@@ -5,7 +5,7 @@
   "targets": [
     {
       "state": {
-        "Name": "sandstorm:buried_tech_ruins"
+        "id": "sandstorm:buried_tech_ruins"
       },
       "target": {
         "block": "minecraft:sand",
@@ -14,7 +14,7 @@
     },
     {
       "state": {
-        "Name": "sandstorm:buried_tech_ruins"
+        "id": "sandstorm:buried_tech_ruins"
       },
       "target": {
         "block": "minecraft:red_sand",
@@ -23,7 +23,7 @@
     },
     {
       "state": {
-        "Name": "sandstorm:buried_tech_ruins"
+        "id": "sandstorm:buried_tech_ruins"
       },
       "target": {
         "block": "minecraft:sandstone",
