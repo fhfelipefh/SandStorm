@@ -1,34 +1,36 @@
 {
   "type": "minecraft:ore",
-  "discard_chance_on_air_exposure": 0.0,
-  "size": 4,
-  "targets": [
-    {
-      "state": {
-        "id": "sandstorm:ancient_data_core"
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 4,
+    "targets": [
+      {
+        "state": {
+          "Name": "sandstorm:ancient_data_core"
+        },
+        "target": {
+          "block": "minecraft:sand",
+          "predicate_type": "minecraft:block_match"
+        }
       },
-      "target": {
-        "block": "minecraft:sand",
-        "predicate_type": "minecraft:block_match"
-      }
-    },
-    {
-      "state": {
-        "id": "sandstorm:ancient_data_core"
+      {
+        "state": {
+          "Name": "sandstorm:ancient_data_core"
+        },
+        "target": {
+          "block": "sandstorm:buried_tech_ruins",
+          "predicate_type": "minecraft:block_match"
+        }
       },
-      "target": {
-        "block": "sandstorm:buried_tech_ruins",
-        "predicate_type": "minecraft:block_match"
+      {
+        "state": {
+          "Name": "sandstorm:ancient_data_core"
+        },
+        "target": {
+          "block": "minecraft:sandstone",
+          "predicate_type": "minecraft:block_match"
+        }
       }
-    },
-    {
-      "state": {
-        "id": "sandstorm:ancient_data_core"
-      },
-      "target": {
-        "block": "minecraft:sandstone",
-        "predicate_type": "minecraft:block_match"
-      }
-    }
-  ]
+    ]
+  }
 }

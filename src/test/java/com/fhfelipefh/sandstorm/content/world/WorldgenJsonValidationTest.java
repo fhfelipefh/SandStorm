@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -41,13 +40,12 @@ public class WorldgenJsonValidationTest {
                 JsonObject jsonObject = element.getAsJsonObject();
                 
                 if (jsonPath.toString().contains("configured_feature")) {
-                    assertFalse(
+                    assertTrue(
                             jsonObject.has("config"),
-                            String.format("File %s uses outdated 'config' wrapper! The properties should be placed directly at the root of the JSON for Minecraft 1.18+.", jsonPath)
+                            String.format("File %s is missing the 'config' wrapper! Configured features must have properties inside 'config'.", jsonPath)
                     );
+                    jsonObject = jsonObject.getAsJsonObject("config");
                 }
-
-                checkLegacyBlockStateName(element, jsonPath);
 
                 if (jsonObject.has("targets")) {
                     JsonArray targets = jsonObject.getAsJsonArray("targets");
@@ -60,7 +58,7 @@ public class WorldgenJsonValidationTest {
                         JsonElement stateElem = targetObj.get("state");
                         if (stateElem.isJsonObject()) {
                             JsonObject stateObj = stateElem.getAsJsonObject();
-                            assertTrue(stateObj.has("id"), "Target state must use 'id' instead of 'Name' in " + jsonPath);
+                            assertTrue(stateObj.has("Name"), "Target state must specify 'Name' in " + jsonPath);
                         }
                     }
                 }
@@ -76,22 +74,7 @@ public class WorldgenJsonValidationTest {
         }
     }
 
-    private void checkLegacyBlockStateName(JsonElement element, Path jsonPath) {
-        if (element.isJsonObject()) {
-            JsonObject obj = element.getAsJsonObject();
-            if (obj.has("state") && obj.get("state").isJsonObject()) {
-                JsonObject stateObj = obj.getAsJsonObject("state");
-                assertFalse(stateObj.has("Name"), "Found legacy 'Name' key in block state definition in " + jsonPath + ". Use 'id' instead for Minecraft 1.21.2+.");
-            }
-            for (String key : obj.keySet()) {
-                checkLegacyBlockStateName(obj.get(key), jsonPath);
-            }
-        } else if (element.isJsonArray()) {
-            for (JsonElement child : element.getAsJsonArray()) {
-                checkLegacyBlockStateName(child, jsonPath);
-            }
-        }
-    }
+
 }
 
 

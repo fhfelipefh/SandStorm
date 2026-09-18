@@ -67,16 +67,16 @@ class SandStormWorldGenTest {
             JsonObject json = parsed.getAsJsonObject();
             assertTrue(json.has("type"));
             assertEquals("minecraft:ore", json.get("type").getAsString());
-            assertFalse(json.has("config"));
-            assertTrue(json.has("targets"));
-            assertTrue(json.getAsJsonArray("targets").size() > 0);
-            json.getAsJsonArray("targets").forEach(targetElem -> {
+            assertTrue(json.has("config"));
+            JsonObject config = json.getAsJsonObject("config");
+            assertTrue(config.has("targets"));
+            assertTrue(config.getAsJsonArray("targets").size() > 0);
+            config.getAsJsonArray("targets").forEach(targetElem -> {
                 assertTrue(targetElem.isJsonObject());
                 JsonObject target = targetElem.getAsJsonObject();
                 assertTrue(target.has("state"));
                 JsonObject state = target.getAsJsonObject("state");
-                assertTrue(state.has("id"));
-                assertFalse(state.has("Name"));
+                assertTrue(state.has("Name"));
             });
         }
     }
