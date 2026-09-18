@@ -211,6 +211,10 @@ class SandStormWorldGenTest {
             DATA_DIR.resolve("minecraft").resolve("worldgen").resolve("noise_settings").resolve("overworld.json");
     private static final Path DESERT_BIOME_JSON =
             DATA_DIR.resolve("minecraft").resolve("worldgen").resolve("biome").resolve("desert.json");
+    private static final Path VILLAGE_DESERT_TAG_JSON =
+            DATA_DIR.resolve("minecraft").resolve("tags").resolve("worldgen").resolve("biome").resolve("has_structure").resolve("village_desert.json");
+    private static final Path PILLAGER_OUTPOST_TAG_JSON =
+            DATA_DIR.resolve("minecraft").resolve("tags").resolve("worldgen").resolve("biome").resolve("has_structure").resolve("pillager_outpost.json");
 
     @Test
     void shouldEnforceAridOverworldNoiseSettings() throws IOException {
@@ -241,6 +245,27 @@ class SandStormWorldGenTest {
             assertFalse(jsonString.contains("minecraft:patch_dry_grass_desert"), "Dry grass must be removed for desolate lore");
             assertTrue(json.has("features"));
             assertEquals(0, json.getAsJsonArray("features").get(9).getAsJsonArray().size(), "Vegetal decoration step must be empty");
+
+            JsonObject naturalSpawns = json.getAsJsonObject("attributes").getAsJsonObject("minecraft:gameplay/natural_mob_spawns");
+            JsonObject spawnsByCategory = naturalSpawns.getAsJsonObject("argument").getAsJsonObject("spawns_by_category");
+            assertEquals(0, spawnsByCategory.getAsJsonArray("creature").size(), "Creature spawns (rabbits, camels) must be empty");
+        }
+    }
+
+    @Test
+    void shouldDisableDesertVillagesAndOutposts() throws IOException {
+        assertTrue(Files.exists(VILLAGE_DESERT_TAG_JSON), "Village desert tag override must exist");
+        try (FileReader reader = new FileReader(VILLAGE_DESERT_TAG_JSON.toFile())) {
+            JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+            assertTrue(json.has("replace") && json.get("replace").getAsBoolean());
+            assertEquals(0, json.getAsJsonArray("values").size(), "Village desert structure must have no allowed biomes");
+        }
+
+        assertTrue(Files.exists(PILLAGER_OUTPOST_TAG_JSON), "Pillager outpost tag override must exist");
+        try (FileReader reader = new FileReader(PILLAGER_OUTPOST_TAG_JSON.toFile())) {
+            JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+            assertTrue(json.has("replace") && json.get("replace").getAsBoolean());
+            assertEquals(0, json.getAsJsonArray("values").size(), "Pillager outpost structure must have no allowed biomes");
         }
     }
 }

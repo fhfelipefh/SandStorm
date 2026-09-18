@@ -18,22 +18,7 @@
               "weight": 10
             }
           ],
-          "creature": [
-            {
-              "type": "minecraft:rabbit",
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 3,
-                "min_inclusive": 2
-              },
-              "weight": 12
-            },
-            {
-              "type": "minecraft:camel",
-              "count": 1,
-              "weight": 1
-            }
-          ],
+          "creature": [],
           "monster": [
             {
               "type": "minecraft:spider",
