@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -36,7 +37,7 @@ public class SpaceshipLandingManager {
         server.getGameRules().set(GameRules.SPAWN_PHANTOMS, false, server);
         server.getGameRules().set(GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS, false, server);
         SpaceshipSavedData data = level.getDataStorage().computeIfAbsent(SpaceshipSavedData.TYPE);
-        if (data.isPlaced() && data.getCabinPos().getY() >= 60) {
+        if (data.isPlaced() && data.getCabinPos().getY() > level.getMinY() + 10) {
             cachedCabinSpawnPos = data.getCabinPos();
         }
     }
@@ -52,7 +53,7 @@ public class SpaceshipLandingManager {
         server.getGameRules().set(GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS, false, server);
         SpaceshipSavedData data = level.getDataStorage().computeIfAbsent(SpaceshipSavedData.TYPE);
 
-        if (!data.isPlaced() || data.getCabinPos().getY() < 60) {
+        if (!data.isPlaced() || data.getCabinPos().getY() <= level.getMinY() + 10) {
             placeSpaceshipCrashSite(server, level, data);
         } else {
             cachedCabinSpawnPos = data.getCabinPos();
@@ -63,6 +64,19 @@ public class SpaceshipLandingManager {
         }
     }
 
+    public static int findGroundSurfaceY(ServerLevel level, int x, int z) {
+        int h = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+        BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos(x, Math.min(h + 2, level.getMaxY() - 1), z);
+        while (p.getY() > level.getMinY()) {
+            var state = level.getBlockState(p);
+            if (!state.isAir() && state.isSolid()) {
+                return p.getY();
+            }
+            p.move(Direction.DOWN);
+        }
+        return level.getMinY() + 64;
+    }
+
     private static void placeSpaceshipCrashSite(MinecraftServer server, ServerLevel level, SpaceshipSavedData data) {
         level.getChunk(0, 0);
         level.getChunk(0, 1);
@@ -70,39 +84,43 @@ public class SpaceshipLandingManager {
         level.getChunk(1, 0);
         level.getChunk(-1, 0);
 
-        int maxSurface = 64;
+        int minSurface = Integer.MAX_VALUE;
         for (int x = -6; x <= 6; x += 2) {
             for (int z = -4; z <= 11; z += 2) {
-                int h = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
-                if (h > maxSurface) {
-                    maxSurface = h;
+                int groundY = findGroundSurfaceY(level, x, z);
+                if (groundY > level.getMinY() + 5) {
+                    minSurface = Math.min(minSurface, groundY);
                 }
             }
         }
 
-        BlockPos testSky = new BlockPos(0, maxSurface, 0);
-        while (!level.canSeeSky(testSky) && testSky.getY() < 120) {
-            testSky = testSky.above();
-        }
-        if (testSky.getY() > maxSurface) {
-            maxSurface = testSky.getY();
+        if (minSurface == Integer.MAX_VALUE || minSurface < level.getMinY() + 10) {
+            minSurface = level.getHeight(Heightmap.Types.MOTION_BLOCKING, 0, 4) - 1;
         }
 
-        if (maxSurface < 64) {
-            maxSurface = 64;
-        }
-
-        int surfaceY = maxSurface;
+        int surfaceY = minSurface;
         BlockPos originPos = new BlockPos(-6, surfaceY, -4);
         BlockPos cabinSpawn = new BlockPos(0, surfaceY + 1, 4);
 
-        for (int x = -6; x <= 6; x++) {
-            for (int z = -4; z <= 11; z++) {
-                for (int y = surfaceY - 1; y >= surfaceY - 4; y--) {
-                    BlockPos p = new BlockPos(x, y, z);
-                    if (level.getBlockState(p).isAir()) {
-                        level.setBlock(p, Blocks.SANDSTONE.defaultBlockState(), 2);
-                    }
+        for (int x = -7; x <= 7; x++) {
+            for (int z = -5; z <= 12; z++) {
+                BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos(x, surfaceY - 1, z);
+                while (p.getY() >= level.getMinY() && (level.getBlockState(p).isAir() || !level.getBlockState(p).isSolid())) {
+                    level.setBlock(p, Blocks.SANDSTONE.defaultBlockState(), 2);
+                    p.move(Direction.DOWN);
+                }
+            }
+        }
+
+        for (int x = -3; x <= 3; x++) {
+            for (int z = -5; z >= -12; z--) {
+                for (int dy = 1; dy <= 4; dy++) {
+                    level.setBlock(new BlockPos(x, surfaceY + dy, z), Blocks.AIR.defaultBlockState(), 3);
+                }
+                BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos(x, surfaceY, z);
+                while (p.getY() >= level.getMinY() && (level.getBlockState(p).isAir() || !level.getBlockState(p).isSolid())) {
+                    level.setBlock(p, (p.getY() == surfaceY) ? Blocks.SAND.defaultBlockState() : Blocks.SANDSTONE.defaultBlockState(), 2);
+                    p.move(Direction.DOWN);
                 }
             }
         }
@@ -138,6 +156,15 @@ public class SpaceshipLandingManager {
             for (int dz = -8; dz <= -4; dz++) {
                 for (int dy = 0; dy <= 3; dy++) {
                     level.setBlock(cabinSpawn.offset(dx, dy, dz), Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+        }
+
+        for (int dx = -2; dx <= 1; dx++) {
+            for (int dz = -8; dz <= 4; dz++) {
+                BlockPos floorPos = cabinSpawn.offset(dx, -1, dz);
+                if (level.getBlockState(floorPos).isAir()) {
+                    level.setBlock(floorPos, Blocks.SMOOTH_STONE.defaultBlockState(), 3);
                 }
             }
         }
