@@ -39,6 +39,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [x] Processamento de silício: Minério bruto (`raw_silicon`), pastilha de silício (`silicon_wafer`), placa de circuito (`circuit_board`) e nanoatuadores (`nano_actuator`).
 - [x] Impressora 3D de bancada (`Printer3DBlock`) com processamento via energia.
 - [x] Fabricador de nanitas (`NaniteFabricatorBlock`) para criação de componentes avançados.
+- [x] Receptor de Energia Solar Sem Fio (`WirelessSolarReceiverBlock` Tier 1 e Tier 2) para transmissão esférica WPT e recarga de traje na nave e postos avançados.
 - [x] Hangar de montagem (`AssemblyBayBlock`) e estação de drones (`DroneDockBlock`).
 - [x] Drone logístico de carga (`CargoDroneEntity`).
 - [x] Veículo escavador tripulável (`ExcavatorVehicleEntity`) com bateria de 50.000 FE/kJ e capacidade de escavação pesada.
@@ -224,5 +225,4 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 14. `855ccb3`: Correção da geração de mundo para o formato do Minecraft 26.3 (`worldgen/feature/`), eliminando crash do registry loader.
 15. `MVP-100%`: Paridade total de legendas de acessibilidade (i18n) em 3 idiomas e atenuação sísmica dinâmica em tempestades de areia.
 16. `v1.3.0`: Incremento de versão para 1.3.0, eliminação total de oceanos e corpos d'água superficiais, desativação de vilas/golens/aldeões e remoção de animais e vegetação vanilla para imersão em mundo árido, silencioso e estéril.
-
-
+17. `v1.3.1`: Receptor Solar Sem Fio (WPT) no casco da nave com desobstrução solar total, montagem completa da bancada da cabine (impressora 3D, fabricador de nanorobôs, dessalinizador, fornalha e bancada de trabalho) e receitas oficiais de manufatura dos receptores.

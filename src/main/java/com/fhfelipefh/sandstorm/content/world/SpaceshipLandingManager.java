@@ -60,6 +60,7 @@ public class SpaceshipLandingManager {
             if (!SpawnSafety.isSafePosition(level, cachedCabinSpawnPos)) {
                 carveCabinInterior(level, cachedCabinSpawnPos);
             }
+            ensureCabinWorkstations(level, cachedCabinSpawnPos);
             level.setRespawnData(LevelData.RespawnData.of(Level.OVERWORLD, cachedCabinSpawnPos, 0.0f, 0.0f));
         }
     }
@@ -160,7 +161,7 @@ public class SpaceshipLandingManager {
             }
         }
 
-        for (int dx = -2; dx <= 1; dx++) {
+        for (int dx = -2; dx <= 2; dx++) {
             for (int dz = -8; dz <= 4; dz++) {
                 BlockPos floorPos = cabinSpawn.offset(dx, -1, dz);
                 if (level.getBlockState(floorPos).isAir()) {
@@ -180,14 +181,64 @@ public class SpaceshipLandingManager {
         }
 
         level.setBlock(cabinSpawn.below(), Blocks.SMOOTH_STONE_SLAB.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(-2, 0, 3), Blocks.CRAFTING_TABLE.defaultBlockState(), 3);
+        ensureCabinWorkstations(level, cabinSpawn);
+    }
 
-        BlockPos roofPos = cabinSpawn.offset(0, 4, 1);
-        while (level.getBlockState(roofPos).isSolid() && roofPos.getY() < cabinSpawn.getY() + 10) {
-            roofPos = roofPos.above();
+    public static void ensureCabinWorkstations(ServerLevel level, BlockPos cabinSpawn) {
+        level.setBlock(cabinSpawn.offset(-2, -1, 3), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 0, 3), Blocks.CRAFTING_TABLE.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 1, 3), Blocks.AIR.defaultBlockState(), 3);
+
+        level.setBlock(cabinSpawn.offset(-2, -1, 2), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 0, 2), com.fhfelipefh.sandstorm.content.block.SandStormBlocks.PRINTER_3D.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 1, 2), Blocks.AIR.defaultBlockState(), 3);
+
+        level.setBlock(cabinSpawn.offset(-2, -1, 1), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 0, 1), com.fhfelipefh.sandstorm.content.block.SandStormBlocks.NANITE_FABRICATOR.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 1, 1), Blocks.AIR.defaultBlockState(), 3);
+
+        level.setBlock(cabinSpawn.offset(2, -1, 2), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(2, 0, 2), com.fhfelipefh.sandstorm.content.block.SandStormBlocks.DESALINATION_FILTER.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(2, 1, 2), Blocks.AIR.defaultBlockState(), 3);
+
+        level.setBlock(cabinSpawn.offset(2, -1, 1), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(2, 0, 1), Blocks.FURNACE.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(2, 1, 1), Blocks.AIR.defaultBlockState(), 3);
+
+        level.setBlock(cabinSpawn.offset(-2, 3, 2), Blocks.SEA_LANTERN.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(2, 3, 2), Blocks.SEA_LANTERN.defaultBlockState(), 3);
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = 0; dz <= 2; dz++) {
+                level.setBlock(cabinSpawn.offset(dx, 5, dz), Blocks.POLISHED_DEEPSLATE.defaultBlockState(), 3);
+            }
         }
-        level.setBlock(roofPos, com.fhfelipefh.sandstorm.content.block.SandStormBlocks.WIRELESS_SOLAR_RECEIVER.defaultBlockState(), 3);
-        com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager.registerReceiver(level.dimension(), roofPos, 1);
+
+        BlockPos receiverPos = cabinSpawn.offset(0, 6, 1);
+        level.setBlock(receiverPos, com.fhfelipefh.sandstorm.content.block.SandStormBlocks.WIRELESS_SOLAR_RECEIVER.defaultBlockState(), 3);
+        com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager.registerReceiver(level.dimension(), receiverPos, 1);
+
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -2; dz <= 4; dz++) {
+                for (int dy = 6; dy <= 25; dy++) {
+                    BlockPos p = cabinSpawn.offset(dx, dy, dz);
+                    if (!p.equals(receiverPos) && !level.getBlockState(p).isAir()) {
+                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 3);
+                    }
+                }
+            }
+        }
+
+        for (int dx = -7; dx <= 7; dx++) {
+            for (int dz = -8; dz <= 12; dz++) {
+                for (int dy = 1; dy <= 25; dy++) {
+                    BlockPos p = cabinSpawn.offset(dx, dy, dz);
+                    if (!p.equals(receiverPos) && (level.getBlockState(p).is(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.WIRELESS_SOLAR_RECEIVER) || level.getBlockState(p).is(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2))) {
+                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 3);
+                    }
+                }
+            }
+        }
     }
 
     public static BlockPos getCabinSpawnPos() {
