@@ -226,7 +226,7 @@ class SandStormWorldGenTest {
     }
 
     @Test
-    void shouldEnforceWaterlessDesertBiome() throws IOException {
+    void shouldEnforceWaterlessAndSterileDesertBiome() throws IOException {
         assertTrue(Files.exists(DESERT_BIOME_JSON), "Desert biome override must exist");
 
         try (FileReader reader = new FileReader(DESERT_BIOME_JSON.toFile())) {
@@ -235,6 +235,12 @@ class SandStormWorldGenTest {
             assertFalse(jsonString.contains("minecraft:desert_well"), "Desert well must be removed to avoid surface water generation");
             assertFalse(jsonString.contains("minecraft:spring_water"), "Spring water must be removed to avoid water cascades");
             assertFalse(jsonString.contains("minecraft:underwater_magma"), "Underwater magma must be removed");
+            assertFalse(jsonString.contains("minecraft:patch_cactus_desert"), "Cactus must be removed for desolate lore");
+            assertFalse(jsonString.contains("minecraft:flower_default"), "Flowers must be removed for desolate lore");
+            assertFalse(jsonString.contains("minecraft:patch_dead_bush_2"), "Dead bush must be removed for desolate lore");
+            assertFalse(jsonString.contains("minecraft:patch_dry_grass_desert"), "Dry grass must be removed for desolate lore");
+            assertTrue(json.has("features"));
+            assertEquals(0, json.getAsJsonArray("features").get(9).getAsJsonArray().size(), "Vegetal decoration step must be empty");
         }
     }
 }
