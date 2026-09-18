@@ -1,114 +1,133 @@
 {
   "item.sonic_cannon.blast": {
     "category": "players",
+    "subtitle": "subtitles.sandstorm.item.sonic_cannon.blast",
     "sounds": [
       "sandstorm:sonic_cannon_blast"
     ]
   },
   "entity.megazord.shockwave": {
     "category": "hostile",
+    "subtitle": "subtitles.sandstorm.entity.megazord.shockwave",
     "sounds": [
       "sandstorm:megazord_shockwave"
     ]
   },
   "entity.sandworm.rumble": {
     "category": "hostile",
+    "subtitle": "subtitles.sandstorm.entity.sandworm.rumble",
     "sounds": [
       "sandstorm:sandworm_rumble"
     ]
   },
   "entity.sandworm.emerge": {
     "category": "hostile",
+    "subtitle": "subtitles.sandstorm.entity.sandworm.emerge",
     "sounds": [
       "sandstorm:sandworm_emerge"
     ]
   },
   "entity.sandworm.attack": {
     "category": "hostile",
+    "subtitle": "subtitles.sandstorm.entity.sandworm.attack",
     "sounds": [
       "sandstorm:sandworm_attack"
     ]
   },
   "block.thumper.thump": {
     "category": "blocks",
+    "subtitle": "subtitles.sandstorm.block.thumper.thump",
     "sounds": [
       "sandstorm:thumper_thump"
     ]
   },
   "item.anomaly_radar.ping": {
     "category": "players",
+    "subtitle": "subtitles.sandstorm.item.anomaly_radar.ping",
     "sounds": [
       "sandstorm:anomaly_radar_ping"
     ]
   },
   "item.atmospheric_analyzer.scan": {
     "category": "players",
+    "subtitle": "subtitles.sandstorm.item.atmospheric_analyzer.scan",
     "sounds": [
       "sandstorm:atmospheric_analyzer_scan"
     ]
   },
   "block.printer_3d.craft": {
     "category": "blocks",
+    "subtitle": "subtitles.sandstorm.block.printer_3d.craft",
     "sounds": [
       "sandstorm:printer_3d_craft"
     ]
   },
   "block.desalination_filter.process": {
     "category": "blocks",
+    "subtitle": "subtitles.sandstorm.block.desalination_filter.process",
     "sounds": [
       "sandstorm:desalination_process"
     ]
   },
   "block.nanite_fabricator.activate": {
     "category": "blocks",
+    "subtitle": "subtitles.sandstorm.block.nanite_fabricator.activate",
     "sounds": [
       "sandstorm:printer_3d_craft"
     ]
   },
   "block.atmospheric_terraformer.hum": {
     "category": "blocks",
+    "subtitle": "subtitles.sandstorm.block.atmospheric_terraformer.hum",
     "sounds": [
       "sandstorm:terraformer_hum"
     ]
   },
   "block.assembly_bay.construct": {
     "category": "blocks",
+    "subtitle": "subtitles.sandstorm.block.assembly_bay.construct",
     "sounds": [
       "sandstorm:assembly_construct"
     ]
   },
   "entity.cargo_drone.flight": {
     "category": "neutral",
+    "subtitle": "subtitles.sandstorm.entity.cargo_drone.flight",
     "sounds": [
       "sandstorm:excavator_engine"
     ]
   },
   "entity.excavator.engine": {
     "category": "neutral",
+    "subtitle": "subtitles.sandstorm.entity.excavator.engine",
     "sounds": [
       "sandstorm:excavator_engine"
     ]
   },
   "entity.megazord.step": {
     "category": "players",
+    "subtitle": "subtitles.sandstorm.entity.megazord.step",
     "sounds": [
       "sandstorm:megazord_step"
     ]
   },
   "suit.battery.low": {
     "category": "ambient",
+    "subtitle": "subtitles.sandstorm.suit.battery.low",
     "sounds": [
       "sandstorm:suit_battery_low"
     ]
   },
   "suit.solar.charge": {
     "category": "ambient",
+    "subtitle": "subtitles.sandstorm.suit.solar.charge",
     "sounds": [
       "sandstorm:suit_solar_charge"
     ]
   },
   "weather.sandstorm.wind": {
     "category": "weather",
+    "subtitle": "subtitles.sandstorm.weather.sandstorm.wind",
     "sounds": [
       "sandstorm:sandstorm_wind",
       "sandstorm:sandstorm_wind_2",
@@ -118,24 +137,28 @@
   },
   "weather.sandstorm.wind.light": {
     "category": "weather",
+    "subtitle": "subtitles.sandstorm.weather.sandstorm.wind.light",
     "sounds": [
       "sandstorm:sandstorm_wind_2"
     ]
   },
   "weather.sandstorm.wind.medium": {
     "category": "weather",
+    "subtitle": "subtitles.sandstorm.weather.sandstorm.wind.medium",
     "sounds": [
       "sandstorm:sandstorm_wind_3"
     ]
   },
   "weather.sandstorm.wind.heavy": {
     "category": "weather",
+    "subtitle": "subtitles.sandstorm.weather.sandstorm.wind.heavy",
     "sounds": [
       "sandstorm:sandstorm_wind_4"
     ]
   },
   "weather.sandstorm.wind.howl": {
     "category": "weather",
+    "subtitle": "subtitles.sandstorm.weather.sandstorm.wind.howl",
     "sounds": [
       "sandstorm:sandstorm_wind"
     ]

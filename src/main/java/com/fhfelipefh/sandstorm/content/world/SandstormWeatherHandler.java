@@ -72,6 +72,10 @@ public class SandstormWeatherHandler {
         WEATHER.stopSandstorm();
     }
 
+    public static void resetWeather() {
+        WEATHER.reset();
+    }
+
     public static SandstormWeatherComponent getWeather() {
         return WEATHER;
     }

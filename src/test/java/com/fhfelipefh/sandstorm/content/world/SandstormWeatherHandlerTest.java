@@ -20,7 +20,7 @@ class SandstormWeatherHandlerTest {
 
     @BeforeEach
     void setUp() {
-        SandstormWeatherHandler.stopSandstorm();
+        SandstormWeatherHandler.resetWeather();
         SandstormWeatherHandler.setNextSandstormGameTime(1000);
     }
 

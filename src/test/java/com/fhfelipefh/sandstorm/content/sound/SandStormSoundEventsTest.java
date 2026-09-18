@@ -25,6 +25,7 @@ class SandStormSoundEventsTest {
 
     private static final Path SOUNDS_DIR = Path.of("src", "main", "resources", "assets", "sandstorm", "sounds");
     private static final Path SOUNDS_JSON = Path.of("src", "main", "resources", "assets", "sandstorm", "sounds.json");
+    private static final Path LANG_DIR = Path.of("src", "main", "resources", "assets", "sandstorm", "lang");
 
     @BeforeAll
     static void setup() {
@@ -132,6 +133,53 @@ class SandStormSoundEventsTest {
                     Path targetOgg = SOUNDS_DIR.resolve(soundFile + ".ogg");
                     assertTrue(Files.exists(targetOgg), "Target OGG file must exist for sound reference: " + soundRef + " at " + targetOgg);
                 }
+            }
+        }
+    }
+
+    @Test
+    void shouldHaveValidSubtitlesAndLanguageParity() throws Exception {
+        assertTrue(Files.exists(SOUNDS_JSON), "sounds.json must exist");
+
+        Path enUsPath = LANG_DIR.resolve("en_us.json");
+        Path ptBrPath = LANG_DIR.resolve("pt_br.json");
+        Path esEsPath = LANG_DIR.resolve("es_es.json");
+
+        assertTrue(Files.exists(enUsPath), "en_us.json must exist");
+        assertTrue(Files.exists(ptBrPath), "pt_br.json must exist");
+        assertTrue(Files.exists(esEsPath), "es_es.json must exist");
+
+        JsonObject enUs;
+        JsonObject ptBr;
+        JsonObject esEs;
+        try (FileReader reader = new FileReader(enUsPath.toFile())) {
+            enUs = JsonParser.parseReader(reader).getAsJsonObject();
+        }
+        try (FileReader reader = new FileReader(ptBrPath.toFile())) {
+            ptBr = JsonParser.parseReader(reader).getAsJsonObject();
+        }
+        try (FileReader reader = new FileReader(esEsPath.toFile())) {
+            esEs = JsonParser.parseReader(reader).getAsJsonObject();
+        }
+
+        try (FileReader reader = new FileReader(SOUNDS_JSON.toFile())) {
+            JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
+
+            for (Map.Entry<String, JsonElement> entry : root.entrySet()) {
+                String eventKey = entry.getKey();
+                JsonObject eventObj = entry.getValue().getAsJsonObject();
+
+                assertTrue(eventObj.has("subtitle"), "Event must have subtitle property: " + eventKey);
+                String subtitleKey = eventObj.get("subtitle").getAsString();
+                assertTrue(subtitleKey.startsWith("subtitles.sandstorm."), "Subtitle key must follow convention: " + subtitleKey);
+
+                assertTrue(enUs.has(subtitleKey), "en_us.json must have translation for subtitle: " + subtitleKey);
+                assertTrue(ptBr.has(subtitleKey), "pt_br.json must have translation for subtitle: " + subtitleKey);
+                assertTrue(esEs.has(subtitleKey), "es_es.json must have translation for subtitle: " + subtitleKey);
+
+                assertFalse(enUs.get(subtitleKey).getAsString().isBlank(), "en_us translation cannot be blank: " + subtitleKey);
+                assertFalse(ptBr.get(subtitleKey).getAsString().isBlank(), "pt_br translation cannot be blank: " + subtitleKey);
+                assertFalse(esEs.get(subtitleKey).getAsString().isBlank(), "es_es translation cannot be blank: " + subtitleKey);
             }
         }
     }

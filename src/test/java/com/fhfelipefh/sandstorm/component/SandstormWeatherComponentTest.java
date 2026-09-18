@@ -74,6 +74,15 @@ class SandstormWeatherComponentTest {
     }
 
     @Test
+    void externalAudioDampingFactorShouldReflectMuffledAudio() {
+        weather.startSandstorm(100, 1.0);
+        for (int i = 0; i < 50; i++) {
+            weather.tick();
+        }
+        assertEquals(0.60, weather.getExternalAudioDampingFactor(), 0.001);
+    }
+
+    @Test
     void sandDamageShouldTriggerAtOrAbove75PercentIntensity() {
         weather.startSandstorm(100, 0.7);
         for (int i = 0; i < 40; i++) {

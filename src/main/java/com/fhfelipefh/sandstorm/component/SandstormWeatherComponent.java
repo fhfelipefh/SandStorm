@@ -25,6 +25,13 @@ public class SandstormWeatherComponent {
         this.remainingTicks = 0;
     }
 
+    public void reset() {
+        this.active = false;
+        this.intensity = 0.0;
+        this.targetIntensity = 0.0;
+        this.remainingTicks = 0;
+    }
+
     public void tick() {
         if (active) {
             if (remainingTicks > 0) {
@@ -72,6 +79,10 @@ public class SandstormWeatherComponent {
 
     public double getVibrationDampingFactor() {
         return Math.clamp(1.0 - (intensity * 0.50), 0.50, 1.0);
+    }
+
+    public double getExternalAudioDampingFactor() {
+        return Math.clamp(1.0 - (intensity * 0.40), 0.60, 1.0);
     }
 
     public boolean canCauseSandDamage() {

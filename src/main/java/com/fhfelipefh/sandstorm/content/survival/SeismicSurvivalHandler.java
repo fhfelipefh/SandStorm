@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.survival;
 import com.fhfelipefh.sandstorm.component.SeismicTrackerComponent;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
+import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -30,6 +31,10 @@ public class SeismicSurvivalHandler {
         }
     }
 
+    public static double getMovementVibrationMultiplier() {
+        return SandstormWeatherHandler.getWeather().getVibrationDampingFactor();
+    }
+
     public static void handlePlayerMovement(ServerPlayer player) {
         if (!player.onGround() || player.isSpectator() || player.isCreative()) {
             return;
@@ -44,10 +49,11 @@ public class SeismicSurvivalHandler {
         int chunkZ = player.chunkPosition().z();
 
         double deltaDist = player.getDeltaMovement().horizontalDistanceSqr();
+        double multiplier = getMovementVibrationMultiplier();
         if (player.isSprinting()) {
-            TRACKER.addVibration(chunkX, chunkZ, 0.8);
+            TRACKER.addVibration(chunkX, chunkZ, 0.8 * multiplier);
         } else if (deltaDist > 0.001) {
-            TRACKER.addVibration(chunkX, chunkZ, 0.2);
+            TRACKER.addVibration(chunkX, chunkZ, 0.2 * multiplier);
         }
 
         double vibration = TRACKER.getVibration(chunkX, chunkZ);

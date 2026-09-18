@@ -11,12 +11,12 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **187 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **252 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
 | **Receitas Data-Driven (JEI/REI)** | 20 receitas oficiais | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
-| **Progresso Estimado do MVP** | **~82%** | **100%** | 🟡 Em Andamento |
+| **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
 ---
 
@@ -122,8 +122,8 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 - [x] **Validação Binária de Cabeçalhos OGG Vorbis**: Inspeção dos 4 bytes mágicos (`OggS` / `0x4F 0x67 0x67 0x53`) garantindo que nenhum arquivo de áudio esteja corrompido ou vazio (tamanho > 100 bytes).
 - [x] **Saneamento de Distribuição**: Garantia automatizada de zero arquivos provisórios `.mp3` na pasta de assets de produção.
 - [x] **Paridade Referencial `sounds.json`**: Cada evento de som possui categoria válida (`players`, `hostile`, `blocks`, `neutral`, `ambient`, `weather`) e todos os caminhos referenciados mapeiam 1:1 para arquivos `.ogg` existentes no disco.
-- [ ] **Legendas e Acessibilidade (i18n)**: Paridade de chaves `subtitles.*` em `pt_br.json`, `en_us.json` e `es_es.json`.
-- [ ] **Atenuação Dinâmica em Tempestades**: Verificação de abafamento de áudio externo e propagação de ruído sísmico em tempo real.
+- [x] **Legendas e Acessibilidade (i18n)**: Paridade de chaves `subtitles.*` em `pt_br.json`, `en_us.json` e `es_es.json`.
+- [x] **Atenuação Dinâmica em Tempestades**: Verificação de abafamento de áudio externo e propagação de ruído sísmico em tempo real.
 
 ---
 
@@ -217,5 +217,7 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 11. `6d03143`: Modelos 3D Blockbench completos, Overworld 100% deserto fixo e testes de áudio OGG.
 12. `43a1ae0`: Correção de gargalos de progressão, testes de dano de inimigos, supressão de phantoms e restrições de portais Nether/End.
 13. `v1.2.0`: Incremento de versão para 1.2.0, build do jar final sandstorm-1.2.0.jar e sincronização com Minecraft.
+14. `855ccb3`: Correção da geração de mundo para o formato do Minecraft 26.3 (`worldgen/feature/`), eliminando crash do registry loader.
+15. `MVP-100%`: Paridade total de legendas de acessibilidade (i18n) em 3 idiomas e atenuação sísmica dinâmica em tempestades de areia.
 
 
