@@ -55,9 +55,9 @@ public class WorldgenJsonValidationTest {
                         JsonElement stateElem = targetObj.get("state");
                         if (stateElem.isJsonObject()) {
                             JsonObject stateObj = stateElem.getAsJsonObject();
-                            assertFalse(stateObj.has("Name"), "Target state must use lowercase 'id' instead of 'Name' in " + jsonPath);
-                            assertTrue(stateObj.has("id"), "Target state object must specify 'id' in " + jsonPath);
-                            assertTrue(stateObj.get("id").getAsString().contains(":"), "Target state id must include namespace in " + jsonPath);
+                            assertTrue(stateObj.has("Name"), "Target state must use 'Name' instead of 'id' in " + jsonPath);
+                            assertFalse(stateObj.has("id"), "Target state object must not specify 'id' in " + jsonPath);
+                            assertTrue(stateObj.get("Name").getAsString().contains(":"), "Target state Name must include namespace in " + jsonPath);
                         } else if (stateElem.isJsonPrimitive()) {
                             assertTrue(stateElem.getAsString().contains(":"), "Target state string must include namespace in " + jsonPath);
                         } else {

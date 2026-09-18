@@ -75,8 +75,8 @@ class SandStormWorldGenTest {
                 JsonObject target = targetElem.getAsJsonObject();
                 assertTrue(target.has("state"));
                 JsonObject state = target.getAsJsonObject("state");
-                assertFalse(state.has("Name"));
-                assertTrue(state.has("id"));
+                assertTrue(state.has("Name"));
+                assertFalse(state.has("id"));
             });
         }
     }
