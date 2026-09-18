@@ -24,9 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SpaceshipStructureGeneratorTest {
 
-    private static final int SIZE_X = 9;
-    private static final int SIZE_Y = 5;
-    private static final int SIZE_Z = 11;
+    private static final int SIZE_X = 13;
+    private static final int SIZE_Y = 7;
+    private static final int SIZE_Z = 16;
 
     @BeforeAll
     static void setup() {
@@ -65,7 +65,7 @@ class SpaceshipStructureGeneratorTest {
         }
 
         ListTag blocksTag = loadedTag.getListOrEmpty("blocks");
-        assertFalse(blocksTag.isEmpty());
+        assertEquals(SIZE_X * SIZE_Y * SIZE_Z, blocksTag.size());
     }
 
     private static CompoundTag buildSpaceshipStructureTag() {
@@ -76,9 +76,12 @@ class SpaceshipStructureGeneratorTest {
         paletteIndices.put("minecraft:iron_block", getOrCreatePaletteIndex(palette, paletteIndices, "minecraft:iron_block", null));
         paletteIndices.put("minecraft:polished_basalt", getOrCreatePaletteIndex(palette, paletteIndices, "minecraft:polished_basalt", Map.of("axis", "y")));
         paletteIndices.put("minecraft:smooth_stone_slab", getOrCreatePaletteIndex(palette, paletteIndices, "minecraft:smooth_stone_slab", Map.of("type", "bottom")));
+        paletteIndices.put("minecraft:polished_deepslate", getOrCreatePaletteIndex(palette, paletteIndices, "minecraft:polished_deepslate", null));
+        paletteIndices.put("minecraft:cut_copper", getOrCreatePaletteIndex(palette, paletteIndices, "minecraft:cut_copper", null));
         paletteIndices.put("minecraft:tinted_glass", getOrCreatePaletteIndex(palette, paletteIndices, "minecraft:tinted_glass", null));
         paletteIndices.put("minecraft:sea_lantern", getOrCreatePaletteIndex(palette, paletteIndices, "minecraft:sea_lantern", null));
         paletteIndices.put("minecraft:crying_obsidian", getOrCreatePaletteIndex(palette, paletteIndices, "minecraft:crying_obsidian", null));
+        paletteIndices.put("minecraft:redstone_lamp", getOrCreatePaletteIndex(palette, paletteIndices, "minecraft:redstone_lamp", null));
         paletteIndices.put("sandstorm:printer_3d", getOrCreatePaletteIndex(palette, paletteIndices, "sandstorm:printer_3d", Map.of("facing", "south")));
 
         ListTag blocksList = new ListTag();
@@ -123,75 +126,155 @@ class SpaceshipStructureGeneratorTest {
         int iron = paletteIndices.get("minecraft:iron_block");
         int basalt = paletteIndices.get("minecraft:polished_basalt");
         int slab = paletteIndices.get("minecraft:smooth_stone_slab");
+        int deepslate = paletteIndices.get("minecraft:polished_deepslate");
+        int copper = paletteIndices.get("minecraft:cut_copper");
         int glass = paletteIndices.get("minecraft:tinted_glass");
         int light = paletteIndices.get("minecraft:sea_lantern");
         int reactor = paletteIndices.get("minecraft:crying_obsidian");
+        int lamp = paletteIndices.get("minecraft:redstone_lamp");
         int printer = paletteIndices.get("sandstorm:printer_3d");
 
-        if (y == 0) {
-            if (x == 0 || x == SIZE_X - 1 || z == 0 || z == SIZE_Z - 1) {
+        if (z <= 3) {
+            if (x >= 4 && x <= 7) {
+                if (y == 0) {
+                    return (z == 0) ? copper : slab;
+                }
+                return air;
+            }
+
+            if (x >= 1 && x <= 2 && y >= 1 && y <= 4) {
+                if (z == 0 || z == 3 || y == 1 || y == 4) {
+                    return iron;
+                }
+                if (y == 2 && z == 2) {
+                    return light;
+                }
+                return (x == 2) ? copper : deepslate;
+            }
+
+            if (x >= 1 && x <= 2 && y == 0) {
                 return iron;
             }
-            return slab;
-        }
 
-        if (y == 1 && x == 4 && z == 9) {
-            return printer;
-        }
+            if (x == 8 && y == 0) {
+                return deepslate;
+            }
 
-        if (y == 1 && (z == 0 && (x == 2 || x == 6))) {
-            return reactor;
-        }
-
-        if (y == 1 && z == 1 && x == 4) {
             return air;
         }
 
-        if (y == 2 && z == 1 && x == 4) {
-            return air;
-        }
-
-        if (y == 1 || y == 2) {
-            if (x == 1 || x == SIZE_X - 2) {
-                if (z == 4 || z == 5 || z == 6) {
-                    return glass;
+        if (z == 4) {
+            if (x >= 4 && x <= 7 && y >= 1 && y <= 4) {
+                return air;
+            }
+            if (y == 0) {
+                return (x >= 4 && x <= 7) ? iron : deepslate;
+            }
+            if (y == 5) {
+                if (x == 5 || x == 6) {
+                    return lamp;
                 }
-                if (z % 2 == 0) {
+                if (x == 4 || x == 7) {
+                    return basalt;
+                }
+                return deepslate;
+            }
+            if (y >= 1 && y <= 4) {
+                if (x == 3) {
+                    return (y == 3) ? light : deepslate;
+                }
+                if (x == 8) {
+                    return (y == 3) ? lamp : deepslate;
+                }
+                if (x >= 1 && x <= 2) {
+                    return iron;
+                }
+                if (x >= 9 && x <= 11) {
+                    return deepslate;
+                }
+            }
+            return (y == 6 && x >= 3 && x <= 9) ? basalt : air;
+        }
+
+        if (z >= 5 && z <= 13) {
+            if (y == 0) {
+                if (x >= 4 && x <= 7) {
+                    if ((x == 5 || x == 6) && (z == 7 || z == 11)) {
+                        return light;
+                    }
+                    return slab;
+                }
+                return iron;
+            }
+
+            if (x == 5 && z == 12 && y == 1) {
+                return printer;
+            }
+
+            if (x >= 4 && x <= 7 && y >= 1 && y <= 4) {
+                return air;
+            }
+
+            if ((x == 3 || x == 8) && y >= 1 && y <= 4) {
+                if (y == 2 && (z == 7 || z == 10)) {
+                    return light;
+                }
+                if (y == 1 && (z == 8 || z == 9)) {
+                    return copper;
+                }
+                return air;
+            }
+
+            if (y >= 1 && y <= 4) {
+                if (x <= 2 || x >= 9) {
+                    if (y >= 2 && y <= 3 && z >= 7 && z <= 10) {
+                        return glass;
+                    }
+                    if (z % 2 == 0) {
+                        return basalt;
+                    }
+                    return iron;
+                }
+            }
+
+            if (y == 5) {
+                if (x >= 3 && x <= 8) {
+                    if ((x == 5 || x == 6) && (z == 7 || z == 10)) {
+                        return light;
+                    }
+                    return iron;
+                }
+                return basalt;
+            }
+
+            if (y == 6) {
+                if (x >= 2 && x <= 10) {
+                    return (x == 5 || x == 6) ? basalt : copper;
+                }
+                return air;
+            }
+        }
+
+        if (z >= 14) {
+            if (y == 0) {
+                return iron;
+            }
+            if (z == 14 && y >= 1 && y <= 4) {
+                if (y == 2 && (x == 5 || x == 7)) {
+                    return reactor;
+                }
+                if (x >= 3 && x <= 9) {
                     return basalt;
                 }
                 return iron;
             }
-            if (z == SIZE_Z - 2) {
-                if (x == 3 || x == 4 || x == 5) {
-                    return (y == 2) ? glass : iron;
-                }
-                return iron;
-            }
-            if (z == 1) {
-                if (x == 4) {
-                    return air;
-                }
-                return iron;
-            }
-            return air;
-        }
-
-        if (y == 3) {
-            if (x == 1 || x == SIZE_X - 2 || z == 1 || z == SIZE_Z - 2) {
-                return iron;
-            }
-            if (x == 4 && (z == 4 || z == 7)) {
-                return light;
-            }
-            return iron;
-        }
-
-        if (y == 4) {
-            if (x >= 2 && x <= SIZE_X - 3 && z >= 2 && z <= SIZE_Z - 3) {
-                if (x == 4) {
+            if (z == 15 && y >= 1 && y <= 3) {
+                if (x >= 4 && x <= 8) {
                     return basalt;
                 }
-                return iron;
+            }
+            if (y == 5 && x >= 3 && x <= 9) {
+                return basalt;
             }
             return air;
         }

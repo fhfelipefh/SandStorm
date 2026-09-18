@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class SpaceshipLandingManager {
 
-    private static BlockPos cachedCabinSpawnPos = new BlockPos(0, 65, 0);
+    private static BlockPos cachedCabinSpawnPos = new BlockPos(0, 65, 4);
 
     public static void initialize() {
         ServerLevelEvents.LOAD.register(SpaceshipLandingManager::onLevelLoad);
@@ -61,8 +61,8 @@ public class SpaceshipLandingManager {
 
     private static void placeSpaceshipCrashSite(MinecraftServer server, ServerLevel level, SpaceshipSavedData data) {
         int maxSurface = level.getMinY() + 10;
-        for (int x = -4; x <= 4; x += 2) {
-            for (int z = -5; z <= 5; z += 2) {
+        for (int x = -6; x <= 6; x += 2) {
+            for (int z = -4; z <= 11; z += 2) {
                 int h = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
                 if (h > maxSurface) {
                     maxSurface = h;
@@ -75,11 +75,11 @@ public class SpaceshipLandingManager {
         }
 
         int surfaceY = maxSurface;
-        BlockPos originPos = new BlockPos(-4, surfaceY, -5);
-        BlockPos cabinSpawn = new BlockPos(0, surfaceY + 1, 0);
+        BlockPos originPos = new BlockPos(-6, surfaceY, -4);
+        BlockPos cabinSpawn = new BlockPos(0, surfaceY + 1, 4);
 
-        for (int x = -4; x <= 4; x++) {
-            for (int z = -5; z <= 5; z++) {
+        for (int x = -6; x <= 6; x++) {
+            for (int z = -4; z <= 11; z++) {
                 for (int y = surfaceY - 1; y >= surfaceY - 3; y--) {
                     BlockPos p = new BlockPos(x, y, z);
                     if (level.getBlockState(p).isAir()) {
@@ -104,20 +104,27 @@ public class SpaceshipLandingManager {
         data.setPlaced(true);
         level.getDataStorage().set(SpaceshipSavedData.TYPE, data);
         cachedCabinSpawnPos = cabinSpawn;
-        SandStormMod.LOGGER.info("SandStorm: Crashed spaceship placed safely at {}", cachedCabinSpawnPos);
+        SandStormMod.LOGGER.info("SandStorm: Crashed spaceship placed safely with 4x4 blast door at {}", cachedCabinSpawnPos);
     }
 
     public static void carveCabinInterior(ServerLevel level, BlockPos cabinSpawn) {
         for (int dx = -2; dx <= 2; dx++) {
-            for (int dz = -3; dz <= 3; dz++) {
-                for (int dy = 0; dy <= 1; dy++) {
+            for (int dz = -3; dz <= 4; dz++) {
+                for (int dy = 0; dy <= 3; dy++) {
                     level.setBlock(cabinSpawn.offset(dx, dy, dz), Blocks.AIR.defaultBlockState(), 3);
                 }
             }
         }
+
+        for (int dx = -2; dx <= 1; dx++) {
+            for (int dz = -8; dz <= -4; dz++) {
+                for (int dy = 0; dy <= 3; dy++) {
+                    level.setBlock(cabinSpawn.offset(dx, dy, dz), Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+        }
+
         level.setBlock(cabinSpawn.below(), Blocks.SMOOTH_STONE_SLAB.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(0, 0, -4), Blocks.AIR.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(0, 1, -4), Blocks.AIR.defaultBlockState(), 3);
     }
 
     public static BlockPos getCabinSpawnPos() {

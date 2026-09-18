@@ -110,7 +110,7 @@ class SpawnSafetyTest {
         assertTrue(airIndex >= 0);
 
         var blocks = tag.getListOrEmpty("blocks");
-        assertEquals(9 * 5 * 11, blocks.size());
+        assertEquals(13 * 7 * 16, blocks.size());
 
         Map<String, Integer> blockStatesAtPos = new HashMap<>();
         for (int i = 0; i < blocks.size(); i++) {
@@ -123,10 +123,15 @@ class SpawnSafetyTest {
             blockStatesAtPos.put(x + "," + y + "," + z, state);
         }
 
-        assertEquals(airIndex, blockStatesAtPos.get("4,1,5"));
-        assertEquals(airIndex, blockStatesAtPos.get("4,2,5"));
-        assertEquals(airIndex, blockStatesAtPos.get("4,1,1"));
-        assertEquals(airIndex, blockStatesAtPos.get("4,2,1"));
+        for (int x = 4; x <= 7; x++) {
+            for (int y = 1; y <= 4; y++) {
+                assertEquals(airIndex, blockStatesAtPos.get(x + "," + y + ",4"));
+                assertEquals(airIndex, blockStatesAtPos.get(x + "," + y + ",2"));
+                assertEquals(airIndex, blockStatesAtPos.get(x + "," + y + ",8"));
+            }
+        }
+
+        assertFalse(airIndex == blockStatesAtPos.get("2,2,2"));
     }
 
     private static class TestBlockGetter implements BlockGetter {
