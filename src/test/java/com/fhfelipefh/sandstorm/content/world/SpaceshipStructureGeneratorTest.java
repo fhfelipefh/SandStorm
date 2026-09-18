@@ -87,16 +87,14 @@ class SpaceshipStructureGeneratorTest {
             for (int y = 0; y < SIZE_Y; y++) {
                 for (int z = 0; z < SIZE_Z; z++) {
                     int stateIndex = determineBlockState(x, y, z, paletteIndices);
-                    if (stateIndex != paletteIndices.get("minecraft:air")) {
-                        CompoundTag blockTag = new CompoundTag();
-                        ListTag posList = new ListTag();
-                        posList.add(IntTag.valueOf(x));
-                        posList.add(IntTag.valueOf(y));
-                        posList.add(IntTag.valueOf(z));
-                        blockTag.put("pos", posList);
-                        blockTag.putInt("state", stateIndex);
-                        blocksList.add(blockTag);
-                    }
+                    CompoundTag blockTag = new CompoundTag();
+                    ListTag posList = new ListTag();
+                    posList.add(IntTag.valueOf(x));
+                    posList.add(IntTag.valueOf(y));
+                    posList.add(IntTag.valueOf(z));
+                    blockTag.put("pos", posList);
+                    blockTag.putInt("state", stateIndex);
+                    blocksList.add(blockTag);
                 }
             }
         }

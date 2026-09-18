@@ -23,6 +23,6 @@ public class MultiplayerSpawnHandler {
 
     public static void relocatePlayerToCrashCabin(ServerPlayer player) {
         BlockPos cabinPos = SpaceshipLandingManager.getCabinSpawnPos();
-        player.teleportTo(cabinPos.getX() + 0.5, cabinPos.getY(), cabinPos.getZ() + 0.5);
+        SpawnSafety.teleportSafely(player, cabinPos);
     }
 }

@@ -1,11 +1,14 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.survival.SpawnSafety;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -21,6 +24,7 @@ public class SpaceshipLandingManager {
 
     public static void initialize() {
         ServerLevelEvents.LOAD.register(SpaceshipLandingManager::onLevelLoad);
+        ServerLifecycleEvents.SERVER_STARTED.register(SpaceshipLandingManager::onServerStarted);
     }
 
     public static void onLevelLoad(MinecraftServer server, ServerLevel level) {
@@ -29,27 +33,61 @@ public class SpaceshipLandingManager {
         }
 
         server.getGameRules().set(GameRules.RESPAWN_RADIUS, 0, server);
-        SandStormMod.LOGGER.info("SandStorm: Enforced spawn radius = 0");
-
         SpaceshipSavedData data = level.getDataStorage().computeIfAbsent(SpaceshipSavedData.TYPE);
+        if (data.isPlaced()) {
+            cachedCabinSpawnPos = data.getCabinPos();
+        }
+    }
+
+    public static void onServerStarted(MinecraftServer server) {
+        ServerLevel overworld = server.overworld();
+        ensureSpaceshipPlaced(server, overworld);
+    }
+
+    public static void ensureSpaceshipPlaced(MinecraftServer server, ServerLevel level) {
+        server.getGameRules().set(GameRules.RESPAWN_RADIUS, 0, server);
+        SpaceshipSavedData data = level.getDataStorage().computeIfAbsent(SpaceshipSavedData.TYPE);
+
         if (!data.isPlaced()) {
-            SandStormMod.LOGGER.info("SandStorm: Placing crashed spaceship at (0, 0)...");
             placeSpaceshipCrashSite(server, level, data);
-            SandStormMod.LOGGER.info("SandStorm: Crashed spaceship placed at {}", cachedCabinSpawnPos);
         } else {
             cachedCabinSpawnPos = data.getCabinPos();
-            SandStormMod.LOGGER.info("SandStorm: Crashed spaceship already placed at {}", cachedCabinSpawnPos);
+            if (!SpawnSafety.isSafePosition(level, cachedCabinSpawnPos)) {
+                carveCabinInterior(level, cachedCabinSpawnPos);
+            }
+            level.setRespawnData(LevelData.RespawnData.of(Level.OVERWORLD, cachedCabinSpawnPos, 0.0f, 0.0f));
         }
     }
 
     private static void placeSpaceshipCrashSite(MinecraftServer server, ServerLevel level, SpaceshipSavedData data) {
-        int surfaceY = level.getHeight(Heightmap.Types.WORLD_SURFACE, 0, 0);
-        if (surfaceY < level.getMinY() + 10) {
-            surfaceY = 64;
+        int maxSurface = level.getMinY() + 10;
+        for (int x = -4; x <= 4; x += 2) {
+            for (int z = -5; z <= 5; z += 2) {
+                int h = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+                if (h > maxSurface) {
+                    maxSurface = h;
+                }
+            }
         }
 
+        if (maxSurface < level.getMinY() + 10) {
+            maxSurface = 64;
+        }
+
+        int surfaceY = maxSurface;
         BlockPos originPos = new BlockPos(-4, surfaceY, -5);
         BlockPos cabinSpawn = new BlockPos(0, surfaceY + 1, 0);
+
+        for (int x = -4; x <= 4; x++) {
+            for (int z = -5; z <= 5; z++) {
+                for (int y = surfaceY - 1; y >= surfaceY - 3; y--) {
+                    BlockPos p = new BlockPos(x, y, z);
+                    if (level.getBlockState(p).isAir()) {
+                        level.setBlock(p, Blocks.SANDSTONE.defaultBlockState(), 2);
+                    }
+                }
+            }
+        }
 
         StructureTemplateManager templateManager = server.getStructureTemplateManager();
         Optional<StructureTemplate> templateOpt = templateManager.get(SandStormMod.id("spaceship_crash_site"));
@@ -59,11 +97,27 @@ public class SpaceshipLandingManager {
             template.placeInWorld(level, originPos, originPos, settings, level.getRandom(), 2);
         }
 
+        carveCabinInterior(level, cabinSpawn);
+
         level.setRespawnData(LevelData.RespawnData.of(Level.OVERWORLD, cabinSpawn, 0.0f, 0.0f));
         data.setCabinPos(cabinSpawn.getX(), cabinSpawn.getY(), cabinSpawn.getZ());
         data.setPlaced(true);
         level.getDataStorage().set(SpaceshipSavedData.TYPE, data);
         cachedCabinSpawnPos = cabinSpawn;
+        SandStormMod.LOGGER.info("SandStorm: Crashed spaceship placed safely at {}", cachedCabinSpawnPos);
+    }
+
+    public static void carveCabinInterior(ServerLevel level, BlockPos cabinSpawn) {
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                for (int dy = 0; dy <= 1; dy++) {
+                    level.setBlock(cabinSpawn.offset(dx, dy, dz), Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+        }
+        level.setBlock(cabinSpawn.below(), Blocks.SMOOTH_STONE_SLAB.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(0, 0, -4), Blocks.AIR.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(0, 1, -4), Blocks.AIR.defaultBlockState(), 3);
     }
 
     public static BlockPos getCabinSpawnPos() {

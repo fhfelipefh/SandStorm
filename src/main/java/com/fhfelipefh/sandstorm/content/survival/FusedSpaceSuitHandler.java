@@ -26,15 +26,18 @@ public class FusedSpaceSuitHandler {
         if (!player.entityTags().contains("sandstorm.fused_suit")) {
             player.addTag("sandstorm.fused_suit");
             BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
-            player.teleportTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
+            SpawnSafety.teleportSafely(player, spawnPos);
             equipFusedSuit(player);
+        } else if (!SpawnSafety.isSafePosition(player.level(), player.blockPosition())) {
+            BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
+            SpawnSafety.teleportSafely(player, spawnPos);
         }
         enforceFusedSuit(player);
     }
 
     public static void onPlayerRespawn(ServerPlayer player) {
         BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
-        player.teleportTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
+        SpawnSafety.teleportSafely(player, spawnPos);
         equipFusedSuit(player);
         enforceFusedSuit(player);
     }
