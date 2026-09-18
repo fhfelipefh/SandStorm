@@ -24,6 +24,7 @@ public class SuitSurvivalHandler {
     }
 
     public static void handlePlayerTick(ServerPlayer player) {
+        FusedSpaceSuitHandler.enforceFusedSuit(player);
         SuitPowerComponent suit = getOrCreateSuit(player.getUUID());
         int armorCount = countEquippedSuitPieces(player);
         suit.updateEquippedArmorCount(armorCount);

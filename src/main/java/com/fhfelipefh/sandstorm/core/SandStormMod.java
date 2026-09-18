@@ -28,6 +28,9 @@ public class SandStormMod implements ModInitializer {
         com.fhfelipefh.sandstorm.content.survival.TechnologyToolRestrictionHandler.initialize();
         com.fhfelipefh.sandstorm.content.survival.BedRestrictionHandler.initialize();
         com.fhfelipefh.sandstorm.content.world.SandStormWorldGen.initialize();
+        com.fhfelipefh.sandstorm.content.world.SpaceshipLandingManager.initialize();
+        com.fhfelipefh.sandstorm.content.survival.FusedSpaceSuitHandler.initialize();
+        com.fhfelipefh.sandstorm.content.survival.MultiplayerSpawnHandler.initialize();
     }
 
     public static Identifier id(String path) {
