@@ -188,8 +188,8 @@ O mod utiliza recursos modernos de compilação da JVM 25.
 
 ### Passo 4: Instalar a Fabric API e o SandStorm
 1. Baixe a **Fabric API** compatível com o Minecraft 26.3 (`0.160.7+26.3`) no [Modrinth](https://modrinth.com/mod/fabric-api) ou [Maven oficial do Fabric](https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/0.160.7+26.3/fabric-api-0.160.7+26.3.jar).
-2. Baixe o arquivo binário do mod **`sandstorm-1.0.0.jar`** na aba de [Releases do GitHub](https://github.com/fhfelipefh/SandStorm/releases) (ou pegue de `build/libs/sandstorm-1.0.0.jar`).
-3. Copie ambos os arquivos `.jar` (`fabric-api-*.jar` e `sandstorm-1.0.0.jar`) para a pasta `mods` do seu Minecraft:
+2. Baixe o arquivo binário do mod **`sandstorm-1.1.0.jar`** na aba de [Releases do GitHub](https://github.com/fhfelipefh/SandStorm/releases) (ou pegue de `build/libs/sandstorm-1.1.0.jar`).
+3. Copie ambos os arquivos `.jar` (`fabric-api-*.jar` e `sandstorm-1.1.0.jar`) para a pasta `mods` do seu Minecraft:
    * **Windows**: `C:\Users\<SeuUsuario>\AppData\Roaming\.minecraft\mods\`
    * **Linux**: `~/.minecraft/mods/`
    * **macOS**: `~/Library/Application Support/minecraft/mods/`
@@ -250,8 +250,8 @@ Para gerar o arquivo `.jar` otimizado e remapeado para distribuição:
 .\gradlew build
 ```
 Após o término com `BUILD SUCCESSFUL`, o artefato final estará disponível em:
-* `build/libs/sandstorm-1.0.0.jar` (arquivo compilado pronto para colocar na pasta `.minecraft/mods`)
-* `build/libs/sandstorm-1.0.0-sources.jar` (código fonte remapeado)
+* `build/libs/sandstorm-1.1.0.jar` (arquivo compilado pronto para colocar na pasta `.minecraft/mods`)
+* `build/libs/sandstorm-1.1.0-sources.jar` (código fonte remapeado)
 
 ### 7. Executando o Cliente ou Servidor de Testes Diretamente
 Você pode iniciar um cliente Minecraft isolado com o mod carregado sem precisar instalá-lo no seu launcher principal:

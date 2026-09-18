@@ -11,10 +11,16 @@ echo.
 set "SCRIPT_DIR=%~dp0"
 set "MINECRAFT_DIR=%APPDATA%\.minecraft"
 set "MODS_DIR=%MINECRAFT_DIR%\mods"
-set "JAR_SOURCE=%SCRIPT_DIR%build\libs\sandstorm-1.0.0.jar"
+set "MOD_VERSION=1.1.0"
+for /f "usebackq tokens=1,2 delims==" %%A in ("%SCRIPT_DIR%gradle.properties") do (
+    if "%%A"=="version" set "MOD_VERSION=%%B"
+)
+set "JAR_NAME=sandstorm-%MOD_VERSION%.jar"
+set "JAR_SOURCE=%SCRIPT_DIR%build\libs\%JAR_NAME%"
 
 echo [*] Diretorio do projeto: %SCRIPT_DIR%
 echo [*] Diretorio do Minecraft: %MINECRAFT_DIR%
+echo [*] Versao do SandStorm: %MOD_VERSION%
 echo.
 
 if not exist "%MODS_DIR%" (
@@ -33,7 +39,8 @@ if not exist "%JAR_SOURCE%" (
 )
 
 if exist "%JAR_SOURCE%" (
-    copy /Y "%JAR_SOURCE%" "%MODS_DIR%\sandstorm-1.0.0.jar" >nul
+    del /Q "%MODS_DIR%\sandstorm-*.jar" >nul 2>&1
+    copy /Y "%JAR_SOURCE%" "%MODS_DIR%\%JAR_NAME%" >nul
 )
 
 set "ARG=%~1"
@@ -102,8 +109,9 @@ if errorlevel 1 (
     pause
     exit /b 1
 )
-copy /Y "%JAR_SOURCE%" "%MODS_DIR%\sandstorm-1.0.0.jar" >nul
-echo [OK] Mod sincronizado com sucesso. Bom jogo!
+del /Q "%MODS_DIR%\sandstorm-*.jar" >nul 2>&1
+copy /Y "%JAR_SOURCE%" "%MODS_DIR%\%JAR_NAME%" >nul
+echo [OK] Mod %JAR_NAME% sincronizado com sucesso. Bom jogo!
 exit /b 0
 
 :opt_dev
@@ -117,12 +125,13 @@ if errorlevel 1 (
     exit /b 1
 )
 
-copy /Y "%JAR_SOURCE%" "%MODS_DIR%\sandstorm-1.0.0.jar" >nul
+del /Q "%MODS_DIR%\sandstorm-*.jar" >nul 2>&1
+copy /Y "%JAR_SOURCE%" "%MODS_DIR%\%JAR_NAME%" >nul
 if errorlevel 1 (
     echo [!] Falha ao copiar o mod compilado para %MODS_DIR%.
 ) else (
     echo [OK] Mod recompilado e atualizado em:
-    echo      %MODS_DIR%\sandstorm-1.0.0.jar
+    echo      %MODS_DIR%\%JAR_NAME%
 )
 
 echo.
