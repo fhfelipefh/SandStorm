@@ -23,12 +23,13 @@ public class FusedSpaceSuitHandler {
     }
 
     public static void onPlayerJoin(ServerPlayer player, MinecraftServer server) {
+        SpaceshipLandingManager.ensureSpaceshipPlaced(server, player.level());
         if (!player.entityTags().contains("sandstorm.fused_suit")) {
             player.addTag("sandstorm.fused_suit");
             BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
             SpawnSafety.teleportSafely(player, spawnPos);
             equipFusedSuit(player);
-        } else if (!SpawnSafety.isSafePosition(player.level(), player.blockPosition())) {
+        } else if (!SpawnSafety.isSafePosition(player.level(), player.blockPosition()) || player.getY() < 60) {
             BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
             SpawnSafety.teleportSafely(player, spawnPos);
         }
