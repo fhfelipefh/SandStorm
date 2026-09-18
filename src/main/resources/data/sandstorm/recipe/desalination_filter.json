@@ -6,7 +6,7 @@
     "C": "minecraft:cauldron",
     "G": "minecraft:glass",
     "I": "minecraft:copper_ingot",
-    "S": "minecraft:smooth_stone"
+    "S": "minecraft:smooth_sandstone"
   },
   "pattern": [
     "IGI",

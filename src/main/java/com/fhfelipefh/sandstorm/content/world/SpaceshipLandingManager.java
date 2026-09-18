@@ -33,6 +33,8 @@ public class SpaceshipLandingManager {
         }
 
         server.getGameRules().set(GameRules.RESPAWN_RADIUS, 0, server);
+        server.getGameRules().set(GameRules.SPAWN_PHANTOMS, false, server);
+        server.getGameRules().set(GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS, false, server);
         SpaceshipSavedData data = level.getDataStorage().computeIfAbsent(SpaceshipSavedData.TYPE);
         if (data.isPlaced() && data.getCabinPos().getY() >= 60) {
             cachedCabinSpawnPos = data.getCabinPos();
@@ -46,6 +48,8 @@ public class SpaceshipLandingManager {
 
     public static void ensureSpaceshipPlaced(MinecraftServer server, ServerLevel level) {
         server.getGameRules().set(GameRules.RESPAWN_RADIUS, 0, server);
+        server.getGameRules().set(GameRules.SPAWN_PHANTOMS, false, server);
+        server.getGameRules().set(GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS, false, server);
         SpaceshipSavedData data = level.getDataStorage().computeIfAbsent(SpaceshipSavedData.TYPE);
 
         if (!data.isPlaced() || data.getCabinPos().getY() < 60) {

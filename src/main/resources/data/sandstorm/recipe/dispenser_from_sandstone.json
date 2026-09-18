@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": "minecraft:bow",
+    "R": "minecraft:redstone",
+    "S": "minecraft:sandstone"
+  },
+  "pattern": [
+    "SSS",
+    "SBS",
+    "SRS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:dispenser"
+  }
+}

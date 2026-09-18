@@ -5,7 +5,7 @@
     "B": "sandstorm:circuit_board",
     "I": "minecraft:iron_block",
     "P": "minecraft:piston",
-    "S": "minecraft:smooth_stone"
+    "S": "minecraft:smooth_sandstone"
   },
   "pattern": [
     " P ",

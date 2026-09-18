@@ -4,14 +4,14 @@
   "key": {
     "A": "sandstorm:nano_actuator",
     "B": "sandstorm:circuit_board",
-    "N": "minecraft:netherite_ingot",
-    "O": "minecraft:obsidian",
+    "C": "sandstorm:sandworm_chitin",
+    "S": "sandstorm:scrap_metal",
     "T": "sandstorm:tech_disc"
   },
   "pattern": [
-    "OTO",
-    "BNB",
-    "OAO"
+    "STS",
+    "BCB",
+    "SAS"
   ],
   "result": {
     "count": 1,

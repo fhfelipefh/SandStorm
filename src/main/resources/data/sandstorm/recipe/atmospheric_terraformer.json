@@ -4,14 +4,14 @@
   "key": {
     "A": "sandstorm:nano_actuator",
     "B": "sandstorm:circuit_board",
-    "G": "minecraft:tinted_glass",
+    "C": "sandstorm:sandworm_chitin",
+    "G": "minecraft:glass",
     "I": "minecraft:iron_block",
-    "N": "minecraft:netherite_block",
-    "X": "minecraft:beacon"
+    "X": "sandstorm:ancient_data_core"
   },
   "pattern": [
     "XGX",
-    "BNB",
+    "BCB",
     "IAI"
   ],
   "result": {

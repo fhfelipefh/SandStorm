@@ -18,11 +18,19 @@ public class VanillaMonsterSuppressionHandler {
     }
 
     public static boolean shouldSuppressEntity(Entity entity) {
-        if (!(entity instanceof Enemy) && !(entity instanceof Monster)) {
+        if (entity == null) {
             return false;
         }
 
         Identifier entityId = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
+        if (entityId != null && "minecraft".equals(entityId.getNamespace()) && "phantom".equals(entityId.getPath())) {
+            return true;
+        }
+
+        if (!(entity instanceof Enemy) && !(entity instanceof Monster)) {
+            return false;
+        }
+
         return entityId != null && "minecraft".equals(entityId.getNamespace());
     }
 }

@@ -52,5 +52,10 @@
   "telemetry.sandstorm.analyzer_no_signal": "Analyzer: Natural desert sector (no active terraforming dome within range)",
   "telemetry.sandstorm.bed_disabled": "The life support suit regulates vital functions. Sleep is obsolete and time cycle cannot be skipped.",
   "telemetry.sandstorm.tool_restricted": "Rudimentary tool incompatible with planetary survival protocols.",
-  "telemetry.sandstorm.mining_requires_robot": "Mining consolidated rocks requires operating heavy robotic machinery."
+  "telemetry.sandstorm.mining_requires_robot": "Mining consolidated rocks requires operating heavy robotic machinery.",
+  "telemetry.sandstorm.portal_disabled": "Spatial distortion blocked: Planetary magnetic fields and storms prevent opening portals to the Nether.",
+  "telemetry.sandstorm.end_portal_disabled": "Void resonance blocked: The planetary field prevents activating the End portal.",
+  "telemetry.sandstorm.dimension_travel_blocked": "Dimensional jump blocked: This planetary expedition is a one-way voyage. Planetary survival is your sole priority.",
+  "telemetry.sandstorm.bay_assembled_excavator": "Assembly Bay: Mining Excavator Vehicle constructed successfully!",
+  "telemetry.sandstorm.bay_assembled_megazord": "Assembly Bay: Megazord Robotic Titan constructed successfully!"
 }

@@ -3,13 +3,13 @@
   "category": "equipment",
   "key": {
     "B": "sandstorm:circuit_board",
-    "E": "minecraft:echo_shard",
     "I": "minecraft:iron_ingot",
     "L": "minecraft:lever",
-    "T": "sandstorm:sandworm_tooth"
+    "T": "sandstorm:sandworm_tooth",
+    "W": "sandstorm:silicon_wafer"
   },
   "pattern": [
-    "ETE",
+    "WTW",
     "IBI",
     " L "
   ],

@@ -52,5 +52,10 @@
   "telemetry.sandstorm.analyzer_no_signal": "Analizador: Sector desértico natural (ninguna cúpula de terraformación al alcance)",
   "telemetry.sandstorm.bed_disabled": "El traje de soporte vital regula las funciones vitales. El sueño es obsoleto y el ciclo temporal no puede alterarse.",
   "telemetry.sandstorm.tool_restricted": "Tecnología rudimentaria incompatible con los protocolos de supervivencia del planeta.",
-  "telemetry.sandstorm.mining_requires_robot": "La minería de rocas consolidadas requiere operar maquinaria robótica."
+  "telemetry.sandstorm.mining_requires_robot": "La minería de rocas consolidadas requiere operar maquinaria robótica.",
+  "telemetry.sandstorm.portal_disabled": "Distorsión espacial bloqueada: Los campos magnéticos y tormentas del planeta impiden la apertura de portales al Nether.",
+  "telemetry.sandstorm.end_portal_disabled": "Resonancia del Vacío bloqueada: El campo planetario impide la activación del portal del End.",
+  "telemetry.sandstorm.dimension_travel_blocked": "Salto dimensional bloqueado: Esta expedición planetaria es un viaje de ida. La supervivencia planetaria es su única prioridad.",
+  "telemetry.sandstorm.bay_assembled_excavator": "Bahía de Ensamblaje: ¡Vehículo Excavador Minero construido con éxito!",
+  "telemetry.sandstorm.bay_assembled_megazord": "Bahía de Ensamblaje: ¡Titán Robótico Megazord construido con éxito!"
 }

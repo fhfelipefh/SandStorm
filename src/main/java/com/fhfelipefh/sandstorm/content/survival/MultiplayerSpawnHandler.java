@@ -18,6 +18,8 @@ public class MultiplayerSpawnHandler {
     public static void onLevelLoad(MinecraftServer server, ServerLevel level) {
         if (level.dimension() == Level.OVERWORLD) {
             server.getGameRules().set(GameRules.RESPAWN_RADIUS, 0, server);
+            server.getGameRules().set(GameRules.SPAWN_PHANTOMS, false, server);
+            server.getGameRules().set(GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS, false, server);
         }
     }
 

@@ -2,6 +2,8 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
+import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
+import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
@@ -53,6 +55,41 @@ public class AssemblyBayBlock extends Block {
             }
             return InteractionResult.SUCCESS;
         }
+
+        if (stack.is(SandStormItems.SCRAP_METAL) && energyStorage.hasEnergy(10000L)) {
+            if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
+                stack.shrink(1);
+                energyStorage.extractEnergy(10000L);
+
+                ExcavatorVehicleEntity excavator = new ExcavatorVehicleEntity(SandStormEntities.EXCAVATOR_VEHICLE, serverLevel);
+                excavator.setPos(pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5);
+                serverLevel.addFreshEntity(excavator);
+
+                if (player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.bay_assembled_excavator"), true);
+                }
+                level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 1.0f, 1.0f);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        if ((stack.is(SandStormBlocks.ANCIENT_DATA_CORE.asItem()) || stack.is(SandStormItems.TECH_DISC)) && energyStorage.hasEnergy(25000L)) {
+            if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
+                stack.shrink(1);
+                energyStorage.extractEnergy(25000L);
+
+                MegazordEntity megazord = new MegazordEntity(SandStormEntities.MEGAZORD, serverLevel);
+                megazord.setPos(pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5);
+                serverLevel.addFreshEntity(megazord);
+
+                if (player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.bay_assembled_megazord"), true);
+                }
+                level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 1.0f, 1.0f);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 

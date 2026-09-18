@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "P": "minecraft:oak_planks",
+    "R": "minecraft:redstone",
+    "S": "minecraft:sandstone"
+  },
+  "pattern": [
+    "PPP",
+    "SIS",
+    "SRS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:piston"
+  }
+}

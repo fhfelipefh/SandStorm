@@ -174,6 +174,34 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 
 ---
 
+### 3. Progressão Livre de Softlocks, Restrição Dimensional e Supressão de Phantoms
+- [x] **Desbloqueio de Fundição Primária**: Receita de Fornalha a partir de 8 blocos de arenito (`furnace_from_sandstone.json`), permitindo processar silício e cozinhar sem minerar pedras antes de montar maquinário robótico.
+- [x] **Metalurgia de Reciclagem**:
+  - [x] Fundição e alto-forno de `scrap_metal` para `iron_ingot`.
+  - [x] Extração e manufatura de `copper_ingot` a partir de `scrap_metal`.
+- [x] **Resgate Avançado em Ruínas Soterradas (`BuriedTechRuinsBlock.java`)**: Drop balanceado de sucata metálica, discos tecnológicos, lingotes de cobre, redstone, pepitas de ouro e obsidiana.
+- [x] **Montagem Industrial de Robôs (`AssemblyBayBlock.java`)**:
+  - [x] `SandStormItems.SCRAP_METAL` (10.000 J) monta e despacha o `ExcavatorVehicleEntity` para destravar a mineração de rochas consolidadas.
+  - [x] `ANCIENT_DATA_CORE` / `TECH_DISC` (25.000 J) monta o titânico `MegazordEntity`.
+  - [x] `SandStormItems.NANO_ACTUATOR` (5.000 J) monta o `CargoDroneEntity`.
+- [x] **Rebalanceamento de Fim de Jogo Planetário**:
+  - [x] `nanite_fabricator.json` usa quitina de verme da areia (`sandworm_chitin`) e liga metálica (`scrap_metal`), conectando o combate do verme à alta tecnologia.
+  - [x] `atmospheric_terraformer.json` utiliza o `ancient_data_core` e quitina de verme, eliminando a dependência do Wither/Netherite do Nether.
+  - [x] Receitas de dispensador e pistão adaptadas com arenito para montagem do 3D Printer e Thumper.
+- [x] **Supressão Total de Phantoms**:
+  - [x] Bloqueio imediato no despachador biológico de entidades (`VanillaMonsterSuppressionHandler.java` descarta `minecraft:phantom`).
+  - [x] Gamerule `doPatrolSpawning` e `spawnPhantoms=false` forçado nas regras de carregamento de nível e pouso da nave.
+- [x] **Bloqueio de Viagens Dimensionais Convencionais (`DimensionPortalRestrictionHandler.java`)**:
+  - [x] Interceptação de ativação de portal do Nether (pederneira/carga de fogo em obsidiana) com telemetria explicativa.
+  - [x] Interceptação de inserção de Olho do Fim em molduras de portal com telemetria.
+  - [x] Bloqueio forçado de gamerule `allowEnteringNetherUsingPortals=false`.
+  - [x] Redirecionamento instantâneo de jogadores que cheguem a Nether/End de volta ao cockpit da nave no Overworld.
+- [x] **Suíte de Testes de Integração de Combate & Dimensões**:
+  - [x] `EnemyDamageIntegrationTest.java`: Dano do verme (18.0), atenuação da armadura do traje espacial (15 defesa + redução para sobrevivência viável), combate do Megazord (30 dano base + 25 sônico) e imunidade da Safe Zone.
+  - [x] `DimensionTravelAndPhantomSuppressionTest.java`: Validação de detecção de tentativas de ignição, ativação de portal e identificação de dimensões proibidas.
+
+---
+
 ## 📈 Histórico de Commits e Marcos
 
 1. `4a1fd0c`: Setup inicial da arquitetura SandStorm, componentes ECS e métricas.
@@ -186,3 +214,5 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 8. `0e630cb`: Restrição tecnológica de ferramentas (exclusividade de robôs para mineração de pedra, liberação de pás para areia).
 9. `72e3dd1`: Criação do TASKS.md inicial com métricas e roadmap.
 10. `e0ebe24`: Correção de aterrissagem segura na superfície Y>=64, porta 4x4 sci-fi e armadura acoplada.
+11. `6d03143`: Modelos 3D Blockbench completos, Overworld 100% deserto fixo e testes de áudio OGG.
+

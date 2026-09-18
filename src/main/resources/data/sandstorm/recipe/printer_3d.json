@@ -7,7 +7,7 @@
     "D": "minecraft:dispenser",
     "G": "minecraft:glass",
     "I": "minecraft:iron_ingot",
-    "S": "minecraft:smooth_stone"
+    "S": "minecraft:smooth_sandstone"
   },
   "pattern": [
     "GDG",
