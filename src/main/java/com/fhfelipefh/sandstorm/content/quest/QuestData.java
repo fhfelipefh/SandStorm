@@ -14,7 +14,9 @@ public record QuestData(
         String noteKey,
         Identifier iconId,
         Identifier requiredItemId,
-        List<String> prerequisiteIds
+        List<String> prerequisiteIds,
+        Identifier rewardItemId,
+        int rewardCount
 ) {
     public Item getIconItem() {
         return BuiltInRegistries.ITEM.getValue(iconId);
@@ -22,5 +24,9 @@ public record QuestData(
 
     public Item getRequiredItem() {
         return BuiltInRegistries.ITEM.getValue(requiredItemId);
+    }
+
+    public Item getRewardItem() {
+        return BuiltInRegistries.ITEM.getValue(rewardItemId);
     }
 }

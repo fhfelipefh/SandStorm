@@ -1,11 +1,15 @@
 package com.fhfelipefh.sandstorm.client.gui;
 
+import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
 import com.fhfelipefh.sandstorm.content.quest.QuestData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRegistry;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -76,7 +80,7 @@ public class SurvivalDatapadScreen extends Screen {
 
         int questAreaTop = top + 58;
         int questAreaBottom = bottom - 10;
-        int cardHeight = 44;
+        int cardHeight = 46;
         int cardSpacing = 6;
 
         List<QuestData> quests = QuestRegistry.getQuestsForChapter(currentChapter);
@@ -94,35 +98,68 @@ public class SurvivalDatapadScreen extends Screen {
                 continue;
             }
 
-            boolean completed = isQuestCompleted(player, quest.id());
-            boolean available = !completed && isQuestAvailable(player, quest);
+            boolean isClaimed = DatapadClientHelper.isQuestClaimed(quest.id());
+            boolean prereqsClaimed = arePrerequisitesClaimed(quest);
+            boolean hasItem = hasRequiredItem(player, quest);
+            boolean isClaimable = !isClaimed && prereqsClaimed && hasItem;
+            boolean isInProgress = !isClaimed && prereqsClaimed && !hasItem;
 
             int cardLeft = left + 10;
             int cardRight = right - 10;
 
-            int cardBg = completed ? 0xDD0D2619 : (available ? 0xDD121F2D : 0xBB181820);
+            int cardBg = isClaimed ? 0xDD0D2619 : (isClaimable ? 0xDD1B2A38 : (isInProgress ? 0xDD121F2D : 0xBB181820));
             extractor.fill(cardLeft, cy, cardRight, cy + cardHeight, cardBg);
 
-            int borderColor = completed ? 0xFF00E676 : (available ? 0xFF00B0FF : 0xFF546E7A);
+            int borderColor = isClaimed ? 0xFF00E676 : (isClaimable ? 0xFFFFD54F : (isInProgress ? 0xFF00B0FF : 0xFF546E7A));
             extractor.fill(cardLeft, cy, cardLeft + 2, cy + cardHeight, borderColor);
 
-            extractor.item(quest.getIconItem().getDefaultInstance(), cardLeft + 8, cy + 14);
+            if (quest.getIconItem() != null) {
+                extractor.item(quest.getIconItem().getDefaultInstance(), cardLeft + 8, cy + 15);
+            }
 
-            Component badge = completed ? Component.translatable("gui.sandstorm.datapad.status.completed")
-                    : (available ? Component.translatable("gui.sandstorm.datapad.status.available")
-                    : Component.translatable("gui.sandstorm.datapad.status.locked"));
-            int badgeColor = completed ? 0xFF69F0AE : (available ? 0xFFFFD54F : 0xFF78909C);
+            Component badge = isClaimed ? Component.translatable("gui.sandstorm.datapad.status.completed")
+                    : (isClaimable ? Component.translatable("gui.sandstorm.datapad.status.ready")
+                    : (isInProgress ? Component.translatable("gui.sandstorm.datapad.status.in_progress")
+                    : Component.translatable("gui.sandstorm.datapad.status.locked")));
+            int badgeColor = isClaimed ? 0xFF69F0AE : (isClaimable ? 0xFFFFD54F : (isInProgress ? 0xFF80D8FF : 0xFF78909C));
             int badgeWidth = font.width(badge);
             int badgeX = cardRight - badgeWidth - 8;
             extractor.text(font, badge, badgeX, cy + 5, badgeColor);
 
-            int titleColor = completed ? 0xFF69F0AE : (available ? 0xFFE0F7FA : 0xFFB0BEC5);
-            float maxTitleWidth = badgeX - (cardLeft + 32) - 8;
-            drawScaledText(extractor, Component.translatable(quest.titleKey()), cardLeft + 32, cy + 5, maxTitleWidth, titleColor);
+            int titleColor = isClaimed ? 0xFF69F0AE : (isClaimable ? 0xFFFFF176 : (isInProgress ? 0xFFE0F7FA : 0xFFB0BEC5));
+            float maxTitleWidth = badgeX - (cardLeft + 30) - 8;
+            drawScaledText(extractor, Component.translatable(quest.titleKey()), cardLeft + 30, cy + 5, maxTitleWidth, titleColor);
 
-            float maxLineWidth = cardRight - (cardLeft + 32) - 8;
-            drawScaledText(extractor, Component.translatable(quest.taskKey()), cardLeft + 32, cy + 18, maxLineWidth, 0xFFCFD8DC);
-            drawScaledText(extractor, Component.translatable(quest.noteKey()), cardLeft + 32, cy + 29, maxLineWidth, 0xFF80DEEA);
+            float maxLineWidth = (cardRight - 90) - (cardLeft + 30) - 4;
+            drawScaledText(extractor, Component.translatable(quest.taskKey()), cardLeft + 30, cy + 17, maxLineWidth, 0xFFCFD8DC);
+            drawScaledText(extractor, Component.translatable(quest.noteKey()), cardLeft + 30, cy + 29, maxLineWidth, 0xFF80DEEA);
+
+            if (quest.getRewardItem() != null) {
+                extractor.item(quest.getRewardItem().getDefaultInstance(), cardRight - 82, cy + 19);
+                String countStr = "x" + quest.rewardCount();
+                extractor.text(font, countStr, cardRight - 64, cy + 23, 0xFFFFD54F);
+            }
+
+            int btnX = cardRight - 46;
+            int btnY = cy + 19;
+            int btnW = 40;
+            int btnH = 16;
+
+            if (isClaimable) {
+                boolean hovered = mouseX >= btnX && mouseX <= btnX + btnW && mouseY >= btnY && mouseY <= btnY + btnH;
+                int btnBg = hovered ? 0xFF00E5FF : 0xFF0091EA;
+                extractor.fill(btnX, btnY, btnX + btnW, btnY + btnH, btnBg);
+                extractor.fill(btnX, btnY, btnX + btnW, btnY + 1, hovered ? 0xFFFFFFFF : 0xFF80D8FF);
+                extractor.fill(btnX, btnY + btnH - 1, btnX + btnW, btnY + btnH, hovered ? 0xFFFFFFFF : 0xFF80D8FF);
+                extractor.fill(btnX, btnY, btnX + 1, btnY + btnH, hovered ? 0xFFFFFFFF : 0xFF80D8FF);
+                extractor.fill(btnX + btnW - 1, btnY, btnX + btnW, btnY + btnH, hovered ? 0xFFFFFFFF : 0xFF80D8FF);
+
+                Component claimText = Component.translatable("gui.sandstorm.datapad.claim");
+                drawScaledCenteredText(extractor, claimText, btnX + btnW / 2f, btnY + 4, btnW - 4, hovered ? 0xFF0A0E17 : 0xFFFFFFFF);
+            } else if (isClaimed) {
+                Component claimedText = Component.translatable("gui.sandstorm.datapad.claimed");
+                drawScaledCenteredText(extractor, claimedText, btnX + btnW / 2f, btnY + 4, btnW - 2, 0xFF69F0AE);
+            }
         }
     }
 
@@ -135,6 +172,7 @@ public class SurvivalDatapadScreen extends Screen {
             int left = 16;
             int top = 12;
             int right = width - 16;
+            int bottom = height - 12;
             int tabCount = 5;
             int tabWidth = (right - left - 20) / tabCount;
             int ty = top + 36;
@@ -149,6 +187,38 @@ public class SurvivalDatapadScreen extends Screen {
                     }
                 }
             }
+
+            int questAreaTop = top + 58;
+            int questAreaBottom = bottom - 10;
+            int cardHeight = 46;
+            int cardSpacing = 6;
+
+            List<QuestData> quests = QuestRegistry.getQuestsForChapter(currentChapter);
+            Player player = minecraft != null ? minecraft.player : null;
+
+            for (int i = 0; i < quests.size(); i++) {
+                QuestData quest = quests.get(i);
+                int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
+                if (cy + cardHeight < questAreaTop || cy > questAreaBottom) {
+                    continue;
+                }
+
+                int cardRight = right - 10;
+                int btnX = cardRight - 46;
+                int btnY = cy + 19;
+                int btnW = 40;
+                int btnH = 16;
+
+                if (mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH) {
+                    if (isQuestClaimable(player, quest)) {
+                        ClientPlayNetworking.send(new ClaimQuestRewardPayload(quest.id()));
+                        if (minecraft != null) {
+                            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+                        }
+                        return true;
+                    }
+                }
+            }
         }
         return super.mouseClicked(event, isDouble);
     }
@@ -159,18 +229,21 @@ public class SurvivalDatapadScreen extends Screen {
         return true;
     }
 
-    private boolean isQuestCompleted(Player player, String questId) {
-        if (player == null) {
+    private boolean isQuestClaimable(Player player, QuestData quest) {
+        if (DatapadClientHelper.isQuestClaimed(quest.id())) {
             return false;
         }
-        QuestData data = QuestRegistry.getQuest(questId);
-        if (data == null || data.getRequiredItem() == null) {
+        return arePrerequisitesClaimed(quest) && hasRequiredItem(player, quest);
+    }
+
+    private boolean hasRequiredItem(Player player, QuestData quest) {
+        if (player == null || quest == null || quest.getRequiredItem() == null) {
             return false;
         }
-        Item req = data.getRequiredItem();
+        Item req = quest.getRequiredItem();
         for (EquipmentSlot slot : EquipmentSlot.values()) {
-            ItemStack equipped = player.getItemBySlot(slot);
-            if (!equipped.isEmpty() && equipped.is(req)) {
+            ItemStack stack = player.getItemBySlot(slot);
+            if (!stack.isEmpty() && stack.is(req)) {
                 return true;
             }
         }
@@ -183,12 +256,12 @@ public class SurvivalDatapadScreen extends Screen {
         return false;
     }
 
-    private boolean isQuestAvailable(Player player, QuestData quest) {
+    private boolean arePrerequisitesClaimed(QuestData quest) {
         if (quest.prerequisiteIds().isEmpty()) {
             return true;
         }
         for (String preId : quest.prerequisiteIds()) {
-            if (!isQuestCompleted(player, preId)) {
+            if (!DatapadClientHelper.isQuestClaimed(preId)) {
                 return false;
             }
         }

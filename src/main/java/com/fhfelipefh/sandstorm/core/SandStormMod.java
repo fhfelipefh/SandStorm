@@ -33,9 +33,18 @@ public class SandStormMod implements ModInitializer {
         com.fhfelipefh.sandstorm.content.survival.MultiplayerSpawnHandler.initialize();
         com.fhfelipefh.sandstorm.content.world.DimensionPortalRestrictionHandler.initialize();
         com.fhfelipefh.sandstorm.content.world.NutrientTerraformingManager.initialize();
+        com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler.initialize();
         net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.clientboundPlay().register(
                 com.fhfelipefh.sandstorm.content.network.SuitSyncPayload.TYPE,
                 com.fhfelipefh.sandstorm.content.network.SuitSyncPayload.STREAM_CODEC
+        );
+        net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.clientboundPlay().register(
+                com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload.TYPE,
+                com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload.STREAM_CODEC
+        );
+        net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.serverboundPlay().register(
+                com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload.TYPE,
+                com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload.STREAM_CODEC
         );
     }
 

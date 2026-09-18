@@ -114,6 +114,8 @@ class QuestlineProgressionGraphTest {
             assertNotNull(q.noteKey());
             assertNotNull(q.iconId(), "Icon ID must not be null for " + q.id());
             assertNotNull(q.requiredItemId(), "Required item ID must not be null for " + q.id());
+            assertNotNull(q.rewardItemId(), "Reward item ID must not be null for " + q.id());
+            assertTrue(q.rewardCount() > 0, "Reward count must be > 0 for " + q.id());
         }
     }
 

@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.client;
 import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
+import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
@@ -23,6 +24,11 @@ public class SandStormClient implements ClientModInitializer {
                         payload.temperature(),
                         payload.armorCount()
                 );
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(SyncPlayerQuestsPayload.TYPE, (payload, context) -> {
+            context.client().execute(() -> {
+                DatapadClientHelper.setClaimedQuests(payload.claimedQuestIds());
             });
         });
     }
