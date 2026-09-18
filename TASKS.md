@@ -215,4 +215,7 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 9. `72e3dd1`: Criação do TASKS.md inicial com métricas e roadmap.
 10. `e0ebe24`: Correção de aterrissagem segura na superfície Y>=64, porta 4x4 sci-fi e armadura acoplada.
 11. `6d03143`: Modelos 3D Blockbench completos, Overworld 100% deserto fixo e testes de áudio OGG.
+12. `43a1ae0`: Correção de gargalos de progressão, testes de dano de inimigos, supressão de phantoms e restrições de portais Nether/End.
+13. `v1.2.0`: Incremento de versão para 1.2.0, build do jar final sandstorm-1.2.0.jar e sincronização com Minecraft.
+
 
