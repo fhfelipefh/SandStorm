@@ -181,6 +181,13 @@ public class SpaceshipLandingManager {
 
         level.setBlock(cabinSpawn.below(), Blocks.SMOOTH_STONE_SLAB.defaultBlockState(), 3);
         level.setBlock(cabinSpawn.offset(-2, 0, 3), Blocks.CRAFTING_TABLE.defaultBlockState(), 3);
+
+        BlockPos roofPos = cabinSpawn.offset(0, 4, 1);
+        while (level.getBlockState(roofPos).isSolid() && roofPos.getY() < cabinSpawn.getY() + 10) {
+            roofPos = roofPos.above();
+        }
+        level.setBlock(roofPos, com.fhfelipefh.sandstorm.content.block.SandStormBlocks.WIRELESS_SOLAR_RECEIVER.defaultBlockState(), 3);
+        com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager.registerReceiver(level.dimension(), roofPos, 1);
     }
 
     public static BlockPos getCabinSpawnPos() {

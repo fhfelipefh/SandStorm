@@ -9,7 +9,7 @@ public class SuitPowerComponent {
     private int equippedArmorCount;
 
     public SuitPowerComponent(long capacity, long solarRechargeRate, long idleDrain, long thermalDrain) {
-        this.energyStorage = new EnergyStorageComponent(capacity, solarRechargeRate, Math.max(idleDrain, thermalDrain) * 4);
+        this.energyStorage = new EnergyStorageComponent(capacity, Math.max(solarRechargeRate, 500L), Math.max(idleDrain, thermalDrain) * 4);
         this.thermal = new ThermalComponent(37.0, 10.0, 50.0);
         this.solarRechargePerTick = Math.max(0, solarRechargeRate);
         this.idleConsumptionPerTick = Math.max(0, idleDrain);
@@ -18,7 +18,7 @@ public class SuitPowerComponent {
     }
 
     public SuitPowerComponent() {
-        this(100000, 20, 2, 5);
+        this(100000, 5, 1, 1);
     }
 
     public void updateEquippedArmorCount(int count) {
@@ -43,20 +43,18 @@ public class SuitPowerComponent {
             energyStorage.extractEnergy(idleConsumptionPerTick);
         }
 
-        double insulation = calculateInsulationFactor();
-        double heatTransferRate = (1.0 - Math.clamp(insulation, 0.0, 1.0)) * 0.03 + 0.015;
         double target = ambientTemperature;
+        double heatTransferRate;
 
-        if (equippedArmorCount >= 4 && energyStorage.hasEnergy(thermalRegulationCostPerTick)) {
-            if (thermal.isOverheating() || thermal.getCurrentTemperature() > 42.0) {
+        if (equippedArmorCount >= 4 && energyStorage.getStoredEnergy() > 0) {
+            if (thermalRegulationCostPerTick > 0) {
                 energyStorage.extractEnergy(thermalRegulationCostPerTick);
-                target = 39.0;
-                heatTransferRate = 0.03;
-            } else if (thermal.isFreezing() || thermal.getCurrentTemperature() < 28.0) {
-                energyStorage.extractEnergy(thermalRegulationCostPerTick);
-                target = 31.0;
-                heatTransferRate = 0.03;
             }
+            target = thermal.getOptimalTemperature();
+            heatTransferRate = 0.05;
+        } else {
+            double insulation = calculateInsulationFactor();
+            heatTransferRate = (1.0 - Math.clamp(insulation, 0.0, 1.0)) * 0.0075 + 0.004;
         }
 
         double current = thermal.getCurrentTemperature();

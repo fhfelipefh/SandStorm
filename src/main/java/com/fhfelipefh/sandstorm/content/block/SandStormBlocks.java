@@ -72,6 +72,20 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_GREEN)
                     .strength(5.0f)
                     .sound(SoundType.GLASS)));
+    public static final WirelessSolarReceiverBlock WIRELESS_SOLAR_RECEIVER = register("wireless_solar_receiver",
+            new WirelessSolarReceiverBlock(BlockBehaviour.Properties.of()
+                    .setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, SandStormMod.id("wireless_solar_receiver")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(3.5f)
+                    .lightLevel(state -> 4)
+                    .sound(SoundType.COPPER), 1));
+    public static final WirelessSolarReceiverBlock WIRELESS_SOLAR_RECEIVER_TIER2 = register("wireless_solar_receiver_tier2",
+            new WirelessSolarReceiverBlock(BlockBehaviour.Properties.of()
+                    .setId(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.BLOCK, SandStormMod.id("wireless_solar_receiver_tier2")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(4.5f)
+                    .lightLevel(state -> 8)
+                    .sound(SoundType.HEAVY_CORE), 2));
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -80,5 +94,6 @@ public class SandStormBlocks {
     }
 
     public static void initialize() {
+        WirelessSolarReceiverManager.initialize();
     }
 }

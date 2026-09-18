@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "sandstorm:block/wireless_solar_receiver"
+  }
+}

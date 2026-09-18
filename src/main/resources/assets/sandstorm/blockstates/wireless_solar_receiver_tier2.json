@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/wireless_solar_receiver_tier2"
+    }
+  }
+}
