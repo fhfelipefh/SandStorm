@@ -32,6 +32,7 @@ public class SandStormMod implements ModInitializer {
         com.fhfelipefh.sandstorm.content.survival.FusedSpaceSuitHandler.initialize();
         com.fhfelipefh.sandstorm.content.survival.MultiplayerSpawnHandler.initialize();
         com.fhfelipefh.sandstorm.content.world.DimensionPortalRestrictionHandler.initialize();
+        com.fhfelipefh.sandstorm.content.world.NutrientTerraformingManager.initialize();
         net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.clientboundPlay().register(
                 com.fhfelipefh.sandstorm.content.network.SuitSyncPayload.TYPE,
                 com.fhfelipefh.sandstorm.content.network.SuitSyncPayload.STREAM_CODEC

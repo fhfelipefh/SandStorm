@@ -57,6 +57,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [x] Índice de terraformação local (`TerraformingIndexComponent`).
 - [x] Lógica de mundo infinito: cúpula com raio dinâmico `getDomeRadius()`, sem contadores globais arbitrários.
 - [x] Conversão de blocos estéreis (areia, arenito) em biomas úmidos e grama dentro do perímetro da máquina.
+- [x] Bomba de Nutrientes Arremessável (`NutrientBombItem` / `NutrientBombEntity`) com ciclo temporal de enriquecimento biológico do solo (`NutrientTerraformingManager`: areia -> terra -> grama viva -> vegetação nativa).
 
 ### Fase 5: Integração JEI/REI/EMI e Testes Automatizados (Concluída - 100%)
 - [x] 20 arquivos JSON de receitas data-driven em `data/sandstorm/recipe/` (smelting, blasting, shaped, shapeless).
@@ -226,3 +227,4 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 15. `MVP-100%`: Paridade total de legendas de acessibilidade (i18n) em 3 idiomas e atenuação sísmica dinâmica em tempestades de areia.
 16. `v1.3.0`: Incremento de versão para 1.3.0, eliminação total de oceanos e corpos d'água superficiais, desativação de vilas/golens/aldeões e remoção de animais e vegetação vanilla para imersão em mundo árido, silencioso e estéril.
 17. `v1.3.1`: Receptor Solar Sem Fio (WPT) no casco da nave com desobstrução solar total, montagem completa da bancada da cabine (impressora 3D, fabricador de nanorobôs, dessalinizador, fornalha e bancada de trabalho) e receitas oficiais de manufatura dos receptores.
+18. `v1.3.2`: Implementação da Bomba de Nutrientes Arremessável (Nutrient Bomb), projétil com splash biológico e motor de enriquecimento e terraformação temporal do solo (areia -> terra -> grama viva -> vegetação espontânea).

@@ -40,6 +40,7 @@ public class SandStormItems {
     public static final SonicCannonItem SONIC_CANNON = register("sonic_cannon", new SonicCannonItem(properties("sonic_cannon")));
     public static final AtmosphericAnalyzerItem ATMOSPHERIC_ANALYZER = register("atmospheric_analyzer", new AtmosphericAnalyzerItem(properties("atmospheric_analyzer")));
     public static final SurvivalDatapadItem SURVIVAL_DATAPAD = register("survival_datapad", new SurvivalDatapadItem(properties("survival_datapad").rarity(net.minecraft.world.item.Rarity.RARE).stacksTo(1)));
+    public static final NutrientBombItem NUTRIENT_BOMB = register("nutrient_bomb", new NutrientBombItem(properties("nutrient_bomb").stacksTo(16)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -76,6 +77,9 @@ public class SandStormItems {
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.DRONE_DOCK);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.ASSEMBLY_BAY);
                         entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.ATMOSPHERIC_TERRAFORMER);
+                        entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.WIRELESS_SOLAR_RECEIVER);
+                        entries.accept(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2);
+                        entries.accept(NUTRIENT_BOMB);
                         entries.accept(SANDWORM_CHITIN);
                         entries.accept(SANDWORM_TOOTH);
                     })

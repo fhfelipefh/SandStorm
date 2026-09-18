@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "sandstorm:raw_silicon",
+    "G": "minecraft:glass_bottle",
+    "S": "sandstorm:mineral_salt",
+    "W": "sandstorm:potable_water_bottle"
+  },
+  "pattern": [
+    " S ",
+    "SWS",
+    "GCG"
+  ],
+  "result": {
+    "count": 2,
+    "id": "sandstorm:nutrient_bomb"
+  }
+}

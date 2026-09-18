@@ -11,6 +11,10 @@ public class SandStormClient implements ClientModInitializer {
     public void onInitializeClient() {
         SurvivalHudOverlay.initialize();
         DatapadClientHelper.initialize();
+        net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(
+                com.fhfelipefh.sandstorm.content.entity.SandStormEntities.NUTRIENT_BOMB,
+                net.minecraft.client.renderer.entity.ThrownItemRenderer::new
+        );
         ClientPlayNetworking.registerGlobalReceiver(SuitSyncPayload.TYPE, (payload, context) -> {
             context.client().execute(() -> {
                 SurvivalHudOverlay.updateSuitData(

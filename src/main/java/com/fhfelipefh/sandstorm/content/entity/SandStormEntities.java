@@ -61,6 +61,20 @@ public class SandStormEntities {
                     .sized(3.5f, 5.0f)
                     .build(MEGAZORD_KEY)
     );
+    public static final ResourceKey<EntityType<?>> NUTRIENT_BOMB_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("nutrient_bomb")
+    );
+
+    public static final EntityType<NutrientBombEntity> NUTRIENT_BOMB = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("nutrient_bomb"),
+            EntityType.Builder.<NutrientBombEntity>of(NutrientBombEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(NUTRIENT_BOMB_KEY)
+    );
 
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
