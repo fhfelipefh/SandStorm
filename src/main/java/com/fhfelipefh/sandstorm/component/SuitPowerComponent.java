@@ -43,15 +43,27 @@ public class SuitPowerComponent {
             energyStorage.extractEnergy(idleConsumptionPerTick);
         }
 
-        thermal.adjustTemperature(ambientTemperature, calculateInsulationFactor());
+        double insulation = calculateInsulationFactor();
+        double heatTransferRate = (1.0 - Math.clamp(insulation, 0.0, 1.0)) * 0.03 + 0.015;
+        double target = ambientTemperature;
 
-        if (!thermal.isSafe()) {
-            if (energyStorage.hasEnergy(thermalRegulationCostPerTick)) {
+        if (equippedArmorCount >= 4 && energyStorage.hasEnergy(thermalRegulationCostPerTick)) {
+            if (thermal.isOverheating() || thermal.getCurrentTemperature() > 42.0) {
                 energyStorage.extractEnergy(thermalRegulationCostPerTick);
-                thermal.regulateTowardOptimal(1.0);
+                target = 39.0;
+                heatTransferRate = 0.03;
+            } else if (thermal.isFreezing() || thermal.getCurrentTemperature() < 28.0) {
+                energyStorage.extractEnergy(thermalRegulationCostPerTick);
+                target = 31.0;
+                heatTransferRate = 0.03;
             }
-        } else {
-            thermal.regulateTowardOptimal(0.2);
+        }
+
+        double current = thermal.getCurrentTemperature();
+        double diff = target - current;
+        if (Math.abs(diff) > 0.001) {
+            double step = Math.signum(diff) * Math.min(Math.abs(diff), heatTransferRate);
+            thermal.setCurrentTemperature(current + step);
         }
     }
 

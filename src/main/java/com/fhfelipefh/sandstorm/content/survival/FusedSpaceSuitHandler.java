@@ -30,6 +30,7 @@ public class FusedSpaceSuitHandler {
             SpawnSafety.teleportSafely(player, spawnPos);
             equipFusedSuit(player);
             giveStarterSurvivalKit(player);
+            SuitSurvivalHandler.getOrCreateSuit(player.getUUID()).getEnergyStorage().setStoredEnergy(50000);
         } else if (!SpawnSafety.isSafePosition(player.level(), player.blockPosition()) || player.getY() <= player.level().getMinY() + 10) {
             BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
             SpawnSafety.teleportSafely(player, spawnPos);

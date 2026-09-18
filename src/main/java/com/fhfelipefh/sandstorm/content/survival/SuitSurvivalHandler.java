@@ -2,7 +2,9 @@ package com.fhfelipefh.sandstorm.content.survival;
 
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -34,13 +36,23 @@ public class SuitSurvivalHandler {
                 ? player.level().canSeeSkyFromBelowWater(pos)
                 : player.level().canSeeSky(pos);
         boolean isDay = player.level().getSkyDarken() < 4;
-        boolean exposedToSunlight = isDay && canSeeSky;
-        boolean underground = !canSeeSky || pos.getY() < 50;
-        double ambientTemperature = (isDay && canSeeSky) ? 48.0 : 22.0;
+        boolean exposedToSunlight = isDay && canSeeSky && pos.getY() >= 50;
+        boolean underground = pos.getY() < 50;
+        double ambientTemperature = calculateAmbientTemperature(player);
         com.fhfelipefh.sandstorm.component.SandstormWeatherComponent weather = com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.getWeather();
         double solarMultiplier = weather.getSolarEfficiencyMultiplier();
 
         suit.tick(exposedToSunlight, ambientTemperature, underground, solarMultiplier);
+
+        ServerPlayNetworking.send(
+                player,
+                new SuitSyncPayload(
+                        suit.getEnergyStorage().getStoredEnergy(),
+                        suit.getEnergyStorage().getCapacity(),
+                        suit.getThermal().getCurrentTemperature(),
+                        armorCount
+                )
+        );
 
         if (suit.isFullSuitEquipped()) {
             boolean lowBattery = suit.getEnergyStorage().getStoredEnergy() > 0 &&
@@ -50,6 +62,19 @@ public class SuitSurvivalHandler {
             }
             if (exposedToSunlight && !underground && player.tickCount % 200 == 0 && suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity()) {
                 player.level().playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SUIT_SOLAR_CHARGE, net.minecraft.sounds.SoundSource.PLAYERS, 0.6f, 1.1f);
+            }
+        }
+
+        if (!player.isCreative() && !player.isSpectator()) {
+            if (suit.getThermal().isOverheating() && player.tickCount % 30 == 0) {
+                float excess = (float) (suit.getThermal().getCurrentTemperature() - 50.0);
+                float damage = Math.max(1.0f, 1.0f + excess * 0.25f);
+                player.hurtServer(player.level(), player.damageSources().dryOut(), damage);
+            } else if (suit.getThermal().isFreezing() && player.tickCount % 30 == 0) {
+                float deficit = (float) (10.0 - suit.getThermal().getCurrentTemperature());
+                float damage = Math.max(1.0f, 1.0f + deficit * 0.25f);
+                player.hurtServer(player.level(), player.damageSources().freeze(), damage);
+                player.setTicksFrozen(Math.min(player.getTicksFrozen() + 40, 140));
             }
         }
 
@@ -81,12 +106,24 @@ public class SuitSurvivalHandler {
         return !stack.isEmpty() && stack.is(expected);
     }
 
-    private static double calculateAmbientTemperature(ServerPlayer player) {
+    public static double calculateAmbientTemperature(ServerPlayer player) {
         BlockPos pos = player.blockPosition();
-        if (player.level().getSkyDarken() < 4 && player.level().canSeeSky(pos)) {
-            return 48.0;
+        if (pos.getY() < 50) {
+            return Math.max(2.0, 20.0 - (50 - pos.getY()) * 0.25);
         }
-        return 22.0;
+        boolean canSeeSky = (player.tickCount % 10 == 0)
+                ? player.level().canSeeSkyFromBelowWater(pos)
+                : player.level().canSeeSky(pos);
+        boolean isDay = player.level().getSkyDarken() < 4;
+        if (canSeeSky && isDay) {
+            return 48.0 + 0.3 * Math.sin(player.tickCount * 0.05);
+        } else if (canSeeSky) {
+            return 8.0 + 0.2 * Math.cos(player.tickCount * 0.05);
+        } else if (isDay) {
+            return 24.0 + 0.2 * Math.sin(player.tickCount * 0.05);
+        } else {
+            return 16.0;
+        }
     }
 
     public static SuitPowerComponent getOrCreateSuit(UUID playerUuid) {
