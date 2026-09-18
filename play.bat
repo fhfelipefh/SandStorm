@@ -58,15 +58,15 @@ echo.
 echo ===================================================
 echo  Escolha como deseja iniciar o jogo:
 echo ===================================================
-echo  [1] Iniciar jogo direto com SandStorm (Recomendado)
+echo  [1] Iniciar jogo direto com SandStorm
 echo  [2] Abrir o Launcher do Minecraft
 echo  [3] Apenas atualizar mod e fechar
-echo  [4] Modo Dev - Recompilar + Log ao vivo no terminal
+echo  [4] Modo Dev - Recompilar + Log ao vivo no terminal (Recomendado)
 echo ===================================================
 echo.
 
-set /p CHOICE="Selecione uma opcao [1-4] (Padrao: 1): "
-if "%CHOICE%"=="" set CHOICE=1
+set /p CHOICE="Selecione uma opcao [1-4] (Padrao: 4): "
+if "%CHOICE%"=="" set CHOICE=4
 
 if "%CHOICE%"=="1" goto opt_run
 if "%CHOICE%"=="2" goto opt_launcher
