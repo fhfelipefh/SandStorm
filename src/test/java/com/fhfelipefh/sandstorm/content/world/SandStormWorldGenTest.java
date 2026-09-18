@@ -63,9 +63,20 @@ class SandStormWorldGenTest {
         for (net.minecraft.resources.RegistryDataLoader.RegistryData<?> rd : net.minecraft.resources.RegistryDataLoader.WORLD_REGISTRIES) {
             if (rd.key().identifier().getPath().equals("worldgen/feature")) {
                 featureCodec = rd.elementCodec();
-                break;
             }
         }
+        com.mojang.serialization.Codec<?> noiseSettingsCodec = null;
+        com.mojang.serialization.Codec<?> biomeCodec = null;
+        for (net.minecraft.resources.RegistryDataLoader.RegistryData<?> rd : net.minecraft.resources.RegistryDataLoader.WORLD_REGISTRIES) {
+            if (rd.key().identifier().getPath().equals("worldgen/noise_settings")) {
+                noiseSettingsCodec = rd.elementCodec();
+            }
+            if (rd.key().identifier().getPath().equals("worldgen/biome")) {
+                biomeCodec = rd.elementCodec();
+            }
+        }
+        assertNotNull(noiseSettingsCodec, "noiseSettingsCodec must exist");
+        assertNotNull(biomeCodec, "biomeCodec must exist");
         assertNotNull(featureCodec, "featureCodec for worldgen/feature must exist");
 
         String testValidWithId = """
@@ -193,6 +204,37 @@ class SandStormWorldGenTest {
             JsonObject biomeSource = generator.getAsJsonObject("biome_source");
             assertEquals("minecraft:fixed", biomeSource.get("type").getAsString());
             assertEquals("minecraft:desert", biomeSource.get("biome").getAsString());
+        }
+    }
+
+    private static final Path OVERWORLD_NOISE_SETTINGS_JSON =
+            DATA_DIR.resolve("minecraft").resolve("worldgen").resolve("noise_settings").resolve("overworld.json");
+    private static final Path DESERT_BIOME_JSON =
+            DATA_DIR.resolve("minecraft").resolve("worldgen").resolve("biome").resolve("desert.json");
+
+    @Test
+    void shouldEnforceAridOverworldNoiseSettings() throws IOException {
+        assertTrue(Files.exists(OVERWORLD_NOISE_SETTINGS_JSON), "Overworld noise settings override must exist");
+
+        try (FileReader reader = new FileReader(OVERWORLD_NOISE_SETTINGS_JSON.toFile())) {
+            JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+            assertTrue(json.has("sea_level"));
+            assertEquals(-64, json.get("sea_level").getAsInt(), "Sea level must be set to -64 to eliminate surface oceans");
+            assertTrue(json.has("default_fluid"));
+            assertEquals("minecraft:air", json.get("default_fluid").getAsString(), "Default fluid must be air to prevent flooded basins and caves");
+        }
+    }
+
+    @Test
+    void shouldEnforceWaterlessDesertBiome() throws IOException {
+        assertTrue(Files.exists(DESERT_BIOME_JSON), "Desert biome override must exist");
+
+        try (FileReader reader = new FileReader(DESERT_BIOME_JSON.toFile())) {
+            JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+            String jsonString = json.toString();
+            assertFalse(jsonString.contains("minecraft:desert_well"), "Desert well must be removed to avoid surface water generation");
+            assertFalse(jsonString.contains("minecraft:spring_water"), "Spring water must be removed to avoid water cascades");
+            assertFalse(jsonString.contains("minecraft:underwater_magma"), "Underwater magma must be removed");
         }
     }
 }

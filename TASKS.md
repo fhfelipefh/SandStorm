@@ -79,6 +79,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [x] Configuração de núcleos de dados ancestrais (`sandstorm:ancient_data_core`):
   - Worldgen feature: `data/sandstorm/worldgen/feature/ancient_data_core.json`
   - Placed feature: `data/sandstorm/worldgen/placed_feature/ancient_data_core.json` (Y: 45 a 68).
+- [x] Eliminação completa de oceanos superficiais e fluidos acima do solo:
+  - Override de noise settings: `data/minecraft/worldgen/noise_settings/overworld.json` (`sea_level: -64`, `default_fluid: "minecraft:air"`).
+  - Override de bioma: `data/minecraft/worldgen/biome/desert.json` (remoção de `desert_well`, `spring_water` e `underwater_magma`).
+  - Água restrita unicamente a aquíferos subterrâneos salobros (`sandstorm:brackish_aquifer`), acessíveis apenas por escavação e purificação com filtro de dessalinização.
 - [x] Handler de injeção em biomas via Fabric Biome API (`SandStormWorldGen.java`).
 - [x] Testes automatizados de Worldgen (`SandStormWorldGenTest.java`).
 
