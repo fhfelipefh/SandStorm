@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "B": "sandstorm:circuit_board",
+    "G": "minecraft:glass",
+    "S": "sandstorm:scrap_metal",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "SGS",
+    "WBW",
+    "SAS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:survival_datapad"
+  }
+}

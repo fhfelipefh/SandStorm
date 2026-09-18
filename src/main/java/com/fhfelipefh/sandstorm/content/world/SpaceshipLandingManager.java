@@ -180,6 +180,7 @@ public class SpaceshipLandingManager {
         }
 
         level.setBlock(cabinSpawn.below(), Blocks.SMOOTH_STONE_SLAB.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 0, 3), Blocks.CRAFTING_TABLE.defaultBlockState(), 3);
     }
 
     public static BlockPos getCabinSpawnPos() {

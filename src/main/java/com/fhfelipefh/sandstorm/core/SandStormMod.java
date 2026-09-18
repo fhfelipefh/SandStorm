@@ -38,6 +38,10 @@ public class SandStormMod implements ModInitializer {
         return Identifier.fromNamespaceAndPath(MOD_ID, path);
     }
 
+    public static Identifier mcId(String path) {
+        return Identifier.fromNamespaceAndPath("minecraft", path);
+    }
+
     public static ResourceKey<Item> itemKey(String path) {
         return ResourceKey.create(Registries.ITEM, id(path));
     }

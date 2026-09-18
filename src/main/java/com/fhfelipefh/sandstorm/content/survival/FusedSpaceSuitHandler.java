@@ -29,11 +29,20 @@ public class FusedSpaceSuitHandler {
             BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
             SpawnSafety.teleportSafely(player, spawnPos);
             equipFusedSuit(player);
-        } else if (!SpawnSafety.isSafePosition(player.level(), player.blockPosition()) || player.getY() < 60) {
+            giveStarterSurvivalKit(player);
+        } else if (!SpawnSafety.isSafePosition(player.level(), player.blockPosition()) || player.getY() <= player.level().getMinY() + 10) {
             BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
             SpawnSafety.teleportSafely(player, spawnPos);
         }
         enforceFusedSuit(player);
+    }
+
+    public static void giveStarterSurvivalKit(ServerPlayer player) {
+        if (!player.getInventory().contains(SandStormItems.SURVIVAL_DATAPAD.getDefaultInstance())) {
+            player.getInventory().add(new ItemStack(SandStormItems.SURVIVAL_DATAPAD));
+        }
+        player.getInventory().add(new ItemStack(SandStormItems.SPACE_RATION, 3));
+        player.getInventory().add(new ItemStack(net.minecraft.world.item.Items.GLASS_BOTTLE, 3));
     }
 
     public static void onPlayerRespawn(ServerPlayer player) {

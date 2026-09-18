@@ -39,6 +39,7 @@ public class SandStormItems {
     public static final Item SCRAP_METAL = register("scrap_metal", new Item(properties("scrap_metal").rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
     public static final SonicCannonItem SONIC_CANNON = register("sonic_cannon", new SonicCannonItem(properties("sonic_cannon")));
     public static final AtmosphericAnalyzerItem ATMOSPHERIC_ANALYZER = register("atmospheric_analyzer", new AtmosphericAnalyzerItem(properties("atmospheric_analyzer")));
+    public static final SurvivalDatapadItem SURVIVAL_DATAPAD = register("survival_datapad", new SurvivalDatapadItem(properties("survival_datapad").rarity(net.minecraft.world.item.Rarity.RARE).stacksTo(1)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -47,6 +48,7 @@ public class SandStormItems {
                     .icon(() -> new ItemStack(SPACE_SUIT_CHESTPLATE))
                     .title(Component.translatable("itemGroup.sandstorm.general"))
                     .displayItems((context, entries) -> {
+                        entries.accept(SURVIVAL_DATAPAD);
                         entries.accept(SPACE_RATION);
                         entries.accept(SPACE_SUIT_HELMET);
                         entries.accept(SPACE_SUIT_CHESTPLATE);
