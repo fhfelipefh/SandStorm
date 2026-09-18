@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/ancient_data_core"
+    }
+  }
+}

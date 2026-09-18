@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/brackish_aquifer"
+    }
+  }
+}

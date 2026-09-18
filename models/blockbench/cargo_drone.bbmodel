@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "java_block",
+    "box_uv": true
+  },
+  "name": "Cargo Drone",
+  "model_identifier": "sandstorm:cargo_drone",
+  "resolution": {
+    "width": 16,
+    "height": 16
+  },
+  "elements": [
+    {
+      "name": "drone_hull",
+      "box_uv": true,
+      "from": [
+        4,
+        4,
+        4
+      ],
+      "to": [
+        12,
+        8,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            12,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            12,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            12,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": 0
+        }
+      }
+    },
+    {
+      "name": "rotor_front_left",
+      "box_uv": true,
+      "from": [
+        0,
+        8,
+        0
+      ],
+      "to": [
+        5,
+        9,
+        5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            5,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            7,
+            5,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            5,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            5,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            5,
+            5
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            5,
+            5
+          ],
+          "texture": 0
+        }
+      }
+    },
+    {
+      "name": "rotor_front_right",
+      "box_uv": true,
+      "from": [
+        11,
+        8,
+        0
+      ],
+      "to": [
+        16,
+        9,
+        5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            11,
+            7,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            7,
+            5,
+            8
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            11,
+            7,
+            16,
+            8
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            7,
+            5,
+            8
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            11,
+            0,
+            16,
+            5
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            11,
+            0,
+            16,
+            5
+          ],
+          "texture": 0
+        }
+      }
+    }
+  ],
+  "outliner": [
+    "drone_hull",
+    "rotor_front_left",
+    "rotor_front_right"
+  ],
+  "textures": [
+    {
+      "name": "cargo_drone",
+      "folder": "entity",
+      "namespace": "sandstorm",
+      "id": "0",
+      "particle": false,
+      "render_mode": "default",
+      "visible": true,
+      "mode": "bitmap",
+      "saved": true
+    }
+  ]
+}

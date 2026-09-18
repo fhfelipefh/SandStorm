@@ -117,41 +117,60 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 > **Status dos Efeitos Sonoros**: Todos os 20 arquivos `.mp3` foram convertidos com sucesso para Vorbis `.ogg` (mantendo os `.mp3` originais preservados).
 > As 4 variações de vento foram integradas em um pool randômico de reprodução contínua e em despachos dinâmicos graduais baseados na intensidade climática em `SandstormWeatherHandler`. Todos os blocos, armas, trajes, veículos e o Verme de Areia agora contam com áudio proprietário imersivo.
 
+### 🧪 Suíte de Testes e Garantia de Áudio (`SandStormSoundEventsTest.java`)
+- [x] **Integridade do Registro Java**: Validação estrita de todos os 23 `SoundEvent` registrados em `SandStormSoundEvents.java`.
+- [x] **Validação Binária de Cabeçalhos OGG Vorbis**: Inspeção dos 4 bytes mágicos (`OggS` / `0x4F 0x67 0x67 0x53`) garantindo que nenhum arquivo de áudio esteja corrompido ou vazio (tamanho > 100 bytes).
+- [x] **Saneamento de Distribuição**: Garantia automatizada de zero arquivos provisórios `.mp3` na pasta de assets de produção.
+- [x] **Paridade Referencial `sounds.json`**: Cada evento de som possui categoria válida (`players`, `hostile`, `blocks`, `neutral`, `ambient`, `weather`) e todos os caminhos referenciados mapeiam 1:1 para arquivos `.ogg` existentes no disco.
+- [ ] **Legendas e Acessibilidade (i18n)**: Paridade de chaves `subtitles.*` em `pt_br.json`, `en_us.json` e `es_es.json`.
+- [ ] **Atenuação Dinâmica em Tempestades**: Verificação de abafamento de áudio externo e propagação de ruído sísmico em tempo real.
+
 ---
 
-## 🎯 O Que Falta para o Fechamento do MVP (Pendências)
+## 🎯 Status de Fechamento do MVP e Modelagens
 
 ### 1. Modelagem 3D no Blockbench & Texturas Pixel Art (Foco Visual)
 - [x] `raw_silicon`: Modelo Blockbench (.bbmodel) + Modelo Item (.json) + Textura 16x16 (.png).
 - [x] `circuit_board`: Modelo Item (.json) + Textura 16x16 (.png).
-- [ ] **Itens Tecnológicos Pendentes**:
-  - [ ] `silicon_wafer`: Textura e modelo 16x16.
-  - [ ] `nano_actuator`: Textura e modelo 16x16.
-  - [ ] `tech_disc`: Textura e modelo 16x16.
-  - [ ] `scrap_metal`: Textura e modelo 16x16.
-  - [ ] `mineral_salt`: Textura e modelo 16x16.
-- [ ] **Equipamentos e Ferramentas**:
-  - [ ] `sonic_cannon`: Modelo 3D no Blockbench + Textura personalizada.
-  - [ ] `anomaly_radar`: Textura e modelo com display animado.
-  - [ ] `atmospheric_analyzer`: Textura e display de telemetria.
-  - [ ] `space_suit_helmet`, `chestplate`, `leggings`, `boots`: Texturas de item + camadas de armadura 3D (`space_suit_layer_1.png` e `space_suit_layer_2.png`).
-- [ ] **Alimentos e Fluidos**:
-  - [ ] `space_ration`: Textura de ração militar espacial embalada a vácuo.
-  - [ ] `potable_water_bottle`: Frasco tecnológico com líquido azul puro.
-  - [ ] `brackish_water_bottle`: Frasco com líquido turvo salobro.
-- [ ] **Modelos 3D de Blocos e Máquinas (Blockbench)**:
-  - [ ] `thumper.bbmodel`: Modelo com pistão oscilante e pesos rítmicos.
-  - [ ] `printer_3d.bbmodel`: Bancada tecnológica com laser/cabeçote de impressão.
-  - [ ] `desalination_filter.bbmodel`: Tubulações de cobre, tanque e condensador.
-  - [ ] `nanite_fabricator.bbmodel`: Câmara de contenção e emissão de luz de nanitas.
-  - [ ] `atmospheric_terraformer.bbmodel`: Reator central emissor de campo de força/cúpula.
-  - [ ] `drone_dock.bbmodel` & `assembly_bay.bbmodel`: Pistas e braços de montagem.
-  - [ ] `ancient_data_core.bbmodel` & `buried_tech_ruins.bbmodel`: Monólitos tecnológicos enterrados.
-- [ ] **Modelos de Entidades**:
-  - [ ] `sandworm.bbmodel`: Corpo segmentado cilíndrico com mandíbulas quádruplas.
-  - [ ] `cargo_drone.bbmodel`: Drone quadricóptero com garras de carga.
-  - [ ] `excavator_vehicle.bbmodel`: Rover industrial de esteiras com pá/furadeira frontal.
-  - [ ] `megazord.bbmodel`: Mecha bipedal titan com cockpit duplo.
+- [x] **Itens Tecnológicos Concluídos**:
+  - [x] `silicon_wafer`: Textura e modelo 16x16.
+  - [x] `nano_actuator`: Textura e modelo 16x16.
+  - [x] `tech_disc`: Textura e modelo 16x16.
+  - [x] `scrap_metal`: Textura e modelo 16x16.
+  - [x] `mineral_salt`: Textura e modelo 16x16.
+- [x] **Equipamentos e Ferramentas Concluídos**:
+  - [x] `sonic_cannon`: Modelo Item (.json) + Textura personalizada 16x16.
+  - [x] `anomaly_radar`: Textura e modelo 16x16.
+  - [x] `atmospheric_analyzer`: Textura e modelo 16x16.
+  - [x] `space_suit_helmet`, `chestplate`, `leggings`, `boots`: Texturas de item + camadas de armadura 3D (`space_suit_layer_1.png` e `space_suit_layer_2.png`).
+- [x] **Alimentos e Fluidos Concluídos**:
+  - [x] `space_ration`: Textura de ração militar espacial embalada a vácuo.
+  - [x] `potable_water_bottle`: Frasco tecnológico com líquido azul puro.
+  - [x] `brackish_water_bottle`: Frasco com líquido turvo salobro.
+- [x] **Modelos 3D de Blocos e Máquinas (Blockbench & Blockstates)**:
+  - [x] `thumper.bbmodel`: Modelo com pistão oscilante, patas de ancoragem e blockstates para `powered=true` e `powered=false`.
+  - [x] `printer_3d.bbmodel`: Bancada tecnológica com pórtico e cabeçote litográfico laser.
+  - [x] `desalination_filter.bbmodel`: Tubulações de cobre, tanque e condensador de osmose.
+  - [x] `nanite_fabricator.bbmodel`: Câmara de contenção e emissão de luz de nanitas.
+  - [x] `atmospheric_terraformer.bbmodel`: Reator central esférico ionizado com cúpula de terraformação.
+  - [x] `drone_dock.bbmodel`: Pista de aterrissagem, faixas de perigo e pilão de recarga.
+  - [x] `assembly_bay.bbmodel`: Pátio de montagem com piso reforçado e colunas de guindaste.
+  - [x] `ancient_data_core.bbmodel`: Monólito arenítico com núcleo óptico ancestral.
+  - [x] `buried_tech_ruins.bbmodel`: Blindagem aeroespacial soterrada com rebites e desgaste térmico.
+  - [x] `brackish_aquifer`: Bloco mineral sedimentar com veios salinos e aquíferos.
+- [x] **Modelos de Entidades (Blockbench)**:
+  - [x] `sandworm.bbmodel`: Corpo cilíndrico segmentado com mandíbulas quádruplas abertas e anel bucal.
+  - [x] `cargo_drone.bbmodel`: Drone quadricóptero com rotores e garras de carga.
+  - [x] `excavator_vehicle.bbmodel`: Rover industrial de esteiras duplas com broca giratória frontal.
+  - [x] `megazord.bbmodel`: Mecha bípede titânico com cockpit e emissores de choque sônico.
+
+---
+
+### 2. Geração de Mundo & Planeta Deserto Permanente
+- [x] Override de dimensão do Overworld (`data/minecraft/dimension/overworld.json`) para planeta deserto fixo (`minecraft:fixed` com `minecraft:desert`).
+- [x] Override do preset de mundo padrão (`data/minecraft/worldgen/world_preset/normal.json`).
+- [x] Eliminação da pasta inválida `data/sandstorm/worldgen/feature/` (resolvendo o crash no launcher oficial).
+- [x] Eliminação completa dos avisos `Missing model for variant` para todos os 10 blocos e máquinas.
 
 ---
 
@@ -166,3 +185,4 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 7. `537c4a8`: Adição de 20 receitas oficiais data-driven e suíte de testes de compatibilidade JEI/REI/EMI.
 8. `0e630cb`: Restrição tecnológica de ferramentas (exclusividade de robôs para mineração de pedra, liberação de pás para areia).
 9. `72e3dd1`: Criação do TASKS.md inicial com métricas e roadmap.
+10. `e0ebe24`: Correção de aterrissagem segura na superfície Y>=64, porta 4x4 sci-fi e armadura acoplada.

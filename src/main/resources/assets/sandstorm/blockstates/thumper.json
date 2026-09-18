@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "sandstorm:block/thumper"
+    },
+    "powered=true": {
+      "model": "sandstorm:block/thumper_active"
+    }
+  }
+}
