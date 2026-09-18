@@ -1,19 +1,11 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:all_mods_loaded",
-      "values": [
-        "sandstorm_disabled_recipe"
-      ]
-    }
-  ],
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "minecraft:barrier"
   ],
+  "category": "misc",
   "result": {
-    "count": 0,
-    "id": "minecraft:air"
-  }
+    "count": 1,
+    "id": "minecraft:barrier"
+  },
+  "type": "minecraft:crafting_shapeless"
 }

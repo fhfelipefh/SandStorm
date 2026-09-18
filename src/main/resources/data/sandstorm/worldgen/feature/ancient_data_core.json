@@ -5,7 +5,7 @@
   "targets": [
     {
       "state": {
-        "Name": "sandstorm:ancient_data_core"
+        "id": "sandstorm:ancient_data_core"
       },
       "target": {
         "block": "minecraft:sand",
@@ -14,7 +14,7 @@
     },
     {
       "state": {
-        "Name": "sandstorm:ancient_data_core"
+        "id": "sandstorm:ancient_data_core"
       },
       "target": {
         "block": "sandstorm:buried_tech_ruins",
@@ -23,7 +23,7 @@
     },
     {
       "state": {
-        "Name": "sandstorm:ancient_data_core"
+        "id": "sandstorm:ancient_data_core"
       },
       "target": {
         "block": "minecraft:sandstone",

@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -54,10 +55,17 @@ class SandStormWorldGenTest {
             JsonObject json = parsed.getAsJsonObject();
             assertTrue(json.has("type"));
             assertEquals("minecraft:ore", json.get("type").getAsString());
-            assertTrue(json.has("config"));
-            JsonObject config = json.getAsJsonObject("config");
-            assertTrue(config.has("targets"));
-            assertTrue(config.getAsJsonArray("targets").size() > 0);
+            assertFalse(json.has("config"));
+            assertTrue(json.has("targets"));
+            assertTrue(json.getAsJsonArray("targets").size() > 0);
+            json.getAsJsonArray("targets").forEach(targetElem -> {
+                assertTrue(targetElem.isJsonObject());
+                JsonObject target = targetElem.getAsJsonObject();
+                assertTrue(target.has("state"));
+                JsonObject state = target.getAsJsonObject("state");
+                assertFalse(state.has("Name"));
+                assertTrue(state.has("id"));
+            });
         }
     }
 
@@ -73,10 +81,17 @@ class SandStormWorldGenTest {
             JsonObject json = parsed.getAsJsonObject();
             assertTrue(json.has("type"));
             assertEquals("minecraft:ore", json.get("type").getAsString());
-            assertTrue(json.has("config"));
-            JsonObject config = json.getAsJsonObject("config");
-            assertTrue(config.has("targets"));
-            assertTrue(config.getAsJsonArray("targets").size() > 0);
+            assertFalse(json.has("config"));
+            assertTrue(json.has("targets"));
+            assertTrue(json.getAsJsonArray("targets").size() > 0);
+            json.getAsJsonArray("targets").forEach(targetElem -> {
+                assertTrue(targetElem.isJsonObject());
+                JsonObject target = targetElem.getAsJsonObject();
+                assertTrue(target.has("state"));
+                JsonObject state = target.getAsJsonObject("state");
+                assertFalse(state.has("Name"));
+                assertTrue(state.has("id"));
+            });
         }
     }
 
