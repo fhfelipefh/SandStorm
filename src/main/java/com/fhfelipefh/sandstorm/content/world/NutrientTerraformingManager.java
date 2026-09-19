@@ -81,6 +81,11 @@ public class NutrientTerraformingManager {
     public static void inoculateArea(ServerLevel level, BlockPos center, int radius) {
         long currentTick = level.getServer().getTickCount();
         int radiusSq = radius * radius;
+        BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
+        BlockPos.MutableBlockPos above = new BlockPos.MutableBlockPos();
+        int cx = center.getX();
+        int cy = center.getY();
+        int cz = center.getZ();
 
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dz = -radius; dz <= radius; dz++) {
@@ -88,13 +93,15 @@ public class NutrientTerraformingManager {
                     continue;
                 }
                 for (int dy = 2; dy >= -3; dy--) {
-                    BlockPos p = center.offset(dx, dy, dz);
+                    p.set(cx + dx, cy + dy, cz + dz);
                     BlockState state = level.getBlockState(p);
                     if (isSandBlock(state.getBlock())) {
-                        BlockPos above = p.above();
-                        if (level.getBlockState(above).isAir() || isSandBlock(level.getBlockState(above).getBlock())) {
+                        above.set(cx + dx, cy + dy + 1, cz + dz);
+                        BlockState aboveState = level.getBlockState(above);
+                        if (aboveState.isAir() || isSandBlock(aboveState.getBlock())) {
                             long delay = 20L * (30 + level.getRandom().nextInt(40));
-                            ACTIVE_TASKS.put(p.immutable(), new InoculatedTask(level.dimension(), p, Stage.SAND_TO_DIRT, currentTick + delay));
+                            BlockPos immutablePos = p.immutable();
+                            ACTIVE_TASKS.put(immutablePos, new InoculatedTask(level.dimension(), immutablePos, Stage.SAND_TO_DIRT, currentTick + delay));
                             break;
                         }
                     }

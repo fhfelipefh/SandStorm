@@ -19,6 +19,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class WirelessSolarReceiverManager {
     private static final Map<ResourceKey<Level>, Map<BlockPos, Integer>> RECEIVER_MAP = new ConcurrentHashMap<>();
+    private static final WirelessChargerComponent CHARGER_TIER1 = new WirelessChargerComponent(1);
+    private static final WirelessChargerComponent CHARGER_TIER2 = new WirelessChargerComponent(2);
+
+    private static WirelessChargerComponent getCharger(int tier) {
+        return tier >= 2 ? CHARGER_TIER2 : CHARGER_TIER1;
+    }
 
     public static void initialize() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -67,7 +73,7 @@ public class WirelessSolarReceiverManager {
                 continue;
             }
             boolean canSeeSky = level.canSeeSky(rPos.above());
-            WirelessChargerComponent charger = new WirelessChargerComponent(tier);
+            WirelessChargerComponent charger = getCharger(tier);
             double effectiveRadius = charger.calculateEffectiveRadius(canSeeSky, isDay, skyDarken, weather);
             long rate = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, weather);
             if (effectiveRadius > 0 && rate > 0) {
@@ -82,6 +88,10 @@ public class WirelessSolarReceiverManager {
     }
 
     public static void tickLevel(ServerLevel level) {
+        if (level.players().isEmpty()) {
+            return;
+        }
+
         Map<BlockPos, Integer> map = RECEIVER_MAP.get(level.dimension());
         if (map == null || map.isEmpty()) {
             return;
@@ -105,7 +115,7 @@ public class WirelessSolarReceiverManager {
             }
 
             boolean canSeeSky = level.canSeeSky(pos.above());
-            WirelessChargerComponent charger = new WirelessChargerComponent(tier);
+            WirelessChargerComponent charger = getCharger(tier);
             double effectiveRadius = charger.calculateEffectiveRadius(canSeeSky, isDay, skyDarken, weather);
             long transferRatePerTick = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, weather);
 

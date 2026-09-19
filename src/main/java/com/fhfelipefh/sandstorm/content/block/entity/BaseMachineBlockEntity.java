@@ -28,6 +28,7 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
     protected int progress = 0;
     protected int maxProgress = 100;
     protected boolean wptConnected = false;
+    protected float cachedWptCharge = -1.0f;
     protected int energyCostPerTick = 10;
 
     protected final ContainerData dataAccess = new ContainerData() {
@@ -82,10 +83,13 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         boolean changed = false;
 
-        float wptCharge = WirelessSolarReceiverManager.getWptChargeAt(level, pos);
-        wptConnected = (wptCharge > 0.0f);
-        if (wptCharge > 0.0f && energy < maxEnergy) {
-            int toAdd = Math.round(wptCharge * 15.0f);
+        if (cachedWptCharge < 0.0f || (level.getGameTime() + pos.hashCode()) % 20 == 0) {
+            cachedWptCharge = WirelessSolarReceiverManager.getWptChargeAt(level, pos);
+            wptConnected = (cachedWptCharge > 0.0f);
+        }
+
+        if (cachedWptCharge > 0.0f && energy < maxEnergy) {
+            int toAdd = Math.round(cachedWptCharge * 15.0f);
             energy = Math.min(maxEnergy, energy + Math.max(1, toAdd));
             changed = true;
         }

@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class QuestRewardHandler {
+    private static final EquipmentSlot[] EQUIPMENT_SLOTS = EquipmentSlot.values();
     private static final Map<UUID, Set<String>> NOTIFIED_CACHE = new HashMap<>();
     private static int tickCounter = 0;
 
@@ -134,7 +135,7 @@ public class QuestRewardHandler {
             return false;
         }
         Item req = quest.getRequiredItem();
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
+        for (EquipmentSlot slot : EQUIPMENT_SLOTS) {
             ItemStack stack = player.getItemBySlot(slot);
             if (!stack.isEmpty() && stack.is(req)) {
                 return true;

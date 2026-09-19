@@ -113,7 +113,7 @@ public class SandStormBlocks {
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
-        SandStormItems.register(path, new BlockItem(registeredBlock, SandStormItems.properties(path)));
+        SandStormItems.register(path, new BlockItem(registeredBlock, SandStormItems.properties(path).useBlockDescriptionPrefix()));
         return registeredBlock;
     }
 

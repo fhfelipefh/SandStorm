@@ -42,13 +42,14 @@ public class SeismicSurvivalHandler {
             return;
         }
 
-        BlockPos pos = player.blockPosition();
-        if (TRACKER.isInsideSafeZone(pos.getX(), pos.getZ())) {
+        int blockX = player.getBlockX();
+        int blockZ = player.getBlockZ();
+        if (TRACKER.isInsideSafeZone(blockX, blockZ)) {
             return;
         }
 
-        int chunkX = player.chunkPosition().x();
-        int chunkZ = player.chunkPosition().z();
+        int chunkX = blockX >> 4;
+        int chunkZ = blockZ >> 4;
 
         double deltaDist = player.getDeltaMovement().horizontalDistanceSqr();
         double multiplier = getMovementVibrationMultiplier();
@@ -62,7 +63,7 @@ public class SeismicSurvivalHandler {
         if (vibration >= 60.0 && vibration < 100.0) {
             if (player.tickCount % 60 == 0) {
                 player.sendSystemMessage(Component.translatable("warning.sandstorm.worm_rumble"), true);
-                player.level().playSound(null, pos, SandStormSoundEvents.SANDWORM_RUMBLE, SoundSource.HOSTILE, 1.0f, 0.8f);
+                player.level().playSound(null, player.blockPosition(), SandStormSoundEvents.SANDWORM_RUMBLE, SoundSource.HOSTILE, 1.0f, 0.8f);
             }
         } else if (vibration >= 100.0) {
             spawnWormEncounter(player);

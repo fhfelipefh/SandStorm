@@ -14,6 +14,7 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
     private static final double MAX_SEISMIC_RANGE = 64.0;
     private static final double WALKING_RANGE = 36.0;
     private static final double SNEAK_RANGE = 8.0;
+    private static final double MAX_CONTINUE_RANGE_SQR = (MAX_SEISMIC_RANGE + 16.0) * (MAX_SEISMIC_RANGE + 16.0);
 
     private final TargetingConditions targetingConditions;
     private LivingEntity potentialTarget;
@@ -67,10 +68,10 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
         if (currentTarget instanceof Player player && (player.isCreative() || player.isSpectator())) {
             return false;
         }
-        if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(currentTarget.blockPosition().getX(), currentTarget.blockPosition().getZ())) {
+        if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(currentTarget.getBlockX(), currentTarget.getBlockZ())) {
             return false;
         }
-        return this.mob.distanceToSqr(currentTarget) <= (MAX_SEISMIC_RANGE + 16.0) * (MAX_SEISMIC_RANGE + 16.0);
+        return this.mob.distanceToSqr(currentTarget) <= MAX_CONTINUE_RANGE_SQR;
     }
 
     public boolean isValidPrey(LivingEntity entity) {
@@ -80,7 +81,7 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
         if (entity instanceof Player player && (player.isCreative() || player.isSpectator())) {
             return false;
         }
-        if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(entity.blockPosition().getX(), entity.blockPosition().getZ())) {
+        if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(entity.getBlockX(), entity.getBlockZ())) {
             return false;
         }
 
@@ -100,8 +101,8 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
         if (entity.isPassenger() || entity.isSprinting()) {
             return MAX_SEISMIC_RANGE;
         }
-        int chunkX = entity.blockPosition().getX() >> 4;
-        int chunkZ = entity.blockPosition().getZ() >> 4;
+        int chunkX = entity.getBlockX() >> 4;
+        int chunkZ = entity.getBlockZ() >> 4;
         double chunkVibration = SeismicSurvivalHandler.getTracker().getVibration(chunkX, chunkZ);
         if (chunkVibration >= 20.0) {
             return MAX_SEISMIC_RANGE;

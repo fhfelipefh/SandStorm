@@ -8,12 +8,14 @@ public class SeismicTrackerComponent {
     private final int safeZoneCenterBlockX;
     private final int safeZoneCenterBlockZ;
     private final double safeZoneRadiusBlocks;
+    private final double safeZoneRadiusBlocksSq;
     private final Map<Long, Double> chunkVibrationMap;
 
     public SeismicTrackerComponent(int safeZoneCenterBlockX, int safeZoneCenterBlockZ, double safeZoneRadiusBlocks) {
         this.safeZoneCenterBlockX = safeZoneCenterBlockX;
         this.safeZoneCenterBlockZ = safeZoneCenterBlockZ;
         this.safeZoneRadiusBlocks = Math.max(0.0, safeZoneRadiusBlocks);
+        this.safeZoneRadiusBlocksSq = this.safeZoneRadiusBlocks * this.safeZoneRadiusBlocks;
         this.chunkVibrationMap = new HashMap<>();
     }
 
@@ -24,7 +26,7 @@ public class SeismicTrackerComponent {
     public boolean isInsideSafeZone(int blockX, int blockZ) {
         double deltaX = blockX - safeZoneCenterBlockX;
         double deltaZ = blockZ - safeZoneCenterBlockZ;
-        return (deltaX * deltaX + deltaZ * deltaZ) <= (safeZoneRadiusBlocks * safeZoneRadiusBlocks);
+        return (deltaX * deltaX + deltaZ * deltaZ) <= safeZoneRadiusBlocksSq;
     }
 
     public void addVibration(int chunkX, int chunkZ, double amount) {

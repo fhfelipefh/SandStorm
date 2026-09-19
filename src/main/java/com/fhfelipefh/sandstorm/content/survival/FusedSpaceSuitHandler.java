@@ -79,6 +79,15 @@ public class FusedSpaceSuitHandler {
         if (player.isCreative() || player.isSpectator()) {
             return;
         }
+        boolean headOk = isMatchingSuitPiece(player.getItemBySlot(EquipmentSlot.HEAD), EquipmentSlot.HEAD);
+        boolean chestOk = isMatchingSuitPiece(player.getItemBySlot(EquipmentSlot.CHEST), EquipmentSlot.CHEST);
+        boolean legsOk = isMatchingSuitPiece(player.getItemBySlot(EquipmentSlot.LEGS), EquipmentSlot.LEGS);
+        boolean feetOk = isMatchingSuitPiece(player.getItemBySlot(EquipmentSlot.FEET), EquipmentSlot.FEET);
+
+        if (headOk && chestOk && legsOk && feetOk) {
+            return;
+        }
+
         equipFusedSuit(player);
         removeExtraSuitItemsFromInventory(player);
     }

@@ -26,6 +26,22 @@ public class SurvivalHudOverlay implements HudElement {
         CLIENT_SUIT.updateEquippedArmorCount(armorCount);
     }
 
+    private static long lastStoredEnergy = -1;
+    private static long lastCapacity = -1;
+    private static double lastTemperature = -999.0;
+    private static double lastStormIntensity = -1.0;
+    private static boolean lastStormActive = false;
+
+    private static Component cachedEnergyComp = Component.empty();
+    private static Component cachedTempComp = Component.empty();
+    private static Component cachedStormComp = null;
+    private static int cachedBatWidth = 0;
+    private static int cachedTempWidth = 0;
+    private static int cachedStormWidth = 0;
+    private static int cachedMaxTextWidth = 0;
+    private static int cachedBatteryColor = 0xFF55FF55;
+    private static int cachedTempColor = 0xFF00E5FF;
+
     @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, DeltaTracker deltaTracker) {
         Minecraft client = Minecraft.getInstance();
@@ -47,16 +63,47 @@ public class SurvivalHudOverlay implements HudElement {
             extractor.fill(0, 0, screenWidth, screenHeight, sandColor);
         }
 
-        double energyPercent = capacity > 0 ? ((double) storedEnergy * 100.0 / (double) capacity) : 0.0;
-        String energyText = String.format(Locale.ROOT, "BAT: %.2f%%", energyPercent);
-        String tempText = String.format(Locale.ROOT, "TEMP: %.2f °C", temperature);
-        String stormText = weather.isActive() ? "STORM: " + (int) (weather.getIntensity() * 100) + "%" : null;
+        boolean energyChanged = storedEnergy != lastStoredEnergy || capacity != lastCapacity;
+        if (energyChanged) {
+            lastStoredEnergy = storedEnergy;
+            lastCapacity = capacity;
+            double energyPercent = capacity > 0 ? ((double) storedEnergy * 100.0 / (double) capacity) : 0.0;
+            String energyText = String.format(Locale.ROOT, "BAT: %.2f%%", energyPercent);
+            cachedEnergyComp = Component.literal(energyText);
+            cachedBatWidth = client.font.width(energyText);
+            cachedBatteryColor = getBatteryColor(energyPercent);
+        }
 
-        int batWidth = client.font.width(energyText);
-        int tempWidth = client.font.width(tempText);
-        int stormWidth = stormText != null ? client.font.width(stormText) : 0;
-        int maxTextWidth = Math.max(batWidth, Math.max(tempWidth, stormWidth));
+        boolean tempChanged = Math.abs(temperature - lastTemperature) >= 0.01;
+        if (tempChanged) {
+            lastTemperature = temperature;
+            String tempText = String.format(Locale.ROOT, "TEMP: %.2f °C", temperature);
+            cachedTempComp = Component.literal(tempText);
+            cachedTempWidth = client.font.width(tempText);
+            cachedTempColor = getTemperatureColor(temperature);
+        }
 
+        boolean stormActive = weather.isActive();
+        double stormIntensity = weather.getIntensity();
+        boolean stormChanged = stormActive != lastStormActive || Math.abs(stormIntensity - lastStormIntensity) >= 0.01;
+        if (stormChanged) {
+            lastStormActive = stormActive;
+            lastStormIntensity = stormIntensity;
+            if (stormActive) {
+                String stormText = "STORM: " + (int) (stormIntensity * 100) + "%";
+                cachedStormComp = Component.literal(stormText);
+                cachedStormWidth = client.font.width(stormText);
+            } else {
+                cachedStormComp = null;
+                cachedStormWidth = 0;
+            }
+        }
+
+        if (energyChanged || tempChanged || stormChanged) {
+            cachedMaxTextWidth = Math.max(cachedBatWidth, Math.max(cachedTempWidth, cachedStormWidth));
+        }
+
+        int maxTextWidth = cachedMaxTextWidth;
         int margin = 8;
         int x = screenWidth - maxTextWidth - margin;
         int y = screenHeight - 45;
@@ -71,26 +118,23 @@ public class SurvivalHudOverlay implements HudElement {
             x = Math.max(margin, screenWidth - maxTextWidth - margin);
         }
 
-        int batteryColor = getBatteryColor(energyPercent);
-        int tempColor = getTemperatureColor(temperature);
-
         float maxAllowed = screenWidth - (margin * 2f);
         if (maxTextWidth > maxAllowed && maxAllowed > 0) {
             float scale = maxAllowed / (float) maxTextWidth;
             extractor.pose().pushMatrix();
             extractor.pose().translate(margin, y);
             extractor.pose().scale(scale, scale);
-            extractor.text(client.font, Component.literal(energyText), 0, 0, batteryColor);
-            extractor.text(client.font, Component.literal(tempText), 0, 11, tempColor);
-            if (stormText != null) {
-                extractor.text(client.font, Component.literal(stormText), 0, 22, 0xFFFF5555);
+            extractor.text(client.font, cachedEnergyComp, 0, 0, cachedBatteryColor);
+            extractor.text(client.font, cachedTempComp, 0, 11, cachedTempColor);
+            if (cachedStormComp != null) {
+                extractor.text(client.font, cachedStormComp, 0, 22, 0xFFFF5555);
             }
             extractor.pose().popMatrix();
         } else {
-            extractor.text(client.font, Component.literal(energyText), x, y, batteryColor);
-            extractor.text(client.font, Component.literal(tempText), x, y + 11, tempColor);
-            if (stormText != null) {
-                extractor.text(client.font, Component.literal(stormText), x, y + 22, 0xFFFF5555);
+            extractor.text(client.font, cachedEnergyComp, x, y, cachedBatteryColor);
+            extractor.text(client.font, cachedTempComp, x, y + 11, cachedTempColor);
+            if (cachedStormComp != null) {
+                extractor.text(client.font, cachedStormComp, x, y + 22, 0xFFFF5555);
             }
         }
     }

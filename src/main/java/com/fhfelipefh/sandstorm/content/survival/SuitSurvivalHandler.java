@@ -23,7 +23,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SuitSurvivalHandler {
+    private record LastSyncState(long energy, long capacity, double temperature, int armorCount, int tick) {}
     private static final Map<UUID, SuitPowerComponent> PLAYER_SUIT_MAP = new ConcurrentHashMap<>();
+    private static final Map<UUID, LastSyncState> LAST_SYNC_MAP = new ConcurrentHashMap<>();
 
     public static void initialize() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -46,7 +48,7 @@ public class SuitSurvivalHandler {
         boolean isDay = player.level().getSkyDarken() < 4;
         boolean exposedToSunlight = isDay && canSeeSky && pos.getY() >= 50;
         boolean underground = pos.getY() < 50;
-        double ambientTemperature = calculateAmbientTemperature(player);
+        double ambientTemperature = calculateAmbientTemperature(player, pos.getY(), canSeeSky, isDay);
         SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
         double solarMultiplier = weather.getSolarEfficiencyMultiplier();
 
@@ -64,15 +66,31 @@ public class SuitSurvivalHandler {
             }
         }
 
-        ServerPlayNetworking.send(
-                player,
-                new SuitSyncPayload(
-                        suit.getEnergyStorage().getStoredEnergy(),
-                        suit.getEnergyStorage().getCapacity(),
-                        suit.getThermal().getCurrentTemperature(),
-                        armorCount
-                )
-        );
+        long currentEnergy = suit.getEnergyStorage().getStoredEnergy();
+        long currentCapacity = suit.getEnergyStorage().getCapacity();
+        double currentTemp = suit.getThermal().getCurrentTemperature();
+
+        LastSyncState last = LAST_SYNC_MAP.get(player.getUUID());
+        boolean shouldSync = last == null
+                || (player.tickCount - last.tick >= 20)
+                || Math.abs(currentEnergy - last.energy) >= 5
+                || currentEnergy == 0
+                || currentEnergy == currentCapacity
+                || Math.abs(currentTemp - last.temperature) >= 0.1
+                || armorCount != last.armorCount;
+
+        if (shouldSync) {
+            LAST_SYNC_MAP.put(player.getUUID(), new LastSyncState(currentEnergy, currentCapacity, currentTemp, armorCount, player.tickCount));
+            ServerPlayNetworking.send(
+                    player,
+                    new SuitSyncPayload(
+                            currentEnergy,
+                            currentCapacity,
+                            currentTemp,
+                            armorCount
+                    )
+            );
+        }
 
         if (suit.isFullSuitEquipped()) {
             boolean lowBattery = suit.getEnergyStorage().getStoredEnergy() > 0 &&
@@ -128,13 +146,17 @@ public class SuitSurvivalHandler {
 
     public static double calculateAmbientTemperature(ServerPlayer player) {
         BlockPos pos = player.blockPosition();
-        if (pos.getY() < 50) {
-            return Math.max(2.0, 20.0 - (50 - pos.getY()) * 0.25);
-        }
         boolean canSeeSky = (player.tickCount % 10 == 0)
                 ? player.level().canSeeSkyFromBelowWater(pos)
                 : player.level().canSeeSky(pos);
         boolean isDay = player.level().getSkyDarken() < 4;
+        return calculateAmbientTemperature(player, pos.getY(), canSeeSky, isDay);
+    }
+
+    public static double calculateAmbientTemperature(ServerPlayer player, int posY, boolean canSeeSky, boolean isDay) {
+        if (posY < 50) {
+            return Math.max(2.0, 20.0 - (50 - posY) * 0.25);
+        }
         if (canSeeSky && isDay) {
             return 48.0 + 0.3 * Math.sin(player.tickCount * 0.05);
         } else if (canSeeSky) {
@@ -152,5 +174,6 @@ public class SuitSurvivalHandler {
 
     public static void removePlayer(UUID playerUuid) {
         PLAYER_SUIT_MAP.remove(playerUuid);
+        LAST_SYNC_MAP.remove(playerUuid);
     }
 }
