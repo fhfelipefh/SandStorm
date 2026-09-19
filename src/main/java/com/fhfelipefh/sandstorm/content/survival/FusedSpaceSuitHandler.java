@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public class FusedSpaceSuitHandler {
@@ -48,7 +49,7 @@ public class FusedSpaceSuitHandler {
             player.getInventory().add(new ItemStack(SandStormItems.SURVIVAL_DATAPAD));
         }
         player.getInventory().add(new ItemStack(SandStormItems.SPACE_RATION, 3));
-        player.getInventory().add(new ItemStack(net.minecraft.world.item.Items.GLASS_BOTTLE, 3));
+        player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE, 3));
     }
 
     public static void onPlayerRespawn(ServerPlayer player) {

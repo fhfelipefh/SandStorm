@@ -158,6 +158,15 @@
   "quest.sandstorm.seismic_thumper.title": "Emissor Sísmico de Solo (Thumper)",
   "quest.sandstorm.seismic_thumper.task": "Construa e instale o Thumper em solo arenoso para gerar pulsos rítmicos.",
   "quest.sandstorm.seismic_thumper.note": "I.A.T.I.: As vibrações rítmicas atraem a atenção de vermes gigantes longe da sua base.",
+  "quest.sandstorm.seismic_bait.title": "Isca Sísmica Ativa",
+  "quest.sandstorm.seismic_bait.task": "Ative o Batedor (Thumper) no deserto aberto para propagar ondas sísmicas.",
+  "quest.sandstorm.seismic_bait.note": "I.A.T.I.: Os pulsos contínuos de 25.0 atrairão qualquer predador subterrâneo no setor.",
+  "quest.sandstorm.sandworm_hunt.title": "Predador do Deserto",
+  "quest.sandstorm.sandworm_hunt.task": "Enfrente e derrote um Verme de Areia no deserto aberto.",
+  "quest.sandstorm.sandworm_hunt.note": "I.A.T.I.: O titã é vulnerável a armas pesadas quando emerge para desferir suas mordidas.",
+  "quest.sandstorm.sandworm_harvest.title": "Espólios de Quitina",
+  "quest.sandstorm.sandworm_harvest.task": "Colete Quitina de Verme de Areia a partir dos restos de um verme derrotado.",
+  "quest.sandstorm.sandworm_harvest.note": "I.A.T.I.: A carapaça do verme resiste ao atrito extremo e serve como liga estrutural superior.",
   "quest.sandstorm.sonic_defense.title": "Armamento Sônico de Dispersão",
   "quest.sandstorm.sonic_defense.task": "Construa o Canhão Sônico de pulso acústico para autodefesa contra predadores.",
   "quest.sandstorm.sonic_defense.note": "I.A.T.I.: Dispara ondas de choque que repelem e desorientam ameaças biológicas.",
@@ -181,5 +190,6 @@
   "quest.sandstorm.planetary_genesis.note": "I.A.T.I.: Missão cumprida. O deserto hostil floresce como o novo lar da civilização.",
   "container.sandstorm.printer_3d": "Impressora 3D de Precisão",
   "container.sandstorm.nanite_fabricator": "Fabricador de Nanitas Robóticas",
-  "container.sandstorm.desalination_filter": "Unidade de Filtro Dessalinizador"
+  "container.sandstorm.desalination_filter": "Unidade de Filtro Dessalinizador",
+  "item.sandstorm.sandworm_spawn_egg": "Ovo Gerador de Verme de Areia"
 }

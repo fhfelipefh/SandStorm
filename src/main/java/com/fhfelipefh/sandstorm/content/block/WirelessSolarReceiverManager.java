@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.component.WirelessChargerComponent;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
+import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -54,7 +55,7 @@ public class WirelessSolarReceiverManager {
         if (map == null || map.isEmpty()) {
             return 0;
         }
-        double weather = com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.getWeather().getSolarEfficiencyMultiplier();
+        double weather = SandstormWeatherHandler.getWeather().getSolarEfficiencyMultiplier();
         boolean isDay = level.getSkyDarken() < 4;
         int skyDarken = level.getSkyDarken();
         long maxCharge = 0;
@@ -86,7 +87,7 @@ public class WirelessSolarReceiverManager {
             return;
         }
 
-        double weather = com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.getWeather().getSolarEfficiencyMultiplier();
+        double weather = SandstormWeatherHandler.getWeather().getSolarEfficiencyMultiplier();
         boolean isDay = level.getSkyDarken() < 4;
         int skyDarken = level.getSkyDarken();
 

@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -51,7 +52,7 @@ public class SonicCannonItem extends Item {
                 enemy.setDeltaMovement(knockback.x, 0.4, knockback.z);
             }
 
-            serverLevel.playSound(null, player.blockPosition(), com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SONIC_CANNON_BLAST, SoundSource.PLAYERS, 1.2f, 1.2f);
+            serverLevel.playSound(null, player.blockPosition(), SandStormSoundEvents.SONIC_CANNON_BLAST, SoundSource.PLAYERS, 1.2f, 1.2f);
 
             if (player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.sonic_blast", enemies.size()), true);

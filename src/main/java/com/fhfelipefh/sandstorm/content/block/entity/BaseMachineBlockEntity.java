@@ -112,7 +112,7 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
                     progress = 0;
                     SoundEvent sound = getProcessSound();
                     if (sound != null) {
-                        level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0f, 1.0f);
+                        level.playSound(null, pos, sound, SoundSource.BLOCKS, 0.25f, 1.0f);
                     }
                 }
             }

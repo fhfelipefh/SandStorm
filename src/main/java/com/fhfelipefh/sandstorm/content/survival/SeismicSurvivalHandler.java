@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.survival;
 import com.fhfelipefh.sandstorm.component.SeismicTrackerComponent;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.BlockPos;
@@ -10,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 
 public class SeismicSurvivalHandler {
@@ -60,7 +62,7 @@ public class SeismicSurvivalHandler {
         if (vibration >= 60.0 && vibration < 100.0) {
             if (player.tickCount % 60 == 0) {
                 player.sendSystemMessage(Component.translatable("warning.sandstorm.worm_rumble"), true);
-                player.level().playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SANDWORM_RUMBLE, net.minecraft.sounds.SoundSource.HOSTILE, 1.0f, 0.8f);
+                player.level().playSound(null, pos, SandStormSoundEvents.SANDWORM_RUMBLE, SoundSource.HOSTILE, 1.0f, 0.8f);
             }
         } else if (vibration >= 100.0) {
             spawnWormEncounter(player);
@@ -81,7 +83,7 @@ public class SeismicSurvivalHandler {
             worm.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             level.addFreshEntity(worm);
             player.sendSystemMessage(Component.translatable("warning.sandstorm.worm_emerge"), true);
-            level.playSound(null, spawnPos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SANDWORM_EMERGE, net.minecraft.sounds.SoundSource.HOSTILE, 1.2f, 0.9f);
+            level.playSound(null, spawnPos, SandStormSoundEvents.SANDWORM_EMERGE, SoundSource.HOSTILE, 1.2f, 0.9f);
         }
     }
 

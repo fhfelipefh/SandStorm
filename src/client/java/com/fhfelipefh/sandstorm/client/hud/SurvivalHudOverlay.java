@@ -1,6 +1,8 @@
 package com.fhfelipefh.sandstorm.client.hud;
 
+import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
+import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
@@ -38,29 +40,58 @@ public class SurvivalHudOverlay implements HudElement {
         int screenWidth = extractor.guiWidth();
         int screenHeight = extractor.guiHeight();
 
-        com.fhfelipefh.sandstorm.component.SandstormWeatherComponent weather = com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.getWeather();
+        SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
         if (weather.isActive()) {
             int alpha = (int) Math.clamp(weather.getIntensity() * 140, 0, 160);
             int sandColor = (alpha << 24) | 0xC29B62;
             extractor.fill(0, 0, screenWidth, screenHeight, sandColor);
         }
 
-        int x = screenWidth - 120;
-        int y = screenHeight - 45;
-
         double energyPercent = capacity > 0 ? ((double) storedEnergy * 100.0 / (double) capacity) : 0.0;
         String energyText = String.format(Locale.ROOT, "BAT: %.2f%%", energyPercent);
         String tempText = String.format(Locale.ROOT, "TEMP: %.2f °C", temperature);
+        String stormText = weather.isActive() ? "STORM: " + (int) (weather.getIntensity() * 100) + "%" : null;
+
+        int batWidth = client.font.width(energyText);
+        int tempWidth = client.font.width(tempText);
+        int stormWidth = stormText != null ? client.font.width(stormText) : 0;
+        int maxTextWidth = Math.max(batWidth, Math.max(tempWidth, stormWidth));
+
+        int margin = 8;
+        int x = screenWidth - maxTextWidth - margin;
+        int y = screenHeight - 45;
+
+        int hotbarRight = (screenWidth / 2) + 95;
+        if (x < hotbarRight) {
+            if (screenHeight > 160) {
+                y = screenHeight - 65;
+            } else {
+                y = margin;
+            }
+            x = Math.max(margin, screenWidth - maxTextWidth - margin);
+        }
 
         int batteryColor = getBatteryColor(energyPercent);
         int tempColor = getTemperatureColor(temperature);
 
-        extractor.text(client.font, Component.literal(energyText), x, y, batteryColor);
-        extractor.text(client.font, Component.literal(tempText), x, y + 11, tempColor);
-
-        if (weather.isActive()) {
-            String stormText = "STORM: " + (int) (weather.getIntensity() * 100) + "%";
-            extractor.text(client.font, Component.literal(stormText), x, y + 22, 0xFFFF5555);
+        float maxAllowed = screenWidth - (margin * 2f);
+        if (maxTextWidth > maxAllowed && maxAllowed > 0) {
+            float scale = maxAllowed / (float) maxTextWidth;
+            extractor.pose().pushMatrix();
+            extractor.pose().translate(margin, y);
+            extractor.pose().scale(scale, scale);
+            extractor.text(client.font, Component.literal(energyText), 0, 0, batteryColor);
+            extractor.text(client.font, Component.literal(tempText), 0, 11, tempColor);
+            if (stormText != null) {
+                extractor.text(client.font, Component.literal(stormText), 0, 22, 0xFFFF5555);
+            }
+            extractor.pose().popMatrix();
+        } else {
+            extractor.text(client.font, Component.literal(energyText), x, y, batteryColor);
+            extractor.text(client.font, Component.literal(tempText), x, y + 11, tempColor);
+            if (stormText != null) {
+                extractor.text(client.font, Component.literal(stormText), x, y + 22, 0xFFFF5555);
+            }
         }
     }
 

@@ -42,7 +42,8 @@ class SandStormItemsTest {
             "tech_disc",
             "scrap_metal",
             "sonic_cannon",
-            "atmospheric_analyzer"
+            "atmospheric_analyzer",
+            "sandworm_spawn_egg"
     })
     void shouldGenerateCorrectResourceKeysForCoreItems(String itemPath) {
         ResourceKey<Item> key = SandStormMod.itemKey(itemPath);

@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,7 +44,7 @@ public class AtmosphericAnalyzerItem extends Item {
                         "telemetry.sandstorm.analyzer_active_signal",
                         (int) SCAN_RADIUS
                 ), true);
-                level.playSound(null, playerPos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.ATMOSPHERIC_ANALYZER_SCAN, SoundSource.PLAYERS, 1.0f, 1.5f);
+                level.playSound(null, playerPos, SandStormSoundEvents.ATMOSPHERIC_ANALYZER_SCAN, SoundSource.PLAYERS, 1.0f, 1.5f);
             } else {
                 serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.analyzer_no_signal"), true);
                 level.playSound(null, playerPos, SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.6f, 0.8f);

@@ -3,7 +3,9 @@
 	"package": "com.fhfelipefh.sandstorm.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"SandStormClientMixin"
+		"SandStormClientMixin",
+		"HudAdaptiveTextMixin",
+		"ChatComponentAdaptiveMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -71,7 +72,7 @@ public class MegazordEntity extends PathfinderMob {
                 target.setDeltaMovement(push.x, 0.5, push.z);
             }
 
-            serverLevel.playSound(null, this.blockPosition(), com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.MEGAZORD_SHOCKWAVE, SoundSource.PLAYERS, 1.5f, 1.0f);
+            serverLevel.playSound(null, this.blockPosition(), SandStormSoundEvents.MEGAZORD_SHOCKWAVE, SoundSource.PLAYERS, 1.5f, 1.0f);
         }
 
         return true;
@@ -101,7 +102,7 @@ public class MegazordEntity extends PathfinderMob {
                             energyStorage.getCapacity()
                     ), true);
                 }
-                this.level().playSound(null, this.blockPosition(), com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.MEGAZORD_STEP, SoundSource.PLAYERS, 1.0f, 0.7f);
+                this.level().playSound(null, this.blockPosition(), SandStormSoundEvents.MEGAZORD_STEP, SoundSource.PLAYERS, 1.0f, 0.7f);
             }
             return InteractionResult.SUCCESS;
         }

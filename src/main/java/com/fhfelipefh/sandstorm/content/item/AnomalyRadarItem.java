@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.component.RadarComponent;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -78,7 +79,7 @@ public class AnomalyRadarItem extends Item {
                         (int) res.horizontalDistance(),
                         res.cardinalDirection()
                 ), true);
-                level.playSound(null, playerPos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.ANOMALY_RADAR_PING, SoundSource.PLAYERS, 0.9f, 1.8f);
+                level.playSound(null, playerPos, SandStormSoundEvents.ANOMALY_RADAR_PING, SoundSource.PLAYERS, 0.9f, 1.8f);
             } else {
                 serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.radar_none"), true);
                 level.playSound(null, playerPos, SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.6f, 0.8f);

@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -66,7 +67,7 @@ public class ExcavatorVehicleEntity extends PathfinderMob {
                             energyStorage.getCapacity()
                     ), true);
                 }
-                this.level().playSound(null, this.blockPosition(), com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.EXCAVATOR_ENGINE, SoundSource.PLAYERS, 0.8f, 1.0f);
+                this.level().playSound(null, this.blockPosition(), SandStormSoundEvents.EXCAVATOR_ENGINE, SoundSource.PLAYERS, 0.8f, 1.0f);
             }
             return InteractionResult.SUCCESS;
         }

@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
 import com.fhfelipefh.sandstorm.component.TerraformingIndexComponent;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -61,7 +62,7 @@ public class AtmosphericTerraformerBlock extends Block {
                             (int) terraformingIndex.getTemperatureCelsius()
                     ), true);
                 }
-                level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.TERRAFORMER_HUM, SoundSource.BLOCKS, 1.0f, 1.2f);
+                level.playSound(null, pos, SandStormSoundEvents.TERRAFORMER_HUM, SoundSource.BLOCKS, 0.35f, 1.0f);
             } else {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable(

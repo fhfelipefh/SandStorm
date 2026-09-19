@@ -138,15 +138,17 @@ public class SurvivalDatapadScreen extends Screen {
                     : (isInProgress ? Component.translatable("gui.sandstorm.datapad.status.in_progress")
                     : Component.translatable("gui.sandstorm.datapad.status.locked")));
             int badgeColor = isClaimed ? 0xFF69F0AE : (isClaimable ? 0xFFFFD54F : (isInProgress ? 0xFF80D8FF : 0xFF78909C));
-            int badgeWidth = font.width(badge);
-            int badgeX = cardRight - badgeWidth - 8;
-            extractor.text(font, badge, badgeX, cy + 5, badgeColor);
+            float availableCardWidth = Math.max(20f, (cardRight - 8) - (cardLeft + 30));
+            int rawBadgeWidth = font.width(badge);
+            float maxBadgeWidth = Math.min(rawBadgeWidth, availableCardWidth * 0.4f);
+            float badgeX = cardRight - maxBadgeWidth - 8;
+            drawScaledText(extractor, badge, badgeX, cy + 5, maxBadgeWidth, badgeColor);
 
             int titleColor = isClaimed ? 0xFF69F0AE : (isClaimable ? 0xFFFFF176 : (isInProgress ? 0xFFE0F7FA : 0xFFB0BEC5));
-            float maxTitleWidth = badgeX - (cardLeft + 30) - 8;
+            float maxTitleWidth = Math.max(0, badgeX - (cardLeft + 30) - 8);
             drawScaledText(extractor, Component.translatable(quest.titleKey()), cardLeft + 30, cy + 5, maxTitleWidth, titleColor);
 
-            float maxLineWidth = (cardRight - 90) - (cardLeft + 30) - 4;
+            float maxLineWidth = Math.max(0, (cardRight - 90) - (cardLeft + 30) - 4);
             drawScaledText(extractor, Component.translatable(quest.taskKey()), cardLeft + 30, cy + 17, maxLineWidth, 0xFFCFD8DC);
             drawScaledText(extractor, Component.translatable(quest.noteKey()), cardLeft + 30, cy + 29, maxLineWidth, 0xFF80DEEA);
 
@@ -179,7 +181,9 @@ public class SurvivalDatapadScreen extends Screen {
         }
 
         if (statusTooltip != null && currentTimeMs < statusTooltipExpiry) {
-            int tooltipWidth = font.width(statusTooltip) + 12;
+            int maxTooltipWidth = Math.max(80, width - 24);
+            int rawTooltipWidth = font.width(statusTooltip) + 12;
+            int tooltipWidth = Math.min(rawTooltipWidth, maxTooltipWidth);
             int tooltipX = (width - tooltipWidth) / 2;
             int tooltipY = bottom - 28;
             extractor.fill(tooltipX, tooltipY, tooltipX + tooltipWidth, tooltipY + 14, 0xEE1A237E);
@@ -333,8 +337,11 @@ public class SurvivalDatapadScreen extends Screen {
     }
 
     private void drawScaledText(GuiGraphicsExtractor extractor, Component text, float x, float y, float maxPixelWidth, int color) {
+        if (maxPixelWidth <= 0) {
+            return;
+        }
         int textWidth = font.width(text);
-        if (textWidth <= maxPixelWidth || maxPixelWidth <= 0) {
+        if (textWidth <= maxPixelWidth) {
             extractor.text(font, text, (int) x, (int) y, color);
         } else {
             float scale = maxPixelWidth / (float) textWidth;
@@ -348,8 +355,11 @@ public class SurvivalDatapadScreen extends Screen {
     }
 
     private void drawScaledCenteredText(GuiGraphicsExtractor extractor, Component text, float centerX, float y, float maxPixelWidth, int color) {
+        if (maxPixelWidth <= 0) {
+            return;
+        }
         int textWidth = font.width(text);
-        if (textWidth <= maxPixelWidth || maxPixelWidth <= 0) {
+        if (textWidth <= maxPixelWidth) {
             extractor.centeredText(font, text, (int) centerX, (int) y, color);
         } else {
             float scale = maxPixelWidth / (float) textWidth;

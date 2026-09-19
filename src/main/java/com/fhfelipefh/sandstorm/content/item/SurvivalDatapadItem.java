@@ -1,6 +1,10 @@
 package com.fhfelipefh.sandstorm.content.item;
 
+import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
+import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -25,11 +29,11 @@ public class SurvivalDatapadItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        if (!level.isClientSide() && player instanceof net.minecraft.server.level.ServerPlayer sp) {
-            net.minecraft.server.MinecraftServer server = sp.level().getServer();
+        if (!level.isClientSide() && player instanceof ServerPlayer sp) {
+            MinecraftServer server = sp.level().getServer();
             if (server != null) {
-                com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData data = com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData.get(server);
-                com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler.syncPlayerQuests(sp, data);
+                PlayerQuestSavedData data = PlayerQuestSavedData.get(server);
+                QuestRewardHandler.syncPlayerQuests(sp, data);
             }
         }
         if (level.isClientSide() && clientScreenOpener != null) {

@@ -6,6 +6,7 @@ import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -51,7 +52,7 @@ public class AssemblyBayBlock extends Block {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.bay_assembled_drone"), true);
                 }
-                level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 1.0f, 1.0f);
+                level.playSound(null, pos, SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 0.35f, 1.0f);
             }
             return InteractionResult.SUCCESS;
         }
@@ -68,7 +69,7 @@ public class AssemblyBayBlock extends Block {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.bay_assembled_excavator"), true);
                 }
-                level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 1.0f, 1.0f);
+                level.playSound(null, pos, SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 0.35f, 1.0f);
             }
             return InteractionResult.SUCCESS;
         }
@@ -85,7 +86,7 @@ public class AssemblyBayBlock extends Block {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.bay_assembled_megazord"), true);
                 }
-                level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 1.0f, 1.0f);
+                level.playSound(null, pos, SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 0.35f, 1.0f);
             }
             return InteractionResult.SUCCESS;
         }

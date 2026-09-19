@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.quest;
 
+import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.Bootstrap;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,7 +25,7 @@ class SurvivalDatapadScreenLogicTest {
 
     @BeforeEach
     void resetClientHelper() {
-        com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.setQuests(List.of(), List.of());
+        DatapadClientHelper.setQuests(List.of(), List.of());
     }
 
     @Test
@@ -47,31 +48,31 @@ class SurvivalDatapadScreenLogicTest {
         QuestData suit = QuestRegistry.getQuest("suit_diagnostics");
         assertNotNull(suit);
 
-        com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.setQuests(List.of(), List.of());
-        assertFalse(com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.isConditionMet("sandstorm.battery_60"));
+        DatapadClientHelper.setQuests(List.of(), List.of());
+        assertFalse(DatapadClientHelper.isConditionMet("sandstorm.battery_60"));
 
-        com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.setQuests(List.of(), List.of("sandstorm.battery_60"));
-        assertTrue(com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.isConditionMet("sandstorm.battery_60"));
+        DatapadClientHelper.setQuests(List.of(), List.of("sandstorm.battery_60"));
+        assertTrue(DatapadClientHelper.isConditionMet("sandstorm.battery_60"));
         assertTrue(arePrerequisitesClaimed(suit));
-        assertFalse(com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
+        assertFalse(DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
     }
 
     @Test
     void testClientQuestStateStartsEmpty() {
-        assertFalse(com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
+        assertFalse(DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
     }
 
     @Test
     void testClientQuestStateSyncMarksAsClaimed() {
-        com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.setClaimedQuests(List.of("suit_diagnostics"));
-        assertTrue(com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
+        DatapadClientHelper.setClaimedQuests(List.of("suit_diagnostics"));
+        assertTrue(DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
     }
 
     @Test
     void testClientQuestStateSyncClearsOnNewSync() {
-        com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.setClaimedQuests(List.of("suit_diagnostics"));
-        com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.setClaimedQuests(List.of());
-        assertFalse(com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
+        DatapadClientHelper.setClaimedQuests(List.of("suit_diagnostics"));
+        DatapadClientHelper.setClaimedQuests(List.of());
+        assertFalse(DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
     }
 
     @Test
@@ -81,7 +82,7 @@ class SurvivalDatapadScreenLogicTest {
 
         assertFalse(arePrerequisitesClaimed(compact));
 
-        com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.setClaimedQuests(List.of("suit_diagnostics"));
+        DatapadClientHelper.setClaimedQuests(List.of("suit_diagnostics"));
         assertTrue(arePrerequisitesClaimed(compact));
     }
 
@@ -90,7 +91,7 @@ class SurvivalDatapadScreenLogicTest {
         QuestData suit = QuestRegistry.getQuest("suit_diagnostics");
         assertNotNull(suit);
 
-        boolean isNotClaimed = !com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.isQuestClaimed("suit_diagnostics");
+        boolean isNotClaimed = !DatapadClientHelper.isQuestClaimed("suit_diagnostics");
         boolean prerequisitesMet = arePrerequisitesClaimed(suit);
 
         assertTrue(isNotClaimed);
@@ -99,9 +100,9 @@ class SurvivalDatapadScreenLogicTest {
 
     @Test
     void testClaimButtonNotVisibleAfterClaim() {
-        com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.setClaimedQuests(List.of("suit_diagnostics"));
+        DatapadClientHelper.setClaimedQuests(List.of("suit_diagnostics"));
         QuestData suit = QuestRegistry.getQuest("suit_diagnostics");
-        assertTrue(com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
+        assertTrue(DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
     }
 
     @Test
@@ -220,7 +221,7 @@ class SurvivalDatapadScreenLogicTest {
             return true;
         }
         for (String preId : quest.prerequisiteIds()) {
-            if (!com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper.isQuestClaimed(preId)) {
+            if (!DatapadClientHelper.isQuestClaimed(preId)) {
                 return false;
             }
         }

@@ -158,6 +158,15 @@
   "quest.sandstorm.seismic_thumper.title": "Emisor Sísmico Terrestre (Thumper)",
   "quest.sandstorm.seismic_thumper.task": "Construya e instale el Thumper en suelo arenoso para generar pulsos rítmicos.",
   "quest.sandstorm.seismic_thumper.note": "I.A.T.I.: Las vibraciones rítmicas atraen a los gusanos gigantes lejos de su campamento.",
+  "quest.sandstorm.seismic_bait.title": "Cebo Sísmico Activo",
+  "quest.sandstorm.seismic_bait.task": "Active el Thumper en el desierto abierto para emitir ondas sísmicas.",
+  "quest.sandstorm.seismic_bait.note": "I.A.T.I.: Los pulsos continuos de 25.0 atraerán a cualquier depredador subterráneo del sector.",
+  "quest.sandstorm.sandworm_hunt.title": "Depredador del Desierto",
+  "quest.sandstorm.sandworm_hunt.task": "Enfrente y derrote a un Gusano de Arena gigante en las dunas abiertas.",
+  "quest.sandstorm.sandworm_hunt.note": "I.A.T.I.: El titán es vulnerable a armamento pesado cuando emerge a la superficie para morder.",
+  "quest.sandstorm.sandworm_harvest.title": "Despojos de Quitina",
+  "quest.sandstorm.sandworm_harvest.task": "Recolecte Quitina de Gusano de Arena de los restos de un gusano derrotado.",
+  "quest.sandstorm.sandworm_harvest.note": "I.A.T.I.: El caparazón resiste fricción extrema y sirve como blindaje industrial de élite.",
   "quest.sandstorm.sonic_defense.title": "Armamento Sónico de Dispersión",
   "quest.sandstorm.sonic_defense.task": "Construya el Cañón Sónico de pulso acústico para autodefensa contra depredadores.",
   "quest.sandstorm.sonic_defense.note": "I.A.T.I.: Dispara ondas de choque que repelen y desorientan amenazas biológicas.",
@@ -181,5 +190,6 @@
   "quest.sandstorm.planetary_genesis.note": "I.A.T.I.: Misión cumplida. El desierto hostil florece como el nuevo hogar de la civilización.",
   "container.sandstorm.printer_3d": "Impresora 3D de Precisión",
   "container.sandstorm.nanite_fabricator": "Fabricador de Nanobots",
-  "container.sandstorm.desalination_filter": "Unidad de Filtro Desalinizador"
+  "container.sandstorm.desalination_filter": "Unidad de Filtro Desalinizador",
+  "item.sandstorm.sandworm_spawn_egg": "Generador de Gusano de Arena"
 }

@@ -1,10 +1,13 @@
 package com.fhfelipefh.sandstorm.content.survival;
 
+import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
@@ -12,6 +15,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Map;
@@ -43,7 +47,7 @@ public class SuitSurvivalHandler {
         boolean exposedToSunlight = isDay && canSeeSky && pos.getY() >= 50;
         boolean underground = pos.getY() < 50;
         double ambientTemperature = calculateAmbientTemperature(player);
-        com.fhfelipefh.sandstorm.component.SandstormWeatherComponent weather = com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.getWeather();
+        SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
         double solarMultiplier = weather.getSolarEfficiencyMultiplier();
 
         suit.tick(exposedToSunlight, ambientTemperature, underground, solarMultiplier);
@@ -74,10 +78,10 @@ public class SuitSurvivalHandler {
             boolean lowBattery = suit.getEnergyStorage().getStoredEnergy() > 0 &&
                     suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity() * 0.15;
             if (lowBattery && player.tickCount % 120 == 0) {
-                player.level().playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SUIT_BATTERY_LOW, net.minecraft.sounds.SoundSource.PLAYERS, 0.8f, 1.0f);
+                player.level().playSound(null, pos, SandStormSoundEvents.SUIT_BATTERY_LOW, SoundSource.PLAYERS, 0.8f, 1.0f);
             }
             if (exposedToSunlight && !underground && player.tickCount % 200 == 0 && suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity()) {
-                player.level().playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.SUIT_SOLAR_CHARGE, net.minecraft.sounds.SoundSource.PLAYERS, 0.6f, 1.1f);
+                player.level().playSound(null, pos, SandStormSoundEvents.SUIT_SOLAR_CHARGE, SoundSource.PLAYERS, 0.6f, 1.1f);
             }
         }
 
@@ -118,7 +122,7 @@ public class SuitSurvivalHandler {
         return count;
     }
 
-    private static boolean isSuitItem(ItemStack stack, net.minecraft.world.item.Item expected) {
+    private static boolean isSuitItem(ItemStack stack, Item expected) {
         return !stack.isEmpty() && stack.is(expected);
     }
 

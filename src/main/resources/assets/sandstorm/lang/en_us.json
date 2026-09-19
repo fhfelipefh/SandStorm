@@ -158,6 +158,15 @@
   "quest.sandstorm.seismic_thumper.title": "Ground Seismic Thumper",
   "quest.sandstorm.seismic_thumper.task": "Craft and deploy the Thumper on sand to project rhythmic acoustic pulses.",
   "quest.sandstorm.seismic_thumper.note": "I.A.T.I.: Rhythmic thumping attracts apex sandworms away from your base.",
+  "quest.sandstorm.seismic_bait.title": "Active Seismic Bait",
+  "quest.sandstorm.seismic_bait.task": "Activate the Thumper in the open desert to emit seismic shockwaves.",
+  "quest.sandstorm.seismic_bait.note": "I.A.T.I.: Sustained 25.0 pulses will draw any subterranean apex predator in the sector.",
+  "quest.sandstorm.sandworm_hunt.title": "Desert Apex Predator",
+  "quest.sandstorm.sandworm_hunt.task": "Engage and slay a giant Sandworm in the open desert dunes.",
+  "quest.sandstorm.sandworm_hunt.note": "I.A.T.I.: The titan is vulnerable to heavy ordnance when breaching the surface to strike.",
+  "quest.sandstorm.sandworm_harvest.title": "Chitin Spoils",
+  "quest.sandstorm.sandworm_harvest.task": "Harvest Sandworm Chitin from the remains of a defeated worm.",
+  "quest.sandstorm.sandworm_harvest.note": "I.A.T.I.: The outer carapace withstands extreme friction and serves as superior industrial plating.",
   "quest.sandstorm.sonic_defense.title": "Acoustic Dispersion Weapon",
   "quest.sandstorm.sonic_defense.task": "Assemble the Sonic Cannon shockwave projector for hostile defense.",
   "quest.sandstorm.sonic_defense.note": "I.A.T.I.: Discharges shock pulses that repel and disorient planetary fauna.",
@@ -181,5 +190,6 @@
   "quest.sandstorm.planetary_genesis.note": "I.A.T.I.: Mission accomplished. The hostile desert blooms into humanity's new home.",
   "container.sandstorm.printer_3d": "Precision 3D Printer",
   "container.sandstorm.nanite_fabricator": "Robotic Nanite Fabricator",
-  "container.sandstorm.desalination_filter": "Desalination Filter Unit"
+  "container.sandstorm.desalination_filter": "Desalination Filter Unit",
+  "item.sandstorm.sandworm_spawn_egg": "Sandworm Spawn Egg"
 }

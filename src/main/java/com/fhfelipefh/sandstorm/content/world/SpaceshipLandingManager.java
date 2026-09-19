@@ -1,5 +1,7 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.survival.SpawnSafety;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
@@ -190,15 +192,15 @@ public class SpaceshipLandingManager {
         level.setBlock(cabinSpawn.offset(-2, 1, 3), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(-2, -1, 2), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(-2, 0, 2), com.fhfelipefh.sandstorm.content.block.SandStormBlocks.PRINTER_3D.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 0, 2), SandStormBlocks.PRINTER_3D.defaultBlockState(), 3);
         level.setBlock(cabinSpawn.offset(-2, 1, 2), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(-2, -1, 1), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(-2, 0, 1), com.fhfelipefh.sandstorm.content.block.SandStormBlocks.NANITE_FABRICATOR.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 0, 1), SandStormBlocks.NANITE_FABRICATOR.defaultBlockState(), 3);
         level.setBlock(cabinSpawn.offset(-2, 1, 1), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(2, -1, 2), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(2, 0, 2), com.fhfelipefh.sandstorm.content.block.SandStormBlocks.DESALINATION_FILTER.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(2, 0, 2), SandStormBlocks.DESALINATION_FILTER.defaultBlockState(), 3);
         level.setBlock(cabinSpawn.offset(2, 1, 2), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(2, -1, 1), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
@@ -215,8 +217,8 @@ public class SpaceshipLandingManager {
         }
 
         BlockPos receiverPos = cabinSpawn.offset(0, 6, 1);
-        level.setBlock(receiverPos, com.fhfelipefh.sandstorm.content.block.SandStormBlocks.WIRELESS_SOLAR_RECEIVER.defaultBlockState(), 3);
-        com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager.registerReceiver(level.dimension(), receiverPos, 1);
+        level.setBlock(receiverPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER.defaultBlockState(), 3);
+        WirelessSolarReceiverManager.registerReceiver(level.dimension(), receiverPos, 1);
 
         for (int dx = -3; dx <= 3; dx++) {
             for (int dz = -2; dz <= 4; dz++) {
@@ -233,7 +235,7 @@ public class SpaceshipLandingManager {
             for (int dz = -8; dz <= 12; dz++) {
                 for (int dy = 1; dy <= 25; dy++) {
                     BlockPos p = cabinSpawn.offset(dx, dy, dz);
-                    if (!p.equals(receiverPos) && (level.getBlockState(p).is(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.WIRELESS_SOLAR_RECEIVER) || level.getBlockState(p).is(com.fhfelipefh.sandstorm.content.block.SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2))) {
+                    if (!p.equals(receiverPos) && (level.getBlockState(p).is(SandStormBlocks.WIRELESS_SOLAR_RECEIVER) || level.getBlockState(p).is(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2))) {
                         level.setBlock(p, Blocks.AIR.defaultBlockState(), 3);
                     }
                 }

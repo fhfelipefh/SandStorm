@@ -1,7 +1,9 @@
 package com.fhfelipefh.sandstorm.content.quest;
 
+import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
+import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -120,7 +122,7 @@ public class QuestRewardHandler {
                 return true;
             }
             if ("sandstorm.battery_60".equals(quest.conditionTag())) {
-                com.fhfelipefh.sandstorm.component.SuitPowerComponent suit = com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
+                SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
                 if (suit.getEnergyStorage().getStoredEnergy() >= suit.getEnergyStorage().getCapacity() * 0.6) {
                     player.addTag("sandstorm.battery_60");
                     return true;

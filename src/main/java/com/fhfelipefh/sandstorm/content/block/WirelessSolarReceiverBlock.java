@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.component.WirelessChargerComponent;
+import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -65,7 +66,7 @@ public class WirelessSolarReceiverBlock extends Block {
             boolean canSeeSky = level.canSeeSky(pos.above());
             boolean isDay = level.getSkyDarken() < 4;
             int skyDarken = level.getSkyDarken();
-            double weather = com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.getWeather().getSolarEfficiencyMultiplier();
+            double weather = SandstormWeatherHandler.getWeather().getSolarEfficiencyMultiplier();
             double radius = charger.calculateEffectiveRadius(canSeeSky, isDay, skyDarken, weather);
             long transferRate = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, weather);
 

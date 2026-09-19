@@ -1,5 +1,7 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -30,7 +32,11 @@ public class ThumperBlock extends Block {
         if (!level.isClientSide()) {
             boolean nextState = !state.getValue(POWERED);
             level.setBlock(pos, state.setValue(POWERED, nextState), 3);
-            level.playSound(null, pos, com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.THUMPER_THUMP, SoundSource.BLOCKS, 0.6f, 0.6f);
+            if (nextState) {
+                SeismicSurvivalHandler.recordVibration(pos.getX() >> 4, pos.getZ() >> 4, 25.0);
+                player.addTag("sandstorm.thumper_activated");
+            }
+            level.playSound(null, pos, SandStormSoundEvents.THUMPER_THUMP, SoundSource.BLOCKS, 0.35f, 0.6f);
         }
         return InteractionResult.SUCCESS;
     }

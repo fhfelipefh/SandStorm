@@ -3,7 +3,14 @@ package com.fhfelipefh.sandstorm.content.world;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.DetectedVersion;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.RegistryDataLoader;
+import net.minecraft.server.Bootstrap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -53,21 +60,21 @@ class SandStormWorldGenTest {
     @Test
     void shouldInitializeWorldGenWithoutException() throws Exception {
         try {
-            net.minecraft.SharedConstants.getCurrentVersion();
+            SharedConstants.getCurrentVersion();
         } catch (IllegalStateException e) {
-            net.minecraft.SharedConstants.setVersion(net.minecraft.DetectedVersion.BUILT_IN);
+            SharedConstants.setVersion(DetectedVersion.BUILT_IN);
         }
-        net.minecraft.server.Bootstrap.bootStrap();
+        Bootstrap.bootStrap();
         
-        com.mojang.serialization.Codec<?> featureCodec = null;
-        for (net.minecraft.resources.RegistryDataLoader.RegistryData<?> rd : net.minecraft.resources.RegistryDataLoader.WORLD_REGISTRIES) {
+        Codec<?> featureCodec = null;
+        for (RegistryDataLoader.RegistryData<?> rd : RegistryDataLoader.WORLD_REGISTRIES) {
             if (rd.key().identifier().getPath().equals("worldgen/feature")) {
                 featureCodec = rd.elementCodec();
             }
         }
-        com.mojang.serialization.Codec<?> noiseSettingsCodec = null;
-        com.mojang.serialization.Codec<?> biomeCodec = null;
-        for (net.minecraft.resources.RegistryDataLoader.RegistryData<?> rd : net.minecraft.resources.RegistryDataLoader.WORLD_REGISTRIES) {
+        Codec<?> noiseSettingsCodec = null;
+        Codec<?> biomeCodec = null;
+        for (RegistryDataLoader.RegistryData<?> rd : RegistryDataLoader.WORLD_REGISTRIES) {
             if (rd.key().identifier().getPath().equals("worldgen/noise_settings")) {
                 noiseSettingsCodec = rd.elementCodec();
             }
@@ -98,7 +105,7 @@ class SandStormWorldGenTest {
         }
         """;
 
-        com.mojang.serialization.DataResult<?> res = featureCodec.parse(com.mojang.serialization.JsonOps.INSTANCE, JsonParser.parseString(testValidWithId));
+        DataResult<?> res = featureCodec.parse(JsonOps.INSTANCE, JsonParser.parseString(testValidWithId));
         assertTrue(res.result().isPresent(), "Parsing should succeed with valid vanilla block: " + res);
         assertDoesNotThrow(SandStormWorldGen::initialize);
     }

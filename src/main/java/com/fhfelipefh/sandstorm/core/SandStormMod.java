@@ -1,8 +1,28 @@
 package com.fhfelipefh.sandstorm.core;
 
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
+import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
+import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
+import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
+import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.survival.BedRestrictionHandler;
+import com.fhfelipefh.sandstorm.content.survival.FusedSpaceSuitHandler;
+import com.fhfelipefh.sandstorm.content.survival.MultiplayerSpawnHandler;
+import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
+import com.fhfelipefh.sandstorm.content.survival.TechnologyToolRestrictionHandler;
+import com.fhfelipefh.sandstorm.content.world.DimensionPortalRestrictionHandler;
+import com.fhfelipefh.sandstorm.content.world.NutrientTerraformingManager;
+import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import com.fhfelipefh.sandstorm.content.world.SandStormWorldGen;
+import com.fhfelipefh.sandstorm.content.world.SpaceshipLandingManager;
+import com.fhfelipefh.sandstorm.content.world.VanillaMonsterSuppressionHandler;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -17,36 +37,36 @@ public class SandStormMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.clientboundPlay().register(
-                com.fhfelipefh.sandstorm.content.network.SuitSyncPayload.TYPE,
-                com.fhfelipefh.sandstorm.content.network.SuitSyncPayload.STREAM_CODEC
+        PayloadTypeRegistry.clientboundPlay().register(
+                SuitSyncPayload.TYPE,
+                SuitSyncPayload.STREAM_CODEC
         );
-        net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.clientboundPlay().register(
-                com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload.TYPE,
-                com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload.STREAM_CODEC
+        PayloadTypeRegistry.clientboundPlay().register(
+                SyncPlayerQuestsPayload.TYPE,
+                SyncPlayerQuestsPayload.STREAM_CODEC
         );
-        net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.serverboundPlay().register(
-                com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload.TYPE,
-                com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload.STREAM_CODEC
+        PayloadTypeRegistry.serverboundPlay().register(
+                ClaimQuestRewardPayload.TYPE,
+                ClaimQuestRewardPayload.STREAM_CODEC
         );
-        com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.initialize();
+        SandStormSoundEvents.initialize();
         SandStormItems.initialize();
-        com.fhfelipefh.sandstorm.content.block.SandStormBlocks.initialize();
-        com.fhfelipefh.sandstorm.content.gui.SandStormMenus.initialize();
+        SandStormBlocks.initialize();
+        SandStormMenus.initialize();
         SuitSurvivalHandler.initialize();
-        com.fhfelipefh.sandstorm.content.world.VanillaMonsterSuppressionHandler.initialize();
-        com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler.initialize();
-        com.fhfelipefh.sandstorm.content.entity.SandStormEntities.initialize();
-        com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler.initialize();
-        com.fhfelipefh.sandstorm.content.survival.TechnologyToolRestrictionHandler.initialize();
-        com.fhfelipefh.sandstorm.content.survival.BedRestrictionHandler.initialize();
-        com.fhfelipefh.sandstorm.content.world.SandStormWorldGen.initialize();
-        com.fhfelipefh.sandstorm.content.world.SpaceshipLandingManager.initialize();
-        com.fhfelipefh.sandstorm.content.survival.FusedSpaceSuitHandler.initialize();
-        com.fhfelipefh.sandstorm.content.survival.MultiplayerSpawnHandler.initialize();
-        com.fhfelipefh.sandstorm.content.world.DimensionPortalRestrictionHandler.initialize();
-        com.fhfelipefh.sandstorm.content.world.NutrientTerraformingManager.initialize();
-        com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler.initialize();
+        VanillaMonsterSuppressionHandler.initialize();
+        SandstormWeatherHandler.initialize();
+        SandStormEntities.initialize();
+        SeismicSurvivalHandler.initialize();
+        TechnologyToolRestrictionHandler.initialize();
+        BedRestrictionHandler.initialize();
+        SandStormWorldGen.initialize();
+        SpaceshipLandingManager.initialize();
+        FusedSpaceSuitHandler.initialize();
+        MultiplayerSpawnHandler.initialize();
+        DimensionPortalRestrictionHandler.initialize();
+        NutrientTerraformingManager.initialize();
+        QuestRewardHandler.initialize();
     }
 
     public static Identifier id(String path) {

@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.Bootstrap;
 import org.junit.jupiter.api.BeforeAll;
@@ -52,22 +53,22 @@ class SandstormWeatherHandlerTest {
     @Test
     void shouldSelectWindSoundVariationsBasedOnIntensityAndRoll() {
         assertEquals(
-                com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.WEATHER_SANDSTORM_WIND_HOWL,
+                SandStormSoundEvents.WEATHER_SANDSTORM_WIND_HOWL,
                 SandstormWeatherHandler.getWindSoundForIntensity(0.5, 0.10f)
         );
 
         assertEquals(
-                com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.WEATHER_SANDSTORM_WIND_LIGHT,
+                SandStormSoundEvents.WEATHER_SANDSTORM_WIND_LIGHT,
                 SandstormWeatherHandler.getWindSoundForIntensity(0.20, 0.50f)
         );
 
         assertEquals(
-                com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.WEATHER_SANDSTORM_WIND_MEDIUM,
+                SandStormSoundEvents.WEATHER_SANDSTORM_WIND_MEDIUM,
                 SandstormWeatherHandler.getWindSoundForIntensity(0.50, 0.50f)
         );
 
         assertEquals(
-                com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents.WEATHER_SANDSTORM_WIND_HEAVY,
+                SandStormSoundEvents.WEATHER_SANDSTORM_WIND_HEAVY,
                 SandstormWeatherHandler.getWindSoundForIntensity(0.85, 0.50f)
         );
     }
