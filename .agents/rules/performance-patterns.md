@@ -24,3 +24,25 @@ Follow these architectural and optimization patterns across the entire codebase:
 
 ## 5. Multilingual Localization Parity
 - Every translation key added to `pt_br.json` must have exact matching keys in `en_us.json` and `es_es.json`.
+
+## 6. Server Inventory Mutation & Slot Synchronization
+- Whenever modifying the player's inventory directly on the server (e.g., `player.getInventory().add(stack)` in quest claims, loot deliveries, or machine interactions):
+  - Always call `player.containerMenu.broadcastChanges()` and `player.inventoryMenu.broadcastChanges()` immediately after.
+  - Without this, the client HUD, hotbar, and open screens will not receive slot update packets until another container event triggers.
+
+## 7. Centralized Notification & Sound Deduplication
+- Do not emit quest, directive, or milestone notifications from arbitrary tick handlers or subsystems.
+- All quest-ready notifications must be routed exclusively through `QuestRewardHandler.checkPlayerNotifications()`.
+- Maintain active deduplication sets (`notified`) to ensure notifications are never dispatched across multiple channels (e.g., Chat vs. Action Bar) for the same event.
+
+## 8. Custom GUI Interactive Feedback Invariant
+- In custom screens and widgets, mouse click handlers on interactive buttons must never fail silently.
+- If a click occurs within a button hitbox but requirements/conditions are not met, always provide immediate user feedback (e.g., explanatory status tooltip and low-pitch click sound).
+
+## 9. Zero Unused Imports Invariant
+- The automated architecture test `NoUnusedImportsArchitectureTest` scans all Java files in `src/main`, `src/client`, and `src/test`.
+- Whenever refactoring code or removing method invocations, immediately prune obsolete import statements to keep the build green.
+
+## 10. Local Runtime & Mod Jar Parity
+- External Minecraft instances running via `play.bat` or the official launcher load `.jar` files from `%APPDATA%\.minecraft\mods\`.
+- After modifying network payloads, screens, or server logic, ensure a fresh jar is built via `./gradlew build -x test` and copied to the mods folder before launching the game.

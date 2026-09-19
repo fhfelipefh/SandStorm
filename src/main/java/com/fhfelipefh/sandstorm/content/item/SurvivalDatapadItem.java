@@ -25,6 +25,13 @@ public class SurvivalDatapadItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        if (!level.isClientSide() && player instanceof net.minecraft.server.level.ServerPlayer sp) {
+            net.minecraft.server.MinecraftServer server = sp.level().getServer();
+            if (server != null) {
+                com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData data = com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData.get(server);
+                com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler.syncPlayerQuests(sp, data);
+            }
+        }
         if (level.isClientSide() && clientScreenOpener != null) {
             clientScreenOpener.run();
         }

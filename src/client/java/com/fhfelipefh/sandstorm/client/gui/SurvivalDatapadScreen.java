@@ -248,6 +248,12 @@ public class SurvivalDatapadScreen extends Screen {
                             minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
                         }
                         return true;
+                    } else {
+                        showStatusTooltip(player, quest);
+                        if (minecraft != null) {
+                            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.5f));
+                        }
+                        return true;
                     }
                 } else if (insideCard && !isQuestClaimable(player, quest)) {
                     showStatusTooltip(player, quest);

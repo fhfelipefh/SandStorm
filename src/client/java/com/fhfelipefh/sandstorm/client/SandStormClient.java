@@ -32,6 +32,9 @@ public class SandStormClient implements ClientModInitializer {
                         payload.temperature(),
                         payload.armorCount()
                 );
+                if (payload.storedEnergy() >= payload.capacity() * 0.6) {
+                    DatapadClientHelper.addCondition("sandstorm.battery_60");
+                }
             });
         });
         ClientPlayNetworking.registerGlobalReceiver(SyncPlayerQuestsPayload.TYPE, (payload, context) -> {

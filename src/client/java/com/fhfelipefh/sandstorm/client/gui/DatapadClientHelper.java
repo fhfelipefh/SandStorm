@@ -41,6 +41,10 @@ public class DatapadClientHelper {
         return CLAIMED_QUESTS.contains(questId);
     }
 
+    public static void addCondition(String conditionTag) {
+        COMPLETED_CONDITIONS.add(conditionTag);
+    }
+
     public static boolean isConditionMet(String conditionTag) {
         return COMPLETED_CONDITIONS.contains(conditionTag);
     }

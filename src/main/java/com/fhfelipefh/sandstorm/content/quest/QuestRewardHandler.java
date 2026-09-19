@@ -85,6 +85,8 @@ public class QuestRewardHandler {
                     player.spawnAtLocation(sl, reward);
                 }
             }
+            player.containerMenu.broadcastChanges();
+            player.inventoryMenu.broadcastChanges();
         }
 
         player.level().playSound(null, player.blockPosition(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS, 1.0f, 1.2f);
@@ -114,7 +116,17 @@ public class QuestRewardHandler {
             return false;
         }
         if (quest.isConditionBased()) {
-            return player.entityTags().contains(quest.conditionTag());
+            if (player.entityTags().contains(quest.conditionTag())) {
+                return true;
+            }
+            if ("sandstorm.battery_60".equals(quest.conditionTag())) {
+                com.fhfelipefh.sandstorm.component.SuitPowerComponent suit = com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
+                if (suit.getEnergyStorage().getStoredEnergy() >= suit.getEnergyStorage().getCapacity() * 0.6) {
+                    player.addTag("sandstorm.battery_60");
+                    return true;
+                }
+            }
+            return false;
         }
         if (quest.getRequiredItem() == null) {
             return false;
