@@ -135,7 +135,7 @@ public class QuestRewardHandler {
         return false;
     }
 
-    private static void checkPlayerNotifications(ServerPlayer player, PlayerQuestSavedData data) {
+    public static void checkPlayerNotifications(ServerPlayer player, PlayerQuestSavedData data) {
         UUID uuid = player.getUUID();
         Set<String> notified = NOTIFIED_CACHE.computeIfAbsent(uuid, k -> new HashSet<>());
         for (QuestData quest : QuestRegistry.getAllQuests().values()) {
@@ -149,6 +149,7 @@ public class QuestRewardHandler {
                         Component.translatable("hud.sandstorm.quest_ready", Component.translatable(quest.titleKey())),
                         true
                 );
+                player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7f, 1.2f);
                 break;
             }
         }

@@ -57,8 +57,7 @@ public class SuitSurvivalHandler {
                 if (server != null) {
                     PlayerQuestSavedData data = PlayerQuestSavedData.get(server);
                     QuestRewardHandler.syncPlayerQuests(player, data);
-                    player.sendSystemMessage(Component.translatable("hud.sandstorm.quest_ready", Component.translatable("quest.sandstorm.suit_diagnostics.title")), false);
-                    player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7f, 1.2f);
+                    QuestRewardHandler.checkPlayerNotifications(player, data);
                 }
             }
         }
