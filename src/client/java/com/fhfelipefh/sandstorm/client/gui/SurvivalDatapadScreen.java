@@ -15,12 +15,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SurvivalDatapadScreen extends Screen {
     private int currentChapter = 1;
     private int scrollOffset = 0;
     private int maxScroll = 0;
+    private final Map<String, Long> claimFlashTimestamps = new HashMap<>();
+    private Component statusTooltip;
+    private long statusTooltipExpiry;
 
     public SurvivalDatapadScreen() {
         super(Component.translatable("gui.sandstorm.datapad.title"));
@@ -91,6 +96,8 @@ public class SurvivalDatapadScreen extends Screen {
 
         Player player = minecraft != null ? minecraft.player : null;
 
+        long currentTimeMs = System.currentTimeMillis();
+
         for (int i = 0; i < quests.size(); i++) {
             QuestData quest = quests.get(i);
             int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
@@ -104,11 +111,20 @@ public class SurvivalDatapadScreen extends Screen {
             boolean isClaimable = !isClaimed && prereqsClaimed && hasItem;
             boolean isInProgress = !isClaimed && prereqsClaimed && !hasItem;
 
+            Long flashTime = claimFlashTimestamps.get(quest.id());
+            boolean isFlashing = flashTime != null && (currentTimeMs - flashTime) < 600;
+            float flashAlpha = isFlashing ? 1.0f - ((currentTimeMs - flashTime) / 600f) : 0f;
+
             int cardLeft = left + 10;
             int cardRight = right - 10;
 
             int cardBg = isClaimed ? 0xDD0D2619 : (isClaimable ? 0xDD1B2A38 : (isInProgress ? 0xDD121F2D : 0xBB181820));
             extractor.fill(cardLeft, cy, cardRight, cy + cardHeight, cardBg);
+
+            if (isFlashing) {
+                int flashOverlay = ((int) (flashAlpha * 80) << 24) | 0x00E5FF;
+                extractor.fill(cardLeft, cy, cardRight, cy + cardHeight, flashOverlay);
+            }
 
             int borderColor = isClaimed ? 0xFF00E676 : (isClaimable ? 0xFFFFD54F : (isInProgress ? 0xFF00B0FF : 0xFF546E7A));
             extractor.fill(cardLeft, cy, cardLeft + 2, cy + cardHeight, borderColor);
@@ -161,6 +177,17 @@ public class SurvivalDatapadScreen extends Screen {
                 drawScaledCenteredText(extractor, claimedText, btnX + btnW / 2f, btnY + 4, btnW - 2, 0xFF69F0AE);
             }
         }
+
+        if (statusTooltip != null && currentTimeMs < statusTooltipExpiry) {
+            int tooltipWidth = font.width(statusTooltip) + 12;
+            int tooltipX = (width - tooltipWidth) / 2;
+            int tooltipY = bottom - 28;
+            extractor.fill(tooltipX, tooltipY, tooltipX + tooltipWidth, tooltipY + 14, 0xEE1A237E);
+            extractor.fill(tooltipX, tooltipY, tooltipX + tooltipWidth, tooltipY + 1, 0xFFFF6D00);
+            drawScaledCenteredText(extractor, statusTooltip, width / 2f, tooltipY + 3, tooltipWidth - 8, 0xFFFFAB40);
+        } else {
+            statusTooltip = null;
+        }
     }
 
     @Override
@@ -209,14 +236,25 @@ public class SurvivalDatapadScreen extends Screen {
                 int btnW = 40;
                 int btnH = 16;
 
+                int cardLeft = left + 10;
+                int cardRight2 = right - 10;
+                boolean insideCard = mx >= cardLeft && mx <= cardRight2 && my >= cy && my <= cy + cardHeight;
+
                 if (mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH) {
                     if (isQuestClaimable(player, quest)) {
                         ClientPlayNetworking.send(new ClaimQuestRewardPayload(quest.id()));
+                        claimFlashTimestamps.put(quest.id(), System.currentTimeMillis());
                         if (minecraft != null) {
                             minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
                         }
                         return true;
                     }
+                } else if (insideCard && !isQuestClaimable(player, quest)) {
+                    showStatusTooltip(player, quest);
+                    if (minecraft != null) {
+                        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.5f));
+                    }
+                    return true;
                 }
             }
         }
@@ -237,7 +275,14 @@ public class SurvivalDatapadScreen extends Screen {
     }
 
     private boolean hasRequiredItem(Player player, QuestData quest) {
-        if (player == null || quest == null || quest.getRequiredItem() == null) {
+        if (player == null || quest == null) {
+            return false;
+        }
+        if (quest.isConditionBased()) {
+            return DatapadClientHelper.isConditionMet(quest.conditionTag())
+                    || player.entityTags().contains(quest.conditionTag());
+        }
+        if (quest.getRequiredItem() == null) {
             return false;
         }
         Item req = quest.getRequiredItem();
@@ -266,6 +311,19 @@ public class SurvivalDatapadScreen extends Screen {
             }
         }
         return true;
+    }
+
+    private void showStatusTooltip(Player player, QuestData quest) {
+        if (DatapadClientHelper.isQuestClaimed(quest.id())) {
+            statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.already_claimed");
+        } else if (!arePrerequisitesClaimed(quest)) {
+            statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.prereqs_missing");
+        } else if (quest.isConditionBased()) {
+            statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.condition_missing");
+        } else if (!hasRequiredItem(player, quest)) {
+            statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.item_missing");
+        }
+        statusTooltipExpiry = System.currentTimeMillis() + 3000;
     }
 
     private void drawScaledText(GuiGraphicsExtractor extractor, Component text, float x, float y, float maxPixelWidth, int color) {

@@ -36,7 +36,7 @@ public class SandStormClient implements ClientModInitializer {
         });
         ClientPlayNetworking.registerGlobalReceiver(SyncPlayerQuestsPayload.TYPE, (payload, context) -> {
             context.client().execute(() -> {
-                DatapadClientHelper.setClaimedQuests(payload.claimedQuestIds());
+                DatapadClientHelper.setQuests(payload.claimedQuestIds(), payload.completedConditions());
             });
         });
     }

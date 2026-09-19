@@ -8,13 +8,17 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import java.util.ArrayList;
 import java.util.List;
 
-public record SyncPlayerQuestsPayload(List<String> claimedQuestIds) implements CustomPacketPayload {
+public record SyncPlayerQuestsPayload(List<String> claimedQuestIds, List<String> completedConditions) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<SyncPlayerQuestsPayload> TYPE = new CustomPacketPayload.Type<>(SandStormMod.id("sync_player_quests"));
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncPlayerQuestsPayload> STREAM_CODEC = StreamCodec.of(
             (buf, payload) -> {
                 buf.writeInt(payload.claimedQuestIds().size());
                 for (String id : payload.claimedQuestIds()) {
                     buf.writeUtf(id);
+                }
+                buf.writeInt(payload.completedConditions().size());
+                for (String cond : payload.completedConditions()) {
+                    buf.writeUtf(cond);
                 }
             },
             buf -> {
@@ -23,9 +27,18 @@ public record SyncPlayerQuestsPayload(List<String> claimedQuestIds) implements C
                 for (int i = 0; i < count; i++) {
                     list.add(buf.readUtf());
                 }
-                return new SyncPlayerQuestsPayload(list);
+                int condCount = buf.readInt();
+                List<String> condList = new ArrayList<>(condCount);
+                for (int i = 0; i < condCount; i++) {
+                    condList.add(buf.readUtf());
+                }
+                return new SyncPlayerQuestsPayload(list, condList);
             }
     );
+
+    public SyncPlayerQuestsPayload(List<String> claimedQuestIds) {
+        this(claimedQuestIds, List.of());
+    }
 
     @Override
     public CustomPacketPayload.Type<SyncPlayerQuestsPayload> type() {

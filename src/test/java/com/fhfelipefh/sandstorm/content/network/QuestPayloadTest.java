@@ -30,8 +30,12 @@ class QuestPayloadTest {
 
     @Test
     void testSyncPlayerQuestsPayloadTypeAndCodec() {
-        SyncPlayerQuestsPayload payload = new SyncPlayerQuestsPayload(List.of("quest_1", "quest_2", "quest_3"));
+        SyncPlayerQuestsPayload payload = new SyncPlayerQuestsPayload(
+                List.of("quest_1", "quest_2", "quest_3"),
+                List.of("sandstorm.battery_60")
+        );
         assertEquals(List.of("quest_1", "quest_2", "quest_3"), payload.claimedQuestIds());
+        assertEquals(List.of("sandstorm.battery_60"), payload.completedConditions());
         assertEquals(SyncPlayerQuestsPayload.TYPE, payload.type());
         assertNotNull(SyncPlayerQuestsPayload.STREAM_CODEC);
         assertEquals("sandstorm:sync_player_quests", SyncPlayerQuestsPayload.TYPE.id().toString());
@@ -42,5 +46,6 @@ class QuestPayloadTest {
 
         SyncPlayerQuestsPayload decoded = SyncPlayerQuestsPayload.STREAM_CODEC.decode(buf);
         assertEquals(List.of("quest_1", "quest_2", "quest_3"), decoded.claimedQuestIds());
+        assertEquals(List.of("sandstorm.battery_60"), decoded.completedConditions());
     }
 }

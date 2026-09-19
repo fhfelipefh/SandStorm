@@ -19,7 +19,12 @@ public class FusedSpaceSuitHandler {
 
     public static void initialize() {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> onPlayerJoin(handler.getPlayer(), server));
-        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> onPlayerRespawn(newPlayer));
+        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+            for (String tag : oldPlayer.entityTags()) {
+                newPlayer.addTag(tag);
+            }
+            onPlayerRespawn(newPlayer);
+        });
     }
 
     public static void onPlayerJoin(ServerPlayer player, MinecraftServer server) {

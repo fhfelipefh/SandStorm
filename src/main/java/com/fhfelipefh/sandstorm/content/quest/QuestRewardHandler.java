@@ -93,7 +93,8 @@ public class QuestRewardHandler {
 
     public static void syncPlayerQuests(ServerPlayer player, PlayerQuestSavedData data) {
         List<String> list = new ArrayList<>(data.getClaimedQuests(player.getUUID()));
-        ServerPlayNetworking.send(player, new SyncPlayerQuestsPayload(list));
+        List<String> conditions = player.entityTags().stream().filter(t -> t.startsWith("sandstorm.")).toList();
+        ServerPlayNetworking.send(player, new SyncPlayerQuestsPayload(list, conditions));
     }
 
     public static boolean arePrerequisitesMet(UUID playerUuid, QuestData quest, PlayerQuestSavedData data) {
@@ -109,7 +110,13 @@ public class QuestRewardHandler {
     }
 
     public static boolean hasRequiredItem(Player player, QuestData quest) {
-        if (player == null || quest == null || quest.getRequiredItem() == null) {
+        if (player == null || quest == null) {
+            return false;
+        }
+        if (quest.isConditionBased()) {
+            return player.entityTags().contains(quest.conditionTag());
+        }
+        if (quest.getRequiredItem() == null) {
             return false;
         }
         Item req = quest.getRequiredItem();

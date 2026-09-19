@@ -3,10 +3,16 @@ package com.fhfelipefh.sandstorm.content.survival;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
+import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
+import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
@@ -43,6 +49,19 @@ public class SuitSurvivalHandler {
         double solarMultiplier = weather.getSolarEfficiencyMultiplier();
 
         suit.tick(exposedToSunlight, ambientTemperature, underground, solarMultiplier);
+
+        if (suit.getEnergyStorage().getStoredEnergy() >= suit.getEnergyStorage().getCapacity() * 0.6) {
+            if (!player.entityTags().contains("sandstorm.battery_60")) {
+                player.addTag("sandstorm.battery_60");
+                MinecraftServer server = player.level().getServer();
+                if (server != null) {
+                    PlayerQuestSavedData data = PlayerQuestSavedData.get(server);
+                    QuestRewardHandler.syncPlayerQuests(player, data);
+                    player.sendSystemMessage(Component.translatable("hud.sandstorm.quest_ready", Component.translatable("quest.sandstorm.suit_diagnostics.title")), false);
+                    player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7f, 1.2f);
+                }
+            }
+        }
 
         ServerPlayNetworking.send(
                 player,
