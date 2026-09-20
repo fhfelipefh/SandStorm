@@ -4,4 +4,11 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
 public class SandwormRenderState extends LivingEntityRenderState {
     public boolean burrowed;
+    public boolean breaching;
+    public boolean surfaced;
+    public boolean submerging;
+    public float breachProgress;
+    public float biteProgress;
+    public float bodyPitch;
+    public float bodyYaw;
 }

@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.survival;
 
+import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.item.SpaceSuitItem;
 import com.fhfelipefh.sandstorm.content.world.SpaceshipLandingManager;
@@ -36,10 +37,15 @@ public class FusedSpaceSuitHandler {
             SpawnSafety.teleportSafely(player, spawnPos);
             equipFusedSuit(player);
             giveStarterSurvivalKit(player);
-            SuitSurvivalHandler.getOrCreateSuit(player.getUUID()).getEnergyStorage().setStoredEnergy(50000);
+            SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player);
+            suit.getEnergyStorage().setStoredEnergy(50000);
+            PlayerSuitSavedData.get(server).setSuitData(player.getUUID(), 50000, 37.0);
         } else if (!SpawnSafety.isSafePosition(player.level(), player.blockPosition()) || player.getY() <= player.level().getMinY() + 10) {
             BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
             SpawnSafety.teleportSafely(player, spawnPos);
+            SuitSurvivalHandler.getOrCreateSuit(player);
+        } else {
+            SuitSurvivalHandler.getOrCreateSuit(player);
         }
         enforceFusedSuit(player);
     }

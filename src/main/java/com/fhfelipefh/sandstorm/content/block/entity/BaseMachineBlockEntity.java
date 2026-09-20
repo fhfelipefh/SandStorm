@@ -209,7 +209,11 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
 
     @Override
     public ItemStack removeItemNoUpdate(int slot) {
-        return ContainerHelper.takeItem(items, slot);
+        ItemStack item = ContainerHelper.takeItem(items, slot);
+        if (!item.isEmpty()) {
+            setChanged();
+        }
+        return item;
     }
 
     @Override
@@ -229,5 +233,6 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
     @Override
     public void clearContent() {
         items.clear();
+        setChanged();
     }
 }

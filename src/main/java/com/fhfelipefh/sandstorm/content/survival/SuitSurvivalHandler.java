@@ -8,7 +8,9 @@ import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
@@ -33,11 +35,27 @@ public class SuitSurvivalHandler {
                 handlePlayerTick(player);
             }
         });
+
+        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+            ServerPlayer player = handler.getPlayer();
+            if (player != null) {
+                savePlayerSuit(player);
+                removePlayer(player.getUUID());
+            }
+        });
+
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                savePlayerSuit(player);
+            }
+            PLAYER_SUIT_MAP.clear();
+            LAST_SYNC_MAP.clear();
+        });
     }
 
     public static void handlePlayerTick(ServerPlayer player) {
         FusedSpaceSuitHandler.enforceFusedSuit(player);
-        SuitPowerComponent suit = getOrCreateSuit(player.getUUID());
+        SuitPowerComponent suit = getOrCreateSuit(player);
         int armorCount = countEquippedSuitPieces(player);
         suit.updateEquippedArmorCount(armorCount);
 
@@ -90,6 +108,10 @@ public class SuitSurvivalHandler {
                             armorCount
                     )
             );
+            MinecraftServer server = player.level().getServer();
+            if (server != null) {
+                PlayerSuitSavedData.get(server).setSuitData(player.getUUID(), currentEnergy, currentTemp);
+            }
         }
 
         if (suit.isFullSuitEquipped()) {
@@ -170,6 +192,39 @@ public class SuitSurvivalHandler {
 
     public static SuitPowerComponent getOrCreateSuit(UUID playerUuid) {
         return PLAYER_SUIT_MAP.computeIfAbsent(playerUuid, uuid -> new SuitPowerComponent());
+    }
+
+    public static SuitPowerComponent getOrCreateSuit(ServerPlayer player) {
+        UUID uuid = player.getUUID();
+        SuitPowerComponent suit = PLAYER_SUIT_MAP.get(uuid);
+        if (suit == null) {
+            suit = new SuitPowerComponent();
+            MinecraftServer server = player.level().getServer();
+            if (server != null) {
+                PlayerSuitSavedData data = PlayerSuitSavedData.get(server);
+                PlayerSuitSavedData.Entry entry = data.getSuitData(uuid);
+                if (entry != null) {
+                    suit.getEnergyStorage().setStoredEnergy(entry.energy());
+                    suit.getThermal().setCurrentTemperature(entry.temperature());
+                }
+            }
+            PLAYER_SUIT_MAP.put(uuid, suit);
+        }
+        return suit;
+    }
+
+    public static void savePlayerSuit(ServerPlayer player) {
+        SuitPowerComponent suit = PLAYER_SUIT_MAP.get(player.getUUID());
+        if (suit != null) {
+            MinecraftServer server = player.level().getServer();
+            if (server != null) {
+                PlayerSuitSavedData.get(server).setSuitData(
+                        player.getUUID(),
+                        suit.getEnergyStorage().getStoredEnergy(),
+                        suit.getThermal().getCurrentTemperature()
+                );
+            }
+        }
     }
 
     public static void removePlayer(UUID playerUuid) {

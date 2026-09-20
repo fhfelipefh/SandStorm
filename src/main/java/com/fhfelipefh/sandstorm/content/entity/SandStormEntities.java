@@ -19,7 +19,7 @@ public class SandStormEntities {
             BuiltInRegistries.ENTITY_TYPE,
             SandStormMod.id("sandworm"),
             EntityType.Builder.of(SandwormEntity::new, MobCategory.MONSTER)
-                    .sized(2.5f, 6.0f)
+                    .sized(3.8f, 10.0f)
                     .build(SANDWORM_KEY)
     );
 

@@ -29,15 +29,11 @@ public class SurvivalHudOverlay implements HudElement {
     private static long lastStoredEnergy = -1;
     private static long lastCapacity = -1;
     private static double lastTemperature = -999.0;
-    private static double lastStormIntensity = -1.0;
-    private static boolean lastStormActive = false;
 
     private static Component cachedEnergyComp = Component.empty();
     private static Component cachedTempComp = Component.empty();
-    private static Component cachedStormComp = null;
     private static int cachedBatWidth = 0;
     private static int cachedTempWidth = 0;
-    private static int cachedStormWidth = 0;
     private static int cachedMaxTextWidth = 0;
     private static int cachedBatteryColor = 0xFF55FF55;
     private static int cachedTempColor = 0xFF00E5FF;
@@ -83,35 +79,19 @@ public class SurvivalHudOverlay implements HudElement {
             cachedTempColor = getTemperatureColor(temperature);
         }
 
-        boolean stormActive = weather.isActive();
-        double stormIntensity = weather.getIntensity();
-        boolean stormChanged = stormActive != lastStormActive || Math.abs(stormIntensity - lastStormIntensity) >= 0.01;
-        if (stormChanged) {
-            lastStormActive = stormActive;
-            lastStormIntensity = stormIntensity;
-            if (stormActive) {
-                String stormText = "STORM: " + (int) (stormIntensity * 100) + "%";
-                cachedStormComp = Component.literal(stormText);
-                cachedStormWidth = client.font.width(stormText);
-            } else {
-                cachedStormComp = null;
-                cachedStormWidth = 0;
-            }
-        }
-
-        if (energyChanged || tempChanged || stormChanged) {
-            cachedMaxTextWidth = Math.max(cachedBatWidth, Math.max(cachedTempWidth, cachedStormWidth));
+        if (energyChanged || tempChanged) {
+            cachedMaxTextWidth = Math.max(cachedBatWidth, cachedTempWidth);
         }
 
         int maxTextWidth = cachedMaxTextWidth;
         int margin = 8;
         int x = screenWidth - maxTextWidth - margin;
-        int y = screenHeight - 45;
+        int y = screenHeight - 34;
 
         int hotbarRight = (screenWidth / 2) + 95;
         if (x < hotbarRight) {
             if (screenHeight > 160) {
-                y = screenHeight - 65;
+                y = screenHeight - 54;
             } else {
                 y = margin;
             }
@@ -126,16 +106,10 @@ public class SurvivalHudOverlay implements HudElement {
             extractor.pose().scale(scale, scale);
             extractor.text(client.font, cachedEnergyComp, 0, 0, cachedBatteryColor);
             extractor.text(client.font, cachedTempComp, 0, 11, cachedTempColor);
-            if (cachedStormComp != null) {
-                extractor.text(client.font, cachedStormComp, 0, 22, 0xFFFF5555);
-            }
             extractor.pose().popMatrix();
         } else {
             extractor.text(client.font, cachedEnergyComp, x, y, cachedBatteryColor);
             extractor.text(client.font, cachedTempComp, x, y + 11, cachedTempColor);
-            if (cachedStormComp != null) {
-                extractor.text(client.font, cachedStormComp, x, y + 22, 0xFFFF5555);
-            }
         }
     }
 

@@ -31,16 +31,16 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
         }
 
         AABB searchBox = this.mob.getBoundingBox().inflate(MAX_SEISMIC_RANGE, 24.0, MAX_SEISMIC_RANGE);
-        List<Player> nearbyPlayers = this.mob.level().getEntitiesOfClass(Player.class, searchBox, this::isValidPrey);
+        List<LivingEntity> nearbyPrey = this.mob.level().getEntitiesOfClass(LivingEntity.class, searchBox, this::isValidPrey);
 
         LivingEntity closestTarget = null;
         double closestDistSqr = Double.MAX_VALUE;
 
-        for (Player player : nearbyPlayers) {
-            double distSqr = this.mob.distanceToSqr(player);
+        for (LivingEntity prey : nearbyPrey) {
+            double distSqr = this.mob.distanceToSqr(prey);
             if (distSqr < closestDistSqr) {
                 closestDistSqr = distSqr;
-                closestTarget = player;
+                closestTarget = prey;
             }
         }
 
@@ -75,7 +75,10 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
     }
 
     public boolean isValidPrey(LivingEntity entity) {
-        if (entity == null || !entity.isAlive() || entity.isSpectator()) {
+        if (entity == null || !entity.isAlive() || entity.isSpectator() || entity == this.mob) {
+            return false;
+        }
+        if (entity.getType() == this.mob.getType()) {
             return false;
         }
         if (entity instanceof Player player && (player.isCreative() || player.isSpectator())) {
@@ -101,17 +104,25 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
         if (entity.isPassenger() || entity.isSprinting()) {
             return MAX_SEISMIC_RANGE;
         }
-        int chunkX = entity.getBlockX() >> 4;
-        int chunkZ = entity.getBlockZ() >> 4;
-        double chunkVibration = SeismicSurvivalHandler.getTracker().getVibration(chunkX, chunkZ);
-        if (chunkVibration >= 20.0) {
-            return MAX_SEISMIC_RANGE;
-        }
-        if (entity.isShiftKeyDown()) {
+        if (entity instanceof Player player) {
+            int chunkX = player.getBlockX() >> 4;
+            int chunkZ = player.getBlockZ() >> 4;
+            double chunkVibration = SeismicSurvivalHandler.getTracker().getVibration(chunkX, chunkZ);
+            if (chunkVibration >= 20.0) {
+                return MAX_SEISMIC_RANGE;
+            }
+            if (player.isShiftKeyDown()) {
+                return SNEAK_RANGE;
+            }
+            double deltaMovementSqr = player.getDeltaMovement().horizontalDistanceSqr();
+            if (deltaMovementSqr > 0.001) {
+                return WALKING_RANGE;
+            }
             return SNEAK_RANGE;
         }
-        double deltaMovementSqr = entity.getDeltaMovement().horizontalDistanceSqr();
-        if (deltaMovementSqr > 0.001) {
+
+        double movementSqr = entity.getDeltaMovement().horizontalDistanceSqr();
+        if (movementSqr > 0.002) {
             return WALKING_RANGE;
         }
         return SNEAK_RANGE;

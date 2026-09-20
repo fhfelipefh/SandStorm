@@ -2,18 +2,17 @@ package com.fhfelipefh.sandstorm.client.renderer;
 
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormState;
+import com.fhfelipefh.sandstorm.core.SandStormMod;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.model.monster.silverfish.SilverfishModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 
-public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRenderState, SilverfishModel> {
-    private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/entity/silverfish/silverfish.png");
+public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRenderState, SandwormModel> {
+    private static final Identifier TEXTURE = SandStormMod.id("textures/entity/sandworm/sandworm.png");
 
     public SandwormRenderer(EntityRendererProvider.Context context) {
-        super(context, new SilverfishModel(context.bakeLayer(ModelLayers.SILVERFISH)), 1.2f);
+        super(context, new SandwormModel(SandwormModel.createBodyLayer().bakeRoot()), 3.0f);
     }
 
     @Override
@@ -29,17 +28,26 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
     @Override
     public void extractRenderState(SandwormEntity entity, SandwormRenderState state, float partialTick) {
         super.extractRenderState(entity, state, partialTick);
-        state.burrowed = entity.getSandwormState() == SandwormState.BURROWED;
+        SandwormState wormState = entity.getSandwormState();
+        state.burrowed = wormState == SandwormState.BURROWED;
+        state.breaching = wormState == SandwormState.BREACHING;
+        state.surfaced = wormState == SandwormState.SURFACED_ASSAULT;
+        state.submerging = wormState == SandwormState.SUBMERGING;
+        state.breachProgress = entity.getBreachAnimationProgress(partialTick);
+        state.biteProgress = entity.getBiteAnimationProgress(partialTick);
+        state.bodyPitch = entity.getXRot();
+        state.bodyYaw = entity.getYRot();
     }
 
     @Override
     protected boolean isBodyVisible(SandwormRenderState state) {
-        return !state.burrowed && super.isBodyVisible(state);
+        return super.isBodyVisible(state);
     }
 
     @Override
     protected void scale(SandwormRenderState state, PoseStack poseStack) {
         super.scale(state, poseStack);
-        poseStack.scale(3.5f, 3.5f, 3.5f);
+        float scaleFactor = 7.5f;
+        poseStack.scale(scaleFactor, scaleFactor, scaleFactor);
     }
 }

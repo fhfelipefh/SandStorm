@@ -28,7 +28,7 @@ public class SandwormBreachGoal extends Goal {
         }
 
         double distSqr = this.sandworm.distanceToSqr(target);
-        return distSqr <= 64.0;
+        return distSqr <= 196.0;
     }
 
     @Override
@@ -38,10 +38,14 @@ public class SandwormBreachGoal extends Goal {
 
     @Override
     public void start() {
-        this.breachTicks = 30;
+        this.breachTicks = 35;
         this.sandworm.setSandwormState(SandwormState.BREACHING);
-        Vec3 currentMovement = this.sandworm.getDeltaMovement();
-        this.sandworm.setDeltaMovement(currentMovement.x * 0.5, 0.65, currentMovement.z * 0.5);
+        LivingEntity target = this.sandworm.getTarget();
+        Vec3 forward = Vec3.ZERO;
+        if (target != null) {
+            forward = new Vec3(target.getX() - this.sandworm.getX(), 0, target.getZ() - this.sandworm.getZ()).normalize();
+        }
+        this.sandworm.setDeltaMovement(forward.x * 0.45, 1.15, forward.z * 0.45);
         this.sandworm.triggerBreachShockwave();
     }
 
@@ -50,7 +54,7 @@ public class SandwormBreachGoal extends Goal {
         this.breachTicks--;
         LivingEntity target = this.sandworm.getTarget();
         if (target != null) {
-            this.sandworm.getLookControl().setLookAt(target, 30.0f, 30.0f);
+            this.sandworm.getLookControl().setLookAt(target, 40.0f, 40.0f);
         }
 
         if (this.breachTicks <= 0) {
