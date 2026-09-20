@@ -12,7 +12,7 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
     private static final Identifier TEXTURE = SandStormMod.id("textures/entity/sandworm/sandworm.png");
 
     public SandwormRenderer(EntityRendererProvider.Context context) {
-        super(context, new SandwormModel(SandwormModel.createBodyLayer().bakeRoot()), 3.0f);
+        super(context, new SandwormModel(SandwormModel.createBodyLayer().bakeRoot()), 4.5f);
     }
 
     @Override

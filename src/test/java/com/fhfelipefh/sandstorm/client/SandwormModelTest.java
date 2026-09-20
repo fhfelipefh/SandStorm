@@ -22,16 +22,19 @@ class SandwormModelTest {
         ModelPart body = root.getChild("body");
         assertNotNull(body);
 
-        ModelPart sandSkirt = body.getChild("sand_skirt");
-        assertNotNull(sandSkirt);
-
         ModelPart base = body.getChild("base");
         assertNotNull(base);
 
-        ModelPart midBody = base.getChild("mid_body");
-        assertNotNull(midBody);
+        ModelPart segLower = base.getChild("segment_lower");
+        assertNotNull(segLower);
 
-        ModelPart neck = midBody.getChild("neck");
+        ModelPart segMid = segLower.getChild("segment_mid");
+        assertNotNull(segMid);
+
+        ModelPart segUpper = segMid.getChild("segment_upper");
+        assertNotNull(segUpper);
+
+        ModelPart neck = segUpper.getChild("neck");
         assertNotNull(neck);
 
         ModelPart head = neck.getChild("head");

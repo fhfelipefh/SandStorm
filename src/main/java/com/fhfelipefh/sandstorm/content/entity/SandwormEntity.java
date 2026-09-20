@@ -144,15 +144,15 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         serverLevel.playSound(null, this.blockPosition(), SandStormSoundEvents.SANDWORM_EMERGE, SoundSource.HOSTILE, 2.0f, 0.85f);
         serverLevel.sendParticles(
                 new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()),
-                this.getX(), this.getY() + 1.0, this.getZ(), 80, 2.5, 1.5, 2.5, 0.35
+                this.getX(), this.getY() + 0.5, this.getZ(), 140, 3.5, 2.0, 3.5, 0.45
         );
         serverLevel.sendParticles(
                 ParticleTypes.GUST_EMITTER_LARGE,
-                this.getX(), this.getY() + 0.5, this.getZ(), 1, 0.0, 0.0, 0.0, 0.0
+                this.getX(), this.getY() + 0.5, this.getZ(), 2, 0.0, 0.0, 0.0, 0.0
         );
         serverLevel.sendParticles(
                 ParticleTypes.EXPLOSION,
-                this.getX(), this.getY() + 1.0, this.getZ(), 3, 1.0, 0.5, 1.0, 0.0
+                this.getX(), this.getY() + 1.0, this.getZ(), 4, 1.5, 0.5, 1.5, 0.0
         );
 
         AABB shockwaveBounds = this.getBoundingBox().inflate(6.0, 3.0, 6.0);

@@ -162,5 +162,4 @@ echo.
 set /p OPEN_LOG="Deseja abrir o log no Notepad? [S/N]: "
 if /i "%OPEN_LOG%"=="S" start notepad "%LOG_FILE%"
 
-pause
 exit /b 0
