@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -44,6 +45,6 @@ public class SurvivalDatapadItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
-        tooltipConsumer.accept(Component.translatable("item.sandstorm.survival_datapad.desc"));
+        tooltipConsumer.accept(Component.translatable("item.sandstorm.survival_datapad.desc").withStyle(ChatFormatting.GRAY));
     }
 }

@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.item;
 
+import com.fhfelipefh.sandstorm.content.effect.SonicBlastVisualEffect;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.network.chat.Component;
@@ -39,7 +40,6 @@ public class SonicCannonItem extends Item {
         if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
             Vec3 eyePos = player.getEyePosition();
             Vec3 lookVec = player.getLookAngle();
-            Vec3 targetCenter = eyePos.add(lookVec.scale(CANNON_RANGE / 2.0));
             AABB effectBounds = new AABB(eyePos, eyePos.add(lookVec.scale(CANNON_RANGE))).inflate(4.0);
 
             List<LivingEntity> enemies = serverLevel.getEntitiesOfClass(LivingEntity.class, effectBounds, entity ->
@@ -52,6 +52,7 @@ public class SonicCannonItem extends Item {
                 enemy.setDeltaMovement(knockback.x, 0.4, knockback.z);
             }
 
+            SonicBlastVisualEffect.spawnSonicBlast(serverLevel, player, CANNON_RANGE);
             serverLevel.playSound(null, player.blockPosition(), SandStormSoundEvents.SONIC_CANNON_BLAST, SoundSource.PLAYERS, 1.2f, 1.2f);
 
             if (player instanceof ServerPlayer serverPlayer) {

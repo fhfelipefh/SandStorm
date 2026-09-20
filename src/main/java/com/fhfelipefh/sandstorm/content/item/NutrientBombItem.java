@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.content.entity.NutrientBombEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -51,6 +52,7 @@ public class NutrientBombItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
-        tooltipConsumer.accept(Component.translatable("item.sandstorm.nutrient_bomb.desc"));
+        tooltipConsumer.accept(Component.translatable("item.sandstorm.nutrient_bomb.desc_1").withStyle(ChatFormatting.GRAY));
+        tooltipConsumer.accept(Component.translatable("item.sandstorm.nutrient_bomb.desc_2").withStyle(ChatFormatting.GRAY));
     }
 }
