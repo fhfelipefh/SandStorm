@@ -49,6 +49,12 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(4.0f)
                     .sound(SoundType.NETHERITE_BLOCK)));
+    public static final FluidPipeBlock FLUID_PIPE = register("fluid_pipe",
+            new FluidPipeBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fluid_pipe")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(1.5f)
+                    .sound(SoundType.METAL)));
     public static final BuriedTechRuinsBlock BURIED_TECH_RUINS = register("buried_tech_ruins",
             new BuriedTechRuinsBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("buried_tech_ruins")))

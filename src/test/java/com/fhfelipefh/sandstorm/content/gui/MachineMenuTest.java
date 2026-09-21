@@ -60,11 +60,11 @@ class MachineMenuTest {
     @Test
     void shouldCreateDesalinationFilterMenuAndVerifySlots() {
         Inventory playerInv = new Inventory(null, null);
-        SimpleContainer container = new SimpleContainer(4);
-        SimpleContainerData data = new SimpleContainerData(6);
+        SimpleContainer container = new SimpleContainer(5);
+        SimpleContainerData data = new SimpleContainerData(10);
 
         DesalinationFilterMenu menu = new DesalinationFilterMenu(null, 1, playerInv, container, data);
-        assertEquals(40, menu.slots.size());
+        assertEquals(41, menu.slots.size());
         assertFalse(menu.slots.get(1).mayPlace(ItemStack.EMPTY));
         assertFalse(menu.slots.get(2).mayPlace(ItemStack.EMPTY));
     }

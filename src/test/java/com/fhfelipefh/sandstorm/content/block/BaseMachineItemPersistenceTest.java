@@ -51,7 +51,7 @@ class BaseMachineItemPersistenceTest {
     @Test
     void shouldInitializeDesalinationFilterWithCorrectSlotsAndState() {
         DesalinationFilterBlockEntity be = new DesalinationFilterBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
-        assertEquals(4, be.getContainerSize());
+        assertEquals(5, be.getContainerSize());
         assertTrue(be.isEmpty());
         assertEquals(0, be.getEnergy());
         assertEquals(0, be.getProgress());
@@ -73,9 +73,9 @@ class BaseMachineItemPersistenceTest {
         assertEquals(2, fabricator.getSlotsForFace(Direction.DOWN).length);
         assertEquals(4, fabricator.getSlotsForFace(Direction.NORTH).length);
 
-        assertEquals(2, filter.getSlotsForFace(Direction.UP).length);
+        assertEquals(3, filter.getSlotsForFace(Direction.UP).length);
         assertEquals(3, filter.getSlotsForFace(Direction.DOWN).length);
-        assertEquals(4, filter.getSlotsForFace(Direction.NORTH).length);
+        assertEquals(5, filter.getSlotsForFace(Direction.NORTH).length);
     }
 
     @Test

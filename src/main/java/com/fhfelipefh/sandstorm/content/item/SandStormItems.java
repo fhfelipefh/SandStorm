@@ -45,6 +45,8 @@ public class SandStormItems {
     public static final AtmosphericAnalyzerItem ATMOSPHERIC_ANALYZER = register("atmospheric_analyzer", new AtmosphericAnalyzerItem(properties("atmospheric_analyzer")));
     public static final SurvivalDatapadItem SURVIVAL_DATAPAD = register("survival_datapad", new SurvivalDatapadItem(properties("survival_datapad").rarity(Rarity.RARE).stacksTo(1)));
     public static final NutrientBombItem NUTRIENT_BOMB = register("nutrient_bomb", new NutrientBombItem(properties("nutrient_bomb").stacksTo(16)));
+    public static final FilterCartridgeItem FILTER_CARTRIDGE = register("filter_cartridge", new FilterCartridgeItem(properties("filter_cartridge").durability(1000).rarity(Rarity.UNCOMMON)));
+    public static final TechBucketItem TECH_BUCKET = register("tech_bucket", new TechBucketItem(properties("tech_bucket").stacksTo(1).rarity(Rarity.RARE)));
     public static final SpawnEggItem SANDWORM_SPAWN_EGG = register("sandworm_spawn_egg", new SpawnEggItem(properties("sandworm_spawn_egg").spawnEgg(SandStormEntities.SANDWORM)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
@@ -67,6 +69,8 @@ public class SandStormItems {
                         entries.accept(SILICON_WAFER);
                         entries.accept(CIRCUIT_BOARD);
                         entries.accept(NANO_ACTUATOR);
+                        entries.accept(FILTER_CARTRIDGE);
+                        entries.accept(TECH_BUCKET);
                         entries.accept(ANOMALY_RADAR);
                         entries.accept(TECH_DISC);
                         entries.accept(SCRAP_METAL);
@@ -77,6 +81,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.PRINTER_3D);
                         entries.accept(SandStormBlocks.DESALINATION_FILTER);
                         entries.accept(SandStormBlocks.NANITE_FABRICATOR);
+                        entries.accept(SandStormBlocks.FLUID_PIPE);
                         entries.accept(SandStormBlocks.BURIED_TECH_RUINS);
                         entries.accept(SandStormBlocks.ANCIENT_DATA_CORE);
                         entries.accept(SandStormBlocks.DRONE_DOCK);

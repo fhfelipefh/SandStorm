@@ -12,27 +12,147 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
-    private static final int[] SLOTS_TOP = new int[]{0, 3};
+    private static final int[] SLOTS_TOP = new int[]{0, 3, 4};
     private static final int[] SLOTS_BOTTOM = new int[]{1, 2, 3};
-    private static final int[] SLOTS_SIDES = new int[]{0, 3, 1, 2};
+    private static final int[] SLOTS_SIDES = new int[]{0, 3, 1, 2, 4};
+
+    private int waterInput = 0;
+    private int waterOutput = 0;
+    private static final int MAX_WATER = 4000;
+
+    private final ContainerData desalinationDataAccess = new ContainerData() {
+        @Override
+        public int get(int index) {
+            return switch (index) {
+                case 0 -> energy;
+                case 1 -> maxEnergy;
+                case 2 -> progress;
+                case 3 -> maxProgress;
+                case 4 -> wptConnected ? 1 : 0;
+                case 5 -> isProcessing() ? 1 : 0;
+                case 6 -> waterInput;
+                case 7 -> waterOutput;
+                case 8 -> MAX_WATER;
+                case 9 -> hasFilterCartridge() ? 1 : 0;
+                default -> 0;
+            };
+        }
+
+        @Override
+        public void set(int index, int value) {
+            switch (index) {
+                case 0 -> energy = value;
+                case 1 -> maxEnergy = value;
+                case 2 -> progress = value;
+                case 3 -> maxProgress = value;
+                case 4 -> wptConnected = (value == 1);
+                case 6 -> waterInput = value;
+                case 7 -> waterOutput = value;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 10;
+        }
+    };
 
     public DesalinationFilterBlockEntity(BlockPos pos, BlockState state) {
         this(SandStormBlocks.DESALINATION_FILTER_BE, pos, state);
     }
 
     public DesalinationFilterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state, 4, 80);
+        super(type, pos, state, 5, 80);
+    }
+
+    public boolean addWaterInput(int amount) {
+        if (amount <= 0 || waterInput >= MAX_WATER) {
+            return false;
+        }
+        waterInput = Math.min(MAX_WATER, waterInput + amount);
+        setChanged();
+        return true;
+    }
+
+    public int getWaterInput() {
+        return waterInput;
+    }
+
+    public int getWaterOutput() {
+        return waterOutput;
+    }
+
+    public int getMaxWater() {
+        return MAX_WATER;
+    }
+
+    public int drainWaterOutput(int amount) {
+        if (amount <= 0 || waterOutput <= 0) {
+            return 0;
+        }
+        int drained = Math.min(waterOutput, amount);
+        waterOutput -= drained;
+        setChanged();
+        return drained;
+    }
+
+    public boolean hasFilterCartridge() {
+        return items.size() > 4 && !items.get(4).isEmpty() && items.get(4).is(SandStormItems.FILTER_CARTRIDGE);
+    }
+
+    @Override
+    public void serverTick(Level level, BlockPos pos, BlockState state) {
+        if (level != null && !level.isClientSide()) {
+            if (level.getGameTime() % 20 == 0 && waterInput + 1000 <= MAX_WATER) {
+                BlockState aboveState = level.getBlockState(pos.above());
+                if (aboveState.is(Blocks.WATER)) {
+                    if (aboveState.getFluidState().isSource()) {
+                        level.setBlock(pos.above(), Blocks.AIR.defaultBlockState(), 3);
+                    }
+                    addWaterInput(1000);
+                }
+            }
+
+            if (level.getGameTime() % 40 == 0 && waterInput + 25 <= MAX_WATER) {
+                for (int i = 1; i <= 5; i++) {
+                    BlockPos checkPos = pos.above(i);
+                    BlockState checkState = level.getBlockState(checkPos);
+                    if (checkState.is(Blocks.POINTED_DRIPSTONE)) {
+                        Direction tipDir = checkState.getValue(PointedDripstoneBlock.TIP_DIRECTION);
+                        if (tipDir == Direction.DOWN) {
+                            addWaterInput(25);
+                            break;
+                        }
+                    } else if (!checkState.isAir()) {
+                        break;
+                    }
+                }
+            }
+
+            if (canProcess() && hasFilterCartridge() && progress < maxProgress) {
+                progress++;
+            }
+        }
+
+        super.serverTick(level, pos, state);
     }
 
     @Override
     protected boolean canProcess() {
-        ItemStack in = items.get(0);
-        if (!in.is(SandStormItems.BRACKISH_WATER_BOTTLE)) {
+        boolean hasWater = waterInput >= 250 || items.get(0).is(SandStormItems.BRACKISH_WATER_BOTTLE);
+        if (!hasWater) {
             return false;
         }
         ItemStack outWater = items.get(1);
@@ -51,7 +171,12 @@ public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
         if (!canProcess()) {
             return;
         }
-        items.get(0).shrink(1);
+        if (waterInput >= 250) {
+            waterInput -= 250;
+        } else {
+            items.get(0).shrink(1);
+        }
+
         ItemStack outWater = items.get(1);
         if (outWater.isEmpty()) {
             items.set(1, new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE));
@@ -64,6 +189,16 @@ public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
             items.set(2, new ItemStack(SandStormItems.MINERAL_SALT, 2));
         } else {
             outSalt.grow(2);
+        }
+
+        waterOutput = Math.min(MAX_WATER, waterOutput + 250);
+
+        if (hasFilterCartridge()) {
+            ItemStack cartridge = items.get(4);
+            cartridge.setDamageValue(cartridge.getDamageValue() + 1);
+            if (cartridge.getDamageValue() >= cartridge.getMaxDamage()) {
+                items.set(4, ItemStack.EMPTY);
+            }
         }
     }
 
@@ -84,7 +219,7 @@ public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
 
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-        return new DesalinationFilterMenu(syncId, playerInventory, this, this.dataAccess);
+        return new DesalinationFilterMenu(syncId, playerInventory, this, this.desalinationDataAccess);
     }
 
     @Override
@@ -100,11 +235,17 @@ public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
         if (slot == 0) {
-            return stack.is(SandStormItems.BRACKISH_WATER_BOTTLE);
+            return stack.is(SandStormItems.BRACKISH_WATER_BOTTLE) || stack.is(Items.WATER_BUCKET);
         }
         if (slot == 3) {
             return getFuelEnergy(stack) > 0;
+        }
+        if (slot == 4) {
+            return stack.is(SandStormItems.FILTER_CARTRIDGE);
         }
         return false;
     }
@@ -125,5 +266,19 @@ public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
         return slot == 1 || slot == 2;
+    }
+
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putInt("waterInput", this.waterInput);
+        output.putInt("waterOutput", this.waterOutput);
+    }
+
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        this.waterInput = input.getIntOr("waterInput", 0);
+        this.waterOutput = input.getIntOr("waterOutput", 0);
     }
 }

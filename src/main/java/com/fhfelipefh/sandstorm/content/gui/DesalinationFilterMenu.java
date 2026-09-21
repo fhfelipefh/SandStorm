@@ -16,7 +16,7 @@ public class DesalinationFilterMenu extends AbstractContainerMenu implements Mac
     private final ContainerData data;
 
     public DesalinationFilterMenu(int syncId, Inventory playerInventory) {
-        this(SandStormMenus.DESALINATION_FILTER_MENU, syncId, playerInventory, new SimpleContainer(4), new SimpleContainerData(6));
+        this(SandStormMenus.DESALINATION_FILTER_MENU, syncId, playerInventory, new SimpleContainer(5), new SimpleContainerData(10));
     }
 
     public DesalinationFilterMenu(int syncId, Inventory playerInventory, Container container, ContainerData data) {
@@ -25,8 +25,8 @@ public class DesalinationFilterMenu extends AbstractContainerMenu implements Mac
 
     public DesalinationFilterMenu(MenuType<?> menuType, int syncId, Inventory playerInventory, Container container, ContainerData data) {
         super(menuType, syncId);
-        checkContainerSize(container, 4);
-        checkContainerDataCount(data, 6);
+        checkContainerSize(container, 5);
+        checkContainerDataCount(data, 10);
         this.container = container;
         this.data = data;
 
@@ -44,6 +44,7 @@ public class DesalinationFilterMenu extends AbstractContainerMenu implements Mac
             }
         });
         this.addSlot(new Slot(container, 3, 8, 48));
+        this.addSlot(new Slot(container, 4, 80, 58));
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
@@ -82,6 +83,23 @@ public class DesalinationFilterMenu extends AbstractContainerMenu implements Mac
         return data.get(5) == 1;
     }
 
+    public int getWaterInput() {
+        return data.get(6);
+    }
+
+    public int getWaterOutput() {
+        return data.get(7);
+    }
+
+    public int getMaxWater() {
+        int max = data.get(8);
+        return max > 0 ? max : 4000;
+    }
+
+    public boolean hasCartridge() {
+        return data.get(9) == 1;
+    }
+
     public int getEnergyScaled(int pixels) {
         int max = getMaxEnergy();
         return max > 0 ? (getEnergy() * pixels) / max : 0;
@@ -92,6 +110,14 @@ public class DesalinationFilterMenu extends AbstractContainerMenu implements Mac
         return max > 0 ? (getProgress() * pixels) / max : 0;
     }
 
+    public int getWaterInputScaled(int pixels) {
+        return (getWaterInput() * pixels) / getMaxWater();
+    }
+
+    public int getWaterOutputScaled(int pixels) {
+        return (getWaterOutput() * pixels) / getMaxWater();
+    }
+
     @Override
     public boolean stillValid(Player player) {
         return this.container.stillValid(player);
@@ -99,46 +125,45 @@ public class DesalinationFilterMenu extends AbstractContainerMenu implements Mac
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        ItemStack itemStack = ItemStack.EMPTY;
+        ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
-        if (slot.hasItem()) {
-            ItemStack stackInSlot = slot.getItem();
-            itemStack = stackInSlot.copy();
+        if (slot != null && slot.hasItem()) {
+            ItemStack originalStack = slot.getItem();
+            newStack = originalStack.copy();
 
             if (index == 1 || index == 2) {
-                if (!this.moveItemStackTo(stackInSlot, 4, 40, true)) {
+                if (!this.moveItemStackTo(originalStack, 5, 41, true)) {
                     return ItemStack.EMPTY;
                 }
-                slot.onQuickCraft(stackInSlot, itemStack);
-            } else if (index < 4) {
-                if (!this.moveItemStackTo(stackInSlot, 4, 40, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else {
-                if (!this.moveItemStackTo(stackInSlot, 0, 1, false)
-                        && !this.moveItemStackTo(stackInSlot, 3, 4, false)) {
-                    if (index < 31) {
-                        if (!this.moveItemStackTo(stackInSlot, 31, 40, false)) {
+                slot.onQuickCraft(originalStack, newStack);
+            } else if (index != 0 && index != 3 && index != 4) {
+                if (!this.moveItemStackTo(originalStack, 0, 1, false)
+                        && !this.moveItemStackTo(originalStack, 4, 5, false)
+                        && !this.moveItemStackTo(originalStack, 3, 4, false)) {
+                    if (index >= 5 && index < 32) {
+                        if (!this.moveItemStackTo(originalStack, 32, 41, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (!this.moveItemStackTo(stackInSlot, 4, 31, false)) {
+                    } else if (index >= 32 && index < 41 && !this.moveItemStackTo(originalStack, 5, 32, false)) {
                         return ItemStack.EMPTY;
                     }
                 }
+            } else if (!this.moveItemStackTo(originalStack, 5, 41, false)) {
+                return ItemStack.EMPTY;
             }
 
-            if (stackInSlot.isEmpty()) {
+            if (originalStack.isEmpty()) {
                 slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
             }
 
-            if (stackInSlot.getCount() == itemStack.getCount()) {
+            if (originalStack.getCount() == newStack.getCount()) {
                 return ItemStack.EMPTY;
             }
 
-            slot.onTake(player, stackInSlot);
+            slot.onTake(player, originalStack);
         }
-        return itemStack;
+        return newStack;
     }
 }
