@@ -6,6 +6,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -63,10 +64,12 @@ public class SandwormBiteAttackGoal extends Goal {
         double dx = target.getX() - this.sandworm.getX();
         double dz = target.getZ() - this.sandworm.getZ();
         float targetYaw = (float) (Math.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
-        this.sandworm.setYRot(targetYaw);
-        this.sandworm.setYHeadRot(targetYaw);
-        this.sandworm.setYBodyRot(targetYaw);
-        this.sandworm.getLookControl().setLookAt(target, 40.0f, 40.0f);
+        float currentYaw = this.sandworm.getYRot();
+        float newYaw = Mth.rotateIfNecessary(currentYaw, targetYaw, 3.5f);
+        this.sandworm.setYRot(newYaw);
+        this.sandworm.setYHeadRot(newYaw);
+        this.sandworm.setYBodyRot(newYaw);
+        this.sandworm.getLookControl().setLookAt(target, 15.0f, 15.0f);
 
         if (this.attackCooldown > 0) {
             this.attackCooldown--;
@@ -78,7 +81,7 @@ public class SandwormBiteAttackGoal extends Goal {
 
         if (distSqr <= reachSqr && this.attackCooldown <= 0) {
             this.performBiteAttack(target);
-            this.attackCooldown = 25;
+            this.attackCooldown = 35;
         }
 
         this.sandworm.decrementSurfaceTicks();

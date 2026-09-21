@@ -109,7 +109,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     }
 
     public void triggerBiteAnimation() {
-        this.entityData.set(DATA_BITE_TICKS, 16);
+        this.entityData.set(DATA_BITE_TICKS, 28);
     }
 
     public float getBreachAnimationProgress(float partialTick) {
@@ -125,7 +125,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         if (ticks <= 0) {
             return 0.0f;
         }
-        return Mth.clamp((16.0f - (ticks - partialTick)) / 16.0f, 0.0f, 1.0f);
+        return Mth.clamp((28.0f - (ticks - partialTick)) / 28.0f, 0.0f, 1.0f);
     }
 
     public void startSubmerging() {

@@ -25,16 +25,28 @@ class SandwormModelTest {
         ModelPart base = body.getChild("base");
         assertNotNull(base);
 
-        ModelPart segLower = base.getChild("segment_lower");
-        assertNotNull(segLower);
+        ModelPart seg1 = base.getChild("segment_1");
+        assertNotNull(seg1);
 
-        ModelPart segMid = segLower.getChild("segment_mid");
-        assertNotNull(segMid);
+        ModelPart seg2 = seg1.getChild("segment_2");
+        assertNotNull(seg2);
 
-        ModelPart segUpper = segMid.getChild("segment_upper");
-        assertNotNull(segUpper);
+        ModelPart seg3 = seg2.getChild("segment_3");
+        assertNotNull(seg3);
 
-        ModelPart neck = segUpper.getChild("neck");
+        ModelPart seg4 = seg3.getChild("segment_4");
+        assertNotNull(seg4);
+
+        ModelPart seg5 = seg4.getChild("segment_5");
+        assertNotNull(seg5);
+
+        ModelPart seg6 = seg5.getChild("segment_6");
+        assertNotNull(seg6);
+
+        ModelPart seg7 = seg6.getChild("segment_7");
+        assertNotNull(seg7);
+
+        ModelPart neck = seg7.getChild("neck");
         assertNotNull(neck);
 
         ModelPart head = neck.getChild("head");
@@ -70,17 +82,17 @@ class SandwormModelTest {
         ModelPart root = layer.bakeRoot();
         ModelPart body = root.getChild("body");
         ModelPart base = body.getChild("base");
-        ModelPart segLower = base.getChild("segment_lower");
-        ModelPart segMid = segLower.getChild("segment_mid");
-        ModelPart segUpper = segMid.getChild("segment_upper");
-        ModelPart neck = segUpper.getChild("neck");
+        ModelPart seg1 = base.getChild("segment_1");
+        ModelPart seg4 = seg1.getChild("segment_2").getChild("segment_3").getChild("segment_4");
+        ModelPart seg7 = seg4.getChild("segment_5").getChild("segment_6").getChild("segment_7");
+        ModelPart neck = seg7.getChild("neck");
         ModelPart head = neck.getChild("head");
 
         SandwormModel model = new SandwormModel(root);
         SandwormRenderState state = new SandwormRenderState();
         state.ageInTicks = 100.0f;
         state.hasTarget = true;
-        state.targetDistance = 8.0f;
+        state.targetDistance = 6.0f;
         state.targetRelativeYaw = 30.0f;
         state.biteProgress = 0.0f;
         state.breaching = false;
@@ -89,12 +101,12 @@ class SandwormModelTest {
         model.setupAnim(state);
 
         assertTrue(base.xRot > 0.0f);
-        assertTrue(segLower.xRot > 0.0f);
-        assertTrue(segMid.xRot > 0.0f);
-        assertTrue(segUpper.xRot > 0.0f);
+        assertTrue(seg1.xRot > 0.0f);
+        assertTrue(seg4.xRot > 0.0f);
+        assertTrue(seg7.xRot > 0.0f);
         assertTrue(neck.xRot > 0.0f);
         assertTrue(head.xRot > 0.0f);
-        assertTrue(segMid.yRot > 0.0f);
+        assertTrue(seg4.yRot > 0.0f);
     }
 
     @Test
@@ -103,10 +115,10 @@ class SandwormModelTest {
         ModelPart root = layer.bakeRoot();
         ModelPart body = root.getChild("body");
         ModelPart base = body.getChild("base");
-        ModelPart segLower = base.getChild("segment_lower");
-        ModelPart segMid = segLower.getChild("segment_mid");
-        ModelPart segUpper = segMid.getChild("segment_upper");
-        ModelPart neck = segUpper.getChild("neck");
+        ModelPart seg1 = base.getChild("segment_1");
+        ModelPart seg4 = seg1.getChild("segment_2").getChild("segment_3").getChild("segment_4");
+        ModelPart seg7 = seg4.getChild("segment_5").getChild("segment_6").getChild("segment_7");
+        ModelPart neck = seg7.getChild("neck");
         ModelPart head = neck.getChild("head");
         ModelPart teethOuter = head.getChild("teeth_outer");
         ModelPart teethMiddle = head.getChild("teeth_middle");
@@ -117,7 +129,7 @@ class SandwormModelTest {
         state.ageInTicks = 100.0f;
         state.hasTarget = true;
         state.targetDistance = 6.0f;
-        state.biteProgress = 0.55f;
+        state.biteProgress = 0.65f;
 
         model.setupAnim(state);
 
@@ -132,8 +144,8 @@ class SandwormModelTest {
         ModelPart root = layer.bakeRoot();
         ModelPart body = root.getChild("body");
         ModelPart base = body.getChild("base");
-        ModelPart segLower = base.getChild("segment_lower");
-        ModelPart segMid = segLower.getChild("segment_mid");
+        ModelPart seg1 = base.getChild("segment_1");
+        ModelPart seg4 = seg1.getChild("segment_2").getChild("segment_3").getChild("segment_4");
 
         SandwormModel model = new SandwormModel(root);
         SandwormRenderState state = new SandwormRenderState();
@@ -144,6 +156,6 @@ class SandwormModelTest {
         model.setupAnim(state);
 
         assertTrue(base.xRot > 1.2f);
-        assertTrue(Math.abs(segMid.yRot) > 0.0f);
+        assertTrue(Math.abs(seg4.yRot) > 0.0f);
     }
 }

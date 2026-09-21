@@ -13,9 +13,13 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
     private final ModelPart root;
     private final ModelPart body;
     private final ModelPart base;
-    private final ModelPart segmentLower;
-    private final ModelPart segmentMid;
-    private final ModelPart segmentUpper;
+    private final ModelPart seg1;
+    private final ModelPart seg2;
+    private final ModelPart seg3;
+    private final ModelPart seg4;
+    private final ModelPart seg5;
+    private final ModelPart seg6;
+    private final ModelPart seg7;
     private final ModelPart neck;
     private final ModelPart head;
     private final ModelPart teethOuter;
@@ -27,10 +31,14 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
         this.root = root;
         this.body = root.getChild("body");
         this.base = this.body.getChild("base");
-        this.segmentLower = this.base.getChild("segment_lower");
-        this.segmentMid = this.segmentLower.getChild("segment_mid");
-        this.segmentUpper = this.segmentMid.getChild("segment_upper");
-        this.neck = this.segmentUpper.getChild("neck");
+        this.seg1 = this.base.getChild("segment_1");
+        this.seg2 = this.seg1.getChild("segment_2");
+        this.seg3 = this.seg2.getChild("segment_3");
+        this.seg4 = this.seg3.getChild("segment_4");
+        this.seg5 = this.seg4.getChild("segment_5");
+        this.seg6 = this.seg5.getChild("segment_6");
+        this.seg7 = this.seg6.getChild("segment_7");
+        this.neck = this.seg7.getChild("neck");
         this.head = this.neck.getChild("head");
         this.teethOuter = this.head.getChild("teeth_outer");
         this.teethMiddle = this.head.getChild("teeth_middle");
@@ -44,34 +52,58 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
         PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0f, 24.0f, 0.0f));
 
         PartDefinition base = body.addOrReplaceChild("base", CubeListBuilder.create()
-                .texOffs(0, 0).addBox(-12.0f, -18.0f, -12.0f, 24.0f, 18.0f, 24.0f)
-                .texOffs(98, 0).addBox(-13.0f, -16.0f, -13.0f, 26.0f, 14.0f, 26.0f)
-                .texOffs(204, 0).addBox(-4.0f, -19.0f, -14.0f, 8.0f, 18.0f, 6.0f),
+                .texOffs(0, 0).addBox(-12.0f, -12.0f, -12.0f, 24.0f, 12.0f, 24.0f)
+                .texOffs(98, 0).addBox(-13.0f, -10.0f, -13.0f, 26.0f, 10.0f, 26.0f)
+                .texOffs(204, 0).addBox(-4.0f, -13.0f, -14.0f, 8.0f, 12.0f, 6.0f),
                 PartPose.offset(0.0f, 0.0f, 0.0f));
 
-        PartDefinition segLower = base.addOrReplaceChild("segment_lower", CubeListBuilder.create()
-                .texOffs(0, 44).addBox(-11.0f, -18.0f, -11.0f, 22.0f, 18.0f, 22.0f)
-                .texOffs(90, 44).addBox(-12.0f, -16.0f, -12.0f, 24.0f, 14.0f, 24.0f)
-                .texOffs(188, 44).addBox(-3.5f, -19.0f, -13.0f, 7.0f, 18.0f, 5.0f),
-                PartPose.offset(0.0f, -18.0f, -2.0f));
+        PartDefinition seg1 = base.addOrReplaceChild("segment_1", CubeListBuilder.create()
+                .texOffs(0, 20).addBox(-11.5f, -12.0f, -11.5f, 23.0f, 12.0f, 23.0f)
+                .texOffs(96, 20).addBox(-12.5f, -10.0f, -12.5f, 25.0f, 10.0f, 25.0f)
+                .texOffs(200, 20).addBox(-3.8f, -13.0f, -13.5f, 7.6f, 12.0f, 5.5f),
+                PartPose.offset(0.0f, -12.0f, -1.0f));
 
-        PartDefinition segMid = segLower.addOrReplaceChild("segment_mid", CubeListBuilder.create()
-                .texOffs(0, 86).addBox(-10.0f, -18.0f, -10.0f, 20.0f, 18.0f, 20.0f)
-                .texOffs(82, 86).addBox(-11.0f, -16.0f, -11.0f, 22.0f, 14.0f, 22.0f)
-                .texOffs(172, 86).addBox(-3.0f, -19.0f, -12.0f, 6.0f, 18.0f, 5.0f),
-                PartPose.offset(0.0f, -18.0f, -2.5f));
+        PartDefinition seg2 = seg1.addOrReplaceChild("segment_2", CubeListBuilder.create()
+                .texOffs(0, 40).addBox(-11.0f, -12.0f, -11.0f, 22.0f, 12.0f, 22.0f)
+                .texOffs(90, 40).addBox(-12.0f, -10.0f, -12.0f, 24.0f, 10.0f, 24.0f)
+                .texOffs(188, 40).addBox(-3.5f, -13.0f, -13.0f, 7.0f, 12.0f, 5.0f),
+                PartPose.offset(0.0f, -12.0f, -1.0f));
 
-        PartDefinition segUpper = segMid.addOrReplaceChild("segment_upper", CubeListBuilder.create()
-                .texOffs(0, 126).addBox(-9.0f, -18.0f, -9.0f, 18.0f, 18.0f, 18.0f)
-                .texOffs(74, 126).addBox(-10.0f, -16.0f, -10.0f, 20.0f, 14.0f, 20.0f)
-                .texOffs(156, 126).addBox(-2.5f, -19.0f, -11.0f, 5.0f, 18.0f, 4.0f),
-                PartPose.offset(0.0f, -18.0f, -2.5f));
+        PartDefinition seg3 = seg2.addOrReplaceChild("segment_3", CubeListBuilder.create()
+                .texOffs(0, 60).addBox(-10.5f, -12.0f, -10.5f, 21.0f, 12.0f, 21.0f)
+                .texOffs(86, 60).addBox(-11.5f, -10.0f, -11.5f, 23.0f, 10.0f, 23.0f)
+                .texOffs(180, 60).addBox(-3.2f, -13.0f, -12.5f, 6.4f, 12.0f, 5.0f),
+                PartPose.offset(0.0f, -12.0f, -1.2f));
 
-        PartDefinition neck = segUpper.addOrReplaceChild("neck", CubeListBuilder.create()
-                .texOffs(0, 164).addBox(-8.0f, -16.0f, -8.0f, 16.0f, 16.0f, 16.0f)
-                .texOffs(66, 164).addBox(-9.0f, -14.0f, -9.0f, 18.0f, 12.0f, 18.0f)
-                .texOffs(140, 164).addBox(-2.0f, -17.0f, -10.0f, 4.0f, 16.0f, 4.0f),
-                PartPose.offset(0.0f, -18.0f, -2.0f));
+        PartDefinition seg4 = seg3.addOrReplaceChild("segment_4", CubeListBuilder.create()
+                .texOffs(0, 80).addBox(-10.0f, -12.0f, -10.0f, 20.0f, 12.0f, 20.0f)
+                .texOffs(82, 80).addBox(-11.0f, -10.0f, -11.0f, 22.0f, 10.0f, 22.0f)
+                .texOffs(172, 80).addBox(-3.0f, -13.0f, -12.0f, 6.0f, 12.0f, 5.0f),
+                PartPose.offset(0.0f, -12.0f, -1.2f));
+
+        PartDefinition seg5 = seg4.addOrReplaceChild("segment_5", CubeListBuilder.create()
+                .texOffs(0, 100).addBox(-9.5f, -12.0f, -9.5f, 19.0f, 12.0f, 19.0f)
+                .texOffs(78, 100).addBox(-10.5f, -10.0f, -10.5f, 21.0f, 10.0f, 21.0f)
+                .texOffs(164, 100).addBox(-2.8f, -13.0f, -11.5f, 5.6f, 12.0f, 4.5f),
+                PartPose.offset(0.0f, -12.0f, -1.5f));
+
+        PartDefinition seg6 = seg5.addOrReplaceChild("segment_6", CubeListBuilder.create()
+                .texOffs(0, 120).addBox(-9.0f, -12.0f, -9.0f, 18.0f, 12.0f, 18.0f)
+                .texOffs(74, 120).addBox(-10.0f, -10.0f, -10.0f, 20.0f, 10.0f, 20.0f)
+                .texOffs(156, 120).addBox(-2.5f, -13.0f, -11.0f, 5.0f, 12.0f, 4.0f),
+                PartPose.offset(0.0f, -12.0f, -1.5f));
+
+        PartDefinition seg7 = seg6.addOrReplaceChild("segment_7", CubeListBuilder.create()
+                .texOffs(0, 140).addBox(-8.5f, -12.0f, -8.5f, 17.0f, 12.0f, 17.0f)
+                .texOffs(70, 140).addBox(-9.5f, -10.0f, -9.5f, 19.0f, 10.0f, 19.0f)
+                .texOffs(148, 140).addBox(-2.2f, -13.0f, -10.5f, 4.4f, 12.0f, 4.0f),
+                PartPose.offset(0.0f, -12.0f, -1.5f));
+
+        PartDefinition neck = seg7.addOrReplaceChild("neck", CubeListBuilder.create()
+                .texOffs(0, 160).addBox(-8.0f, -12.0f, -8.0f, 16.0f, 12.0f, 16.0f)
+                .texOffs(66, 160).addBox(-9.0f, -10.0f, -9.0f, 18.0f, 10.0f, 18.0f)
+                .texOffs(140, 160).addBox(-2.0f, -13.0f, -10.0f, 4.0f, 12.0f, 4.0f),
+                PartPose.offset(0.0f, -12.0f, -1.5f));
 
         PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create()
                 .texOffs(0, 198).addBox(-7.0f, -10.0f, -10.0f, 14.0f, 4.0f, 6.0f)
@@ -83,7 +115,7 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
                 .texOffs(128, 198).addBox(-9.0f, 4.0f, -9.5f, 5.0f, 5.0f, 5.0f)
                 .texOffs(128, 198).addBox(4.0f, 4.0f, -9.5f, 5.0f, 5.0f, 5.0f)
                 .texOffs(0, 220).addBox(-7.0f, -7.0f, -6.0f, 14.0f, 14.0f, 10.0f),
-                PartPose.offset(0.0f, -16.0f, -2.0f));
+                PartPose.offset(0.0f, -12.0f, -2.0f));
 
         PartDefinition teethOuter = head.addOrReplaceChild("teeth_outer", CubeListBuilder.create()
                 .texOffs(180, 160).addBox(-1.0f, -7.0f, -8.5f, 2.0f, 3.0f, 2.0f)
@@ -142,66 +174,103 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
         float slither = 1.0f - rearing;
         float phase = state.slitherProgress;
 
-        float slitherBasePitch = 1.38f + Mth.cos(phase) * 0.06f;
-        float slitherBaseYaw = Mth.sin(phase) * 0.40f;
+        float slitherBasePitch = 1.40f + Mth.cos(phase) * 0.04f;
+        float slitherBaseYaw = Mth.sin(phase) * 0.35f;
 
-        float slitherSegLowerPitch = 0.04f + Mth.cos(phase - 0.7f) * 0.08f;
-        float slitherSegLowerYaw = Mth.sin(phase - 0.7f) * 0.50f;
+        float slitherSeg1Pitch = 0.02f + Mth.cos(phase - 0.5f) * 0.05f;
+        float slitherSeg1Yaw = Mth.sin(phase - 0.5f) * 0.42f;
 
-        float slitherSegMidPitch = 0.04f + Mth.cos(phase - 1.4f) * 0.10f;
-        float slitherSegMidYaw = Mth.sin(phase - 1.4f) * 0.55f;
+        float slitherSeg2Pitch = 0.02f + Mth.cos(phase - 1.0f) * 0.06f;
+        float slitherSeg2Yaw = Mth.sin(phase - 1.0f) * 0.48f;
 
-        float slitherSegUpperPitch = -0.05f + Mth.cos(phase - 2.1f) * 0.10f;
-        float slitherSegUpperYaw = Mth.sin(phase - 2.1f) * 0.50f;
+        float slitherSeg3Pitch = 0.02f + Mth.cos(phase - 1.5f) * 0.06f;
+        float slitherSeg3Yaw = Mth.sin(phase - 1.5f) * 0.52f;
 
-        float slitherNeckPitch = -0.22f + Mth.cos(phase - 2.8f) * 0.08f;
-        float slitherNeckYaw = Mth.sin(phase - 2.8f) * 0.40f;
+        float slitherSeg4Pitch = 0.02f + Mth.cos(phase - 2.0f) * 0.06f;
+        float slitherSeg4Yaw = Mth.sin(phase - 2.0f) * 0.54f;
 
-        float slitherHeadPitch = -0.30f;
-        float slitherHeadYaw = Mth.sin(phase - 3.5f) * 0.30f;
+        float slitherSeg5Pitch = -0.02f + Mth.cos(phase - 2.5f) * 0.06f;
+        float slitherSeg5Yaw = Mth.sin(phase - 2.5f) * 0.52f;
+
+        float slitherSeg6Pitch = -0.03f + Mth.cos(phase - 3.0f) * 0.06f;
+        float slitherSeg6Yaw = Mth.sin(phase - 3.0f) * 0.48f;
+
+        float slitherSeg7Pitch = -0.04f + Mth.cos(phase - 3.5f) * 0.05f;
+        float slitherSeg7Yaw = Mth.sin(phase - 3.5f) * 0.42f;
+
+        float slitherNeckPitch = -0.15f + Mth.cos(phase - 4.0f) * 0.04f;
+        float slitherNeckYaw = Mth.sin(phase - 4.0f) * 0.35f;
+
+        float slitherHeadPitch = -0.25f;
+        float slitherHeadYaw = Mth.sin(phase - 4.5f) * 0.28f;
 
         float totalPitch;
         if (state.hasTarget) {
-            float distNorm = Mth.clamp((state.targetDistance - 4.0f) / 20.0f, 0.0f, 1.0f);
-            totalPitch = Mth.lerp(distNorm, 1.40f, 0.85f);
+            float distNorm = Mth.clamp((state.targetDistance - 3.0f) / 20.0f, 0.0f, 1.0f);
+            totalPitch = Mth.lerp(distNorm, 2.05f, 1.15f);
         } else {
-            totalPitch = 0.70f;
+            totalPitch = 0.95f;
         }
 
-        float w0 = Mth.sin(age * 0.06f) * 0.03f;
-        float w1 = Mth.sin(age * 0.06f - 0.4f) * 0.035f;
-        float w2 = Mth.sin(age * 0.06f - 0.8f) * 0.04f;
-        float w3 = Mth.sin(age * 0.06f - 1.2f) * 0.045f;
-        float w4 = Mth.sin(age * 0.06f - 1.6f) * 0.05f;
-        float w5 = Mth.sin(age * 0.06f - 2.0f) * 0.06f;
+        float w0 = Mth.sin(age * 0.035f) * 0.02f;
+        float w1 = Mth.sin(age * 0.035f - 0.3f) * 0.025f;
+        float w2 = Mth.sin(age * 0.035f - 0.6f) * 0.025f;
+        float w3 = Mth.sin(age * 0.035f - 0.9f) * 0.03f;
+        float w4 = Mth.sin(age * 0.035f - 1.2f) * 0.03f;
+        float w5 = Mth.sin(age * 0.035f - 1.5f) * 0.03f;
+        float w6 = Mth.sin(age * 0.035f - 1.8f) * 0.03f;
+        float w7 = Mth.sin(age * 0.035f - 2.1f) * 0.03f;
+        float w8 = Mth.sin(age * 0.035f - 2.4f) * 0.035f;
+        float w9 = Mth.sin(age * 0.035f - 2.7f) * 0.04f;
 
-        float rearBasePitch = (totalPitch * 0.08f) + w0;
-        float rearSegLowerPitch = (totalPitch * 0.16f) + w1;
-        float rearSegMidPitch = (totalPitch * 0.22f) + w2;
-        float rearSegUpperPitch = (totalPitch * 0.24f) + w3;
-        float rearNeckPitch = (totalPitch * 0.18f) + w4;
-        float rearHeadPitch = (totalPitch * 0.12f) + w5;
+        float rearBasePitch = (totalPitch * 0.06f) + w0;
+        float rearSeg1Pitch = (totalPitch * 0.08f) + w1;
+        float rearSeg2Pitch = (totalPitch * 0.11f) + w2;
+        float rearSeg3Pitch = (totalPitch * 0.13f) + w3;
+        float rearSeg4Pitch = (totalPitch * 0.14f) + w4;
+        float rearSeg5Pitch = (totalPitch * 0.14f) + w5;
+        float rearSeg6Pitch = (totalPitch * 0.13f) + w6;
+        float rearSeg7Pitch = (totalPitch * 0.10f) + w7;
+        float rearNeckPitch = (totalPitch * 0.06f) + w8;
+        float rearHeadPitch = (totalPitch * 0.05f) + w9;
 
         float relYawRad = Mth.clamp(state.targetRelativeYaw * (float) (Math.PI / 180.0), -1.2f, 1.2f);
-        float sway = Mth.cos(age * 0.04f) * 0.03f;
-        float rearBaseYaw = (relYawRad * 0.10f) + sway * 0.3f;
-        float rearSegLowerYaw = (relYawRad * 0.15f) + sway * 0.6f;
-        float rearSegMidYaw = (relYawRad * 0.22f) + sway * 0.9f;
-        float rearSegUpperYaw = (relYawRad * 0.25f) + sway * 1.2f;
-        float rearNeckYaw = (relYawRad * 0.18f) + sway * 1.5f;
-        float rearHeadYaw = (relYawRad * 0.10f) + sway * 1.8f;
+        float sway = Mth.cos(age * 0.025f) * 0.025f;
+
+        float rearBaseYaw = (relYawRad * 0.06f) + sway * 0.2f;
+        float rearSeg1Yaw = (relYawRad * 0.08f) + sway * 0.4f;
+        float rearSeg2Yaw = (relYawRad * 0.11f) + sway * 0.6f;
+        float rearSeg3Yaw = (relYawRad * 0.13f) + sway * 0.8f;
+        float rearSeg4Yaw = (relYawRad * 0.14f) + sway * 1.0f;
+        float rearSeg5Yaw = (relYawRad * 0.14f) + sway * 1.2f;
+        float rearSeg6Yaw = (relYawRad * 0.13f) + sway * 1.4f;
+        float rearSeg7Yaw = (relYawRad * 0.10f) + sway * 1.6f;
+        float rearNeckYaw = (relYawRad * 0.06f) + sway * 1.8f;
+        float rearHeadYaw = (relYawRad * 0.05f) + sway * 2.0f;
 
         this.base.xRot = Mth.lerp(slither, rearBasePitch, slitherBasePitch);
         this.base.yRot = Mth.lerp(slither, rearBaseYaw, slitherBaseYaw);
 
-        this.segmentLower.xRot = Mth.lerp(slither, rearSegLowerPitch, slitherSegLowerPitch);
-        this.segmentLower.yRot = Mth.lerp(slither, rearSegLowerYaw, slitherSegLowerYaw);
+        this.seg1.xRot = Mth.lerp(slither, rearSeg1Pitch, slitherSeg1Pitch);
+        this.seg1.yRot = Mth.lerp(slither, rearSeg1Yaw, slitherSeg1Yaw);
 
-        this.segmentMid.xRot = Mth.lerp(slither, rearSegMidPitch, slitherSegMidPitch);
-        this.segmentMid.yRot = Mth.lerp(slither, rearSegMidYaw, slitherSegMidYaw);
+        this.seg2.xRot = Mth.lerp(slither, rearSeg2Pitch, slitherSeg2Pitch);
+        this.seg2.yRot = Mth.lerp(slither, rearSeg2Yaw, slitherSeg2Yaw);
 
-        this.segmentUpper.xRot = Mth.lerp(slither, rearSegUpperPitch, slitherSegUpperPitch);
-        this.segmentUpper.yRot = Mth.lerp(slither, rearSegUpperYaw, slitherSegUpperYaw);
+        this.seg3.xRot = Mth.lerp(slither, rearSeg3Pitch, slitherSeg3Pitch);
+        this.seg3.yRot = Mth.lerp(slither, rearSeg3Yaw, slitherSeg3Yaw);
+
+        this.seg4.xRot = Mth.lerp(slither, rearSeg4Pitch, slitherSeg4Pitch);
+        this.seg4.yRot = Mth.lerp(slither, rearSeg4Yaw, slitherSeg4Yaw);
+
+        this.seg5.xRot = Mth.lerp(slither, rearSeg5Pitch, slitherSeg5Pitch);
+        this.seg5.yRot = Mth.lerp(slither, rearSeg5Yaw, slitherSeg5Yaw);
+
+        this.seg6.xRot = Mth.lerp(slither, rearSeg6Pitch, slitherSeg6Pitch);
+        this.seg6.yRot = Mth.lerp(slither, rearSeg6Yaw, slitherSeg6Yaw);
+
+        this.seg7.xRot = Mth.lerp(slither, rearSeg7Pitch, slitherSeg7Pitch);
+        this.seg7.yRot = Mth.lerp(slither, rearSeg7Yaw, slitherSeg7Yaw);
 
         this.neck.xRot = Mth.lerp(slither, rearNeckPitch, slitherNeckPitch);
         this.neck.yRot = Mth.lerp(slither, rearNeckYaw, slitherNeckYaw);
@@ -211,9 +280,13 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
 
         if (state.breaching) {
             this.base.xRot *= state.breachProgress;
-            this.segmentLower.xRot *= state.breachProgress;
-            this.segmentMid.xRot *= state.breachProgress;
-            this.segmentUpper.xRot *= state.breachProgress;
+            this.seg1.xRot *= state.breachProgress;
+            this.seg2.xRot *= state.breachProgress;
+            this.seg3.xRot *= state.breachProgress;
+            this.seg4.xRot *= state.breachProgress;
+            this.seg5.xRot *= state.breachProgress;
+            this.seg6.xRot *= state.breachProgress;
+            this.seg7.xRot *= state.breachProgress;
             this.neck.xRot *= state.breachProgress;
             this.head.xRot *= state.breachProgress;
         }
@@ -221,23 +294,25 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
         if (state.biteProgress > 0.0f) {
             float p = state.biteProgress;
             float strikeCurve;
-            if (p < 0.35f) {
-                strikeCurve = -Mth.sin(p / 0.35f * (float) (Math.PI * 0.5)) * 0.20f;
+            if (p < 0.40f) {
+                strikeCurve = -Mth.sin(p / 0.40f * (float) (Math.PI * 0.5)) * 0.22f;
             } else {
-                strikeCurve = Mth.sin((p - 0.35f) / 0.65f * (float) Math.PI) * 0.75f;
+                strikeCurve = Mth.sin((p - 0.40f) / 0.60f * (float) Math.PI) * 0.85f;
             }
-            this.segmentLower.xRot += strikeCurve * 0.15f;
-            this.segmentMid.xRot += strikeCurve * 0.30f;
-            this.segmentUpper.xRot += strikeCurve * 0.45f;
-            this.neck.xRot += strikeCurve * 0.55f;
-            this.head.xRot += strikeCurve * 0.65f;
+            this.seg3.xRot += strikeCurve * 0.10f;
+            this.seg4.xRot += strikeCurve * 0.15f;
+            this.seg5.xRot += strikeCurve * 0.20f;
+            this.seg6.xRot += strikeCurve * 0.25f;
+            this.seg7.xRot += strikeCurve * 0.28f;
+            this.neck.xRot += strikeCurve * 0.32f;
+            this.head.xRot += strikeCurve * 0.38f;
 
             float teethSnap = Mth.sin(p * (float) Math.PI);
-            this.teethOuter.z = teethSnap * -3.0f;
-            this.teethMiddle.z = teethSnap * -4.0f;
-            this.teethInner.z = teethSnap * -5.0f;
-            this.teethOuter.xRot = teethSnap * 0.15f;
-            this.teethMiddle.xRot = -teethSnap * 0.15f;
+            this.teethOuter.z = teethSnap * -3.5f;
+            this.teethMiddle.z = teethSnap * -4.5f;
+            this.teethInner.z = teethSnap * -5.5f;
+            this.teethOuter.xRot = teethSnap * 0.18f;
+            this.teethMiddle.xRot = -teethSnap * 0.18f;
         } else {
             this.teethOuter.z = 0.0f;
             this.teethMiddle.z = 0.0f;

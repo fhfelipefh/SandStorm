@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.entity.ai;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
@@ -46,7 +47,7 @@ public class SandwormSlitherChaseGoal extends Goal {
     public void start() {
         LivingEntity target = this.sandworm.getTarget();
         if (target != null) {
-            this.sandworm.getNavigation().moveTo(target, 1.45);
+            this.sandworm.getNavigation().moveTo(target, 1.10);
         }
     }
 
@@ -57,9 +58,17 @@ public class SandwormSlitherChaseGoal extends Goal {
             return;
         }
 
-        this.sandworm.getNavigation().moveTo(target, 1.45);
-        this.sandworm.getLookControl().setLookAt(target, 30.0f, 30.0f);
-        this.sandworm.setRearingProgress(Math.max(0.0f, this.sandworm.getRearingProgress() - 0.08f));
+        this.sandworm.getNavigation().moveTo(target, 1.10);
+        double dx = target.getX() - this.sandworm.getX();
+        double dz = target.getZ() - this.sandworm.getZ();
+        float targetYaw = (float) (Math.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
+        float currentYaw = this.sandworm.getYRot();
+        float newYaw = Mth.rotateIfNecessary(currentYaw, targetYaw, 3.5f);
+        this.sandworm.setYRot(newYaw);
+        this.sandworm.setYHeadRot(newYaw);
+        this.sandworm.setYBodyRot(newYaw);
+        this.sandworm.getLookControl().setLookAt(target, 15.0f, 15.0f);
+        this.sandworm.setRearingProgress(Math.max(0.0f, this.sandworm.getRearingProgress() - 0.05f));
 
         if (this.sandworm.tickCount % 40 == 0 && !this.sandworm.level().isClientSide()) {
             this.sandworm.level().playSound(
