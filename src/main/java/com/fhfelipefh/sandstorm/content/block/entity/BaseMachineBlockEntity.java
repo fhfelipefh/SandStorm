@@ -81,6 +81,10 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
         return energy;
     }
 
+    public int getMaxEnergy() {
+        return maxEnergy;
+    }
+
     public int getProgress() {
         return progress;
     }
