@@ -1,11 +1,19 @@
 package com.fhfelipefh.sandstorm.content.survival;
 
+import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.Bootstrap;
+import net.minecraft.util.datafix.DataFixers;
+import net.minecraft.world.level.saveddata.SavedDataType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +28,37 @@ class PlayerSuitSavedDataTest {
     static void setup() {
         SharedConstants.tryDetectVersion();
         Bootstrap.bootStrap();
+    }
+
+    @Test
+    void shouldPersistAndReloadFromSavedDataStorage() {
+        try {
+            Path tempDir = Files.createTempDirectory("sds_test");
+            Class<?> sdsClass = Class.forName("net.minecraft.world.level.storage.SavedDataStorage");
+            var ctor = sdsClass.getDeclaredConstructor(Path.class, DataFixer.class, HolderLookup.Provider.class);
+            ctor.setAccessible(true);
+            var registries = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+            Object sds = ctor.newInstance(tempDir, DataFixers.getDataFixer(), registries);
+
+            var computeMethod = sdsClass.getDeclaredMethod("computeIfAbsent", SavedDataType.class);
+            computeMethod.setAccessible(true);
+            PlayerSuitSavedData data = (PlayerSuitSavedData) computeMethod.invoke(sds, PlayerSuitSavedData.TYPE);
+            UUID testPlayer = UUID.randomUUID();
+            data.setSuitData(testPlayer, 77777L, 37.0);
+
+            var saveMethod = sdsClass.getDeclaredMethod("saveAndJoin");
+            saveMethod.setAccessible(true);
+            saveMethod.invoke(sds);
+
+            Object sds2 = ctor.newInstance(tempDir, DataFixers.getDataFixer(), registries);
+            PlayerSuitSavedData loaded = (PlayerSuitSavedData) computeMethod.invoke(sds2, PlayerSuitSavedData.TYPE);
+            PlayerSuitSavedData.Entry entry = loaded.getSuitData(testPlayer);
+            assertNotNull(entry);
+            assertEquals(77777L, entry.energy());
+            assertEquals(37.0, entry.temperature(), 0.001);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

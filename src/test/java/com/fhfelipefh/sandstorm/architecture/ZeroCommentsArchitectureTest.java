@@ -20,6 +20,7 @@ class ZeroCommentsArchitectureTest {
     void allSourceFilesMustHaveZeroComments() throws IOException {
         List<String> violations = new ArrayList<>();
         checkDirectory(Path.of("src", "main", "java"), violations);
+        checkDirectory(Path.of("src", "client", "java"), violations);
         checkDirectory(Path.of("src", "test", "java"), violations);
 
         assertTrue(violations.isEmpty(), "Found prohibited comments in Java files:\n" + String.join("\n", violations));

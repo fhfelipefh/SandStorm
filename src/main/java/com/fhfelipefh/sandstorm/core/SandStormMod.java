@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.core;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.command.SandwormShowcaseCommand;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
@@ -67,6 +68,7 @@ public class SandStormMod implements ModInitializer {
         DimensionPortalRestrictionHandler.initialize();
         NutrientTerraformingManager.initialize();
         QuestRewardHandler.initialize();
+        SandwormShowcaseCommand.initialize();
     }
 
     public static Identifier id(String path) {

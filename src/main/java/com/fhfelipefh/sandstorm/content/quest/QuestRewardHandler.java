@@ -123,7 +123,7 @@ public class QuestRewardHandler {
                 return true;
             }
             if ("sandstorm.battery_60".equals(quest.conditionTag())) {
-                SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
+                SuitPowerComponent suit = (player instanceof ServerPlayer sp) ? SuitSurvivalHandler.getOrCreateSuit(sp) : SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
                 if (suit.getEnergyStorage().getStoredEnergy() >= suit.getEnergyStorage().getCapacity() * 0.6) {
                     player.addTag("sandstorm.battery_60");
                     return true;

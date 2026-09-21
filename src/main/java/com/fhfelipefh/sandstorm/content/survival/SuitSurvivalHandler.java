@@ -28,15 +28,20 @@ public class SuitSurvivalHandler {
     private record LastSyncState(long energy, long capacity, double temperature, int armorCount, int tick) {}
     private static final Map<UUID, SuitPowerComponent> PLAYER_SUIT_MAP = new ConcurrentHashMap<>();
     private static final Map<UUID, LastSyncState> LAST_SYNC_MAP = new ConcurrentHashMap<>();
+    private static MinecraftServer currentServer;
 
     public static void initialize() {
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> currentServer = server);
+
         ServerTickEvents.END_SERVER_TICK.register(server -> {
+            currentServer = server;
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 handlePlayerTick(player);
             }
         });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            currentServer = server;
             ServerPlayer player = handler.getPlayer();
             if (player != null) {
                 SuitPowerComponent suit = getOrCreateSuit(player);
@@ -61,17 +66,19 @@ public class SuitSurvivalHandler {
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
             ServerPlayer player = handler.getPlayer();
             if (player != null) {
-                savePlayerSuit(player);
+                savePlayerSuit(player, server);
                 removePlayer(player.getUUID());
             }
         });
 
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                savePlayerSuit(player);
+                savePlayerSuit(player, server);
             }
+            server.overworld().getDataStorage().saveAndJoin();
             PLAYER_SUIT_MAP.clear();
             LAST_SYNC_MAP.clear();
+            currentServer = null;
         });
     }
 
@@ -213,7 +220,20 @@ public class SuitSurvivalHandler {
     }
 
     public static SuitPowerComponent getOrCreateSuit(UUID playerUuid) {
-        return PLAYER_SUIT_MAP.computeIfAbsent(playerUuid, uuid -> new SuitPowerComponent());
+        SuitPowerComponent suit = PLAYER_SUIT_MAP.get(playerUuid);
+        if (suit == null) {
+            suit = new SuitPowerComponent();
+            if (currentServer != null) {
+                PlayerSuitSavedData data = PlayerSuitSavedData.get(currentServer);
+                PlayerSuitSavedData.Entry entry = data.getSuitData(playerUuid);
+                if (entry != null) {
+                    suit.getEnergyStorage().setStoredEnergy(entry.energy());
+                    suit.getThermal().setCurrentTemperature(entry.temperature());
+                }
+            }
+            PLAYER_SUIT_MAP.put(playerUuid, suit);
+        }
+        return suit;
     }
 
     public static SuitPowerComponent getOrCreateSuit(ServerPlayer player) {
@@ -221,7 +241,7 @@ public class SuitSurvivalHandler {
         SuitPowerComponent suit = PLAYER_SUIT_MAP.get(uuid);
         if (suit == null) {
             suit = new SuitPowerComponent();
-            MinecraftServer server = player.level().getServer();
+            MinecraftServer server = player.level().getServer() != null ? player.level().getServer() : currentServer;
             if (server != null) {
                 PlayerSuitSavedData data = PlayerSuitSavedData.get(server);
                 PlayerSuitSavedData.Entry entry = data.getSuitData(uuid);
@@ -235,18 +255,23 @@ public class SuitSurvivalHandler {
         return suit;
     }
 
-    public static void savePlayerSuit(ServerPlayer player) {
+    public static void savePlayerSuit(ServerPlayer player, MinecraftServer server) {
         SuitPowerComponent suit = PLAYER_SUIT_MAP.get(player.getUUID());
         if (suit != null) {
-            MinecraftServer server = player.level().getServer();
-            if (server != null) {
-                PlayerSuitSavedData.get(server).setSuitData(
+            MinecraftServer s = server != null ? server : (player.level().getServer() != null ? player.level().getServer() : currentServer);
+            if (s != null) {
+                PlayerSuitSavedData.get(s).setSuitData(
                         player.getUUID(),
                         suit.getEnergyStorage().getStoredEnergy(),
                         suit.getThermal().getCurrentTemperature()
                 );
+                s.overworld().getDataStorage().saveAndJoin();
             }
         }
+    }
+
+    public static void savePlayerSuit(ServerPlayer player) {
+        savePlayerSuit(player, null);
     }
 
     public static void removePlayer(UUID playerUuid) {

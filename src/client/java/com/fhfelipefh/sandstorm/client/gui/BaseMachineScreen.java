@@ -89,8 +89,8 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
             extractor.fill(sx, sy, sx + 16, sy + 16, bgColor);
         }
 
-        renderEnergyMeter(extractor, x + 10, y + 18, 12, 32);
-        renderProgressBar(extractor, x + 70, y + 33, 36, 12);
+        renderEnergyMeter(extractor, x + 8, y + 19, 16, 26);
+        renderProgressBar(extractor, x + 70, y + 39, 36, 12);
     }
 
     protected void renderEnergyMeter(GuiGraphicsExtractor extractor, int x, int y, int width, int height) {
@@ -127,7 +127,7 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         int x = this.leftPos;
         int y = this.topPos;
 
-        if (mouseX >= x + 10 && mouseX <= x + 22 && mouseY >= y + 18 && mouseY <= y + 50) {
+        if (mouseX >= x + 7 && mouseX <= x + 25 && mouseY >= y + 18 && mouseY <= y + 46) {
             String wptStatus = this.menu.isWptConnected()
                     ? "§a⚡ Rede WPT Conectada (Recarga Sem Fio Ativa)"
                     : "§c⚡ Sem Sinal WPT (Insira Baterias)";
@@ -139,7 +139,7 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
                     : "§7WPT Offline: Fora do Alcance da Transmissao";
             Component tooltip = Component.literal(wptStatus);
             extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
-        } else if (mouseX >= x + 70 && mouseX <= x + 106 && mouseY >= y + 33 && mouseY <= y + 45) {
+        } else if (mouseX >= x + 69 && mouseX <= x + 107 && mouseY >= y + 38 && mouseY <= y + 52) {
             int maxProg = this.menu.getMaxProgress();
             int pct = maxProg > 0 ? (this.menu.getProgress() * 100 / maxProg) : 0;
             String status = this.menu.isProcessing() ? " §a[PROCESSANDO]" : " §7[EM ESPERA]";

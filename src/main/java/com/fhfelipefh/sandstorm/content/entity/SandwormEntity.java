@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.entity.ai.SandwormBiteAttackGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormBreachGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormBurrowGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormSeismicTargetGoal;
+import com.fhfelipefh.sandstorm.content.entity.ai.SandwormShowcaseGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormSlitherChaseGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormState;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
@@ -47,9 +48,13 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     private static final EntityDataAccessor<Integer> DATA_BITE_TICKS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_REARING = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<BlockPos> DATA_STRIKE_POS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Boolean> DATA_SHOWCASE_MODE = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int surfaceTicks = 140;
     private int submergingTicks = 0;
+    private float groundSink = 0.4f;
+    private float groundSlopePitch = 0.0f;
+    private float groundSlopeRoll = 0.0f;
 
     public SandwormEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -75,6 +80,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         builder.define(DATA_BITE_TICKS, 0);
         builder.define(DATA_REARING, 1.0f);
         builder.define(DATA_STRIKE_POS, BlockPos.ZERO);
+        builder.define(DATA_SHOWCASE_MODE, false);
     }
 
     public SandwormState getSandwormState() {
@@ -268,20 +274,25 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
             this.entityData.set(DATA_BITE_TICKS, bite - 1);
         }
 
+        updateGroundTerrain();
+
         if (this.level().isClientSide()) {
+            spawnGroundAmbientParticles();
             return;
         }
 
-        LivingEntity currentTarget = this.getTarget();
-        if (currentTarget != null && !this.canAttack(currentTarget)) {
-            this.setTarget(null);
-            currentTarget = null;
-        }
+        if (!this.isShowcaseMode()) {
+            LivingEntity currentTarget = this.getTarget();
+            if (currentTarget != null && !this.canAttack(currentTarget)) {
+                this.setTarget(null);
+                currentTarget = null;
+            }
 
-        if (currentTarget == null && this.getSandwormState() == SandwormState.BURROWED) {
-            this.setSandwormState(SandwormState.SURFACED_ASSAULT);
-        } else if (currentTarget != null && this.getSandwormState() == SandwormState.SURFACED_ASSAULT && this.distanceToSqr(currentTarget) > 4096.0) {
-            this.startSubmerging();
+            if (currentTarget == null && this.getSandwormState() == SandwormState.BURROWED) {
+                this.setSandwormState(SandwormState.SURFACED_ASSAULT);
+            } else if (currentTarget != null && this.getSandwormState() == SandwormState.SURFACED_ASSAULT && this.distanceToSqr(currentTarget) > 4096.0) {
+                this.startSubmerging();
+            }
         }
 
         this.setJumping(false);
@@ -339,6 +350,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
 
     @Override
     protected void registerGoals() {
+        this.goalSelector.addGoal(0, new SandwormShowcaseGoal(this));
         this.goalSelector.addGoal(1, new SandwormBreachGoal(this));
         this.goalSelector.addGoal(2, new SandwormBiteAttackGoal(this));
         this.goalSelector.addGoal(3, new SandwormSlitherChaseGoal(this));
@@ -350,6 +362,9 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
 
     @Override
     public boolean canAttack(LivingEntity target) {
+        if (this.isShowcaseMode()) {
+            return false;
+        }
         if (!super.canAttack(target)) {
             return false;
         }
@@ -362,6 +377,10 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
 
     @Override
     public boolean isInvulnerableTo(ServerLevel level, DamageSource source) {
+        if (this.isShowcaseMode()) {
+            return true;
+        }
+
         if (source.is(DamageTypes.IN_WALL) ||
                 source.is(DamageTypes.FALL) ||
                 source.is(DamageTypes.DROWN)) {
@@ -405,5 +424,124 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     @Override
     protected SoundEvent getDeathSound() {
         return SandStormSoundEvents.SANDWORM_EMERGE;
+    }
+
+    private void updateGroundTerrain() {
+        if (this.getSandwormState() == SandwormState.BURROWED) {
+            this.groundSink = 0.0f;
+            this.groundSlopePitch = 0.0f;
+            this.groundSlopeRoll = 0.0f;
+            return;
+        }
+
+        double entityY = this.getY();
+        double minSurfaceY = entityY;
+        double northSurfaceY = entityY;
+        double southSurfaceY = entityY;
+        double eastSurfaceY = entityY;
+        double westSurfaceY = entityY;
+
+        double radius = 4.2;
+        int sampleCount = 8;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+        for (int i = 0; i < sampleCount; i++) {
+            double angle = (i / (double) sampleCount) * Math.PI * 2.0;
+            double sx = this.getX() + Math.cos(angle) * radius;
+            double sz = this.getZ() + Math.sin(angle) * radius;
+
+            pos.set(sx, entityY + 2, sz);
+            while (pos.getY() > entityY - 8 && this.level().getBlockState(pos).isAir()) {
+                pos.move(0, -1, 0);
+            }
+            double surfaceY = pos.getY() + 1.0;
+            if (surfaceY < minSurfaceY) {
+                minSurfaceY = surfaceY;
+            }
+
+            if (i == 0) {
+                eastSurfaceY = surfaceY;
+            } else if (i == 2) {
+                southSurfaceY = surfaceY;
+            } else if (i == 4) {
+                westSurfaceY = surfaceY;
+            } else if (i == 6) {
+                northSurfaceY = surfaceY;
+            }
+        }
+
+        double drop = entityY - minSurfaceY;
+        float targetSink = (float) Math.max(0.45, drop + 0.35);
+        this.groundSink = Mth.lerp(0.2f, this.groundSink, targetSink);
+
+        double slopeZ = (southSurfaceY - northSurfaceY) / (radius * 2.0);
+        double slopeX = (eastSurfaceY - westSurfaceY) / (radius * 2.0);
+        this.groundSlopePitch = Mth.lerp(0.15f, this.groundSlopePitch, (float) slopeZ);
+        this.groundSlopeRoll = Mth.lerp(0.15f, this.groundSlopeRoll, (float) slopeX);
+    }
+
+    private void spawnGroundAmbientParticles() {
+        if (this.getSandwormState() == SandwormState.BURROWED) {
+            return;
+        }
+
+        float baseRadius = 4.2f;
+        int count = this.getSandwormState() == SandwormState.BREACHING ? 10 : 5;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+        for (int i = 0; i < count; i++) {
+            float angle = this.random.nextFloat() * ((float) Math.PI * 2.0f);
+            double dist = baseRadius * (0.8 + this.random.nextFloat() * 0.4);
+            double px = this.getX() + Math.cos(angle) * dist;
+            double pz = this.getZ() + Math.sin(angle) * dist;
+
+            pos.set(px, this.getY() + 2, pz);
+            while (pos.getY() > this.getY() - 8 && this.level().getBlockState(pos).isAir()) {
+                pos.move(0, -1, 0);
+            }
+            double py = pos.getY() + 1.0;
+
+            double vx = (this.random.nextDouble() - 0.5) * 0.2;
+            double vy = this.random.nextDouble() * 0.18 + 0.04;
+            double vz = (this.random.nextDouble() - 0.5) * 0.2;
+
+            this.level().addParticle(
+                    new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()),
+                    px, py + 0.05, pz,
+                    vx, vy, vz
+            );
+
+            if (this.random.nextInt(3) == 0) {
+                this.level().addParticle(
+                        ParticleTypes.DUST_PLUME,
+                        px, py + 0.05, pz,
+                        vx * 0.3, 0.04, vz * 0.3
+                );
+            }
+        }
+    }
+
+    public float getGroundSink() {
+        return this.groundSink;
+    }
+
+    public float getGroundSlopePitch() {
+        return this.groundSlopePitch;
+    }
+
+    public float getGroundSlopeRoll() {
+        return this.groundSlopeRoll;
+    }
+
+    public boolean isShowcaseMode() {
+        return this.entityData.get(DATA_SHOWCASE_MODE);
+    }
+
+    public void setShowcaseMode(boolean showcase) {
+        this.entityData.set(DATA_SHOWCASE_MODE, showcase);
+        if (showcase) {
+            this.setPermanentlyInvulnerable(true);
+            this.setPersistenceRequired();
+        }
     }
 }

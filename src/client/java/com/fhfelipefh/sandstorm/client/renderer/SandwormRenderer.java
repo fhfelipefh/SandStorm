@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRenderState, SandwormModel> {
@@ -77,6 +78,9 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
         double speedSq = vel.x * vel.x + vel.z * vel.z;
         state.isSlithering = speedSq > 0.001 || state.rearingProgress < 0.85f;
         state.slitherProgress = (entity.tickCount + partialTick) * 0.10f;
+        state.groundSink = entity.getGroundSink();
+        state.groundSlopePitch = entity.getGroundSlopePitch();
+        state.groundSlopeRoll = entity.getGroundSlopeRoll();
     }
 
     @Override
@@ -89,5 +93,10 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
         super.scale(state, poseStack);
         float scaleFactor = 7.5f;
         poseStack.scale(scaleFactor, scaleFactor, scaleFactor);
+    }
+
+    @Override
+    protected AABB getBoundingBoxForCulling(SandwormEntity entity, float partialTick) {
+        return super.getBoundingBoxForCulling(entity, partialTick).inflate(25.0, 45.0, 25.0);
     }
 }

@@ -61,6 +61,15 @@ class SandwormModelTest {
         ModelPart teethInner = head.getChild("teeth_inner");
         assertNotNull(teethInner);
 
+        ModelPart subRing1 = base.getChild("sub_ring_1");
+        assertNotNull(subRing1);
+
+        ModelPart subRing2 = subRing1.getChild("sub_ring_2");
+        assertNotNull(subRing2);
+
+        ModelPart subRing3 = subRing2.getChild("sub_ring_3");
+        assertNotNull(subRing3);
+
         SandwormModel model = new SandwormModel(root);
         assertNotNull(model);
         assertNotNull(model.getRoot());
@@ -71,9 +80,16 @@ class SandwormModelTest {
         state.breaching = true;
         state.breachProgress = 0.5f;
         state.biteProgress = 0.8f;
+        state.groundSink = 1.5f;
+        state.groundSlopePitch = 0.2f;
+        state.groundSlopeRoll = -0.1f;
 
         model.setupAnim(state);
         assertTrue(head.xRot != 0.0f);
+        assertTrue(body.y > 24.0f);
+        assertTrue(subRing1.xRot != 0.0f);
+        assertTrue(subRing2.xRot != 0.0f);
+        assertTrue(subRing3.xRot != 0.0f);
     }
 
     @Test
@@ -136,6 +152,36 @@ class SandwormModelTest {
         assertTrue(teethOuter.z < 0.0f);
         assertTrue(teethMiddle.z < 0.0f);
         assertTrue(teethInner.z < 0.0f);
+    }
+
+    @Test
+    void shouldGentlyAnimateTeethDuringIdleState() {
+        LayerDefinition layer = SandwormModel.createBodyLayer();
+        ModelPart root = layer.bakeRoot();
+        ModelPart body = root.getChild("body");
+        ModelPart base = body.getChild("base");
+        ModelPart seg1 = base.getChild("segment_1");
+        ModelPart seg4 = seg1.getChild("segment_2").getChild("segment_3").getChild("segment_4");
+        ModelPart seg7 = seg4.getChild("segment_5").getChild("segment_6").getChild("segment_7");
+        ModelPart neck = seg7.getChild("neck");
+        ModelPart head = neck.getChild("head");
+        ModelPart teethOuter = head.getChild("teeth_outer");
+        ModelPart teethMiddle = head.getChild("teeth_middle");
+        ModelPart teethInner = head.getChild("teeth_inner");
+
+        SandwormModel model = new SandwormModel(root);
+        SandwormRenderState state = new SandwormRenderState();
+        state.ageInTicks = 35.0f;
+        state.biteProgress = 0.0f;
+
+        model.setupAnim(state);
+
+        assertTrue(teethOuter.zRot != 0.0f);
+        assertTrue(teethMiddle.zRot != 0.0f);
+        assertTrue(teethInner.zRot != 0.0f);
+        assertTrue(teethOuter.z != 0.0f);
+        assertTrue(teethMiddle.z != 0.0f);
+        assertTrue(teethInner.z != 0.0f);
     }
 
     @Test

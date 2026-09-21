@@ -38,7 +38,7 @@ public class Printer3DMenu extends AbstractContainerMenu implements MachineMenu 
                 return false;
             }
         });
-        this.addSlot(new Slot(container, 3, 12, 53));
+        this.addSlot(new Slot(container, 3, 8, 48));
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {

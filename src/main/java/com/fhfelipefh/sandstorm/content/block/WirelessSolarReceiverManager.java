@@ -132,7 +132,7 @@ public class WirelessSolarReceiverManager {
             for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, searchBox)) {
                 if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= radiusSq) {
                     if (SuitSurvivalHandler.countEquippedSuitPieces(player) > 0) {
-                        SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
+                        SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player);
                         long totalTransfer = transferRatePerTick * 20;
                         long received = suit.getEnergyStorage().receiveEnergy(totalTransfer);
                         if (received > 0 && player.tickCount % 60 == 0) {
