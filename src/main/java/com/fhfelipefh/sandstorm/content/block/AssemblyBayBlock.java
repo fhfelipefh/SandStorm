@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
+import com.fhfelipefh.sandstorm.util.NumberFormat;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
@@ -99,8 +100,8 @@ public class AssemblyBayBlock extends Block {
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
             serverPlayer.sendSystemMessage(Component.translatable(
                     "telemetry.sandstorm.bay_status",
-                    energyStorage.getStoredEnergy(),
-                    energyStorage.getCapacity()
+                    NumberFormat.compact(energyStorage.getStoredEnergy()),
+                    NumberFormat.compact(energyStorage.getCapacity())
             ), true);
             level.playSound(null, pos, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 0.8f, 0.8f);
         }

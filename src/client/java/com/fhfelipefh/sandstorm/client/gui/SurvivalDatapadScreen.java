@@ -54,8 +54,8 @@ public class SurvivalDatapadScreen extends Screen {
         extractor.fill(left, top, left + 1, bottom, 0xFF00E5FF);
         extractor.fill(right - 1, top, right, bottom, 0xFF00E5FF);
 
-        Component titleComp = Component.literal("I.A.T.I. OS // TERMINAL DE TERRAFORMAÇÃO // ARRAKIS-IX");
-        Component statusComp = Component.literal("ONLINE // CONEXAO ORBITAL ESTAVEL");
+        Component titleComp = Component.literal("I.A.T.I. // ARRAKIS-IX");
+        Component statusComp = Component.literal("ONLINE // LINK ORBITAL OK");
         int statusWidth = font.width(statusComp);
         int statusX = right - statusWidth - 10;
         float maxHeaderTitleWidth = statusX - (left + 10) - 12;

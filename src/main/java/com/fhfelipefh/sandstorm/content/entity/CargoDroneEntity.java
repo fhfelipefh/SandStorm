@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
+import com.fhfelipefh.sandstorm.util.NumberFormat;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -106,8 +107,8 @@ public class CargoDroneEntity extends PathfinderMob {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable(
                             "telemetry.sandstorm.drone_status",
-                            this.energyStorage.getStoredEnergy(),
-                            this.energyStorage.getCapacity()
+                            NumberFormat.compact(this.energyStorage.getStoredEnergy()),
+                            NumberFormat.compact(this.energyStorage.getCapacity())
                     ), true);
                 }
                 level.playSound(null, this.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8f, 1.5f);

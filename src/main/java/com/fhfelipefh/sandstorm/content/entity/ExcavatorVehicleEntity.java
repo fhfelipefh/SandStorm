@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
+import com.fhfelipefh.sandstorm.util.NumberFormat;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -63,8 +64,8 @@ public class ExcavatorVehicleEntity extends PathfinderMob {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable(
                             "telemetry.sandstorm.excavator_mounted",
-                            energyStorage.getStoredEnergy(),
-                            energyStorage.getCapacity()
+                            NumberFormat.compact(energyStorage.getStoredEnergy()),
+                            NumberFormat.compact(energyStorage.getCapacity())
                     ), true);
                 }
                 this.level().playSound(null, this.blockPosition(), SandStormSoundEvents.EXCAVATOR_ENGINE, SoundSource.PLAYERS, 0.8f, 1.0f);

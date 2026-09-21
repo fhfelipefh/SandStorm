@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
+import com.fhfelipefh.sandstorm.util.NumberFormat;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -98,8 +99,8 @@ public class MegazordEntity extends PathfinderMob {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable(
                             "telemetry.sandstorm.megazord_cockpit",
-                            energyStorage.getStoredEnergy(),
-                            energyStorage.getCapacity()
+                            NumberFormat.compact(energyStorage.getStoredEnergy()),
+                            NumberFormat.compact(energyStorage.getCapacity())
                     ), true);
                 }
                 this.level().playSound(null, this.blockPosition(), SandStormSoundEvents.MEGAZORD_STEP, SoundSource.PLAYERS, 1.0f, 0.7f);

@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
+import com.fhfelipefh.sandstorm.util.NumberFormat;
 import com.fhfelipefh.sandstorm.component.TerraformingIndexComponent;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -67,8 +68,8 @@ public class AtmosphericTerraformerBlock extends Block {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable(
                             "telemetry.sandstorm.terraformer_no_energy",
-                            energyStorage.getStoredEnergy(),
-                            ENERGY_PER_CYCLE
+                            NumberFormat.compact(energyStorage.getStoredEnergy()),
+                            NumberFormat.compact(ENERGY_PER_CYCLE)
                     ), true);
                 }
                 level.playSound(null, pos, SoundEvents.REDSTONE_TORCH_BURNOUT, SoundSource.BLOCKS, 0.8f, 0.8f);

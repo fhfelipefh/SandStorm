@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
+import com.fhfelipefh.sandstorm.util.NumberFormat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -34,8 +35,8 @@ public class DroneDockBlock extends Block {
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
             serverPlayer.sendSystemMessage(Component.translatable(
                     "telemetry.sandstorm.dock_status",
-                    energyStorage.getStoredEnergy(),
-                    energyStorage.getCapacity()
+                    NumberFormat.compact(energyStorage.getStoredEnergy()),
+                    NumberFormat.compact(energyStorage.getCapacity())
             ), true);
             level.playSound(null, pos, SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 0.8f, 1.2f);
         }

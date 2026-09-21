@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.content.gui.MachineMenu;
+import com.fhfelipefh.sandstorm.util.NumberFormat;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -15,14 +16,7 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
     }
 
     protected static String formatCompact(long value) {
-        if (value >= 1_000_000) {
-            double m = value / 1_000_000.0;
-            return (m == (long) m) ? (long) m + "M" : String.format("%.1fM", m);
-        } else if (value >= 1_000) {
-            double k = value / 1_000.0;
-            return (k == (long) k) ? (long) k + "K" : String.format("%.1fK", k);
-        }
-        return String.valueOf(value);
+        return NumberFormat.compact(value);
     }
 
     @Override
