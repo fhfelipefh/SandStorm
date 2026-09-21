@@ -122,10 +122,10 @@ class SurvivalDatapadScreenLogicTest {
 
         int i = 0;
         int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
-        int btnX = cardRight - 46;
-        int btnY = cy + 19;
-        int btnW = 40;
-        int btnH = 16;
+        int btnX = cardRight - 48;
+        int btnY = cy + 18;
+        int btnW = 44;
+        int btnH = 18;
 
         assertTrue(btnX > left);
         assertTrue(btnY > top);

@@ -1,5 +1,7 @@
 package com.fhfelipefh.sandstorm.client.gui;
 
+import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
+import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
 import com.fhfelipefh.sandstorm.content.quest.QuestData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRegistry;
@@ -159,10 +161,10 @@ public class SurvivalDatapadScreen extends Screen {
                 extractor.text(font, countStr, cardRight - 64, cy + 23, 0xFFFFD54F);
             }
 
-            int btnX = cardRight - 46;
-            int btnY = cy + 19;
-            int btnW = 40;
-            int btnH = 16;
+            int btnX = cardRight - 48;
+            int btnY = cy + 18;
+            int btnW = 44;
+            int btnH = 18;
 
             if (isClaimable) {
                 boolean hovered = mouseX >= btnX && mouseX <= btnX + btnW && mouseY >= btnY && mouseY <= btnY + btnH;
@@ -174,10 +176,10 @@ public class SurvivalDatapadScreen extends Screen {
                 extractor.fill(btnX + btnW - 1, btnY, btnX + btnW, btnY + btnH, hovered ? 0xFFFFFFFF : 0xFF80D8FF);
 
                 Component claimText = Component.translatable("gui.sandstorm.datapad.claim");
-                drawScaledCenteredText(extractor, claimText, btnX + btnW / 2f, btnY + 4, btnW - 4, hovered ? 0xFF0A0E17 : 0xFFFFFFFF);
+                drawScaledCenteredText(extractor, claimText, btnX + btnW / 2f, btnY + 5, btnW - 4, hovered ? 0xFF0A0E17 : 0xFFFFFFFF);
             } else if (isClaimed) {
                 Component claimedText = Component.translatable("gui.sandstorm.datapad.claimed");
-                drawScaledCenteredText(extractor, claimedText, btnX + btnW / 2f, btnY + 4, btnW - 2, 0xFF69F0AE);
+                drawScaledCenteredText(extractor, claimedText, btnX + btnW / 2f, btnY + 5, btnW - 2, 0xFF69F0AE);
             }
         }
 
@@ -236,10 +238,10 @@ public class SurvivalDatapadScreen extends Screen {
                 }
 
                 int cardRight = right - 10;
-                int btnX = cardRight - 46;
-                int btnY = cy + 19;
-                int btnW = 40;
-                int btnH = 16;
+                int btnX = cardRight - 48;
+                int btnY = cy + 18;
+                int btnW = 44;
+                int btnH = 18;
 
                 int cardLeft = left + 10;
                 int cardRight2 = right - 10;
@@ -291,6 +293,17 @@ public class SurvivalDatapadScreen extends Screen {
             return false;
         }
         if (quest.isConditionBased()) {
+            if ("sandstorm.battery_60".equals(quest.conditionTag())) {
+                SuitPowerComponent suit = SurvivalHudOverlay.getClientSuit();
+                if (suit != null) {
+                    long cap = suit.getEnergyStorage().getCapacity();
+                    long stored = suit.getEnergyStorage().getStoredEnergy();
+                    if (cap > 0 && ((double) stored * 100.0 / (double) cap) >= 60.0) {
+                        DatapadClientHelper.addCondition("sandstorm.battery_60");
+                        return true;
+                    }
+                }
+            }
             return DatapadClientHelper.isConditionMet(quest.conditionTag())
                     || player.entityTags().contains(quest.conditionTag());
         }

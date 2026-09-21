@@ -79,12 +79,15 @@ public class QuestRewardHandler {
         }
         PlayerQuestSavedData data = PlayerQuestSavedData.get(server);
         if (data.isClaimed(player.getUUID(), questId)) {
+            syncPlayerQuests(player, data);
             return;
         }
         if (!arePrerequisitesMet(player.getUUID(), quest, data)) {
+            syncPlayerQuests(player, data);
             return;
         }
         if (!hasRequiredItem(player, quest, data)) {
+            syncPlayerQuests(player, data);
             return;
         }
 
@@ -92,9 +95,12 @@ public class QuestRewardHandler {
 
         if (quest.getRewardItem() != null && quest.rewardCount() > 0) {
             ItemStack reward = new ItemStack(quest.getRewardItem(), quest.rewardCount());
-            if (!player.getInventory().add(reward)) {
-                if (player.level() instanceof ServerLevel sl) {
-                    player.spawnAtLocation(sl, reward);
+            boolean added = player.getInventory().add(reward);
+            if ((!added || !reward.isEmpty()) && player.level() instanceof ServerLevel sl && !reward.isEmpty()) {
+                var itemEntity = player.spawnAtLocation(sl, reward);
+                if (itemEntity != null) {
+                    itemEntity.setNoPickUpDelay();
+                    itemEntity.setTarget(player.getUUID());
                 }
             }
             player.containerMenu.broadcastChanges();
@@ -102,7 +108,8 @@ public class QuestRewardHandler {
         }
 
         player.level().playSound(null, player.blockPosition(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS, 1.0f, 1.2f);
-        server.overworld().getDataStorage().saveAndJoin();
+        data.setDirty();
+        server.overworld().getDataStorage().scheduleSave();
         syncPlayerQuests(player, data);
     }
 

@@ -26,6 +26,10 @@ public class SurvivalHudOverlay implements HudElement {
         CLIENT_SUIT.updateEquippedArmorCount(armorCount);
     }
 
+    public static SuitPowerComponent getClientSuit() {
+        return CLIENT_SUIT;
+    }
+
     private static long lastStoredEnergy = -1;
     private static long lastCapacity = -1;
     private static double lastTemperature = -999.0;
@@ -184,9 +188,5 @@ public class SurvivalHudOverlay implements HudElement {
                 extractor.fill(x + 1, y + 1, x + (streakLength / 2) + 1, y + 2, ((grainAlpha / 2) << 24) | rgb);
             }
         }
-    }
-
-    public static SuitPowerComponent getClientSuit() {
-        return CLIENT_SUIT;
     }
 }
