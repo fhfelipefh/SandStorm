@@ -164,6 +164,38 @@ class SandwormModelTest {
         assertTrue(teethOuter.z < 0.0f);
         assertTrue(teethMiddle.z < 0.0f);
         assertTrue(teethInner.z < 0.0f);
+        assertTrue(base.xRot > 0.0f);
+        assertTrue(seg1.xRot > 0.0f);
+        assertTrue(head.xScale < 1.0f);
+        assertTrue(body.z < 0.0f);
+    }
+
+    @Test
+    void shouldOpenMouthWideDuringBiteWindup() {
+        LayerDefinition layer = SandwormModel.createBodyLayer();
+        ModelPart root = layer.bakeRoot();
+        ModelPart body = root.getChild("body");
+        ModelPart base = body.getChild("base");
+        ModelPart seg1 = base.getChild("segment_1");
+        ModelPart seg10 = seg1.getChild("segment_2").getChild("segment_3").getChild("segment_4")
+                .getChild("segment_5").getChild("segment_6").getChild("segment_7")
+                .getChild("segment_8").getChild("segment_9").getChild("segment_10");
+        ModelPart neck = seg10.getChild("neck");
+        ModelPart head = neck.getChild("head");
+        ModelPart teethOuter = head.getChild("teeth_outer");
+
+        SandwormModel model = new SandwormModel(root);
+        SandwormRenderState state = new SandwormRenderState();
+        state.ageInTicks = 100.0f;
+        state.hasTarget = true;
+        state.targetDistance = 6.0f;
+        state.biteProgress = 0.20f;
+
+        model.setupAnim(state);
+
+        assertTrue(head.xScale > 1.0f);
+        assertTrue(teethOuter.xScale > 1.0f);
+        assertTrue(teethOuter.z > 0.0f);
     }
 
     @Test

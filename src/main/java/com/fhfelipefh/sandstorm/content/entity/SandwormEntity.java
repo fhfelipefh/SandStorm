@@ -269,7 +269,21 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
             } else {
                 push = push.normalize();
             }
-            entity.setDeltaMovement(push.x * 1.5, 0.45, push.z * 1.5);
+
+            boolean isIronGolemOrHeavy = !(entity instanceof Player) && (entity.getMaxHealth() >= 80.0f || entity.getType().getDescriptionId().contains("iron_golem"));
+            if (isIronGolemOrHeavy) {
+                entity.setDeltaMovement(push.x * 1.8, 2.2, push.z * 1.8);
+                serverLevel.sendParticles(
+                        ParticleTypes.GUST_EMITTER_LARGE,
+                        entity.getX(), entity.getY() + 0.5, entity.getZ(), 2, 0.0, 0.0, 0.0, 0.0
+                );
+                serverLevel.sendParticles(
+                        ParticleTypes.EXPLOSION,
+                        entity.getX(), entity.getY() + 0.5, entity.getZ(), 2, 0.5, 0.5, 0.5, 0.0
+                );
+            } else {
+                entity.setDeltaMovement(push.x * 1.5, 0.55, push.z * 1.5);
+            }
         }
     }
 

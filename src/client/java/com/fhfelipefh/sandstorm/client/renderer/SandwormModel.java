@@ -400,32 +400,80 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
         if (state.biteProgress > 0.0f) {
             float p = state.biteProgress;
             float strikeCurve;
-            if (p < 0.40f) {
-                strikeCurve = -Mth.sin(p / 0.40f * (float) (Math.PI * 0.5)) * 0.22f;
+            if (p < 0.30f) {
+                float windup = Mth.sin(p / 0.30f * (float) (Math.PI * 0.5));
+                strikeCurve = -windup * 0.35f;
+            } else if (p <= 0.70f) {
+                float lunge = Mth.sin((p - 0.30f) / 0.40f * (float) (Math.PI * 0.5));
+                strikeCurve = Mth.lerp(lunge, -0.35f, 1.25f);
             } else {
-                strikeCurve = Mth.sin((p - 0.40f) / 0.60f * (float) Math.PI) * 0.85f;
+                float recover = Mth.sin((p - 0.70f) / 0.30f * (float) (Math.PI * 0.5));
+                strikeCurve = Mth.lerp(recover, 1.25f, 0.0f);
             }
-            this.seg4.xRot += strikeCurve * 0.10f;
-            this.seg5.xRot += strikeCurve * 0.14f;
-            this.seg6.xRot += strikeCurve * 0.18f;
-            this.seg7.xRot += strikeCurve * 0.22f;
-            this.seg8.xRot += strikeCurve * 0.26f;
-            this.seg9.xRot += strikeCurve * 0.30f;
-            this.seg10.xRot += strikeCurve * 0.33f;
-            this.neck.xRot += strikeCurve * 0.36f;
-            this.head.xRot += strikeCurve * 0.40f;
 
-            float teethSnap = Mth.sin(p * (float) Math.PI);
-            this.teethOuter.z = teethSnap * -2.0f;
-            this.teethMiddle.z = teethSnap * -2.8f;
-            this.teethInner.z = teethSnap * -3.5f;
-            this.teethOuter.xRot = teethSnap * 0.18f;
-            this.teethMiddle.xRot = -teethSnap * 0.18f;
-            this.teethInner.xRot = teethSnap * 0.15f;
-            this.teethOuter.zRot = teethSnap * 0.12f;
-            this.teethMiddle.zRot = -teethSnap * 0.14f;
-            this.teethInner.zRot = teethSnap * 0.16f;
+            this.base.xRot += strikeCurve * 0.08f;
+            this.seg1.xRot += strikeCurve * 0.09f;
+            this.seg2.xRot += strikeCurve * 0.10f;
+            this.seg3.xRot += strikeCurve * 0.11f;
+            this.seg4.xRot += strikeCurve * 0.12f;
+            this.seg5.xRot += strikeCurve * 0.13f;
+            this.seg6.xRot += strikeCurve * 0.14f;
+            this.seg7.xRot += strikeCurve * 0.14f;
+            this.seg8.xRot += strikeCurve * 0.13f;
+            this.seg9.xRot += strikeCurve * 0.12f;
+            this.seg10.xRot += strikeCurve * 0.11f;
+            this.neck.xRot += strikeCurve * 0.10f;
+            this.head.xRot += strikeCurve * 0.08f;
+
+            float openProgress;
+            float snapProgress;
+            if (p < 0.30f) {
+                openProgress = Mth.sin(p / 0.30f * (float) (Math.PI * 0.5));
+                snapProgress = 0.0f;
+            } else if (p <= 0.70f) {
+                float frac = (p - 0.30f) / 0.40f;
+                openProgress = 1.0f - frac;
+                snapProgress = Mth.sin(frac * (float) (Math.PI * 0.5));
+            } else {
+                float frac = (p - 0.70f) / 0.30f;
+                openProgress = 0.0f;
+                snapProgress = 1.0f - frac;
+            }
+
+            float headOpen = 1.0f + (openProgress * 0.28f) - (snapProgress * 0.20f);
+            this.head.xScale = headOpen;
+            this.head.yScale = headOpen;
+
+            this.teethOuter.xScale = 1.0f + (openProgress * 0.32f) - (snapProgress * 0.35f);
+            this.teethOuter.yScale = this.teethOuter.xScale;
+            this.teethMiddle.xScale = 1.0f + (openProgress * 0.28f) - (snapProgress * 0.38f);
+            this.teethMiddle.yScale = this.teethMiddle.xScale;
+            this.teethInner.xScale = 1.0f + (openProgress * 0.24f) - (snapProgress * 0.42f);
+            this.teethInner.yScale = this.teethInner.xScale;
+
+            this.teethOuter.z = (openProgress * 2.0f) - (snapProgress * 4.5f);
+            this.teethMiddle.z = (openProgress * 2.5f) - (snapProgress * 5.5f);
+            this.teethInner.z = (openProgress * 3.0f) - (snapProgress * 6.5f);
+
+            this.teethOuter.xRot = snapProgress * 0.22f;
+            this.teethMiddle.xRot = -snapProgress * 0.22f;
+            this.teethInner.xRot = snapProgress * 0.18f;
+
+            this.teethOuter.zRot = snapProgress * 0.35f;
+            this.teethMiddle.zRot = -snapProgress * 0.45f;
+            this.teethInner.zRot = snapProgress * 0.55f;
+
+            this.body.z = -strikeCurve * 14.0f;
         } else {
+            this.head.xScale = 1.0f;
+            this.head.yScale = 1.0f;
+            this.teethOuter.xScale = 1.0f;
+            this.teethOuter.yScale = 1.0f;
+            this.teethMiddle.xScale = 1.0f;
+            this.teethMiddle.yScale = 1.0f;
+            this.teethInner.xScale = 1.0f;
+            this.teethInner.yScale = 1.0f;
+
             this.teethOuter.z = Mth.sin(age * 0.06f) * 0.05f;
             this.teethMiddle.z = Mth.cos(age * 0.06f + 1.0f) * 0.05f;
             this.teethInner.z = Mth.sin(age * 0.06f + 2.0f) * 0.05f;
@@ -435,6 +483,7 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
             this.teethOuter.zRot = Mth.sin(age * 0.04f) * 0.035f;
             this.teethMiddle.zRot = -Mth.sin(age * 0.045f + 1.2f) * 0.04f;
             this.teethInner.zRot = Mth.sin(age * 0.05f + 2.4f) * 0.045f;
+            this.body.z = 0.0f;
         }
 
         float pulse = Mth.sin(age * 0.05f) * 0.02f;
@@ -465,7 +514,18 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
             float smoothBreach = Mth.sin(bp * (float) (Math.PI * 0.5));
             this.body.y = 24.0f + 180.0f * (1.0f - smoothBreach) + sinkModelUnits;
         } else {
-            this.body.y = 24.0f + sinkModelUnits;
+            float biteDrop = 0.0f;
+            if (state.biteProgress > 0.0f) {
+                float p = state.biteProgress;
+                if (p >= 0.30f && p <= 0.70f) {
+                    float lunge = Mth.sin((p - 0.30f) / 0.40f * (float) (Math.PI * 0.5));
+                    biteDrop = lunge * 28.0f;
+                } else if (p > 0.70f) {
+                    float recover = Mth.sin((p - 0.70f) / 0.30f * (float) (Math.PI * 0.5));
+                    biteDrop = (1.0f - recover) * 28.0f;
+                }
+            }
+            this.body.y = 24.0f + sinkModelUnits + biteDrop;
         }
 
         this.body.visible = !state.burrowed;
