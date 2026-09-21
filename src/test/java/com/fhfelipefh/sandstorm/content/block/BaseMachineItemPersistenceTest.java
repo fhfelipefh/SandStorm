@@ -65,17 +65,17 @@ class BaseMachineItemPersistenceTest {
         NaniteFabricatorBlockEntity fabricator = new NaniteFabricatorBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
         DesalinationFilterBlockEntity filter = new DesalinationFilterBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
 
-        assertEquals(2, printer.getSlotsForFace(Direction.UP).length);
-        assertEquals(1, printer.getSlotsForFace(Direction.DOWN).length);
-        assertEquals(1, printer.getSlotsForFace(Direction.NORTH).length);
+        assertEquals(3, printer.getSlotsForFace(Direction.UP).length);
+        assertEquals(2, printer.getSlotsForFace(Direction.DOWN).length);
+        assertEquals(4, printer.getSlotsForFace(Direction.NORTH).length);
 
-        assertEquals(2, fabricator.getSlotsForFace(Direction.UP).length);
-        assertEquals(1, fabricator.getSlotsForFace(Direction.DOWN).length);
-        assertEquals(1, fabricator.getSlotsForFace(Direction.NORTH).length);
+        assertEquals(3, fabricator.getSlotsForFace(Direction.UP).length);
+        assertEquals(2, fabricator.getSlotsForFace(Direction.DOWN).length);
+        assertEquals(4, fabricator.getSlotsForFace(Direction.NORTH).length);
 
-        assertEquals(1, filter.getSlotsForFace(Direction.UP).length);
-        assertEquals(2, filter.getSlotsForFace(Direction.DOWN).length);
-        assertEquals(1, filter.getSlotsForFace(Direction.NORTH).length);
+        assertEquals(2, filter.getSlotsForFace(Direction.UP).length);
+        assertEquals(3, filter.getSlotsForFace(Direction.DOWN).length);
+        assertEquals(4, filter.getSlotsForFace(Direction.NORTH).length);
     }
 
     @Test

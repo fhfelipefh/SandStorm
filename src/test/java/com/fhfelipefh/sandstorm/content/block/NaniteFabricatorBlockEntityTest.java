@@ -40,21 +40,29 @@ class NaniteFabricatorBlockEntityTest {
         NaniteFabricatorBlockEntity be = new NaniteFabricatorBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
 
         int[] topSlots = be.getSlotsForFace(Direction.UP);
-        assertEquals(2, topSlots.length);
+        assertEquals(3, topSlots.length);
         assertEquals(0, topSlots[0]);
         assertEquals(1, topSlots[1]);
+        assertEquals(3, topSlots[2]);
 
         int[] bottomSlots = be.getSlotsForFace(Direction.DOWN);
-        assertEquals(1, bottomSlots.length);
+        assertEquals(2, bottomSlots.length);
         assertEquals(2, bottomSlots[0]);
+        assertEquals(3, bottomSlots[1]);
 
         int[] sideSlots = be.getSlotsForFace(Direction.EAST);
-        assertEquals(1, sideSlots.length);
-        assertEquals(3, sideSlots[0]);
+        assertEquals(4, sideSlots.length);
+        assertEquals(1, sideSlots[0]);
+        assertEquals(0, sideSlots[1]);
+        assertEquals(3, sideSlots[2]);
+        assertEquals(2, sideSlots[3]);
 
         assertFalse(be.canPlaceItemThroughFace(2, ItemStack.EMPTY, Direction.UP));
         assertFalse(be.canPlaceItemThroughFace(3, ItemStack.EMPTY, Direction.DOWN));
         assertTrue(be.canTakeItemThroughFace(2, ItemStack.EMPTY, Direction.DOWN));
+        assertTrue(be.canTakeItemThroughFace(2, ItemStack.EMPTY, Direction.EAST));
         assertFalse(be.canTakeItemThroughFace(1, ItemStack.EMPTY, Direction.DOWN));
+        assertFalse(be.canTakeItemThroughFace(0, ItemStack.EMPTY, Direction.DOWN));
+        assertFalse(be.canTakeItemThroughFace(3, ItemStack.EMPTY, Direction.DOWN));
     }
 }

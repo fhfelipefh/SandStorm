@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -16,9 +17,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class Printer3DBlockEntity extends BaseMachineBlockEntity {
-    private static final int[] SLOTS_TOP = new int[]{0, 1};
-    private static final int[] SLOTS_BOTTOM = new int[]{2};
-    private static final int[] SLOTS_SIDES = new int[]{3};
+    private static final int[] SLOTS_TOP = new int[]{0, 1, 3};
+    private static final int[] SLOTS_BOTTOM = new int[]{2, 3};
+    private static final int[] SLOTS_SIDES = new int[]{1, 0, 3, 2};
 
     public Printer3DBlockEntity(BlockPos pos, BlockState state) {
         this(SandStormBlocks.PRINTER_3D_BE, pos, state);
@@ -99,24 +100,34 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
     }
 
     @Override
-    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction dir) {
-        if (dir == Direction.DOWN) {
-            return false;
-        }
-        if (slot == 3) {
-            return getFuelEnergy(stack) > 0;
-        }
+    public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == 0) {
             return stack.is(SandStormItems.SILICON_WAFER);
         }
         if (slot == 1) {
             return stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.SCRAP_METAL);
         }
+        if (slot == 3) {
+            return getFuelEnergy(stack) > 0;
+        }
         return false;
     }
 
     @Override
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction dir) {
+        if (dir == Direction.DOWN) {
+            return slot == 3 && getFuelEnergy(stack) > 0;
+        }
+        return canPlaceItem(slot, stack);
+    }
+
+    @Override
+    public boolean canTakeItem(Container target, int slot, ItemStack stack) {
+        return slot == 2;
+    }
+
+    @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
-        return dir == Direction.DOWN && slot == 2;
+        return slot == 2;
     }
 }

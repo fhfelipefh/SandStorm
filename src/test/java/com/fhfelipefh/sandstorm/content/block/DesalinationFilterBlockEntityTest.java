@@ -40,22 +40,29 @@ class DesalinationFilterBlockEntityTest {
         DesalinationFilterBlockEntity be = new DesalinationFilterBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
 
         int[] topSlots = be.getSlotsForFace(Direction.UP);
-        assertEquals(1, topSlots.length);
+        assertEquals(2, topSlots.length);
         assertEquals(0, topSlots[0]);
+        assertEquals(3, topSlots[1]);
 
         int[] bottomSlots = be.getSlotsForFace(Direction.DOWN);
-        assertEquals(2, bottomSlots.length);
+        assertEquals(3, bottomSlots.length);
         assertEquals(1, bottomSlots[0]);
         assertEquals(2, bottomSlots[1]);
+        assertEquals(3, bottomSlots[2]);
 
         int[] sideSlots = be.getSlotsForFace(Direction.WEST);
-        assertEquals(1, sideSlots.length);
-        assertEquals(3, sideSlots[0]);
+        assertEquals(4, sideSlots.length);
+        assertEquals(0, sideSlots[0]);
+        assertEquals(3, sideSlots[1]);
+        assertEquals(1, sideSlots[2]);
+        assertEquals(2, sideSlots[3]);
 
         assertFalse(be.canPlaceItemThroughFace(1, ItemStack.EMPTY, Direction.UP));
         assertFalse(be.canPlaceItemThroughFace(2, ItemStack.EMPTY, Direction.UP));
         assertTrue(be.canTakeItemThroughFace(1, ItemStack.EMPTY, Direction.DOWN));
         assertTrue(be.canTakeItemThroughFace(2, ItemStack.EMPTY, Direction.DOWN));
+        assertTrue(be.canTakeItemThroughFace(1, ItemStack.EMPTY, Direction.WEST));
+        assertTrue(be.canTakeItemThroughFace(2, ItemStack.EMPTY, Direction.WEST));
         assertFalse(be.canTakeItemThroughFace(0, ItemStack.EMPTY, Direction.DOWN));
     }
 }
