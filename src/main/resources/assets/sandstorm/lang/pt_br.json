@@ -30,6 +30,8 @@
   "block.sandstorm.wireless_solar_receiver_tier2": "Receptor Solar Sem Fio (Tier 2)",
   "item.sandstorm.wireless_solar_receiver": "Receptor Solar Sem Fio (Tier 1)",
   "item.sandstorm.wireless_solar_receiver_tier2": "Receptor Solar Sem Fio (Tier 2)",
+  "block.sandstorm.thermal_generator": "Gerador Térmico",
+  "item.sandstorm.thermal_generator": "Gerador Térmico",
   "entity.sandstorm.sandworm": "Verme de Areia",
   "entity.sandstorm.cargo_drone": "Drone de Carga Aérea",
   "entity.sandstorm.excavator_vehicle": "Veículo de Escavação Terrestre",

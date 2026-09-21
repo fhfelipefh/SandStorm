@@ -30,6 +30,8 @@
   "block.sandstorm.wireless_solar_receiver_tier2": "Wireless Solar Receiver (Tier 2)",
   "item.sandstorm.wireless_solar_receiver": "Wireless Solar Receiver (Tier 1)",
   "item.sandstorm.wireless_solar_receiver_tier2": "Wireless Solar Receiver (Tier 2)",
+  "block.sandstorm.thermal_generator": "Thermal Generator",
+  "item.sandstorm.thermal_generator": "Thermal Generator",
   "entity.sandstorm.sandworm": "Sandworm",
   "entity.sandstorm.cargo_drone": "Aerial Cargo Drone",
   "entity.sandstorm.excavator_vehicle": "Mining Excavator Vehicle",

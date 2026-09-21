@@ -6,6 +6,7 @@ import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
+import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
@@ -41,6 +42,10 @@ public class SandStormMod implements ModInitializer {
         PayloadTypeRegistry.clientboundPlay().register(
                 SuitSyncPayload.TYPE,
                 SuitSyncPayload.STREAM_CODEC
+        );
+        PayloadTypeRegistry.clientboundPlay().register(
+                SandstormWeatherPayload.TYPE,
+                SandstormWeatherPayload.STREAM_CODEC
         );
         PayloadTypeRegistry.clientboundPlay().register(
                 SyncPlayerQuestsPayload.TYPE,

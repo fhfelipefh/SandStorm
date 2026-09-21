@@ -53,10 +53,11 @@ public class SurvivalHudOverlay implements HudElement {
         int screenHeight = extractor.guiHeight();
 
         SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
-        if (weather.isActive()) {
-            int alpha = (int) Math.clamp(weather.getIntensity() * 140, 0, 160);
+        if (weather.isActive() && weather.getIntensity() > 0.02) {
+            int alpha = (int) Math.clamp(weather.getIntensity() * 120, 0, 140);
             int sandColor = (alpha << 24) | 0xC29B62;
             extractor.fill(0, 0, screenWidth, screenHeight, sandColor);
+            renderSandGrains(extractor, client, screenWidth, screenHeight, weather.getIntensity());
         }
 
         boolean energyChanged = storedEnergy != lastStoredEnergy || capacity != lastCapacity;
@@ -153,6 +154,36 @@ public class SurvivalHudOverlay implements HudElement {
         int g = Math.round(gA + (gB - gA) * factor);
         int b = Math.round(bA + (bB - bA) * factor);
         return 0xFF000000 | (r << 16) | (g << 8) | b;
+    }
+
+    private static void renderSandGrains(GuiGraphicsExtractor extractor, Minecraft client, int width, int height, double intensity) {
+        if (client.player == null) {
+            return;
+        }
+        int tick = client.player.tickCount;
+        int grainCount = (int) (25 + intensity * 65);
+        for (int i = 0; i < grainCount; i++) {
+            int seed = (i * 37) ^ 0x5DEECE66;
+            int speed = 8 + (seed % 14);
+            int streakLength = 4 + (seed % 16);
+            int startX = (int) ((seed + (long) tick * speed) % (width + streakLength + 40)) - streakLength;
+            int x = width - startX;
+            int y = Math.abs((seed * 31 + i * 17) % Math.max(1, height));
+
+            int grainAlpha = (int) Math.clamp(intensity * (120 + (seed % 100)), 40, 220);
+            int colorIndex = (seed >> 3) & 3;
+            int rgb = switch (colorIndex) {
+                case 0 -> 0xD8B880;
+                case 1 -> 0xC29B62;
+                case 2 -> 0xE0C896;
+                default -> 0xA88048;
+            };
+            int grainColor = (grainAlpha << 24) | rgb;
+            extractor.fill(x, y, x + streakLength, y + 1, grainColor);
+            if ((seed & 1) == 0) {
+                extractor.fill(x + 1, y + 1, x + (streakLength / 2) + 1, y + 2, ((grainAlpha / 2) << 24) | rgb);
+            }
+        }
     }
 
     public static SuitPowerComponent getClientSuit() {

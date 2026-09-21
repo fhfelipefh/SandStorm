@@ -5,11 +5,14 @@ import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
 import com.fhfelipefh.sandstorm.client.gui.NaniteFabricatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.Printer3DScreen;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
+import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
 import com.fhfelipefh.sandstorm.client.renderer.SandwormRenderer;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
+import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
+import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -22,6 +25,7 @@ public class SandStormClient implements ClientModInitializer {
     public void onInitializeClient() {
         SurvivalHudOverlay.initialize();
         DatapadClientHelper.initialize();
+        SandstormParticleHandler.initialize();
         MenuScreens.register(SandStormMenus.PRINTER_3D_MENU, Printer3DScreen::new);
         MenuScreens.register(SandStormMenus.NANITE_FABRICATOR_MENU, NaniteFabricatorScreen::new);
         MenuScreens.register(SandStormMenus.DESALINATION_FILTER_MENU, DesalinationFilterScreen::new);
@@ -46,6 +50,15 @@ public class SandStormClient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(SyncPlayerQuestsPayload.TYPE, (payload, context) -> {
             context.client().execute(() -> {
                 DatapadClientHelper.setQuests(payload.claimedQuestIds(), payload.completedConditions());
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(SandstormWeatherPayload.TYPE, (payload, context) -> {
+            context.client().execute(() -> {
+                if (payload.active()) {
+                    SandstormWeatherHandler.getWeather().startSandstorm(200, payload.intensity());
+                } else {
+                    SandstormWeatherHandler.getWeather().stopSandstorm();
+                }
             });
         });
     }

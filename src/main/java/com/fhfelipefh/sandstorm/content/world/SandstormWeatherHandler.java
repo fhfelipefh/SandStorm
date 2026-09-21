@@ -1,12 +1,19 @@
 package com.fhfelipefh.sandstorm.content.world;
 
 import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
+import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 public class SandstormWeatherHandler {
     private static final SandstormWeatherComponent WEATHER = new SandstormWeatherComponent();
@@ -32,8 +39,45 @@ public class SandstormWeatherHandler {
     public static void handleServerTick(ServerLevel level, long gameTime) {
         handleServerTick(gameTime);
 
-        if (level != null && WEATHER.isActive() && gameTime % 80 == 0) {
-            playWeatherWindSound(level);
+        if (level != null && gameTime % 20 == 0) {
+            SandstormWeatherPayload payload = new SandstormWeatherPayload(WEATHER.isActive(), WEATHER.getIntensity());
+            for (ServerPlayer player : level.players()) {
+                ServerPlayNetworking.send(player, payload);
+            }
+        }
+
+        if (level != null && WEATHER.isActive()) {
+            if (gameTime % 80 == 0) {
+                playWeatherWindSound(level);
+            }
+            if (WEATHER.getIntensity() >= 0.35 && gameTime % 40 == 0) {
+                depositSandDrifts(level);
+            }
+        }
+    }
+
+    public static void depositSandDrifts(ServerLevel level) {
+        if (level == null || level.players().isEmpty()) {
+            return;
+        }
+        for (ServerPlayer player : level.players()) {
+            if (!level.canSeeSky(player.blockPosition())) {
+                continue;
+            }
+            int dx = level.getRandom().nextInt(25) - 12;
+            int dz = level.getRandom().nextInt(25) - 12;
+            BlockPos checkPos = player.blockPosition().offset(dx, 0, dz);
+            BlockPos topPos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, checkPos);
+            if (topPos.distSqr(player.blockPosition()) < 16) {
+                continue;
+            }
+            if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(topPos.getX(), topPos.getZ())) {
+                continue;
+            }
+            BlockState below = level.getBlockState(topPos.below());
+            if (below.isSolid() && level.getBlockState(topPos).isAir()) {
+                level.setBlock(topPos, Blocks.SAND.defaultBlockState(), 3);
+            }
         }
     }
 

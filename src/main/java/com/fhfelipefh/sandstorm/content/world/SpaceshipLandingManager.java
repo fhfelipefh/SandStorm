@@ -43,6 +43,7 @@ public class SpaceshipLandingManager {
         server.getGameRules().set(GameRules.SPAWN_PATROLS, false, server);
         server.getGameRules().set(GameRules.SPAWN_WANDERING_TRADERS, false, server);
         server.getGameRules().set(GameRules.SPAWN_WARDENS, false, server);
+        server.getGameRules().set(GameRules.WATER_SOURCE_CONVERSION, false, server);
         SpaceshipSavedData data = level.getDataStorage().computeIfAbsent(SpaceshipSavedData.TYPE);
         if (data.isPlaced() && data.getCabinPos().getY() > level.getMinY() + 10) {
             cachedCabinSpawnPos = data.getCabinPos();
@@ -63,6 +64,7 @@ public class SpaceshipLandingManager {
         server.getGameRules().set(GameRules.SPAWN_PATROLS, false, server);
         server.getGameRules().set(GameRules.SPAWN_WANDERING_TRADERS, false, server);
         server.getGameRules().set(GameRules.SPAWN_WARDENS, false, server);
+        server.getGameRules().set(GameRules.WATER_SOURCE_CONVERSION, false, server);
         SpaceshipSavedData data = level.getDataStorage().computeIfAbsent(SpaceshipSavedData.TYPE);
 
         if (!data.isPlaced() || data.getCabinPos().getY() <= level.getMinY() + 10) {

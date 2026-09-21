@@ -94,6 +94,13 @@ public class SandStormBlocks {
                     .strength(4.5f)
                     .lightLevel(state -> 8)
                     .sound(SoundType.HEAVY_CORE), 2));
+    public static final ThermalGeneratorBlock THERMAL_GENERATOR = register("thermal_generator",
+            new ThermalGeneratorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("thermal_generator")))
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(4.0f)
+                    .lightLevel(state -> state.getValue(ThermalGeneratorBlock.LIT) ? 14 : 0)
+                    .sound(SoundType.NETHERITE_BLOCK)));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -119,5 +126,6 @@ public class SandStormBlocks {
 
     public static void initialize() {
         WirelessSolarReceiverManager.initialize();
+        ThermalGeneratorManager.initialize();
     }
 }

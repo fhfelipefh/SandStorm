@@ -25,6 +25,7 @@ public class MultiplayerSpawnHandler {
             server.getGameRules().set(GameRules.SPAWN_PATROLS, false, server);
             server.getGameRules().set(GameRules.SPAWN_WANDERING_TRADERS, false, server);
             server.getGameRules().set(GameRules.SPAWN_WARDENS, false, server);
+            server.getGameRules().set(GameRules.WATER_SOURCE_CONVERSION, false, server);
         }
     }
 

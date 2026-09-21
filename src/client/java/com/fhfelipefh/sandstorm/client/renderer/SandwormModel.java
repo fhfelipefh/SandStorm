@@ -246,9 +246,9 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
         float totalPitch;
         if (state.hasTarget) {
             float distNorm = Mth.clamp((state.targetDistance - 3.0f) / 20.0f, 0.0f, 1.0f);
-            totalPitch = Mth.lerp(distNorm, 1.85f, 0.95f);
+            totalPitch = Mth.lerp(distNorm, 0.35f, 0.15f);
         } else {
-            totalPitch = 0.85f;
+            totalPitch = 0.12f;
         }
 
         float w0 = Mth.sin(age * 0.035f) * 0.015f;
@@ -455,15 +455,15 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
 
         float sinkModelUnits = state.groundSink * (16.0f / 7.5f);
         if (state.burrowed) {
-            this.body.y = 24.0f + 120.0f;
+            this.body.y = 24.0f + 200.0f;
         } else if (state.submerging) {
             float sp = state.submergeProgress;
             float smoothSub = Mth.sin(sp * (float) (Math.PI * 0.5));
-            this.body.y = 24.0f + (smoothSub * 56.0f) + sinkModelUnits;
+            this.body.y = 24.0f + (smoothSub * 180.0f) + sinkModelUnits;
         } else if (state.breaching) {
             float bp = state.breachProgress;
             float smoothBreach = Mth.sin(bp * (float) (Math.PI * 0.5));
-            this.body.y = 24.0f + 48.0f * (1.0f - smoothBreach) + sinkModelUnits;
+            this.body.y = 24.0f + 180.0f * (1.0f - smoothBreach) + sinkModelUnits;
         } else {
             this.body.y = 24.0f + sinkModelUnits;
         }

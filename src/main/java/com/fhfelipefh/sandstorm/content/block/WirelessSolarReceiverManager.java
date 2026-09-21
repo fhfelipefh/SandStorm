@@ -57,14 +57,15 @@ public class WirelessSolarReceiverManager {
     }
 
     public static long getWptChargeAt(Level level, BlockPos pos) {
+        long thermalCharge = ThermalGeneratorManager.getWptChargeAt(level, pos);
         Map<BlockPos, Integer> map = RECEIVER_MAP.get(level.dimension());
         if (map == null || map.isEmpty()) {
-            return 0;
+            return thermalCharge;
         }
         double weather = SandstormWeatherHandler.getWeather().getSolarEfficiencyMultiplier();
         boolean isDay = level.getSkyDarken() < 4;
         int skyDarken = level.getSkyDarken();
-        long maxCharge = 0;
+        long maxCharge = thermalCharge;
 
         for (Map.Entry<BlockPos, Integer> entry : map.entrySet()) {
             BlockPos rPos = entry.getKey();

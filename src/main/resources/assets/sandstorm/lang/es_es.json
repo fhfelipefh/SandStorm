@@ -30,6 +30,8 @@
   "block.sandstorm.wireless_solar_receiver_tier2": "Receptor Solar Inalámbrico (Tier 2)",
   "item.sandstorm.wireless_solar_receiver": "Receptor Solar Inalámbrico (Tier 1)",
   "item.sandstorm.wireless_solar_receiver_tier2": "Receptor Solar Inalámbrico (Tier 2)",
+  "block.sandstorm.thermal_generator": "Generador Térmico",
+  "item.sandstorm.thermal_generator": "Generador Térmico",
   "entity.sandstorm.sandworm": "Gusano de Arena",
   "entity.sandstorm.cargo_drone": "Dron de Carga Aéreo",
   "entity.sandstorm.excavator_vehicle": "Vehículo Excavador Minero",

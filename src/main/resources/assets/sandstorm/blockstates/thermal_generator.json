@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "sandstorm:block/thermal_generator"
+    },
+    "lit=true": {
+      "model": "sandstorm:block/thermal_generator_on"
+    }
+  }
+}
