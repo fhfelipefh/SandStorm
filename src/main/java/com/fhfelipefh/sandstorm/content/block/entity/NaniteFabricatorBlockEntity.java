@@ -71,6 +71,13 @@ public class NaniteFabricatorBlockEntity extends BaseMachineBlockEntity {
         return 3;
     }
 
+    public ItemStack getFabricatingItem() {
+        if (this.isProcessing()) {
+            return new ItemStack(SandStormItems.NANO_ACTUATOR);
+        }
+        return this.getItem(2);
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable("container.sandstorm.nanite_fabricator");

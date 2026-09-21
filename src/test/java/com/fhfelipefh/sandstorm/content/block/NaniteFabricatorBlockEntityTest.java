@@ -65,4 +65,10 @@ class NaniteFabricatorBlockEntityTest {
         assertFalse(be.canTakeItemThroughFace(0, ItemStack.EMPTY, Direction.DOWN));
         assertFalse(be.canTakeItemThroughFace(3, ItemStack.EMPTY, Direction.DOWN));
     }
+
+    @Test
+    void shouldReturnEmptyFabricatingItemWhenIdle() {
+        NaniteFabricatorBlockEntity be = new NaniteFabricatorBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        assertTrue(be.getFabricatingItem().isEmpty());
+    }
 }

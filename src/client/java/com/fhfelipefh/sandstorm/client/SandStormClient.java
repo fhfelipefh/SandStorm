@@ -6,6 +6,7 @@ import com.fhfelipefh.sandstorm.client.gui.NaniteFabricatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.Printer3DScreen;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
+import com.fhfelipefh.sandstorm.client.renderer.NaniteFabricatorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.Printer3DBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandwormRenderer;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
@@ -33,6 +34,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.NANITE_FABRICATOR_MENU, NaniteFabricatorScreen::new);
         MenuScreens.register(SandStormMenus.DESALINATION_FILTER_MENU, DesalinationFilterScreen::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.NUTRIENT_BOMB, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDWORM, SandwormRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CARGO_DRONE, NoopRenderer::new);
