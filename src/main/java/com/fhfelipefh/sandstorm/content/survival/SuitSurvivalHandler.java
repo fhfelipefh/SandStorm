@@ -107,6 +107,7 @@ public class SuitSurvivalHandler {
                 MinecraftServer server = player.level().getServer();
                 if (server != null) {
                     PlayerQuestSavedData data = PlayerQuestSavedData.get(server);
+                    data.markConditionCompleted(player.getUUID(), "sandstorm.battery_60");
                     QuestRewardHandler.syncPlayerQuests(player, data);
                     QuestRewardHandler.checkPlayerNotifications(player, data);
                 }

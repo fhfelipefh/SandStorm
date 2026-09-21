@@ -8,6 +8,8 @@ import com.fhfelipefh.sandstorm.content.entity.ai.SandwormShowcaseGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormSlitherChaseGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormState;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
+import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import net.minecraft.core.BlockPos;
@@ -431,10 +433,20 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     @Override
     public void die(DamageSource damageSource) {
         super.die(damageSource);
-        if (damageSource.getEntity() instanceof ServerPlayer player) {
+        ServerPlayer player = null;
+        if (damageSource.getEntity() instanceof ServerPlayer sp) {
+            player = sp;
+        } else if (this.getLastHurtByMob() instanceof ServerPlayer sp) {
+            player = sp;
+        }
+        if (player != null) {
             player.addTag("sandstorm.kill_sandworm");
-        } else if (this.getLastHurtByMob() instanceof ServerPlayer player) {
-            player.addTag("sandstorm.kill_sandworm");
+            if (player.level().getServer() != null) {
+                PlayerQuestSavedData data = PlayerQuestSavedData.get(player.level().getServer());
+                data.markConditionCompleted(player.getUUID(), "sandstorm.kill_sandworm");
+                QuestRewardHandler.syncPlayerQuests(player, data);
+                QuestRewardHandler.checkPlayerNotifications(player, data);
+            }
         }
     }
 

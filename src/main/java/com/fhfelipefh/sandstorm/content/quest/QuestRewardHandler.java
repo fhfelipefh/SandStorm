@@ -34,7 +34,16 @@ public class QuestRewardHandler {
     public static void initialize() {
         ServerPlayNetworking.registerGlobalReceiver(ClaimQuestRewardPayload.TYPE, (payload, context) -> {
             ServerPlayer player = context.player();
-            context.server().execute(() -> handleClaim(player, payload.questId()));
+            context.server().execute(() -> {
+                PlayerQuestSavedData data = PlayerQuestSavedData.get(context.server());
+                if (payload.clientConditions() != null) {
+                    for (String cond : payload.clientConditions()) {
+                        data.markConditionCompleted(player.getUUID(), cond);
+                        player.addTag(cond);
+                    }
+                }
+                handleClaim(player, payload.questId());
+            });
         });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
@@ -75,7 +84,7 @@ public class QuestRewardHandler {
         if (!arePrerequisitesMet(player.getUUID(), quest, data)) {
             return;
         }
-        if (!hasRequiredItem(player, quest)) {
+        if (!hasRequiredItem(player, quest, data)) {
             return;
         }
 
@@ -93,13 +102,25 @@ public class QuestRewardHandler {
         }
 
         player.level().playSound(null, player.blockPosition(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS, 1.0f, 1.2f);
+        server.overworld().getDataStorage().saveAndJoin();
         syncPlayerQuests(player, data);
     }
 
     public static void syncPlayerQuests(ServerPlayer player, PlayerQuestSavedData data) {
         List<String> list = new ArrayList<>(data.getClaimedQuests(player.getUUID()));
-        List<String> conditions = player.entityTags().stream().filter(t -> t.startsWith("sandstorm.")).toList();
-        ServerPlayNetworking.send(player, new SyncPlayerQuestsPayload(list, conditions));
+        Set<String> conditions = new HashSet<>(data.getCompletedConditions(player.getUUID()));
+        for (String tag : player.entityTags()) {
+            if (tag.startsWith("sandstorm.")) {
+                conditions.add(tag);
+                data.markConditionCompleted(player.getUUID(), tag);
+            }
+        }
+        for (String cond : conditions) {
+            if (!player.entityTags().contains(cond)) {
+                player.addTag(cond);
+            }
+        }
+        ServerPlayNetworking.send(player, new SyncPlayerQuestsPayload(list, new ArrayList<>(conditions)));
     }
 
     public static boolean arePrerequisitesMet(UUID playerUuid, QuestData quest, PlayerQuestSavedData data) {
@@ -115,17 +136,33 @@ public class QuestRewardHandler {
     }
 
     public static boolean hasRequiredItem(Player player, QuestData quest) {
+        if (player != null && player.level().getServer() != null) {
+            return hasRequiredItem(player, quest, PlayerQuestSavedData.get(player.level().getServer()));
+        }
+        return hasRequiredItem(player, quest, null);
+    }
+
+    public static boolean hasRequiredItem(Player player, QuestData quest, PlayerQuestSavedData data) {
         if (player == null || quest == null) {
             return false;
         }
         if (quest.isConditionBased()) {
+            if (data != null && data.isConditionCompleted(player.getUUID(), quest.conditionTag())) {
+                return true;
+            }
             if (player.entityTags().contains(quest.conditionTag())) {
+                if (data != null) {
+                    data.markConditionCompleted(player.getUUID(), quest.conditionTag());
+                }
                 return true;
             }
             if ("sandstorm.battery_60".equals(quest.conditionTag())) {
                 SuitPowerComponent suit = (player instanceof ServerPlayer sp) ? SuitSurvivalHandler.getOrCreateSuit(sp) : SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
                 if (suit.getEnergyStorage().getStoredEnergy() >= suit.getEnergyStorage().getCapacity() * 0.6) {
                     player.addTag("sandstorm.battery_60");
+                    if (data != null) {
+                        data.markConditionCompleted(player.getUUID(), "sandstorm.battery_60");
+                    }
                     return true;
                 }
             }

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -246,7 +247,8 @@ public class SurvivalDatapadScreen extends Screen {
 
                 if (mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH) {
                     if (isQuestClaimable(player, quest)) {
-                        ClientPlayNetworking.send(new ClaimQuestRewardPayload(quest.id()));
+                        DatapadClientHelper.addClaimedQuest(quest.id());
+                        ClientPlayNetworking.send(new ClaimQuestRewardPayload(quest.id(), new ArrayList<>(DatapadClientHelper.getCompletedConditions())));
                         claimFlashTimestamps.put(quest.id(), System.currentTimeMillis());
                         if (minecraft != null) {
                             minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));

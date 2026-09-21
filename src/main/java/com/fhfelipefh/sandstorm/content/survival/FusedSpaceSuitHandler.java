@@ -3,6 +3,8 @@ package com.fhfelipefh.sandstorm.content.survival;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.item.SpaceSuitItem;
+import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
+import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.world.SpaceshipLandingManager;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -24,6 +26,14 @@ public class FusedSpaceSuitHandler {
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
             for (String tag : oldPlayer.entityTags()) {
                 newPlayer.addTag(tag);
+            }
+            MinecraftServer server = newPlayer.level().getServer();
+            if (server != null) {
+                PlayerQuestSavedData data = PlayerQuestSavedData.get(server);
+                for (String cond : data.getCompletedConditions(newPlayer.getUUID())) {
+                    newPlayer.addTag(cond);
+                }
+                QuestRewardHandler.syncPlayerQuests(newPlayer, data);
             }
             onPlayerRespawn(newPlayer);
         });

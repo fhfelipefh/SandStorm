@@ -14,8 +14,9 @@ class QuestPayloadTest {
 
     @Test
     void testClaimQuestRewardPayloadTypeAndCodec() {
-        ClaimQuestRewardPayload payload = new ClaimQuestRewardPayload("suit_diagnostics");
+        ClaimQuestRewardPayload payload = new ClaimQuestRewardPayload("suit_diagnostics", List.of("sandstorm.battery_60"));
         assertEquals("suit_diagnostics", payload.questId());
+        assertEquals(List.of("sandstorm.battery_60"), payload.clientConditions());
         assertEquals(ClaimQuestRewardPayload.TYPE, payload.type());
         assertNotNull(ClaimQuestRewardPayload.STREAM_CODEC);
         assertEquals("sandstorm:claim_quest_reward", ClaimQuestRewardPayload.TYPE.id().toString());
@@ -26,6 +27,7 @@ class QuestPayloadTest {
 
         ClaimQuestRewardPayload decoded = ClaimQuestRewardPayload.STREAM_CODEC.decode(buf);
         assertEquals("suit_diagnostics", decoded.questId());
+        assertEquals(List.of("sandstorm.battery_60"), decoded.clientConditions());
     }
 
     @Test

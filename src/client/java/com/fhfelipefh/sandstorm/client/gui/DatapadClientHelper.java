@@ -41,6 +41,10 @@ public class DatapadClientHelper {
         return CLAIMED_QUESTS.contains(questId);
     }
 
+    public static void addClaimedQuest(String questId) {
+        CLAIMED_QUESTS.add(questId);
+    }
+
     public static void addCondition(String conditionTag) {
         COMPLETED_CONDITIONS.add(conditionTag);
     }

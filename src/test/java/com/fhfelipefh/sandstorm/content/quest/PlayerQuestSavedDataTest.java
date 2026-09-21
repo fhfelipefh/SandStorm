@@ -74,6 +74,29 @@ class PlayerQuestSavedDataTest {
     }
 
     @Test
+    void testConditionCompletedTrackingAndSerialization() {
+        PlayerQuestSavedData original = new PlayerQuestSavedData();
+        UUID player1 = UUID.randomUUID();
+
+        assertFalse(original.isConditionCompleted(player1, "sandstorm.battery_60"));
+        assertTrue(original.markConditionCompleted(player1, "sandstorm.battery_60"));
+        assertFalse(original.markConditionCompleted(player1, "sandstorm.battery_60"));
+        assertTrue(original.isConditionCompleted(player1, "sandstorm.battery_60"));
+        assertEquals(Set.of("sandstorm.battery_60"), original.getCompletedConditions(player1));
+
+        DataResult<Tag> encodeResult = PlayerQuestSavedData.CODEC.encodeStart(NbtOps.INSTANCE, original);
+        assertTrue(encodeResult.isSuccess());
+
+        Tag tag = encodeResult.getOrThrow();
+        DataResult<PlayerQuestSavedData> decodeResult = PlayerQuestSavedData.CODEC.parse(NbtOps.INSTANCE, tag);
+        assertTrue(decodeResult.isSuccess());
+
+        PlayerQuestSavedData decoded = decodeResult.getOrThrow();
+        assertTrue(decoded.isConditionCompleted(player1, "sandstorm.battery_60"));
+        assertEquals(Set.of("sandstorm.battery_60"), decoded.getCompletedConditions(player1));
+    }
+
+    @Test
     void testFromEntriesDirect() {
         UUID player1 = UUID.randomUUID();
         PlayerQuestSavedData.Entry entry = new PlayerQuestSavedData.Entry(player1, List.of("quest_a", "quest_b"));
