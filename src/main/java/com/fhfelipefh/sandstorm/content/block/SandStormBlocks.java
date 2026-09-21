@@ -5,6 +5,9 @@ import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -133,5 +136,13 @@ public class SandStormBlocks {
     public static void initialize() {
         WirelessSolarReceiverManager.initialize();
         ThermalGeneratorManager.initialize();
+        registerTransferApi();
+    }
+
+    private static void registerTransferApi() {
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, PRINTER_3D_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, NANITE_FABRICATOR_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, DESALINATION_FILTER_BE);
+        FluidStorage.SIDED.registerForBlockEntity(DesalinationFilterBlockEntity::getFluidStorage, DESALINATION_FILTER_BE);
     }
 }

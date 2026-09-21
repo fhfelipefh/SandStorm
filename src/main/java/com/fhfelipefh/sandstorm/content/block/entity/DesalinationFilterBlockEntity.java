@@ -4,8 +4,16 @@ import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.gui.DesalinationFilterMenu;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.fabricmc.fabric.impl.transfer.fluid.FluidVariantImpl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
@@ -20,8 +28,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
     private static final int[] SLOTS_TOP = new int[]{0, 3, 4};
@@ -31,6 +44,160 @@ public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
     private int waterInput = 0;
     private int waterOutput = 0;
     private static final int MAX_WATER = 4000;
+
+    private final Storage<FluidVariant> inputFluidStorage = new Storage<>() {
+        @Override
+        public boolean supportsInsertion() {
+            return true;
+        }
+
+        @Override
+        public boolean supportsExtraction() {
+            return false;
+        }
+
+        @Override
+        public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+            if (!resource.isOf(Fluids.WATER) || maxAmount <= 0) {
+                return 0;
+            }
+            long dropletsPerMb = FluidConstants.BUCKET / 1000;
+            long currentDroplets = (long) waterInput * dropletsPerMb;
+            long maxDroplets = (long) MAX_WATER * dropletsPerMb;
+            long space = maxDroplets - currentDroplets;
+            if (space <= 0) {
+                return 0;
+            }
+            long toInsert = Math.min(maxAmount, space);
+            int addedMb = (int) (toInsert / dropletsPerMb);
+            if (addedMb <= 0) {
+                return 0;
+            }
+            long actualInserted = (long) addedMb * dropletsPerMb;
+            int prevWater = waterInput;
+            waterInput += addedMb;
+            transaction.addCloseCallback((tx, result) -> {
+                if (result.wasAborted()) {
+                    waterInput = prevWater;
+                } else {
+                    setChanged();
+                }
+            });
+            return actualInserted;
+        }
+
+        @Override
+        public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+            return 0;
+        }
+
+        @Override
+        public Iterator<StorageView<FluidVariant>> iterator() {
+            return Collections.<StorageView<FluidVariant>>singletonList(new StorageView<>() {
+                @Override
+                public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+                    return 0;
+                }
+
+                @Override
+                public boolean isResourceBlank() {
+                    return waterInput <= 0;
+                }
+
+                @Override
+                public FluidVariant getResource() {
+                    return waterInput > 0 ? new FluidVariantImpl(Fluids.WATER, DataComponentPatch.EMPTY) : new FluidVariantImpl(Fluids.EMPTY, DataComponentPatch.EMPTY);
+                }
+
+                @Override
+                public long getAmount() {
+                    return (long) waterInput * (FluidConstants.BUCKET / 1000);
+                }
+
+                @Override
+                public long getCapacity() {
+                    return (long) MAX_WATER * (FluidConstants.BUCKET / 1000);
+                }
+            }).iterator();
+        }
+    };
+
+    private final Storage<FluidVariant> outputFluidStorage = new Storage<>() {
+        @Override
+        public boolean supportsInsertion() {
+            return false;
+        }
+
+        @Override
+        public boolean supportsExtraction() {
+            return true;
+        }
+
+        @Override
+        public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+            return 0;
+        }
+
+        @Override
+        public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+            if (!resource.isOf(Fluids.WATER) || maxAmount <= 0) {
+                return 0;
+            }
+            long dropletsPerMb = FluidConstants.BUCKET / 1000;
+            long currentDroplets = (long) waterOutput * dropletsPerMb;
+            if (currentDroplets <= 0) {
+                return 0;
+            }
+            long toExtract = Math.min(maxAmount, currentDroplets);
+            int drainedMb = (int) (toExtract / dropletsPerMb);
+            if (drainedMb <= 0) {
+                return 0;
+            }
+            long actualDrained = (long) drainedMb * dropletsPerMb;
+            int prevWater = waterOutput;
+            waterOutput -= drainedMb;
+            transaction.addCloseCallback((tx, result) -> {
+                if (result.wasAborted()) {
+                    waterOutput = prevWater;
+                } else {
+                    setChanged();
+                }
+            });
+            return actualDrained;
+        }
+
+        @Override
+        public Iterator<StorageView<FluidVariant>> iterator() {
+            return Collections.<StorageView<FluidVariant>>singletonList(new StorageView<>() {
+                @Override
+                public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+                    return outputFluidStorage.extract(resource, maxAmount, transaction);
+                }
+
+                @Override
+                public boolean isResourceBlank() {
+                    return waterOutput <= 0;
+                }
+
+                @Override
+                public FluidVariant getResource() {
+                    return waterOutput > 0 ? new FluidVariantImpl(Fluids.WATER, DataComponentPatch.EMPTY) : new FluidVariantImpl(Fluids.EMPTY, DataComponentPatch.EMPTY);
+                }
+
+                @Override
+                public long getAmount() {
+                    return (long) waterOutput * (FluidConstants.BUCKET / 1000);
+                }
+
+                @Override
+                public long getCapacity() {
+                    return (long) MAX_WATER * (FluidConstants.BUCKET / 1000);
+                }
+            }).iterator();
+        }
+    };
+
+    private final Storage<FluidVariant> combinedFluidStorage = new CombinedStorage<>(List.of(inputFluidStorage, outputFluidStorage));
 
     private final ContainerData desalinationDataAccess = new ContainerData() {
         @Override
@@ -77,6 +244,16 @@ public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
         super(type, pos, state, 5, 80);
     }
 
+    public Storage<FluidVariant> getFluidStorage(Direction side) {
+        if (side == Direction.UP) {
+            return inputFluidStorage;
+        }
+        if (side == Direction.DOWN) {
+            return outputFluidStorage;
+        }
+        return combinedFluidStorage;
+    }
+
     public boolean addWaterInput(int amount) {
         if (amount <= 0 || waterInput >= MAX_WATER) {
             return false;
@@ -92,6 +269,16 @@ public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
 
     public int getWaterOutput() {
         return waterOutput;
+    }
+
+    public void setWaterOutput(int waterOutput) {
+        this.waterOutput = Math.clamp(waterOutput, 0, MAX_WATER);
+        setChanged();
+    }
+
+    public void setWaterInput(int waterInput) {
+        this.waterInput = Math.clamp(waterInput, 0, MAX_WATER);
+        setChanged();
     }
 
     public int getMaxWater() {

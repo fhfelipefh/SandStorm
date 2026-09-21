@@ -98,6 +98,6 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
 
     @Override
     protected AABB getBoundingBoxForCulling(SandwormEntity entity, float partialTick) {
-        return super.getBoundingBoxForCulling(entity, partialTick).inflate(25.0, 45.0, 25.0);
+        return super.getBoundingBoxForCulling(entity, partialTick).inflate(60.0, 100.0, 60.0);
     }
 }

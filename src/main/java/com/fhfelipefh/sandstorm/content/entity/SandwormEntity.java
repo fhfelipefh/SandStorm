@@ -145,7 +145,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     public float getBreachAnimationProgress(float partialTick) {
         int ticks = this.entityData.get(DATA_BREACH_TICKS);
         if (ticks <= 0) {
-            return 0.0f;
+            return this.getSandwormState() == SandwormState.BREACHING ? 1.0f : 0.0f;
         }
         return Mth.clamp((35.0f - (ticks - partialTick)) / 35.0f, 0.0f, 1.0f);
     }
@@ -153,7 +153,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     public float getSubmergeAnimationProgress(float partialTick) {
         int ticks = this.entityData.get(DATA_SUBMERGE_TICKS);
         if (ticks <= 0) {
-            return 0.0f;
+            return this.getSandwormState() == SandwormState.SUBMERGING ? 1.0f : 0.0f;
         }
         return Mth.clamp((35.0f - (ticks - partialTick)) / 35.0f, 0.0f, 1.0f);
     }
@@ -293,20 +293,22 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     public void tick() {
         super.tick();
 
-        int breach = this.entityData.get(DATA_BREACH_TICKS);
-        if (breach > 0) {
-            this.entityData.set(DATA_BREACH_TICKS, breach - 1);
-        }
-        int submerge = this.entityData.get(DATA_SUBMERGE_TICKS);
-        if (submerge > 0) {
-            this.entityData.set(DATA_SUBMERGE_TICKS, submerge - 1);
-        }
-        int bite = this.entityData.get(DATA_BITE_TICKS);
-        if (bite > 0) {
-            if (bite == 8 && this.level() instanceof ServerLevel serverLevel) {
-                this.executeBiteImpact(serverLevel);
+        if (!this.level().isClientSide()) {
+            int breach = this.entityData.get(DATA_BREACH_TICKS);
+            if (breach > 0) {
+                this.entityData.set(DATA_BREACH_TICKS, breach - 1);
             }
-            this.entityData.set(DATA_BITE_TICKS, bite - 1);
+            int submerge = this.entityData.get(DATA_SUBMERGE_TICKS);
+            if (submerge > 0) {
+                this.entityData.set(DATA_SUBMERGE_TICKS, submerge - 1);
+            }
+            int bite = this.entityData.get(DATA_BITE_TICKS);
+            if (bite > 0) {
+                if (bite == 8 && this.level() instanceof ServerLevel serverLevel) {
+                    this.executeBiteImpact(serverLevel);
+                }
+                this.entityData.set(DATA_BITE_TICKS, bite - 1);
+            }
         }
 
         updateGroundTerrain();
