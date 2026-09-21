@@ -51,52 +51,69 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
 
         PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(0.0f, 24.0f, 0.0f));
 
+
         PartDefinition base = body.addOrReplaceChild("base", CubeListBuilder.create()
                 .texOffs(0, 0).addBox(-12.0f, -12.0f, -12.0f, 24.0f, 12.0f, 24.0f)
                 .texOffs(98, 0).addBox(-13.0f, -10.0f, -13.0f, 26.0f, 10.0f, 26.0f)
-                .texOffs(204, 0).addBox(-4.0f, -13.0f, -14.0f, 8.0f, 12.0f, 6.0f),
+                .texOffs(204, 0).addBox(-4.0f, -13.0f, -14.0f, 8.0f, 12.0f, 6.0f)
+
+                .texOffs(0, 0).addBox(-11.0f, -20.0f, -11.0f, 22.0f, 8.0f, 22.0f),
                 PartPose.offset(0.0f, 0.0f, 0.0f));
 
         PartDefinition seg1 = base.addOrReplaceChild("segment_1", CubeListBuilder.create()
                 .texOffs(0, 20).addBox(-11.5f, -12.0f, -11.5f, 23.0f, 12.0f, 23.0f)
                 .texOffs(96, 20).addBox(-12.5f, -10.0f, -12.5f, 25.0f, 10.0f, 25.0f)
-                .texOffs(200, 20).addBox(-3.8f, -13.0f, -13.5f, 7.6f, 12.0f, 5.5f),
+                .texOffs(200, 20).addBox(-3.8f, -13.0f, -13.5f, 7.6f, 12.0f, 5.5f)
+
+                .texOffs(0, 20).addBox(-10.5f, -20.0f, -10.5f, 21.0f, 8.0f, 21.0f),
                 PartPose.offset(0.0f, -12.0f, -1.0f));
 
         PartDefinition seg2 = seg1.addOrReplaceChild("segment_2", CubeListBuilder.create()
                 .texOffs(0, 40).addBox(-11.0f, -12.0f, -11.0f, 22.0f, 12.0f, 22.0f)
                 .texOffs(90, 40).addBox(-12.0f, -10.0f, -12.0f, 24.0f, 10.0f, 24.0f)
-                .texOffs(188, 40).addBox(-3.5f, -13.0f, -13.0f, 7.0f, 12.0f, 5.0f),
+                .texOffs(188, 40).addBox(-3.5f, -13.0f, -13.0f, 7.0f, 12.0f, 5.0f)
+
+                .texOffs(0, 40).addBox(-10.0f, -20.0f, -10.0f, 20.0f, 8.0f, 20.0f),
                 PartPose.offset(0.0f, -12.0f, -1.0f));
 
         PartDefinition seg3 = seg2.addOrReplaceChild("segment_3", CubeListBuilder.create()
                 .texOffs(0, 60).addBox(-10.5f, -12.0f, -10.5f, 21.0f, 12.0f, 21.0f)
                 .texOffs(86, 60).addBox(-11.5f, -10.0f, -11.5f, 23.0f, 10.0f, 23.0f)
-                .texOffs(180, 60).addBox(-3.2f, -13.0f, -12.5f, 6.4f, 12.0f, 5.0f),
+                .texOffs(180, 60).addBox(-3.2f, -13.0f, -12.5f, 6.4f, 12.0f, 5.0f)
+
+                .texOffs(0, 60).addBox(-9.5f, -20.0f, -9.5f, 19.0f, 8.0f, 19.0f),
                 PartPose.offset(0.0f, -12.0f, -1.2f));
 
         PartDefinition seg4 = seg3.addOrReplaceChild("segment_4", CubeListBuilder.create()
                 .texOffs(0, 80).addBox(-10.0f, -12.0f, -10.0f, 20.0f, 12.0f, 20.0f)
                 .texOffs(82, 80).addBox(-11.0f, -10.0f, -11.0f, 22.0f, 10.0f, 22.0f)
-                .texOffs(172, 80).addBox(-3.0f, -13.0f, -12.0f, 6.0f, 12.0f, 5.0f),
+                .texOffs(172, 80).addBox(-3.0f, -13.0f, -12.0f, 6.0f, 12.0f, 5.0f)
+
+                .texOffs(0, 80).addBox(-9.0f, -20.0f, -9.0f, 18.0f, 8.0f, 18.0f),
                 PartPose.offset(0.0f, -12.0f, -1.2f));
 
         PartDefinition seg5 = seg4.addOrReplaceChild("segment_5", CubeListBuilder.create()
                 .texOffs(0, 100).addBox(-9.5f, -12.0f, -9.5f, 19.0f, 12.0f, 19.0f)
                 .texOffs(78, 100).addBox(-10.5f, -10.0f, -10.5f, 21.0f, 10.0f, 21.0f)
-                .texOffs(164, 100).addBox(-2.8f, -13.0f, -11.5f, 5.6f, 12.0f, 4.5f),
+                .texOffs(164, 100).addBox(-2.8f, -13.0f, -11.5f, 5.6f, 12.0f, 4.5f)
+
+                .texOffs(0, 100).addBox(-8.5f, -20.0f, -8.5f, 17.0f, 8.0f, 17.0f),
                 PartPose.offset(0.0f, -12.0f, -1.5f));
 
         PartDefinition seg6 = seg5.addOrReplaceChild("segment_6", CubeListBuilder.create()
                 .texOffs(0, 120).addBox(-9.0f, -12.0f, -9.0f, 18.0f, 12.0f, 18.0f)
                 .texOffs(74, 120).addBox(-10.0f, -10.0f, -10.0f, 20.0f, 10.0f, 20.0f)
-                .texOffs(156, 120).addBox(-2.5f, -13.0f, -11.0f, 5.0f, 12.0f, 4.0f),
+                .texOffs(156, 120).addBox(-2.5f, -13.0f, -11.0f, 5.0f, 12.0f, 4.0f)
+
+                .texOffs(0, 120).addBox(-8.0f, -20.0f, -8.0f, 16.0f, 8.0f, 16.0f),
                 PartPose.offset(0.0f, -12.0f, -1.5f));
 
         PartDefinition seg7 = seg6.addOrReplaceChild("segment_7", CubeListBuilder.create()
                 .texOffs(0, 140).addBox(-8.5f, -12.0f, -8.5f, 17.0f, 12.0f, 17.0f)
                 .texOffs(70, 140).addBox(-9.5f, -10.0f, -9.5f, 19.0f, 10.0f, 19.0f)
-                .texOffs(148, 140).addBox(-2.2f, -13.0f, -10.5f, 4.4f, 12.0f, 4.0f),
+                .texOffs(148, 140).addBox(-2.2f, -13.0f, -10.5f, 4.4f, 12.0f, 4.0f)
+
+                .texOffs(0, 140).addBox(-7.5f, -20.0f, -7.5f, 15.0f, 8.0f, 15.0f),
                 PartPose.offset(0.0f, -12.0f, -1.5f));
 
         PartDefinition neck = seg7.addOrReplaceChild("neck", CubeListBuilder.create()
