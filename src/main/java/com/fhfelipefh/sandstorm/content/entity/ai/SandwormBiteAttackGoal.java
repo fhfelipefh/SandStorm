@@ -2,18 +2,12 @@ package com.fhfelipefh.sandstorm.content.entity.ai;
 
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
@@ -61,6 +55,17 @@ public class SandwormBiteAttackGoal extends Goal {
         this.sandworm.setDeltaMovement(0.0, Math.min(0.0, this.sandworm.getDeltaMovement().y), 0.0);
         this.sandworm.setRearingProgress(Math.min(1.0f, this.sandworm.getRearingProgress() + 0.08f));
 
+        BlockPos strikePos = this.sandworm.getStrikePos();
+        if (this.sandworm.getBiteTicks() > 0 && strikePos != null && !strikePos.equals(BlockPos.ZERO)) {
+            double sx = strikePos.getX() + 0.5 - this.sandworm.getX();
+            double sz = strikePos.getZ() + 0.5 - this.sandworm.getZ();
+            float strikeYaw = (float) (Math.atan2(sz, sx) * (180.0 / Math.PI)) - 90.0f;
+            this.sandworm.setYRot(strikeYaw);
+            this.sandworm.setYHeadRot(strikeYaw);
+            this.sandworm.setYBodyRot(strikeYaw);
+            return;
+        }
+
         double dx = target.getX() - this.sandworm.getX();
         double dz = target.getZ() - this.sandworm.getZ();
         float targetYaw = (float) (Math.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
@@ -75,13 +80,14 @@ public class SandwormBiteAttackGoal extends Goal {
             this.attackCooldown--;
         }
 
-        double reach = 22.0;
+        float yawDiff = Math.abs(Mth.wrapDegrees(targetYaw - currentYaw));
+        double reach = 20.0;
         double reachSqr = reach * reach;
         double distSqr = this.sandworm.distanceToSqr(target);
 
-        if (distSqr <= reachSqr && this.attackCooldown <= 0) {
+        if (distSqr <= reachSqr && yawDiff <= 25.0f && this.attackCooldown <= 0) {
             this.performBiteAttack(target);
-            this.attackCooldown = 35;
+            this.attackCooldown = 40;
         }
 
         this.sandworm.decrementSurfaceTicks();
@@ -91,20 +97,10 @@ public class SandwormBiteAttackGoal extends Goal {
     }
 
     private void performBiteAttack(LivingEntity target) {
+        BlockPos strikePos = target.blockPosition();
+        this.sandworm.triggerBiteAnimation(strikePos);
         if (this.sandworm.level() instanceof ServerLevel serverLevel) {
-            this.sandworm.triggerBiteAnimation();
-            float damage = (float) this.sandworm.getAttributeValue(Attributes.ATTACK_DAMAGE) + 6.0f;
-            target.hurtServer(serverLevel, this.sandworm.damageSources().mobAttack(this.sandworm), damage);
-            target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 80, 2));
-
-            Vec3 knockback = target.position().subtract(this.sandworm.position()).normalize().scale(1.5);
-            target.setDeltaMovement(knockback.x, 0.4, knockback.z);
-
-            serverLevel.sendParticles(
-                    new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()),
-                    target.getX(), target.getY() + 0.5, target.getZ(), 30, 0.8, 0.6, 0.8, 0.15
-            );
-            serverLevel.playSound(null, this.sandworm.blockPosition(), SandStormSoundEvents.SANDWORM_ATTACK, SoundSource.HOSTILE, 1.8f, 0.9f);
+            serverLevel.playSound(null, this.sandworm.blockPosition(), SandStormSoundEvents.SANDWORM_RUMBLE, SoundSource.HOSTILE, 1.8f, 0.85f);
         }
     }
 

@@ -23,13 +23,14 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -45,6 +46,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     private static final EntityDataAccessor<Integer> DATA_BREACH_TICKS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_BITE_TICKS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_REARING = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<BlockPos> DATA_STRIKE_POS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.BLOCK_POS);
 
     private int surfaceTicks = 140;
     private int submergingTicks = 0;
@@ -72,6 +74,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         builder.define(DATA_BREACH_TICKS, 0);
         builder.define(DATA_BITE_TICKS, 0);
         builder.define(DATA_REARING, 1.0f);
+        builder.define(DATA_STRIKE_POS, BlockPos.ZERO);
     }
 
     public SandwormState getSandwormState() {
@@ -108,8 +111,21 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         this.entityData.set(DATA_BREACH_TICKS, ticks);
     }
 
-    public void triggerBiteAnimation() {
+    public BlockPos getStrikePos() {
+        return this.entityData.get(DATA_STRIKE_POS);
+    }
+
+    public int getBiteTicks() {
+        return this.entityData.get(DATA_BITE_TICKS);
+    }
+
+    public void triggerBiteAnimation(BlockPos strikePos) {
+        this.entityData.set(DATA_STRIKE_POS, strikePos);
         this.entityData.set(DATA_BITE_TICKS, 28);
+    }
+
+    public void triggerBiteAnimation() {
+        this.triggerBiteAnimation(this.blockPosition());
     }
 
     public float getBreachAnimationProgress(float partialTick) {
@@ -179,6 +195,63 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         }
     }
 
+    public void executeBiteImpact(ServerLevel serverLevel) {
+        BlockPos strikePos = this.getStrikePos();
+        Vec3 impactCenter;
+        if (strikePos == null || strikePos.equals(BlockPos.ZERO)) {
+            double yawRad = Math.toRadians(this.getYRot());
+            impactCenter = new Vec3(this.getX() - Math.sin(yawRad) * 12.0, this.getY(), this.getZ() + Math.cos(yawRad) * 12.0);
+        } else {
+            impactCenter = Vec3.atCenterOf(strikePos);
+        }
+
+        serverLevel.playSound(null, BlockPos.containing(impactCenter), SandStormSoundEvents.SANDWORM_ATTACK, SoundSource.HOSTILE, 2.2f, 0.8f);
+        serverLevel.sendParticles(
+                new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()),
+                impactCenter.x, impactCenter.y + 0.5, impactCenter.z, 90, 2.2, 1.2, 2.2, 0.35
+        );
+        serverLevel.sendParticles(
+                ParticleTypes.GUST_EMITTER_LARGE,
+                impactCenter.x, impactCenter.y + 0.5, impactCenter.z, 2, 0.0, 0.0, 0.0, 0.0
+        );
+        serverLevel.sendParticles(
+                ParticleTypes.EXPLOSION,
+                impactCenter.x, impactCenter.y + 0.8, impactCenter.z, 3, 1.0, 0.5, 1.0, 0.0
+        );
+
+        AABB impactBounds = new AABB(
+                impactCenter.x - 4.5, impactCenter.y - 2.5, impactCenter.z - 4.5,
+                impactCenter.x + 4.5, impactCenter.y + 3.5, impactCenter.z + 4.5
+        );
+
+        List<LivingEntity> targets = serverLevel.getEntitiesOfClass(LivingEntity.class, impactBounds, e ->
+                e != this && !(e instanceof SandwormEntity)
+        );
+
+        float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + 8.0f;
+
+        for (LivingEntity entity : targets) {
+            if (entity instanceof Player player && (player.isCreative() || player.isSpectator())) {
+                continue;
+            }
+            if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(entity.getBlockX(), entity.getBlockZ())) {
+                continue;
+            }
+
+            entity.hurtServer(serverLevel, this.damageSources().mobAttack(this), damage);
+            entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 80, 2));
+
+            Vec3 push = entity.position().subtract(impactCenter);
+            if (push.horizontalDistanceSqr() < 0.001) {
+                double yawRad = Math.toRadians(this.getYRot());
+                push = new Vec3(-Math.sin(yawRad), 0.35, Math.cos(yawRad));
+            } else {
+                push = push.normalize();
+            }
+            entity.setDeltaMovement(push.x * 1.5, 0.45, push.z * 1.5);
+        }
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -189,6 +262,9 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         }
         int bite = this.entityData.get(DATA_BITE_TICKS);
         if (bite > 0) {
+            if (bite == 8 && this.level() instanceof ServerLevel serverLevel) {
+                this.executeBiteImpact(serverLevel);
+            }
             this.entityData.set(DATA_BITE_TICKS, bite - 1);
         }
 
@@ -268,24 +344,8 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         this.goalSelector.addGoal(3, new SandwormSlitherChaseGoal(this));
         this.goalSelector.addGoal(4, new SandwormBurrowGoal(this));
 
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new SandwormSeismicTargetGoal(this));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, (entity, level) -> isValidLivingPrey(entity)));
-    }
-
-    public boolean isValidLivingPrey(LivingEntity entity) {
-        if (entity == null || !entity.isAlive() || entity.isSpectator() || entity == this) {
-            return false;
-        }
-        if (entity instanceof SandwormEntity) {
-            return false;
-        }
-        if (entity instanceof Player player && (player.isCreative() || player.isSpectator())) {
-            return false;
-        }
-        BlockPos pos = entity.blockPosition();
-        return !SeismicSurvivalHandler.getTracker().isInsideSafeZone(pos.getX(), pos.getZ());
+        this.targetSelector.addGoal(1, new SandwormSeismicTargetGoal(this));
+        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.fhfelipefh.sandstorm.core.SandStormMod;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,12 +43,21 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
         state.bodyYaw = entity.getYRot();
 
         LivingEntity target = entity.getTarget();
-        if (target != null && target.isAlive()) {
+        BlockPos strikePos = entity.getStrikePos();
+        boolean isBiting = entity.getBiteAnimationProgress(partialTick) > 0.0f;
+
+        Vec3 wormPos = entity.position();
+        Vec3 targetPos = null;
+        if (isBiting && strikePos != null && !strikePos.equals(BlockPos.ZERO)) {
+            targetPos = Vec3.atCenterOf(strikePos);
+        } else if (target != null && target.isAlive()) {
+            targetPos = target.position().add(0, target.getEyeHeight() * 0.5, 0);
+        }
+
+        if (targetPos != null) {
             state.hasTarget = true;
-            Vec3 wormPos = entity.position();
-            Vec3 targetPos = target.position();
             double dx = targetPos.x - wormPos.x;
-            double dy = (targetPos.y + target.getEyeHeight() * 0.5) - (wormPos.y + 12.0);
+            double dy = targetPos.y - (wormPos.y + 12.0);
             double dz = targetPos.z - wormPos.z;
             double horizontalDist = Math.sqrt(dx * dx + dz * dz);
             state.targetDistance = (float) horizontalDist;

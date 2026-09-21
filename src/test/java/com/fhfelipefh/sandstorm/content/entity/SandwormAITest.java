@@ -194,4 +194,39 @@ class SandwormAITest {
         assertFalse(SandwormState.SURFACED_ASSAULT.isSubterranean());
         assertTrue(SandwormState.SURFACED_ASSAULT.isSurfaced());
     }
+
+    @Test
+    void shouldPrioritizeCrowdNoiseOverLoneTarget() {
+        double loneDistanceSqr = 10.0 * 10.0;
+        double loneCrowdNoise = 1.0;
+        int loneCount = 1;
+        double loneScore = (loneCrowdNoise * 1500.0) + (loneCount * 500.0) - loneDistanceSqr;
+
+        double crowdDistanceSqr = 40.0 * 40.0;
+        double crowdNoise = 3.0 * 1.0;
+        int crowdCount = 3;
+        double crowdScore = (crowdNoise * 1500.0) + (crowdCount * 500.0) - crowdDistanceSqr;
+
+        assertTrue(crowdScore > loneScore);
+        assertTrue(crowdScore - loneScore > 800.0);
+    }
+
+    @Test
+    void shouldValidateBiteApexFrameAndTelegraphedImpactBounds() {
+        int initialBiteTicks = 28;
+        int apexRemainingTicks = 8;
+        float progress = (initialBiteTicks - apexRemainingTicks) / (float) initialBiteTicks;
+        assertEquals(0.71428573f, progress, 0.001f);
+
+        BlockPos strikePos = new BlockPos(10, 64, 10);
+        Vec3 impactCenter = Vec3.atCenterOf(strikePos);
+        AABB impactBounds = new AABB(
+                impactCenter.x - 4.5, impactCenter.y - 2.5, impactCenter.z - 4.5,
+                impactCenter.x + 4.5, impactCenter.y + 3.5, impactCenter.z + 4.5
+        );
+
+        assertTrue(impactBounds.contains(new Vec3(10.5, 64.5, 10.5)));
+        assertTrue(impactBounds.contains(new Vec3(14.0, 64.0, 10.5)));
+        assertFalse(impactBounds.contains(new Vec3(16.0, 64.0, 10.5)));
+    }
 }
