@@ -3,7 +3,12 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -80,6 +85,10 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
         return progress;
     }
 
+    public int getMaxProgress() {
+        return maxProgress;
+    }
+
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         boolean changed = false;
 
@@ -129,6 +138,9 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
 
         if (changed) {
             setChanged();
+            if (level != null && !level.isClientSide() && (progress % 5 == 0 || progress == 0 || progress == 1)) {
+                level.sendBlockUpdated(pos, state, state, 3);
+            }
         }
     }
 
@@ -176,6 +188,16 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
         ContainerHelper.loadAllItems(input, this.items);
         this.energy = input.getIntOr("energy", 0);
         this.progress = input.getIntOr("progress", 0);
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return this.saveCustomOnly(registries);
     }
 
     @Override

@@ -70,6 +70,13 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
         return 3;
     }
 
+    public ItemStack getPrintingItem() {
+        if (this.isProcessing()) {
+            return new ItemStack(SandStormItems.CIRCUIT_BOARD);
+        }
+        return this.getItem(2);
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable("container.sandstorm.printer_3d");
