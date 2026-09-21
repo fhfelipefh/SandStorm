@@ -1,4 +1,5 @@
 {
+  "parent": "minecraft:block/block",
   "render_type": "minecraft:translucent",
   "textures": {
     "particle": "sandstorm:block/printer_3d_casing",
