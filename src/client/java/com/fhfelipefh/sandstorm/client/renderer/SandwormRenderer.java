@@ -7,6 +7,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
 public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRenderState, SandwormModel> {
     private static final Identifier TEXTURE = SandStormMod.id("textures/entity/sandworm/sandworm.png");
@@ -37,6 +40,27 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
         state.biteProgress = entity.getBiteAnimationProgress(partialTick);
         state.bodyPitch = entity.getXRot();
         state.bodyYaw = entity.getYRot();
+
+        LivingEntity target = entity.getTarget();
+        if (target != null && target.isAlive()) {
+            state.hasTarget = true;
+            Vec3 wormPos = entity.position();
+            Vec3 targetPos = target.position();
+            double dx = targetPos.x - wormPos.x;
+            double dy = (targetPos.y + target.getEyeHeight() * 0.5) - (wormPos.y + 12.0);
+            double dz = targetPos.z - wormPos.z;
+            double horizontalDist = Math.sqrt(dx * dx + dz * dz);
+            state.targetDistance = (float) horizontalDist;
+            float targetYaw = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
+            state.targetRelativeYaw = Mth.wrapDegrees(targetYaw - entity.getYRot());
+            float pitchToTarget = (float) (-Mth.atan2(dy, horizontalDist));
+            state.targetPitch = Mth.clamp(pitchToTarget, 0.2f, 1.35f);
+        } else {
+            state.hasTarget = false;
+            state.targetDistance = 0.0f;
+            state.targetPitch = 0.45f;
+            state.targetRelativeYaw = 0.0f;
+        }
     }
 
     @Override

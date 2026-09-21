@@ -3,7 +3,6 @@ package com.fhfelipefh.sandstorm.content.entity.ai;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
@@ -13,7 +12,7 @@ public class SandwormBreachGoal extends Goal {
 
     public SandwormBreachGoal(SandwormEntity sandworm) {
         this.sandworm = sandworm;
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
@@ -40,21 +39,34 @@ public class SandwormBreachGoal extends Goal {
     public void start() {
         this.breachTicks = 35;
         this.sandworm.setSandwormState(SandwormState.BREACHING);
+        this.sandworm.getNavigation().stop();
+        this.sandworm.setDeltaMovement(0.0, 0.0, 0.0);
         LivingEntity target = this.sandworm.getTarget();
-        Vec3 forward = Vec3.ZERO;
         if (target != null) {
-            forward = new Vec3(target.getX() - this.sandworm.getX(), 0, target.getZ() - this.sandworm.getZ()).normalize();
+            double dx = target.getX() - this.sandworm.getX();
+            double dz = target.getZ() - this.sandworm.getZ();
+            float targetYaw = (float) (Math.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
+            this.sandworm.setYRot(targetYaw);
+            this.sandworm.setYHeadRot(targetYaw);
+            this.sandworm.setYBodyRot(targetYaw);
         }
-        this.sandworm.setDeltaMovement(forward.x * 0.45, 1.15, forward.z * 0.45);
         this.sandworm.triggerBreachShockwave();
     }
 
     @Override
     public void tick() {
         this.breachTicks--;
+        this.sandworm.getNavigation().stop();
+        this.sandworm.setDeltaMovement(0.0, Math.min(0.0, this.sandworm.getDeltaMovement().y), 0.0);
         LivingEntity target = this.sandworm.getTarget();
         if (target != null) {
             this.sandworm.getLookControl().setLookAt(target, 40.0f, 40.0f);
+            double dx = target.getX() - this.sandworm.getX();
+            double dz = target.getZ() - this.sandworm.getZ();
+            float targetYaw = (float) (Math.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
+            this.sandworm.setYRot(targetYaw);
+            this.sandworm.setYHeadRot(targetYaw);
+            this.sandworm.setYBodyRot(targetYaw);
         }
 
         if (this.breachTicks <= 0) {

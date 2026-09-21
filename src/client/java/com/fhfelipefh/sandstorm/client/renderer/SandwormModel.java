@@ -138,44 +138,80 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
         super.setupAnim(state);
 
         float age = state.ageInTicks;
-        float idleWave = Mth.sin(age * 0.08f) * 0.04f;
+        float totalPitch;
+        if (state.hasTarget) {
+            float distNorm = Mth.clamp((state.targetDistance - 4.0f) / 20.0f, 0.0f, 1.0f);
+            totalPitch = Mth.lerp(distNorm, 1.40f, 0.85f);
+        } else {
+            totalPitch = 0.70f;
+        }
 
-        this.base.xRot = 0.04f + idleWave * 0.6f;
-        this.segmentLower.xRot = -0.08f + idleWave * 0.8f;
-        this.segmentMid.xRot = -0.12f + idleWave * 1.0f;
-        this.segmentUpper.xRot = -0.16f + idleWave * 1.2f;
-        this.neck.xRot = -0.20f + idleWave * 1.4f;
-        this.head.xRot = -0.25f + idleWave * 1.8f;
+        float w0 = Mth.sin(age * 0.06f) * 0.03f;
+        float w1 = Mth.sin(age * 0.06f - 0.4f) * 0.035f;
+        float w2 = Mth.sin(age * 0.06f - 0.8f) * 0.04f;
+        float w3 = Mth.sin(age * 0.06f - 1.2f) * 0.045f;
+        float w4 = Mth.sin(age * 0.06f - 1.6f) * 0.05f;
+        float w5 = Mth.sin(age * 0.06f - 2.0f) * 0.06f;
 
-        float sway = Mth.cos(age * 0.06f) * 0.06f;
-        this.base.yRot = sway * 0.3f;
-        this.segmentLower.yRot = sway * 0.5f;
-        this.segmentMid.yRot = sway * 0.8f;
-        this.segmentUpper.yRot = sway * 1.1f;
-        this.neck.yRot = sway * 1.4f;
-        this.head.yRot = sway * 1.7f;
+        this.base.xRot = (totalPitch * 0.08f) + w0;
+        this.segmentLower.xRot = (totalPitch * 0.16f) + w1;
+        this.segmentMid.xRot = (totalPitch * 0.22f) + w2;
+        this.segmentUpper.xRot = (totalPitch * 0.24f) + w3;
+        this.neck.xRot = (totalPitch * 0.18f) + w4;
+        this.head.xRot = (totalPitch * 0.12f) + w5;
+
+        float relYawRad = Mth.clamp(state.targetRelativeYaw * (float) (Math.PI / 180.0), -1.2f, 1.2f);
+        float sway = Mth.cos(age * 0.04f) * 0.03f;
+        this.base.yRot = (relYawRad * 0.10f) + sway * 0.3f;
+        this.segmentLower.yRot = (relYawRad * 0.15f) + sway * 0.6f;
+        this.segmentMid.yRot = (relYawRad * 0.22f) + sway * 0.9f;
+        this.segmentUpper.yRot = (relYawRad * 0.25f) + sway * 1.2f;
+        this.neck.yRot = (relYawRad * 0.18f) + sway * 1.5f;
+        this.head.yRot = (relYawRad * 0.10f) + sway * 1.8f;
 
         if (state.breaching) {
-            float breachAngle = -0.4f * state.breachProgress;
-            this.segmentLower.xRot += breachAngle * 0.5f;
-            this.segmentMid.xRot += breachAngle * 0.8f;
-            this.segmentUpper.xRot += breachAngle * 1.1f;
-            this.neck.xRot += breachAngle * 1.3f;
-            this.head.xRot += breachAngle * 1.5f;
+            this.base.xRot *= state.breachProgress;
+            this.segmentLower.xRot *= state.breachProgress;
+            this.segmentMid.xRot *= state.breachProgress;
+            this.segmentUpper.xRot *= state.breachProgress;
+            this.neck.xRot *= state.breachProgress;
+            this.head.xRot *= state.breachProgress;
         }
 
         if (state.biteProgress > 0.0f) {
-            float biteLunge = Mth.sin(state.biteProgress * (float) Math.PI);
-            this.head.xRot += biteLunge * 0.45f;
-            this.head.yRot += biteLunge * 0.1f;
+            float p = state.biteProgress;
+            float strikeCurve;
+            if (p < 0.35f) {
+                strikeCurve = -Mth.sin(p / 0.35f * (float) (Math.PI * 0.5)) * 0.20f;
+            } else {
+                strikeCurve = Mth.sin((p - 0.35f) / 0.65f * (float) Math.PI) * 0.65f;
+            }
+            this.segmentLower.xRot += strikeCurve * 0.15f;
+            this.segmentMid.xRot += strikeCurve * 0.30f;
+            this.segmentUpper.xRot += strikeCurve * 0.45f;
+            this.neck.xRot += strikeCurve * 0.55f;
+            this.head.xRot += strikeCurve * 0.65f;
+
+            float teethSnap = Mth.sin(p * (float) Math.PI);
+            this.teethOuter.z = teethSnap * -2.5f;
+            this.teethMiddle.z = teethSnap * -3.5f;
+            this.teethInner.z = teethSnap * -4.5f;
+            this.teethOuter.xRot = teethSnap * 0.15f;
+            this.teethMiddle.xRot = -teethSnap * 0.15f;
+        } else {
+            this.teethOuter.z = 0.0f;
+            this.teethMiddle.z = 0.0f;
+            this.teethInner.z = 0.0f;
+            this.teethOuter.xRot = 0.0f;
+            this.teethMiddle.xRot = 0.0f;
         }
 
         if (state.burrowed) {
-            this.body.y = 24.0f + 16.0f;
+            this.body.y = 24.0f + 24.0f;
         } else if (state.submerging) {
-            this.body.y = 24.0f + 12.0f;
+            this.body.y = 24.0f + 16.0f;
         } else if (state.breaching) {
-            this.body.y = 24.0f - 8.0f * state.breachProgress;
+            this.body.y = 24.0f + 18.0f * (1.0f - state.breachProgress);
         } else {
             this.body.y = 24.0f;
         }

@@ -27,8 +27,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
@@ -195,8 +193,14 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
 
         if (currentTarget == null && this.getSandwormState() == SandwormState.BURROWED) {
             this.setSandwormState(SandwormState.SURFACED_ASSAULT);
-        } else if (currentTarget != null && this.getSandwormState() == SandwormState.SURFACED_ASSAULT && this.distanceToSqr(currentTarget) > 256.0) {
+        } else if (currentTarget != null && this.getSandwormState() == SandwormState.SURFACED_ASSAULT && this.distanceToSqr(currentTarget) > 576.0) {
             this.startSubmerging();
+        }
+
+        if (this.getSandwormState() != SandwormState.BURROWED) {
+            this.setDeltaMovement(0.0, Math.min(0.0, this.getDeltaMovement().y), 0.0);
+            this.getNavigation().stop();
+            this.setJumping(false);
         }
 
         if (this.getSandwormState() == SandwormState.SUBMERGING) {
@@ -232,12 +236,15 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     }
 
     @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new SandwormBreachGoal(this));
-        this.goalSelector.addGoal(3, new SandwormBiteAttackGoal(this));
-        this.goalSelector.addGoal(4, new SandwormBurrowGoal(this));
-        this.goalSelector.addGoal(5, new RandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(1, new SandwormBreachGoal(this));
+        this.goalSelector.addGoal(2, new SandwormBiteAttackGoal(this));
+        this.goalSelector.addGoal(3, new SandwormBurrowGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new SandwormSeismicTargetGoal(this));

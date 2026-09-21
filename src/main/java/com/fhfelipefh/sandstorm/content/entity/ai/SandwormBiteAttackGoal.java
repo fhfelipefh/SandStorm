@@ -56,20 +56,31 @@ public class SandwormBiteAttackGoal extends Goal {
             return;
         }
 
+        this.sandworm.getNavigation().stop();
+        this.sandworm.setDeltaMovement(0.0, Math.min(0.0, this.sandworm.getDeltaMovement().y), 0.0);
+
+        double dx = target.getX() - this.sandworm.getX();
+        double dz = target.getZ() - this.sandworm.getZ();
+        float targetYaw = (float) (Math.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
+        this.sandworm.setYRot(targetYaw);
+        this.sandworm.setYHeadRot(targetYaw);
+        this.sandworm.setYBodyRot(targetYaw);
         this.sandworm.getLookControl().setLookAt(target, 40.0f, 40.0f);
-        this.sandworm.getNavigation().moveTo(target, 1.35);
 
         if (this.attackCooldown > 0) {
             this.attackCooldown--;
         }
 
-        double reach = this.sandworm.getBbWidth() * 1.6 + target.getBbWidth() + 2.0;
+        double reach = 22.0;
         double reachSqr = reach * reach;
         double distSqr = this.sandworm.distanceToSqr(target);
 
         if (distSqr <= reachSqr && this.attackCooldown <= 0) {
             this.performBiteAttack(target);
             this.attackCooldown = 25;
+        } else if (distSqr > reachSqr + 64.0) {
+            this.sandworm.startSubmerging();
+            return;
         }
 
         this.sandworm.decrementSurfaceTicks();
