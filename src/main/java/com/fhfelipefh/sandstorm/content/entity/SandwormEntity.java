@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.entity.ai.SandwormBiteAttackGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormBreachGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormBurrowGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormSeismicTargetGoal;
+import com.fhfelipefh.sandstorm.content.entity.ai.SandwormSlitherChaseGoal;
 import com.fhfelipefh.sandstorm.content.entity.ai.SandwormState;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
@@ -43,6 +44,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     private static final EntityDataAccessor<Integer> DATA_STATE = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_BREACH_TICKS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_BITE_TICKS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DATA_REARING = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.FLOAT);
 
     private int surfaceTicks = 140;
     private int submergingTicks = 0;
@@ -69,6 +71,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         builder.define(DATA_STATE, SandwormState.SURFACED_ASSAULT.ordinal());
         builder.define(DATA_BREACH_TICKS, 0);
         builder.define(DATA_BITE_TICKS, 0);
+        builder.define(DATA_REARING, 1.0f);
     }
 
     public SandwormState getSandwormState() {
@@ -77,6 +80,14 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
 
     public void setSandwormState(SandwormState state) {
         this.entityData.set(DATA_STATE, state.ordinal());
+    }
+
+    public float getRearingProgress() {
+        return this.entityData.get(DATA_REARING);
+    }
+
+    public void setRearingProgress(float progress) {
+        this.entityData.set(DATA_REARING, Mth.clamp(progress, 0.0f, 1.0f));
     }
 
     public int getSurfaceTicks() {
@@ -193,14 +204,24 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
 
         if (currentTarget == null && this.getSandwormState() == SandwormState.BURROWED) {
             this.setSandwormState(SandwormState.SURFACED_ASSAULT);
-        } else if (currentTarget != null && this.getSandwormState() == SandwormState.SURFACED_ASSAULT && this.distanceToSqr(currentTarget) > 576.0) {
+        } else if (currentTarget != null && this.getSandwormState() == SandwormState.SURFACED_ASSAULT && this.distanceToSqr(currentTarget) > 4096.0) {
             this.startSubmerging();
         }
 
-        if (this.getSandwormState() != SandwormState.BURROWED) {
+        this.setJumping(false);
+
+        if (this.getSandwormState() == SandwormState.BREACHING) {
             this.setDeltaMovement(0.0, Math.min(0.0, this.getDeltaMovement().y), 0.0);
             this.getNavigation().stop();
-            this.setJumping(false);
+        }
+
+        if (this.getDeltaMovement().horizontalDistanceSqr() > 0.001 && this.level() instanceof ServerLevel serverLevel) {
+            double yawRad = Math.toRadians(this.getYRot());
+            double sideX = Math.cos(yawRad) * 2.5;
+            double sideZ = Math.sin(yawRad) * 2.5;
+            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()), this.getX() - sideX, this.getY() + 0.3, this.getZ() - sideZ, 4, 0.4, 0.2, 0.4, 0.1);
+            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()), this.getX() + sideX, this.getY() + 0.3, this.getZ() + sideZ, 4, 0.4, 0.2, 0.4, 0.1);
+            serverLevel.sendParticles(ParticleTypes.POOF, this.getX(), this.getY() + 0.2, this.getZ(), 2, 0.8, 0.2, 0.8, 0.02);
         }
 
         if (this.getSandwormState() == SandwormState.SUBMERGING) {
@@ -244,7 +265,8 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SandwormBreachGoal(this));
         this.goalSelector.addGoal(2, new SandwormBiteAttackGoal(this));
-        this.goalSelector.addGoal(3, new SandwormBurrowGoal(this));
+        this.goalSelector.addGoal(3, new SandwormSlitherChaseGoal(this));
+        this.goalSelector.addGoal(4, new SandwormBurrowGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new SandwormSeismicTargetGoal(this));

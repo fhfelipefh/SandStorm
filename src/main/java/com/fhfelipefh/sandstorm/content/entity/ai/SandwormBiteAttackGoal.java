@@ -32,7 +32,7 @@ public class SandwormBiteAttackGoal extends Goal {
         }
 
         LivingEntity target = this.sandworm.getTarget();
-        return target != null && target.isAlive() && this.sandworm.canAttack(target);
+        return target != null && target.isAlive() && this.sandworm.canAttack(target) && this.sandworm.distanceToSqr(target) <= 324.0;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class SandwormBiteAttackGoal extends Goal {
             return false;
         }
 
-        return this.sandworm.getSurfaceTicks() > 0;
+        return this.sandworm.getSurfaceTicks() > 0 && this.sandworm.distanceToSqr(target) <= 400.0;
     }
 
     @Override
@@ -58,6 +58,7 @@ public class SandwormBiteAttackGoal extends Goal {
 
         this.sandworm.getNavigation().stop();
         this.sandworm.setDeltaMovement(0.0, Math.min(0.0, this.sandworm.getDeltaMovement().y), 0.0);
+        this.sandworm.setRearingProgress(Math.min(1.0f, this.sandworm.getRearingProgress() + 0.08f));
 
         double dx = target.getX() - this.sandworm.getX();
         double dz = target.getZ() - this.sandworm.getZ();
@@ -78,9 +79,6 @@ public class SandwormBiteAttackGoal extends Goal {
         if (distSqr <= reachSqr && this.attackCooldown <= 0) {
             this.performBiteAttack(target);
             this.attackCooldown = 25;
-        } else if (distSqr > reachSqr + 64.0) {
-            this.sandworm.startSubmerging();
-            return;
         }
 
         this.sandworm.decrementSurfaceTicks();

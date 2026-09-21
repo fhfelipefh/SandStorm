@@ -84,6 +84,7 @@ class SandwormModelTest {
         state.targetRelativeYaw = 30.0f;
         state.biteProgress = 0.0f;
         state.breaching = false;
+        state.rearingProgress = 1.0f;
 
         model.setupAnim(state);
 
@@ -123,5 +124,26 @@ class SandwormModelTest {
         assertTrue(teethOuter.z < 0.0f);
         assertTrue(teethMiddle.z < 0.0f);
         assertTrue(teethInner.z < 0.0f);
+    }
+
+    @Test
+    void shouldSlitherHorizontallyLikeSnakeWhenMoving() {
+        LayerDefinition layer = SandwormModel.createBodyLayer();
+        ModelPart root = layer.bakeRoot();
+        ModelPart body = root.getChild("body");
+        ModelPart base = body.getChild("base");
+        ModelPart segLower = base.getChild("segment_lower");
+        ModelPart segMid = segLower.getChild("segment_mid");
+
+        SandwormModel model = new SandwormModel(root);
+        SandwormRenderState state = new SandwormRenderState();
+        state.ageInTicks = 50.0f;
+        state.rearingProgress = 0.0f;
+        state.slitherProgress = 1.5f;
+
+        model.setupAnim(state);
+
+        assertTrue(base.xRot > 1.2f);
+        assertTrue(Math.abs(segMid.yRot) > 0.0f);
     }
 }

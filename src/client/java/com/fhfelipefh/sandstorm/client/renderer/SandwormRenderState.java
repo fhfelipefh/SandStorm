@@ -15,4 +15,7 @@ public class SandwormRenderState extends LivingEntityRenderState {
     public float targetDistance;
     public float targetPitch;
     public float targetRelativeYaw;
+    public float rearingProgress;
+    public float slitherProgress;
+    public boolean isSlithering;
 }

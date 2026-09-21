@@ -138,6 +138,28 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
         super.setupAnim(state);
 
         float age = state.ageInTicks;
+        float rearing = Mth.clamp(state.rearingProgress, 0.0f, 1.0f);
+        float slither = 1.0f - rearing;
+        float phase = state.slitherProgress;
+
+        float slitherBasePitch = 1.38f + Mth.cos(phase) * 0.06f;
+        float slitherBaseYaw = Mth.sin(phase) * 0.40f;
+
+        float slitherSegLowerPitch = 0.04f + Mth.cos(phase - 0.7f) * 0.08f;
+        float slitherSegLowerYaw = Mth.sin(phase - 0.7f) * 0.50f;
+
+        float slitherSegMidPitch = 0.04f + Mth.cos(phase - 1.4f) * 0.10f;
+        float slitherSegMidYaw = Mth.sin(phase - 1.4f) * 0.55f;
+
+        float slitherSegUpperPitch = -0.05f + Mth.cos(phase - 2.1f) * 0.10f;
+        float slitherSegUpperYaw = Mth.sin(phase - 2.1f) * 0.50f;
+
+        float slitherNeckPitch = -0.22f + Mth.cos(phase - 2.8f) * 0.08f;
+        float slitherNeckYaw = Mth.sin(phase - 2.8f) * 0.40f;
+
+        float slitherHeadPitch = -0.30f;
+        float slitherHeadYaw = Mth.sin(phase - 3.5f) * 0.30f;
+
         float totalPitch;
         if (state.hasTarget) {
             float distNorm = Mth.clamp((state.targetDistance - 4.0f) / 20.0f, 0.0f, 1.0f);
@@ -153,21 +175,39 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
         float w4 = Mth.sin(age * 0.06f - 1.6f) * 0.05f;
         float w5 = Mth.sin(age * 0.06f - 2.0f) * 0.06f;
 
-        this.base.xRot = (totalPitch * 0.08f) + w0;
-        this.segmentLower.xRot = (totalPitch * 0.16f) + w1;
-        this.segmentMid.xRot = (totalPitch * 0.22f) + w2;
-        this.segmentUpper.xRot = (totalPitch * 0.24f) + w3;
-        this.neck.xRot = (totalPitch * 0.18f) + w4;
-        this.head.xRot = (totalPitch * 0.12f) + w5;
+        float rearBasePitch = (totalPitch * 0.08f) + w0;
+        float rearSegLowerPitch = (totalPitch * 0.16f) + w1;
+        float rearSegMidPitch = (totalPitch * 0.22f) + w2;
+        float rearSegUpperPitch = (totalPitch * 0.24f) + w3;
+        float rearNeckPitch = (totalPitch * 0.18f) + w4;
+        float rearHeadPitch = (totalPitch * 0.12f) + w5;
 
         float relYawRad = Mth.clamp(state.targetRelativeYaw * (float) (Math.PI / 180.0), -1.2f, 1.2f);
         float sway = Mth.cos(age * 0.04f) * 0.03f;
-        this.base.yRot = (relYawRad * 0.10f) + sway * 0.3f;
-        this.segmentLower.yRot = (relYawRad * 0.15f) + sway * 0.6f;
-        this.segmentMid.yRot = (relYawRad * 0.22f) + sway * 0.9f;
-        this.segmentUpper.yRot = (relYawRad * 0.25f) + sway * 1.2f;
-        this.neck.yRot = (relYawRad * 0.18f) + sway * 1.5f;
-        this.head.yRot = (relYawRad * 0.10f) + sway * 1.8f;
+        float rearBaseYaw = (relYawRad * 0.10f) + sway * 0.3f;
+        float rearSegLowerYaw = (relYawRad * 0.15f) + sway * 0.6f;
+        float rearSegMidYaw = (relYawRad * 0.22f) + sway * 0.9f;
+        float rearSegUpperYaw = (relYawRad * 0.25f) + sway * 1.2f;
+        float rearNeckYaw = (relYawRad * 0.18f) + sway * 1.5f;
+        float rearHeadYaw = (relYawRad * 0.10f) + sway * 1.8f;
+
+        this.base.xRot = Mth.lerp(slither, rearBasePitch, slitherBasePitch);
+        this.base.yRot = Mth.lerp(slither, rearBaseYaw, slitherBaseYaw);
+
+        this.segmentLower.xRot = Mth.lerp(slither, rearSegLowerPitch, slitherSegLowerPitch);
+        this.segmentLower.yRot = Mth.lerp(slither, rearSegLowerYaw, slitherSegLowerYaw);
+
+        this.segmentMid.xRot = Mth.lerp(slither, rearSegMidPitch, slitherSegMidPitch);
+        this.segmentMid.yRot = Mth.lerp(slither, rearSegMidYaw, slitherSegMidYaw);
+
+        this.segmentUpper.xRot = Mth.lerp(slither, rearSegUpperPitch, slitherSegUpperPitch);
+        this.segmentUpper.yRot = Mth.lerp(slither, rearSegUpperYaw, slitherSegUpperYaw);
+
+        this.neck.xRot = Mth.lerp(slither, rearNeckPitch, slitherNeckPitch);
+        this.neck.yRot = Mth.lerp(slither, rearNeckYaw, slitherNeckYaw);
+
+        this.head.xRot = Mth.lerp(slither, rearHeadPitch, slitherHeadPitch);
+        this.head.yRot = Mth.lerp(slither, rearHeadYaw, slitherHeadYaw + relYawRad * 0.35f * slither);
 
         if (state.breaching) {
             this.base.xRot *= state.breachProgress;
@@ -184,7 +224,7 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
             if (p < 0.35f) {
                 strikeCurve = -Mth.sin(p / 0.35f * (float) (Math.PI * 0.5)) * 0.20f;
             } else {
-                strikeCurve = Mth.sin((p - 0.35f) / 0.65f * (float) Math.PI) * 0.65f;
+                strikeCurve = Mth.sin((p - 0.35f) / 0.65f * (float) Math.PI) * 0.75f;
             }
             this.segmentLower.xRot += strikeCurve * 0.15f;
             this.segmentMid.xRot += strikeCurve * 0.30f;
@@ -193,9 +233,9 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
             this.head.xRot += strikeCurve * 0.65f;
 
             float teethSnap = Mth.sin(p * (float) Math.PI);
-            this.teethOuter.z = teethSnap * -2.5f;
-            this.teethMiddle.z = teethSnap * -3.5f;
-            this.teethInner.z = teethSnap * -4.5f;
+            this.teethOuter.z = teethSnap * -3.0f;
+            this.teethMiddle.z = teethSnap * -4.0f;
+            this.teethInner.z = teethSnap * -5.0f;
             this.teethOuter.xRot = teethSnap * 0.15f;
             this.teethMiddle.xRot = -teethSnap * 0.15f;
         } else {
@@ -207,16 +247,16 @@ public class SandwormModel extends EntityModel<SandwormRenderState> {
         }
 
         if (state.burrowed) {
-            this.body.y = 24.0f + 24.0f;
+            this.body.y = 24.0f + 120.0f;
         } else if (state.submerging) {
-            this.body.y = 24.0f + 16.0f;
+            this.body.y = 24.0f + 24.0f;
         } else if (state.breaching) {
-            this.body.y = 24.0f + 18.0f * (1.0f - state.breachProgress);
+            this.body.y = 24.0f + 20.0f * (1.0f - state.breachProgress);
         } else {
-            this.body.y = 24.0f;
+            this.body.y = Mth.lerp(slither, 24.0f, 24.0f + 6.0f);
         }
 
-        this.body.visible = true;
+        this.body.visible = !state.burrowed;
     }
 
     public ModelPart getRoot() {

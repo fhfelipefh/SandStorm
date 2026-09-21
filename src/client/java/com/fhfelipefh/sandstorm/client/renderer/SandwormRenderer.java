@@ -61,6 +61,12 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
             state.targetPitch = 0.45f;
             state.targetRelativeYaw = 0.0f;
         }
+
+        state.rearingProgress = entity.getRearingProgress();
+        Vec3 vel = entity.getDeltaMovement();
+        double speedSq = vel.x * vel.x + vel.z * vel.z;
+        state.isSlithering = speedSq > 0.001 || state.rearingProgress < 0.85f;
+        state.slitherProgress = (entity.tickCount + partialTick) * 0.22f;
     }
 
     @Override
