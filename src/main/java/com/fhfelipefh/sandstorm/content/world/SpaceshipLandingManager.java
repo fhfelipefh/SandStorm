@@ -1,5 +1,7 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.block.NaniteFabricatorBlock;
+import com.fhfelipefh.sandstorm.content.block.Printer3DBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.survival.SpawnSafety;
@@ -12,6 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FurnaceBlock;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -204,11 +207,11 @@ public class SpaceshipLandingManager {
         level.setBlock(cabinSpawn.offset(-2, 1, 3), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(-2, -1, 2), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(-2, 0, 2), SandStormBlocks.PRINTER_3D.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 0, 2), SandStormBlocks.PRINTER_3D.defaultBlockState().setValue(Printer3DBlock.FACING, Direction.EAST), 3);
         level.setBlock(cabinSpawn.offset(-2, 1, 2), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(-2, -1, 1), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(-2, 0, 1), SandStormBlocks.NANITE_FABRICATOR.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 0, 1), SandStormBlocks.NANITE_FABRICATOR.defaultBlockState().setValue(NaniteFabricatorBlock.FACING, Direction.EAST), 3);
         level.setBlock(cabinSpawn.offset(-2, 1, 1), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(2, -1, 2), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
@@ -216,7 +219,7 @@ public class SpaceshipLandingManager {
         level.setBlock(cabinSpawn.offset(2, 1, 2), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(2, -1, 1), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(2, 0, 1), Blocks.FURNACE.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(2, 0, 1), Blocks.FURNACE.defaultBlockState().setValue(FurnaceBlock.FACING, Direction.WEST), 3);
         level.setBlock(cabinSpawn.offset(2, 1, 1), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(-2, 3, 2), Blocks.SEA_LANTERN.defaultBlockState(), 3);
