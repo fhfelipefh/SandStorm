@@ -20,6 +20,11 @@ public class MultiplayerSpawnHandler {
             server.getGameRules().set(GameRules.RESPAWN_RADIUS, 0, server);
             server.getGameRules().set(GameRules.SPAWN_PHANTOMS, false, server);
             server.getGameRules().set(GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS, false, server);
+            server.getGameRules().set(GameRules.SPAWN_MOBS, false, server);
+            server.getGameRules().set(GameRules.SPAWN_MONSTERS, false, server);
+            server.getGameRules().set(GameRules.SPAWN_PATROLS, false, server);
+            server.getGameRules().set(GameRules.SPAWN_WANDERING_TRADERS, false, server);
+            server.getGameRules().set(GameRules.SPAWN_WARDENS, false, server);
         }
     }
 

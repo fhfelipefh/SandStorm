@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.core.SandStormMod;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 
@@ -20,7 +21,7 @@ public class SpaceshipSavedData extends SavedData {
             SandStormMod.id("spaceship_crash_site"),
             SpaceshipSavedData::new,
             CODEC,
-            null
+            DataFixTypes.SAVED_DATA_COMMAND_STORAGE
     );
 
     private boolean placed;

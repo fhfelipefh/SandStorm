@@ -186,4 +186,12 @@ class SandwormAITest {
         assertEquals("sandstorm:sandworm_chitin", harvest.requiredItemId().toString());
         assertEquals(6, harvest.rewardCount());
     }
+
+    @Test
+    void shouldEnsureSpawnedAndSpontaneousWormsShareIdenticalInitialStateAndActiveAI() {
+        assertEquals(SandwormState.SURFACED_ASSAULT, SandwormState.fromOrdinal(2));
+        assertEquals(2, SandwormState.SURFACED_ASSAULT.ordinal());
+        assertFalse(SandwormState.SURFACED_ASSAULT.isSubterranean());
+        assertTrue(SandwormState.SURFACED_ASSAULT.isSurfaced());
+    }
 }

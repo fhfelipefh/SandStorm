@@ -205,6 +205,30 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
                 this.setSandwormState(SandwormState.BURROWED);
             }
         }
+
+        AABB bodyBounds = this.getBoundingBox().inflate(1.5, 0.5, 1.5);
+        List<LivingEntity> insideEntities = this.level().getEntitiesOfClass(LivingEntity.class, bodyBounds, e -> e != this && !(e instanceof SandwormEntity));
+        for (LivingEntity entity : insideEntities) {
+            if (entity instanceof Player player && player.isSpectator()) {
+                continue;
+            }
+            double dx = entity.getX() - this.getX();
+            double dz = entity.getZ() - this.getZ();
+            double dist = Math.sqrt(dx * dx + dz * dz);
+            Vec3 pushDir;
+            if (dist < 0.05) {
+                float randomAngle = this.getRandom().nextFloat() * ((float) Math.PI * 2.0f);
+                pushDir = new Vec3(Math.cos(randomAngle), 0.35, Math.sin(randomAngle)).normalize();
+            } else {
+                pushDir = new Vec3(dx / dist, 0.35, dz / dist).normalize();
+            }
+            entity.setDeltaMovement(pushDir.x * 1.6, 0.45, pushDir.z * 1.6);
+            if (this.level() instanceof ServerLevel serverLevel) {
+                if (!(entity instanceof Player player && player.isCreative())) {
+                    entity.hurtServer(serverLevel, this.damageSources().mobAttack(this), 6.0f);
+                }
+            }
+        }
     }
 
     @Override

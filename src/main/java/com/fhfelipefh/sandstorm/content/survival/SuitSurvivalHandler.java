@@ -36,6 +36,28 @@ public class SuitSurvivalHandler {
             }
         });
 
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            ServerPlayer player = handler.getPlayer();
+            if (player != null) {
+                SuitPowerComponent suit = getOrCreateSuit(player);
+                int armorCount = countEquippedSuitPieces(player);
+                suit.updateEquippedArmorCount(armorCount);
+                long currentEnergy = suit.getEnergyStorage().getStoredEnergy();
+                long currentCapacity = suit.getEnergyStorage().getCapacity();
+                double currentTemp = suit.getThermal().getCurrentTemperature();
+                LAST_SYNC_MAP.put(player.getUUID(), new LastSyncState(currentEnergy, currentCapacity, currentTemp, armorCount, player.tickCount));
+                ServerPlayNetworking.send(
+                        player,
+                        new SuitSyncPayload(
+                                currentEnergy,
+                                currentCapacity,
+                                currentTemp,
+                                armorCount
+                        )
+                );
+            }
+        });
+
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
             ServerPlayer player = handler.getPlayer();
             if (player != null) {

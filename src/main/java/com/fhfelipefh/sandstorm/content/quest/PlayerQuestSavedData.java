@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 
@@ -34,7 +35,7 @@ public class PlayerQuestSavedData extends SavedData {
             SandStormMod.id("player_quests"),
             PlayerQuestSavedData::new,
             CODEC,
-            null
+            DataFixTypes.SAVED_DATA_COMMAND_STORAGE
     );
 
     private final Map<UUID, Set<String>> claimedMap = new HashMap<>();

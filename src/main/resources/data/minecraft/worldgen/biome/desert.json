@@ -11,70 +11,9 @@
       "argument": {
         "spawn_costs": {},
         "spawns_by_category": {
-          "ambient": [
-            {
-              "type": "minecraft:bat",
-              "count": 8,
-              "weight": 10
-            }
-          ],
+          "ambient": [],
           "creature": [],
-          "monster": [
-            {
-              "type": "minecraft:spider",
-              "count": 4,
-              "weight": 100
-            },
-            {
-              "type": "minecraft:zombie",
-              "count": 4,
-              "weight": 19
-            },
-            {
-              "type": "minecraft:zombie_villager",
-              "count": 1,
-              "weight": 1
-            },
-            {
-              "type": "minecraft:skeleton",
-              "count": 4,
-              "weight": 50
-            },
-            {
-              "type": "minecraft:creeper",
-              "count": 4,
-              "weight": 100
-            },
-            {
-              "type": "minecraft:slime",
-              "count": 4,
-              "weight": 100
-            },
-            {
-              "type": "minecraft:enderman",
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 1
-              },
-              "weight": 10
-            },
-            {
-              "type": "minecraft:witch",
-              "count": 1,
-              "weight": 5
-            },
-            {
-              "type": "minecraft:husk",
-              "count": 4,
-              "weight": 80
-            },
-            {
-              "type": "minecraft:parched",
-              "count": 4,
-              "weight": 50
-            }
-          ],
+          "monster": [],
           "underground_water_creature": []
         }
       },
@@ -103,9 +42,7 @@
     ],
     [
       "minecraft:fossil_upper",
-      "minecraft:fossil_lower",
-      "minecraft:monster_room",
-      "minecraft:monster_room_deep"
+      "minecraft:fossil_lower"
     ],
     [],
     [],
