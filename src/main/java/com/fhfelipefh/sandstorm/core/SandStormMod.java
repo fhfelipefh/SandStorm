@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.core;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.command.SandstormWeatherCommand;
 import com.fhfelipefh.sandstorm.content.command.SandwormShowcaseCommand;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
@@ -74,6 +75,7 @@ public class SandStormMod implements ModInitializer {
         NutrientTerraformingManager.initialize();
         QuestRewardHandler.initialize();
         SandwormShowcaseCommand.initialize();
+        SandstormWeatherCommand.initialize();
     }
 
     public static Identifier id(String path) {

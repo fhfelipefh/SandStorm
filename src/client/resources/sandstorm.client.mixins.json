@@ -5,7 +5,8 @@
 	"client": [
 		"SandStormClientMixin",
 		"HudAdaptiveTextMixin",
-		"ChatComponentAdaptiveMixin"
+		"ChatComponentAdaptiveMixin",
+		"SandstormFogMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

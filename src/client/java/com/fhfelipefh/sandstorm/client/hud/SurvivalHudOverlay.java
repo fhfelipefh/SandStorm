@@ -54,7 +54,7 @@ public class SurvivalHudOverlay implements HudElement {
 
         SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
         if (weather.isActive() && weather.getIntensity() > 0.02) {
-            int alpha = (int) Math.clamp(weather.getIntensity() * 120, 0, 140);
+            int alpha = (int) Math.clamp(weather.getIntensity() * 25, 0, 32);
             int sandColor = (alpha << 24) | 0xC29B62;
             extractor.fill(0, 0, screenWidth, screenHeight, sandColor);
             renderSandGrains(extractor, client, screenWidth, screenHeight, weather.getIntensity());
@@ -161,16 +161,16 @@ public class SurvivalHudOverlay implements HudElement {
             return;
         }
         int tick = client.player.tickCount;
-        int grainCount = (int) (25 + intensity * 65);
+        int grainCount = (int) (6 + intensity * 14);
         for (int i = 0; i < grainCount; i++) {
             int seed = (i * 37) ^ 0x5DEECE66;
             int speed = 8 + (seed % 14);
-            int streakLength = 4 + (seed % 16);
+            int streakLength = 4 + (seed % 14);
             int startX = (int) ((seed + (long) tick * speed) % (width + streakLength + 40)) - streakLength;
             int x = width - startX;
             int y = Math.abs((seed * 31 + i * 17) % Math.max(1, height));
 
-            int grainAlpha = (int) Math.clamp(intensity * (120 + (seed % 100)), 40, 220);
+            int grainAlpha = (int) Math.clamp(intensity * (30 + (seed % 30)), 15, 60);
             int colorIndex = (seed >> 3) & 3;
             int rgb = switch (colorIndex) {
                 case 0 -> 0xD8B880;

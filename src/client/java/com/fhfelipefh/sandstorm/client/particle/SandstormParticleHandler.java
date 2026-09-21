@@ -4,15 +4,14 @@ import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.Vec3;
 
 public class SandstormParticleHandler {
-    private static final int SAND_COLOR = 0xD8B880;
+    private static final int SAND_GOLD = 0xC49B64;
+    private static final int SAND_DARK = 0x8C6538;
+    private static final int SAND_PALE = 0xE2C48E;
+    private static final int SAND_SILT = 0x5A3E1F;
 
     public static void initialize() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> tick(client));
@@ -39,53 +38,35 @@ public class SandstormParticleHandler {
         }
 
         RandomSource random = client.level.getRandom();
-        double windVx = -1.6 - (intensity * 0.8);
-        double windVy = -0.04;
-        double windVz = -0.8 - (intensity * 0.4);
+        double windVx = -1.2 - (intensity * 0.6);
+        double windVy = -0.02 - (random.nextDouble() * 0.02);
+        double windVz = -0.6 - (intensity * 0.3);
 
-        int count = (int) (12 + (intensity * 26));
+        int count = (int) (3 + (intensity * 6));
         for (int i = 0; i < count; i++) {
-            double spreadX = (random.nextDouble() - 0.5) * 22.0;
-            double spreadY = random.nextDouble() * 7.0 - 0.5;
-            double spreadZ = (random.nextDouble() - 0.5) * 22.0;
+            double angle = random.nextDouble() * Math.PI * 2.0;
+            double distance = 4.0 + random.nextDouble() * 18.0;
+            double spreadY = (random.nextDouble() - 0.25) * 5.0;
 
-            double x = client.player.getX() - (windVx * 3.5) + spreadX;
+            double x = client.player.getX() - (windVx * 2.0) + Math.cos(angle) * distance;
             double y = client.player.getY() + spreadY;
-            double z = client.player.getZ() - (windVz * 3.5) + spreadZ;
+            double z = client.player.getZ() - (windVz * 2.0) + Math.sin(angle) * distance;
 
             float roll = random.nextFloat();
+            DustParticleOptions particle;
             if (roll < 0.40f) {
-                client.level.addParticle(
-                        new BlockParticleOption(ParticleTypes.FALLING_DUST, Blocks.SAND.defaultBlockState()),
-                        x, y, z, windVx, windVy, windVz
-                );
-            } else if (roll < 0.75f) {
-                client.level.addParticle(
-                        new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()),
-                        x, y, z, windVx, windVy, windVz
-                );
-            } else if (roll < 0.95f) {
-                client.level.addParticle(
-                        new DustParticleOptions(SAND_COLOR, 1.2f),
-                        x, y, z, windVx * 0.7, windVy, windVz * 0.7
-                );
+                particle = new DustParticleOptions(SAND_GOLD, 0.45f);
+            } else if (roll < 0.70f) {
+                particle = new DustParticleOptions(SAND_DARK, 0.40f);
+            } else if (roll < 0.90f) {
+                particle = new DustParticleOptions(SAND_PALE, 0.50f);
             } else {
-                client.level.addParticle(
-                        ParticleTypes.POOF,
-                        x, y, z, windVx * 0.5, windVy, windVz * 0.5
-                );
+                particle = new DustParticleOptions(SAND_SILT, 0.35f);
             }
-        }
-
-        Vec3 look = client.player.getLookAngle();
-        for (int i = 0; i < 4; i++) {
-            double eyeX = client.player.getX() + look.x * 1.2 + (random.nextDouble() - 0.5) * 1.6;
-            double eyeY = client.player.getEyeY() + look.y * 1.2 + (random.nextDouble() - 0.5) * 0.8;
-            double eyeZ = client.player.getZ() + look.z * 1.2 + (random.nextDouble() - 0.5) * 1.6;
 
             client.level.addParticle(
-                    new BlockParticleOption(ParticleTypes.FALLING_DUST, Blocks.SAND.defaultBlockState()),
-                    eyeX, eyeY, eyeZ, windVx * 1.2, windVy, windVz * 1.2
+                    particle,
+                    x, y, z, windVx, windVy, windVz
             );
         }
     }
