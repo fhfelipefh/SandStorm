@@ -24,7 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class Printer3DBlockEntityRenderer implements BlockEntityRenderer<Printer3DBlockEntity, Printer3DRenderState> {
-    private static final Identifier MECHANISM_TEXTURE = SandStormMod.id("textures/block/printer_3d_casing.png");
+    private static final Identifier MECHANISM_TEXTURE = SandStormMod.id("textures/entity/printer_3d/printer_3d_mechanisms.png");
     private final ItemModelResolver itemModelResolver;
     private final Font font;
     private final Printer3DMechanismsModel model;
@@ -93,19 +93,17 @@ public class Printer3DBlockEntityRenderer implements BlockEntityRenderer<Printer
         poseStack.pushPose();
         poseStack.scale(1.0f / 16.0f, 1.0f / 16.0f, 1.0f / 16.0f);
 
-        collector.submitCustomGeometry(poseStack, RenderTypes.entityCutout(MECHANISM_TEXTURE), (pose, consumer) -> {
-            this.model.getZRods().render(poseStack, consumer, state.lightCoords, OverlayTexture.NO_OVERLAY);
+        collector.submitModelPart(this.model.getZRods(), poseStack, RenderTypes.entityCutout(MECHANISM_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, null);
 
-            poseStack.pushPose();
-            poseStack.translate(8.0f, toolY, toolZ);
-            this.model.getGantryRail().render(poseStack, consumer, state.lightCoords, OverlayTexture.NO_OVERLAY);
-            poseStack.popPose();
+        poseStack.pushPose();
+        poseStack.translate(8.0f, toolY, toolZ);
+        collector.submitModelPart(this.model.getGantryRail(), poseStack, RenderTypes.entityCutout(MECHANISM_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, null);
+        poseStack.popPose();
 
-            poseStack.pushPose();
-            poseStack.translate(toolX, toolY, toolZ);
-            this.model.getToolhead().render(poseStack, consumer, state.lightCoords, OverlayTexture.NO_OVERLAY);
-            poseStack.popPose();
-        });
+        poseStack.pushPose();
+        poseStack.translate(toolX, toolY, toolZ);
+        collector.submitModelPart(this.model.getToolhead(), poseStack, RenderTypes.entityCutout(MECHANISM_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, null);
+        poseStack.popPose();
 
         if (state.isProcessing) {
             float bedSurfaceY = 2.8f;
