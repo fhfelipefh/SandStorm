@@ -72,4 +72,19 @@ class SandstormWeatherHandlerTest {
                 SandstormWeatherHandler.getWindSoundForIntensity(0.85, 0.50f)
         );
     }
+
+    @Test
+    void newWorldShouldHaveAtLeast20MinutesGracePeriod() {
+        SandstormWeatherHandler.resetWeather();
+        assertEquals(24000, SandstormWeatherHandler.getNextSandstormGameTime());
+
+        SandstormWeatherHandler.handleServerTick(12000);
+        assertFalse(SandstormWeatherHandler.getWeather().isActive());
+
+        SandstormWeatherHandler.handleServerTick(23999);
+        assertFalse(SandstormWeatherHandler.getWeather().isActive());
+
+        SandstormWeatherHandler.handleServerTick(24000);
+        assertTrue(SandstormWeatherHandler.getWeather().isActive());
+    }
 }

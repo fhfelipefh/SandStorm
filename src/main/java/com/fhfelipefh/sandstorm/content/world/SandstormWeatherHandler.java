@@ -16,8 +16,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public class SandstormWeatherHandler {
+    public static final long NEW_WORLD_GRACE_PERIOD_TICKS = 24000L;
     private static final SandstormWeatherComponent WEATHER = new SandstormWeatherComponent();
-    private static long nextSandstormGameTime = 6000;
+    private static long nextSandstormGameTime = NEW_WORLD_GRACE_PERIOD_TICKS;
 
     public static void initialize() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -37,21 +38,38 @@ public class SandstormWeatherHandler {
     }
 
     public static void handleServerTick(ServerLevel level, long gameTime) {
-        handleServerTick(gameTime);
+        WEATHER.tick();
 
-        if (level != null && gameTime % 20 == 0) {
-            SandstormWeatherPayload payload = new SandstormWeatherPayload(WEATHER.isActive(), WEATHER.getIntensity());
-            for (ServerPlayer player : level.players()) {
-                ServerPlayNetworking.send(player, payload);
-            }
-        }
+        if (level != null) {
+            SandstormSavedData data = level.getDataStorage().computeIfAbsent(SandstormSavedData.TYPE);
+            nextSandstormGameTime = data.getNextSandstormGameTime();
 
-        if (level != null && WEATHER.isActive()) {
-            if (gameTime % 80 == 0) {
-                playWeatherWindSound(level);
+            if (!data.isFirstStormTriggered() && gameTime < NEW_WORLD_GRACE_PERIOD_TICKS) {
+                if (data.getNextSandstormGameTime() < NEW_WORLD_GRACE_PERIOD_TICKS) {
+                    data.setNextSandstormGameTime(NEW_WORLD_GRACE_PERIOD_TICKS);
+                    nextSandstormGameTime = NEW_WORLD_GRACE_PERIOD_TICKS;
+                }
+            } else if (!WEATHER.isActive() && gameTime >= data.getNextSandstormGameTime()) {
+                WEATHER.startSandstorm(4000, 0.85);
+                data.setFirstStormTriggered(true);
+                data.setNextSandstormGameTime(gameTime + 14000L);
+                nextSandstormGameTime = data.getNextSandstormGameTime();
             }
-            if (WEATHER.getIntensity() >= 0.35 && gameTime % 40 == 0) {
-                depositSandDrifts(level);
+
+            if (gameTime % 20 == 0) {
+                SandstormWeatherPayload payload = new SandstormWeatherPayload(WEATHER.isActive(), WEATHER.getIntensity());
+                for (ServerPlayer player : level.players()) {
+                    ServerPlayNetworking.send(player, payload);
+                }
+            }
+
+            if (WEATHER.isActive()) {
+                if (gameTime % 80 == 0) {
+                    playWeatherWindSound(level);
+                }
+                if (WEATHER.getIntensity() >= 0.35 && gameTime % 40 == 0) {
+                    depositSandDrifts(level);
+                }
             }
         }
     }
@@ -118,6 +136,7 @@ public class SandstormWeatherHandler {
 
     public static void resetWeather() {
         WEATHER.reset();
+        nextSandstormGameTime = NEW_WORLD_GRACE_PERIOD_TICKS;
     }
 
     public static SandstormWeatherComponent getWeather() {
