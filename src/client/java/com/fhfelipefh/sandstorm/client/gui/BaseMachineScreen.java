@@ -14,6 +14,17 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         super(menu, playerInventory, title);
     }
 
+    protected static String formatCompact(long value) {
+        if (value >= 1_000_000) {
+            double m = value / 1_000_000.0;
+            return (m == (long) m) ? (long) m + "M" : String.format("%.1fM", m);
+        } else if (value >= 1_000) {
+            double k = value / 1_000.0;
+            return (k == (long) k) ? (long) k + "K" : String.format("%.1fK", k);
+        }
+        return String.valueOf(value);
+    }
+
     @Override
     protected void init() {
         super.init();
@@ -128,15 +139,17 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         int y = this.topPos;
 
         if (mouseX >= x + 7 && mouseX <= x + 25 && mouseY >= y + 18 && mouseY <= y + 46) {
+            String energy = formatCompact(this.menu.getEnergy());
+            String maxEnergy = formatCompact(this.menu.getMaxEnergy());
             String wptStatus = this.menu.isWptConnected()
-                    ? "§a⚡ Rede WPT Conectada (Recarga Sem Fio Ativa)"
-                    : "§c⚡ Sem Sinal WPT (Insira Baterias)";
-            Component tooltip = Component.literal("§bEnergia: §f" + this.menu.getEnergy() + " / " + this.menu.getMaxEnergy() + " J\n" + wptStatus);
+                    ? "§a⚡ WPT Ativa"
+                    : "§c⚡ Sem WPT";
+            Component tooltip = Component.literal("§b" + energy + " / " + maxEnergy + " J " + wptStatus);
             extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
         } else if (mouseX >= x + 8 && mouseX <= x + 22 && mouseY >= y + 4 && mouseY <= y + 16) {
             String wptStatus = this.menu.isWptConnected()
-                    ? "§aWPT Online: Recebendo Energia Sem Fio da Nave"
-                    : "§7WPT Offline: Fora do Alcance da Transmissao";
+                    ? "§aWPT Online"
+                    : "§7WPT Offline";
             Component tooltip = Component.literal(wptStatus);
             extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
         } else if (mouseX >= x + 69 && mouseX <= x + 107 && mouseY >= y + 38 && mouseY <= y + 52) {
