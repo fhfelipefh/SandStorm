@@ -39,6 +39,7 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
         state.surfaced = wormState == SandwormState.SURFACED_ASSAULT;
         state.submerging = wormState == SandwormState.SUBMERGING;
         state.breachProgress = entity.getBreachAnimationProgress(partialTick);
+        state.submergeProgress = entity.getSubmergeAnimationProgress(partialTick);
         state.biteProgress = entity.getBiteAnimationProgress(partialTick);
         state.bodyPitch = entity.getXRot();
         state.bodyYaw = entity.getYRot();

@@ -8,6 +8,7 @@ public class SandwormRenderState extends LivingEntityRenderState {
     public boolean surfaced;
     public boolean submerging;
     public float breachProgress;
+    public float submergeProgress;
     public float biteProgress;
     public float bodyPitch;
     public float bodyYaw;

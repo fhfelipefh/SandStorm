@@ -46,7 +46,16 @@ class SandwormModelTest {
         ModelPart seg7 = seg6.getChild("segment_7");
         assertNotNull(seg7);
 
-        ModelPart neck = seg7.getChild("neck");
+        ModelPart seg8 = seg7.getChild("segment_8");
+        assertNotNull(seg8);
+
+        ModelPart seg9 = seg8.getChild("segment_9");
+        assertNotNull(seg9);
+
+        ModelPart seg10 = seg9.getChild("segment_10");
+        assertNotNull(seg10);
+
+        ModelPart neck = seg10.getChild("neck");
         assertNotNull(neck);
 
         ModelPart head = neck.getChild("head");
@@ -101,7 +110,8 @@ class SandwormModelTest {
         ModelPart seg1 = base.getChild("segment_1");
         ModelPart seg4 = seg1.getChild("segment_2").getChild("segment_3").getChild("segment_4");
         ModelPart seg7 = seg4.getChild("segment_5").getChild("segment_6").getChild("segment_7");
-        ModelPart neck = seg7.getChild("neck");
+        ModelPart seg10 = seg7.getChild("segment_8").getChild("segment_9").getChild("segment_10");
+        ModelPart neck = seg10.getChild("neck");
         ModelPart head = neck.getChild("head");
 
         SandwormModel model = new SandwormModel(root);
@@ -120,6 +130,7 @@ class SandwormModelTest {
         assertTrue(seg1.xRot > 0.0f);
         assertTrue(seg4.xRot > 0.0f);
         assertTrue(seg7.xRot > 0.0f);
+        assertTrue(seg10.xRot > 0.0f);
         assertTrue(neck.xRot > 0.0f);
         assertTrue(head.xRot > 0.0f);
         assertTrue(seg4.yRot > 0.0f);
@@ -134,7 +145,8 @@ class SandwormModelTest {
         ModelPart seg1 = base.getChild("segment_1");
         ModelPart seg4 = seg1.getChild("segment_2").getChild("segment_3").getChild("segment_4");
         ModelPart seg7 = seg4.getChild("segment_5").getChild("segment_6").getChild("segment_7");
-        ModelPart neck = seg7.getChild("neck");
+        ModelPart seg10 = seg7.getChild("segment_8").getChild("segment_9").getChild("segment_10");
+        ModelPart neck = seg10.getChild("neck");
         ModelPart head = neck.getChild("head");
         ModelPart teethOuter = head.getChild("teeth_outer");
         ModelPart teethMiddle = head.getChild("teeth_middle");
@@ -163,7 +175,8 @@ class SandwormModelTest {
         ModelPart seg1 = base.getChild("segment_1");
         ModelPart seg4 = seg1.getChild("segment_2").getChild("segment_3").getChild("segment_4");
         ModelPart seg7 = seg4.getChild("segment_5").getChild("segment_6").getChild("segment_7");
-        ModelPart neck = seg7.getChild("neck");
+        ModelPart seg10 = seg7.getChild("segment_8").getChild("segment_9").getChild("segment_10");
+        ModelPart neck = seg10.getChild("neck");
         ModelPart head = neck.getChild("head");
         ModelPart teethOuter = head.getChild("teeth_outer");
         ModelPart teethMiddle = head.getChild("teeth_middle");
@@ -185,23 +198,54 @@ class SandwormModelTest {
     }
 
     @Test
-    void shouldSlitherHorizontallyLikeSnakeWhenMoving() {
+    void shouldSmoothlySubmergeAndDiveDownIntoSandWhenSubmerging() {
         LayerDefinition layer = SandwormModel.createBodyLayer();
         ModelPart root = layer.bakeRoot();
         ModelPart body = root.getChild("body");
         ModelPart base = body.getChild("base");
         ModelPart seg1 = base.getChild("segment_1");
         ModelPart seg4 = seg1.getChild("segment_2").getChild("segment_3").getChild("segment_4");
+        ModelPart seg7 = seg4.getChild("segment_5").getChild("segment_6").getChild("segment_7");
+        ModelPart seg10 = seg7.getChild("segment_8").getChild("segment_9").getChild("segment_10");
+        ModelPart neck = seg10.getChild("neck");
+        ModelPart head = neck.getChild("head");
 
         SandwormModel model = new SandwormModel(root);
         SandwormRenderState state = new SandwormRenderState();
         state.ageInTicks = 50.0f;
-        state.rearingProgress = 0.0f;
-        state.slitherProgress = 1.5f;
+        state.rearingProgress = 1.0f;
+        state.submerging = true;
+        state.submergeProgress = 0.5f;
 
         model.setupAnim(state);
 
-        assertTrue(base.xRot > 1.2f);
-        assertTrue(Math.abs(seg4.yRot) > 0.0f);
+        assertTrue(body.y > 24.0f);
+        assertTrue(head.xRot > 0.0f);
+    }
+
+    @Test
+    void shouldSmoothlyEmergeAndUncurlFromSandWhenBreaching() {
+        LayerDefinition layer = SandwormModel.createBodyLayer();
+        ModelPart root = layer.bakeRoot();
+        ModelPart body = root.getChild("body");
+        ModelPart base = body.getChild("base");
+        ModelPart seg1 = base.getChild("segment_1");
+        ModelPart seg4 = seg1.getChild("segment_2").getChild("segment_3").getChild("segment_4");
+        ModelPart seg7 = seg4.getChild("segment_5").getChild("segment_6").getChild("segment_7");
+        ModelPart seg10 = seg7.getChild("segment_8").getChild("segment_9").getChild("segment_10");
+        ModelPart neck = seg10.getChild("neck");
+        ModelPart head = neck.getChild("head");
+
+        SandwormModel model = new SandwormModel(root);
+        SandwormRenderState state = new SandwormRenderState();
+        state.ageInTicks = 50.0f;
+        state.rearingProgress = 0.5f;
+        state.breaching = true;
+        state.breachProgress = 0.4f;
+
+        model.setupAnim(state);
+
+        assertTrue(body.y > 24.0f);
+        assertTrue(head.xRot != 0.0f);
     }
 }

@@ -45,6 +45,7 @@ import java.util.List;
 public class SandwormEntity extends PathfinderMob implements Enemy {
     private static final EntityDataAccessor<Integer> DATA_STATE = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_BREACH_TICKS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_SUBMERGE_TICKS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_BITE_TICKS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_REARING = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<BlockPos> DATA_STRIKE_POS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.BLOCK_POS);
@@ -77,6 +78,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         super.defineSynchedData(builder);
         builder.define(DATA_STATE, SandwormState.SURFACED_ASSAULT.ordinal());
         builder.define(DATA_BREACH_TICKS, 0);
+        builder.define(DATA_SUBMERGE_TICKS, 0);
         builder.define(DATA_BITE_TICKS, 0);
         builder.define(DATA_REARING, 1.0f);
         builder.define(DATA_STRIKE_POS, BlockPos.ZERO);
@@ -117,6 +119,10 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         this.entityData.set(DATA_BREACH_TICKS, ticks);
     }
 
+    public void setSubmergeTicks(int ticks) {
+        this.entityData.set(DATA_SUBMERGE_TICKS, ticks);
+    }
+
     public BlockPos getStrikePos() {
         return this.entityData.get(DATA_STRIKE_POS);
     }
@@ -142,6 +148,14 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         return Mth.clamp((35.0f - (ticks - partialTick)) / 35.0f, 0.0f, 1.0f);
     }
 
+    public float getSubmergeAnimationProgress(float partialTick) {
+        int ticks = this.entityData.get(DATA_SUBMERGE_TICKS);
+        if (ticks <= 0) {
+            return 0.0f;
+        }
+        return Mth.clamp((35.0f - (ticks - partialTick)) / 35.0f, 0.0f, 1.0f);
+    }
+
     public float getBiteAnimationProgress(float partialTick) {
         int ticks = this.entityData.get(DATA_BITE_TICKS);
         if (ticks <= 0) {
@@ -153,6 +167,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     public void startSubmerging() {
         this.setSandwormState(SandwormState.SUBMERGING);
         this.submergingTicks = 35;
+        this.setSubmergeTicks(35);
         if (this.level() instanceof ServerLevel serverLevel) {
             serverLevel.playSound(null, this.blockPosition(), SandStormSoundEvents.SANDWORM_RUMBLE, SoundSource.HOSTILE, 1.5f, 0.75f);
             serverLevel.sendParticles(
@@ -266,6 +281,10 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         if (breach > 0) {
             this.entityData.set(DATA_BREACH_TICKS, breach - 1);
         }
+        int submerge = this.entityData.get(DATA_SUBMERGE_TICKS);
+        if (submerge > 0) {
+            this.entityData.set(DATA_SUBMERGE_TICKS, submerge - 1);
+        }
         int bite = this.entityData.get(DATA_BITE_TICKS);
         if (bite > 0) {
             if (bite == 8 && this.level() instanceof ServerLevel serverLevel) {
@@ -290,7 +309,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
 
             if (currentTarget == null && this.getSandwormState() == SandwormState.BURROWED) {
                 this.setSandwormState(SandwormState.SURFACED_ASSAULT);
-            } else if (currentTarget != null && this.getSandwormState() == SandwormState.SURFACED_ASSAULT && this.distanceToSqr(currentTarget) > 4096.0) {
+            } else if (currentTarget != null && this.getSandwormState() == SandwormState.SURFACED_ASSAULT && this.distanceToSqr(currentTarget) > 196.0) {
                 this.startSubmerging();
             }
         }
@@ -315,6 +334,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
             this.submergingTicks--;
             if (this.submergingTicks <= 0) {
                 this.setSandwormState(SandwormState.BURROWED);
+                this.setSubmergeTicks(0);
             }
         }
 
