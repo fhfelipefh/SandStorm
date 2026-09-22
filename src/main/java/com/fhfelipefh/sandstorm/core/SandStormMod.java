@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.core;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.command.SandstormClaimCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormWeatherCommand;
 import com.fhfelipefh.sandstorm.content.command.SandwormShowcaseCommand;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
@@ -77,6 +78,7 @@ public class SandStormMod implements ModInitializer {
         QuestRewardHandler.initialize();
         SandwormShowcaseCommand.initialize();
         SandstormWeatherCommand.initialize();
+        SandstormClaimCommand.initialize();
         RecipeUnlockHandler.initialize();
     }
 

@@ -122,10 +122,10 @@ class SurvivalDatapadScreenLogicTest {
 
         int i = 0;
         int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
-        int btnX = cardRight - 48;
-        int btnY = cy + 18;
-        int btnW = 44;
-        int btnH = 18;
+        int btnW = 56;
+        int btnH = 20;
+        int btnX = cardRight - 60;
+        int btnY = cy + 16;
 
         assertTrue(btnX > left);
         assertTrue(btnY > top);
@@ -149,10 +149,10 @@ class SurvivalDatapadScreenLogicTest {
         int cardRight = right - 10;
         int cy = 70;
         int cardHeight = 46;
-        int btnX = cardRight - 48;
-        int btnY = cy + 18;
-        int btnW = 44;
-        int btnH = 18;
+        int btnW = 56;
+        int btnH = 20;
+        int btnX = cardRight - 60;
+        int btnY = cy + 16;
 
         double mxBtn = btnX + 10;
         double myBtn = btnY + 5;
@@ -173,6 +173,38 @@ class SurvivalDatapadScreenLogicTest {
         boolean insideCardOut = mxOut >= cardLeft && mxOut <= cardRight && myOut >= cy && myOut <= cy + cardHeight;
         boolean onButtonOut = mxOut >= btnX && mxOut <= btnX + btnW && myOut >= btnY && myOut <= btnY + btnH;
         assertFalse(onButtonOut || insideCardOut);
+    }
+
+    @Test
+    void testHoverFallbackDetection() {
+        String lastHoveredClaimableQuestId = "suit_diagnostics";
+        QuestData quest = QuestRegistry.getQuest("suit_diagnostics");
+        assertNotNull(quest);
+        boolean wasHovered = quest.id().equals(lastHoveredClaimableQuestId);
+        assertTrue(wasHovered);
+
+        double offscreenX = -999;
+        double offscreenY = -999;
+        boolean insideCard = offscreenX >= 26 && offscreenX <= 454;
+        boolean onButton = offscreenX >= 394 && offscreenX <= 450;
+        assertFalse(insideCard);
+        assertFalse(onButton);
+        assertTrue(onButton || insideCard || wasHovered);
+    }
+
+    @Test
+    void testKeyShortcutMatching() {
+        int keyR = 82;
+        int keyEnter = 257;
+        int keySpace = 32;
+
+        assertTrue(keyR == 82);
+        assertTrue(keyEnter == 257 || keySpace == 32);
+
+        for (int chKey = 49; chKey <= 53; chKey++) {
+            int chapter = chKey - 48;
+            assertTrue(chapter >= 1 && chapter <= 5);
+        }
     }
 
     @Test

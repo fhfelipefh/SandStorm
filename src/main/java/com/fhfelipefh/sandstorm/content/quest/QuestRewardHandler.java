@@ -89,12 +89,17 @@ public class QuestRewardHandler {
             syncPlayerQuests(player, data);
             return;
         }
-        if (!arePrerequisitesMet(player.getUUID(), quest, data)) {
+        boolean prereqsMet = arePrerequisitesMet(player.getUUID(), quest, data);
+        boolean hasItem = hasRequiredItem(player, quest, data);
+        SandStormMod.LOGGER.info("Quest claim check for {} (player {}): prereqsMet={}, hasItem={}",
+                questId, player.getName().getString(), prereqsMet, hasItem);
+
+        if (!prereqsMet) {
             SandStormMod.LOGGER.warn("Prerequisites not met for quest {} and player {}", questId, player.getName().getString());
             syncPlayerQuests(player, data);
             return;
         }
-        if (!hasRequiredItem(player, quest, data)) {
+        if (!hasItem) {
             SandStormMod.LOGGER.warn("Does not have required item for quest {} and player {}", questId, player.getName().getString());
             syncPlayerQuests(player, data);
             return;
@@ -117,6 +122,12 @@ public class QuestRewardHandler {
             player.containerMenu.broadcastChanges();
             player.inventoryMenu.broadcastChanges();
         }
+
+        Component questTitle = Component.translatable(quest.titleKey());
+        Component rewardName = quest.getRewardItem() != null
+                ? Component.translatable(quest.getRewardItem().getDescriptionId())
+                : Component.literal("");
+        player.sendSystemMessage(Component.translatable("gui.sandstorm.datapad.claimed_success", questTitle, quest.rewardCount(), rewardName));
 
         player.level().playSound(null, player.blockPosition(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS, 1.0f, 1.2f);
         data.setDirty();

@@ -9,6 +9,7 @@ import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -30,9 +31,16 @@ public class SurvivalDatapadScreen extends Screen {
     private final Map<String, Long> claimFlashTimestamps = new HashMap<>();
     private Component statusTooltip;
     private long statusTooltipExpiry;
+    private String lastHoveredClaimableQuestId;
 
     public SurvivalDatapadScreen() {
         super(Component.translatable("gui.sandstorm.datapad.title"));
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        SandStormMod.LOGGER.info("Datapad opened by client player");
     }
 
     @Override
@@ -42,6 +50,8 @@ public class SurvivalDatapadScreen extends Screen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        lastHoveredClaimableQuestId = null;
+
         extractor.fill(0, 0, width, height, 0xD00A0E17);
 
         int left = 16;
@@ -71,7 +81,10 @@ public class SurvivalDatapadScreen extends Screen {
         }
 
         Component chapterComp = Component.translatable("gui.sandstorm.datapad.chapter." + currentChapter);
-        drawScaledText(extractor, chapterComp, left + 10, top + 20, right - left - 20, 0xFFFFD54F);
+        Component shortcutHint = Component.translatable("gui.sandstorm.datapad.shortcut_hint");
+        int hintWidth = font.width(shortcutHint);
+        extractor.text(font, shortcutHint, right - hintWidth - 10, top + 20, 0xFF00E5FF);
+        drawScaledText(extractor, chapterComp, left + 10, top + 20, right - left - hintWidth - 24, 0xFFFFD54F);
 
         extractor.fill(left + 6, top + 32, right - 6, top + 33, 0x5500E5FF);
 
@@ -152,23 +165,28 @@ public class SurvivalDatapadScreen extends Screen {
             float maxTitleWidth = Math.max(0, badgeX - (cardLeft + 30) - 8);
             drawScaledText(extractor, Component.translatable(quest.titleKey()), cardLeft + 30, cy + 5, maxTitleWidth, titleColor);
 
-            float maxLineWidth = Math.max(0, (cardRight - 90) - (cardLeft + 30) - 4);
+            float maxLineWidth = Math.max(0, (cardRight - 94) - (cardLeft + 30) - 4);
             drawScaledText(extractor, Component.translatable(quest.taskKey()), cardLeft + 30, cy + 17, maxLineWidth, 0xFFCFD8DC);
             drawScaledText(extractor, Component.translatable(quest.noteKey()), cardLeft + 30, cy + 29, maxLineWidth, 0xFF80DEEA);
 
             if (quest.getRewardItem() != null) {
-                extractor.item(quest.getRewardItem().getDefaultInstance(), cardRight - 82, cy + 19);
+                extractor.item(quest.getRewardItem().getDefaultInstance(), cardRight - 94, cy + 18);
                 String countStr = "x" + quest.rewardCount();
-                extractor.text(font, countStr, cardRight - 64, cy + 23, 0xFFFFD54F);
+                extractor.text(font, countStr, cardRight - 76, cy + 22, 0xFFFFD54F);
             }
 
-            int btnX = cardRight - 48;
-            int btnY = cy + 18;
-            int btnW = 44;
-            int btnH = 18;
+            int btnW = 56;
+            int btnH = 20;
+            int btnX = cardRight - 60;
+            int btnY = cy + 16;
 
             if (isClaimable) {
                 boolean hovered = mouseX >= btnX && mouseX <= btnX + btnW && mouseY >= btnY && mouseY <= btnY + btnH;
+                boolean cardHovered = mouseX >= cardLeft && mouseX <= cardRight && mouseY >= cy && mouseY <= cy + cardHeight;
+                if (hovered || cardHovered) {
+                    lastHoveredClaimableQuestId = quest.id();
+                }
+
                 int btnBg = hovered ? 0xFF00E5FF : 0xFF0091EA;
                 extractor.fill(btnX, btnY, btnX + btnW, btnY + btnH, btnBg);
                 extractor.fill(btnX, btnY, btnX + btnW, btnY + 1, hovered ? 0xFFFFFFFF : 0xFF80D8FF);
@@ -176,11 +194,11 @@ public class SurvivalDatapadScreen extends Screen {
                 extractor.fill(btnX, btnY, btnX + 1, btnY + btnH, hovered ? 0xFFFFFFFF : 0xFF80D8FF);
                 extractor.fill(btnX + btnW - 1, btnY, btnX + btnW, btnY + btnH, hovered ? 0xFFFFFFFF : 0xFF80D8FF);
 
-                Component claimText = Component.translatable("gui.sandstorm.datapad.claim");
-                drawScaledCenteredText(extractor, claimText, btnX + btnW / 2f, btnY + 5, btnW - 4, hovered ? 0xFF0A0E17 : 0xFFFFFFFF);
+                Component claimText = Component.translatable("gui.sandstorm.datapad.claim_btn");
+                drawScaledCenteredText(extractor, claimText, btnX + btnW / 2f, btnY + 6, btnW - 4, hovered ? 0xFF0A0E17 : 0xFFFFFFFF);
             } else if (isClaimed) {
                 Component claimedText = Component.translatable("gui.sandstorm.datapad.claimed");
-                drawScaledCenteredText(extractor, claimedText, btnX + btnW / 2f, btnY + 5, btnW - 2, 0xFF69F0AE);
+                drawScaledCenteredText(extractor, claimedText, btnX + btnW / 2f, btnY + 6, btnW - 2, 0xFF69F0AE);
             }
         }
 
@@ -200,76 +218,148 @@ public class SurvivalDatapadScreen extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean isDouble) {
-        if (event.button() == 0) {
-            double mx = event.x();
-            double my = event.y();
+        SandStormMod.LOGGER.info("Datapad mouseClicked: button={}, isLeft={}, x={}, y={}, isDouble={}",
+                event.button(), event.isLeft(), event.x(), event.y(), isDouble);
+        if (handleInputClick(event.x(), event.y())) {
+            return true;
+        }
+        return super.mouseClicked(event, isDouble);
+    }
 
-            int left = 16;
-            int top = 12;
-            int right = width - 16;
-            int bottom = height - 12;
-            int tabCount = 5;
-            int tabWidth = (right - left - 20) / tabCount;
-            int ty = top + 36;
+    @Override
+    public boolean mouseReleased(MouseButtonEvent event) {
+        SandStormMod.LOGGER.info("Datapad mouseReleased: button={}, isLeft={}, x={}, y={}",
+                event.button(), event.isLeft(), event.x(), event.y());
+        if (handleInputClick(event.x(), event.y())) {
+            return true;
+        }
+        return super.mouseReleased(event);
+    }
 
-            if (my >= ty && my <= ty + 16) {
-                for (int ch = 1; ch <= tabCount; ch++) {
-                    int tx = left + 10 + (ch - 1) * tabWidth;
-                    if (mx >= tx && mx <= tx + tabWidth) {
-                        currentChapter = ch;
-                        scrollOffset = 0;
-                        return true;
-                    }
-                }
+    @Override
+    public boolean keyPressed(KeyEvent event) {
+        SandStormMod.LOGGER.info("Datapad keyPressed: key={}, keycode={}, isConfirmation={}",
+                event.key(), event.keycode(), event.isConfirmation());
+        if (event.key() == 82 || event.keycode() == 82) {
+            if (claimAvailableQuest()) {
+                return true;
             }
+        }
+        if (event.isConfirmation() || event.key() == 257 || event.key() == 32) {
+            if (claimAvailableQuest()) {
+                return true;
+            }
+        }
+        if (event.key() >= 49 && event.key() <= 53) {
+            currentChapter = event.key() - 48;
+            scrollOffset = 0;
+            return true;
+        }
+        return super.keyPressed(event);
+    }
 
-            int questAreaTop = top + 58;
-            int questAreaBottom = bottom - 10;
-            int cardHeight = 46;
-            int cardSpacing = 6;
+    private boolean handleInputClick(double mx, double my) {
+        int left = 16;
+        int top = 12;
+        int right = width - 16;
+        int bottom = height - 12;
+        int tabCount = 5;
+        int tabWidth = (right - left - 20) / tabCount;
+        int ty = top + 36;
 
-            List<QuestData> quests = QuestRegistry.getQuestsForChapter(currentChapter);
-            Player player = minecraft != null ? minecraft.player : null;
-
-            for (int i = 0; i < quests.size(); i++) {
-                QuestData quest = quests.get(i);
-                int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
-                if (cy + cardHeight < questAreaTop || cy > questAreaBottom) {
-                    continue;
-                }
-
-                int cardRight = right - 10;
-                int btnX = cardRight - 48;
-                int btnY = cy + 18;
-                int btnW = 44;
-                int btnH = 18;
-
-                int cardLeft = left + 10;
-                int cardRight2 = right - 10;
-                boolean insideCard = mx >= cardLeft && mx <= cardRight2 && my >= cy && my <= cy + cardHeight;
-                boolean onButton = mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH;
-
-                if (onButton || insideCard) {
-                    if (isQuestClaimable(player, quest)) {
-                        SandStormMod.LOGGER.info("Datapad client claiming quest: {} at ({}, {})", quest.id(), mx, my);
-                        DatapadClientHelper.addClaimedQuest(quest.id());
-                        ClientPlayNetworking.send(new ClaimQuestRewardPayload(quest.id(), new ArrayList<>(DatapadClientHelper.getCompletedConditions())));
-                        claimFlashTimestamps.put(quest.id(), System.currentTimeMillis());
-                        if (minecraft != null) {
-                            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
-                        }
-                        return true;
-                    } else {
-                        showStatusTooltip(player, quest);
-                        if (minecraft != null) {
-                            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.5f));
-                        }
-                        return true;
-                    }
+        if (my >= ty && my <= ty + 16) {
+            for (int ch = 1; ch <= tabCount; ch++) {
+                int tx = left + 10 + (ch - 1) * tabWidth;
+                if (mx >= tx && mx <= tx + tabWidth) {
+                    currentChapter = ch;
+                    scrollOffset = 0;
+                    return true;
                 }
             }
         }
-        return super.mouseClicked(event, isDouble);
+
+        int questAreaTop = top + 58;
+        int questAreaBottom = bottom - 10;
+        int cardHeight = 46;
+        int cardSpacing = 6;
+
+        List<QuestData> quests = QuestRegistry.getQuestsForChapter(currentChapter);
+        Player player = minecraft != null ? minecraft.player : null;
+
+        for (int i = 0; i < quests.size(); i++) {
+            QuestData quest = quests.get(i);
+            int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
+            if (cy + cardHeight < questAreaTop || cy > questAreaBottom) {
+                continue;
+            }
+
+            int cardLeft = left + 10;
+            int cardRight = right - 10;
+            int btnW = 56;
+            int btnH = 20;
+            int btnX = cardRight - 60;
+            int btnY = cy + 16;
+
+            boolean insideCard = mx >= cardLeft && mx <= cardRight && my >= cy && my <= cy + cardHeight;
+            boolean onButton = mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH;
+            boolean wasHovered = quest.id().equals(lastHoveredClaimableQuestId);
+
+            if (onButton || insideCard || wasHovered) {
+                return executeClaim(player, quest);
+            }
+        }
+        return false;
+    }
+
+    private boolean executeClaim(Player player, QuestData quest) {
+        if (quest == null) {
+            return false;
+        }
+        if (isQuestClaimable(player, quest)) {
+            SandStormMod.LOGGER.info("Datapad client claiming quest: {}", quest.id());
+            DatapadClientHelper.addClaimedQuest(quest.id());
+            ClientPlayNetworking.send(new ClaimQuestRewardPayload(quest.id(), new ArrayList<>(DatapadClientHelper.getCompletedConditions())));
+            claimFlashTimestamps.put(quest.id(), System.currentTimeMillis());
+            lastHoveredClaimableQuestId = null;
+            if (minecraft != null) {
+                minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+            }
+            return true;
+        } else {
+            SandStormMod.LOGGER.info("Datapad quest {} is not claimable. PrereqsMet={}, HasItem={}",
+                    quest.id(), arePrerequisitesClaimed(quest), hasRequiredItem(player, quest));
+            showStatusTooltip(player, quest);
+            if (minecraft != null) {
+                minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.5f));
+            }
+            return true;
+        }
+    }
+
+    private boolean claimAvailableQuest() {
+        Player player = minecraft != null ? minecraft.player : null;
+        if (lastHoveredClaimableQuestId != null) {
+            QuestData hoveredQuest = QuestRegistry.getQuest(lastHoveredClaimableQuestId);
+            if (hoveredQuest != null && isQuestClaimable(player, hoveredQuest)) {
+                return executeClaim(player, hoveredQuest);
+            }
+        }
+
+        List<QuestData> quests = QuestRegistry.getQuestsForChapter(currentChapter);
+        for (QuestData quest : quests) {
+            if (isQuestClaimable(player, quest)) {
+                return executeClaim(player, quest);
+            }
+        }
+
+        for (QuestData quest : QuestRegistry.getAllQuests().values()) {
+            if (isQuestClaimable(player, quest)) {
+                currentChapter = quest.chapter();
+                scrollOffset = 0;
+                return executeClaim(player, quest);
+            }
+        }
+        return false;
     }
 
     @Override
