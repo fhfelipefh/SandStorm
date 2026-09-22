@@ -39,25 +39,29 @@ public class SandStormBlocks {
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("printer_3d")))
                     .mapColor(MapColor.COLOR_LIGHT_GRAY)
                     .strength(3.5f)
-                    .sound(SoundType.METAL)));
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
     public static final DesalinationFilterBlock DESALINATION_FILTER = register("desalination_filter",
             new DesalinationFilterBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("desalination_filter")))
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(3.0f)
-                    .sound(SoundType.COPPER)));
+                    .sound(SoundType.COPPER)
+                    .noOcclusion()));
     public static final NaniteFabricatorBlock NANITE_FABRICATOR = register("nanite_fabricator",
             new NaniteFabricatorBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("nanite_fabricator")))
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(4.0f)
-                    .sound(SoundType.NETHERITE_BLOCK)));
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
     public static final FluidPipeBlock FLUID_PIPE = register("fluid_pipe",
             new FluidPipeBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fluid_pipe")))
                     .mapColor(MapColor.COLOR_LIGHT_BLUE)
                     .strength(1.5f)
-                    .sound(SoundType.METAL)));
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
     public static final BuriedTechRuinsBlock BURIED_TECH_RUINS = register("buried_tech_ruins",
             new BuriedTechRuinsBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("buried_tech_ruins")))
@@ -88,7 +92,8 @@ public class SandStormBlocks {
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("atmospheric_terraformer")))
                     .mapColor(MapColor.COLOR_GREEN)
                     .strength(5.0f)
-                    .sound(SoundType.GLASS)));
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
     public static final WirelessSolarReceiverBlock WIRELESS_SOLAR_RECEIVER = register("wireless_solar_receiver",
             new WirelessSolarReceiverBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("wireless_solar_receiver")))

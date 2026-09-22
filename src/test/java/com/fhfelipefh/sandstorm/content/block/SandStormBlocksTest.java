@@ -6,7 +6,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -40,5 +42,11 @@ class SandStormBlocksTest {
         assertEquals(Registries.BLOCK, key.registryKey());
         assertEquals("sandstorm", key.identifier().getNamespace());
         assertEquals(blockPath, key.identifier().getPath());
+    }
+
+    @Test
+    void shouldSupportNoOcclusionProperties() {
+        BlockBehaviour.Properties props = BlockBehaviour.Properties.of().noOcclusion();
+        assertNotNull(props);
     }
 }
