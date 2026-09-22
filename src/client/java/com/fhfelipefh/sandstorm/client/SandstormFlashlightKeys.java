@@ -17,7 +17,7 @@ public final class SandstormFlashlightKeys {
         FLASHLIGHT_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.sandstorm.flashlight",
                 InputConstants.Type.KEYBOARD,
-                InputConstants.KEY_F,
+                InputConstants.KEY_G,
                 SANDSTORM_CATEGORY
         ));
     }
