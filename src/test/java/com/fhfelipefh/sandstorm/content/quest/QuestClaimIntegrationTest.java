@@ -3,9 +3,11 @@ package com.fhfelipefh.sandstorm.content.quest;
 import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
+import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
@@ -222,5 +224,29 @@ class QuestClaimIntegrationTest {
         assertTrue(DatapadClientHelper.isQuestClaimed("suit_diagnostics"));
         assertTrue(DatapadClientHelper.isQuestClaimed("compact_sandstone"));
         assertTrue(DatapadClientHelper.isConditionMet("sandstorm.battery_60"));
+    }
+
+    @Test
+    void testSandstoneFurnaceDetectionInInventory() {
+        Inventory inventory = new TestInventory();
+        QuestData quest = QuestRegistry.getQuest("sandstone_furnace");
+        assertNotNull(quest);
+        assertEquals("sandstorm:sandstone_furnace", quest.iconId().toString());
+
+        inventory.setItem(8, new ItemStack(Items.FURNACE));
+        Item req = quest.getRequiredItem();
+
+        boolean found = false;
+        for (int i = 0; i < 36; i++) {
+            ItemStack stack = inventory.getItem(i);
+            if (!stack.isEmpty()) {
+                Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+                if ((req != null && stack.is(req)) || ("sandstone_furnace".equals(quest.id()) && (id.equals(SandStormMod.id("sandstone_furnace")) || id.equals(SandStormMod.mcId("furnace"))))) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        assertTrue(found);
     }
 }

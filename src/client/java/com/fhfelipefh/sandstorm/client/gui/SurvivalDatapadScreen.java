@@ -12,13 +12,14 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -412,15 +413,26 @@ public class SurvivalDatapadScreen extends Screen {
         Item req = quest.getRequiredItem();
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             ItemStack stack = player.getItemBySlot(slot);
-            if (!stack.isEmpty() && (stack.is(req) || ("sandstone_furnace".equals(quest.id()) && stack.is(Items.FURNACE)))) {
+            if (!stack.isEmpty() && matchesQuestItem(quest, stack, req)) {
                 return true;
             }
         }
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
-            if (!stack.isEmpty() && (stack.is(req) || ("sandstone_furnace".equals(quest.id()) && stack.is(Items.FURNACE)))) {
+            if (!stack.isEmpty() && matchesQuestItem(quest, stack, req)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    private static boolean matchesQuestItem(QuestData quest, ItemStack stack, Item req) {
+        if (req != null && stack.is(req)) {
+            return true;
+        }
+        if ("sandstone_furnace".equals(quest.id())) {
+            Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+            return id.equals(SandStormMod.id("sandstone_furnace")) || id.equals(SandStormMod.mcId("furnace"));
         }
         return false;
     }
