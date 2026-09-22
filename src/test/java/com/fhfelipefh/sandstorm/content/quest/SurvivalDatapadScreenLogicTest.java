@@ -172,9 +172,9 @@ class SurvivalDatapadScreenLogicTest {
     }
 
     @Test
-    void testChapter1HasFourQuests() {
+    void testChapter1HasFiveQuests() {
         List<QuestData> chapter1 = QuestRegistry.getQuestsForChapter(1);
-        assertEquals(4, chapter1.size());
+        assertEquals(5, chapter1.size());
     }
 
     @Test

@@ -202,6 +202,10 @@ public class SurvivalDatapadScreen extends Screen {
         if (event.button() == 0) {
             double mx = event.x();
             double my = event.y();
+            if (this.minecraft != null && this.minecraft.getWindow() != null) {
+                mx = mx * (double) this.minecraft.getWindow().getGuiScaledWidth() / (double) this.minecraft.getWindow().getScreenWidth();
+                my = my * (double) this.minecraft.getWindow().getGuiScaledHeight() / (double) this.minecraft.getWindow().getScreenHeight();
+            }
 
             int left = 16;
             int top = 12;
@@ -270,6 +274,7 @@ public class SurvivalDatapadScreen extends Screen {
                     }
                     return true;
                 }
+                cy += cardHeight + 4;
             }
         }
         return super.mouseClicked(event, isDouble);

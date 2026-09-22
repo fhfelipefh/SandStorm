@@ -24,6 +24,7 @@ import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import com.fhfelipefh.sandstorm.content.world.SandStormWorldGen;
 import com.fhfelipefh.sandstorm.content.world.SpaceshipLandingManager;
 import com.fhfelipefh.sandstorm.content.world.VanillaMonsterSuppressionHandler;
+import com.fhfelipefh.sandstorm.content.recipe.RecipeUnlockHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.core.registries.Registries;
@@ -76,6 +77,7 @@ public class SandStormMod implements ModInitializer {
         QuestRewardHandler.initialize();
         SandwormShowcaseCommand.initialize();
         SandstormWeatherCommand.initialize();
+        RecipeUnlockHandler.initialize();
     }
 
     public static Identifier id(String path) {
