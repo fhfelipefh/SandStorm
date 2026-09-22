@@ -46,3 +46,26 @@ Follow these architectural and optimization patterns across the entire codebase:
 ## 10. Local Runtime & Mod Jar Parity
 - External Minecraft instances running via `play.bat` or the official launcher load `.jar` files from `%APPDATA%\.minecraft\mods\`.
 - After modifying network payloads, screens, or server logic, ensure a fresh jar is built via `./gradlew build -x test` and copied to the mods folder before launching the game.
+
+## 11. Unit Testing Block Entities with Frozen Registries
+- Calling `Bootstrap.bootStrap()` freezes `BuiltInRegistries.BLOCK`. Loading `SandStormBlocks` statically in unit tests throws `IllegalStateException: This registry can't create intrusive holders`.
+- All custom `BlockEntity` classes must provide an overloaded constructor accepting `(BlockEntityType<?> type, BlockPos pos, BlockState state)`.
+- Unit tests must instantiate the block entity using dummy types (e.g. `BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState()`) rather than referencing `SandStormBlocks.<TYPE>`.
+
+## 12. Item Data Component Binding in Unit Tests
+- Instantiating `new ItemStack(...)` in unit tests after `Bootstrap.bootStrap()` throws `NullPointerException: Components not bound yet` in Minecraft 1.21.4 / 26.3.
+- In `@BeforeAll static void setup()`, iterate through `BuiltInRegistries.ITEM` and bind empty components if unbound:
+  ```java
+  for (Item item : BuiltInRegistries.ITEM) {
+      if (!item.builtInRegistryHolder().areComponentsBound()) {
+          item.builtInRegistryHolder().bindComponents(DataComponentMap.EMPTY);
+      }
+  }
+  ```
+
+## 13. Transparent & Open-Mesh Block Occlusion Invariant
+- Custom blocks with non-solid, cutout, open-mesh, or transparent geometry (e.g. machinery, filters, pipes, terraformers) must declare `.noOcclusion()` in `BlockBehaviour.Properties`.
+- Missing `.noOcclusion()` causes neighboring block faces (floors/walls) to be culled by the rendering engine, creating X-ray artifacts through the terrain. Verified by `TransparentBlockOcclusionArchitectureTest`.
+
+## 14. Language & Documentation Convention (pt-BR)
+- All implementation plans (`implementation_plan.md`), walkthroughs (`walkthrough.md`), and technical design proposals for this repository must be authored in Brazilian Portuguese (`pt-BR`).

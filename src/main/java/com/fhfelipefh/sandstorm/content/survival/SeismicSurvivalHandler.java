@@ -81,6 +81,9 @@ public class SeismicSurvivalHandler {
 
         SandwormEntity worm = SandStormEntities.SANDWORM.create(level, EntitySpawnReason.TRIGGERED);
         if (worm != null) {
+            int roll = level.getRandom().nextInt(100);
+            int size = roll < 25 ? 1 : (roll < 80 ? 2 : (roll < 95 ? 3 : 4));
+            worm.setWormSize(size, true);
             worm.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             level.addFreshEntity(worm);
             player.sendSystemMessage(Component.translatable("warning.sandstorm.worm_emerge"), true);

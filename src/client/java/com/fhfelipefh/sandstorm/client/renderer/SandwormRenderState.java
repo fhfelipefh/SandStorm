@@ -22,4 +22,5 @@ public class SandwormRenderState extends LivingEntityRenderState {
     public float groundSink;
     public float groundSlopePitch;
     public float groundSlopeRoll;
+    public float scale = 1.0f;
 }

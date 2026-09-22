@@ -33,6 +33,7 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
     @Override
     public void extractRenderState(SandwormEntity entity, SandwormRenderState state, float partialTick) {
         super.extractRenderState(entity, state, partialTick);
+        state.scale = entity.getWormScale();
         SandwormState wormState = entity.getSandwormState();
         state.burrowed = wormState == SandwormState.BURROWED;
         state.breaching = wormState == SandwormState.BREACHING;
@@ -92,12 +93,13 @@ public class SandwormRenderer extends MobRenderer<SandwormEntity, SandwormRender
     @Override
     protected void scale(SandwormRenderState state, PoseStack poseStack) {
         super.scale(state, poseStack);
-        float scaleFactor = 7.5f;
+        float scaleFactor = 7.5f * state.scale;
         poseStack.scale(scaleFactor, scaleFactor, scaleFactor);
     }
 
     @Override
     protected AABB getBoundingBoxForCulling(SandwormEntity entity, float partialTick) {
-        return super.getBoundingBoxForCulling(entity, partialTick).inflate(60.0, 100.0, 60.0);
+        float s = entity.getWormScale();
+        return super.getBoundingBoxForCulling(entity, partialTick).inflate(60.0 * s, 100.0 * s, 60.0 * s);
     }
 }

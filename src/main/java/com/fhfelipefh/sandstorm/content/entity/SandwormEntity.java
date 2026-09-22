@@ -31,6 +31,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -39,6 +40,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -52,6 +55,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     private static final EntityDataAccessor<Float> DATA_REARING = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<BlockPos> DATA_STRIKE_POS = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<Boolean> DATA_SHOWCASE_MODE = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_SIZE = SynchedEntityData.defineId(SandwormEntity.class, EntityDataSerializers.INT);
 
     private int surfaceTicks = 140;
     private int submergingTicks = 0;
@@ -72,7 +76,8 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
                 .add(Attributes.ARMOR, 12.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.FOLLOW_RANGE, 64.0)
-                .add(Attributes.STEP_HEIGHT, 2.0);
+                .add(Attributes.STEP_HEIGHT, 2.0)
+                .add(Attributes.SCALE, 1.0);
     }
 
     @Override
@@ -85,6 +90,108 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         builder.define(DATA_REARING, 1.0f);
         builder.define(DATA_STRIKE_POS, BlockPos.ZERO);
         builder.define(DATA_SHOWCASE_MODE, false);
+        builder.define(DATA_SIZE, 2);
+    }
+
+    public int getWormSize() {
+        return this.entityData.get(DATA_SIZE);
+    }
+
+    public float getWormScale() {
+        return switch (this.getWormSize()) {
+            case 1 -> 0.6f;
+            case 3 -> 1.5f;
+            case 4 -> 2.0f;
+            default -> 1.0f;
+        };
+    }
+
+    public void setWormSize(int size, boolean resetHealth) {
+        int clamped = Mth.clamp(size, 1, 4);
+        this.entityData.set(DATA_SIZE, clamped);
+        this.refreshDimensions();
+        this.updateAttributesForSize(resetHealth);
+    }
+
+    public void setWormSize(int size) {
+        this.setWormSize(size, false);
+    }
+
+    private void updateAttributesForSize(boolean resetHealth) {
+        int size = this.getWormSize();
+        AttributeInstance maxHealthAttr = this.getAttribute(Attributes.MAX_HEALTH);
+        if (maxHealthAttr != null) {
+            double maxHealth = switch (size) {
+                case 1 -> 180.0;
+                case 3 -> 450.0;
+                case 4 -> 600.0;
+                default -> 300.0;
+            };
+            maxHealthAttr.setBaseValue(maxHealth);
+            if (resetHealth) {
+                this.setHealth((float) maxHealth);
+            }
+        }
+        AttributeInstance attackAttr = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (attackAttr != null) {
+            double attack = switch (size) {
+                case 1 -> 11.0;
+                case 3 -> 27.0;
+                case 4 -> 36.0;
+                default -> 18.0;
+            };
+            attackAttr.setBaseValue(attack);
+        }
+        AttributeInstance speedAttr = this.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (speedAttr != null) {
+            double speed = switch (size) {
+                case 1 -> 0.36;
+                case 3 -> 0.29;
+                case 4 -> 0.26;
+                default -> 0.32;
+            };
+            speedAttr.setBaseValue(speed);
+        }
+        AttributeInstance armorAttr = this.getAttribute(Attributes.ARMOR);
+        if (armorAttr != null) {
+            double armor = switch (size) {
+                case 1 -> 8.0;
+                case 3 -> 16.0;
+                case 4 -> 20.0;
+                default -> 12.0;
+            };
+            armorAttr.setBaseValue(armor);
+        }
+        AttributeInstance scaleAttr = this.getAttribute(Attributes.SCALE);
+        if (scaleAttr != null) {
+            scaleAttr.setBaseValue(this.getWormScale());
+        }
+        this.xpReward = switch (size) {
+            case 1 -> 30;
+            case 3 -> 100;
+            case 4 -> 160;
+            default -> 60;
+        };
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (DATA_SIZE.equals(key)) {
+            this.refreshDimensions();
+        }
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putInt("WormSize", this.getWormSize());
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.setWormSize(input.getIntOr("WormSize", 2), false);
     }
 
     public SandwormState getSandwormState() {
@@ -189,10 +296,12 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
             return;
         }
 
-        serverLevel.playSound(null, this.blockPosition(), SandStormSoundEvents.SANDWORM_EMERGE, SoundSource.HOSTILE, 2.0f, 0.85f);
+        float scale = this.getWormScale();
+        float soundPitch = Math.max(0.4f, 0.85f / scale);
+        serverLevel.playSound(null, this.blockPosition(), SandStormSoundEvents.SANDWORM_EMERGE, SoundSource.HOSTILE, 2.0f, soundPitch);
         serverLevel.sendParticles(
                 new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()),
-                this.getX(), this.getY() + 0.5, this.getZ(), 140, 3.5, 2.0, 3.5, 0.45
+                this.getX(), this.getY() + 0.5, this.getZ(), (int) (140 * scale), 3.5 * scale, 2.0 * scale, 3.5 * scale, 0.45
         );
         serverLevel.sendParticles(
                 ParticleTypes.GUST_EMITTER_LARGE,
@@ -200,10 +309,10 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         );
         serverLevel.sendParticles(
                 ParticleTypes.EXPLOSION,
-                this.getX(), this.getY() + 1.0, this.getZ(), 4, 1.5, 0.5, 1.5, 0.0
+                this.getX(), this.getY() + 1.0, this.getZ(), (int) (4 * scale), 1.5 * scale, 0.5, 1.5 * scale, 0.0
         );
 
-        AABB shockwaveBounds = this.getBoundingBox().inflate(6.0, 3.0, 6.0);
+        AABB shockwaveBounds = this.getBoundingBox().inflate(6.0 * scale, 3.0 * scale, 6.0 * scale);
         List<LivingEntity> targets = serverLevel.getEntitiesOfClass(LivingEntity.class, shockwaveBounds, e ->
                 e != this && !(e instanceof SandwormEntity)
         );
@@ -212,26 +321,28 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
             if (entity instanceof Player player && (player.isCreative() || player.isSpectator())) {
                 continue;
             }
-            entity.hurtServer(serverLevel, this.damageSources().mobAttack(this), 12.0f);
-            Vec3 push = entity.position().subtract(this.position()).normalize().scale(1.2);
-            entity.setDeltaMovement(push.x, 0.55, push.z);
+            entity.hurtServer(serverLevel, this.damageSources().mobAttack(this), 12.0f * scale);
+            Vec3 push = entity.position().subtract(this.position()).normalize().scale(1.2 * scale);
+            entity.setDeltaMovement(push.x, 0.55 * Math.min(scale, 1.4), push.z);
         }
     }
 
     public void executeBiteImpact(ServerLevel serverLevel) {
+        float scale = this.getWormScale();
         BlockPos strikePos = this.getStrikePos();
         Vec3 impactCenter;
         if (strikePos == null || strikePos.equals(BlockPos.ZERO)) {
             double yawRad = Math.toRadians(this.getYRot());
-            impactCenter = new Vec3(this.getX() - Math.sin(yawRad) * 12.0, this.getY(), this.getZ() + Math.cos(yawRad) * 12.0);
+            impactCenter = new Vec3(this.getX() - Math.sin(yawRad) * (12.0 * scale), this.getY(), this.getZ() + Math.cos(yawRad) * (12.0 * scale));
         } else {
             impactCenter = Vec3.atCenterOf(strikePos);
         }
 
-        serverLevel.playSound(null, BlockPos.containing(impactCenter), SandStormSoundEvents.SANDWORM_ATTACK, SoundSource.HOSTILE, 2.2f, 0.8f);
+        float soundPitch = Math.max(0.4f, 0.8f / scale);
+        serverLevel.playSound(null, BlockPos.containing(impactCenter), SandStormSoundEvents.SANDWORM_ATTACK, SoundSource.HOSTILE, 2.2f, soundPitch);
         serverLevel.sendParticles(
                 new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()),
-                impactCenter.x, impactCenter.y + 0.5, impactCenter.z, 90, 2.2, 1.2, 2.2, 0.35
+                impactCenter.x, impactCenter.y + 0.5, impactCenter.z, (int) (90 * scale), 2.2 * scale, 1.2 * scale, 2.2 * scale, 0.35
         );
         serverLevel.sendParticles(
                 ParticleTypes.GUST_EMITTER_LARGE,
@@ -239,19 +350,19 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
         );
         serverLevel.sendParticles(
                 ParticleTypes.EXPLOSION,
-                impactCenter.x, impactCenter.y + 0.8, impactCenter.z, 3, 1.0, 0.5, 1.0, 0.0
+                impactCenter.x, impactCenter.y + 0.8, impactCenter.z, (int) (3 * scale), 1.0 * scale, 0.5, 1.0 * scale, 0.0
         );
 
         AABB impactBounds = new AABB(
-                impactCenter.x - 4.5, impactCenter.y - 2.5, impactCenter.z - 4.5,
-                impactCenter.x + 4.5, impactCenter.y + 3.5, impactCenter.z + 4.5
+                impactCenter.x - 4.5 * scale, impactCenter.y - 2.5 * scale, impactCenter.z - 4.5 * scale,
+                impactCenter.x + 4.5 * scale, impactCenter.y + 3.5 * scale, impactCenter.z + 4.5 * scale
         );
 
         List<LivingEntity> targets = serverLevel.getEntitiesOfClass(LivingEntity.class, impactBounds, e ->
                 e != this && !(e instanceof SandwormEntity)
         );
 
-        float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + 8.0f;
+        float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + (8.0f * scale);
 
         for (LivingEntity entity : targets) {
             if (entity instanceof Player player && (player.isCreative() || player.isSpectator())) {
@@ -274,7 +385,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
 
             boolean isIronGolemOrHeavy = !(entity instanceof Player) && (entity.getMaxHealth() >= 80.0f || entity.getType().getDescriptionId().contains("iron_golem"));
             if (isIronGolemOrHeavy) {
-                entity.setDeltaMovement(push.x * 1.8, 2.2, push.z * 1.8);
+                entity.setDeltaMovement(push.x * 1.8 * scale, 2.2 * Math.min(scale, 1.4), push.z * 1.8 * scale);
                 serverLevel.sendParticles(
                         ParticleTypes.GUST_EMITTER_LARGE,
                         entity.getX(), entity.getY() + 0.5, entity.getZ(), 2, 0.0, 0.0, 0.0, 0.0
@@ -284,7 +395,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
                         entity.getX(), entity.getY() + 0.5, entity.getZ(), 2, 0.5, 0.5, 0.5, 0.0
                 );
             } else {
-                entity.setDeltaMovement(push.x * 1.5, 0.55, push.z * 1.5);
+                entity.setDeltaMovement(push.x * 1.5 * scale, 0.55 * Math.min(scale, 1.4), push.z * 1.5 * scale);
             }
         }
     }
@@ -356,7 +467,8 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
             }
         }
 
-        AABB bodyBounds = this.getBoundingBox().inflate(1.5, 0.5, 1.5);
+        float scale = this.getWormScale();
+        AABB bodyBounds = this.getBoundingBox().inflate(1.5 * scale, 0.5 * scale, 1.5 * scale);
         List<LivingEntity> insideEntities = this.level().getEntitiesOfClass(LivingEntity.class, bodyBounds, e -> e != this && !(e instanceof SandwormEntity));
         for (LivingEntity entity : insideEntities) {
             if (entity instanceof Player player && player.isSpectator()) {
@@ -372,10 +484,10 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
             } else {
                 pushDir = new Vec3(dx / dist, 0.35, dz / dist).normalize();
             }
-            entity.setDeltaMovement(pushDir.x * 1.6, 0.45, pushDir.z * 1.6);
+            entity.setDeltaMovement(pushDir.x * 1.6 * scale, 0.45 * Math.min(scale, 1.4), pushDir.z * 1.6 * scale);
             if (this.level() instanceof ServerLevel serverLevel) {
                 if (!(entity instanceof Player player && player.isCreative())) {
-                    entity.hurtServer(serverLevel, this.damageSources().mobAttack(this), 6.0f);
+                    entity.hurtServer(serverLevel, this.damageSources().mobAttack(this), 6.0f * scale);
                 }
             }
         }
@@ -455,8 +567,35 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     @Override
     protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean recentlyHit) {
         super.dropCustomDeathLoot(level, source, recentlyHit);
-        this.spawnAtLocation(level, new ItemStack(SandStormItems.SANDWORM_CHITIN, 3 + this.random.nextInt(3)));
-        this.spawnAtLocation(level, new ItemStack(SandStormItems.SANDWORM_TOOTH, 1 + this.random.nextInt(2)));
+        int chitinCount = switch (this.getWormSize()) {
+            case 1 -> 1 + this.random.nextInt(3);
+            case 3 -> 5 + this.random.nextInt(4);
+            case 4 -> 6 + this.random.nextInt(6);
+            default -> 3 + this.random.nextInt(3);
+        };
+        int toothCount = switch (this.getWormSize()) {
+            case 1 -> this.random.nextInt(2);
+            case 3 -> 2 + this.random.nextInt(3);
+            case 4 -> 2 + this.random.nextInt(4);
+            default -> 1 + this.random.nextInt(2);
+        };
+        if (chitinCount > 0) {
+            this.spawnAtLocation(level, new ItemStack(SandStormItems.SANDWORM_CHITIN, chitinCount));
+        }
+        if (toothCount > 0) {
+            this.spawnAtLocation(level, new ItemStack(SandStormItems.SANDWORM_TOOTH, toothCount));
+        }
+    }
+
+    @Override
+    public float getVoicePitch() {
+        float sizeFactor = switch (this.getWormSize()) {
+            case 1 -> 1.3f;
+            case 3 -> 0.75f;
+            case 4 -> 0.55f;
+            default -> 1.0f;
+        };
+        return super.getVoicePitch() * sizeFactor;
     }
 
     @Override
