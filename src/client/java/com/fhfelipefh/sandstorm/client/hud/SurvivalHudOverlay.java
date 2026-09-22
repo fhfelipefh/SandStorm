@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.client.hud;
 
+import com.fhfelipefh.sandstorm.client.FlashlightState;
 import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
@@ -115,6 +116,11 @@ public class SurvivalHudOverlay implements HudElement {
         } else {
             extractor.text(client.font, cachedEnergyComp, x, y, cachedBatteryColor);
             extractor.text(client.font, cachedTempComp, x, y + 11, cachedTempColor);
+            if (FlashlightState.isActive()) {
+                Component flashComp = Component.literal("[LAMP]");
+                int flashColor = 0xFFFFEE44;
+                extractor.text(client.font, flashComp, x, y + 22, flashColor);
+            }
         }
     }
 

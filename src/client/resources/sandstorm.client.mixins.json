@@ -6,7 +6,8 @@
 		"SandStormClientMixin",
 		"HudAdaptiveTextMixin",
 		"ChatComponentAdaptiveMixin",
-		"SandstormFogMixin"
+		"SandstormFogMixin",
+		"FlashlightLightMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

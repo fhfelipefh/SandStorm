@@ -136,8 +136,9 @@ public class WirelessSolarReceiverManager {
                         SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player);
                         long totalTransfer = transferRatePerTick * 20;
                         long received = suit.getEnergyStorage().receiveEnergy(totalTransfer);
-                        if (received > 0 && player.tickCount % 60 == 0) {
-                            level.playSound(null, player.blockPosition(), SandStormSoundEvents.SUIT_SOLAR_CHARGE, SoundSource.PLAYERS, 0.5f, 1.2f);
+                        boolean batteryNearlyFull = suit.getEnergyStorage().getStoredEnergy() >= suit.getEnergyStorage().getCapacity() * 0.98;
+                        if (received > 0 && !batteryNearlyFull && player.tickCount % 200 == 0) {
+                            level.playSound(null, player.blockPosition(), SandStormSoundEvents.SUIT_SOLAR_CHARGE, SoundSource.PLAYERS, 0.08f, 1.0f);
                         }
                     }
                 }

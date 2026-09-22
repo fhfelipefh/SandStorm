@@ -8,6 +8,8 @@ import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
+import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
+import com.fhfelipefh.sandstorm.content.survival.FlashlightStateServer;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
@@ -28,6 +30,7 @@ import com.fhfelipefh.sandstorm.content.world.VanillaMonsterSuppressionHandler;
 import com.fhfelipefh.sandstorm.content.recipe.RecipeUnlockHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -58,6 +61,10 @@ public class SandStormMod implements ModInitializer {
                 ClaimQuestRewardPayload.TYPE,
                 ClaimQuestRewardPayload.STREAM_CODEC
         );
+        PayloadTypeRegistry.serverboundPlay().register(
+                FlashlightTogglePayload.TYPE,
+                FlashlightTogglePayload.STREAM_CODEC
+        );
         SandStormSoundEvents.initialize();
         SandStormItems.initialize();
         SandStormBlocks.initialize();
@@ -80,6 +87,12 @@ public class SandStormMod implements ModInitializer {
         SandstormWeatherCommand.initialize();
         SandstormClaimCommand.initialize();
         RecipeUnlockHandler.initialize();
+        ServerPlayNetworking.registerGlobalReceiver(
+                FlashlightTogglePayload.TYPE,
+                (payload, context) -> {
+                    FlashlightStateServer.setFlashlight(context.player().getUUID(), payload.enabled());
+                }
+        );
     }
 
     public static Identifier id(String path) {

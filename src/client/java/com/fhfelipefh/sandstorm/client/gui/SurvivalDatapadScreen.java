@@ -32,6 +32,7 @@ public class SurvivalDatapadScreen extends Screen {
     private Component statusTooltip;
     private long statusTooltipExpiry;
     private String lastHoveredClaimableQuestId;
+    private boolean clickHandledOnPress = false;
 
     public SurvivalDatapadScreen() {
         super(Component.translatable("gui.sandstorm.datapad.title"));
@@ -221,8 +222,10 @@ public class SurvivalDatapadScreen extends Screen {
         SandStormMod.LOGGER.info("Datapad mouseClicked: button={}, isLeft={}, x={}, y={}, isDouble={}",
                 event.button(), event.isLeft(), event.x(), event.y(), isDouble);
         if (handleInputClick(event.x(), event.y())) {
+            clickHandledOnPress = true;
             return true;
         }
+        clickHandledOnPress = false;
         return super.mouseClicked(event, isDouble);
     }
 
@@ -230,6 +233,10 @@ public class SurvivalDatapadScreen extends Screen {
     public boolean mouseReleased(MouseButtonEvent event) {
         SandStormMod.LOGGER.info("Datapad mouseReleased: button={}, isLeft={}, x={}, y={}",
                 event.button(), event.isLeft(), event.x(), event.y());
+        if (clickHandledOnPress) {
+            clickHandledOnPress = false;
+            return true;
+        }
         if (handleInputClick(event.x(), event.y())) {
             return true;
         }
@@ -305,6 +312,9 @@ public class SurvivalDatapadScreen extends Screen {
             boolean wasHovered = quest.id().equals(lastHoveredClaimableQuestId);
 
             if (onButton || insideCard || wasHovered) {
+                if (DatapadClientHelper.isQuestClaimed(quest.id())) {
+                    return false;
+                }
                 return executeClaim(player, quest);
             }
         }
@@ -312,7 +322,7 @@ public class SurvivalDatapadScreen extends Screen {
     }
 
     private boolean executeClaim(Player player, QuestData quest) {
-        if (quest == null) {
+        if (quest == null || DatapadClientHelper.isQuestClaimed(quest.id())) {
             return false;
         }
         if (isQuestClaimable(player, quest)) {
@@ -321,6 +331,7 @@ public class SurvivalDatapadScreen extends Screen {
             ClientPlayNetworking.send(new ClaimQuestRewardPayload(quest.id(), new ArrayList<>(DatapadClientHelper.getCompletedConditions())));
             claimFlashTimestamps.put(quest.id(), System.currentTimeMillis());
             lastHoveredClaimableQuestId = null;
+            statusTooltip = null;
             if (minecraft != null) {
                 minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
             }
@@ -426,14 +437,17 @@ public class SurvivalDatapadScreen extends Screen {
     }
 
     private void showStatusTooltip(Player player, QuestData quest) {
-        if (DatapadClientHelper.isQuestClaimed(quest.id())) {
-            statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.already_claimed");
-        } else if (!arePrerequisitesClaimed(quest)) {
+        if (quest == null || DatapadClientHelper.isQuestClaimed(quest.id())) {
+            return;
+        }
+        if (!arePrerequisitesClaimed(quest)) {
             statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.prereqs_missing");
         } else if (quest.isConditionBased()) {
             statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.condition_missing");
         } else if (!hasRequiredItem(player, quest)) {
             statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.item_missing");
+        } else {
+            return;
         }
         statusTooltipExpiry = System.currentTimeMillis() + 3000;
     }

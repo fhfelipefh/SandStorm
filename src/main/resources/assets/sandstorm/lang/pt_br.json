@@ -236,5 +236,7 @@
   "message.sandstorm.wireless_solar_receiver.active": "TRANSMITINDO WPT",
   "message.sandstorm.wireless_solar_receiver.inactive": "SEM LUZ SOLAR",
   "message.sandstorm.wireless_solar_receiver.telemetry": "§b[WPT Solar Tier %s]§r %s | Raio: %sm | Taxa: %s J/tick | Buffer: %s / %s J",
-  "item.sandstorm.sandworm_spawn_egg": "Ovo de Verme de Areia"
+  "item.sandstorm.sandworm_spawn_egg": "Ovo de Verme de Areia",
+  "key.sandstorm.flashlight": "Alternar Lanterna do Capacete",
+  "key.category.sandstorm.sandstorm_category": "SandStorm"
 }

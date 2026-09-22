@@ -8,6 +8,7 @@ import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import com.fhfelipefh.sandstorm.content.survival.FlashlightStateServer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -66,6 +67,7 @@ public class SuitSurvivalHandler {
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
             ServerPlayer player = handler.getPlayer();
             if (player != null) {
+                FlashlightStateServer.removePlayer(player.getUUID());
                 savePlayerSuit(player, server);
                 removePlayer(player.getUUID());
             }
@@ -147,11 +149,19 @@ public class SuitSurvivalHandler {
         if (suit.isFullSuitEquipped()) {
             boolean lowBattery = suit.getEnergyStorage().getStoredEnergy() > 0 &&
                     suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity() * 0.15;
-            if (lowBattery && player.tickCount % 120 == 0) {
-                player.level().playSound(null, pos, SandStormSoundEvents.SUIT_BATTERY_LOW, SoundSource.PLAYERS, 0.8f, 1.0f);
+            if (lowBattery && player.tickCount % 160 == 0) {
+                player.level().playSound(null, pos, SandStormSoundEvents.SUIT_BATTERY_LOW, SoundSource.PLAYERS, 0.25f, 1.0f);
             }
-            if (exposedToSunlight && !underground && player.tickCount % 200 == 0 && suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity()) {
-                player.level().playSound(null, pos, SandStormSoundEvents.SUIT_SOLAR_CHARGE, SoundSource.PLAYERS, 0.6f, 1.1f);
+            if (exposedToSunlight && !underground && player.tickCount % 200 == 0 && suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity() * 0.98) {
+                player.level().playSound(null, pos, SandStormSoundEvents.SUIT_SOLAR_CHARGE, SoundSource.PLAYERS, 0.10f, 1.0f);
+            }
+
+            if (FlashlightStateServer.isActive(player.getUUID())) {
+                boolean hadEnergy = suit.getEnergyStorage().getStoredEnergy() > 0;
+                suit.consumeEnergy(2L);
+                if (hadEnergy && suit.getEnergyStorage().getStoredEnergy() == 0) {
+                    FlashlightStateServer.setFlashlight(player.getUUID(), false);
+                }
             }
         }
 

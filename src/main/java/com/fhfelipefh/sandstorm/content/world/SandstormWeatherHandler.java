@@ -116,12 +116,14 @@ public class SandstormWeatherHandler {
         double intensity = WEATHER.getIntensity();
         float roll = level.getRandom().nextFloat();
         SoundEvent selectedSound = getWindSoundForIntensity(intensity, roll);
-        float volume = (float) Math.clamp(0.4 + intensity * 0.6, 0.3, 1.0);
+        float baseVolume = (float) Math.clamp(0.15 + intensity * 0.25, 0.10, 0.40);
         float pitch = (float) (0.9 + (level.getRandom().nextFloat() * 0.2));
 
         for (ServerPlayer player : level.players()) {
+            boolean insideSafeZone = SeismicSurvivalHandler.getTracker().isInsideSafeZone(player.getBlockX(), player.getBlockZ());
             if (player.level().canSeeSky(player.blockPosition())) {
-                level.playSound(null, player.blockPosition(), selectedSound, SoundSource.WEATHER, volume, pitch);
+                float effectiveVolume = insideSafeZone ? baseVolume * 0.35f : baseVolume;
+                level.playSound(null, player.blockPosition(), selectedSound, SoundSource.WEATHER, effectiveVolume, pitch);
             }
         }
     }

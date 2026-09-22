@@ -236,5 +236,7 @@
   "message.sandstorm.wireless_solar_receiver.active": "TRANSMITTING WPT",
   "message.sandstorm.wireless_solar_receiver.inactive": "NO SUNLIGHT",
   "message.sandstorm.wireless_solar_receiver.telemetry": "§b[WPT Solar Tier %s]§r %s | Radius: %sm | Rate: %s J/tick | Buffer: %s / %s J",
-  "item.sandstorm.sandworm_spawn_egg": "Sandworm Spawn Egg"
+  "item.sandstorm.sandworm_spawn_egg": "Sandworm Spawn Egg",
+  "key.sandstorm.flashlight": "Toggle Helmet Flashlight",
+  "key.category.sandstorm.sandstorm_category": "SandStorm"
 }
