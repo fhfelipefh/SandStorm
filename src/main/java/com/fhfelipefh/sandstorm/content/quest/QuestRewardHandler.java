@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
+import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -69,37 +70,37 @@ public class QuestRewardHandler {
     }
 
     public static void handleClaim(ServerPlayer player, String questId) {
-        System.out.println("Handling claim for quest: " + questId + " for player: " + player.getName().getString());
+        SandStormMod.LOGGER.info("Handling claim for quest: {} for player: {}", questId, player.getName().getString());
         QuestData quest = QuestRegistry.getQuest(questId);
         if (quest == null) {
-            System.out.println("Quest is null");
+            SandStormMod.LOGGER.warn("Quest is null: {}", questId);
             return;
         }
 
         MinecraftServer server = player.level().getServer();
         if (server == null) {
-            System.out.println("Server is null");
+            SandStormMod.LOGGER.warn("Server is null for player: {}", player.getName().getString());
             return;
         }
         PlayerQuestSavedData data = PlayerQuestSavedData.get(server);
 
         if (data.isClaimed(player.getUUID(), questId)) {
-            System.out.println("Quest already claimed");
+            SandStormMod.LOGGER.info("Quest {} already claimed for player {}", questId, player.getName().getString());
             syncPlayerQuests(player, data);
             return;
         }
         if (!arePrerequisitesMet(player.getUUID(), quest, data)) {
-            System.out.println("Prerequisites not met");
+            SandStormMod.LOGGER.warn("Prerequisites not met for quest {} and player {}", questId, player.getName().getString());
             syncPlayerQuests(player, data);
             return;
         }
         if (!hasRequiredItem(player, quest, data)) {
-            System.out.println("Does not have required item");
+            SandStormMod.LOGGER.warn("Does not have required item for quest {} and player {}", questId, player.getName().getString());
             syncPlayerQuests(player, data);
             return;
         }
 
-        System.out.println("Marking claimed and giving reward");
+        SandStormMod.LOGGER.info("Marking quest {} claimed and giving reward to player {}", questId, player.getName().getString());
 
         data.markClaimed(player.getUUID(), questId);
 

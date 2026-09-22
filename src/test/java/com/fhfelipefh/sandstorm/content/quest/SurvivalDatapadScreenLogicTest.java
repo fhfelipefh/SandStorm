@@ -142,6 +142,40 @@ class SurvivalDatapadScreenLogicTest {
     }
 
     @Test
+    void testWholeCardClickDetection() {
+        int left = 16;
+        int right = 480 - 16;
+        int cardLeft = left + 10;
+        int cardRight = right - 10;
+        int cy = 70;
+        int cardHeight = 46;
+        int btnX = cardRight - 48;
+        int btnY = cy + 18;
+        int btnW = 44;
+        int btnH = 18;
+
+        double mxBtn = btnX + 10;
+        double myBtn = btnY + 5;
+        boolean insideCardBtn = mxBtn >= cardLeft && mxBtn <= cardRight && myBtn >= cy && myBtn <= cy + cardHeight;
+        boolean onButtonBtn = mxBtn >= btnX && mxBtn <= btnX + btnW && myBtn >= btnY && myBtn <= btnY + btnH;
+        assertTrue(onButtonBtn || insideCardBtn);
+
+        double mxCard = cardLeft + 20;
+        double myCard = cy + 10;
+        boolean insideCardLeft = mxCard >= cardLeft && mxCard <= cardRight && myCard >= cy && myCard <= cy + cardHeight;
+        boolean onButtonLeft = mxCard >= btnX && mxCard <= btnX + btnW && myCard >= btnY && myCard <= btnY + btnH;
+        assertFalse(onButtonLeft);
+        assertTrue(insideCardLeft);
+        assertTrue(onButtonLeft || insideCardLeft);
+
+        double mxOut = cardLeft - 5;
+        double myOut = cy - 5;
+        boolean insideCardOut = mxOut >= cardLeft && mxOut <= cardRight && myOut >= cy && myOut <= cy + cardHeight;
+        boolean onButtonOut = mxOut >= btnX && mxOut <= btnX + btnW && myOut >= btnY && myOut <= btnY + btnH;
+        assertFalse(onButtonOut || insideCardOut);
+    }
+
+    @Test
     void testTabSwitchingCoordinates() {
         int screenWidth = 480;
         int left = 16;

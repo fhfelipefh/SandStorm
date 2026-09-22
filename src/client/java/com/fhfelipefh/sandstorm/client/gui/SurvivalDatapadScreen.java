@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
 import com.fhfelipefh.sandstorm.content.quest.QuestData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRegistry;
+import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -202,10 +203,6 @@ public class SurvivalDatapadScreen extends Screen {
         if (event.button() == 0) {
             double mx = event.x();
             double my = event.y();
-            if (this.minecraft != null && this.minecraft.getWindow() != null) {
-                mx = mx * (double) this.minecraft.getWindow().getGuiScaledWidth() / (double) this.minecraft.getWindow().getScreenWidth();
-                my = my * (double) this.minecraft.getWindow().getGuiScaledHeight() / (double) this.minecraft.getWindow().getScreenHeight();
-            }
 
             int left = 16;
             int top = 12;
@@ -250,9 +247,11 @@ public class SurvivalDatapadScreen extends Screen {
                 int cardLeft = left + 10;
                 int cardRight2 = right - 10;
                 boolean insideCard = mx >= cardLeft && mx <= cardRight2 && my >= cy && my <= cy + cardHeight;
+                boolean onButton = mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH;
 
-                if (mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH) {
+                if (onButton || insideCard) {
                     if (isQuestClaimable(player, quest)) {
+                        SandStormMod.LOGGER.info("Datapad client claiming quest: {} at ({}, {})", quest.id(), mx, my);
                         DatapadClientHelper.addClaimedQuest(quest.id());
                         ClientPlayNetworking.send(new ClaimQuestRewardPayload(quest.id(), new ArrayList<>(DatapadClientHelper.getCompletedConditions())));
                         claimFlashTimestamps.put(quest.id(), System.currentTimeMillis());
@@ -267,14 +266,7 @@ public class SurvivalDatapadScreen extends Screen {
                         }
                         return true;
                     }
-                } else if (insideCard && !isQuestClaimable(player, quest)) {
-                    showStatusTooltip(player, quest);
-                    if (minecraft != null) {
-                        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.5f));
-                    }
-                    return true;
                 }
-                cy += cardHeight + 4;
             }
         }
         return super.mouseClicked(event, isDouble);
