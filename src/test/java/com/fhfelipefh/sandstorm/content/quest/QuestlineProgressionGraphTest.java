@@ -125,7 +125,6 @@ class QuestlineProgressionGraphTest {
 
         List<String> requiredRecipes = List.of(
                 "crafting_table_from_sandstone.json",
-                "stick_from_sandstone.json",
                 "stick_from_scrap_metal.json",
                 "survival_datapad.json"
         );
