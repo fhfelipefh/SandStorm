@@ -48,6 +48,10 @@ public class SuitPowerComponent {
         energyStorage.setStoredEnergy(storedEnergy);
     }
 
+    public void setCapacity(long capacity) {
+        energyStorage.setCapacity(capacity);
+    }
+
     public void tick(boolean exposedToSunlight, double ambientTemperature, boolean underground) {
         tick(exposedToSunlight, ambientTemperature, underground, 1.0);
     }

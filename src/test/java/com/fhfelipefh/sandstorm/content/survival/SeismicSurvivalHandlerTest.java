@@ -1,14 +1,25 @@
 package com.fhfelipefh.sandstorm.content.survival;
 
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import net.minecraft.SharedConstants;
+import net.minecraft.server.Bootstrap;
+import net.minecraft.world.level.block.Blocks;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SeismicSurvivalHandlerTest {
+
+    @BeforeAll
+    static void setup() {
+        SharedConstants.tryDetectVersion();
+        Bootstrap.bootStrap();
+    }
 
     @AfterEach
     void tearDown() {
@@ -42,5 +53,16 @@ class SeismicSurvivalHandlerTest {
             SandstormWeatherHandler.getWeather().tick();
         }
         assertEquals(0.50, SeismicSurvivalHandler.getMovementVibrationMultiplier(), 0.001);
+    }
+
+    @Test
+    void shouldRecognizeSafeBlocksAndLooseSand() {
+        assertTrue(SeismicSurvivalHandler.isSeismicSafeBlock(Blocks.SANDSTONE.defaultBlockState()));
+        assertTrue(SeismicSurvivalHandler.isSeismicSafeBlock(Blocks.CUT_SANDSTONE.defaultBlockState()));
+        assertTrue(SeismicSurvivalHandler.isSeismicSafeBlock(Blocks.STONE.defaultBlockState()));
+        assertTrue(SeismicSurvivalHandler.isSeismicSafeBlock(Blocks.COBBLESTONE.defaultBlockState()));
+        assertFalse(SeismicSurvivalHandler.isSeismicSafeBlock(Blocks.SAND.defaultBlockState()));
+        assertFalse(SeismicSurvivalHandler.isSeismicSafeBlock(Blocks.RED_SAND.defaultBlockState()));
+        assertFalse(SeismicSurvivalHandler.isSeismicSafeBlock(null));
     }
 }

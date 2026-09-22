@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "I": "minecraft:blue_ice",
+    "L": "minecraft:magma_block",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "SIS",
+    "IBL",
+    "SLS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:suit_upgrade_thermal"
+  }
+}

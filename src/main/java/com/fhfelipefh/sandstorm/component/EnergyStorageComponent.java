@@ -1,10 +1,20 @@
 package com.fhfelipefh.sandstorm.component;
 
 public class EnergyStorageComponent {
-    private final long capacity;
+    private long capacity;
     private final long maxReceiveRate;
     private final long maxExtractRate;
     private long storedEnergy;
+
+    public void setCapacity(long capacity) {
+        if (capacity < 0) {
+            throw new IllegalArgumentException("Capacity must be non-negative");
+        }
+        this.capacity = capacity;
+        if (this.storedEnergy > capacity) {
+            this.storedEnergy = capacity;
+        }
+    }
 
     public EnergyStorageComponent(long capacity, long maxReceiveRate, long maxExtractRate) {
         if (capacity < 0) {

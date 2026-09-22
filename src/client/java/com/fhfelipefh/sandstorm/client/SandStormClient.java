@@ -53,6 +53,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.CARGO_DRONE, NoopRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.EXCAVATOR_VEHICLE, NoopRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.MEGAZORD, NoopRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.SANDBOARD, NoopRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

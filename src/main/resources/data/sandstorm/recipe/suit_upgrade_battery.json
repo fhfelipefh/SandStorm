@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "C": "minecraft:copper_ingot",
+    "R": "minecraft:redstone_block",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "CSC",
+    "RBR",
+    "CSC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:suit_upgrade_battery"
+  }
+}

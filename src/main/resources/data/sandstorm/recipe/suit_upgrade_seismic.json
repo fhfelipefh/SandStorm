@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "N": "sandstorm:nano_actuator",
+    "S": "sandstorm:sandworm_chitin",
+    "W": "minecraft:white_wool"
+  },
+  "pattern": [
+    "WSW",
+    "NBN",
+    "WSW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:suit_upgrade_seismic"
+  }
+}

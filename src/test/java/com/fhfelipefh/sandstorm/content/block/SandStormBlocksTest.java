@@ -30,6 +30,7 @@ class SandStormBlocksTest {
             "thumper",
             "printer_3d",
             "desalination_filter",
+            "dew_condenser",
             "nanite_fabricator",
             "buried_tech_ruins",
             "ancient_data_core",

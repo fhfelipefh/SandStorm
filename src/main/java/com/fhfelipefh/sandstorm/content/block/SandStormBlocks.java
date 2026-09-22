@@ -56,6 +56,14 @@ public class SandStormBlocks {
                     .strength(3.0f)
                     .sound(SoundType.COPPER)
                     .noOcclusion()));
+    public static final DewCondenserBlock DEW_CONDENSER = register("dew_condenser",
+            new DewCondenserBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("dew_condenser")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(2.5f)
+                    .sound(SoundType.METAL)
+                    .randomTicks()
+                    .noOcclusion()));
     public static final NaniteFabricatorBlock NANITE_FABRICATOR = register("nanite_fabricator",
             new NaniteFabricatorBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("nanite_fabricator")))

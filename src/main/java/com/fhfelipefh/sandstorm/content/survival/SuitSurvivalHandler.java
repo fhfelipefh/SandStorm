@@ -15,6 +15,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -90,6 +91,13 @@ public class SuitSurvivalHandler {
         int armorCount = countEquippedSuitPieces(player);
         suit.updateEquippedArmorCount(armorCount);
 
+        PlayerSuitSavedData suitData = PlayerSuitSavedData.get((ServerLevel) player.level());
+        if (suitData.hasUpgrade(player.getUUID(), "battery")) {
+            suit.setCapacity(150000L);
+        } else {
+            suit.setCapacity(100000L);
+        }
+
         BlockPos pos = player.blockPosition();
         boolean canSeeSky = (player.tickCount % 10 == 0)
                 ? player.level().canSeeSkyFromBelowWater(pos)
@@ -97,7 +105,11 @@ public class SuitSurvivalHandler {
         boolean isDay = player.level().getSkyDarken() < 4;
         boolean exposedToSunlight = isDay && canSeeSky && pos.getY() >= 50;
         boolean underground = pos.getY() < 50;
+
         double ambientTemperature = calculateAmbientTemperature(player, pos.getY(), canSeeSky, isDay);
+        if (suitData.hasUpgrade(player.getUUID(), "thermal")) {
+            ambientTemperature = 37.0 + (ambientTemperature - 37.0) * 0.5;
+        }
         SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
         double solarMultiplier = weather.getSolarEfficiencyMultiplier();
 
@@ -158,7 +170,8 @@ public class SuitSurvivalHandler {
 
             if (FlashlightStateServer.isActive(player.getUUID())) {
                 boolean hadEnergy = suit.getEnergyStorage().getStoredEnergy() > 0;
-                suit.consumeEnergy(2L);
+                long drain = suitData.hasUpgrade(player.getUUID(), "visor") ? 1L : 2L;
+                suit.consumeEnergy(drain);
                 if (hadEnergy && suit.getEnergyStorage().getStoredEnergy() == 0) {
                     FlashlightStateServer.setFlashlight(player.getUUID(), false);
                 }

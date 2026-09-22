@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "B": "sandstorm:circuit_board",
+    "G": "minecraft:tinted_glass",
+    "R": "sandstorm:nano_actuator"
+  },
+  "pattern": [
+    "GAG",
+    "RBR",
+    "GAG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:suit_upgrade_visor"
+  }
+}

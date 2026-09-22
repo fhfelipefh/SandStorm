@@ -76,10 +76,24 @@ public class SandStormEntities {
                     .build(NUTRIENT_BOMB_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> SANDBOARD_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("sandboard")
+    );
+
+    public static final EntityType<SandboardEntity> SANDBOARD = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("sandboard"),
+            EntityType.Builder.of(SandboardEntity::new, MobCategory.MISC)
+                    .sized(0.8f, 0.3f)
+                    .build(SANDBOARD_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(EXCAVATOR_VEHICLE, ExcavatorVehicleEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(MEGAZORD, MegazordEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(SANDBOARD, SandboardEntity.createAttributes());
     }
 }
