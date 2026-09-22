@@ -25,6 +25,7 @@ class SandStormBlocksTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "sandstone_workbench",
             "brackish_aquifer",
             "thumper",
             "printer_3d",

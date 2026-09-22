@@ -14,7 +14,7 @@ public class FlashlightLightMixin {
     private static final float FLASHLIGHT_BLOCK_FACTOR = 1.0f;
 
     @Inject(method = "extract", at = @At("RETURN"))
-    private void applyFlashlightLight(LightmapRenderState state, CallbackInfo ci) {
+    private void applyFlashlightLight(LightmapRenderState state, float partialTicks, CallbackInfo ci) {
         if (!FlashlightState.isActive()) {
             return;
         }

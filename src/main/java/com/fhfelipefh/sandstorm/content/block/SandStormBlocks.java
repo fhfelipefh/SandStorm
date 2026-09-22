@@ -24,6 +24,12 @@ import net.minecraft.world.level.material.MapColor;
 import java.util.Set;
 
 public class SandStormBlocks {
+    public static final SandstoneWorkbenchBlock SANDSTONE_WORKBENCH = register("sandstone_workbench",
+            new SandstoneWorkbenchBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("sandstone_workbench")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(1.5f)
+                    .sound(SoundType.STONE)));
     public static final BrackishWaterBlock BRACKISH_AQUIFER = register("brackish_aquifer",
             new BrackishWaterBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("brackish_aquifer")))

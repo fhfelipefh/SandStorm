@@ -80,6 +80,7 @@ public class SandStormItems {
                         entries.accept(PLASMA_RIFLE);
                         entries.accept(VIBRO_CRYSKNIFE);
                         entries.accept(ATMOSPHERIC_ANALYZER);
+                        entries.accept(SandStormBlocks.SANDSTONE_WORKBENCH);
                         entries.accept(SandStormBlocks.BRACKISH_AQUIFER);
                         entries.accept(SandStormBlocks.THUMPER);
                         entries.accept(SandStormBlocks.PRINTER_3D);

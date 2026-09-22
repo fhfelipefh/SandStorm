@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "sandstorm:block/sandstone_workbench_bottom",
+    "east": "sandstorm:block/sandstone_workbench_side",
+    "north": "sandstorm:block/sandstone_workbench_front",
+    "particle": "sandstorm:block/sandstone_workbench_front",
+    "south": "sandstorm:block/sandstone_workbench_side",
+    "up": "sandstorm:block/sandstone_workbench_top",
+    "west": "sandstorm:block/sandstone_workbench_front"
+  }
+}
