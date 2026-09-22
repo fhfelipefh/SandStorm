@@ -17,6 +17,7 @@
     "minecraft:granite",
     "minecraft:diorite",
     "minecraft:andesite",
-    "sandstorm:sandstone_workbench"
+    "sandstorm:sandstone_workbench",
+    "sandstorm:sandstone_furnace"
   ]
 }

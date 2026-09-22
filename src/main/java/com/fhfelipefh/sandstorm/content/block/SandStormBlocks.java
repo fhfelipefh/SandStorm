@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ThermalGeneratorBlockEntity;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 
 import java.util.Set;
@@ -30,6 +32,13 @@ public class SandStormBlocks {
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("sandstone_workbench")))
                     .mapColor(MapColor.COLOR_YELLOW)
                     .strength(0.8f)
+                    .sound(SoundType.STONE)));
+    public static final SandstoneFurnaceBlock SANDSTONE_FURNACE = register("sandstone_furnace",
+            new SandstoneFurnaceBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("sandstone_furnace")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(1.5f)
+                    .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0)
                     .sound(SoundType.STONE)));
     public static final BrackishWaterBlock BRACKISH_AQUIFER = register("brackish_aquifer",
             new BrackishWaterBlock(BlockBehaviour.Properties.of()
@@ -170,6 +179,11 @@ public class SandStormBlocks {
             SandStormMod.id("chemical_refinery"),
             new BlockEntityType<>(ChemicalRefineryBlockEntity::new, Set.of(CHEMICAL_REFINERY))
     );
+    public static final BlockEntityType<SandstoneFurnaceBlockEntity> SANDSTONE_FURNACE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("sandstone_furnace"),
+            new BlockEntityType<>(SandstoneFurnaceBlockEntity::new, Set.of(SANDSTONE_FURNACE))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -188,6 +202,7 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, NANITE_FABRICATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, DESALINATION_FILTER_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, CHEMICAL_REFINERY_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SANDSTONE_FURNACE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, THERMAL_GENERATOR_BE);
         FluidStorage.SIDED.registerForBlockEntity(DesalinationFilterBlockEntity::getFluidStorage, DESALINATION_FILTER_BE);
         FluidStorage.SIDED.registerForBlockEntity(ThermalGeneratorBlockEntity::getFluidStorage, THERMAL_GENERATOR_BE);
