@@ -18,9 +18,15 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Map;
 import java.util.UUID;
@@ -30,6 +36,7 @@ public class SuitSurvivalHandler {
     private record LastSyncState(long energy, long capacity, double temperature, int armorCount, int tick) {}
     private static final Map<UUID, SuitPowerComponent> PLAYER_SUIT_MAP = new ConcurrentHashMap<>();
     private static final Map<UUID, LastSyncState> LAST_SYNC_MAP = new ConcurrentHashMap<>();
+    private static final Map<UUID, Integer> PROPELLANT_TICKS_MAP = new ConcurrentHashMap<>();
     private static MinecraftServer currentServer;
 
     public static void initialize() {
@@ -96,6 +103,14 @@ public class SuitSurvivalHandler {
             suit.setCapacity(150000L);
         } else {
             suit.setCapacity(100000L);
+        }
+
+        if (suitData.hasUpgrade(player.getUUID(), "jetpack")) {
+            handleJetpackFlight(player);
+        } else if (!player.isCreative() && !player.isSpectator() && player.getAbilities().mayfly) {
+            player.getAbilities().mayfly = false;
+            player.getAbilities().flying = false;
+            player.onUpdateAbilities();
         }
 
         BlockPos pos = player.blockPosition();
@@ -298,8 +313,102 @@ public class SuitSurvivalHandler {
         savePlayerSuit(player, null);
     }
 
+    private static boolean hasPropellant(ServerPlayer player) {
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (!stack.isEmpty() && stack.is(SandStormItems.PROPELLANT_CARTRIDGE)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean consumePropellant(ServerPlayer player) {
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (!stack.isEmpty() && stack.is(SandStormItems.PROPELLANT_CARTRIDGE)) {
+                stack.shrink(1);
+                ItemStack empty = new ItemStack(SandStormItems.EMPTY_CARTRIDGE);
+                if (!player.getInventory().add(empty)) {
+                    player.spawnAtLocation((ServerLevel) player.level(), empty);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void handleJetpackFlight(ServerPlayer player) {
+        if (player.isCreative() || player.isSpectator()) {
+            return;
+        }
+
+        UUID uuid = player.getUUID();
+        int currentFuel = PROPELLANT_TICKS_MAP.getOrDefault(uuid, 0);
+        boolean hasCartridge = hasPropellant(player);
+
+        if (currentFuel > 0 || hasCartridge) {
+            if (!player.getAbilities().mayfly) {
+                player.getAbilities().mayfly = true;
+                player.onUpdateAbilities();
+            }
+        }
+
+        if (player.getAbilities().flying) {
+            if (currentFuel <= 0) {
+                if (consumePropellant(player)) {
+                    currentFuel = 1200;
+                    PROPELLANT_TICKS_MAP.put(uuid, currentFuel);
+                    player.sendSystemMessage(Component.translatable("message.sandstorm.jetpack_refueled"), true);
+                    player.level().playSound(null, player.blockPosition(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS, 0.8f, 1.2f);
+                } else {
+                    player.getAbilities().flying = false;
+                    player.getAbilities().mayfly = false;
+                    player.onUpdateAbilities();
+                    player.sendSystemMessage(Component.translatable("message.sandstorm.jetpack_out_of_fuel"), true);
+                    player.level().playSound(null, player.blockPosition(), SoundEvents.LAVA_EXTINGUISH, SoundSource.PLAYERS, 0.8f, 1.0f);
+                    player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 100, 0, false, false, true));
+                    PROPELLANT_TICKS_MAP.put(uuid, 0);
+                    return;
+                }
+            }
+
+            currentFuel--;
+            PROPELLANT_TICKS_MAP.put(uuid, currentFuel);
+            player.fallDistance = 0.0f;
+
+            ServerLevel sLevel = (ServerLevel) player.level();
+            double px = player.getX();
+            double py = player.getY() + 0.2;
+            double pz = player.getZ();
+            sLevel.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, px, py, pz, 2, 0.1, 0.05, 0.1, 0.01);
+            sLevel.sendParticles(ParticleTypes.SMOKE, px, py, pz, 1, 0.05, 0.05, 0.05, 0.02);
+
+            if (player.isSprinting()) {
+                Vec3 look = player.getLookAngle();
+                Vec3 motion = player.getDeltaMovement();
+                player.setDeltaMovement(motion.add(look.x * 0.06, look.y * 0.04, look.z * 0.06));
+                if (currentFuel > 0) {
+                    currentFuel--;
+                    PROPELLANT_TICKS_MAP.put(uuid, currentFuel);
+                }
+            }
+
+            if (currentFuel == 200) {
+                player.sendSystemMessage(Component.translatable("message.sandstorm.jetpack_fuel_low"), true);
+                sLevel.playSound(null, player.blockPosition(), SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.PLAYERS, 0.8f, 1.5f);
+            }
+        } else {
+            if (currentFuel <= 0 && !hasCartridge && player.getAbilities().mayfly) {
+                player.getAbilities().mayfly = false;
+                player.onUpdateAbilities();
+            }
+        }
+    }
+
     public static void removePlayer(UUID playerUuid) {
         PLAYER_SUIT_MAP.remove(playerUuid);
         LAST_SYNC_MAP.remove(playerUuid);
+        PROPELLANT_TICKS_MAP.remove(playerUuid);
     }
 }

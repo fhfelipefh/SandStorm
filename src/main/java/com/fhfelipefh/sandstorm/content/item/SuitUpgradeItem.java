@@ -19,7 +19,8 @@ public class SuitUpgradeItem extends Item {
         BATTERY("battery", "item.sandstorm.suit_upgrade_battery"),
         THERMAL("thermal", "item.sandstorm.suit_upgrade_thermal"),
         SEISMIC("seismic", "item.sandstorm.suit_upgrade_seismic"),
-        VISOR("visor", "item.sandstorm.suit_upgrade_visor");
+        VISOR("visor", "item.sandstorm.suit_upgrade_visor"),
+        JETPACK("jetpack", "item.sandstorm.suit_upgrade_jetpack");
 
         private final String id;
         private final String translationKey;

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PCP",
+    "SMS",
+    "PFP"
+  ],
+  "key": {
+    "P": "sandstorm:fluid_pipe",
+    "C": "sandstorm:circuit_board",
+    "S": "sandstorm:scrap_metal",
+    "M": "sandstorm:desalination_filter",
+    "F": "minecraft:iron_block"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:chemical_refinery"
+  }
+}

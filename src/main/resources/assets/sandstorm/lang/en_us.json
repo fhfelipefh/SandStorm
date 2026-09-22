@@ -260,5 +260,17 @@
   "message.sandstorm.dew_condenser_empty": "The condenser has not collected enough water yet.",
   "telemetry.sandstorm.dew_condenser_condensing": "CONDENSING (Freezing Desert Night)",
   "telemetry.sandstorm.dew_condenser_waiting_night": "AWAITING COLD NIGHT",
-  "telemetry.sandstorm.dew_condenser_status": "§b[Dew Condenser]§r Reservoir: %s / %s Bottles | Status: %s"
+  "telemetry.sandstorm.dew_condenser_status": "§b[Dew Condenser]§r Reservoir: %s / %s Bottles | Status: %s",
+  "block.sandstorm.chemical_refinery": "Chemical Refinery",
+  "item.sandstorm.chemical_refinery": "Chemical Refinery",
+  "container.sandstorm.chemical_refinery": "Chemical Propellant Refinery",
+  "item.sandstorm.empty_cartridge": "Empty Propellant Cartridge",
+  "item.sandstorm.propellant_cartridge": "High-Pressure Propellant Cartridge",
+  "tooltip.sandstorm.propellant_cartridge_desc": "High-pressure ionic fuel for jetpack flight.",
+  "tooltip.sandstorm.propellant_cartridge_duration": "Flight Time: 60s Continuous Free Flight",
+  "item.sandstorm.suit_upgrade_jetpack": "Jetpack Flight Module",
+  "upgrade.sandstorm.jetpack": "Jetpack (Survival Free Flight)",
+  "message.sandstorm.jetpack_refueled": "§a[Jetpack] Propellant cartridge reloaded! (60s remaining)",
+  "message.sandstorm.jetpack_out_of_fuel": "§c[Jetpack] Propellant depleted! Engaging safe descent.",
+  "message.sandstorm.jetpack_fuel_low": "§e[Jetpack] WARNING: Propellant below 10 seconds!"
 }

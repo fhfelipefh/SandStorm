@@ -20,11 +20,13 @@ class SuitUpgradeTest {
         assertEquals("thermal", SuitUpgradeItem.UpgradeType.THERMAL.getId());
         assertEquals("seismic", SuitUpgradeItem.UpgradeType.SEISMIC.getId());
         assertEquals("visor", SuitUpgradeItem.UpgradeType.VISOR.getId());
+        assertEquals("jetpack", SuitUpgradeItem.UpgradeType.JETPACK.getId());
 
         assertEquals("item.sandstorm.suit_upgrade_battery", SuitUpgradeItem.UpgradeType.BATTERY.getTranslationKey());
         assertEquals("item.sandstorm.suit_upgrade_thermal", SuitUpgradeItem.UpgradeType.THERMAL.getTranslationKey());
         assertEquals("item.sandstorm.suit_upgrade_seismic", SuitUpgradeItem.UpgradeType.SEISMIC.getTranslationKey());
         assertEquals("item.sandstorm.suit_upgrade_visor", SuitUpgradeItem.UpgradeType.VISOR.getTranslationKey());
+        assertEquals("item.sandstorm.suit_upgrade_jetpack", SuitUpgradeItem.UpgradeType.JETPACK.getTranslationKey());
     }
 
     @Test

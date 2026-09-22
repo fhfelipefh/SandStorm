@@ -27,6 +27,11 @@ public class SandStormMenus {
             new MenuType<>(ThermalGeneratorMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<ChemicalRefineryMenu> CHEMICAL_REFINERY_MENU = register(
+            "chemical_refinery",
+            new MenuType<>(ChemicalRefineryMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

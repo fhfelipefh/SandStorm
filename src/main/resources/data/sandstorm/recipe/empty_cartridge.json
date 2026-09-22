@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "SCS",
+    " S "
+  ],
+  "key": {
+    "S": "sandstorm:scrap_metal",
+    "C": "sandstorm:raw_silicon"
+  },
+  "result": {
+    "count": 2,
+    "id": "sandstorm:empty_cartridge"
+  }
+}

@@ -53,6 +53,9 @@ public class SandStormItems {
     public static final SuitUpgradeItem SUIT_UPGRADE_THERMAL = register("suit_upgrade_thermal", new SuitUpgradeItem(SuitUpgradeItem.UpgradeType.THERMAL, properties("suit_upgrade_thermal").rarity(Rarity.RARE).stacksTo(1)));
     public static final SuitUpgradeItem SUIT_UPGRADE_SEISMIC = register("suit_upgrade_seismic", new SuitUpgradeItem(SuitUpgradeItem.UpgradeType.SEISMIC, properties("suit_upgrade_seismic").rarity(Rarity.RARE).stacksTo(1)));
     public static final SuitUpgradeItem SUIT_UPGRADE_VISOR = register("suit_upgrade_visor", new SuitUpgradeItem(SuitUpgradeItem.UpgradeType.VISOR, properties("suit_upgrade_visor").rarity(Rarity.RARE).stacksTo(1)));
+    public static final SuitUpgradeItem SUIT_UPGRADE_JETPACK = register("suit_upgrade_jetpack", new SuitUpgradeItem(SuitUpgradeItem.UpgradeType.JETPACK, properties("suit_upgrade_jetpack").rarity(Rarity.EPIC).stacksTo(1)));
+    public static final Item EMPTY_CARTRIDGE = register("empty_cartridge", new Item(properties("empty_cartridge").rarity(Rarity.UNCOMMON)));
+    public static final PropellantCartridgeItem PROPELLANT_CARTRIDGE = register("propellant_cartridge", new PropellantCartridgeItem(properties("propellant_cartridge").rarity(Rarity.RARE).stacksTo(16)));
     public static final SandboardItem SANDBOARD = register("sandboard", new SandboardItem(properties("sandboard").rarity(Rarity.RARE).stacksTo(1)));
     public static final SpawnEggItem SANDWORM_SPAWN_EGG = register("sandworm_spawn_egg", new SpawnEggItem(properties("sandworm_spawn_egg").spawnEgg(SandStormEntities.SANDWORM)));
 
@@ -73,6 +76,9 @@ public class SandStormItems {
                         entries.accept(SUIT_UPGRADE_THERMAL);
                         entries.accept(SUIT_UPGRADE_SEISMIC);
                         entries.accept(SUIT_UPGRADE_VISOR);
+                        entries.accept(SUIT_UPGRADE_JETPACK);
+                        entries.accept(EMPTY_CARTRIDGE);
+                        entries.accept(PROPELLANT_CARTRIDGE);
                         entries.accept(SANDBOARD);
                         entries.accept(BRACKISH_WATER_BOTTLE);
                         entries.accept(POTABLE_WATER_BOTTLE);
@@ -97,6 +103,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.DESALINATION_FILTER);
                         entries.accept(SandStormBlocks.DEW_CONDENSER);
                         entries.accept(SandStormBlocks.NANITE_FABRICATOR);
+                        entries.accept(SandStormBlocks.CHEMICAL_REFINERY);
                         entries.accept(SandStormBlocks.FLUID_PIPE);
                         entries.accept(SandStormBlocks.BURIED_TECH_RUINS);
                         entries.accept(SandStormBlocks.ANCIENT_DATA_CORE);

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "TDT",
+    "PAP",
+    "SCS"
+  ],
+  "key": {
+    "T": "sandstorm:tech_disc",
+    "D": "sandstorm:nano_actuator",
+    "P": "sandstorm:propellant_cartridge",
+    "A": "sandstorm:circuit_board",
+    "S": "sandstorm:scrap_metal",
+    "C": "minecraft:netherite_ingot"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:suit_upgrade_jetpack"
+  }
+}

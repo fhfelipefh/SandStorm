@@ -260,5 +260,17 @@
   "message.sandstorm.dew_condenser_empty": "O condensador ainda não acumulou água suficiente.",
   "telemetry.sandstorm.dew_condenser_condensing": "CONDENSANDO (Madrugada Desértica)",
   "telemetry.sandstorm.dew_condenser_waiting_night": "AGUARDANDO NOITE FRIA",
-  "telemetry.sandstorm.dew_condenser_status": "§b[Condensador de Orvalho]§r Reservatório: %s / %s Frascos | Status: %s"
+  "telemetry.sandstorm.dew_condenser_status": "§b[Condensador de Orvalho]§r Reservatório: %s / %s Frascos | Status: %s",
+  "block.sandstorm.chemical_refinery": "Refinaria Química",
+  "item.sandstorm.chemical_refinery": "Refinaria Química",
+  "container.sandstorm.chemical_refinery": "Refinaria Química de Propelente",
+  "item.sandstorm.empty_cartridge": "Cartucho Vazio de Propelente",
+  "item.sandstorm.propellant_cartridge": "Cartucho de Propelente de Alta Pressão",
+  "tooltip.sandstorm.propellant_cartridge_desc": "Combustível iônico de alta pressão para propulsores.",
+  "tooltip.sandstorm.propellant_cartridge_duration": "Autonomia: 60s de Voo Livre Contínuo",
+  "item.sandstorm.suit_upgrade_jetpack": "Módulo de Propulsão a Jato (Jetpack)",
+  "upgrade.sandstorm.jetpack": "Mochila a Jato (Voo Livre em Sobrevivência)",
+  "message.sandstorm.jetpack_refueled": "§a[Propulsor] Cartucho recarregado! (60s de voo restantes)",
+  "message.sandstorm.jetpack_out_of_fuel": "§c[Propulsor] Combustível esgotado! Desacelerando propulsão.",
+  "message.sandstorm.jetpack_fuel_low": "§e[Propulsor] AVISO: Reserva de propelente abaixo de 10 segundos!"
 }
