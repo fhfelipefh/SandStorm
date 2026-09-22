@@ -28,7 +28,7 @@ public class SandStormBlocks {
             new SandstoneWorkbenchBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("sandstone_workbench")))
                     .mapColor(MapColor.COLOR_YELLOW)
-                    .strength(1.5f)
+                    .strength(0.8f)
                     .sound(SoundType.STONE)));
     public static final BrackishWaterBlock BRACKISH_AQUIFER = register("brackish_aquifer",
             new BrackishWaterBlock(BlockBehaviour.Properties.of()

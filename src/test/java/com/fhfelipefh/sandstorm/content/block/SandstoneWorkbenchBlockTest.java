@@ -14,7 +14,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -45,5 +47,15 @@ class SandstoneWorkbenchBlockTest {
         Method stillValid = SandstoneWorkbenchMenu.class.getDeclaredMethod("stillValid", Player.class);
         assertNotNull(stillValid);
         assertEquals(boolean.class, stillValid.getReturnType());
+    }
+
+    @Test
+    void shouldHaveBlockLootTableDroppingSelf() throws Exception {
+        try (InputStream stream = getClass().getResourceAsStream("/data/sandstorm/loot_table/blocks/sandstone_workbench.json")) {
+            assertNotNull(stream);
+            String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+            assertTrue(json.contains("sandstorm:sandstone_workbench"));
+            assertTrue(json.contains("minecraft:survives_explosion"));
+        }
     }
 }
