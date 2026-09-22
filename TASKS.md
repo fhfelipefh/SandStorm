@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **252 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **471 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 20 receitas oficiais | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 45 receitas oficiais | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -60,7 +60,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [x] Bomba de Nutrientes Arremessável (`NutrientBombItem` / `NutrientBombEntity`) com ciclo temporal de enriquecimento biológico do solo (`NutrientTerraformingManager`: areia -> terra -> grama viva -> vegetação nativa).
 
 ### Fase 5: Integração JEI/REI/EMI e Testes Automatizados (Concluída - 100%)
-- [x] 20 arquivos JSON de receitas data-driven em `data/sandstorm/recipe/` (smelting, blasting, shaped, shapeless).
+- [x] 45 arquivos JSON de receitas data-driven em `data/sandstorm/recipe/` (smelting, blasting, shaped, shapeless).
 - [x] 24 arquivos JSON em `data/minecraft/recipe/` anulando ferramentas vanilla via `fabric:load_conditions`.
 - [x] `SandStormItemsTest`: Validação de chaves de itens e namespace.
 - [x] `SandStormBlocksTest`: Validação de chaves de blocos e propriedades.
@@ -87,6 +87,88 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - Água restrita unicamente a aquíferos subterrâneos salobros (`sandstorm:brackish_aquifer`), acessíveis apenas por escavação e purificação com filtro de dessalinização.
 - [x] Handler de injeção em biomas via Fabric Biome API (`SandStormWorldGen.java`).
 - [x] Testes automatizados de Worldgen (`SandStormWorldGenTest.java`).
+
+### Fase 7: Infraestrutura Inicial, Sobrevivência em Arenito e Mobilidade (Concluída - 100%)
+- [x] **Bancada de Trabalho de Arenito (`sandstone_workbench`)**:
+  - [x] Bloco 3x3 funcional para fabricação manual primária sem madeira.
+  - [x] Texturas exclusivas e alinhadas ao arenito clássico do deserto.
+  - [x] Drop garantido ao ser quebrada com a mão livre ou ferramentas.
+- [x] **Fornalha de Arenito (`sandstone_furnace`)**:
+  - [x] Bloco e entidade funcional com suporte a fundição e queima de combustíveis.
+  - [x] Estados horizontal (`facing`) e aceso (`lit`), com emissão de luz 13, partículas e som de brasas.
+  - [x] Integração com Fabric Transfer API (`ItemStorage.SIDED`) para automação de inventário.
+  - [x] Drop garantido com a mão livre ou ferramentas.
+  - [x] Receita oficial com 8 blocos de arenito (`sandstone_furnace.json`).
+- [x] **Caminhos de Rocha Sólida (Safe Paths)**:
+  - [x] Criação da tag de blocos sísmicos seguros (`seismic_safe_blocks.json`), incluindo rochas naturais, arenito, bancada e fornalha de arenito.
+  - [x] Jogadores andando sobre esses blocos não propagam vibrações detectáveis pelos vermes de areia.
+- [x] **Condensador Noturno de Orvalho (`dew_condenser`)**:
+  - [x] Coleta de umidade atmosférica durante a madrugada congelante do deserto.
+  - [x] Produção passiva de água potável limpa pela manhã.
+- [x] **Prancha de Areia (Sandboard - `sandboard`)**:
+  - [x] Veículo portátil equipado nos pés para surfar descendo dunas de areia.
+  - [x] Física de aceleração por inclinação topográfica de dunas.
+- [x] **Saneamento de Receitas Básicas**:
+  - [x] Remoção da receita inconsistente de arenito para graveto de madeira.
+  - [x] Manutenção da reciclagem de gravetos/hastes metálicas a partir de sucata (`stick_from_scrap_metal.json`).
+- [x] **Controles e Ergonomia**:
+  - [x] Remapeamento do atalho da lanterna do capacete para a tecla **G** (`InputConstants.KEY_G`), evitando conflito com a tecla F (troca de mão secundária).
+
+### Fase 8: Voo a Jato, Propelente e Refino Químico (Concluída - 100%)
+- [x] **Módulo de Voo a Jato do Traje (`suit_upgrade_jetpack`)**:
+  - [x] Instalação por clique direito no traje fundido.
+  - [x] Voo livre de sobrevivência com aceleração vetorial via corrida (`sprint boost`).
+  - [x] Efeitos de partículas de propulsão e som dedicado.
+  - [x] Protocolo de descida segura com Queda Lenta (`Slow Falling`) preventiva ao esgotar combustível.
+- [x] **Cartuchos de Combustível**:
+  - [x] Cartucho Vazio (`empty_cartridge`) forjado com sucata metálica e silício.
+  - [x] Cartucho de Propelente de Alta Pressão (`propellant_cartridge`) com 60s de autonomia de voo por unidade.
+  - [x] Consumo automático em tempo real no inventário com devolução do cartucho vazio.
+- [x] **Refinaria Química Industrial (`chemical_refinery`)**:
+  - [x] Bloco e entidade multislot com estética industrial dark-tech correspondente às outras máquinas.
+  - [x] Reação química entre sal mineral, água, cartuchos vazios e energia elétrica/WPT para síntese de propelente.
+  - [x] Tela procedural com interface gráfica holográfica (`ChemicalRefineryScreen.java`).
+- [x] **Módulos de Upgrade do Traje Espacial (`suit_upgrade_*`)**:
+  - [x] `suit_upgrade_battery`: Expansão da capacidade da bateria do traje.
+  - [x] `suit_upgrade_thermal`: Blindagem contra extremos térmicos diurnos e noturnos.
+  - [x] `suit_upgrade_seismic`: Redução de pegada de vibração sísmica.
+  - [x] `suit_upgrade_visor`: Otimização ótica com redução do consumo da lanterna.
+
+---
+
+## 🚀 Próximas Tarefas & Backlog de Expansão (Novas Tasks)
+
+### 🌪️ Fase 9: Fenômenos Climáticos Extremos & Exploração Avançada
+- [ ] **Tempestades Elétricas de Areia (Ion Sandstorms)**:
+  - Descargas elétricas e arcos ionizantes durante o pico das tempestades de areia.
+  - Interferência em bússolas, radares e HUD do capacete com efeito de estática glitch.
+  - Sobrecarga temporária em geradores e receptores solares expostos sem aterramento.
+- [ ] **Efeito Térmico de Miragem e Ondas de Calor**:
+  - Distorção ótica no horizonte em temperaturas superiores a 45°C.
+  - Falsos reflexos de poças de água e ruínas distantes para induzir desorientação no deserto.
+- [ ] **Novas Estruturas Procedurais de Ruínas**:
+  - *Outposts de Colonização Abandonados*: Instalações modulares semi-soterradas contendo terminais de dados e componentes de maquinário.
+  - *Silos de Combustível Clandestinos*: Tanques subterrâneos com cartuchos e reagentes químicos estocados.
+
+### 🛡️ Fase 10: Biologia Alienígena Hostil & Defesas de Base
+- [ ] **Ninhos Subterrâneos & Larvas de Verme (Sandworm Brood)**:
+  - Larvas do verme da areia habitando ruínas profundas e cavernas areníticas.
+  - Comportamento de enxame agressivo quando o jogador cava próximo a depósitos de silício.
+- [ ] **Torreta Sônica Automatizada (Autonomous Sonic Turret)**:
+  - Estrutura de defesa de perímetro para postos avançados e bases de terraformação.
+  - Conectada à rede de energia sem fio (WPT) para disparar ondas sônicas defensivas contra vermes e ameaças móveis.
+- [ ] **Sinalizador Sísmico de Quarentena (Seismic Beacon)**:
+  - Bloco de alta tecnologia que emite pulso de frequência nula, criando uma bolha sísmica neutra onde vermes não entram.
+
+### 🎮 Fase 11: Polimento Audiovisual, Qualidade de Vida & Publicação
+- [ ] **Áudio Dinâmico para a Prancha de Areia (Sandboard)**:
+  - Som contínuo de areia fofa deslizando sob a prancha, variando de tom e volume com a velocidade.
+- [ ] **Efeitos Visuais de Deslizamento**:
+  - Rastro e spray de areia nas laterais da prancha ao fazer curvas fechadas descendo dunas.
+- [ ] **Guia Integrado no Datapad com Diagramas de Maquinário**:
+  - Aba de esquemáticos e manuais holográficos de montagem no Datapad.
+- [ ] **Compatibilidade Oficial com Otimizadores Gráficos**:
+  - Validação estrita de compatibilidade com Sodium, Iris Shaders e Lithium na versão 26.3.
 
 ---
 
@@ -144,6 +226,10 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `tech_disc`: Textura e modelo 16x16.
   - [x] `scrap_metal`: Textura e modelo 16x16.
   - [x] `mineral_salt`: Textura e modelo 16x16.
+  - [x] `empty_cartridge`: Recipiente de combustível reforçado.
+  - [x] `propellant_cartridge`: Cartucho de propelente de alta pressão.
+  - [x] `suit_upgrade_*`: 5 módulos de melhoria de armadura do traje.
+  - [x] `sandboard`: Prancha de areia portátil para locomoção.
 - [x] **Equipamentos e Ferramentas Concluídos**:
   - [x] `sonic_cannon`: Modelo Item (.json) + Textura personalizada 16x16.
   - [x] `anomaly_radar`: Textura e modelo 16x16.
@@ -158,17 +244,22 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `printer_3d.bbmodel`: Bancada tecnológica com pórtico e cabeçote litográfico laser.
   - [x] `desalination_filter.bbmodel`: Tubulações de cobre, tanque e condensador de osmose.
   - [x] `nanite_fabricator.bbmodel`: Câmara de contenção e emissão de luz de nanitas.
+  - [x] `chemical_refinery.bbmodel`: Máquina industrial química com tubos iluminados e leds de status.
   - [x] `atmospheric_terraformer.bbmodel`: Reator central esférico ionizado com cúpula de terraformação.
   - [x] `drone_dock.bbmodel`: Pista de aterrissagem, faixas de perigo e pilão de recarga.
   - [x] `assembly_bay.bbmodel`: Pátio de montagem com piso reforçado e colunas de guindaste.
   - [x] `ancient_data_core.bbmodel`: Monólito arenítico com núcleo óptico ancestral.
   - [x] `buried_tech_ruins.bbmodel`: Blindagem aeroespacial soterrada com rebites e desgaste térmico.
   - [x] `brackish_aquifer`: Bloco mineral sedimentar com veios salinos e aquíferos.
+  - [x] `sandstone_workbench`: Bancada de emergência talhada em arenito com tampo quadriculado.
+  - [x] `sandstone_furnace`: Fornalha de arenito com câmara de queima e brasas ativas.
+  - [x] `dew_condenser`: Condensador noturno de orvalho em estrutura de arenito e malha de coleta.
 - [x] **Modelos de Entidades (Blockbench)**:
   - [x] `sandworm.bbmodel`: Corpo cilíndrico segmentado com mandíbulas quádruplas abertas e anel bucal.
   - [x] `cargo_drone.bbmodel`: Drone quadricóptero com rotores e garras de carga.
   - [x] `excavator_vehicle.bbmodel`: Rover industrial de esteiras duplas com broca giratória frontal.
   - [x] `megazord.bbmodel`: Mecha bípede titânico com cockpit e emissores de choque sônico.
+  - [x] `sandboard`: Prancha de surfe nas dunas com fixadores de botas.
 
 ---
 
@@ -229,3 +320,5 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 17. `v1.3.1`: Receptor Solar Sem Fio (WPT) no casco da nave com desobstrução solar total, montagem completa da bancada da cabine (impressora 3D, fabricador de nanorobôs, dessalinizador, fornalha e bancada de trabalho) e receitas oficiais de manufatura dos receptores.
 18. `v1.3.2`: Implementação da Bomba de Nutrientes Arremessável (Nutrient Bomb), projétil com splash biológico e motor de enriquecimento e terraformação temporal do solo (areia -> terra -> grama viva -> vegetação espontânea).
 19. `v1.3.3`: Sistema de Progressão e Resgate de Recompensas do Survival Datapad: persistência permanente de progresso por UUID com `PlayerQuestSavedData`, sincronização bidirecional via CustomPacketPayload, botão interativo `[RESGATAR]` com feedback de áudio, inclusão de 2 novas quests (`wireless_solar_receiver` e `nutrient_bomb`), balanceamento de recompensas para todas as 22 missões, e notificações não-intrusivas na actionbar com telemetria da I.A.T.I.
+20. `v1.3.4`: Bancada de Trabalho de Arenito (`sandstone_workbench`), Fornalha de Arenito (`sandstone_furnace`), Condensador Noturno de Orvalho (`dew_condenser`), Prancha de Areia (`sandboard`), Módulos de Upgrade do Traje Espacial (`suit_upgrade_*`), Mochila a Jato com voo livre de sobrevivência e Refinaria Química Industrial (`chemical_refinery`).
+21. `v1.3.5`: Saneamento de receitas básicas (remoção de arenito para gravetos de madeira), remapeamento ergonômico da lanterna para a tecla **G** (liberando a tecla F para troca de mãos), blindagem dupla da detecção de itens de fornalha no Datapad e expansão da suíte para **471 testes automatizados** com 100% de aprovação.
