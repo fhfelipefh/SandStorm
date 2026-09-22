@@ -29,6 +29,25 @@ public class SuitPowerComponent {
         return equippedArmorCount >= 4;
     }
 
+    public boolean consumeEnergy(long amount) {
+        if (amount <= 0) {
+            return true;
+        }
+        if (energyStorage.getStoredEnergy() >= amount) {
+            energyStorage.setStoredEnergy(energyStorage.getStoredEnergy() - amount);
+            return true;
+        }
+        return false;
+    }
+
+    public long getStoredEnergy() {
+        return energyStorage.getStoredEnergy();
+    }
+
+    public void setStoredEnergy(long storedEnergy) {
+        energyStorage.setStoredEnergy(storedEnergy);
+    }
+
     public void tick(boolean exposedToSunlight, double ambientTemperature, boolean underground) {
         tick(exposedToSunlight, ambientTemperature, underground, 1.0);
     }

@@ -68,6 +68,13 @@ public class SonicBlastVisualEffect {
                         0.0, 0.0, 0.0,
                         0.0
                 );
+                serverLevel.sendParticles(
+                        ParticleTypes.ELECTRIC_SPARK,
+                        point.x, point.y, point.z,
+                        4,
+                        0.3, 0.3, 0.3,
+                        0.05
+                );
                 lastRingDist = d;
             }
 

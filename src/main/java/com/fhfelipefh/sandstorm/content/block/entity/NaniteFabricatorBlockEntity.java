@@ -33,17 +33,24 @@ public class NaniteFabricatorBlockEntity extends BaseMachineBlockEntity {
     protected boolean canProcess() {
         ItemStack in0 = items.get(0);
         ItemStack in1 = items.get(1);
-        if (!in0.is(SandStormItems.CIRCUIT_BOARD)) {
-            return false;
+        if (in0.is(SandStormItems.CIRCUIT_BOARD)) {
+            if (!in1.is(SandStormItems.SANDWORM_CHITIN) && !in1.is(SandStormItems.SCRAP_METAL)) {
+                return false;
+            }
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                return true;
+            }
+            return out.is(SandStormItems.NANO_ACTUATOR) && out.getCount() < out.getMaxStackSize();
         }
-        if (!in1.is(SandStormItems.SANDWORM_CHITIN) && !in1.is(SandStormItems.SCRAP_METAL)) {
-            return false;
+        if (in0.is(SandStormItems.SANDWORM_TOOTH)) {
+            if (!in1.is(SandStormItems.NANO_ACTUATOR)) {
+                return false;
+            }
+            ItemStack out = items.get(2);
+            return out.isEmpty();
         }
-        ItemStack out = items.get(2);
-        if (out.isEmpty()) {
-            return true;
-        }
-        return out.is(SandStormItems.NANO_ACTUATOR) && out.getCount() < out.getMaxStackSize();
+        return false;
     }
 
     @Override
@@ -51,13 +58,21 @@ public class NaniteFabricatorBlockEntity extends BaseMachineBlockEntity {
         if (!canProcess()) {
             return;
         }
-        items.get(0).shrink(1);
-        items.get(1).shrink(1);
-        ItemStack out = items.get(2);
-        if (out.isEmpty()) {
-            items.set(2, new ItemStack(SandStormItems.NANO_ACTUATOR));
-        } else {
-            out.grow(1);
+        ItemStack in0 = items.get(0);
+        ItemStack in1 = items.get(1);
+        if (in0.is(SandStormItems.CIRCUIT_BOARD)) {
+            in0.shrink(1);
+            in1.shrink(1);
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                items.set(2, new ItemStack(SandStormItems.NANO_ACTUATOR));
+            } else {
+                out.grow(1);
+            }
+        } else if (in0.is(SandStormItems.SANDWORM_TOOTH)) {
+            in0.shrink(1);
+            in1.shrink(1);
+            items.set(2, new ItemStack(SandStormItems.VIBRO_CRYSKNIFE));
         }
     }
 
@@ -73,6 +88,10 @@ public class NaniteFabricatorBlockEntity extends BaseMachineBlockEntity {
 
     public ItemStack getFabricatingItem() {
         if (this.isProcessing()) {
+            ItemStack in0 = items.get(0);
+            if (in0.is(SandStormItems.SANDWORM_TOOTH)) {
+                return new ItemStack(SandStormItems.VIBRO_CRYSKNIFE);
+            }
             return new ItemStack(SandStormItems.NANO_ACTUATOR);
         }
         return this.getItem(2);
@@ -102,10 +121,10 @@ public class NaniteFabricatorBlockEntity extends BaseMachineBlockEntity {
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == 0) {
-            return stack.is(SandStormItems.CIRCUIT_BOARD);
+            return stack.is(SandStormItems.CIRCUIT_BOARD) || stack.is(SandStormItems.SANDWORM_TOOTH);
         }
         if (slot == 1) {
-            return stack.is(SandStormItems.SANDWORM_CHITIN) || stack.is(SandStormItems.SCRAP_METAL);
+            return stack.is(SandStormItems.SANDWORM_CHITIN) || stack.is(SandStormItems.SCRAP_METAL) || stack.is(SandStormItems.NANO_ACTUATOR);
         }
         if (slot == 3) {
             return getFuelEnergy(stack) > 0;

@@ -33,17 +33,24 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
     protected boolean canProcess() {
         ItemStack in0 = items.get(0);
         ItemStack in1 = items.get(1);
-        if (!in0.is(SandStormItems.SILICON_WAFER)) {
-            return false;
+        if (in0.is(SandStormItems.SILICON_WAFER)) {
+            if (!in1.is(SandStormItems.RAW_SILICON) && !in1.is(SandStormItems.SCRAP_METAL)) {
+                return false;
+            }
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                return true;
+            }
+            return out.is(SandStormItems.CIRCUIT_BOARD) && out.getCount() < out.getMaxStackSize();
         }
-        if (!in1.is(SandStormItems.RAW_SILICON) && !in1.is(SandStormItems.SCRAP_METAL)) {
-            return false;
+        if (in0.is(SandStormItems.CIRCUIT_BOARD)) {
+            if (!in1.is(SandStormItems.NANO_ACTUATOR)) {
+                return false;
+            }
+            ItemStack out = items.get(2);
+            return out.isEmpty();
         }
-        ItemStack out = items.get(2);
-        if (out.isEmpty()) {
-            return true;
-        }
-        return out.is(SandStormItems.CIRCUIT_BOARD) && out.getCount() < out.getMaxStackSize();
+        return false;
     }
 
     @Override
@@ -51,13 +58,21 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
         if (!canProcess()) {
             return;
         }
-        items.get(0).shrink(1);
-        items.get(1).shrink(1);
-        ItemStack out = items.get(2);
-        if (out.isEmpty()) {
-            items.set(2, new ItemStack(SandStormItems.CIRCUIT_BOARD));
-        } else {
-            out.grow(1);
+        ItemStack in0 = items.get(0);
+        ItemStack in1 = items.get(1);
+        if (in0.is(SandStormItems.SILICON_WAFER)) {
+            in0.shrink(1);
+            in1.shrink(1);
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                items.set(2, new ItemStack(SandStormItems.CIRCUIT_BOARD));
+            } else {
+                out.grow(1);
+            }
+        } else if (in0.is(SandStormItems.CIRCUIT_BOARD)) {
+            in0.shrink(1);
+            in1.shrink(1);
+            items.set(2, new ItemStack(SandStormItems.PLASMA_RIFLE));
         }
     }
 
@@ -73,6 +88,10 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
 
     public ItemStack getPrintingItem() {
         if (this.isProcessing()) {
+            ItemStack in0 = items.get(0);
+            if (in0.is(SandStormItems.CIRCUIT_BOARD)) {
+                return new ItemStack(SandStormItems.PLASMA_RIFLE);
+            }
             return new ItemStack(SandStormItems.CIRCUIT_BOARD);
         }
         return this.getItem(2);
@@ -102,10 +121,10 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == 0) {
-            return stack.is(SandStormItems.SILICON_WAFER);
+            return stack.is(SandStormItems.SILICON_WAFER) || stack.is(SandStormItems.CIRCUIT_BOARD);
         }
         if (slot == 1) {
-            return stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.SCRAP_METAL);
+            return stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.SCRAP_METAL) || stack.is(SandStormItems.NANO_ACTUATOR);
         }
         if (slot == 3) {
             return getFuelEnergy(stack) > 0;

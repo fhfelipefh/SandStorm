@@ -42,6 +42,8 @@ public class SandStormItems {
     public static final Item TECH_DISC = register("tech_disc", new Item(properties("tech_disc").rarity(Rarity.RARE)));
     public static final Item SCRAP_METAL = register("scrap_metal", new Item(properties("scrap_metal").rarity(Rarity.UNCOMMON)));
     public static final SonicCannonItem SONIC_CANNON = register("sonic_cannon", new SonicCannonItem(properties("sonic_cannon")));
+    public static final PlasmaRifleItem PLASMA_RIFLE = register("plasma_rifle", new PlasmaRifleItem(properties("plasma_rifle")));
+    public static final VibroCrysknifeItem VIBRO_CRYSKNIFE = register("vibro_crysknife", new VibroCrysknifeItem(properties("vibro_crysknife")));
     public static final AtmosphericAnalyzerItem ATMOSPHERIC_ANALYZER = register("atmospheric_analyzer", new AtmosphericAnalyzerItem(properties("atmospheric_analyzer")));
     public static final SurvivalDatapadItem SURVIVAL_DATAPAD = register("survival_datapad", new SurvivalDatapadItem(properties("survival_datapad").rarity(Rarity.RARE).stacksTo(1)));
     public static final NutrientBombItem NUTRIENT_BOMB = register("nutrient_bomb", new NutrientBombItem(properties("nutrient_bomb").stacksTo(16)));
@@ -75,6 +77,8 @@ public class SandStormItems {
                         entries.accept(TECH_DISC);
                         entries.accept(SCRAP_METAL);
                         entries.accept(SONIC_CANNON);
+                        entries.accept(PLASMA_RIFLE);
+                        entries.accept(VIBRO_CRYSKNIFE);
                         entries.accept(ATMOSPHERIC_ANALYZER);
                         entries.accept(SandStormBlocks.BRACKISH_AQUIFER);
                         entries.accept(SandStormBlocks.THUMPER);

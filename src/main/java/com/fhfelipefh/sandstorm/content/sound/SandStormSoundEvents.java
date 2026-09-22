@@ -8,6 +8,9 @@ import net.minecraft.sounds.SoundEvent;
 
 public class SandStormSoundEvents {
     public static final SoundEvent SONIC_CANNON_BLAST = register("item.sonic_cannon.blast");
+    public static final SoundEvent PLASMA_RIFLE_FIRE = register("item.plasma_rifle.fire");
+    public static final SoundEvent VIBRO_CRYSKNIFE_SWING = register("item.vibro_crysknife.swing");
+    public static final SoundEvent VIBRO_CRYSKNIFE_HIT = register("item.vibro_crysknife.hit");
     public static final SoundEvent MEGAZORD_SHOCKWAVE = register("entity.megazord.shockwave");
     public static final SoundEvent MEGAZORD_STEP = register("entity.megazord.step");
     public static final SoundEvent SANDWORM_RUMBLE = register("entity.sandworm.rumble");

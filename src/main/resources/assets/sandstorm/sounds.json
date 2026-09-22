@@ -6,6 +6,28 @@
       "sandstorm:sonic_cannon_blast"
     ]
   },
+  "item.plasma_rifle.fire": {
+    "category": "players",
+    "subtitle": "subtitles.sandstorm.item.plasma_rifle.fire",
+    "sounds": [
+      "sandstorm:anomaly_radar_ping",
+      "sandstorm:sonic_cannon_blast"
+    ]
+  },
+  "item.vibro_crysknife.swing": {
+    "category": "players",
+    "subtitle": "subtitles.sandstorm.item.vibro_crysknife.swing",
+    "sounds": [
+      "sandstorm:terraformer_hum"
+    ]
+  },
+  "item.vibro_crysknife.hit": {
+    "category": "players",
+    "subtitle": "subtitles.sandstorm.item.vibro_crysknife.hit",
+    "sounds": [
+      "sandstorm:printer_3d_craft"
+    ]
+  },
   "entity.megazord.shockwave": {
     "category": "hostile",
     "subtitle": "subtitles.sandstorm.entity.megazord.shockwave",

@@ -1,8 +1,11 @@
 package com.fhfelipefh.sandstorm.content.item;
 
+import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.effect.SonicBlastVisualEffect;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,16 +18,20 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SonicCannonItem extends Item {
     public static final int COOLDOWN_TICKS = 25;
     public static final double CANNON_RANGE = 24.0;
     public static final float DAMAGE_AMOUNT = 20.0f;
+    public static final long ENERGY_COST = 2500L;
 
     public SonicCannonItem(Properties properties) {
         super(properties
@@ -35,6 +42,16 @@ public class SonicCannonItem extends Item {
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack heldStack = player.getItemInHand(hand);
+
+        SuitPowerComponent suit = (player instanceof ServerPlayer sp) ? SuitSurvivalHandler.getOrCreateSuit(sp) : SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
+        if (!suit.consumeEnergy(ENERGY_COST)) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                serverPlayer.sendSystemMessage(Component.translatable("tooltip.sandstorm.weapon.no_power").withStyle(ChatFormatting.RED), true);
+                serverPlayer.level().playSound(null, player.blockPosition(), SandStormSoundEvents.SUIT_BATTERY_LOW, SoundSource.PLAYERS, 1.0f, 1.0f);
+            }
+            return InteractionResult.FAIL;
+        }
+
         player.getCooldowns().addCooldown(heldStack, COOLDOWN_TICKS);
 
         if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
@@ -61,5 +78,11 @@ public class SonicCannonItem extends Item {
         }
 
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.weapon.damage", (int) DAMAGE_AMOUNT).withStyle(ChatFormatting.AQUA));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.weapon.energy_cost", ENERGY_COST).withStyle(ChatFormatting.GOLD));
     }
 }

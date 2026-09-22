@@ -42,6 +42,8 @@ class SandStormItemsTest {
             "tech_disc",
             "scrap_metal",
             "sonic_cannon",
+            "plasma_rifle",
+            "vibro_crysknife",
             "atmospheric_analyzer",
             "sandworm_spawn_egg"
     })
