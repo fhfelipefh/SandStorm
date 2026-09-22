@@ -18,6 +18,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -203,13 +204,13 @@ public class QuestRewardHandler {
         Item req = quest.getRequiredItem();
         for (EquipmentSlot slot : EQUIPMENT_SLOTS) {
             ItemStack stack = player.getItemBySlot(slot);
-            if (!stack.isEmpty() && stack.is(req)) {
+            if (!stack.isEmpty() && (stack.is(req) || ("sandstone_furnace".equals(quest.id()) && stack.is(Items.FURNACE)))) {
                 return true;
             }
         }
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
-            if (!stack.isEmpty() && stack.is(req)) {
+            if (!stack.isEmpty() && (stack.is(req) || ("sandstone_furnace".equals(quest.id()) && stack.is(Items.FURNACE)))) {
                 return true;
             }
         }

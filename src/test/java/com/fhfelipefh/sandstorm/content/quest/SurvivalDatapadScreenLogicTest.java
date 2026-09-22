@@ -282,6 +282,14 @@ class SurvivalDatapadScreenLogicTest {
         assertEquals(100, clamped);
     }
 
+    @Test
+    void testSandstoneFurnaceQuestUsesSandstoneFurnaceIconAndItem() {
+        QuestData quest = QuestRegistry.getQuest("sandstone_furnace");
+        assertNotNull(quest);
+        assertEquals("sandstorm:sandstone_furnace", quest.iconId().toString());
+        assertEquals("sandstorm:sandstone_furnace", quest.requiredItemId().toString());
+    }
+
     private boolean arePrerequisitesClaimed(QuestData quest) {
         if (quest.prerequisiteIds().isEmpty()) {
             return true;
