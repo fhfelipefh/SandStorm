@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 public class ProceduralRuinsManager {
 
@@ -16,7 +17,7 @@ public class ProceduralRuinsManager {
 
     public static void initialize() {
         ServerChunkEvents.CHUNK_LOAD.register((level, chunk, isNewChunk) -> {
-            if (level.dimension() != Level.OVERWORLD) {
+            if (!isNewChunk || level.dimension() != Level.OVERWORLD) {
                 return;
             }
             ChunkPos pos = chunk.getPos();
@@ -40,16 +41,19 @@ public class ProceduralRuinsManager {
             long hash = hash64(chunkKey ^ seed);
             long roll = Math.abs(hash);
 
+            int surfaceY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, 8, 8);
             if (roll % OUTPOST_RARITY == 0) {
-                int surfaceY = SpaceshipLandingManager.findGroundSurfaceY(level, samplePos.getX(), samplePos.getZ());
                 if (surfaceY > level.getMinY() + 15) {
-                    AbandonedOutpostGenerator.generate(level, new BlockPos(samplePos.getX(), surfaceY, samplePos.getZ()));
+                    level.getServer().execute(() -> {
+                        AbandonedOutpostGenerator.generate(level, new BlockPos(samplePos.getX(), surfaceY, samplePos.getZ()));
+                    });
                 }
             } else if ((roll / OUTPOST_RARITY) % FUEL_SILO_RARITY == 0) {
-                int surfaceY = SpaceshipLandingManager.findGroundSurfaceY(level, samplePos.getX(), samplePos.getZ());
                 if (surfaceY > level.getMinY() + 45) {
                     int siloY = 32 + (int) (Math.abs(hash >> 16) % 10);
-                    FuelSiloGenerator.generate(level, new BlockPos(samplePos.getX(), siloY, samplePos.getZ()), surfaceY);
+                    level.getServer().execute(() -> {
+                        FuelSiloGenerator.generate(level, new BlockPos(samplePos.getX(), siloY, samplePos.getZ()), surfaceY);
+                    });
                 }
             }
         });

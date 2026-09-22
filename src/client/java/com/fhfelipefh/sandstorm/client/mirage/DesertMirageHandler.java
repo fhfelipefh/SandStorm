@@ -50,9 +50,10 @@ public class DesertMirageHandler {
 
         double temp = SurvivalHudOverlay.getClientSuit().getThermal().getCurrentTemperature();
         boolean suitOverheated = temp >= 45.0;
-        boolean ambientOverheated = client.level.getSkyDarken() < 4 && client.player.getY() >= 50;
+        long dayTime = client.level.getOverworldClockTime() % 24000L;
+        boolean middaySun = dayTime >= 4000L && dayTime <= 8000L && client.player.getY() >= 50;
 
-        return suitOverheated || ambientOverheated;
+        return suitOverheated || middaySun;
     }
 
     public static void tick(Minecraft client) {

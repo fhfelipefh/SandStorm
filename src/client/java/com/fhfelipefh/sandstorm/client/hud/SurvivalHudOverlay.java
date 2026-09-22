@@ -1,7 +1,6 @@
 package com.fhfelipefh.sandstorm.client.hud;
 
 import com.fhfelipefh.sandstorm.client.FlashlightState;
-import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
@@ -64,8 +63,6 @@ public class SurvivalHudOverlay implements HudElement {
             int sandColor = (alpha << 24) | 0xC29B62;
             extractor.fill(0, 0, screenWidth, screenHeight, sandColor);
             renderSandGrains(extractor, client, screenWidth, screenHeight, weather.getIntensity());
-        } else if (DesertMirageHandler.isMirageActive(client)) {
-            renderHeatwaveShimmer(extractor, client, screenWidth, screenHeight);
         }
 
         boolean energyChanged = storedEnergy != lastStoredEnergy || capacity != lastCapacity;
@@ -196,24 +193,6 @@ public class SurvivalHudOverlay implements HudElement {
             if ((seed & 1) == 0) {
                 extractor.fill(x + 1, y + 1, x + (streakLength / 2) + 1, y + 2, ((grainAlpha / 2) << 24) | rgb);
             }
-        }
-    }
-
-    private static void renderHeatwaveShimmer(GuiGraphicsExtractor extractor, Minecraft client, int width, int height) {
-        if (client.player == null) {
-            return;
-        }
-        int tick = client.player.tickCount;
-        int bands = 4;
-        int bottomHalfStart = height / 2;
-        int bandSpacing = (height - bottomHalfStart) / bands;
-
-        for (int i = 0; i < bands; i++) {
-            double wave = Math.sin((tick * 0.08) + (i * 1.3));
-            int y = bottomHalfStart + i * bandSpacing + (int) (wave * 3.0);
-            int alpha = (int) (8 + Math.abs(wave) * 8);
-            int shimmerColor = (alpha << 24) | 0xFFE082;
-            extractor.fill(0, y, width, y + 2, shimmerColor);
         }
     }
 }

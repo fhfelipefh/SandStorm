@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(LightmapRenderStateExtractor.class)
+@Mixin(value = LightmapRenderStateExtractor.class, priority = 1050)
 public class FlashlightLightMixin {
 
     private static final float FLASHLIGHT_BLOCK_FACTOR = 1.0f;

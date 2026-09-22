@@ -1,10 +1,8 @@
 package com.fhfelipefh.sandstorm.client.mixin;
 
-import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.fog.FogData;
@@ -15,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(FogRenderer.class)
+@Mixin(value = FogRenderer.class, priority = 1050)
 public class SandstormFogMixin {
 
     private static final float DUST_R = 0.74f;
@@ -31,21 +29,6 @@ public class SandstormFogMixin {
 
         SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
         if (!weather.isActive()) {
-            if (DesertMirageHandler.isMirageActive(Minecraft.getInstance())) {
-                float gameTime = (float) clientLevel.getGameTime() + deltaTracker.getGameTimeDeltaPartialTick(true);
-                float heatwave = (float) Math.sin(gameTime * 0.12f) * 3.5f;
-
-                Vector4f color = data.color;
-                if (color != null) {
-                    color.x = Math.min(1.0f, color.x + 0.12f);
-                    color.y = Math.min(1.0f, color.y + 0.06f);
-                }
-
-                data.renderDistanceEnd = Math.max(32.0f, data.renderDistanceEnd - 22.0f + heatwave);
-                data.renderDistanceStart = Math.max(6.0f, data.renderDistanceStart - 8.0f + heatwave * 0.4f);
-                data.environmentalEnd = data.renderDistanceEnd;
-                data.environmentalStart = data.renderDistanceStart;
-            }
             return;
         }
 

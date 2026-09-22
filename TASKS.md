@@ -11,7 +11,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **478 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **482 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
 | **Receitas Data-Driven (JEI/REI)** | 45 receitas oficiais | Cobertura total | ✅ Concluído |
@@ -171,8 +171,47 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - Rastro e spray de areia nas laterais da prancha ao fazer curvas fechadas descendo dunas.
 - [ ] **Guia Integrado no Datapad com Diagramas de Maquinário**:
   - Aba de esquemáticos e manuais holográficos de montagem no Datapad.
-- [ ] **Compatibilidade Oficial com Otimizadores Gráficos**:
-  - Validação estrita de compatibilidade com Sodium, Iris Shaders e Lithium na versão 26.3.
+- [x] **Compatibilidade Oficial com Otimizadores Gráficos**:
+  - [x] Validação estrita de compatibilidade com Sodium, Iris Shaders e Lithium na versão 26.3.
+  - [x] Metadados oficiais de compatibilidade via bloco `"suggests"` no `fabric.mod.json`.
+  - [x] Priorização de mixins (`priority = 1050`) em `SandstormFogMixin` e `FlashlightLightMixin` para coexistência harmoniosa com shaders externos e pipelines de iluminação.
+  - [x] Modelos de blocos dinâmicos (`Printer3D`, `NaniteFabricator`, `DesalinationFilter`) 100% migrados para `SubmitNodeCollector` sem vazamentos de estado OpenGL.
+  - [x] Teste arquitetural formal `GraphicOptimizersCompatibilityArchitectureTest.java` com 100% de sucesso.
+
+### 🌿 Fase 12: Xenobotânica, Agricultura Hidropônica & Ciclos de Carbono
+- [ ] **Câmara Hidropônica Pressurizada (`hydroponic_chamber`)**:
+  - Módulo selado com iluminação bio-UV e injeção de água dessalinizada e sais minerais.
+  - Aceleração controlada de culturas vegetais dentro do raio de proteção da cúpula de terraformação.
+- [ ] **Sementes de Grama Xeno-Adaptada (`xeno_grass_seeds`)**:
+  - Espécies xerófilas geneticamente aprimoradas para fixação de nitrogênio e conversão acelerada de areia em solo arável fértil.
+  - Propagação vegetal biológica com resistência aos ventos abrasivos.
+- [ ] **Cactos de Seiva Pesada (`heavy_sap_cactus`)**:
+  - Nova flora desértica resistente à radiação solar extrema.
+  - Extração de biopolímeros flexíveis e água bruta concentrada através de seringas de coleta.
+- [ ] **Biorremediação de Resíduos Salinos**:
+  - Utilização de plantas halófitas para absorver o excesso de salitre acumulado no solo após ciclos intensivos de dessalinização.
+
+### ⚡ Fase 13: Rede Logística de Dutos & Malha Energética WPT Expandida
+- [ ] **Torre Retransmissora WPT de Longo Alcance (`wpt_relay_tower`)**:
+  - Pilão de alta voltagem para estender a rede de energia sem fio em até 128 blocos, alimentando escavações e postos avançados remotos.
+  - Indicador de sinal com arco voltaico de ressonância eletromagnética.
+- [ ] **Dutos de Fluidos Inteligentes (`smart_fluid_pipe`)**:
+  - Sistema modular de transporte pressurizado para água salobra, água potável, salmoura e propelente.
+  - Válvulas direcionais com filtros de refluxo e conectores para tanques de estocagem.
+- [ ] **Console Holográfico de Monitoramento de Rede (`grid_monitor_console`)**:
+  - Terminal interativo que exibe telemetria em tempo real: geração solar, queima térmica, consumo por máquina e carga global do buffer.
+- [ ] **Acumulador de Estado Sólido Industrial (`solid_state_accumulator`)**:
+  - Banco de baterias de alta capacidade (250.000 J a 1.000.000 J) para sustentação energética durante tempestades severas e a noite congelante.
+
+### 🌋 Fase 14: Expedições Subterrâneas Profundas & Surto de Plasma Cósmico
+- [ ] **Cavernas de Quartzo Piezoelétrico (`piezo_caverns`)**:
+  - Geodos subterrâneos raros (Y: -30 a 10) repletos de cristais que vibram acusticamente ao sofrer impacto ou corte por laser.
+  - Fonte de ressonadores piezoelétricos para tecnologia militar e sísmica avançada.
+- [ ] **Evento Climático: Surto de Plasma Solar (Coronal Plasma Surge)**:
+  - Onda de calor extremo diurno de curta duração que causa sobreaquecimento acelerado no traje se o jogador permanecer a céu aberto.
+  - Consequência positiva: quadruplica temporariamente a geração de todos os painéis e receptores solares WPT.
+- [ ] **Perfuratriz Automática de Poço Profundo (`deep_core_drill`)**:
+  - Maquinário industrial de grande porte para extração contínua de fluidos fósseis pressurizados e minerais raros do manto planetário.
 
 ---
 
@@ -326,3 +365,5 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 19. `v1.3.3`: Sistema de Progressão e Resgate de Recompensas do Survival Datapad: persistência permanente de progresso por UUID com `PlayerQuestSavedData`, sincronização bidirecional via CustomPacketPayload, botão interativo `[RESGATAR]` com feedback de áudio, inclusão de 2 novas quests (`wireless_solar_receiver` e `nutrient_bomb`), balanceamento de recompensas para todas as 22 missões, e notificações não-intrusivas na actionbar com telemetria da I.A.T.I.
 20. `v1.3.4`: Bancada de Trabalho de Arenito (`sandstone_workbench`), Fornalha de Arenito (`sandstone_furnace`), Condensador Noturno de Orvalho (`dew_condenser`), Prancha de Areia (`sandboard`), Módulos de Upgrade do Traje Espacial (`suit_upgrade_*`), Mochila a Jato com voo livre de sobrevivência e Refinaria Química Industrial (`chemical_refinery`).
 21. `v1.3.5`: Saneamento de receitas básicas (remoção de arenito para gravetos de madeira), remapeamento ergonômico da lanterna para a tecla **G** (liberando a tecla F para troca de mãos), blindagem dupla da detecção de itens de fornalha no Datapad e expansão da suíte para **471 testes automatizados** com 100% de aprovação.
+22. `v1.3.6`: Resolução de deadlock no thread do servidor em chunk loading (`ProceduralRuinsManager`), eliminação das faixas de calor no HUD (`SurvivalHudOverlay`), normalização de neblina em tempo limpo (`SandstormFogMixin`), e validação estrita de compatibilidade oficial com os otimizadores gráficos **Sodium**, **Iris Shaders** e **Lithium** na versão 26.3 com teste arquitetural dedicado (`GraphicOptimizersCompatibilityArchitectureTest`), expandindo a suíte para **482 testes automatizados** 100% aprovados.
+
