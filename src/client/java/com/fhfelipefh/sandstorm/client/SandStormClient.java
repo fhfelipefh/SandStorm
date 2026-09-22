@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
 import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
 import com.fhfelipefh.sandstorm.client.gui.NaniteFabricatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.Printer3DScreen;
+import com.fhfelipefh.sandstorm.client.gui.ThermalGeneratorScreen;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
 import com.fhfelipefh.sandstorm.client.renderer.DesalinationFilterBlockEntityRenderer;
@@ -34,6 +35,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.PRINTER_3D_MENU, Printer3DScreen::new);
         MenuScreens.register(SandStormMenus.NANITE_FABRICATOR_MENU, NaniteFabricatorScreen::new);
         MenuScreens.register(SandStormMenus.DESALINATION_FILTER_MENU, DesalinationFilterScreen::new);
+        MenuScreens.register(SandStormMenus.THERMAL_GENERATOR_MENU, ThermalGeneratorScreen::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.DESALINATION_FILTER_BE, DesalinationFilterBlockEntityRenderer::new);

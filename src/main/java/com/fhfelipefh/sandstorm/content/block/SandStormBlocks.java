@@ -3,6 +3,8 @@ package com.fhfelipefh.sandstorm.content.block;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.ThermalGeneratorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.WirelessSolarReceiverBlockEntity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -131,6 +133,16 @@ public class SandStormBlocks {
             SandStormMod.id("desalination_filter"),
             new BlockEntityType<>(DesalinationFilterBlockEntity::new, Set.of(DESALINATION_FILTER))
     );
+    public static final BlockEntityType<ThermalGeneratorBlockEntity> THERMAL_GENERATOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("thermal_generator"),
+            new BlockEntityType<>(ThermalGeneratorBlockEntity::new, Set.of(THERMAL_GENERATOR))
+    );
+    public static final BlockEntityType<WirelessSolarReceiverBlockEntity> WIRELESS_SOLAR_RECEIVER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("wireless_solar_receiver"),
+            new BlockEntityType<>(WirelessSolarReceiverBlockEntity::new, Set.of(WIRELESS_SOLAR_RECEIVER, WIRELESS_SOLAR_RECEIVER_TIER2))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -148,6 +160,8 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, PRINTER_3D_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, NANITE_FABRICATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, DESALINATION_FILTER_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, THERMAL_GENERATOR_BE);
         FluidStorage.SIDED.registerForBlockEntity(DesalinationFilterBlockEntity::getFluidStorage, DESALINATION_FILTER_BE);
+        FluidStorage.SIDED.registerForBlockEntity(ThermalGeneratorBlockEntity::getFluidStorage, THERMAL_GENERATOR_BE);
     }
 }

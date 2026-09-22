@@ -210,5 +210,13 @@
   "container.sandstorm.printer_3d": "Impresora 3D",
   "container.sandstorm.nanite_fabricator": "Fabricador de Nanites",
   "container.sandstorm.desalination_filter": "Filtro Desalinizador",
+  "container.sandstorm.thermal_generator": "Generador Térmico",
+  "message.sandstorm.thermal_generator.lava_added": "§6[Generador Térmico]§r ¡Lava añadida! Combustible: %s / %s mB",
+  "message.sandstorm.thermal_generator.tank_full": "§e[Generador Térmico]§r ¡El tanque de lava está lleno!",
+  "message.sandstorm.thermal_generator.active": "§6[Generador Térmico]§r Activo | Combustión: %ss | WPT: TRANSMITIENDO (%s J/tick, %sm)",
+  "message.sandstorm.thermal_generator.inactive": "§c[Generador Térmico]§r INACTIVO - ¡Recarga con un cubo de lava!",
+  "message.sandstorm.wireless_solar_receiver.active": "TRANSMITIENDO WPT",
+  "message.sandstorm.wireless_solar_receiver.inactive": "SIN LUZ SOLAR",
+  "message.sandstorm.wireless_solar_receiver.telemetry": "§b[WPT Solar Tier %s]§r %s | Radio: %sm | Tasa: %s J/tick | Buffer: %s / %s J",
   "item.sandstorm.sandworm_spawn_egg": "Huevo de Gusano de Arena"
 }

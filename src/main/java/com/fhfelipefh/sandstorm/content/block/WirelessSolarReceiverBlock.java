@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.component.WirelessChargerComponent;
+import com.fhfelipefh.sandstorm.content.block.entity.WirelessSolarReceiverBlockEntity;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -8,16 +9,22 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.Locale;
 
-public class WirelessSolarReceiverBlock extends Block {
+public class WirelessSolarReceiverBlock extends Block implements EntityBlock {
     private final int tier;
     private final WirelessChargerComponent charger;
 
@@ -33,6 +40,23 @@ public class WirelessSolarReceiverBlock extends Block {
 
     public WirelessChargerComponent getCharger() {
         return charger;
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new WirelessSolarReceiverBlockEntity(pos, state, tier);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        if (level.isClientSide()) {
+            return null;
+        }
+        return (lvl, pos, st, be) -> {
+            if (be instanceof WirelessSolarReceiverBlockEntity receiver) {
+                receiver.serverTick(lvl, pos, st);
+            }
+        };
     }
 
     @Override
@@ -70,11 +94,33 @@ public class WirelessSolarReceiverBlock extends Block {
             double radius = charger.calculateEffectiveRadius(canSeeSky, isDay, skyDarken, weather);
             long transferRate = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, weather);
 
-            String status = (canSeeSky && isDay) ? "TRANSMITINDO WPT" : "SEM LUZ SOLAR";
-            serverPlayer.sendSystemMessage(Component.literal(
-                    "§b[WPT Solar Tier " + tier + "]§r " + status + " | Raio: " + String.format(Locale.ROOT, "%.1f", radius) + "m | Taxa: " + transferRate + " J/tick"
+            BlockEntity be = level.getBlockEntity(pos);
+            long storedEnergy = 0L;
+            long capacity = tier >= 2 ? WirelessSolarReceiverBlockEntity.TIER2_CAPACITY : WirelessSolarReceiverBlockEntity.TIER1_CAPACITY;
+            if (be instanceof WirelessSolarReceiverBlockEntity receiver) {
+                storedEnergy = receiver.getEnergyStorage().getStoredEnergy();
+                capacity = receiver.getEnergyStorage().getCapacity();
+            }
+
+            Component status = (canSeeSky && isDay)
+                    ? Component.translatable("message.sandstorm.wireless_solar_receiver.active")
+                    : Component.translatable("message.sandstorm.wireless_solar_receiver.inactive");
+
+            serverPlayer.sendSystemMessage(Component.translatable(
+                    "message.sandstorm.wireless_solar_receiver.telemetry",
+                    tier,
+                    status,
+                    String.format(Locale.ROOT, "%.1f", radius),
+                    transferRate,
+                    storedEnergy,
+                    capacity
             ), true);
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        return useWithoutItem(state, level, pos, player, hitResult);
     }
 }

@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.block;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.ThermalGeneratorBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
@@ -50,6 +51,11 @@ class TransferApiCompatibilityTest {
         Storage<ItemVariant> filterItemStorage = ContainerStorage.of(filter, Direction.UP);
         assertNotNull(filterItemStorage);
         assertTrue(filterItemStorage.supportsInsertion());
+
+        ThermalGeneratorBlockEntity thermalGenerator = new ThermalGeneratorBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<ItemVariant> thermalStorage = ContainerStorage.of(thermalGenerator, Direction.UP);
+        assertNotNull(thermalStorage);
+        assertTrue(thermalStorage.supportsInsertion());
     }
 
     @Test
@@ -70,6 +76,15 @@ class TransferApiCompatibilityTest {
         assertNotNull(sideStorage);
         assertTrue(sideStorage.supportsInsertion());
         assertTrue(sideStorage.supportsExtraction());
+    }
+
+    @Test
+    void shouldExposeFluidStorageForThermalGenerator() {
+        ThermalGeneratorBlockEntity generator = new ThermalGeneratorBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<FluidVariant> fluidStorage = generator.getFluidStorage(Direction.UP);
+        assertNotNull(fluidStorage);
+        assertTrue(fluidStorage.supportsInsertion());
+        assertFalse(fluidStorage.supportsExtraction());
     }
 
     @Test

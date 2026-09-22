@@ -210,5 +210,13 @@
   "container.sandstorm.printer_3d": "3D Printer",
   "container.sandstorm.nanite_fabricator": "Nanite Fabricator",
   "container.sandstorm.desalination_filter": "Desalination Filter",
+  "container.sandstorm.thermal_generator": "Thermal Generator",
+  "message.sandstorm.thermal_generator.lava_added": "§6[Thermal Generator]§r Lava added! Fuel: %s / %s mB",
+  "message.sandstorm.thermal_generator.tank_full": "§e[Thermal Generator]§r Lava tank is full!",
+  "message.sandstorm.thermal_generator.active": "§6[Thermal Generator]§r Active | Burn: %ss | WPT: TRANSMITTING (%s J/tick, %sm)",
+  "message.sandstorm.thermal_generator.inactive": "§c[Thermal Generator]§r INACTIVE - Refuel with a Lava Bucket!",
+  "message.sandstorm.wireless_solar_receiver.active": "TRANSMITTING WPT",
+  "message.sandstorm.wireless_solar_receiver.inactive": "NO SUNLIGHT",
+  "message.sandstorm.wireless_solar_receiver.telemetry": "§b[WPT Solar Tier %s]§r %s | Radius: %sm | Rate: %s J/tick | Buffer: %s / %s J",
   "item.sandstorm.sandworm_spawn_egg": "Sandworm Spawn Egg"
 }
