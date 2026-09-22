@@ -73,6 +73,8 @@
   "warning.sandstorm.worm_emerge": "⚠ ALERTA: Verme emergindo!",
   "telemetry.sandstorm.radar_signal": "SINAL: Anomalia a %s blocos (%s)",
   "telemetry.sandstorm.radar_none": "Sem anomalias no raio de varredura.",
+  "telemetry.sandstorm.radar_interference": "§c[INTERFERÊNCIA IONIZANTE DETECTADA: Distorção eletromagnética corrompendo telemetria!]",
+  "telemetry.sandstorm.radar_signal_corrupted": "§eS1N4L: Anomalia ~%s blocos (%s) [FLUTUAÇÃO ESTÁTICA]",
   "telemetry.sandstorm.dock_status": "Doca: %s / %s J",
   "telemetry.sandstorm.drone_loaded": "Drone: Carregou [%s]",
   "telemetry.sandstorm.drone_unloaded": "Drone: Item descarregado",

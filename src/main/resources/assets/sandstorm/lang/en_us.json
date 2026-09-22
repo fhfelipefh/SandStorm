@@ -73,6 +73,8 @@
   "warning.sandstorm.worm_emerge": "⚠ ALERT: Sandworm emerging!",
   "telemetry.sandstorm.radar_signal": "SIGNAL: Anomaly %s blocks (%s)",
   "telemetry.sandstorm.radar_none": "No anomalies in scan range.",
+  "telemetry.sandstorm.radar_interference": "§c[ION INTERFERENCE DETECTED: Electromagnetic distortion scrambling telemetry!]",
+  "telemetry.sandstorm.radar_signal_corrupted": "§eS1GN4L: Anomaly ~%s blocks (%s) [STATIC JITTER]",
   "telemetry.sandstorm.dock_status": "Dock: %s / %s J",
   "telemetry.sandstorm.drone_loaded": "Drone: Loaded [%s]",
   "telemetry.sandstorm.drone_unloaded": "Drone: Item unloaded",

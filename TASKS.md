@@ -11,7 +11,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **471 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **478 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
 | **Receitas Data-Driven (JEI/REI)** | 45 receitas oficiais | Cobertura total | ✅ Concluído |
@@ -138,17 +138,21 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 
 ## 🚀 Próximas Tarefas & Backlog de Expansão (Novas Tasks)
 
-### 🌪️ Fase 9: Fenômenos Climáticos Extremos & Exploração Avançada
-- [ ] **Tempestades Elétricas de Areia (Ion Sandstorms)**:
-  - Descargas elétricas e arcos ionizantes durante o pico das tempestades de areia.
-  - Interferência em bússolas, radares e HUD do capacete com efeito de estática glitch.
-  - Sobrecarga temporária em geradores e receptores solares expostos sem aterramento.
-- [ ] **Efeito Térmico de Miragem e Ondas de Calor**:
-  - Distorção ótica no horizonte em temperaturas superiores a 45°C.
-  - Falsos reflexos de poças de água e ruínas distantes para induzir desorientação no deserto.
-- [ ] **Novas Estruturas Procedurais de Ruínas**:
-  - *Outposts de Colonização Abandonados*: Instalações modulares semi-soterradas contendo terminais de dados e componentes de maquinário.
-  - *Silos de Combustível Clandestinos*: Tanques subterrâneos com cartuchos e reagentes químicos estocados.
+### 🌪️ Fase 9: Fenômenos Climáticos Extremos & Exploração Avançada (Concluída - 100%)
+- [x] **Tempestades Elétricas de Areia (Ion Sandstorms)**:
+  - [x] Descargas elétricas e arcos ionizantes durante o pico das tempestades de areia (`intensity >= 0.75`).
+  - [x] Formação de fulgurito (areia vitrificada em blocos de vidro com descargas elétricas).
+  - [x] Partículas de faíscas elétricas e ion dust ciano suspensas no ar da tempestade.
+  - [x] Interferência eletromagnética em bússolas (giro errático da agulha durante tempestades iônicas).
+  - [x] Interferência e corrupção de telemetria no radar de anomalias com ruído estático e sons de burnout.
+- [x] **Efeito Térmico de Miragem e Ondas de Calor**:
+  - [x] Distorção ótica no horizonte em temperaturas elevadas / extremos diurnos com ondulação de neblina e cintilação de calor no HUD.
+  - [x] Falsos reflexos de poças de água que evaporam em poofs de vapor ao aproximar-se (< 11 blocos).
+  - [x] Aparições fantasmagóricas de ruínas distantes que se dissolvem em poeira arenosa ao aproximar-se (< 15 blocos).
+- [x] **Novas Estruturas Procedurais de Ruínas**:
+  - [x] *Outposts de Colonização Abandonados*: Instalações modulares semi-soterradas (11x11) contendo terminais de dados (`ancient_data_core`), maquinários industriais (`buried_tech_ruins`, `printer_3d`), dunas invasoras e baús com peças tecnológicas e upgrades de traje.
+  - [x] *Silos de Combustível Clandestinos*: Tanques e bunkers subterrâneos (Y: 30-44) com chaminé de ventilação na superfície, tubulações de fluidos (`fluid_pipe`), refinaria química (`chemical_refinery`), cartuchos de propelente estocados e reagentes químicos.
+  - [x] Detecção expandida no Radar de Anomalias para localizar postos avançados e silos de combustível.
 
 ### 🛡️ Fase 10: Biologia Alienígena Hostil & Defesas de Base
 - [ ] **Ninhos Subterrâneos & Larvas de Verme (Sandworm Brood)**:

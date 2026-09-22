@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 
 public class SandstormParticleHandler {
@@ -68,6 +69,29 @@ public class SandstormParticleHandler {
                     particle,
                     x, y, z, windVx, windVy, windVz
             );
+        }
+
+        if (intensity >= 0.75) {
+            int ionCount = (int) ((intensity - 0.75) * 20.0) + 2;
+            for (int j = 0; j < ionCount; j++) {
+                double px = client.player.getX() + (random.nextDouble() - 0.5) * 18.0;
+                double py = client.player.getY() + random.nextDouble() * 4.0;
+                double pz = client.player.getZ() + (random.nextDouble() - 0.5) * 18.0;
+                client.level.addParticle(
+                        ParticleTypes.ELECTRIC_SPARK,
+                        px, py, pz,
+                        (random.nextDouble() - 0.5) * 0.8,
+                        (random.nextDouble() - 0.5) * 0.4,
+                        (random.nextDouble() - 0.5) * 0.8
+                );
+                if (random.nextFloat() < 0.35f) {
+                    client.level.addParticle(
+                            new DustParticleOptions(0x00E5FF, 0.65f),
+                            px, py, pz,
+                            windVx * 1.4, windVy, windVz * 1.4
+                    );
+                }
+            }
         }
     }
 }

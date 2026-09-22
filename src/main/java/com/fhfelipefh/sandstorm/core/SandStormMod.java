@@ -23,6 +23,7 @@ import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.survival.TechnologyToolRestrictionHandler;
 import com.fhfelipefh.sandstorm.content.world.DimensionPortalRestrictionHandler;
 import com.fhfelipefh.sandstorm.content.world.NutrientTerraformingManager;
+import com.fhfelipefh.sandstorm.content.world.ProceduralRuinsManager;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import com.fhfelipefh.sandstorm.content.world.SandStormWorldGen;
 import com.fhfelipefh.sandstorm.content.world.SpaceshipLandingManager;
@@ -77,6 +78,7 @@ public class SandStormMod implements ModInitializer {
         TechnologyToolRestrictionHandler.initialize();
         BedRestrictionHandler.initialize();
         SandStormWorldGen.initialize();
+        ProceduralRuinsManager.initialize();
         SpaceshipLandingManager.initialize();
         FusedSpaceSuitHandler.initialize();
         MultiplayerSpawnHandler.initialize();

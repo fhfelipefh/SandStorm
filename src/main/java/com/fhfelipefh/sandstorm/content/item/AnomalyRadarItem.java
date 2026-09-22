@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.item;
 import com.fhfelipefh.sandstorm.component.RadarComponent;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -53,13 +54,20 @@ public class AnomalyRadarItem extends Item {
                     .filter(pos -> {
                         BlockState s = level.getBlockState(pos);
                         return s.is(SandStormBlocks.BURIED_TECH_RUINS)
-                                || s.is(SandStormBlocks.ANCIENT_DATA_CORE);
+                                || s.is(SandStormBlocks.ANCIENT_DATA_CORE)
+                                || s.is(SandStormBlocks.CHEMICAL_REFINERY);
                     })
                     .limit(32)
                     .forEach(pos -> {
                         BlockState s = level.getBlockState(pos);
-                        String type = s.is(SandStormBlocks.BURIED_TECH_RUINS)
-                                ? "buried_ruins" : "ancient_data_core";
+                        String type;
+                        if (s.is(SandStormBlocks.CHEMICAL_REFINERY)) {
+                            type = "fuel_silo";
+                        } else if (s.is(SandStormBlocks.ANCIENT_DATA_CORE)) {
+                            type = "outpost_terminal";
+                        } else {
+                            type = "buried_ruins";
+                        }
                         targets.add(new RadarComponent.AnomalyTarget(
                                 pos.getX(), pos.getY(), pos.getZ(), type));
                     });
@@ -72,7 +80,26 @@ public class AnomalyRadarItem extends Item {
                     SCAN_RADIUS
             );
 
-            if (scanResult.isPresent()) {
+            boolean isIonStorm = SandstormWeatherHandler.getWeather().isActive()
+                    && SandstormWeatherHandler.getWeather().getIntensity() >= 0.70;
+
+            if (isIonStorm) {
+                serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.radar_interference"), true);
+                level.playSound(null, playerPos, SoundEvents.REDSTONE_TORCH_BURNOUT, SoundSource.PLAYERS, 0.9f, 0.6f);
+                level.playSound(null, playerPos, SoundEvents.ITEM_BREAK.value(), SoundSource.PLAYERS, 0.7f, 1.4f);
+
+                if (scanResult.isPresent()) {
+                    RadarComponent.ScanResult res = scanResult.get();
+                    int scrambledDist = Math.max(5, (int) (res.horizontalDistance() * (0.6 + level.getRandom().nextDouble() * 0.8)));
+                    String[] erraticDirs = {"???", "ERR", "!#$", "~~~", "NaN"};
+                    String fakeDir = erraticDirs[level.getRandom().nextInt(erraticDirs.length)];
+                    serverPlayer.sendSystemMessage(Component.translatable(
+                            "telemetry.sandstorm.radar_signal_corrupted",
+                            scrambledDist,
+                            fakeDir
+                    ));
+                }
+            } else if (scanResult.isPresent()) {
                 RadarComponent.ScanResult res = scanResult.get();
                 serverPlayer.sendSystemMessage(Component.translatable(
                         "telemetry.sandstorm.radar_signal",

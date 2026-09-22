@@ -11,6 +11,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -70,6 +73,9 @@ public class SandstormWeatherHandler {
                 if (WEATHER.getIntensity() >= 0.35 && gameTime % 40 == 0) {
                     depositSandDrifts(level);
                 }
+                if (WEATHER.getIntensity() >= 0.75 && gameTime % 30 == 0) {
+                    triggerIonDischarges(level);
+                }
             }
         }
     }
@@ -95,6 +101,45 @@ public class SandstormWeatherHandler {
             BlockState below = level.getBlockState(topPos.below());
             if (below.isSolid() && level.getBlockState(topPos).isAir()) {
                 level.setBlock(topPos, Blocks.SAND.defaultBlockState(), 3);
+            }
+        }
+    }
+
+    public static void triggerIonDischarges(ServerLevel level) {
+        if (level == null || level.players().isEmpty()) {
+            return;
+        }
+        for (ServerPlayer player : level.players()) {
+            if (!level.canSeeSky(player.blockPosition())) {
+                continue;
+            }
+            if (level.getRandom().nextFloat() > 0.35f) {
+                continue;
+            }
+            int dx = level.getRandom().nextInt(41) - 20;
+            int dz = level.getRandom().nextInt(41) - 20;
+            if (dx * dx + dz * dz < 36) {
+                continue;
+            }
+            BlockPos checkPos = player.blockPosition().offset(dx, 0, dz);
+            BlockPos surfacePos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, checkPos);
+
+            if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(surfacePos.getX(), surfacePos.getZ())) {
+                continue;
+            }
+
+            BlockState below = level.getBlockState(surfacePos.below());
+            if (below.is(Blocks.SAND) || below.is(Blocks.SANDSTONE) || below.is(Blocks.RED_SAND)) {
+                LightningBolt bolt = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.NATURAL);
+                if (bolt != null) {
+                    bolt.setVisualOnly(false);
+                    bolt.snapTo(surfacePos.getX() + 0.5, surfacePos.getY(), surfacePos.getZ() + 0.5);
+                    level.addFreshEntity(bolt);
+
+                    if (below.is(Blocks.SAND) && level.getRandom().nextFloat() < 0.35f) {
+                        level.setBlock(surfacePos.below(), Blocks.GLASS.defaultBlockState(), 3);
+                    }
+                }
             }
         }
     }
