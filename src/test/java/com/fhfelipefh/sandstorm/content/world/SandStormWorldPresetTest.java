@@ -110,7 +110,7 @@ class SandStormWorldPresetTest {
             JsonObject lang = JsonParser.parseReader(reader).getAsJsonObject();
             assertTrue(lang.has("generator.sandstorm.desert_planet"));
             assertTrue(lang.has("generator.sandstorm.desert_planet.description"));
-            assertFalse(lang.get("generator.sandstorm.desert_planet").getAsString().isBlank());
+            assertEquals("Sandstorm", lang.get("generator.sandstorm.desert_planet").getAsString());
             assertFalse(lang.get("generator.sandstorm.desert_planet.description").getAsString().isBlank());
         }
     }

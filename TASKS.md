@@ -344,19 +344,19 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [x] **Integração no Botão "Tipo de mundo" da Aba "Mundo"**:
   - [x] Registro do identificador `sandstorm:desert_planet` na tag de presets do Minecraft: `data/minecraft/tags/worldgen/world_preset/normal.json` com `"replace": false`.
   - [x] Disponibilização direta no botão ciclável **"Tipo de mundo"** na aba **"Mundo"** da tela de criação (`CreateWorldScreen` / `WorldCreationUiState`), permitindo ao jogador alternar livremente entre:
-    - `Tipo de mundo: SandStorm: Planeta Árido`
+    - `Tipo de mundo: Sandstorm`
     - `Tipo de mundo: Padrão` (Minecraft Vanilla)
     - `Tipo de mundo: Superplano`
     - `Tipo de mundo: Grandes Biomas`
     - `Tipo de mundo: Amplificado`
     - `Tipo de mundo: Mundo Único`
 - [x] **Pré-seleção Automática por Padrão ao Abrir a Tela de Criação**:
-  - [x] Implementação de Mixin client em `WorldCreationUiState` / `CreateWorldScreen` (`SandStormWorldPresetSelectionMixin`).
-  - [x] Ao abrir a tela "Criar novo mundo", o seletor `Tipo de mundo` na aba "Mundo" é automaticamente inicializado com o preset do SandStorm (`sandstorm:desert_planet`) como opção padrão ativa.
+  - [x] Implementação de Mixin client em `WorldCreationUiState` (`SandStormWorldPresetSelectionMixin`).
+  - [x] Ao abrir a tela "Criar novo mundo", o seletor `Tipo de mundo` na aba "Mundo" é automaticamente inicializado com o preset do SandStorm (`sandstorm:desert_planet`) como opção padrão ativa (interceptando a seleção vanilla inicial de `WorldPresets.NORMAL` em novos mundos e aplicando `setWorldType`).
   - [x] Proporciona inicialização instantânea e imersiva para o jogador sem requerer configuração manual de menus, mantendo total liberdade para alternar para "Padrão" caso deseje um mundo vanilla.
 - [x] **Localização & Identidade (i18n)**:
   - [x] Chaves de internacionalização registradas em `pt_br.json`, `en_us.json` e `es_es.json`:
-    - `generator.sandstorm.desert_planet`: "SandStorm: Planeta Árido" / "SandStorm: Arid Planet" / "SandStorm: Planeta Árido".
+    - `generator.sandstorm.desert_planet`: "Sandstorm" (título enxuto oficial em pt_br, en_us e es_es).
     - `generator.sandstorm.desert_planet.description`: "Planeta desértico árido e hostil, assolado por tempestades de areia, vermes gigantes e segredos tecnológicos soterrados."
 - [x] **Suíte de Testes Automatizados & Validação Arquitetural**:
   - [x] Teste de integridade estrutural do preset `desert_planet.json` (`SandStormWorldPresetTest.java`).

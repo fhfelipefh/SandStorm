@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screens.worldselection.WorldCreationContext;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.presets.WorldPreset;
+import net.minecraft.world.level.levelgen.presets.WorldPresets;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +28,7 @@ public abstract class SandStormWorldPresetSelectionMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void sandstorm$setDefaultWorldPreset(Path savesFolder, WorldCreationContext settings, Optional<ResourceKey<WorldPreset>> preset, OptionalLong seed, CallbackInfo ci) {
-        if (preset.isEmpty()) {
+        if (seed.isEmpty() && (preset.isEmpty() || (preset.isPresent() && preset.get().equals(WorldPresets.NORMAL)))) {
             for (WorldCreationUiState.WorldTypeEntry entry : getNormalPresetList()) {
                 if (entry.preset() != null && entry.preset().is(SandStormWorldPresets.DESERT_PLANET)) {
                     setWorldType(entry);

@@ -305,6 +305,6 @@
   "block.sandstorm.halophyte_plant": "Planta Halófita Biorremediadora",
   "item.sandstorm.halophyte_plant": "Planta Halófita Biorremediadora",
   "tooltip.sandstorm.halophyte_plant_desc": "Espécie tolerante a sal capaz de absorver o salitre do solo e restaurar areia limpa.",
-  "generator.sandstorm.desert_planet": "SandStorm: Planeta Árido",
+  "generator.sandstorm.desert_planet": "Sandstorm",
   "generator.sandstorm.desert_planet.description": "Planeta desértico árido e hostil, assolado por tempestades de areia, vermes gigantes e segredos tecnológicos soterrados."
 }
