@@ -13,6 +13,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TechnologyToolRestrictionHandler {
@@ -20,6 +22,12 @@ public class TechnologyToolRestrictionHandler {
     public static void initialize() {
         PlayerBlockBreakEvents.BEFORE.register((level, player, pos, state, blockEntity) -> {
             return canPlayerBreakBlock(player, state);
+        });
+
+        PlayerBlockBreakEvents.AFTER.register((level, player, pos, state, blockEntity) -> {
+            if (!level.isClientSide() && player != null && player.isCreative() && isSandBlock(state)) {
+                Block.popResource(level, pos, new ItemStack(Blocks.SAND));
+            }
         });
 
         AttackBlockCallback.EVENT.register((player, level, hand, pos, direction) -> {
@@ -104,5 +112,16 @@ public class TechnologyToolRestrictionHandler {
 
     public static boolean isShovel(String path) {
         return path != null && path.endsWith("_shovel");
+    }
+
+    public static boolean isSandBlock(BlockState state) {
+        if (state == null) {
+            return false;
+        }
+        if (state.is(Blocks.SAND) || state.is(Blocks.RED_SAND) || state.is(Blocks.SUSPICIOUS_SAND)) {
+            return true;
+        }
+        Identifier id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+        return id != null && "sandstorm".equals(id.getNamespace()) && "salinized_sand".equals(id.getPath());
     }
 }

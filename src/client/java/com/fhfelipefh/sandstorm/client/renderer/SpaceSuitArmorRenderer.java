@@ -17,21 +17,38 @@ public class SpaceSuitArmorRenderer implements ArmorRenderer {
     private static final Identifier BASE_TEXTURE = SandStormMod.id("textures/entity/equipment/humanoid/space_suit.png");
     private static final Identifier GLOW_TEXTURE = SandStormMod.id("textures/entity/equipment/humanoid/space_suit_glow.png");
 
-    private final SpaceSuitArmorModel model;
+    private final SpaceSuitArmorModel helmetModel;
+    private final SpaceSuitArmorModel chestModel;
+    private final SpaceSuitArmorModel leggingsModel;
+    private final SpaceSuitArmorModel bootsModel;
 
     public SpaceSuitArmorRenderer() {
-        this.model = new SpaceSuitArmorModel(SpaceSuitArmorModel.createBodyLayer().bakeRoot());
+        this.helmetModel = new SpaceSuitArmorModel(SpaceSuitArmorModel.createBodyLayer().bakeRoot());
+        this.chestModel = new SpaceSuitArmorModel(SpaceSuitArmorModel.createBodyLayer().bakeRoot());
+        this.leggingsModel = new SpaceSuitArmorModel(SpaceSuitArmorModel.createBodyLayer().bakeRoot());
+        this.bootsModel = new SpaceSuitArmorModel(SpaceSuitArmorModel.createBodyLayer().bakeRoot());
+    }
+
+    public SpaceSuitArmorModel getModelForSlot(EquipmentSlot slot) {
+        return switch (slot) {
+            case HEAD -> this.helmetModel;
+            case CHEST -> this.chestModel;
+            case LEGS -> this.leggingsModel;
+            case FEET -> this.bootsModel;
+            default -> this.chestModel;
+        };
     }
 
     @Override
     public void render(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, ItemStack stack, HumanoidRenderState humanoidRenderState, EquipmentSlot slot, int light, HumanoidModel<HumanoidRenderState> contextModel) {
-        this.model.copyTransforms(contextModel);
-        this.model.setVisibleSlot(slot);
+        SpaceSuitArmorModel slotModel = getModelForSlot(slot);
+        slotModel.copyTransforms(contextModel);
+        slotModel.setVisibleSlot(slot);
 
         RenderType baseRenderType = RenderTypes.armorCutoutNoCull(BASE_TEXTURE);
         RenderType glowRenderType = RenderTypes.eyes(GLOW_TEXTURE);
 
-        submitNodeCollector.submitModel(this.model, humanoidRenderState, poseStack, baseRenderType, light, OverlayTexture.NO_OVERLAY, -1);
-        submitNodeCollector.submitModel(this.model, humanoidRenderState, poseStack, glowRenderType, 0x00F000F0, OverlayTexture.NO_OVERLAY, -1);
+        submitNodeCollector.submitModel(slotModel, humanoidRenderState, poseStack, baseRenderType, light, OverlayTexture.NO_OVERLAY, -1);
+        submitNodeCollector.submitModel(slotModel, humanoidRenderState, poseStack, glowRenderType, 0x00F000F0, OverlayTexture.NO_OVERLAY, -1);
     }
 }

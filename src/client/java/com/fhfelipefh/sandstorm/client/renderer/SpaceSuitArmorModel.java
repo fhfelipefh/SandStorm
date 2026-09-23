@@ -99,7 +99,6 @@ public class SpaceSuitArmorModel extends HumanoidModel<HumanoidRenderState> {
                 this.leftArm.visible = true;
             }
             case LEGS -> {
-                this.body.visible = true;
                 this.rightLeg.visible = true;
                 this.leftLeg.visible = true;
             }
