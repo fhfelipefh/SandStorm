@@ -242,11 +242,14 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] Interface gráfica industrial com slots de bateria/célula, barra de energia animada e botão de alternância de modo (`SolidStateAccumulatorScreen`).
 
 ### 🌋 Fase 14: Expedições Subterrâneas Profundas & Surto de Plasma Cósmico
-- [ ] **Cavernas de Quartzo Piezoelétrico (`piezo_caverns`)**:
-  - Geodos subterrâneos raros (Y: -30 a 10) repletos de cristais que vibram acusticamente ao sofrer impacto ou corte por laser.
-  - Fonte de ressonadores piezoelétricos para tecnologia militar e sísmica avançada.
-- [ ] **Perfuratriz Automática de Poço Profundo (`deep_core_drill`)**:
-  - Maquinário industrial de grande porte para extração contínua de fluidos fósseis pressurizados e minerais raros do manto planetário.
+- [x] **Cavernas de Quartzo Piezoelétrico (`piezo_caverns`)**:
+  - [x] Geodos subterrâneos raros (Y: -30 a 10) repletos de cristais que vibram acusticamente ao sofrer impacto ou corte por laser (`PiezoQuartzBlock`, `BuddingPiezoQuartzBlock`, `PiezoQuartzClusterBlock`).
+  - [x] Fonte de ressonadores piezoelétricos (`piezo_resonator`, `piezo_quartz_shard`) para tecnologia militar e sísmica avançada.
+  - [x] Geração procedural subterrânea configurada via recursos de bioma e `SandStormWorldGen`.
+- [x] **Perfuratriz Automática de Poço Profundo (`deep_core_drill`)**:
+  - [x] Maquinário industrial de grande porte para extração contínua de fluidos fósseis pressurizados e minerais raros do manto planetário (`DeepCoreDrillBlock`, `DeepCoreDrillBlockEntity`).
+  - [x] Sistema de armazenamento de energia (50.000 J a 50 J/t), tanque de fluidos embutido de 4.000 mB integrado à Fabric Transfer API (`Storage<FluidVariant>`), buffer de 8 slots de minérios e envase automático de baldes de fluidos fósseis (`pressurized_fossil_fluid_bucket`).
+  - [x] Chassis industrial cyberpunk com interface holográfica (`DeepCoreDrillScreen`, `DeepCoreDrillMenu`) e monitoramento em tempo real.
 
 ### 🛡️ Fase 15: Tecnologia Militar de Plasma, Blindagens Exóticas & Defesa Orbital
 - [ ] **Canhão de Feixe de Plasma Pesado (`heavy_plasma_cannon`)**:

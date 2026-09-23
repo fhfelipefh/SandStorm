@@ -63,6 +63,11 @@ class SandStormWorldGenTest {
         assertEquals(Registries.PLACED_FEATURE, SandStormWorldGen.ANCIENT_DATA_CORE_KEY.registryKey());
         assertEquals("sandstorm", SandStormWorldGen.ANCIENT_DATA_CORE_KEY.identifier().getNamespace());
         assertEquals("ancient_data_core", SandStormWorldGen.ANCIENT_DATA_CORE_KEY.identifier().getPath());
+
+        assertNotNull(SandStormWorldGen.PIEZO_CAVERN_KEY);
+        assertEquals(Registries.PLACED_FEATURE, SandStormWorldGen.PIEZO_CAVERN_KEY.registryKey());
+        assertEquals("sandstorm", SandStormWorldGen.PIEZO_CAVERN_KEY.identifier().getNamespace());
+        assertEquals("piezo_cavern", SandStormWorldGen.PIEZO_CAVERN_KEY.identifier().getPath());
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
@@ -29,6 +30,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 
 import java.util.Set;
 
@@ -220,6 +222,39 @@ public class SandStormBlocks {
                     .strength(3.0f)
                     .sound(SoundType.METAL)
                     .noOcclusion()));
+    public static final PiezoQuartzBlock PIEZO_QUARTZ_BLOCK = register("piezo_quartz_block",
+            new PiezoQuartzBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("piezo_quartz_block")))
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(2.5f, 4.0f)
+                    .sound(SoundType.AMETHYST)
+                    .requiresCorrectToolForDrops()));
+    public static final BuddingPiezoQuartzBlock BUDDING_PIEZO_QUARTZ = register("budding_piezo_quartz",
+            new BuddingPiezoQuartzBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("budding_piezo_quartz")))
+                    .randomTicks()
+                    .mapColor(MapColor.COLOR_MAGENTA)
+                    .strength(3.0f, 5.0f)
+                    .sound(SoundType.AMETHYST)
+                    .requiresCorrectToolForDrops()));
+    public static final PiezoQuartzClusterBlock PIEZO_QUARTZ_CLUSTER = register("piezo_quartz_cluster",
+            new PiezoQuartzClusterBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("piezo_quartz_cluster")))
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .forceSolidOn()
+                    .noOcclusion()
+                    .randomTicks()
+                    .sound(SoundType.AMETHYST_CLUSTER)
+                    .strength(1.5f)
+                    .lightLevel(state -> 5)
+                    .pushReaction(PushReaction.POPPED)));
+    public static final DeepCoreDrillBlock DEEP_CORE_DRILL = register("deep_core_drill",
+            new DeepCoreDrillBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("deep_core_drill")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(5.0f, 12.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -286,6 +321,11 @@ public class SandStormBlocks {
             SandStormMod.id("grid_monitor_console"),
             new BlockEntityType<>(GridMonitorConsoleBlockEntity::new, Set.of(GRID_MONITOR_CONSOLE))
     );
+    public static final BlockEntityType<DeepCoreDrillBlockEntity> DEEP_CORE_DRILL_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("deep_core_drill"),
+            new BlockEntityType<>(DeepCoreDrillBlockEntity::new, Set.of(DEEP_CORE_DRILL))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -312,5 +352,7 @@ public class SandStormBlocks {
         FluidStorage.SIDED.registerForBlockEntity(ThermalGeneratorBlockEntity::getFluidStorage, THERMAL_GENERATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SOLID_STATE_ACCUMULATOR_BE);
         FluidStorage.SIDED.registerForBlockEntity(SmartFluidPipeBlockEntity::getFluidStorage, SMART_FLUID_PIPE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, DEEP_CORE_DRILL_BE);
+        FluidStorage.SIDED.registerForBlockEntity(DeepCoreDrillBlockEntity::getFluidStorage, DEEP_CORE_DRILL_BE);
     }
 }

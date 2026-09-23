@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.equipment.ArmorType;
@@ -62,6 +63,9 @@ public class SandStormItems {
     public static final SamplingSyringeItem SAMPLING_SYRINGE = register("sampling_syringe", new SamplingSyringeItem(properties("sampling_syringe").stacksTo(1)));
     public static final HeavySapBottleItem HEAVY_SAP_BOTTLE = register("heavy_sap_bottle", new HeavySapBottleItem(properties("heavy_sap_bottle")));
     public static final Item FLEXIBLE_BIOPOLYMER = register("flexible_biopolymer", new Item(properties("flexible_biopolymer").rarity(Rarity.UNCOMMON)));
+    public static final Item PIEZO_QUARTZ_SHARD = register("piezo_quartz_shard", new Item(properties("piezo_quartz_shard").rarity(Rarity.UNCOMMON)));
+    public static final Item PIEZO_RESONATOR = register("piezo_resonator", new Item(properties("piezo_resonator").rarity(Rarity.RARE)));
+    public static final Item PRESSURIZED_FOSSIL_FLUID_BUCKET = register("pressurized_fossil_fluid_bucket", new Item(properties("pressurized_fossil_fluid_bucket").craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.UNCOMMON)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -130,6 +134,13 @@ public class SandStormItems {
                         entries.accept(SANDWORM_CHITIN);
                         entries.accept(SANDWORM_TOOTH);
                         entries.accept(SANDWORM_SPAWN_EGG);
+                        entries.accept(PIEZO_QUARTZ_SHARD);
+                        entries.accept(PIEZO_RESONATOR);
+                        entries.accept(PRESSURIZED_FOSSIL_FLUID_BUCKET);
+                        entries.accept(SandStormBlocks.PIEZO_QUARTZ_BLOCK);
+                        entries.accept(SandStormBlocks.BUDDING_PIEZO_QUARTZ);
+                        entries.accept(SandStormBlocks.PIEZO_QUARTZ_CLUSTER);
+                        entries.accept(SandStormBlocks.DEEP_CORE_DRILL);
                     })
                     .build()
     );

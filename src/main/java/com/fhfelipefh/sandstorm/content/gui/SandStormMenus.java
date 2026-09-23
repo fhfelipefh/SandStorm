@@ -52,6 +52,11 @@ public class SandStormMenus {
             new MenuType<>(GridMonitorConsoleMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<DeepCoreDrillMenu> DEEP_CORE_DRILL_MENU = register(
+            "deep_core_drill",
+            new MenuType<>(DeepCoreDrillMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

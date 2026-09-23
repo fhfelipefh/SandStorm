@@ -20,6 +20,9 @@ public class SandStormWorldGen {
     public static final ResourceKey<PlacedFeature> ANCIENT_DATA_CORE_KEY =
             ResourceKey.create(Registries.PLACED_FEATURE, SandStormMod.id("ancient_data_core"));
 
+    public static final ResourceKey<PlacedFeature> PIEZO_CAVERN_KEY =
+            ResourceKey.create(Registries.PLACED_FEATURE, SandStormMod.id("piezo_cavern"));
+
     public static void initialize() {
         BiomeModifications.addFeature(
                 BiomeSelectors.includeByKey(Biomes.DESERT),
@@ -37,6 +40,12 @@ public class SandStormWorldGen {
                 BiomeSelectors.includeByKey(Biomes.DESERT),
                 GenerationStep.Decoration.UNDERGROUND_DECORATION,
                 ANCIENT_DATA_CORE_KEY
+        );
+
+        BiomeModifications.addFeature(
+                BiomeSelectors.includeByKey(Biomes.DESERT),
+                GenerationStep.Decoration.UNDERGROUND_DECORATION,
+                PIEZO_CAVERN_KEY
         );
     }
 }

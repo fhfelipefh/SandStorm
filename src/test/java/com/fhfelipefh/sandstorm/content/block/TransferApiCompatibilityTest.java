@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
@@ -56,6 +57,20 @@ class TransferApiCompatibilityTest {
         Storage<ItemVariant> thermalStorage = ContainerStorage.of(thermalGenerator, Direction.UP);
         assertNotNull(thermalStorage);
         assertTrue(thermalStorage.supportsInsertion());
+
+        DeepCoreDrillBlockEntity drill = new DeepCoreDrillBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<ItemVariant> drillStorage = ContainerStorage.of(drill, Direction.UP);
+        assertNotNull(drillStorage);
+        assertTrue(drillStorage.supportsInsertion());
+    }
+
+    @Test
+    void shouldExposeFluidStorageForDeepCoreDrill() {
+        DeepCoreDrillBlockEntity drill = new DeepCoreDrillBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<FluidVariant> fluidStorage = drill.getFluidStorage(Direction.UP);
+        assertNotNull(fluidStorage);
+        assertTrue(fluidStorage.supportsExtraction());
+        assertFalse(fluidStorage.supportsInsertion());
     }
 
     @Test

@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "drilling=false,facing=east": {
+      "model": "sandstorm:block/deep_core_drill",
+      "y": 90
+    },
+    "drilling=false,facing=north": {
+      "model": "sandstorm:block/deep_core_drill"
+    },
+    "drilling=false,facing=south": {
+      "model": "sandstorm:block/deep_core_drill",
+      "y": 180
+    },
+    "drilling=false,facing=west": {
+      "model": "sandstorm:block/deep_core_drill",
+      "y": 270
+    },
+    "drilling=true,facing=east": {
+      "model": "sandstorm:block/deep_core_drill_active",
+      "y": 90
+    },
+    "drilling=true,facing=north": {
+      "model": "sandstorm:block/deep_core_drill_active"
+    },
+    "drilling=true,facing=south": {
+      "model": "sandstorm:block/deep_core_drill_active",
+      "y": 180
+    },
+    "drilling=true,facing=west": {
+      "model": "sandstorm:block/deep_core_drill_active",
+      "y": 270
+    }
+  }
+}

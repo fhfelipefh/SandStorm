@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "sandstorm:block/piezo_quartz_cluster",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "sandstorm:block/piezo_quartz_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "sandstorm:block/piezo_quartz_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/piezo_quartz_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "sandstorm:block/piezo_quartz_cluster"
+    },
+    "facing=west": {
+      "model": "sandstorm:block/piezo_quartz_cluster",
+      "x": 90,
+      "y": 270
+    }
+  }
+}
