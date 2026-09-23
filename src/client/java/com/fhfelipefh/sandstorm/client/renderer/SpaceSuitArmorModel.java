@@ -20,7 +20,7 @@ public class SpaceSuitArmorModel extends HumanoidModel<HumanoidRenderState> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        root.addOrReplaceChild("head", CubeListBuilder.create()
+        PartDefinition head = root.addOrReplaceChild("head", CubeListBuilder.create()
                 .texOffs(0, 0).addBox(-4.5f, -8.5f, -4.5f, 9.0f, 9.0f, 9.0f, new CubeDeformation(0.5f))
                 .texOffs(36, 0).addBox(-3.5f, -6.5f, -5.3f, 7.0f, 4.0f, 2.0f)
                 .texOffs(54, 0).addBox(-4.8f, -3.5f, -4.5f, 2.0f, 2.0f, 4.0f)
@@ -29,7 +29,7 @@ public class SpaceSuitArmorModel extends HumanoidModel<HumanoidRenderState> {
                 .texOffs(36, 6).addBox(-4.5f, -0.5f, -4.5f, 9.0f, 2.0f, 9.0f),
                 PartPose.ZERO);
 
-        root.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+        head.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
 
         root.addOrReplaceChild("body", CubeListBuilder.create()
                 .texOffs(0, 27).addBox(-4.5f, 0.0f, -2.5f, 9.0f, 12.0f, 5.0f, new CubeDeformation(0.6f))
