@@ -10,6 +10,10 @@ Ao criar ou editar qualquer arquivo `.java` em `src/main/java`, `src/client/java
    - Toda classe externa deve ser declarada como import explícito no topo do arquivo (`import net.minecraft...;`). Violação quebra `NoInlineImportsArchitectureTest`.
 3. **Zero Imports Não Utilizados**:
    - Todo import declarado no topo do arquivo deve ser efetivamente usado no corpo da classe. Violação quebra `NoUnusedImportsArchitectureTest`.
+4. **Prevenção de Deadlocks no Servidor**:
+   - **Geração de Mundo (Chunks)**: Nunca execute `level.setBlock()` (ou gere estruturas) diretamente dentro de manipuladores do evento `ServerChunkEvents.CHUNK_LOAD` via `level.getServer().execute()`. Isso causa *deadlock* mútuo entre o *Server Thread* e o *Chunk Worker Thread*. A forma correta é adicionar os alvos a uma fila assíncrona (`Queue`) e processá-los via `ServerTickEvents.END_SERVER_TICK`, condicionando a execução ao `level.isLoaded(pos)`.
+   - **Salvamento (I/O)**: É proibido chamar `saveAndJoin()` na thread do servidor. As classes devem invocar `setDirty()` e delegar a persistência ao sistema assíncrono vanilla.
+   - Violações quebram `ServerDeadlockPreventionArchitectureTest`.
 
 ## 🧹 Higiene de Arquivos & Scripts Geradores
 1. Scripts temporários (ex: scripts Python de geração procedural de texturas, conversores descartáveis) devem ser colocados no diretório scratch do agente ou excluídos imediatamente após a geração dos arquivos finais.
