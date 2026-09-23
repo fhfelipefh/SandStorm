@@ -154,10 +154,29 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] *Silos de Combustível Clandestinos*: Tanques e bunkers subterrâneos (Y: 30-44) com chaminé de ventilação na superfície, tubulações de fluidos (`fluid_pipe`), refinaria química (`chemical_refinery`), cartuchos de propelente estocados e reagentes químicos.
   - [x] Detecção expandida no Radar de Anomalias para localizar postos avançados e silos de combustível.
 
-### 🛡️ Fase 10: Biologia Alienígena Hostil & Defesas de Base
-- [ ] **Ninhos Subterrâneos & Larvas de Verme (Sandworm Brood)**:
-  - Larvas do verme da areia habitando ruínas profundas e cavernas areníticas.
-  - Comportamento de enxame agressivo quando o jogador cava próximo a depósitos de silício.
+### 🛡️ Fase 10: Biologia Alienígena Hostil, Ciclo de Vida do Verme (Estilo Duna) & Defesas de Base
+- [ ] **Ciclo Biológico Completo do Verme da Areia (Metamorfose Ecológica de Duna)**:
+  - [ ] **Estágio 1: Truta da Areia (Sandtrout / Little Makers - `sandtrout`)**:
+    - Pequena criatura bio-anfíbia coriácea que rasteja sob dunas profundas e ruínas areníticas.
+    - **Seqüestro Ativo de Umidade (Desertificação)**: Atrai-se instintivamente por qualquer fonte de água líquida (garrafas quebradas, condensadores de orvalho desprotegidos, poças de aquíferos) e a absorve imediatamente, aprisionando a umidade em tecidos biológicos selados para proteger os vermes adultos da água livre letal.
+    - **Captura & Biomembrana Impermeabilizante**: Pode ser coletada manualmente com o traje espacial em frascos herméticos (`sandtrout_capsule`), servindo como membrana biológica impermeabilizante de alta tecnologia na confecção de trajes e eclusas.
+    - Morte por saturação: Se exposta a excesso de água sem conseguir escapar, sofre lise celular liberando a massa precursora que enriquece os aquíferos salobros (`brackish_aquifer`).
+  - [ ] **Estágio 2: Larva / Ninfa da Areia (Sandworm Larva / Brood - `sandworm_larva`)**:
+    - Agrupamento metamórfico de trutas da areia que dá origem a larvas vermiformes de 2 a 4 blocos de comprimento.
+    - **Ninhos em Cavernas & Ruínas Subterrâneas (`sandworm_nest`)**: Habitam fendas profundas de arenito e galerias escuras, protegendo depósitos de silício fóssil e núcleos tecnológicos soterrados.
+    - **Comportamento de Enxame Predatório (Pack Hunting AI)**: Comunicam-se por estalos sísmicos de alta frequência; se o jogador fizer barulho ao minerar ou quebrar blocos por perto, emergem rapidamente da areia solta em bandos de 3 a 6 indivíduos rápidos e vorazes.
+    - Drops: Quitina tenra de larva (`soft_chitin_plate`) e fluido biliar corrosivo (`larval_bile`).
+  - [ ] **Estágio 3: Verme Sub-Adulto / Caçador de Dunas (Juvenile Sandworm - `juvenile_sandworm`)**:
+    - Espécime em fase intermediária de crescimento (~12 a 18 blocos de comprimento).
+    - Patrulha as bordas e dunas superficiais em velocidade moderada, atacando alvos que se desloquem fora de blocos seguros de rocha.
+    - Menor resistência que o titã adulto: Pode ser repelido por 1 a 2 disparos certeiros do Canhão Sônico (`sonic_cannon`) ou pela Torreta Sônica (`autonomous_sonic_turret`).
+    - **Ritual da Água da Vida (Water of Life Extraction)**:
+      - Ao ser afogado intencionalmente pelo jogador com água potável pura em uma câmara de contenção hidropônica ou selada, o verme jovem sofre espasmo metabólico final e secreta a **Água da Vida (`water_of_life_vial`)**.
+      - Substância catalisadora de extrema potência biológica e periculosidade: ao ser consumida com traje protegido ou analisada no Datapad, desbloqueia instantaneamente a árvore oculta de telemetria ancestral e receitas tecnológicas arcanas.
+  - [x] **Estágio 4: Verme Adulto Colossal / Shai-Hulud (`sandworm`)**:
+    - O predador ápice titânico de 64+ blocos já implementado no mod (`SandwormEntity`), com movimentação de deslocamento de dunas, mandíbulas de placas quádruplas e destruição sísmica em massa.
+  - [ ] **Motor Ecológico de Metamorfose (`SandwormLifecycleManager`)**:
+    - Simulação de progressão ontogenética no mundo: agregação de trutas -> emergência de ninhos de larvas -> maturação para caçadores juvenis -> migração definitiva para as profundezas do grande deserto árido como vermes colossais.
 - [x] **Torreta Sônica Automatizada (Autonomous Sonic Turret - `autonomous_sonic_turret`)**:
   - [x] Bloco industrial com rotação direcional e carcaça pesada de titânio escuro (`#121820`), emissores de onda sônica duplos e cúpula de sensores óticos.
   - [x] Integração total com malha de energia sem fio (WPT) e slot de bateria auxiliar, consumindo 400 J por pulso acústico num raio de 20 blocos.
@@ -349,6 +368,10 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 | `block.megastructure_constructor.laser` | `megastructure_laser.ogg` | `blocks` | 1.8s (loop) | Feixe de laser de fusão molecular contínuo emitido por drones construtores ao assentar blocos. |
 | `block.megastructure_constructor.layer_complete` | `megastructure_layer_complete.ogg` | `blocks` | 1.2s | Sinal harmônico de telemetria anunciando o término da fatia/camada Y atual e avanço para o andar superior. |
 | `block.megastructure_constructor.complete` | `megastructure_complete.ogg` | `players` | 3.5s | Acorde orquestral triunfante em ressonância cósmica com dispersão de onda de choque celebrando a conclusão da megaestrutura. |
+| `entity.sandtrout.slither` | `sandtrout_slither.ogg` | `neutral` | 1.5s (loop) | Som viscoso e rápido de rastejamento da truta da areia sob os grãos e dunas. |
+| `entity.sandworm_larva.chitter` | `sandworm_larva_chitter.ogg` | `hostile` | 0.8s | Cliques rápidos e estalos sísmicos insectoides de comunicação em bando das larvas de verme. |
+| `entity.sandworm_larva.bite` | `sandworm_larva_bite.ogg` | `hostile` | 0.6s | Mordida rápida de mandíbula quitinosa tenra com sibilância de secreção ácida. |
+| `entity.juvenile_sandworm.submerge` | `juvenile_sandworm_submerge.ogg` | `hostile` | 2.0s | Deslocamento de dunas e mergulho rápido de espécime juvenil nas camadas superficiais de areia. |
 
 > [!NOTE]
 > **Status dos Efeitos Sonoros**: Todos os 20 arquivos `.mp3` foram convertidos com sucesso para Vorbis `.ogg` (mantendo os `.mp3` originais preservados).
@@ -384,6 +407,10 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `heavy_sap_bottle`: Frasco tecnológico com seiva viscosa concentrada.
   - [x] `flexible_biopolymer`: Biopolímero flexível extraído de seiva e processado.
   - [x] `halophyte_plant`: Planta halófita suculenta (textura de item e modelos de crescimento).
+  - [ ] `sandtrout_capsule`: Frasco criogênico de contenção hermética de truta da areia viva.
+  - [ ] `soft_chitin_plate`: Placa de quitina tenra de larva do verme.
+  - [ ] `larval_bile`: Frasco de secreção ácida digestiva larval.
+  - [ ] `water_of_life_vial`: Frasco tecnológico reforçado com a mística Água da Vida luminescente.
 - [x] **Equipamentos e Ferramentas Concluídos**:
   - [x] `sonic_cannon`: Modelo Item (.json) + Textura personalizada 16x16.
   - [x] `anomaly_radar`: Textura e modelo 16x16.
@@ -415,6 +442,10 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `halophyte_plant`: Modelos 3D de planta suculenta em 4 estágios de crescimento para biorremediação.
 - [x] **Modelos de Entidades (Blockbench)**:
   - [x] `sandworm.bbmodel`: Corpo cilíndrico segmentado com mandíbulas quádruplas abertas e anel bucal.
+  - [ ] `sandtrout.bbmodel`: Modelo pequeno de criatura ameboide coriácea rastejante de areia (Truta da Areia / Little Maker).
+  - [ ] `sandworm_larva.bbmodel`: Modelo segmentado ágil de larva/ninfa com anéis tenros de quitina e mandíbula trirradiada.
+  - [ ] `juvenile_sandworm.bbmodel`: Modelo intermediário de verme caçador de dunas (~15 blocos) com crista dorsal e sulcos de escavação.
+  - [ ] `builder_drone.bbmodel`: Drone operário de construção com pórtico emissor de laser de fusão e garras mecânicas.
   - [x] `cargo_drone.bbmodel`: Drone quadricóptero com rotores e garras de carga.
   - [x] `excavator_vehicle.bbmodel`: Rover industrial de esteiras duplas com broca giratória frontal.
   - [x] `megazord.bbmodel`: Mecha bípede titânico com cockpit e emissores de choque sônico.
