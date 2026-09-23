@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **482 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **500 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 45 receitas oficiais | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 49 receitas oficiais | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -212,6 +212,34 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [ ] **Perfuratriz Automática de Poço Profundo (`deep_core_drill`)**:
   - Maquinário industrial de grande porte para extração contínua de fluidos fósseis pressurizados e minerais raros do manto planetário.
 
+### 🛡️ Fase 15: Tecnologia Militar de Plasma, Blindagens Exóticas & Defesa Orbital
+- [ ] **Canhão de Feixe de Plasma Pesado (`heavy_plasma_cannon`)**:
+  - Arma industrial/militar pesada que projeta feixes de plasma térmico concentrado a longas distâncias, com alto poder de penetração em carcaças de vermes e rochas densas.
+  - Alimentado por células de plasma recarregáveis em refinarias e acoplável em veículos e mechas.
+- [ ] **Gerador de Escudo de Força Cinético (`kinetic_shield_generator`)**:
+  - Estrutura de contenção defensiva para bases e postos avançados que cria uma cúpula eletromagnética deflectora de projéteis e amortecedora de investidas sísmicas.
+  - Drena energia contínua da malha WPT para sustentar o campo contra sobrecargas.
+- [ ] **Matriz de Blindagem Composta de Titânio e Quitina (`titanium_chitin_composite`)**:
+  - Superliga metalobiológica sintetizada na câmara de nanitas para forjar novos módulos de fuselagem, pranchas blindadas e blindagens de mechas de alta durabilidade.
+- [ ] **Satélite de Sensoriamento Remoto Orbital (`orbital_survey_satellite`)**:
+  - Dispositivo de lançamento para órbita baixa planetária que fornece escaneamento topográfico em larga escala, previsão de tempestades iônicas e telemetria para o Datapad.
+
+### 🌪️ Fase 16: Biomas Extremos, Ventos Radioativos & Oásis Fósseis
+- [ ] **Ermos de Fulgurito Líquido & Dunas Vitrificadas (`fulgurite_wastes`)**:
+  - Sub-bioma desértico hiper-radioativo formado por séculos de descargas iônicas contínuas, repleto de monólitos de vidro negro e areia eletrizada condutora.
+- [ ] **Surto de Radiação Solar Cósmica de Classe X (`class_x_solar_flare`)**:
+  - Fenômeno cósmico climático temporário onde a estrela do sistema atinge tempestade magnética severa, sobrecarregando geradores solares mas exigindo abrigo hermético para evitar dano por radiação.
+- [ ] **Oásis Fóssil Subterrâneo (`fossilized_oasis`)**:
+  - Cavernas ocultas com remanescentes botânicos preservados em âmbar e fontes termais minerais, fonte de sementes ancestrais para terraformação definitiva.
+
+### 🚂 Fase 17: Logística Maglev, Linhas Industriais & Domos Coloniais
+- [ ] **Sistema Ferroviário Magnético de Areia (`sand_maglev_rail`)**:
+  - Trilhos de levitação magnética e vagões autônomos de alta velocidade para transporte expresso de minérios, fluidos e jogadores entre postos avançados distantes.
+- [ ] **Domo Residencial de Colonos (`habitat_dome`)**:
+  - Módulos habitacionais pressurizados com controle atmosférico integrado, recicladores de oxigênio e camas de criostase para suporte de vida prolongado.
+- [ ] **Linha de Montagem Industrial Automatizada (`auto_assembly_line`)**:
+  - Esteiras industriais e braços manipuladores robóticos para manufatura contínua sem necessidade de intervenção do jogador em receitas em cadeia.
+
 ---
 
 ## 🎧 Catálogo Completo de Efeitos Sonoros Necessários (SFX)
@@ -272,6 +300,11 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `propellant_cartridge`: Cartucho de propelente de alta pressão.
   - [x] `suit_upgrade_*`: 5 módulos de melhoria de armadura do traje.
   - [x] `sandboard`: Prancha de areia portátil para locomoção.
+  - [x] `xeno_grass_seeds`: Sementes xerófilas geneticamente aprimoradas.
+  - [x] `sampling_syringe`: Seringa descartável de coleta de seiva e amostras biológicas.
+  - [x] `heavy_sap_bottle`: Frasco tecnológico com seiva viscosa concentrada.
+  - [x] `flexible_biopolymer`: Biopolímero flexível extraído de seiva e processado.
+  - [x] `halophyte_plant`: Planta halófita suculenta (textura de item e modelos de crescimento).
 - [x] **Equipamentos e Ferramentas Concluídos**:
   - [x] `sonic_cannon`: Modelo Item (.json) + Textura personalizada 16x16.
   - [x] `anomaly_radar`: Textura e modelo 16x16.
@@ -296,6 +329,11 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `sandstone_workbench`: Bancada de emergência talhada em arenito com tampo quadriculado.
   - [x] `sandstone_furnace`: Fornalha de arenito com câmara de queima e brasas ativas.
   - [x] `dew_condenser`: Condensador noturno de orvalho em estrutura de arenito e malha de coleta.
+  - [x] `hydroponic_chamber`: Módulo hidropônico selado com câmara de iluminação bio-UV e renderizador 3D animado.
+  - [x] `xeno_grass_block`: Bloco de grama xeno-adaptada com textura de topo xerófila e transição com areia.
+  - [x] `heavy_sap_cactus`: Cacto xerófilo de seiva pesada com 4 níveis visuais de seiva (`SAP_LEVEL` 0 a 3).
+  - [x] `salinized_sand`: Substrato de areia saturado de salitre residual pós-dessalinização.
+  - [x] `halophyte_plant`: Modelos 3D de planta suculenta em 4 estágios de crescimento para biorremediação.
 - [x] **Modelos de Entidades (Blockbench)**:
   - [x] `sandworm.bbmodel`: Corpo cilíndrico segmentado com mandíbulas quádruplas abertas e anel bucal.
   - [x] `cargo_drone.bbmodel`: Drone quadricóptero com rotores e garras de carga.
@@ -365,4 +403,5 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 20. `v1.3.4`: Bancada de Trabalho de Arenito (`sandstone_workbench`), Fornalha de Arenito (`sandstone_furnace`), Condensador Noturno de Orvalho (`dew_condenser`), Prancha de Areia (`sandboard`), Módulos de Upgrade do Traje Espacial (`suit_upgrade_*`), Mochila a Jato com voo livre de sobrevivência e Refinaria Química Industrial (`chemical_refinery`).
 21. `v1.3.5`: Saneamento de receitas básicas (remoção de arenito para gravetos de madeira), remapeamento ergonômico da lanterna para a tecla **G** (liberando a tecla F para troca de mãos), blindagem dupla da detecção de itens de fornalha no Datapad e expansão da suíte para **471 testes automatizados** com 100% de aprovação.
 22. `v1.3.6`: Resolução de deadlock no thread do servidor em chunk loading (`ProceduralRuinsManager`), eliminação das faixas de calor no HUD (`SurvivalHudOverlay`), normalização de neblina em tempo limpo (`SandstormFogMixin`), e validação estrita de compatibilidade oficial com os otimizadores gráficos **Sodium**, **Iris Shaders** e **Lithium** na versão 26.3 com teste arquitetural dedicado (`GraphicOptimizersCompatibilityArchitectureTest`), expandindo a suíte para **482 testes automatizados** 100% aprovados.
+23. `v1.3.7`: Implementação completa da **Fase 12: Xenobotânica, Agricultura Hidropônica & Ciclos de Carbono** (`44ff438`): Câmara Hidropônica Pressurizada (`hydroponic_chamber`) com boost de cúpula de terraformação e energia sem fio WPT, Sementes e Bloco de Grama Xeno-Adaptada (`xeno_grass_seeds` / `xeno_grass_block`) com fixação biológica de nitrogênio e conversão em solo fértil, Cactos de Seiva Pesada (`heavy_sap_cactus`), Seringa de Coleta (`sampling_syringe`), Frasco de Seiva Pesada (`heavy_sap_bottle`), Biopolímeros Flexíveis (`flexible_biopolymer`), Biorremediação de Solos com Areia Salinizada (`salinized_sand`) e Plantas Halófitas (`halophyte_plant`) em 4 estágios de desenvolvimento, além da expansão da suíte para **500 testes automatizados** com 100% de aprovação.
 
