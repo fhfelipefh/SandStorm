@@ -15,6 +15,7 @@ import com.fhfelipefh.sandstorm.client.renderer.HydroponicChamberBlockEntityRend
 import com.fhfelipefh.sandstorm.client.renderer.NaniteFabricatorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.Printer3DBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandwormRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.SpaceSuitArmorRenderer;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
@@ -27,6 +28,7 @@ import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.Minecraft;
@@ -55,6 +57,12 @@ public class SandStormClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.DESALINATION_FILTER_BE, DesalinationFilterBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.HYDROPONIC_CHAMBER_BE, HydroponicChamberBlockEntityRenderer::new);
+
+        ArmorRenderer.register(new SpaceSuitArmorRenderer(),
+                SandStormItems.SPACE_SUIT_HELMET,
+                SandStormItems.SPACE_SUIT_CHESTPLATE,
+                SandStormItems.SPACE_SUIT_LEGGINGS,
+                SandStormItems.SPACE_SUIT_BOOTS);
 
         EntityRendererRegistry.register(SandStormEntities.NUTRIENT_BOMB, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDWORM, SandwormRenderer::new);
