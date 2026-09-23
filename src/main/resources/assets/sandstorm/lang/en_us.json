@@ -304,5 +304,7 @@
   "tooltip.sandstorm.salinized_sand_desc": "Substrate saturated with mineral salt residues from heavy desalination cycles.",
   "block.sandstorm.halophyte_plant": "Bioremediating Halophyte Plant",
   "item.sandstorm.halophyte_plant": "Bioremediating Halophyte Plant",
-  "tooltip.sandstorm.halophyte_plant_desc": "Salt-tolerant succulent capable of extracting soil salinization and restoring clean terrain."
+  "tooltip.sandstorm.halophyte_plant_desc": "Salt-tolerant succulent capable of extracting soil salinization and restoring clean terrain.",
+  "generator.sandstorm.desert_planet": "SandStorm: Arid Planet",
+  "generator.sandstorm.desert_planet.description": "Harsh arid desert planet plagued by sandstorms, colossal sandworms, and buried ancient technology."
 }

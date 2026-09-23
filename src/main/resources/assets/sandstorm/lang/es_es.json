@@ -304,5 +304,7 @@
   "tooltip.sandstorm.salinized_sand_desc": "Suelo saturado con exceso de salitre por ciclos intensivos de desalinización.",
   "block.sandstorm.halophyte_plant": "Planta Halófita Biorremediadora",
   "item.sandstorm.halophyte_plant": "Planta Halófita Biorremediadora",
-  "tooltip.sandstorm.halophyte_plant_desc": "Planta tolerante a la sal que absorbe los residuos salinos devolviendo la arena limpia."
+  "tooltip.sandstorm.halophyte_plant_desc": "Planta tolerante a la sal que absorbe los residuos salinos devolviendo la arena limpia.",
+  "generator.sandstorm.desert_planet": "SandStorm: Planeta Árido",
+  "generator.sandstorm.desert_planet.description": "Planeta desértico árido y hostil, azotado por tormentas de arena, gusanos gigantes y secretos tecnológicos enterrados."
 }

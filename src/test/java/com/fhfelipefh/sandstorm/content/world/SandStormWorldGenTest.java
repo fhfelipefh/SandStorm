@@ -38,6 +38,14 @@ class SandStormWorldGenTest {
             DATA_DIR.resolve("minecraft").resolve("dimension").resolve("overworld.json");
     private static final Path NORMAL_WORLD_PRESET_JSON =
             DATA_DIR.resolve("minecraft").resolve("worldgen").resolve("world_preset").resolve("normal.json");
+    private static final Path OVERWORLD_NOISE_SETTINGS_JSON =
+            DATA_DIR.resolve("minecraft").resolve("worldgen").resolve("noise_settings").resolve("overworld.json");
+    private static final Path DESERT_PLANET_WORLD_PRESET_JSON =
+            DATA_DIR.resolve("sandstorm").resolve("worldgen").resolve("world_preset").resolve("desert_planet.json");
+    private static final Path DESERT_PLANET_NOISE_SETTINGS_JSON =
+            DATA_DIR.resolve("sandstorm").resolve("worldgen").resolve("noise_settings").resolve("desert_planet.json");
+    private static final Path NORMAL_WORLD_PRESET_TAG_JSON =
+            DATA_DIR.resolve("minecraft").resolve("tags").resolve("worldgen").resolve("world_preset").resolve("normal.json");
 
     @Test
     void shouldDefineValidPlacedFeatureKeys() {
@@ -165,33 +173,25 @@ class SandStormWorldGenTest {
     }
 
     @Test
-    void shouldEnforceDesertDimensionConfiguration() throws IOException {
-        assertTrue(Files.exists(OVERWORLD_DIMENSION_JSON), "Overworld dimension override must exist");
-
-        try (FileReader reader = new FileReader(OVERWORLD_DIMENSION_JSON.toFile())) {
-            JsonElement parsed = JsonParser.parseReader(reader);
-            assertTrue(parsed.isJsonObject());
-            JsonObject root = parsed.getAsJsonObject();
-
-            assertTrue(root.has("type"));
-            assertEquals("minecraft:overworld", root.get("type").getAsString());
-
-            assertTrue(root.has("generator"));
-            JsonObject generator = root.getAsJsonObject("generator");
-            assertEquals("minecraft:noise", generator.get("type").getAsString());
-
-            assertTrue(generator.has("biome_source"));
-            JsonObject biomeSource = generator.getAsJsonObject("biome_source");
-            assertEquals("minecraft:fixed", biomeSource.get("type").getAsString());
-            assertEquals("minecraft:desert", biomeSource.get("biome").getAsString());
-        }
+    void shouldDefineValidWorldPresetKey() {
+        assertNotNull(SandStormWorldPresets.DESERT_PLANET);
+        assertEquals(Registries.WORLD_PRESET, SandStormWorldPresets.DESERT_PLANET.registryKey());
+        assertEquals("sandstorm", SandStormWorldPresets.DESERT_PLANET.identifier().getNamespace());
+        assertEquals("desert_planet", SandStormWorldPresets.DESERT_PLANET.identifier().getPath());
     }
 
     @Test
-    void shouldEnforceDesertWorldPresetConfiguration() throws IOException {
-        assertTrue(Files.exists(NORMAL_WORLD_PRESET_JSON), "Normal world preset override must exist");
+    void shouldNotOverrideVanillaOverworldDimensionOrNormalPreset() {
+        assertFalse(Files.exists(OVERWORLD_DIMENSION_JSON), "Vanilla overworld dimension override must not exist to decouple from vanilla");
+        assertFalse(Files.exists(NORMAL_WORLD_PRESET_JSON), "Vanilla normal world preset override must not exist to decouple from vanilla");
+        assertFalse(Files.exists(OVERWORLD_NOISE_SETTINGS_JSON), "Vanilla overworld noise settings override must not exist to decouple from vanilla");
+    }
 
-        try (FileReader reader = new FileReader(NORMAL_WORLD_PRESET_JSON.toFile())) {
+    @Test
+    void shouldEnforceDedicatedDesertPlanetWorldPreset() throws IOException {
+        assertTrue(Files.exists(DESERT_PLANET_WORLD_PRESET_JSON), "Desert planet world preset must exist");
+
+        try (FileReader reader = new FileReader(DESERT_PLANET_WORLD_PRESET_JSON.toFile())) {
             JsonElement parsed = JsonParser.parseReader(reader);
             assertTrue(parsed.isJsonObject());
             JsonObject root = parsed.getAsJsonObject();
@@ -206,6 +206,7 @@ class SandStormWorldGenTest {
             assertTrue(overworld.has("generator"));
             JsonObject generator = overworld.getAsJsonObject("generator");
             assertEquals("minecraft:noise", generator.get("type").getAsString());
+            assertEquals("sandstorm:desert_planet", generator.get("settings").getAsString());
 
             assertTrue(generator.has("biome_source"));
             JsonObject biomeSource = generator.getAsJsonObject("biome_source");
@@ -214,18 +215,29 @@ class SandStormWorldGenTest {
         }
     }
 
-    private static final Path OVERWORLD_NOISE_SETTINGS_JSON =
-            DATA_DIR.resolve("minecraft").resolve("worldgen").resolve("noise_settings").resolve("overworld.json");
+    @Test
+    void shouldRegisterDesertPlanetInNormalWorldPresetTag() throws IOException {
+        assertTrue(Files.exists(NORMAL_WORLD_PRESET_TAG_JSON), "World preset tag normal.json must exist");
+
+        try (FileReader reader = new FileReader(NORMAL_WORLD_PRESET_TAG_JSON.toFile())) {
+            JsonObject tag = JsonParser.parseReader(reader).getAsJsonObject();
+            assertTrue(tag.has("replace"));
+            assertFalse(tag.get("replace").getAsBoolean(), "Tag must not replace existing presets");
+            assertTrue(tag.has("values"));
+            assertTrue(tag.getAsJsonArray("values").toString().contains("sandstorm:desert_planet"), "Tag must contain sandstorm:desert_planet");
+        }
+    }
+
     private static final Path DESERT_BIOME_JSON =
             DATA_DIR.resolve("minecraft").resolve("worldgen").resolve("biome").resolve("desert.json");
     private static final Path HAS_STRUCTURE_TAG_DIR =
             DATA_DIR.resolve("minecraft").resolve("tags").resolve("worldgen").resolve("biome").resolve("has_structure");
 
     @Test
-    void shouldEnforceAridOverworldNoiseSettings() throws IOException {
-        assertTrue(Files.exists(OVERWORLD_NOISE_SETTINGS_JSON), "Overworld noise settings override must exist");
+    void shouldEnforceAridDesertPlanetNoiseSettings() throws IOException {
+        assertTrue(Files.exists(DESERT_PLANET_NOISE_SETTINGS_JSON), "Desert planet noise settings must exist");
 
-        try (FileReader reader = new FileReader(OVERWORLD_NOISE_SETTINGS_JSON.toFile())) {
+        try (FileReader reader = new FileReader(DESERT_PLANET_NOISE_SETTINGS_JSON.toFile())) {
             JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
             assertTrue(json.has("sea_level"));
             assertEquals(-64, json.get("sea_level").getAsInt(), "Sea level must be set to -64 to eliminate surface oceans");
