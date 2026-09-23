@@ -11,7 +11,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **509 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **512 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
 | **Receitas Data-Driven (JEI/REI)** | 49 receitas oficiais | Cobertura total | ✅ Concluído |
@@ -172,8 +172,14 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 ### 🎮 Fase 11: Polimento Audiovisual, Qualidade de Vida & Publicação
 - [ ] **Áudio Dinâmico para a Prancha de Areia (Sandboard)**:
   - Som contínuo de areia fofa deslizando sob a prancha, variando de tom e volume com a velocidade.
-- [ ] **Efeitos Visuais de Deslizamento**:
-  - Rastro e spray de areia nas laterais da prancha ao fazer curvas fechadas descendo dunas.
+- [x] **Efeitos Visuais de Deslizamento do Sandboard**:
+  - [x] Emissão de partículas de areia do terreno sob a prancha durante deslizamentos em velocidade (`SandboardEntity.tick()`).
+- [x] **Redesign Visual do Traje Espacial (`SpaceSuitArmorModel`)**:
+  - [x] Modelo 3D customizado dark-tech (`#121820`) com ombreiras reforçadas, tanques dorsais duplos de O2 e placas blindadas.
+  - [x] Visor holográfico com camada de brilho emissivo ciano (`#00E5FF`) utilizando `RenderTypes.eyes`.
+  - [x] Ícones 2D de itens redesenhados em pixel art de alta fidelidade para capacete, peitoral, calças e botas.
+  - [x] Renderizador acoplado via `ArmorRenderer` com renderização dinâmica por slot de equipamento.
+  - [x] Conformidade de hierarquia `HumanoidModel` (subpartes `head/hat`, `body`, `right_arm`, `left_arm`, `right_leg`, `left_leg`) e proteção contra crashes de inicialização.
 - [ ] **Guia Integrado no Datapad com Diagramas de Maquinário**:
   - Aba de esquemáticos e manuais holográficos de montagem no Datapad.
 - [x] **Compatibilidade Oficial com Otimizadores Gráficos**:
@@ -347,7 +353,7 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `sonic_cannon`: Modelo Item (.json) + Textura personalizada 16x16.
   - [x] `anomaly_radar`: Textura e modelo 16x16.
   - [x] `atmospheric_analyzer`: Textura e modelo 16x16.
-  - [x] `space_suit_helmet`, `chestplate`, `leggings`, `boots`: Texturas de item + camadas de armadura 3D (`space_suit_layer_1.png` e `space_suit_layer_2.png`).
+  - [x] `space_suit_helmet`, `chestplate`, `leggings`, `boots`: Redesign visual dark-tech completo com modelo 3D customizado (`SpaceSuitArmorModel`), ombreiras industriais, tanques duplos dorsais de O2, visor holográfico emissivo ciano (`#00E5FF`), texturas 2D de itens redesenhadas e camadas de armadura 3D (`space_suit.png` e `space_suit_glow.png`).
 - [x] **Alimentos e Fluidos Concluídos**:
   - [x] `space_ration`: Textura de ração militar espacial embalada a vácuo.
   - [x] `potable_water_bottle`: Frasco tecnológico com líquido azul puro.
@@ -444,5 +450,7 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 23. `v1.3.7`: Implementação completa da **Fase 12: Xenobotânica, Agricultura Hidropônica & Ciclos de Carbono** (`44ff438`): Câmara Hidropônica Pressurizada (`hydroponic_chamber`) com boost de cúpula de terraformação e energia sem fio WPT, Sementes e Bloco de Grama Xeno-Adaptada (`xeno_grass_seeds` / `xeno_grass_block`) com fixação biológica de nitrogênio e conversão em solo fértil, Cactos de Seiva Pesada (`heavy_sap_cactus`), Seringa de Coleta (`sampling_syringe`), Frasco de Seiva Pesada (`heavy_sap_bottle`), Biopolímeros Flexíveis (`flexible_biopolymer`), Biorremediação de Solos com Areia Salinizada (`salinized_sand`) e Plantas Halófitas (`halophyte_plant`) em 4 estágios de desenvolvimento, além da expansão da suíte para **500 testes automatizados** com 100% de aprovação.
 24. `7138892`: Redesign completo do Traje Espacial (`space_suit`) com geometria 3D imponente (ombreiras angulares, tanques duplos de oxigênio traseiros e placas de reforço) na paleta industrial dark-tech (`#121820`), com renderização em duas camadas e visor holográfico com brilho emissivo ciano (`#00E5FF`).
 25. `2d273b4`: Implementação da Torreta Sônica Automatizada (`autonomous_sonic_turret`) com renderização 3D, alcance de 20 blocos, dano sônico e repulsão física, interface HUD em tela cheia com barra de pesquisa em tempo real, grid de cards de seleção de alvos de mobs/monstros, modos Whitelist/Blacklist, estratégias de mira por I.A., e expansão para **509 testes automatizados** com 100% de sucesso.
+26. `6e02721`: Documentação e planejamento da Fase 18 (Fortificações Perimétricas, Muralhas de Espinhos e Contra-Medidas Físicas), atualização das métricas e log de commits.
+27. `d341188`: Resolução de crash de inicialização do cliente Fabric (`NoSuchElementException: Can't find part hat`), corrigindo o aninhamento da parte `hat` como filha direta de `head` no `SpaceSuitArmorModel` conforme a hierarquia do `HumanoidModel` do Minecraft, adição de testes de regressão dedicados (`SpaceSuitArmorModelTest`), validação das regras arquiteturais de zero comentários e zero imports inline, e expansão da suíte para **512 testes automatizados** com 100% de sucesso.
 
 
