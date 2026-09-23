@@ -85,7 +85,10 @@ public class SpaceshipLandingManager {
     }
 
     public static int findGroundSurfaceY(ServerLevel level, int x, int z) {
-        int h = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+        int h = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
+        if (h <= level.getMinY()) {
+            h = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+        }
         BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos(x, Math.min(h + 2, level.getMaxY() - 1), z);
         while (p.getY() > level.getMinY()) {
             var state = level.getBlockState(p);
@@ -98,27 +101,34 @@ public class SpaceshipLandingManager {
     }
 
     private static void placeSpaceshipCrashSite(MinecraftServer server, ServerLevel level, SpaceshipSavedData data) {
-        level.getChunk(0, 0);
-        level.getChunk(0, 1);
-        level.getChunk(0, -1);
-        level.getChunk(1, 0);
-        level.getChunk(-1, 0);
+        for (int cx = -1; cx <= 1; cx++) {
+            for (int cz = -1; cz <= 1; cz++) {
+                level.getChunk(cx, cz);
+            }
+        }
 
-        int minSurface = Integer.MAX_VALUE;
+        int centerGroundY = findGroundSurfaceY(level, 0, 4);
+        int maxSurface = centerGroundY;
         for (int x = -6; x <= 6; x += 2) {
             for (int z = -4; z <= 11; z += 2) {
                 int groundY = findGroundSurfaceY(level, x, z);
-                if (groundY > level.getMinY() + 5) {
-                    minSurface = Math.min(minSurface, groundY);
+                if (groundY > level.getMinY() + 10) {
+                    maxSurface = Math.max(maxSurface, groundY);
                 }
             }
         }
 
-        if (minSurface == Integer.MAX_VALUE || minSurface < level.getMinY() + 10) {
-            minSurface = level.getHeight(Heightmap.Types.MOTION_BLOCKING, 0, 4) - 1;
+        int surfaceY = Math.max(centerGroundY, maxSurface - 1);
+        if (surfaceY < level.getMinY() + 10) {
+            surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, 0, 4);
         }
 
-        int surfaceY = minSurface;
+        BlockPos cabinBase = new BlockPos(0, surfaceY, 4);
+        while (surfaceY < level.getMaxY() - 10 && (level.getBlockState(cabinBase).is(Blocks.STONE) || level.getBlockState(cabinBase).is(Blocks.DEEPSLATE))) {
+            surfaceY++;
+            cabinBase = new BlockPos(0, surfaceY, 4);
+        }
+
         BlockPos originPos = new BlockPos(-6, surfaceY, -4);
         BlockPos cabinSpawn = new BlockPos(0, surfaceY + 1, 4);
 
@@ -134,7 +144,7 @@ public class SpaceshipLandingManager {
 
         for (int x = -3; x <= 3; x++) {
             for (int z = -5; z >= -12; z--) {
-                for (int dy = 1; dy <= 4; dy++) {
+                for (int dy = 1; dy <= 5; dy++) {
                     level.setBlock(new BlockPos(x, surfaceY + dy, z), Blocks.AIR.defaultBlockState(), 3);
                 }
                 BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos(x, surfaceY, z);
@@ -189,16 +199,6 @@ public class SpaceshipLandingManager {
             }
         }
 
-        for (int dx = -3; dx <= 2; dx++) {
-            for (int dz = -8; dz <= -4; dz++) {
-                BlockPos p = cabinSpawn.offset(dx, 0, dz);
-                while (!level.canSeeSky(p) && p.getY() < 120) {
-                    p = p.above();
-                    level.setBlock(p, Blocks.AIR.defaultBlockState(), 3);
-                }
-            }
-        }
-
         level.setBlock(cabinSpawn.below(), Blocks.SMOOTH_STONE_SLAB.defaultBlockState(), 3);
         ensureCabinWorkstations(level, cabinSpawn);
     }
@@ -239,7 +239,7 @@ public class SpaceshipLandingManager {
 
         for (int dx = -3; dx <= 3; dx++) {
             for (int dz = -2; dz <= 4; dz++) {
-                for (int dy = 6; dy <= 25; dy++) {
+                for (int dy = 7; dy <= 25; dy++) {
                     BlockPos p = cabinSpawn.offset(dx, dy, dz);
                     if (!p.equals(receiverPos) && !level.getBlockState(p).isAir()) {
                         level.setBlock(p, Blocks.AIR.defaultBlockState(), 3);
