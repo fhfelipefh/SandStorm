@@ -24,6 +24,8 @@ public class SandStormSoundEvents {
     public static final SoundEvent NANITE_ACTIVATE = register("block.nanite_fabricator.activate");
     public static final SoundEvent TERRAFORMER_HUM = register("block.atmospheric_terraformer.hum");
     public static final SoundEvent ASSEMBLY_CONSTRUCT = register("block.assembly_bay.construct");
+    public static final SoundEvent WPT_RELAY_HUM = register("block.wpt_relay.hum");
+    public static final SoundEvent FLUID_PIPE_FLOW = register("block.smart_fluid_pipe.flow");
     public static final SoundEvent CARGO_DRONE_FLIGHT = register("entity.cargo_drone.flight");
     public static final SoundEvent EXCAVATOR_ENGINE = register("entity.excavator.engine");
     public static final SoundEvent SUIT_BATTERY_LOW = register("suit.battery.low");

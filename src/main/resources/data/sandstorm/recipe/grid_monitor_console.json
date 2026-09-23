@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "sandstorm:survival_datapad",
+    "C": "sandstorm:circuit_board",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    " D ",
+    "RCR",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:grid_monitor_console"
+  }
+}

@@ -306,5 +306,19 @@
   "item.sandstorm.halophyte_plant": "Bioremediating Halophyte Plant",
   "tooltip.sandstorm.halophyte_plant_desc": "Salt-tolerant succulent capable of extracting soil salinization and restoring clean terrain.",
   "generator.sandstorm.desert_planet": "Sandstorm",
-  "generator.sandstorm.desert_planet.description": "Harsh arid desert planet plagued by sandstorms, colossal sandworms, and buried ancient technology."
+  "generator.sandstorm.desert_planet.description": "Harsh arid desert planet plagued by sandstorms, colossal sandworms, and buried ancient technology.",
+  "block.sandstorm.wpt_relay_tower": "WPT Relay Tower",
+  "item.sandstorm.wpt_relay_tower": "WPT Relay Tower",
+  "tooltip.sandstorm.wpt_relay_tower_desc": "High-voltage relay pylon extending WPT wireless power grid coverage up to 128 blocks.",
+  "block.sandstorm.solid_state_accumulator": "Solid-State Industrial Accumulator",
+  "item.sandstorm.solid_state_accumulator": "Solid-State Industrial Accumulator",
+  "container.sandstorm.solid_state_accumulator": "Solid-State Accumulator",
+  "tooltip.sandstorm.solid_state_accumulator_desc": "High-capacity 500k J battery bank buffering power for night cycles and intense sandstorms.",
+  "block.sandstorm.smart_fluid_pipe": "Smart Pressurized Fluid Pipe",
+  "item.sandstorm.smart_fluid_pipe": "Smart Pressurized Fluid Pipe",
+  "tooltip.sandstorm.smart_fluid_pipe_desc": "Direction-aware pressurized fluid conduit with reflux prevention and automatic balancing.",
+  "block.sandstorm.grid_monitor_console": "WPT Grid Monitoring Terminal",
+  "item.sandstorm.grid_monitor_console": "WPT Grid Monitoring Terminal",
+  "container.sandstorm.grid_monitor_console": "Grid Telemetry Console",
+  "tooltip.sandstorm.grid_monitor_console_desc": "Holographic telemetry station tracking global generation, battery buffers, and grid stability."
 }

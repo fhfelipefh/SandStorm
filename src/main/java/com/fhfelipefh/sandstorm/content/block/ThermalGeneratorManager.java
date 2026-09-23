@@ -53,6 +53,10 @@ public class ThermalGeneratorManager {
         return updated;
     }
 
+    public static Map<BlockPos, Integer> getGenerators(ResourceKey<Level> dim) {
+        return GENERATOR_MAP.getOrDefault(dim, Map.of());
+    }
+
     public static int getBurnTime(ResourceKey<Level> dim, BlockPos pos) {
         Map<BlockPos, Integer> map = GENERATOR_MAP.get(dim);
         if (map == null) {

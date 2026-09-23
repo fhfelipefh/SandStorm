@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **522 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **533 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 49 receitas oficiais | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 53 receitas oficiais | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -223,17 +223,23 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] Substrato saturado de salitre (`salinized_sand`) resultante de processos intensivos de dessalinização.
   - [x] Utilização de plantas halófitas (`halophyte_plant`) em 4 estágios de desenvolvimento para absorver o excesso de salitre acumulado no solo e restaurar solo limpo.
 
-### ⚡ Fase 13: Rede Logística de Dutos & Malha Energética WPT Expandida
-- [ ] **Torre Retransmissora WPT de Longo Alcance (`wpt_relay_tower`)**:
-  - Pilão de alta voltagem para estender a rede de energia sem fio em até 128 blocos, alimentando escavações e postos avançados remotos.
-  - Indicador de sinal com arco voltaico de ressonância eletromagnética.
-- [ ] **Dutos de Fluidos Inteligentes (`smart_fluid_pipe`)**:
-  - Sistema modular de transporte pressurizado para água salobra, água potável, salmoura e propelente.
-  - Válvulas direcionais com filtros de refluxo e conectores para tanques de estocagem.
-- [ ] **Console Holográfico de Monitoramento de Rede (`grid_monitor_console`)**:
-  - Terminal interativo que exibe telemetria em tempo real: geração solar, queima térmica, consumo por máquina e carga global do buffer.
-- [ ] **Acumulador de Estado Sólido Industrial (`solid_state_accumulator`)**:
-  - Banco de baterias de alta capacidade (250.000 J a 1.000.000 J) para sustentação energética durante tempestades severas e a noite congelante.
+### ⚡ Fase 13: Rede Logística de Dutos & Malha Energética WPT Expandida (Concluída - 100%)
+- [x] **Torre Retransmissora WPT de Longo Alcance (`wpt_relay_tower`)**:
+  - [x] Pilão de alta voltagem para estender a rede de energia sem fio em até 128 blocos, alimentando escavações e postos avançados remotos.
+  - [x] Indicador de sinal com arco voltaico de ressonância eletromagnética, efeitos de partículas e som ambiente.
+  - [x] Gerenciamento espacial global com `WptRelayTowerManager` interligado aos receptores solares wireless.
+- [x] **Dutos de Fluidos Inteligentes (`smart_fluid_pipe`)**:
+  - [x] Sistema modular de transporte pressurizado para água salobra, água potável, salmoura e propelente.
+  - [x] Conexão dinâmica de 6 direções com VoxelShapes dedicados e prevenção de refluxo unidirecional.
+  - [x] Integração completa com Fabric Transfer API (`FluidStorage.SIDED`).
+- [x] **Console Holográfico de Monitoramento de Rede (`grid_monitor_console`)**:
+  - [x] Terminal interativo com interface holográfica dark-tech (`GridMonitorConsoleScreen`).
+  - [x] Telemetria em tempo real: contagem e geração solar, contagem e geração térmica, número de torres retransmissoras, acumuladores ativos, energia total estocada e capacidade do buffer.
+  - [x] Diagnóstico da malha energética com status de estabilidade (BALANCED, SURPLUS, DEFICIT, CRITICAL) e carga local de cobertura WPT.
+- [x] **Acumulador de Estado Sólido Industrial (`solid_state_accumulator`)**:
+  - [x] Banco de baterias de alta densidade energética (500.000 J) com sustentação para tempestades severas e a noite fria.
+  - [x] Modos de operação selecionáveis no bloco e na interface: AUTO (equilibra carga/descarga), CHARGE (apenas armazena) e DISCHARGE (fornece energia WPT ativa em 48 blocos).
+  - [x] Interface gráfica industrial com slots de bateria/célula, barra de energia animada e botão de alternância de modo (`SolidStateAccumulatorScreen`).
 
 ### 🌋 Fase 14: Expedições Subterrâneas Profundas & Surto de Plasma Cósmico
 - [ ] **Cavernas de Quartzo Piezoelétrico (`piezo_caverns`)**:

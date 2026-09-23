@@ -3,12 +3,16 @@ package com.fhfelipefh.sandstorm.content.block;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
-import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SmartFluidPipeBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ThermalGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.WirelessSolarReceiverBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.WptRelayTowerBlockEntity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -188,6 +192,34 @@ public class SandStormBlocks {
                     .strength(4.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .noOcclusion()));
+    public static final WptRelayTowerBlock WPT_RELAY_TOWER = register("wpt_relay_tower",
+            new WptRelayTowerBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("wpt_relay_tower")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(3.5f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final SolidStateAccumulatorBlock SOLID_STATE_ACCUMULATOR = register("solid_state_accumulator",
+            new SolidStateAccumulatorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("solid_state_accumulator")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(4.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final SmartFluidPipeBlock SMART_FLUID_PIPE = register("smart_fluid_pipe",
+            new SmartFluidPipeBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("smart_fluid_pipe")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(2.0f)
+                    .sound(SoundType.COPPER)
+                    .noOcclusion()));
+    public static final GridMonitorConsoleBlock GRID_MONITOR_CONSOLE = register("grid_monitor_console",
+            new GridMonitorConsoleBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("grid_monitor_console")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.0f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -234,6 +266,26 @@ public class SandStormBlocks {
             SandStormMod.id("autonomous_sonic_turret"),
             new BlockEntityType<>(AutonomousSonicTurretBlockEntity::new, Set.of(AUTONOMOUS_SONIC_TURRET))
     );
+    public static final BlockEntityType<WptRelayTowerBlockEntity> WPT_RELAY_TOWER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("wpt_relay_tower"),
+            new BlockEntityType<>(WptRelayTowerBlockEntity::new, Set.of(WPT_RELAY_TOWER))
+    );
+    public static final BlockEntityType<SolidStateAccumulatorBlockEntity> SOLID_STATE_ACCUMULATOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("solid_state_accumulator"),
+            new BlockEntityType<>(SolidStateAccumulatorBlockEntity::new, Set.of(SOLID_STATE_ACCUMULATOR))
+    );
+    public static final BlockEntityType<SmartFluidPipeBlockEntity> SMART_FLUID_PIPE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("smart_fluid_pipe"),
+            new BlockEntityType<>(SmartFluidPipeBlockEntity::new, Set.of(SMART_FLUID_PIPE))
+    );
+    public static final BlockEntityType<GridMonitorConsoleBlockEntity> GRID_MONITOR_CONSOLE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("grid_monitor_console"),
+            new BlockEntityType<>(GridMonitorConsoleBlockEntity::new, Set.of(GRID_MONITOR_CONSOLE))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -258,5 +310,7 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, AUTONOMOUS_SONIC_TURRET_BE);
         FluidStorage.SIDED.registerForBlockEntity(DesalinationFilterBlockEntity::getFluidStorage, DESALINATION_FILTER_BE);
         FluidStorage.SIDED.registerForBlockEntity(ThermalGeneratorBlockEntity::getFluidStorage, THERMAL_GENERATOR_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SOLID_STATE_ACCUMULATOR_BE);
+        FluidStorage.SIDED.registerForBlockEntity(SmartFluidPipeBlockEntity::getFluidStorage, SMART_FLUID_PIPE_BE);
     }
 }

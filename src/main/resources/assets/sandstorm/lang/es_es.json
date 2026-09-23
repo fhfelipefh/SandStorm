@@ -306,5 +306,19 @@
   "item.sandstorm.halophyte_plant": "Planta Halófita Biorremediadora",
   "tooltip.sandstorm.halophyte_plant_desc": "Planta tolerante a la sal que absorbe los residuos salinos devolviendo la arena limpia.",
   "generator.sandstorm.desert_planet": "Sandstorm",
-  "generator.sandstorm.desert_planet.description": "Planeta desértico árido y hostil, azotado por tormentas de arena, gusanos gigantes y secretos tecnológicos enterrados."
+  "generator.sandstorm.desert_planet.description": "Planeta desértico árido y hostil, azotado por tormentas de arena, gusanos gigantes y secretos tecnológicos enterrados.",
+  "block.sandstorm.wpt_relay_tower": "Torre Repetidora WPT",
+  "item.sandstorm.wpt_relay_tower": "Torre Repetidora WPT",
+  "tooltip.sandstorm.wpt_relay_tower_desc": "Torreta de alta tensión que extiende la cobertura de la red eléctrica inalámbrica WPT hasta 128 bloques.",
+  "block.sandstorm.solid_state_accumulator": "Acumulador de Estado Sólido",
+  "item.sandstorm.solid_state_accumulator": "Acumulador de Estado Sólido",
+  "container.sandstorm.solid_state_accumulator": "Acumulador de Estado Sólido",
+  "tooltip.sandstorm.solid_state_accumulator_desc": "Banco de baterías industrial de 500k J para mantener la base de noche y bajo tormentas.",
+  "block.sandstorm.smart_fluid_pipe": "Tubería de Fluido Inteligente Presurizada",
+  "item.sandstorm.smart_fluid_pipe": "Tubería de Fluido Inteligente Presurizada",
+  "tooltip.sandstorm.smart_fluid_pipe_desc": "Conducto presurizado de fluidos con prevención activa de reflujo y balanceo automático.",
+  "block.sandstorm.grid_monitor_console": "Terminal de Monitorización de Red WPT",
+  "item.sandstorm.grid_monitor_console": "Terminal de Monitorización de Red WPT",
+  "container.sandstorm.grid_monitor_console": "Telemetría de Red WPT",
+  "tooltip.sandstorm.grid_monitor_console_desc": "Consola holográfica que muestra telemetría en tiempo real de la generación, baterías y estabilidad."
 }

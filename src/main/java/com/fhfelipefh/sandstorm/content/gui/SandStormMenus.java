@@ -42,6 +42,16 @@ public class SandStormMenus {
             new MenuType<>(AutonomousSonicTurretMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<SolidStateAccumulatorMenu> SOLID_STATE_ACCUMULATOR_MENU = register(
+            "solid_state_accumulator",
+            new MenuType<>(SolidStateAccumulatorMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<GridMonitorConsoleMenu> GRID_MONITOR_CONSOLE_MENU = register(
+            "grid_monitor_console",
+            new MenuType<>(GridMonitorConsoleMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

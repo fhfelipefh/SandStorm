@@ -56,16 +56,17 @@ public class WirelessSolarReceiverManager {
         return RECEIVER_MAP.getOrDefault(dim, Map.of());
     }
 
-    public static long getWptChargeAt(Level level, BlockPos pos) {
+    public static long getPrimaryWptChargeAt(Level level, BlockPos pos) {
         long thermalCharge = ThermalGeneratorManager.getWptChargeAt(level, pos);
+        long accumulatorCharge = SolidStateAccumulatorManager.getWptChargeAt(level, pos);
+        long maxCharge = Math.max(thermalCharge, accumulatorCharge);
         Map<BlockPos, Integer> map = RECEIVER_MAP.get(level.dimension());
         if (map == null || map.isEmpty()) {
-            return thermalCharge;
+            return maxCharge;
         }
         double weather = SandstormWeatherHandler.getWeather().getSolarEfficiencyMultiplier();
         boolean isDay = level.getSkyDarken() < 4;
         int skyDarken = level.getSkyDarken();
-        long maxCharge = thermalCharge;
 
         for (Map.Entry<BlockPos, Integer> entry : map.entrySet()) {
             BlockPos rPos = entry.getKey();
@@ -86,6 +87,12 @@ public class WirelessSolarReceiverManager {
             }
         }
         return maxCharge;
+    }
+
+    public static long getWptChargeAt(Level level, BlockPos pos) {
+        long primaryCharge = getPrimaryWptChargeAt(level, pos);
+        long relayCharge = WptRelayTowerManager.getWptChargeAt(level, pos);
+        return Math.max(primaryCharge, relayCharge);
     }
 
     public static void tickLevel(ServerLevel level) {

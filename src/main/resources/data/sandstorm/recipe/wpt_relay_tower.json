@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "R": "sandstorm:wireless_solar_receiver",
+    "C": "sandstorm:circuit_board",
+    "I": "minecraft:copper_ingot",
+    "L": "minecraft:lightning_rod"
+  },
+  "pattern": [
+    " L ",
+    "RCR",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:wpt_relay_tower"
+  }
+}
