@@ -280,6 +280,34 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - Projetado para fechamento hermético de emergência em hangares, garagens de rovers e eclusas de ar.
   - Causa dano crítico esmagador e perfurante se fechar sobre qualquer entidade que esteja sob o vão no momento da descida.
 
+### 🏗️ Fase 19: Construtor Autônomo de Megaestruturas, Drones Operários & Manufatura Holográfica 3D (Layer-by-Layer)
+- [ ] **Núcleo de Construção de Megaestruturas (`megastructure_constructor`)**:
+  - Bloco tecnológico pesado de ancoragem no solo com cúpula de emissão de sinal, compartimento de peças e hangar de drones embutido.
+  - Conexão nativa à malha de energia sem fio (WPT) e buffer interno de alta voltagem (500.000 J), consumindo energia a cada bloco materializado.
+  - Interface holográfica interativa para seleção de esquemáticos (Cúpula Geodésica de Biosfera, Cidadela Fortificada, Silo de Lançamento e Pirâmide Tecnológica), controle de velocidade de montagem e matriz de inventário de materiais requeridos com contadores em tempo real.
+  - Telemetria de diagnóstico: se faltar algum recurso específico ou energia, o construtor entra em modo de espera e projeta a silhueta da peça faltante em tom de alerta âmbar (`#FFB300`).
+- [ ] **Drones Construtores Operários (`builder_drone`)**:
+  - Nova entidade de robótica aérea inteligente (`BuilderDroneEntity`) acoplada ao construtor central, operando em esquadrilhas de 2 a 4 unidades autônomas num raio de até 48 blocos.
+  - **Ciclo Operário de Montagem**: O drone coleta o bloco necessário no compartimento do núcleo, decola com propulsores iônicos ciano e navega de forma suave até a coordenada exata do bloco na camada ativa.
+  - **Feixe Litográfico de Fusão Molecular**: O drone paira sobre a coordenada e projeta um feixe contínuo de laser/plasma ciano (`#00E5FF`) com som característico de solda a laser e partículas de brasas e faíscas elétricas até assentar o bloco no mundo físico.
+  - Retorno automático ao núcleo em caso de tempestades elétricas extremas ou término do lote de blocos da camada.
+- [ ] **Mecânica de Manufatura Aditiva 3D Layer-by-Layer (Fatia a Fatia Y)**:
+  - Algoritmo construtivo estrito por fatias horizontais de elevação: a estrutura é erguida de baixo para cima (`Y_min` até `Y_max`), nunca deixando blocos flutuando sem suporte físico ou fora da ordem de impressão.
+  - Dentro de cada nível Y, a construção avança de forma concêntrica ou radial contínua, criando um processo visualmente fascinante e rítmico, idêntico ao de uma impressora 3D industrial em escala monumental.
+  - Disparo de aviso sonoro harmônico (`megastructure_layer_complete`) e notificação na tela ao concluir cada andar ("*Camada 8/36 concluída. Avançando para o nível superior...*").
+- [ ] **Projeção Holográfica Prévia (Holographic Blueprint Wireframe)**:
+  - Sistema de renderização cliente em tempo real que projeta o modelo completo da megaestrutura no espaço tridimensional com malha translúcida azul/ciano antes e durante a construção.
+  - A camada atual em execução recebe realce luminescente pulsante, facilitando o acompanhamento visual do progresso da obra de qualquer ângulo.
+  - Os blocos físicos assentados pelos drones substituem o holograma instantaneamente com transição fluida de materialização.
+- [ ] **Catálogo de Megaestruturas Nativas em Blueprints**:
+  - *Cúpula Geodésica de Biosfera (`biosphere_dome`)*: Enorme cúpula hemisférica hermética de vidro temperado e nervuras metálicas de titânio, com eclusa de despressurização e canteiros centrais de terraformação.
+  - *Castelo / Cidadela de Fortificação Planetária (`planetary_citadel`)*: Fortaleza monumental de múltiplos andares com muralhas perimétricas com ameias, torres nos quatro cantos preparadas para acoplar Torretas Sônicas (`autonomous_sonic_turret`) e salão central.
+  - *Silo & Plataforma de Lançamento Orbital (`orbital_launch_silo`)*: Estrutura vertical monumental com anéis de sustentação de fuselagem, torre de gantry e tubulações de combustível para satélites e naves.
+  - *Pirâmide Tecnológica do Deserto (`desert_tech_pyramid`)*: Megálito de arenito lapidado e veios condutores de silício, com câmara interna de reatores e vértice superior captador de tempestades iônicas.
+- [ ] **Finalização Épica & Efeitos Audiovisuais Satisfatórios ("Eye-Candy")**:
+  - Pulso sonoro triunfante em 64 blocos ao concluir o último bloco da megaestrutura, acompanhado de dispersão de onda de choque de partículas de luz ciano e recolhimento em formação dos drones.
+  - A estrutura concluída é automaticamente registrada como Zona Sísmica Segura imune a ataques de vermes da areia no solo interno.
+
 ---
 
 ## 🎧 Catálogo Completo de Efeitos Sonoros Necessários (SFX)
@@ -314,6 +342,9 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 | `block.spike_wall.retract` | `spike_wall_retract.ogg` | `blocks` | 0.8s | Recolhimento mecânico de pistões de espinhos. Som de engrenagens voltando à carcaça do bloco. |
 | `block.spike_wall.impale` | `spike_wall_impale.ogg` | `players` | 0.6s | Impacto perfurante e dilacerante. Som seco de aço perfurando blindagem e tecido orgânico com estalo de pressão. |
 | `block.electrified_spikes.shock` | `electrified_spikes_shock.ogg` | `blocks` | 1.0s | Descarga de alta tensão contínua em arco voltaico ciano ao contato com corpos orgânicos ou invasores. |
+| `block.megastructure_constructor.laser` | `megastructure_laser.ogg` | `blocks` | 1.8s (loop) | Feixe de laser de fusão molecular contínuo emitido por drones construtores ao assentar blocos. |
+| `block.megastructure_constructor.layer_complete` | `megastructure_layer_complete.ogg` | `blocks` | 1.2s | Sinal harmônico de telemetria anunciando o término da fatia/camada Y atual e avanço para o andar superior. |
+| `block.megastructure_constructor.complete` | `megastructure_complete.ogg` | `players` | 3.5s | Acorde orquestral triunfante em ressonância cósmica com dispersão de onda de choque celebrando a conclusão da megaestrutura. |
 
 > [!NOTE]
 > **Status dos Efeitos Sonoros**: Todos os 20 arquivos `.mp3` foram convertidos com sucesso para Vorbis `.ogg` (mantendo os `.mp3` originais preservados).
