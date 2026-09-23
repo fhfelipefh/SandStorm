@@ -479,6 +479,10 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `heavy_sap_cactus`: Cacto xerófilo de seiva pesada com 4 níveis visuais de seiva (`SAP_LEVEL` 0 a 3).
   - [x] `salinized_sand`: Substrato de areia saturado de salitre residual pós-dessalinização.
   - [x] `halophyte_plant`: Modelos 3D de planta suculenta em 4 estágios de crescimento para biorremediação.
+  - [x] `wpt_relay_tower`: Torre pilar de alta voltagem com emissor WPT e estados ativo/inativo.
+  - [x] `smart_fluid_pipe`: Dutos modulares de fluidos inteligentes com 6 conexões direcionais.
+  - [x] `grid_monitor_console`: Console com tela holográfica inclinada de telemetria energética da grade.
+  - [x] `solid_state_accumulator`: Banco de baterias de estado sólido industrial com indicador frontal de carga.
 - [x] **Modelos de Entidades (Blockbench)**:
   - [x] `sandworm.bbmodel`: Corpo cilíndrico segmentado com mandíbulas quádruplas abertas e anel bucal.
   - [ ] `sandtrout.bbmodel`: Modelo pequeno de criatura ameboide coriácea rastejante de areia (Truta da Areia / Little Maker).
@@ -564,5 +568,12 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - Mixin client `SandStormWorldPresetSelectionMixin` para pré-seleção automática por padrão ao abrir a tela de criação.
     - Eliminação completa dos overrides forçados nos arquivos vanilla (`dimension/overworld.json`, `world_preset/normal.json`, `worldgen/noise_settings/overworld.json`), preservando 100% da integridade de mundos vanilla normais.
     - Suíte de testes dedicada `SandStormWorldPresetTest` e atualização de `SandStormWorldGenTest`, expandindo a suíte para **522 testes automatizados** com 100% de sucesso.
+29. `0a0cc5a`: Implementação e validação da **Fase 13: Rede Logística de Dutos & Malha Energética WPT Expandida**:
+    - Torre Retransmissora WPT de Longo Alcance (`wpt_relay_tower`) estendendo cobertura sem fio em até 128 blocos com arco voltaico e som ambiente eletromagnético via `WptRelayTowerManager`.
+    - Dutos de Fluidos Inteligentes (`smart_fluid_pipe`) com 6 conexões direcionais dinâmicas, prevenção de refluxo e compatibilidade direta com a Fabric Transfer API (`FluidStorage.SIDED`).
+    - Console Holográfico de Monitoramento (`grid_monitor_console` / `GridMonitorConsoleScreen`) com telemetria ao vivo de geração solar, térmica, torres, acumuladores, energia estocada e diagnóstico de estabilidade da grade energética.
+    - Acumulador de Estado Sólido Industrial (`solid_state_accumulator` / `SolidStateAccumulatorScreen`) com capacidade de 500.000 J, modos AUTO, CHARGE e DISCHARGE (raio WPT de 48 blocos).
+    - 4 novas receitas shaped data-driven, loot tables, modelos 3D com rotação isométrica para GUI e expansão da suíte para **533 testes automatizados** com 100% de aprovação.
+
 
 
