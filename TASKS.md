@@ -331,6 +331,39 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - Pulso sonoro triunfante em 64 blocos ao concluir o último bloco da megaestrutura, acompanhado de dispersão de onda de choque de partículas de luz ciano e recolhimento em formação dos drones.
   - A estrutura concluída é automaticamente registrada como Zona Sísmica Segura imune a ataques de vermes da areia no solo interno.
 
+### 🌍 Fase 20: Preset de Mundo Dedicado & Desacoplamento do Vanilla ("Mundo" -> "Tipo de mundo: SandStorm")
+- [ ] **Desacoplamento Total da Geração de Mundo Vanilla**:
+  - [ ] Interromper a substituição invasiva e destrutiva dos arquivos nativos do Minecraft (`data/minecraft/dimension/overworld.json` e `data/minecraft/worldgen/world_preset/normal.json`).
+  - [ ] Garantir que o Overworld vanilla permaneça 100% íntegro e jogável quando o jogador selecionar ou jogar em perfis/mundos convencionais.
+- [ ] **Criação do World Preset Oficial do SandStorm (`sandstorm:desert_planet`)**:
+  - [ ] Registro do preset de mundo dedicado em `data/sandstorm/worldgen/world_preset/desert_planet.json`.
+  - [ ] Configuração isolada da dimensão sob namespace próprio do mod:
+    - Gerador de ruído do deserto infinito sem oceanos nem corpos d'água superficiais (`sea_level: -64`, `default_fluid: "minecraft:air"`).
+    - Injeção das features geológicas e arqueológicas exclusivas: aquíferos salobros subterrâneos (`sandstorm:brackish_aquifer`), ruínas tecnológicas soterradas (`sandstorm:buried_tech_ruins`) e núcleos de dados ancestrais (`sandstorm:ancient_data_core`).
+    - Supressão de estruturas e mobs convencionais no ecossistema do preset árido.
+- [ ] **Integração no Botão "Tipo de mundo" da Aba "Mundo"**:
+  - [ ] Registro do identificador `sandstorm:desert_planet` na tag de presets do Minecraft: `data/minecraft/tags/worldgen/world_preset/normal.json` com `"replace": false`.
+  - [ ] Disponibilização direta no botão ciclável **"Tipo de mundo"** na aba **"Mundo"** da tela de criação (`CreateWorldScreen` / `WorldCreationUiState`), permitindo ao jogador alternar livremente entre:
+    - `Tipo de mundo: SandStorm: Planeta Árido`
+    - `Tipo de mundo: Padrão` (Minecraft Vanilla)
+    - `Tipo de mundo: Superplano`
+    - `Tipo de mundo: Grandes Biomas`
+    - `Tipo de mundo: Amplificado`
+    - `Tipo de mundo: Mundo Único`
+- [ ] **Pré-seleção Automática por Padrão ao Abrir a Tela de Criação**:
+  - [ ] Implementação de Mixin client em `WorldCreationUiState` / `CreateWorldScreen` (`SandStormWorldPresetSelectionMixin`).
+  - [ ] Ao abrir a tela "Criar novo mundo", o seletor `Tipo de mundo` na aba "Mundo" é automaticamente inicializado com o preset do SandStorm (`sandstorm:desert_planet`) como opção padrão ativa.
+  - [ ] Proporciona inicialização instantânea e imersiva para o jogador sem requerer configuração manual de menus, mantendo total liberdade para alternar para "Padrão" caso deseje um mundo vanilla.
+- [ ] **Localização & Identidade (i18n)**:
+  - [ ] Chaves de internacionalização registradas em `pt_br.json`, `en_us.json` e `es_es.json`:
+    - `generator.sandstorm.desert_planet`: "SandStorm: Planeta Árido" / "SandStorm: Arid Planet" / "SandStorm: Planeta Árido".
+    - `generator.sandstorm.desert_planet.description`: "Planeta desértico árido e hostil, assolado por tempestades de areia, vermes gigantes e segredos tecnológicos soterrados."
+- [ ] **Suíte de Testes Automatizados & Validação Arquitetural**:
+  - [ ] Teste de integridade estrutural do preset `desert_planet.json` (`SandStormWorldPresetTest.java`).
+  - [ ] Teste de inclusão na tag `data/minecraft/tags/worldgen/world_preset/normal.json`.
+  - [ ] Validação de não-poluição do namespace vanilla quando presets padrão forem selecionados.
+  - [ ] Cobertura 100% verde com rigor absoluto: zero comentários, zero imports inline e zero imports não utilizados.
+
 ---
 
 ## 🎧 Catálogo Completo de Efeitos Sonoros Necessários (SFX)
@@ -454,10 +487,11 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 ---
 
 ### 2. Geração de Mundo & Planeta Deserto Permanente
-- [x] Override de dimensão do Overworld (`data/minecraft/dimension/overworld.json`) para planeta deserto fixo (`minecraft:fixed` com `minecraft:desert`).
-- [x] Override do preset de mundo padrão (`data/minecraft/worldgen/world_preset/normal.json`).
+- [x] Override inicial de dimensão do Overworld (`data/minecraft/dimension/overworld.json`) para planeta deserto fixo (`minecraft:fixed` com `minecraft:desert`) *(a ser desacoplado na Fase 20 para preservar mundos vanilla intactos)*.
+- [x] Override inicial do preset de mundo padrão (`data/minecraft/worldgen/world_preset/normal.json`) *(a ser migrado para o preset dedicado `sandstorm:desert_planet` na Fase 20)*.
 - [x] Eliminação da pasta inválida `data/sandstorm/worldgen/feature/` (resolvendo o crash no launcher oficial).
 - [x] Eliminação completa dos avisos `Missing model for variant` para todos os 10 blocos e máquinas.
+- [ ] **Migração Arquitetural para Preset Dedicado**: Implementação da Fase 20 com botão na aba "Mundo" (`Tipo de mundo: SandStorm`), pré-seleção padrão e desacoplamento de arquivos nativos do Minecraft.
 
 ---
 
