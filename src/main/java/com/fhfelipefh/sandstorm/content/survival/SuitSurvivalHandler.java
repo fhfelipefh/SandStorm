@@ -85,7 +85,6 @@ public class SuitSurvivalHandler {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 savePlayerSuit(player, server);
             }
-            server.overworld().getDataStorage().saveAndJoin();
             PLAYER_SUIT_MAP.clear();
             LAST_SYNC_MAP.clear();
             currentServer = null;
@@ -148,11 +147,11 @@ public class SuitSurvivalHandler {
         double currentTemp = suit.getThermal().getCurrentTemperature();
 
         LastSyncState last = LAST_SYNC_MAP.get(player.getUUID());
+        boolean energyStateChanged = last == null || last.energy != currentEnergy;
         boolean shouldSync = last == null
                 || (player.tickCount - last.tick >= 20)
                 || Math.abs(currentEnergy - last.energy) >= 5
-                || currentEnergy == 0
-                || currentEnergy == currentCapacity
+                || (energyStateChanged && (currentEnergy == 0 || currentEnergy == currentCapacity))
                 || Math.abs(currentTemp - last.temperature) >= 0.1
                 || armorCount != last.armorCount;
 
@@ -304,7 +303,6 @@ public class SuitSurvivalHandler {
                         suit.getEnergyStorage().getStoredEnergy(),
                         suit.getThermal().getCurrentTemperature()
                 );
-                s.overworld().getDataStorage().saveAndJoin();
             }
         }
     }

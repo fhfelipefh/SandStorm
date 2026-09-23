@@ -132,10 +132,11 @@ public class SpaceshipLandingManager {
         BlockPos originPos = new BlockPos(-6, surfaceY, -4);
         BlockPos cabinSpawn = new BlockPos(0, surfaceY + 1, 4);
 
+        int minFoundationY = Math.max(surfaceY - 12, level.getMinY());
         for (int x = -7; x <= 7; x++) {
             for (int z = -5; z <= 12; z++) {
                 BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos(x, surfaceY - 1, z);
-                while (p.getY() >= level.getMinY() && (level.getBlockState(p).isAir() || !level.getBlockState(p).isSolid())) {
+                while (p.getY() >= minFoundationY && (level.getBlockState(p).isAir() || !level.getBlockState(p).isSolid())) {
                     level.setBlock(p, Blocks.SANDSTONE.defaultBlockState(), 2);
                     p.move(Direction.DOWN);
                 }
@@ -148,7 +149,7 @@ public class SpaceshipLandingManager {
                     level.setBlock(new BlockPos(x, surfaceY + dy, z), Blocks.AIR.defaultBlockState(), 3);
                 }
                 BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos(x, surfaceY, z);
-                while (p.getY() >= level.getMinY() && (level.getBlockState(p).isAir() || !level.getBlockState(p).isSolid())) {
+                while (p.getY() >= minFoundationY && (level.getBlockState(p).isAir() || !level.getBlockState(p).isSolid())) {
                     level.setBlock(p, (p.getY() == surfaceY) ? Blocks.SAND.defaultBlockState() : Blocks.SANDSTONE.defaultBlockState(), 2);
                     p.move(Direction.DOWN);
                 }
