@@ -290,6 +290,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - Nova entidade de robótica aérea inteligente (`BuilderDroneEntity`) acoplada ao construtor central, operando em esquadrilhas de 2 a 4 unidades autônomas num raio de até 48 blocos.
   - **Ciclo Operário de Montagem**: O drone coleta o bloco necessário no compartimento do núcleo, decola com propulsores iônicos ciano e navega de forma suave até a coordenada exata do bloco na camada ativa.
   - **Feixe Litográfico de Fusão Molecular**: O drone paira sobre a coordenada e projeta um feixe contínuo de laser/plasma ciano (`#00E5FF`) com som característico de solda a laser e partículas de brasas e faíscas elétricas até assentar o bloco no mundo físico.
+  - **Dano Térmico Contínuo Indiscriminado (Laser Hazard)**:
+    - Qualquer entidade que passar por baixo do feixe, cruzar a linha de tiro do laser ou tocar no ponto focal de fusão molecular (monstros invasores, animais, outros jogadores ou o próprio arquiteto/operador) sofre 8.0 pontos de dano térmico contínuo por segundo (`DamageSource` de calor/plasma), com ignição de fogo e efeito de repulsão leve.
+    - Mecânica de alto risco no canteiro de obras que exige atenção durante a operação, permitindo também o uso tático do feixe construtor como armadilha ambiental de defesa caso hordas invasoras se aproximem da área em construção.
+    - Partículas de fumaça cinzenta, clarão avermelhado de calor e estalos sonoros de queimadura ao atingir qualquer criatura ou jogador sob o raio.
   - Retorno automático ao núcleo em caso de tempestades elétricas extremas ou término do lote de blocos da camada.
 - [ ] **Mecânica de Manufatura Aditiva 3D Layer-by-Layer (Fatia a Fatia Y)**:
   - Algoritmo construtivo estrito por fatias horizontais de elevação: a estrutura é erguida de baixo para cima (`Y_min` até `Y_max`), nunca deixando blocos flutuando sem suporte físico ou fora da ordem de impressão.
