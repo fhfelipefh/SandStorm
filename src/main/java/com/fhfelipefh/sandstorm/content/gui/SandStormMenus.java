@@ -32,6 +32,11 @@ public class SandStormMenus {
             new MenuType<>(ChemicalRefineryMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<HydroponicChamberMenu> HYDROPONIC_CHAMBER_MENU = register(
+            "hydroponic_chamber",
+            new MenuType<>(HydroponicChamberMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

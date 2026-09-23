@@ -58,6 +58,10 @@ public class SandStormItems {
     public static final PropellantCartridgeItem PROPELLANT_CARTRIDGE = register("propellant_cartridge", new PropellantCartridgeItem(properties("propellant_cartridge").rarity(Rarity.RARE).stacksTo(16)));
     public static final SandboardItem SANDBOARD = register("sandboard", new SandboardItem(properties("sandboard").rarity(Rarity.RARE).stacksTo(1)));
     public static final SpawnEggItem SANDWORM_SPAWN_EGG = register("sandworm_spawn_egg", new SpawnEggItem(properties("sandworm_spawn_egg").spawnEgg(SandStormEntities.SANDWORM)));
+    public static final XenoGrassSeedsItem XENO_GRASS_SEEDS = register("xeno_grass_seeds", new XenoGrassSeedsItem(properties("xeno_grass_seeds")));
+    public static final SamplingSyringeItem SAMPLING_SYRINGE = register("sampling_syringe", new SamplingSyringeItem(properties("sampling_syringe").stacksTo(1)));
+    public static final HeavySapBottleItem HEAVY_SAP_BOTTLE = register("heavy_sap_bottle", new HeavySapBottleItem(properties("heavy_sap_bottle")));
+    public static final Item FLEXIBLE_BIOPOLYMER = register("flexible_biopolymer", new Item(properties("flexible_biopolymer").rarity(Rarity.UNCOMMON)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -114,6 +118,15 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.WIRELESS_SOLAR_RECEIVER);
                         entries.accept(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2);
                         entries.accept(NUTRIENT_BOMB);
+                        entries.accept(XENO_GRASS_SEEDS);
+                        entries.accept(SAMPLING_SYRINGE);
+                        entries.accept(HEAVY_SAP_BOTTLE);
+                        entries.accept(FLEXIBLE_BIOPOLYMER);
+                        entries.accept(SandStormBlocks.HYDROPONIC_CHAMBER);
+                        entries.accept(SandStormBlocks.XENO_GRASS_BLOCK);
+                        entries.accept(SandStormBlocks.HEAVY_SAP_CACTUS);
+                        entries.accept(SandStormBlocks.SALINIZED_SAND);
+                        entries.accept(SandStormBlocks.HALOPHYTE_PLANT);
                         entries.accept(SANDWORM_CHITIN);
                         entries.accept(SANDWORM_TOOTH);
                         entries.accept(SANDWORM_SPAWN_EGG);

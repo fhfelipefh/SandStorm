@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "sandstorm:block/hydroponic_chamber_casing",
+    "top": "sandstorm:block/hydroponic_chamber_top",
+    "front": "sandstorm:block/hydroponic_chamber_front_on",
+    "side": "sandstorm:block/hydroponic_chamber_casing"
+  }
+}

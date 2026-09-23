@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "  N",
+    " G ",
+    "S  "
+  ],
+  "key": {
+    "N": "minecraft:iron_nugget",
+    "G": "minecraft:glass_bottle",
+    "S": "sandstorm:scrap_metal"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:sampling_syringe"
+  }
+}

@@ -179,17 +179,19 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] Teste arquitetural formal `GraphicOptimizersCompatibilityArchitectureTest.java` com 100% de sucesso.
 
 ### 🌿 Fase 12: Xenobotânica, Agricultura Hidropônica & Ciclos de Carbono
-- [ ] **Câmara Hidropônica Pressurizada (`hydroponic_chamber`)**:
-  - Módulo selado com iluminação bio-UV e injeção de água dessalinizada e sais minerais.
-  - Aceleração controlada de culturas vegetais dentro do raio de proteção da cúpula de terraformação.
-- [ ] **Sementes de Grama Xeno-Adaptada (`xeno_grass_seeds`)**:
-  - Espécies xerófilas geneticamente aprimoradas para fixação de nitrogênio e conversão acelerada de areia em solo arável fértil.
-  - Propagação vegetal biológica com resistência aos ventos abrasivos.
-- [ ] **Cactos de Seiva Pesada (`heavy_sap_cactus`)**:
-  - Nova flora desértica resistente à radiação solar extrema.
-  - Extração de biopolímeros flexíveis e água bruta concentrada através de seringas de coleta.
-- [ ] **Biorremediação de Resíduos Salinos**:
-  - Utilização de plantas halófitas para absorver o excesso de salitre acumulado no solo após ciclos intensivos de dessalinização.
+- [x] **Câmara Hidropônica Pressurizada (`hydroponic_chamber`)**:
+  - [x] Módulo selado com iluminação bio-UV e injeção de água dessalinizada e sais minerais.
+  - [x] Aceleração controlada de culturas vegetais dentro do raio de proteção da cúpula de terraformação (boost 3x de velocidade e rendimento).
+  - [x] Renderizador 3D dedicado com mudas animadas e integração total com malha de energia sem fio (WPT).
+- [x] **Sementes de Grama Xeno-Adaptada (`xeno_grass_seeds`)**:
+  - [x] Espécies xerófilas geneticamente aprimoradas para fixação de nitrogênio e conversão acelerada de areia em solo arável fértil (`Blocks.DIRT`).
+  - [x] Propagação vegetal biológica com resistência aos ventos abrasivos e colonização progressiva de dunas.
+- [x] **Cactos de Seiva Pesada (`heavy_sap_cactus`)**:
+  - [x] Nova flora desértica resistente à radiação solar extrema, acumulando seiva viscosa sob incidência solar direta (`SAP_LEVEL` 0 a 3).
+  - [x] Extração de biopolímeros flexíveis e água bruta concentrada através de seringas de coleta (`sampling_syringe`) e frascos de vidro.
+- [x] **Biorremediação de Resíduos Salinos**:
+  - [x] Substrato saturado de salitre (`salinized_sand`) resultante de processos intensivos de dessalinização.
+  - [x] Utilização de plantas halófitas (`halophyte_plant`) em 4 estágios de desenvolvimento para absorver o excesso de salitre acumulado no solo e restaurar solo limpo.
 
 ### ⚡ Fase 13: Rede Logística de Dutos & Malha Energética WPT Expandida
 - [ ] **Torre Retransmissora WPT de Longo Alcance (`wpt_relay_tower`)**:
@@ -207,9 +209,6 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [ ] **Cavernas de Quartzo Piezoelétrico (`piezo_caverns`)**:
   - Geodos subterrâneos raros (Y: -30 a 10) repletos de cristais que vibram acusticamente ao sofrer impacto ou corte por laser.
   - Fonte de ressonadores piezoelétricos para tecnologia militar e sísmica avançada.
-- [ ] **Evento Climático: Surto de Plasma Solar (Coronal Plasma Surge)**:
-  - Onda de calor extremo diurno de curta duração que causa sobreaquecimento acelerado no traje se o jogador permanecer a céu aberto.
-  - Consequência positiva: quadruplica temporariamente a geração de todos os painéis e receptores solares WPT.
 - [ ] **Perfuratriz Automática de Poço Profundo (`deep_core_drill`)**:
   - Maquinário industrial de grande porte para extração contínua de fluidos fósseis pressurizados e minerais raros do manto planetário.
 

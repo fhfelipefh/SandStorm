@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cactus",
+  "textures": {
+    "bottom": "sandstorm:block/heavy_sap_cactus_bottom",
+    "top": "sandstorm:block/heavy_sap_cactus_top",
+    "side": "sandstorm:block/heavy_sap_cactus_side",
+    "particle": "sandstorm:block/heavy_sap_cactus_side"
+  }
+}

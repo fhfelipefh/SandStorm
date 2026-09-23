@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:wheat_seeds",
+    "sandstorm:mineral_salt",
+    "sandstorm:nutrient_bomb"
+  ],
+  "result": {
+    "count": 2,
+    "id": "sandstorm:xeno_grass_seeds"
+  }
+}
