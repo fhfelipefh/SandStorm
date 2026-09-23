@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,powered=false": {
+      "model": "sandstorm:block/autonomous_sonic_turret"
+    },
+    "facing=north,powered=true": {
+      "model": "sandstorm:block/autonomous_sonic_turret"
+    },
+    "facing=east,powered=false": {
+      "model": "sandstorm:block/autonomous_sonic_turret",
+      "y": 90
+    },
+    "facing=east,powered=true": {
+      "model": "sandstorm:block/autonomous_sonic_turret",
+      "y": 90
+    },
+    "facing=south,powered=false": {
+      "model": "sandstorm:block/autonomous_sonic_turret",
+      "y": 180
+    },
+    "facing=south,powered=true": {
+      "model": "sandstorm:block/autonomous_sonic_turret",
+      "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "sandstorm:block/autonomous_sonic_turret",
+      "y": 270
+    },
+    "facing=west,powered=true": {
+      "model": "sandstorm:block/autonomous_sonic_turret",
+      "y": 270
+    }
+  }
+}

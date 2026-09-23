@@ -158,9 +158,14 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [ ] **Ninhos Subterrâneos & Larvas de Verme (Sandworm Brood)**:
   - Larvas do verme da areia habitando ruínas profundas e cavernas areníticas.
   - Comportamento de enxame agressivo quando o jogador cava próximo a depósitos de silício.
-- [ ] **Torreta Sônica Automatizada (Autonomous Sonic Turret)**:
-  - Estrutura de defesa de perímetro para postos avançados e bases de terraformação.
-  - Conectada à rede de energia sem fio (WPT) para disparar ondas sônicas defensivas contra vermes e ameaças móveis.
+- [x] **Torreta Sônica Automatizada (Autonomous Sonic Turret - `autonomous_sonic_turret`)**:
+  - [x] Bloco industrial com rotação direcional e carcaça pesada de titânio escuro (`#121820`), emissores de onda sônica duplos e cúpula de sensores óticos.
+  - [x] Integração total com malha de energia sem fio (WPT) e slot de bateria auxiliar, consumindo 400 J por pulso acústico num raio de 20 blocos.
+  - [x] Disparo acústico repelente (`SandStormSoundEvents.SONIC_CANNON_BLAST`, ondas de choque `SonicBlastVisualEffect`) causando 16 de dano e repulsão física em alvos válidos.
+  - [x] Matriz de I.A. avançada configurável através de HUD em tela cheia (`AutonomousSonicTurretScreen`), com barra de pesquisa em tempo real e catálogo de cards para cada mob e monstro do jogo.
+  - [x] Modos de filtragem selecionáveis: Alvos Ativos (Whitelist) vs Ignorados (Blacklist).
+  - [x] Estratégias de mira inteligentes: Foco no Mais Próximo, Menor Vida e Maior Ameaça, com ações rápidas para seleção de todos os monstros e limpeza de alvos.
+  - [x] Sincronização cliente-servidor instantânea via pacote de rede `ConfigureTurretPayload`.
 - [ ] **Sinalizador Sísmico de Quarentena (Seismic Beacon)**:
   - Bloco de alta tecnologia que emite pulso de frequência nula, criando uma bolha sísmica neutra onde vermes não entram.
 

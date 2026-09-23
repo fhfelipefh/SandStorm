@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "sandstorm:autonomous_sonic_turret"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "sandstorm:blocks/autonomous_sonic_turret"
+}

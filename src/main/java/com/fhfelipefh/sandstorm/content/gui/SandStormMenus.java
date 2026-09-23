@@ -37,6 +37,11 @@ public class SandStormMenus {
             new MenuType<>(HydroponicChamberMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<AutonomousSonicTurretMenu> AUTONOMOUS_SONIC_TURRET_MENU = register(
+            "autonomous_sonic_turret",
+            new MenuType<>(AutonomousSonicTurretMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

@@ -102,4 +102,23 @@ public class SonicBlastVisualEffect {
             0.05
         );
     }
+
+    public static void spawnSonicBlastFromPoint(ServerLevel serverLevel, Vec3 origin, Vec3 targetPoint) {
+        Vec3 direction = targetPoint.subtract(origin).normalize();
+        double effectiveRange = origin.distanceTo(targetPoint);
+        Vec3 muzzlePos = origin.add(direction.scale(0.5));
+        serverLevel.sendParticles(ParticleTypes.GUST_EMITTER_SMALL, muzzlePos.x, muzzlePos.y, muzzlePos.z, 1, 0.0, 0.0, 0.0, 0.0);
+
+        double lastRingDist = 0.0;
+        for (double d = 0.8; d <= effectiveRange; d += DEFAULT_STEP) {
+            Vec3 point = origin.add(direction.scale(d));
+            serverLevel.sendParticles(ParticleTypes.SMALL_GUST, point.x, point.y, point.z, 1, direction.x * 0.1, direction.y * 0.1, direction.z * 0.1, 0.02);
+            if (d - lastRingDist >= SONIC_RING_INTERVAL) {
+                serverLevel.sendParticles(ParticleTypes.SONIC_BOOM, point.x, point.y, point.z, 1, 0.0, 0.0, 0.0, 0.0);
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, point.x, point.y, point.z, 3, 0.2, 0.2, 0.2, 0.05);
+                lastRingDist = d;
+            }
+        }
+        serverLevel.sendParticles(ParticleTypes.GUST_EMITTER_LARGE, targetPoint.x, targetPoint.y, targetPoint.z, 1, 0.0, 0.0, 0.0, 0.0);
+    }
 }

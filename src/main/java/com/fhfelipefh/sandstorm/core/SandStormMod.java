@@ -7,7 +7,9 @@ import com.fhfelipefh.sandstorm.content.command.SandwormShowcaseCommand;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
+import com.fhfelipefh.sandstorm.content.network.ConfigureTurretPayload;
 import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
 import com.fhfelipefh.sandstorm.content.survival.FlashlightStateServer;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
@@ -32,6 +34,7 @@ import com.fhfelipefh.sandstorm.content.recipe.RecipeUnlockHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -66,6 +69,10 @@ public class SandStormMod implements ModInitializer {
                 FlashlightTogglePayload.TYPE,
                 FlashlightTogglePayload.STREAM_CODEC
         );
+        PayloadTypeRegistry.serverboundPlay().register(
+                ConfigureTurretPayload.TYPE,
+                ConfigureTurretPayload.STREAM_CODEC
+        );
         SandStormSoundEvents.initialize();
         SandStormItems.initialize();
         SandStormBlocks.initialize();
@@ -93,6 +100,17 @@ public class SandStormMod implements ModInitializer {
                 FlashlightTogglePayload.TYPE,
                 (payload, context) -> {
                     FlashlightStateServer.setFlashlight(context.player().getUUID(), payload.enabled());
+                }
+        );
+        ServerPlayNetworking.registerGlobalReceiver(
+                ConfigureTurretPayload.TYPE,
+                (payload, context) -> {
+                    BlockPos pos = payload.pos();
+                    if (context.player().level().getBlockEntity(pos) instanceof AutonomousSonicTurretBlockEntity turret) {
+                        turret.setFilterMode(payload.filterMode());
+                        turret.setTargetingStrategy(payload.targetingStrategy());
+                        turret.setTargetEntityIds(payload.selectedEntityTypes());
+                    }
                 }
         );
     }

@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
@@ -180,6 +181,13 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_LIGHT_GREEN)
                     .strength(0.3f)
                     .sound(SoundType.GRASS)));
+    public static final AutonomousSonicTurretBlock AUTONOMOUS_SONIC_TURRET = register("autonomous_sonic_turret",
+            new AutonomousSonicTurretBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("autonomous_sonic_turret")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(4.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -221,6 +229,11 @@ public class SandStormBlocks {
             SandStormMod.id("hydroponic_chamber"),
             new BlockEntityType<>(HydroponicChamberBlockEntity::new, Set.of(HYDROPONIC_CHAMBER))
     );
+    public static final BlockEntityType<AutonomousSonicTurretBlockEntity> AUTONOMOUS_SONIC_TURRET_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("autonomous_sonic_turret"),
+            new BlockEntityType<>(AutonomousSonicTurretBlockEntity::new, Set.of(AUTONOMOUS_SONIC_TURRET))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -242,6 +255,7 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SANDSTONE_FURNACE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, THERMAL_GENERATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, HYDROPONIC_CHAMBER_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, AUTONOMOUS_SONIC_TURRET_BE);
         FluidStorage.SIDED.registerForBlockEntity(DesalinationFilterBlockEntity::getFluidStorage, DESALINATION_FILTER_BE);
         FluidStorage.SIDED.registerForBlockEntity(ThermalGeneratorBlockEntity::getFluidStorage, THERMAL_GENERATOR_BE);
     }

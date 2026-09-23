@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client;
 
 import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
+import com.fhfelipefh.sandstorm.client.gui.AutonomousSonicTurretScreen;
 import com.fhfelipefh.sandstorm.client.gui.ChemicalRefineryScreen;
 import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
 import com.fhfelipefh.sandstorm.client.gui.HydroponicChamberScreen;
@@ -52,6 +53,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.THERMAL_GENERATOR_MENU, ThermalGeneratorScreen::new);
         MenuScreens.register(SandStormMenus.CHEMICAL_REFINERY_MENU, ChemicalRefineryScreen::new);
         MenuScreens.register(SandStormMenus.HYDROPONIC_CHAMBER_MENU, HydroponicChamberScreen::new);
+        MenuScreens.register(SandStormMenus.AUTONOMOUS_SONIC_TURRET_MENU, AutonomousSonicTurretScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
