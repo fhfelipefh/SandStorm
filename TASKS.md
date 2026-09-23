@@ -11,7 +11,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **500 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **509 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
 | **Receitas Data-Driven (JEI/REI)** | 49 receitas oficiais | Cobertura total | ✅ Concluído |
@@ -245,6 +245,35 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [ ] **Linha de Montagem Industrial Automatizada (`auto_assembly_line`)**:
   - Esteiras industriais e braços manipuladores robóticos para manufatura contínua sem necessidade de intervenção do jogador em receitas em cadeia.
 
+### 🚧 Fase 18: Fortificações Perimétricas, Muralhas de Espinhos & Contra-Medidas Físicas
+- [ ] **Paredes com Espinhos de Titânio Balístico (`titanium_spike_wall`)**:
+  - Painel modular de fortificação estrutural feito de liga pesada de titânio escuro (`#121820`) e pontas reforçadas de metal temperado.
+  - **Dano Físico Contínuo Indiscriminado**: Qualquer entidade que encostar, colidir ou tentar atravessar (monstros invasores, outros jogadores ou o próprio operador da base desatento) sofre 6.0 pontos de dano cinético de perfuração por contato contínuo, além de desaceleração severa e efeito lacerante.
+  - Suporte a posicionamento multidirecional: vertical como parede de barreira perimétrica, horizontal rente ao solo ou invertido em tetos de contenção.
+  - Barreira física passiva imune a desgaste de baterias, ideal para defesa permanente de perímetros de assentamento.
+- [ ] **Paredes de Espinhos Retráteis Pneumáticos (`retractable_spike_wall`)**:
+  - Bloco de contenção ativo dotado de pistões pneumáticos de alta pressão e estacas afiadas de perfuração.
+  - Estado recolhido: As estacas permanecem alinhadas à superfície da parede, funcionando como bloco liso de passagem livre e inofensivo.
+  - Ativação por Redstone/Sinal Lógico: Ejeção repentina e violenta das lâminas projetando-se em até 1.5 bloco para a frente.
+  - **Dano Crítico de Empalamento & Repulsão**: Causa 14.0 de dano instantâneo de perfuração mecânica somado a alto recuo cinético (knockback), atingindo com letalidade qualquer criatura ou player (aliado ou inimigo) presente na área de projeção.
+- [ ] **Muralha de Espinhos Eletrizados de Alta Tensão (`electrified_spike_barrier`)**:
+  - Barreira metálica condutora conectada à malha de energia sem fio (WPT) ou cabeamento elétrico direto.
+  - **Dano Duplo (Perfuração Mecânica + Arco Voltaico Ciano)**: Ao encostar, descarrega energia elétrica de alta densidade (arco voltaico emissivo `#00E5FF`), consumindo 50 J por pulso de descarga.
+  - Causa dano físico mais choque elétrico e paralisia temporária (Stun / Lentidão extrema IV).
+  - Indiscriminado e de alto risco: Eletrocuta qualquer ser vivo desprotegido (jogadores necessitam de Traje Espacial com módulo de isolamento para não sofrerem eletrocussão letal).
+- [ ] **Muralha de Espinhos com Revestimento Bio-Corrosivo (`corrosive_chitin_spike_wall`)**:
+  - Barreira avançada forjada no Fabricador de Nanitas com quitina afiada de verme (`sandworm_chitin`), biopolímeros flexíveis (`flexible_biopolymer`) e seiva pesada de cacto (`heavy_sap_bottle`).
+  - **Dano de Corrosão Ácida e Degradação de Armaduras**: O contato com as pontas embebidas em ácido biológico inflige perfuração e o status "Corrosão Ácida", drenando vida ao longo do tempo e deteriorando aceleradamente a durabilidade da armadura equipada a cada tick.
+  - Barreira altamente perigosa para contenção de espécimes hostis biológicos e dissuasão de invasores em ambientes desérticos.
+- [ ] **Armadilha de Espinhos de Chão Pressurizada (`kinetic_floor_spikes`)**:
+  - Grelha embutida de piso camuflável nas texturas de arenito ou placas de titânio de bases.
+  - Ativação sísmica por pressão: Ao detectar o peso de passos de qualquer entidade (mobs, outros players ou o próprio construtor), ejeta estacas verticais afiadas do assoalho.
+  - Dano perfurante ascendente com foco nos membros inferiores, ignorando proteções convencionais que não sejam botas reforçadas do traje espacial.
+- [ ] **Portão Fortificado com Grades de Espinhos Esmagadores (`crushing_spike_gate`)**:
+  - Portão industrial motorizado de contenção com fileiras de dentes pontiagudos de titânio.
+  - Projetado para fechamento hermético de emergência em hangares, garagens de rovers e eclusas de ar.
+  - Causa dano crítico esmagador e perfurante se fechar sobre qualquer entidade que esteja sob o vão no momento da descida.
+
 ---
 
 ## 🎧 Catálogo Completo de Efeitos Sonoros Necessários (SFX)
@@ -275,6 +304,10 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 | `weather.sandstorm.wind.light` | `sandstorm_wind_2.ogg` | `weather` | 6.0s (loop) | Variação 2: Brisa arenosa leve para início e fim de tempestade (< 35% de intensidade). |
 | `weather.sandstorm.wind.medium` | `sandstorm_wind_3.ogg` | `weather` | 6.0s (loop) | Variação 3: Ventania intermediária em aceleração contínua (35% a 70% de intensidade). |
 | `weather.sandstorm.wind.heavy` | `sandstorm_wind_4.ogg` | `weather` | 6.0s (loop) | Variação 4: Tempestade violenta e ensurdecedora no pico sísmico/climático (> 70% de intensidade). |
+| `block.spike_wall.extend` | `spike_wall_extend.ogg` | `blocks` | 0.7s | Ejeção pneumática rápida de estacas de titânio. Som sibilante de ar comprimido seguido de estalo metálico. |
+| `block.spike_wall.retract` | `spike_wall_retract.ogg` | `blocks` | 0.8s | Recolhimento mecânico de pistões de espinhos. Som de engrenagens voltando à carcaça do bloco. |
+| `block.spike_wall.impale` | `spike_wall_impale.ogg` | `players` | 0.6s | Impacto perfurante e dilacerante. Som seco de aço perfurando blindagem e tecido orgânico com estalo de pressão. |
+| `block.electrified_spikes.shock` | `electrified_spikes_shock.ogg` | `blocks` | 1.0s | Descarga de alta tensão contínua em arco voltaico ciano ao contato com corpos orgânicos ou invasores. |
 
 > [!NOTE]
 > **Status dos Efeitos Sonoros**: Todos os 20 arquivos `.mp3` foram convertidos com sucesso para Vorbis `.ogg` (mantendo os `.mp3` originais preservados).
@@ -409,4 +442,7 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 21. `v1.3.5`: Saneamento de receitas básicas (remoção de arenito para gravetos de madeira), remapeamento ergonômico da lanterna para a tecla **G** (liberando a tecla F para troca de mãos), blindagem dupla da detecção de itens de fornalha no Datapad e expansão da suíte para **471 testes automatizados** com 100% de aprovação.
 22. `v1.3.6`: Resolução de deadlock no thread do servidor em chunk loading (`ProceduralRuinsManager`), eliminação das faixas de calor no HUD (`SurvivalHudOverlay`), normalização de neblina em tempo limpo (`SandstormFogMixin`), e validação estrita de compatibilidade oficial com os otimizadores gráficos **Sodium**, **Iris Shaders** e **Lithium** na versão 26.3 com teste arquitetural dedicado (`GraphicOptimizersCompatibilityArchitectureTest`), expandindo a suíte para **482 testes automatizados** 100% aprovados.
 23. `v1.3.7`: Implementação completa da **Fase 12: Xenobotânica, Agricultura Hidropônica & Ciclos de Carbono** (`44ff438`): Câmara Hidropônica Pressurizada (`hydroponic_chamber`) com boost de cúpula de terraformação e energia sem fio WPT, Sementes e Bloco de Grama Xeno-Adaptada (`xeno_grass_seeds` / `xeno_grass_block`) com fixação biológica de nitrogênio e conversão em solo fértil, Cactos de Seiva Pesada (`heavy_sap_cactus`), Seringa de Coleta (`sampling_syringe`), Frasco de Seiva Pesada (`heavy_sap_bottle`), Biopolímeros Flexíveis (`flexible_biopolymer`), Biorremediação de Solos com Areia Salinizada (`salinized_sand`) e Plantas Halófitas (`halophyte_plant`) em 4 estágios de desenvolvimento, além da expansão da suíte para **500 testes automatizados** com 100% de aprovação.
+24. `7138892`: Redesign completo do Traje Espacial (`space_suit`) com geometria 3D imponente (ombreiras angulares, tanques duplos de oxigênio traseiros e placas de reforço) na paleta industrial dark-tech (`#121820`), com renderização em duas camadas e visor holográfico com brilho emissivo ciano (`#00E5FF`).
+25. `2d273b4`: Implementação da Torreta Sônica Automatizada (`autonomous_sonic_turret`) com renderização 3D, alcance de 20 blocos, dano sônico e repulsão física, interface HUD em tela cheia com barra de pesquisa em tempo real, grid de cards de seleção de alvos de mobs/monstros, modos Whitelist/Blacklist, estratégias de mira por I.A., e expansão para **509 testes automatizados** com 100% de sucesso.
+
 
