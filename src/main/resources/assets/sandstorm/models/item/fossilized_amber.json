@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "sandstorm:block/fossilized_amber"
-  }
+  "parent": "sandstorm:block/fossilized_amber"
 }

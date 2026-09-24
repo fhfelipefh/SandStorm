@@ -368,5 +368,19 @@
   "block.sandstorm.auto_assembly_line": "Linha de Montagem Automática",
   "item.sandstorm.auto_assembly_line": "Linha de Montagem Automática",
   "container.sandstorm.auto_assembly_line": "Linha de Montagem Automática",
-  "tooltip.sandstorm.auto_assembly_line_desc": "Esteira industrial automatizada com braços robóticos para manufatura contínua em cadeia."
+  "tooltip.sandstorm.auto_assembly_line_desc": "Esteira industrial automatizada com braços robóticos para manufatura contínua em cadeia.",
+  "block.sandstorm.electrified_sand": "Areia Eletrificada",
+  "item.sandstorm.electrified_sand": "Areia Eletrificada",
+  "block.sandstorm.thermal_spring_stone": "Rocha Hidrotermal",
+  "item.sandstorm.thermal_spring_stone": "Rocha Hidrotermal",
+  "block.sandstorm.fossilized_amber": "Âmbar Fossilizado",
+  "item.sandstorm.fossilized_amber": "Âmbar Fossilizado",
+  "block.sandstorm.fulgurite_glass": "Vidro de Fulgurito",
+  "item.sandstorm.fulgurite_glass": "Vidro de Fulgurito",
+  "block.sandstorm.ancient_reed_block": "Junco Ancestral",
+  "item.sandstorm.ancient_reed_block": "Junco Ancestral",
+  "item.sandstorm.ancient_reed": "Junco Ancestral",
+  "item.sandstorm.ancient_seed": "Semente de Junco Ancestral",
+  "subtitles.sandstorm.block.wpt_relay.hum": "Repetidor WPT zumbindo",
+  "subtitles.sandstorm.block.smart_fluid_pipe.flow": "Fluido fluindo pelo cano"
 }

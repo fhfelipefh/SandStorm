@@ -368,5 +368,19 @@
   "block.sandstorm.auto_assembly_line": "Auto Assembly Line",
   "item.sandstorm.auto_assembly_line": "Auto Assembly Line",
   "container.sandstorm.auto_assembly_line": "Auto Assembly Line",
-  "tooltip.sandstorm.auto_assembly_line_desc": "Automated industrial conveyor with robotic arms for continuous chain-recipe manufacturing."
+  "tooltip.sandstorm.auto_assembly_line_desc": "Automated industrial conveyor with robotic arms for continuous chain-recipe manufacturing.",
+  "block.sandstorm.electrified_sand": "Electrified Sand",
+  "item.sandstorm.electrified_sand": "Electrified Sand",
+  "block.sandstorm.thermal_spring_stone": "Thermal Spring Stone",
+  "item.sandstorm.thermal_spring_stone": "Thermal Spring Stone",
+  "block.sandstorm.fossilized_amber": "Fossilized Amber",
+  "item.sandstorm.fossilized_amber": "Fossilized Amber",
+  "block.sandstorm.fulgurite_glass": "Fulgurite Glass",
+  "item.sandstorm.fulgurite_glass": "Fulgurite Glass",
+  "block.sandstorm.ancient_reed_block": "Ancient Reed",
+  "item.sandstorm.ancient_reed_block": "Ancient Reed",
+  "item.sandstorm.ancient_reed": "Ancient Reed",
+  "item.sandstorm.ancient_seed": "Ancient Reed Seed",
+  "subtitles.sandstorm.block.wpt_relay.hum": "WPT Relay hums",
+  "subtitles.sandstorm.block.smart_fluid_pipe.flow": "Fluid flows through pipe"
 }
