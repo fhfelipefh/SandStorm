@@ -1,7 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block.entity;
 
 import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
-import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -162,15 +161,6 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
         }
         if (stack.is(Items.REDSTONE_BLOCK)) {
             return 3600;
-        }
-        if (stack.is(SandStormItems.RAW_SILICON)) {
-            return 250;
-        }
-        if (stack.is(SandStormItems.SILICON_WAFER)) {
-            return 1000;
-        }
-        if (stack.is(SandStormItems.TECH_DISC)) {
-            return 5000;
         }
         return 0;
     }

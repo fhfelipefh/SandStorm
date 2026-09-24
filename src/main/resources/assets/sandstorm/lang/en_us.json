@@ -21,7 +21,7 @@
   "container.sandstorm.printer_3d": "3D Printer",
   "block.sandstorm.autonomous_sonic_turret": "Autonomous Sonic Turret",
   "item.sandstorm.autonomous_sonic_turret": "Autonomous Sonic Turret",
-  "gui.sandstorm.machine.battery_slot_hint": "Battery Slot: insert Raw Silicon (+250 J), Redstone (+400 J) or Wafer (+1,000 J)",
+  "gui.sandstorm.machine.battery_slot_hint": "Battery Slot: insert Redstone (+400 J) or Redstone Block (+3,600 J)",
   "gui.sandstorm.machine.recipes_tooltip": "Blueprints",
   "gui.sandstorm.machine.recipes_title": "BLUEPRINTS",
   "gui.sandstorm.machine.recipe_ready": "§aResources ready",

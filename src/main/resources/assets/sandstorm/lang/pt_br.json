@@ -21,7 +21,7 @@
   "container.sandstorm.printer_3d": "Impressora 3D",
   "block.sandstorm.autonomous_sonic_turret": "Torreta Sônica Automatizada",
   "item.sandstorm.autonomous_sonic_turret": "Torreta Sônica Automatizada",
-  "gui.sandstorm.machine.battery_slot_hint": "Slot de Bateria: insira Silício (+250 J), Redstone (+400 J) ou Wafer (+1.000 J)",
+  "gui.sandstorm.machine.battery_slot_hint": "Slot de Bateria: insira Redstone (+400 J) ou Bloco de Redstone (+3.600 J)",
   "gui.sandstorm.machine.recipes_tooltip": "Projetos",
   "gui.sandstorm.machine.recipes_title": "PROJETOS",
   "gui.sandstorm.machine.recipe_ready": "§aRecursos disponíveis",

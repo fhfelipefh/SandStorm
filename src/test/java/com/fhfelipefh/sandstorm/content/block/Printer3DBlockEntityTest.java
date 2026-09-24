@@ -5,8 +5,12 @@ import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.Bootstrap;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,6 +27,11 @@ class Printer3DBlockEntityTest {
     static void setup() {
         SharedConstants.tryDetectVersion();
         Bootstrap.bootStrap();
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (!item.builtInRegistryHolder().areComponentsBound()) {
+                item.builtInRegistryHolder().bindComponents(DataComponentMap.EMPTY);
+            }
+        }
     }
 
     @Test
@@ -39,6 +48,10 @@ class Printer3DBlockEntityTest {
     @Test
     void shouldRecognizeFuelValues() {
         assertEquals(0, BaseMachineBlockEntity.getFuelEnergy(ItemStack.EMPTY));
+        assertEquals(400, BaseMachineBlockEntity.getFuelEnergy(new ItemStack(Items.REDSTONE)));
+        assertEquals(3600, BaseMachineBlockEntity.getFuelEnergy(new ItemStack(Items.REDSTONE_BLOCK)));
+        assertEquals(0, BaseMachineBlockEntity.getFuelEnergy(new ItemStack(Items.DIAMOND)));
+        assertEquals(0, BaseMachineBlockEntity.getFuelEnergy(new ItemStack(Items.IRON_INGOT)));
     }
 
     @Test
