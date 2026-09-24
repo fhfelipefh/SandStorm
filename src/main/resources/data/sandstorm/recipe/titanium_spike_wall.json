@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "S": "sandstorm:scrap_metal",
-    "T": "sandstorm:titanium_ingot"
+    "T": "sandstorm:titanium_chitin_composite"
   },
   "pattern": [
     "T T",

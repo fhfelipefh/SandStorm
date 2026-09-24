@@ -48,6 +48,7 @@ class JeiCompatibilityTest {
                     assertTrue(result.has("id"), "Result must specify id: " + recipePath);
                     String resultId = result.get("id").getAsString();
                     assertTrue(IDENTIFIER_PATTERN.matcher(resultId).matches(), "Invalid result id: " + resultId);
+                    assertValidSandStormItem(resultId, recipePath);
 
                     if (type.equals("minecraft:crafting_shaped")) {
                         validateShapedRecipe(json, recipePath);
@@ -76,6 +77,7 @@ class JeiCompatibilityTest {
             assertEqualsOrSingleChar(symbol);
             String itemId = entry.getValue().getAsString();
             assertTrue(IDENTIFIER_PATTERN.matcher(itemId).matches(), "Invalid key item identifier: " + itemId);
+            assertValidSandStormItem(itemId, path);
         }
 
         for (JsonElement row : pattern) {
@@ -100,6 +102,7 @@ class JeiCompatibilityTest {
         for (JsonElement ing : ingredients) {
             String itemId = ing.getAsString();
             assertTrue(IDENTIFIER_PATTERN.matcher(itemId).matches(), "Invalid ingredient identifier: " + itemId);
+            assertValidSandStormItem(itemId, path);
         }
     }
 
@@ -107,8 +110,17 @@ class JeiCompatibilityTest {
         assertTrue(json.has("ingredient"), "Smelting recipe must have ingredient: " + path);
         String ingredient = json.get("ingredient").getAsString();
         assertTrue(IDENTIFIER_PATTERN.matcher(ingredient).matches(), "Invalid smelting ingredient: " + ingredient);
+        assertValidSandStormItem(ingredient, path);
         assertTrue(json.has("cookingtime"), "Smelting recipe must have cookingtime: " + path);
         assertTrue(json.get("cookingtime").getAsInt() > 0);
+    }
+
+    private void assertValidSandStormItem(String itemId, Path path) {
+        if (itemId.startsWith("sandstorm:")) {
+            String name = itemId.substring("sandstorm:".length());
+            Path itemDef = Path.of("src", "main", "resources", "assets", "sandstorm", "items", name + ".json");
+            assertTrue(Files.exists(itemDef), "Recipe references non-existent sandstorm item '" + itemId + "' in " + path);
+        }
     }
 
     @ParameterizedTest

@@ -5,7 +5,7 @@
     "C": "sandstorm:circuit_board",
     "E": "sandstorm:electrified_sand",
     "S": "sandstorm:titanium_spike_wall",
-    "T": "sandstorm:titanium_ingot"
+    "T": "sandstorm:titanium_chitin_composite"
   },
   "pattern": [
     " C ",
