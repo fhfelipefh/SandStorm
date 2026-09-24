@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.AutoAssemblyLineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
@@ -372,6 +373,47 @@ public class SandStormBlocks {
                     .strength(5.0f, 10.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .noOcclusion()));
+    public static final RadiotrophicMyceliumBlock RADIOTROPHIC_MYCELIUM = register("radiotrophic_mycelium",
+            new RadiotrophicMyceliumBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("radiotrophic_mycelium")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .instabreak()
+                    .sound(SoundType.SCULK)));
+    public static final ChitinolyticFungusBlock CHITINOLYTIC_FUNGUS = register("chitinolytic_fungus",
+            new ChitinolyticFungusBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("chitinolytic_fungus")))
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .noOcclusion()));
+    public static final CryoXerophilicLichenBlock CRYO_XEROPHILIC_LICHEN = register("cryo_xerophilic_lichen",
+            new CryoXerophilicLichenBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("cryo_xerophilic_lichen")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .instabreak()
+                    .sound(SoundType.LILY_PAD)
+                    .noOcclusion()));
+    public static final HalophyteSucculentBlock HALOPHYTE_SUCCULENT = register("halophyte_succulent",
+            new HalophyteSucculentBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("halophyte_succulent")))
+                    .mapColor(MapColor.COLOR_LIGHT_GREEN)
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .noOcclusion()));
+    public static final DuneEphedraBlock DUNE_EPHEDRA = register("dune_ephedra",
+            new DuneEphedraBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("dune_ephedra")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .noOcclusion()));
+    public static final BioreactorVatBlock BIOREACTOR_VAT = register("bioreactor_vat",
+            new BioreactorVatBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("bioreactor_vat")))
+                    .mapColor(MapColor.COLOR_LIGHT_GREEN)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -458,6 +500,11 @@ public class SandStormBlocks {
             SandStormMod.id("megastructure_constructor"),
             new BlockEntityType<>(MegastructureConstructorBlockEntity::new, Set.of(MEGASTRUCTURE_CONSTRUCTOR))
     );
+    public static final BlockEntityType<BioreactorVatBlockEntity> BIOREACTOR_VAT_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("bioreactor_vat"),
+            new BlockEntityType<>(BioreactorVatBlockEntity::new, Set.of(BIOREACTOR_VAT))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -489,5 +536,6 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, KINETIC_SHIELD_GENERATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, AUTO_ASSEMBLY_LINE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, MEGASTRUCTURE_CONSTRUCTOR_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, BIOREACTOR_VAT_BE);
     }
 }

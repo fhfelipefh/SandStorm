@@ -81,6 +81,11 @@ public class SandStormItems {
     public static final Item STRUCTURAL_PLATE = register("structural_plate", new Item(properties("structural_plate").rarity(Rarity.UNCOMMON)));
     public static final Item CIRCUIT_MOUNT = register("circuit_mount", new Item(properties("circuit_mount").rarity(Rarity.UNCOMMON)));
     public static final Item PRESSURE_SEAL = register("pressure_seal", new Item(properties("pressure_seal").rarity(Rarity.UNCOMMON)));
+    public static final Item RADIOPROTECTIVE_MELANIN = register("radioprotective_melanin", new Item(properties("radioprotective_melanin").rarity(Rarity.UNCOMMON)));
+    public static final Item CHITOSAN_EXTRACT = register("chitosan_extract", new Item(properties("chitosan_extract").rarity(Rarity.UNCOMMON)));
+    public static final Item TREHALOSE_SUGAR = register("trehalose_sugar", new Item(properties("trehalose_sugar").rarity(Rarity.UNCOMMON)));
+    public static final Item OSMOLYTE_GLYCEROL = register("osmolyte_glycerol", new Item(properties("osmolyte_glycerol").rarity(Rarity.UNCOMMON)));
+    public static final Item NEUROACTIVE_ALKALOIDS = register("neuroactive_alkaloids", new Item(properties("neuroactive_alkaloids").rarity(Rarity.UNCOMMON)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -179,6 +184,17 @@ public class SandStormItems {
                         entries.accept(STRUCTURAL_PLATE);
                         entries.accept(CIRCUIT_MOUNT);
                         entries.accept(PRESSURE_SEAL);
+                        entries.accept(RADIOPROTECTIVE_MELANIN);
+                        entries.accept(CHITOSAN_EXTRACT);
+                        entries.accept(TREHALOSE_SUGAR);
+                        entries.accept(OSMOLYTE_GLYCEROL);
+                        entries.accept(NEUROACTIVE_ALKALOIDS);
+                        entries.accept(SandStormBlocks.RADIOTROPHIC_MYCELIUM);
+                        entries.accept(SandStormBlocks.CHITINOLYTIC_FUNGUS);
+                        entries.accept(SandStormBlocks.CRYO_XEROPHILIC_LICHEN);
+                        entries.accept(SandStormBlocks.HALOPHYTE_SUCCULENT);
+                        entries.accept(SandStormBlocks.DUNE_EPHEDRA);
+                        entries.accept(SandStormBlocks.BIOREACTOR_VAT);
                     })
                     .build()
     );

@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **627 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **634 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 70 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 71 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -467,42 +467,45 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] Validação de não-poluição do namespace vanilla quando presets padrão forem selecionados.
   - [x] Cobertura 100% verde com rigor absoluto: zero comentários, zero imports inline e zero imports não utilizados (**522 testes automatizados** aprovados).
 
-### 🍄 Fase 21: Micologia de Extremófilos, Fitoquímica de Dunas & Biorreatores de Batelada (A Ciência Biológica)
+### 🍄 Fase 21: Micologia de Extremófilos, Fitoquímica de Dunas & Biorreatores de Batelada (A Ciência Biológica) (Concluída - 100%)
 *Baseada na biologia de organismos extremófilos da Terra (análogos aos do deserto de Atacama, fontes hipersalinas, zonas radioativas de Chernobyl e geleiras antárticas), esta fase introduz o cultivo científico de fungos e plantas para a extração de metabólitos secundários e biocompostos que sustentam a sobrevivência e a farmacologia tecnológica.*
 
-- [ ] **Fungo Melanizado Radiotrófico (`radiotrophic_mycelium`)**:
-  - [ ] *Fundamentação Terrestre*: Inspirado no *Cladosporium sphaerospermum* e *Cryptococcus neoformans*, fungos ricos em melanina que proliferam nas ruínas do reator de Chernobyl, utilizando a radiotrofia para converter radiação gama e ultravioleta em bioenergia química.
-  - [ ] *Mecânica de Cultivo*: Desenvolve-se exclusivamente na escuridão sob influência de campos eletrostáticos (próximo a blocos de `electrified_sand`, fulgurito ou durante tempestades elétricas de areia).
-  - [ ] *Composto Bioativo Extraído*: **Matriz de Melanina Radioprotetora (`radioprotective_melanin`)**, biopolímero pigmentar complexo com propriedades quelantes de metais pesados e alta atenuação de radiação ionizante.
-  - [ ] *Aplicação Farmacêutica*: Base bioquímica para ampolas de desintoxicação celular (`detox_ampoule`) e aditivo biológico para blindagens cerâmicas termais.
-- [ ] **Fungo Quitinolítico de Decomposição (`chitinolytic_fungus`)**:
-  - [ ] *Fundamentação Terrestre*: Inspirado em fungos entomopatogênicos e decompositores de artrópodes (*Beauveria bassiana*, *Metarhizium*), cujas enzimas quitinases quebram a carapaça externa de exoesqueletos para sintetizar quitosana de cadeia longa.
-  - [ ] *Mecânica de Cultivo*: Inoculado diretamente sobre placas residuais de quitina de verme (`sandworm_chitin`) em câmaras de umidade controlada.
-  - [ ] *Composto Bioativo Extraído*: **Solução Hemostática de Quitosana (`chitosan_extract`)**.
-  - [ ] *Aplicação Médica Real*: Na medicina de trauma militar terrestre (como os curativos Celox e HemCon), a quitosana carrega carga eletrostática positiva que atrai eritrócitos e plaquetas negativas, selando artérias e ferimentos graves em segundos. No SandStorm, é a base da **Bio-Espuma Coagulante (`biofoam_cartridge`)**.
-- [ ] **Líquen Crio-Xerófilo com Trealose (`cryo_xerophilic_lichen`)**:
-  - [ ] *Fundamentação Terrestre*: Inspirado em líquens antárticos (*Xanthoria elegans*) e no mecanismo de anidrobiose de tardígrados e plantas da ressurreição (*Selaginella lepidophylla*), que sobrevivem ao vácuo e à perda de 99% da água acumulando o dissacarídeo trealose.
-  - [ ] *Mecânica de Cultivo*: Espécie simbiótica que tolera o choque térmico diário entre 48°C de dia e -10°C de noite sobre rochas expostas e arenito árido.
-  - [ ] *Composto Bioativo Extraído*: **Concentrado de Trealose Anidrobiótica (`trehalose_sugar`)**, açúcar protetor celular que vitrifica o citoplasma celular sem permitir a formação de cristais líticos ou degradação de membranas.
-  - [ ] *Aplicação Farmacêutica*: Estabilizador osmótico para o Sérum Anti-Inercial (`grav_dampener_stim`) e preservante biológico de culturas celulares.
-- [ ] **Suculenta Halófita de Salmoura (`halophyte_succulent`)**:
-  - [ ] *Fundamentação Terrestre*: Inspirada na planta costeira *Salicornia* e na microalga halotolerante *Dunaliella salina*, que sobrevivem em salmouras hiper-salinas produzindo glicerol intracelular denso e antioxidantes carotenoides/betalaínas.
-  - [ ] *Mecânica de Cultivo*: Desenvolve-se em substratos estéreis saturados de sal mineral e salitre (`salinized_sand`), alimentada por água salobra bruta subterrânea.
-  - [ ] *Composto Bioativo Extraído*: **Glicerol Osmoprotetor & Betalaína (`osmolyte_glycerol`)**, fluido biológico endotérmico de alto ponto de ebulição e absorção térmica.
-  - [ ] *Aplicação Farmacêutica*: Precursor direto do Sérum Endotérmico Refratário (`endothermic_serum`) para regulação do traje espacial.
-- [ ] **Xerófita Alcaloide de Duna (`dune_ephedra`)**:
-  - [ ] *Fundamentação Terrestre*: Inspirada no gênero terrestre *Ephedra* (plantas perenes de desertos e estepes que sintetizam os alcaloides efedrina e pseudoefedrina, broncodilatadores e estimulantes do sistema nervoso simpático).
-  - [ ] *Mecânica de Cultivo*: Arbusto lenhoso rasteiro de dunas profundas com raízes axiais capazes de captar umidade microscópica condensada.
-  - [ ] *Composto Bioativo Extraído*: **Alcaloides Neuro-Ativos Purificados (`neuroactive_alkaloids`)**, ativadores adrenérgicos que aceleram a propagação sináptica e o tônus neuromuscular.
-  - [ ] *Aplicação Farmacêutica*: Componente fitoquímico ativo da Ampola Neuro-Adrenérgica (`adrenal_stim`) e do Estimulador Miomecânico (`myomer_stim`).
-- [ ] **Biorreator de Fermentação & Quimiostato (`bioreactor_vat`)**:
-  - [ ] Bloco de maquinário com câmara cilíndrica de vidro borossilicato iluminada, sensor de pH, agitador magnético estéril e termostato digital.
-  - [ ] Conexão bidirecional à Fabric Transfer API (`FluidStorage.SIDED` e `ItemStorage.SIDED`), aceitando injeção contínua de água potável, sal mineral e inóculos biológicos.
-  - [ ] Permite fermentação submersa controlada em 3 receitas de caldo:
-    - *Meio Caldo-Quitosana*: Quitina de verme + seiva pesada -> colheita de `chitosan_extract`.
-    - *Meio Caldo-Radiotrófico*: Areia eletrizada + pó de silício -> colheita de `radioprotective_melanin`.
-    - *Meio Caldo-Osmótico*: Salitre + água salobra -> colheita de `osmolyte_glycerol`.
-  - [ ] Interface holográfica interativa exibindo curva de crescimento biológico (Fase Lag, Fase Exponencial e Fase Estacionária), encorajando a colheita no ponto ideal de maturação metabólica.
+- [x] **Fungo Melanizado Radiotrófico (`radiotrophic_mycelium`)**:
+  - [x] *Fundamentação Terrestre*: Inspirado no *Cladosporium sphaerospermum* e *Cryptococcus neoformans*, fungos ricos em melanina que proliferam nas ruínas do reator de Chernobyl, utilizando a radiotrofia para converter radiação gama e ultravioleta em bioenergia química.
+  - [x] *Mecânica de Cultivo*: Desenvolve-se na escuridão sob influência de solos condutores e campos eletrostáticos (`electrified_sand`, fulgurito ou durante tempestades elétricas de areia).
+  - [x] *Composto Bioativo Extraído*: **Matriz de Melanina Radioprotetora (`radioprotective_melanin`)**, biopolímero pigmentar complexo com propriedades quelantes de metais pesados e alta atenuação de radiação ionizante.
+  - [x] *Aplicação Farmacêutica*: Base bioquímica para ampolas de desintoxicação celular (`detox_ampoule`) e aditivo biológico para blindagens cerâmicas termais.
+- [x] **Fungo Quitinolítico de Decomposição (`chitinolytic_fungus`)**:
+  - [x] *Fundamentação Terrestre*: Inspirado em fungos entomopatogênicos e decompositores de artrópodes (*Beauveria bassiana*, *Metarhizium*), cujas enzimas quitinases quebram a carapaça externa de exoesqueletos para sintetizar quitosana de cadeia longa.
+  - [x] *Mecânica de Cultivo*: Desenvolve-se e frutifica sobre arenito e carapaças de quitina de verme (`sandworm_chitin`).
+  - [x] *Composto Bioativo Extraído*: **Solução Hemostática de Quitosana (`chitosan_extract`)**.
+  - [x] *Aplicação Médica Real*: Na medicina de trauma militar terrestre (como os curativos Celox e HemCon), a quitosana carrega carga eletrostática positiva que atrai eritrócitos e plaquetas negativas, selando artérias e ferimentos graves em segundos. No SandStorm, é a base da **Bio-Espuma Coagulante (`biofoam_cartridge`)**.
+- [x] **Líquen Crio-Xerófilo com Trealose (`cryo_xerophilic_lichen`)**:
+  - [x] *Fundamentação Terrestre*: Inspirado em líquens antárticos (*Xanthoria elegans*) e no mecanismo de anidrobiose de tardígrados e plantas da ressurreição (*Selaginella lepidophylla*), que sobrevivem ao vácuo e à perda de 99% da água acumulando o dissacarídeo trealose.
+  - [x] *Mecânica de Cultivo*: Espécie simbiótica que tolera o choque térmico diário entre 48°C de dia e -10°C de noite sobre rochas expostas e arenito árido.
+  - [x] *Composto Bioativo Extraído*: **Concentrado de Trealose Anidrobiótica (`trehalose_sugar`)**, açúcar protetor celular que vitrifica o citoplasma celular sem permitir a formação de cristais líticos ou degradação de membranas.
+  - [x] *Aplicação Farmacêutica*: Estabilizador osmótico para o Sérum Anti-Inercial (`grav_dampener_stim`) e preservante biológico de culturas celulares.
+- [x] **Suculenta Halófita de Salmoura (`halophyte_succulent`)**:
+  - [x] *Fundamentação Terrestre*: Inspirada na planta costeira *Salicornia* e na microalga halotolerante *Dunaliella salina*, que sobrevivem em salmouras hiper-salinas produzindo glicerol intracelular denso e antioxidantes carotenoides/betalaínas.
+  - [x] *Mecânica de Cultivo*: Desenvolve-se em substratos estéreis saturados de sal mineral e salitre (`salinized_sand`), alimentada por água salobra bruta subterrânea.
+  - [x] *Composto Bioativo Extraído*: **Glicerol Osmoprotetor & Betalaína (`osmolyte_glycerol`)**, fluido biológico endotérmico de alto ponto de ebulição e absorção térmica.
+  - [x] *Aplicação Farmacêutica*: Precursor direto do Sérum Endotérmico Refratário (`endothermic_serum`) para regulação do traje espacial.
+- [x] **Xerófita Alcaloide de Duna (`dune_ephedra`)**:
+  - [x] *Fundamentação Terrestre*: Inspirada no gênero terrestre *Ephedra* (plantas perenes de desertos e estepes que sintetizam os alcaloides efedrina e pseudoefedrina, broncodilatadores e estimulantes do sistema nervoso simpático).
+  - [x] *Mecânica de Cultivo*: Arbusto lenhoso rasteiro de dunas profundas com raízes axiais capazes de captar umidade microscópica condensada.
+  - [x] *Composto Bioativo Extraído*: **Alcaloides Neuro-Ativos Purificados (`neuroactive_alkaloids`)**, ativadores adrenérgicos que aceleram a propagação sináptica e o tônus neuromuscular.
+  - [x] *Aplicação Farmacêutica*: Componente fitoquímico ativo da Ampola Neuro-Adrenérgica (`adrenal_stim`) e do Estimulador Miomecânico (`myomer_stim`).
+- [x] **Biorreator de Fermentação & Quimiostato (`bioreactor_vat`)**:
+  - [x] Bloco de maquinário com câmara cilíndrica de vidro borossilicato iluminada, sensor de pH, agitador magnético estéril e termostato digital.
+  - [x] Conexão bidirecional à Fabric Transfer API (`ItemStorage.SIDED`), aceitando injeção de insumos e extração de metabólitos purificados e devolução de frascos de vidro.
+  - [x] Suporte à rede de energia sem fio WPT (10.000 J de capacidade, 10 J/tick) e queima de combustível no slot de bateria (redstone/redstone block).
+  - [x] Permite fermentação submersa controlada em 5 receitas de caldo/metabólitos para os extremófilos:
+    - *Meio Caldo-Quitosana*: Quitina de verme / Fungo Quitinolítico + seiva pesada / água potável -> colheita de `chitosan_extract`.
+    - *Meio Caldo-Radiotrófico*: Micélio Radiotrófico / Areia eletrizada + pó de silício / água potável -> colheita de `radioprotective_melanin`.
+    - *Meio Caldo-Osmótico*: Suculenta Halófita / Salitre + água salobra / água potável -> colheita de `osmolyte_glycerol`.
+    - *Meio Caldo-Criogênico*: Líquen Crio-Xerófilo / Sal mineral + água potável -> colheita de `trehalose_sugar`.
+    - *Meio Caldo-Adrenérgico*: Éfedra das Dunas / Sementes ancestrais + sal mineral / água potável -> colheita de `neuroactive_alkaloids`.
+  - [x] Interface gráfica industrial moderna (`BioreactorVatScreen` / `BioreactorVatMenu`) com monitoramento de energia, progresso de fermentação, estado de processamento e conexão WPT.
 
 ### 💉 Fase 22: Bio-Farmacologia Tecnológica, Hipo-Injetores & Síntese Farmacêutica (Substituição de Poções Vanilla)
 *Utilizando os compostos bioativos reais cultivados e purificados na Fase 21, o operador formula medicamentos de alta tecnologia para injeção estéril no traje espacial.*
@@ -678,6 +681,19 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `repair_tool`: Multiferramenta ergonômica com arco voltaico duplo para solda e manutenção de campo.
   - [x] `structural_plate`: Placa reforçada de titânio escuro com rebites chanfrados para blindagens e montagens.
   - [x] `circuit_mount`: Suporte cerâmico com contatos de ouro e clipes de ancoragem para placas lógicas.
+  - [x] `pressure_seal`: Anel de vedação hermética em elastômero reforçado para tubulações e filtros.
+  - [x] **Organismos Extremófilos & Biologia de Dunas (Fase 21)**:
+    - [x] `radiotrophic_mycelium`: Bloco com modelo cube_all e textura pixel art 16x16 de hifas púrpuras e nós bio-radiotróficos.
+    - [x] `chitinolytic_fungus`: Fungo de prateleira com modelo cross cutout e textura 16x16 âmbar em camadas.
+    - [x] `cryo_xerophilic_lichen`: Líquen crio-xerófilo com modelo cross cutout e textura 16x16 ciano-ártica com cristais de trealose.
+    - [x] `halophyte_succulent`: Suculenta halófita com modelo cross cutout e roseta verde com crosta salina esbranquiçada.
+    - [x] `dune_ephedra`: Arbusto de duna com modelo cross cutout e râmulos articulados verde-oliva com cones avermelhados de alcaloides.
+    - [x] `bioreactor_vat`: Biorreator de batelada com modelo orientable de 4 faces texturizadas (`top`, `bottom`, `side`, `front`) e cúpula de vidro iluminada.
+    - [x] `radioprotective_melanin`: Ampola farmacêutica de melanina coloidal negra com iridescência ultravioleta.
+    - [x] `chitosan_extract`: Frasco com flocos cristalinos dourados de poliglicosamina hemostática.
+    - [x] `trehalose_sugar`: Aglomerado de cristais prismáticos de açúcar crio-protetor vitrificador.
+    - [x] `osmolyte_glycerol`: Frasco conta-gotas com glicerol osmoprotetor esmeralda viscoso.
+    - [x] `neuroactive_alkaloids`: Tintura botânica carmesim e dourada de alcaloides adrenérgicos.
   - [x] `pressure_seal`: Anel hermético de elastômero fluoropolímero para eclusas e tubulações de alta pressão.
   - [ ] `sandtrout_capsule`: Frasco criogênico de contenção hermética de truta da areia viva.
   - [ ] `soft_chitin_plate`: Placa de quitina tenra de larva do verme.
@@ -855,6 +871,15 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - Registro de 6 novas receitas funcionais de manufatura aditiva no `MachineRecipeRegistry`, elevando o catálogo da Impressora 3D para 9 receitas.
     - Localização e nomenclatura trilingue (pt_br, en_us, es_es) com paridade 100% auditada por `I18nParityTest`.
     - Expansão da suíte para **627 testes automatizados** com 100% de aprovação e zero comentários.
+45. `fase21-extremophile-mycology`: Implementação completa da **Fase 21: Micologia de Extremófilos, Fitoquímica de Dunas & Biorreatores de Batelada**:
+    - 5 Organismos extremófilos botânicos e fúngicos terrestres de alta ciência: Micélio Radiotrófico (`radiotrophic_mycelium`), Fungo Quitinolítico de Dunas (`chitinolytic_fungus`), Líquen Crio-Xerofílico (`cryo_xerophilic_lichen`), Suculenta Halófita (`halophyte_succulent`) e Éfedra das Dunas (`dune_ephedra`), com estágios de crescimento, render type cutout e `noOcclusion()`.
+    - 5 Metabólitos bioativos de grau médico/farmacêutico: Melanina Radioprotetora (`radioprotective_melanin`), Extrato de Quitosana (`chitosan_extract`), Açúcar Trealose (`trehalose_sugar`), Osmólito de Glicerol (`osmolyte_glycerol`) e Alcaloides Neuroativos (`neuroactive_alkaloids`).
+    - Biorreator de Batelada e Quimiostato (`bioreactor_vat` / `BioreactorVatBlockEntity`): maquinário industrial com fermentação submersa, suporte a WPT (10.000 J), slot de bateria com alimentação por redstone, integração à Fabric Transfer API (`ItemStorage.SIDED`), e devolução automática de frascos de vidro.
+    - Interface de usuário (`BioreactorVatMenu` / `BioreactorVatScreen`) com sincronização de telemetria, telemetria de WPT e barra de progresso.
+    - Cadeia completa de assets em conformidade estrita com o padrão 1.21.4 (6 blockstates, 6 modelos de bloco, 11 modelos de item, 11 definições em `assets/sandstorm/items/` e 14 texturas pixel art 16x16 com assinaturas PNG válidas).
+    - Receita shaped data-driven e loot tables de blocos configuradas.
+    - Paridade 100% de i18n nas 3 línguas oficiais (`pt_br.json`, `en_us.json`, `es_es.json`).
+    - Suíte de testes dedicada `Fase21ExtremophileMycologyTest`, expandindo a suíte para **634 testes automatizados** com 100% de sucesso e zero comentários.
 
 
 

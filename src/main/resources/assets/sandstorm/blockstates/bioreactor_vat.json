@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sandstorm:block/bioreactor_vat"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/bioreactor_vat",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/bioreactor_vat",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/bioreactor_vat",
+      "y": 270
+    }
+  }
+}
