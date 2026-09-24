@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": "sandstorm:circuit_board",
+    "B": "sandstorm:silicon_wafer",
     "C": "minecraft:cauldron",
     "G": "minecraft:glass",
     "I": "minecraft:copper_ingot",
