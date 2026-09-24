@@ -176,7 +176,7 @@
   "quest.sandstorm.compact_sandstone.task": "Compact 4 sand into Sandstone.",
   "quest.sandstorm.compact_sandstone.note": "Sandstone is the primary building material.",
   "quest.sandstorm.emergency_workbench.title": "Emergency Workbench",
-  "quest.sandstorm.emergency_workbench.task": "Use cabin bench or craft one with 4 Sandstone.",
+  "quest.sandstorm.emergency_workbench.task": "Use 4 sandstone",
   "quest.sandstorm.emergency_workbench.note": "Enables 3x3 crafting for rods and machines.",
   "quest.sandstorm.sandstone_furnace.title": "Sandstone Furnace",
   "quest.sandstorm.sandstone_furnace.task": "Build a furnace with 8 Sandstone.",
