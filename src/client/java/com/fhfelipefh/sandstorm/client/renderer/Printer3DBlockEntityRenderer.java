@@ -112,14 +112,14 @@ public class Printer3DBlockEntityRenderer implements BlockEntityRenderer<Printer
             float nozzleTipY = toolY + 3.5f;
 
             collector.submitCustomGeometry(poseStack, RenderTypes.LINES, (pose, consumer) -> {
-                consumer.addVertex(pose, toolX, nozzleTipY, toolZ).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, toolX, targetLaserY, toolZ).setColor(0x80, 0xF3, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, toolX, nozzleTipY, toolZ).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, toolX, targetLaserY, toolZ).setColor(0x80, 0xF3, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, toolX - 0.5f, targetLaserY, toolZ).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 1.0f, 0.0f, 0.0f);
-                consumer.addVertex(pose, toolX + 0.5f, targetLaserY, toolZ).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 1.0f, 0.0f, 0.0f);
+                consumer.addVertex(pose, toolX - 0.5f, targetLaserY, toolZ).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 1.0f, 0.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, toolX + 0.5f, targetLaserY, toolZ).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 1.0f, 0.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, toolX, targetLaserY, toolZ - 0.5f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 0.0f, 1.0f);
-                consumer.addVertex(pose, toolX, targetLaserY, toolZ + 0.5f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 0.0f, 1.0f);
+                consumer.addVertex(pose, toolX, targetLaserY, toolZ - 0.5f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 0.0f, 1.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, toolX, targetLaserY, toolZ + 0.5f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 0.0f, 1.0f).setLineWidth(1.0f);
             });
         }
         poseStack.popPose();

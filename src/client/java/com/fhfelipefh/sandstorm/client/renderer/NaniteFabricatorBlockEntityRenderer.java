@@ -136,18 +136,18 @@ public class NaniteFabricatorBlockEntityRenderer implements BlockEntityRenderer<
             float focalZ = 8.0f;
 
             collector.submitCustomGeometry(poseStack, RenderTypes.LINES, (pose, consumer) -> {
-                consumer.addVertex(pose, bot1X, bot1Y, bot1Z).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, focalX, focalY, focalZ).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, bot1X, bot1Y, bot1Z).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, focalX, focalY, focalZ).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, bot2X, bot2Y, bot2Z).setColor(0xE0, 0x40, 0xFB, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, focalX, focalY, focalZ).setColor(0xE0, 0x40, 0xFB, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, bot2X, bot2Y, bot2Z).setColor(0xE0, 0x40, 0xFB, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, focalX, focalY, focalZ).setColor(0xE0, 0x40, 0xFB, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, bot3X, bot3Y, bot3Z).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, focalX, focalY, focalZ).setColor(0x80, 0xF3, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, bot3X, bot3Y, bot3Z).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, focalX, focalY, focalZ).setColor(0x80, 0xF3, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
                 float armTipY = 14.0f - 7.0f + armExtend;
-                consumer.addVertex(pose, 8.0f, armTipY, 8.0f).setColor(0xE0, 0x40, 0xFB, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, focalX, focalY, focalZ).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, 8.0f, armTipY, 8.0f).setColor(0xE0, 0x40, 0xFB, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, focalX, focalY, focalZ).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
             });
         }
         poseStack.popPose();

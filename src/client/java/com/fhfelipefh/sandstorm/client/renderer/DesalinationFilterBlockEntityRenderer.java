@@ -78,46 +78,46 @@ public class DesalinationFilterBlockEntityRenderer implements BlockEntityRendere
                 float inRatio = Math.min(1.0f, (float) state.waterInput / (float) state.maxWater);
                 float inWaterY = 2.1f + (inRatio * 4.6f);
 
-                consumer.addVertex(pose, -5.4f, inWaterY, -2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, -1.6f, inWaterY, -2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, -5.4f, inWaterY, -2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, -1.6f, inWaterY, -2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, -1.6f, inWaterY, -2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, -1.6f, inWaterY, 2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, -1.6f, inWaterY, -2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, -1.6f, inWaterY, 2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, -1.6f, inWaterY, 2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, -5.4f, inWaterY, 2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, -1.6f, inWaterY, 2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, -5.4f, inWaterY, 2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, -5.4f, inWaterY, 2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, -5.4f, inWaterY, -2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, -5.4f, inWaterY, 2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, -5.4f, inWaterY, -2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, -5.4f, inWaterY, 0.0f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, -1.6f, inWaterY, 0.0f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, -5.4f, inWaterY, 0.0f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, -1.6f, inWaterY, 0.0f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, -3.5f, inWaterY, -2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, -3.5f, inWaterY, 2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, -3.5f, inWaterY, -2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, -3.5f, inWaterY, 2.9f).setColor(0x29, 0x80, 0xB9, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
             }
 
             if (state.waterOutput > 0) {
                 float outRatio = Math.min(1.0f, (float) state.waterOutput / (float) state.maxWater);
                 float outWaterY = 2.1f + (outRatio * 3.6f);
 
-                consumer.addVertex(pose, 1.6f, outWaterY, -2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, 5.4f, outWaterY, -2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, 1.6f, outWaterY, -2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, 5.4f, outWaterY, -2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, 5.4f, outWaterY, -2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, 5.4f, outWaterY, 2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, 5.4f, outWaterY, -2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, 5.4f, outWaterY, 2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, 5.4f, outWaterY, 2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, 1.6f, outWaterY, 2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, 5.4f, outWaterY, 2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, 1.6f, outWaterY, 2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, 1.6f, outWaterY, 2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, 1.6f, outWaterY, -2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, 1.6f, outWaterY, 2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, 1.6f, outWaterY, -2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, 1.6f, outWaterY, 0.0f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, 5.4f, outWaterY, 0.0f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, 1.6f, outWaterY, 0.0f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, 5.4f, outWaterY, 0.0f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, 3.5f, outWaterY, -2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, 3.5f, outWaterY, 2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, 3.5f, outWaterY, -2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, 3.5f, outWaterY, 2.9f).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
             }
 
             if (state.isProcessing) {
@@ -125,17 +125,17 @@ public class DesalinationFilterBlockEntityRenderer implements BlockEntityRendere
                 float angle = state.animationTicks * 0.4f;
                 float drop1X = Mth.cos(angle) * 1.6f;
                 float drop1Z = Mth.sin(angle) * 1.6f;
-                consumer.addVertex(pose, drop1X, drop1Y, drop1Z).setColor(0x80, 0xF3, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, drop1X, drop1Y - 0.5f, drop1Z).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, drop1X, drop1Y, drop1Z).setColor(0x80, 0xF3, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, drop1X, drop1Y - 0.5f, drop1Z).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
                 float drop2Y = 6.5f - ((state.animationTicks * 0.25f + 2.0f) % 3.5f);
                 float drop2X = 3.5f;
                 float drop2Z = 0.0f;
-                consumer.addVertex(pose, drop2X, drop2Y, drop2Z).setColor(0x80, 0xF3, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, drop2X, drop2Y - 0.4f, drop2Z).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, drop2X, drop2Y, drop2Z).setColor(0x80, 0xF3, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, drop2X, drop2Y - 0.4f, drop2Z).setColor(0x00, 0xE5, 0xFF, 0xFF).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
 
-                consumer.addVertex(pose, 0.0f, 3.5f, 0.0f).setColor(0x00, 0xE5, 0xFF, 0x80).setNormal(pose, 0.0f, 1.0f, 0.0f);
-                consumer.addVertex(pose, 0.0f, 11.5f, 0.0f).setColor(0x80, 0xF3, 0xFF, 0x80).setNormal(pose, 0.0f, 1.0f, 0.0f);
+                consumer.addVertex(pose, 0.0f, 3.5f, 0.0f).setColor(0x00, 0xE5, 0xFF, 0x80).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
+                consumer.addVertex(pose, 0.0f, 11.5f, 0.0f).setColor(0x80, 0xF3, 0xFF, 0x80).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.0f);
             }
         });
 
