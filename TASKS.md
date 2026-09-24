@@ -467,34 +467,78 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] Validação de não-poluição do namespace vanilla quando presets padrão forem selecionados.
   - [x] Cobertura 100% verde com rigor absoluto: zero comentários, zero imports inline e zero imports não utilizados (**522 testes automatizados** aprovados).
 
-### 💉 Fase 21: Bio-Farmacologia Tecnológica, Hipo-Injetores & Ampolas Estimulantes (Substituição de Poções Vanilla)
+### 🍄 Fase 21: Micologia de Extremófilos, Fitoquímica de Dunas & Biorreatores de Batelada (A Ciência Biológica)
+*Baseada na biologia de organismos extremófilos da Terra (análogos aos do deserto de Atacama, fontes hipersalinas, zonas radioativas de Chernobyl e geleiras antárticas), esta fase introduz o cultivo científico de fungos e plantas para a extração de metabólitos secundários e biocompostos que sustentam a sobrevivência e a farmacologia tecnológica.*
+
+- [ ] **Fungo Melanizado Radiotrófico (`radiotrophic_mycelium`)**:
+  - [ ] *Fundamentação Terrestre*: Inspirado no *Cladosporium sphaerospermum* e *Cryptococcus neoformans*, fungos ricos em melanina que proliferam nas ruínas do reator de Chernobyl, utilizando a radiotrofia para converter radiação gama e ultravioleta em bioenergia química.
+  - [ ] *Mecânica de Cultivo*: Desenvolve-se exclusivamente na escuridão sob influência de campos eletrostáticos (próximo a blocos de `electrified_sand`, fulgurito ou durante tempestades elétricas de areia).
+  - [ ] *Composto Bioativo Extraído*: **Matriz de Melanina Radioprotetora (`radioprotective_melanin`)**, biopolímero pigmentar complexo com propriedades quelantes de metais pesados e alta atenuação de radiação ionizante.
+  - [ ] *Aplicação Farmacêutica*: Base bioquímica para ampolas de desintoxicação celular (`detox_ampoule`) e aditivo biológico para blindagens cerâmicas termais.
+- [ ] **Fungo Quitinolítico de Decomposição (`chitinolytic_fungus`)**:
+  - [ ] *Fundamentação Terrestre*: Inspirado em fungos entomopatogênicos e decompositores de artrópodes (*Beauveria bassiana*, *Metarhizium*), cujas enzimas quitinases quebram a carapaça externa de exoesqueletos para sintetizar quitosana de cadeia longa.
+  - [ ] *Mecânica de Cultivo*: Inoculado diretamente sobre placas residuais de quitina de verme (`sandworm_chitin`) em câmaras de umidade controlada.
+  - [ ] *Composto Bioativo Extraído*: **Solução Hemostática de Quitosana (`chitosan_extract`)**.
+  - [ ] *Aplicação Médica Real*: Na medicina de trauma militar terrestre (como os curativos Celox e HemCon), a quitosana carrega carga eletrostática positiva que atrai eritrócitos e plaquetas negativas, selando artérias e ferimentos graves em segundos. No SandStorm, é a base da **Bio-Espuma Coagulante (`biofoam_cartridge`)**.
+- [ ] **Líquen Crio-Xerófilo com Trealose (`cryo_xerophilic_lichen`)**:
+  - [ ] *Fundamentação Terrestre*: Inspirado em líquens antárticos (*Xanthoria elegans*) e no mecanismo de anidrobiose de tardígrados e plantas da ressurreição (*Selaginella lepidophylla*), que sobrevivem ao vácuo e à perda de 99% da água acumulando o dissacarídeo trealose.
+  - [ ] *Mecânica de Cultivo*: Espécie simbiótica que tolera o choque térmico diário entre 48°C de dia e -10°C de noite sobre rochas expostas e arenito árido.
+  - [ ] *Composto Bioativo Extraído*: **Concentrado de Trealose Anidrobiótica (`trehalose_sugar`)**, açúcar protetor celular que vitrifica o citoplasma celular sem permitir a formação de cristais líticos ou degradação de membranas.
+  - [ ] *Aplicação Farmacêutica*: Estabilizador osmótico para o Sérum Anti-Inercial (`grav_dampener_stim`) e preservante biológico de culturas celulares.
+- [ ] **Suculenta Halófita de Salmoura (`halophyte_succulent`)**:
+  - [ ] *Fundamentação Terrestre*: Inspirada na planta costeira *Salicornia* e na microalga halotolerante *Dunaliella salina*, que sobrevivem em salmouras hiper-salinas produzindo glicerol intracelular denso e antioxidantes carotenoides/betalaínas.
+  - [ ] *Mecânica de Cultivo*: Desenvolve-se em substratos estéreis saturados de sal mineral e salitre (`salinized_sand`), alimentada por água salobra bruta subterrânea.
+  - [ ] *Composto Bioativo Extraído*: **Glicerol Osmoprotetor & Betalaína (`osmolyte_glycerol`)**, fluido biológico endotérmico de alto ponto de ebulição e absorção térmica.
+  - [ ] *Aplicação Farmacêutica*: Precursor direto do Sérum Endotérmico Refratário (`endothermic_serum`) para regulação do traje espacial.
+- [ ] **Xerófita Alcaloide de Duna (`dune_ephedra`)**:
+  - [ ] *Fundamentação Terrestre*: Inspirada no gênero terrestre *Ephedra* (plantas perenes de desertos e estepes que sintetizam os alcaloides efedrina e pseudoefedrina, broncodilatadores e estimulantes do sistema nervoso simpático).
+  - [ ] *Mecânica de Cultivo*: Arbusto lenhoso rasteiro de dunas profundas com raízes axiais capazes de captar umidade microscópica condensada.
+  - [ ] *Composto Bioativo Extraído*: **Alcaloides Neuro-Ativos Purificados (`neuroactive_alkaloids`)**, ativadores adrenérgicos que aceleram a propagação sináptica e o tônus neuromuscular.
+  - [ ] *Aplicação Farmacêutica*: Componente fitoquímico ativo da Ampola Neuro-Adrenérgica (`adrenal_stim`) e do Estimulador Miomecânico (`myomer_stim`).
+- [ ] **Biorreator de Fermentação & Quimiostato (`bioreactor_vat`)**:
+  - [ ] Bloco de maquinário com câmara cilíndrica de vidro borossilicato iluminada, sensor de pH, agitador magnético estéril e termostato digital.
+  - [ ] Conexão bidirecional à Fabric Transfer API (`FluidStorage.SIDED` e `ItemStorage.SIDED`), aceitando injeção contínua de água potável, sal mineral e inóculos biológicos.
+  - [ ] Permite fermentação submersa controlada em 3 receitas de caldo:
+    - *Meio Caldo-Quitosana*: Quitina de verme + seiva pesada -> colheita de `chitosan_extract`.
+    - *Meio Caldo-Radiotrófico*: Areia eletrizada + pó de silício -> colheita de `radioprotective_melanin`.
+    - *Meio Caldo-Osmótico*: Salitre + água salobra -> colheita de `osmolyte_glycerol`.
+  - [ ] Interface holográfica interativa exibindo curva de crescimento biológico (Fase Lag, Fase Exponencial e Fase Estacionária), encorajando a colheita no ponto ideal de maturação metabólica.
+
+### 💉 Fase 22: Bio-Farmacologia Tecnológica, Hipo-Injetores & Síntese Farmacêutica (Substituição de Poções Vanilla)
+*Utilizando os compostos bioativos reais cultivados e purificados na Fase 21, o operador formula medicamentos de alta tecnologia para injeção estéril no traje espacial.*
+
 - [ ] **Hipo-Injetor Pneumático Portátil (`hypo_injector`)**:
   - [ ] Dispositivo médico ergonômico em liga de titânio escuro com cartucho pneumático pressurizado reutilizável.
   - [ ] Mecânica de acionamento instantâneo (0.2s): carrega ampolas/stims no inventário e injeta diretamente no sistema circulatório do operador sem necessidade de desequipar o capacete do traje espacial.
   - [ ] Suporte a atalho tático de emergência (uso direto com a mão secundária ou tecla rápida configurável).
   - [ ] Sistema de barramento sonoro com sibilo pneumático característico de ejeção a gás estéril (`item.hypo_injector.use`).
   - [ ] Integração com o `SurvivalHudOverlay`: visor LED com indicador de doses restantes e telemetria de saturação metabólica.
-- [ ] **Ampolas Bioquímicas & Stims de Alta Eficiência (Substitutos de Poções)**:
+- [ ] **Formulação Científica das Ampolas & Stims (Substitutos de Poções)**:
   - [ ] **Ampola Neuro-Adrenérgica (`adrenal_stim`)** *(Substitui Speed / Velocidade)*:
-    - Estimula os impulsos nervosos e sobrecarrega temporariamente os servomotores dos membros inferiores por 3 minutos (+30% velocidade de movimento e +15% aceleração de sprint).
-    - Fabricação: Refinaria Química (`chemical_refinery`) a partir de seiva pesada concentrada (`heavy_sap_bottle`), sal mineral e silício refinado.
+    - *Fórmula*: Alcaloides Neuro-Ativos (`neuroactive_alkaloids`) + Solução Salina Mineralizada (`mineral_salt`).
+    - *Efeito Farmacológico*: Vasodilatação periférica e sobrecarga controlada dos servomotores dos membros inferiores por 3 minutos (+30% velocidade de movimento e +15% aceleração de sprint).
   - [ ] **Bio-Espuma Coagulante Molecular (`biofoam_cartridge`)** *(Substitui Instant Health & Regeneration)*:
-    - Espuma hemostática enriquecida com micro-nanorobôs médicos que sela perfurações e traumas graves em combate.
-    - Aplica cura instantânea de 4 corações e regeneração celular acelerada por 15 segundos.
-    - Fabricação: Fabricador de Nanitas (`nanite_fabricator`) a partir de quitina micronizada (`sandworm_chitin`) e biopolímeros flexíveis (`flexible_biopolymer`).
+    - *Fórmula*: Solução Hemostática de Quitosana (`chitosan_extract`) + Biopolímeros Flexíveis (`flexible_biopolymer`) + Micro-nanitas médicos.
+    - *Efeito Farmacológico*: A quitosana catiônica atrai as células sanguíneas formando um tampão gelatinoso instantâneo, selando hemorragias internas (cura imediata de 4 corações + regeneração acelerada de tecidos por 15s).
   - [ ] **Estimulador Miomecânico de Torque (`myomer_stim`)** *(Substitui Strength / Força)*:
-    - Injeta nanofibras de polímero contrátil nos membros superiores, multiplicando o torque e a tração mecânica do exoesqueleto em +40% por 3 minutos.
-    - Amplifica severamente o impacto cinético da Vibro-Crysknife, armas tecnológicas e golpes corpo a corpo.
+    - *Fórmula*: Alcaloides Neuro-Ativos (`neuroactive_alkaloids`) + Nanotubos de Carbono / Quitina de Verme (`sandworm_chitin`).
+    - *Efeito Farmacológico*: Aumenta temporariamente o limiar contrátil muscular e o torque do exoesqueleto em +40% por 3 minutos, amplificando o dano de armas brancas e impacto cinético.
   - [ ] **Sérum Endotérmico Refratário (`endothermic_serum`)** *(Substitui Fire Resistance / Resistência ao Fogo)*:
-    - Nanogel de altíssima capacidade térmica que preenche as micro-câmaras do traje espacial, conferindo 5 minutos de imunidade total a chamas, radiação de plasma e insolação extrema no deserto.
+    - *Fórmula*: Glicerol Osmoprotetor (`osmolyte_glycerol`) + Seiva Pesada de Cacto (`heavy_sap_bottle`).
+    - *Efeito Farmacológico*: Nanogel de altíssima capacidade endotérmica que satura as micro-câmaras do traje espacial, conferindo 5 minutos de imunidade total a chamas, radiação de plasma e insolação extrema no deserto.
   - [ ] **Sérum Anti-Inercial Gravitacional (`grav_dampener_stim`)** *(Substitui Slow Falling & Jump Boost)*:
-    - Solução eletrolítica que sintoniza as solas das botas magnéticas com micro-campos repulsores: permite saltos verticais de 2.5 blocos e desaceleração terminal suave em quedas de penhascos e crateras rochosas.
-  - [ ] **Ampola de Desintoxicação Celular (`detox_ampoule`)** *(Substitui Leite / Cura de Efeitos Negativos)*:
-    - Agente quelante sintético de ação instantânea que neutraliza veneno ácido de verme de areia, radiação estática de fulgurito e estados de náusea em 1 segundo.
+    - *Fórmula*: Concentrado de Trealose Anidrobiótica (`trehalose_sugar`) + Fragmento de Quartzo Piezoelétrico lapidado (`piezo_quartz_shard`).
+    - *Efeito Farmacológico*: Solução eletrolítica que sintoniza as solas das botas magnéticas com micro-campos repulsores piezoelétricos: permite saltos de 2.5 blocos e desaceleração terminal suave em quedas de desfiladeiros.
+  - [ ] **Ampola de Desintoxicação Celular (`detox_ampoule`)** *(Substitui Leite / Antídoto de Venenos)*:
+    - *Fórmula*: Matriz de Melanina Radioprotetora (`radioprotective_melanin`) + Água Potável Pura (`potable_water_bottle`).
+    - *Efeito Farmacológico*: A melanina quelante sequestra moléculas de ácido e toxinas de verme de areia, restaurando a homeostase celular e purgando venenos, choque estático e náuseas em 1.0s.
   - [ ] **Emulsão de Refração Óptica Furtiva (`stealth_nano_drape`)** *(Substitui Invisibility / Invisibilidade)*:
-    - Revestimento fotônico que dobra feixes de luz visível ao redor do chassi do traje por 90 segundos, ocultando o jogador da linha de visão de sentinelas automáticas e criaturas mutantes da superfície.
+    - *Fórmula*: Biopolímeros Flexíveis + Partículas micronizadas de Vidro de Fulgurito (`fulgurite_glass`).
+    - *Efeito Farmacológico*: Película metamaterial translúcida que curva feixes de luz ao redor do chassi do traje por 90 segundos, tornando o operador indetectável para radares e sensores visuais de criaturas da superfície.
 
-### 🔬 Fase 22: Bancada de Modificação Molecular, Overclocks de Hardware & Nanocoatings (Substituição de Encantamentos)
+### 🔬 Fase 23: Bancada de Modificação Molecular, Overclocks de Hardware & Nanocoatings (Substituição de Encantamentos)
+*Substituição da Mesa de Encantamentos, Bigorna e livros mágicos por engenharia física de semicondutores, overclocks de firmware e nanocamadas estruturais.*
+
 - [ ] **Bancada de Modificação Molecular (`molecular_modifier`)**:
   - [ ] Maquinário tecnológico de engenharia de precisão que substitui a Mesa de Encantamentos (`enchanting_table`) e a Bigorna (`anvil`) convencionais.
   - [ ] Conexão à malha de energia sem fio WPT (consumo de 500 J por ciclo de calibração molecular).
@@ -511,7 +555,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [ ] **Núcleo de Cavitação Ultrassônica (`cavitation_frequency_core`)** *(Substitui Efficiency / Eficiência)*:
     - Sintoniza a frequência de impacto da Picareta de Silício com a densidade molecular da rocha, acelerando a taxa de extração em até 200%.
   - [ ] **Desintegrador de Fase Atômica (`atomic_phase_disrupter`)** *(Substitui Silk Touch / Toque Suave)*:
-    - Dissocia os limites atômicos do bloco de forma controlada, permitindo a extração perfeitamente íntegra de vidros de fulgurito, colmeias fósseis e clusters de quartzo piezoelétrico.
+    - Dissocia as ligações químicas sem fraturar o bloco, permitindo a extração perfeitamente íntegra de vidros de fulgurito, colmeias fósseis e clusters de quartzo piezoelétrico.
   - [ ] **Espectrômetro de Ressonância Densimétrica (`spectrometric_sifter`)** *(Substitui Fortune / Fortuna)*:
     - Sensor espectrométrico microscópico que mapeia veios raros no ponto de impacto, maximizando o rendimento de silício, gemas piezoelétricas e carvão fóssil.
 - [ ] **Nanotecnologia Estrutural & Auto-Regeneração (Substitutos de Mending & Unbreaking)**:
@@ -523,18 +567,18 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [ ] **Grelha de Amortecimento Balístico (`ballistic_dampener_mesh`)** *(Substitui Proteção Geral / Protection)*:
     - Malha de dispersão de impacto que dissipa energia cinética por toda a área do chassi.
   - [ ] **Blindagem Cerâmica Ablativa (`ablative_thermal_plating`)** *(Substitui Proteção contra Fogo)*:
-    - Placas refratárias projetadas para absorver radiação solar extrema e chamas sem transferir calor ao operador.
+    - Placas refratárias enriquecidas com melanina radiotrófica projetadas para absorver radiação solar extrema e chamas sem transferir calor ao operador.
   - [ ] **Amortecedores Pneumáticos de Vácuo (`pneumatic_fall_dampers`)** *(Substitui Peso Pena / Feather Falling)*:
     - Pistões hidráulicos de desaceleração montados nos calcanhares das Botas Magnéticas, eliminando até 80% do impacto de pousos abruptos.
   - [ ] **Placas de Descarga Reativa de Chassi (`reactive_shock_plating`)** *(Substitui Espinhos / Thorns)*:
     - Eletrodos perimétricos no traje que liberam um arco voltaico defensivo ciano contra agressores corpo a corpo, causando paralisia e choque elétrico.
 
-### 🏥 Fase 23: Estação Médica Bio-Regenerativa (MedBay Pod) & Purificação Tecnológica do Vanilla
+### 🏥 Fase 24: Estação Médica Bio-Regenerativa (MedBay Pod) & Purificação Tecnológica do Vanilla
 - [ ] **Cápsula de Regeneração Celular MedBay (`bio_regeneration_pod`)**:
   - [ ] Cúpula hermética horizontal de criostase e terapia intensiva com visor curvo de vidro de fulgurito temperado.
   - [ ] Funcionalidade de internação: O jogador deita-se na câmara para:
     - Regeneração acelerada de saúde (cura completa em 8 segundos).
-    - Descontaminação biológica e purga instantânea de venenos e radiação.
+    - Descontaminação biológica e purga instantânea de venenos e radiação com lavagem de soluções de quitosana e trealose.
     - Recarga ultrarrápida dos tanques de oxigênio do traje e estabilização térmica corporal.
   - [ ] Integração com a Fabric Transfer API (`FluidStorage.SIDED` e `ItemStorage.SIDED`): consome água potável e biopolímeros flexíveis para sintetizar soluções regenerativas.
   - [ ] Animações de pressurização, névoa criogênica translúcida e telemetria holográfica com ECG no painel superior.
@@ -542,7 +586,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [ ] Remoção e anulação no `RecipeManager` das receitas do Suporte de Poções (`brewing_stand`) e da Mesa de Encantamentos (`enchanting_table`).
   - [ ] Supressão de livros encantados em tabelas de saque de estruturas (substituídos por Data Cores, Discos de Firmware e Módulos de Overclock).
   - [ ] Prevenção de spawn de bruxas, suportes arcanos e mecânicas mágicas que quebram a coerência hard sci-fi do planeta desértico.
-  - [ ] Suíte de testes dedicada: `Fase21BioPharmacologyTest`, `Fase22MolecularModifierTest` e `Fase23MedBayAndMagicSuppressionTest`.
+  - [ ] Suíte de testes dedicada: `Fase21ExtremophileMycologyTest`, `Fase22BioPharmacologyTest`, `Fase23MolecularModifierTest` e `Fase24MedBayAndMagicSuppressionTest`.
 
 ---
 
@@ -589,6 +633,7 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 | `block.molecular_modifier.work` | `molecular_modifier_work.ogg` | `blocks` | 1.6s | Zumbido harmônico de laser litográfico calibrando microchips e gravação em silício em nível atômico. |
 | `block.medbay_pod.enter` | `medbay_pod_enter.ogg` | `blocks` | 1.0s | Pressurização de cúpula médica. Fechamento hermético pneumático com descompressão a gás estéril. |
 | `block.medbay_pod.heal` | `medbay_pod_heal.ogg` | `ambient` | 2.0s (loop) | Circulação suave de fluido criogênico e biopolímeros regenerativos em tubulações estéreis. |
+| `block.bioreactor.bubble` | `bioreactor_bubble.ogg` | `ambient` | 2.5s (loop) | Borbulhamento e circulação de caldo nutritivo estéril em tanque de fermentação com zumbido magnético suave. |
 | `item.stim.activate` | `stim_activate.ogg` | `players` | 0.8s | Pulso bio-elétrico com batimentos cardíacos sutilmente acelerados e tom harmônico ascendente de sobrecarga motora. |
 
 > [!NOTE]
