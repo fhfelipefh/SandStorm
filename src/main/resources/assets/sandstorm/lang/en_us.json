@@ -197,7 +197,7 @@
   "quest.sandstorm.glass_canister.task": "Smelt sand into glass, craft bottles.",
   "quest.sandstorm.glass_canister.note": "Glass resists brine mineral acidity.",
   "quest.sandstorm.brackish_brine.title": "Brackish Water",
-  "quest.sandstorm.brackish_brine.task": "Dig below Y=60, fill bottles at aquifer.",
+  "quest.sandstorm.brackish_brine.task": "Dig into the depths and fill bottles at the aquifer.",
   "quest.sandstorm.brackish_brine.note": "Saline water — never drink raw.",
   "quest.sandstorm.thermal_purification.title": "Thermal Purification",
   "quest.sandstorm.thermal_purification.task": "Boil brackish water → potable water + salt.",

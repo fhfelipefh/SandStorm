@@ -197,7 +197,7 @@
   "quest.sandstorm.glass_canister.task": "Funda areia em vidro e molde frascos.",
   "quest.sandstorm.glass_canister.note": "Vidro resiste à acidez da salmoura.",
   "quest.sandstorm.brackish_brine.title": "Extração de Água Salobra",
-  "quest.sandstorm.brackish_brine.task": "Cave abaixo de Y=60 e encha frascos no aquífero.",
+  "quest.sandstorm.brackish_brine.task": "Cave nas profundezas e encha frascos no aquífero.",
   "quest.sandstorm.brackish_brine.note": "Água salina — nunca ingira sem purificar.",
   "quest.sandstorm.thermal_purification.title": "Purificação Térmica",
   "quest.sandstorm.thermal_purification.task": "Ferva água salobra na fornalha → água potável + sal.",
