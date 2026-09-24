@@ -85,4 +85,18 @@ class Printer3DBlockEntityTest {
         assertFalse(be.canTakeItemThroughFace(1, ItemStack.EMPTY, Direction.DOWN));
         assertFalse(be.canTakeItemThroughFace(3, ItemStack.EMPTY, Direction.DOWN));
     }
+
+    @Test
+    void shouldClearPrintingItemWhenItemIsRemovedFromSlot() {
+        Printer3DBlockEntity be = new Printer3DBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        assertTrue(be.getPrintingItem().isEmpty());
+
+        be.setItem(2, new ItemStack(Items.REDSTONE));
+        assertFalse(be.getPrintingItem().isEmpty());
+        assertEquals(Items.REDSTONE, be.getPrintingItem().getItem());
+
+        ItemStack removed = be.removeItem(2, 1);
+        assertEquals(Items.REDSTONE, removed.getItem());
+        assertTrue(be.getPrintingItem().isEmpty());
+    }
 }

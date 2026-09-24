@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.block.entity;
 
 import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
+import java.util.Collections;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -131,6 +132,7 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
                 if (progress >= maxProgress) {
                     processRecipe();
                     progress = 0;
+                    notifyBlockUpdate();
                     SoundEvent sound = getProcessSound();
                     if (sound != null) {
                         level.playSound(null, pos, sound, SoundSource.BLOCKS, 0.25f, 1.0f);
@@ -184,6 +186,7 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
+        Collections.fill(this.items, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(input, this.items);
         this.energy = input.getIntOr("energy", 0);
         this.progress = input.getIntOr("progress", 0);
@@ -224,6 +227,7 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
         ItemStack result = ContainerHelper.removeItem(items, slot, amount);
         if (!result.isEmpty()) {
             setChanged();
+            notifyBlockUpdate();
         }
         return result;
     }
@@ -233,6 +237,7 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
         ItemStack item = ContainerHelper.takeItem(items, slot);
         if (!item.isEmpty()) {
             setChanged();
+            notifyBlockUpdate();
         }
         return item;
     }
@@ -244,6 +249,7 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
             stack.setCount(getMaxStackSize(stack));
         }
         setChanged();
+        notifyBlockUpdate();
     }
 
     @Override
@@ -255,5 +261,12 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
     public void clearContent() {
         items.clear();
         setChanged();
+        notifyBlockUpdate();
+    }
+
+    public void notifyBlockUpdate() {
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
     }
 }
