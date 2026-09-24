@@ -3,16 +3,17 @@
   "category": "misc",
   "key": {
     "A": "sandstorm:nano_actuator",
-    "B": "sandstorm:circuit_board",
-    "D": "minecraft:dispenser",
+    "C": "sandstorm:circuit_board",
     "G": "minecraft:glass",
-    "I": "minecraft:iron_ingot",
-    "S": "minecraft:smooth_sandstone"
+    "M": "sandstorm:scrap_metal",
+    "P": "minecraft:piston",
+    "T": "sandstorm:tech_disc",
+    "W": "sandstorm:silicon_wafer"
   },
   "pattern": [
-    "GDG",
-    "IBI",
-    "SAS"
+    "MGM",
+    "CTA",
+    "WPW"
   ],
   "result": {
     "count": 1,

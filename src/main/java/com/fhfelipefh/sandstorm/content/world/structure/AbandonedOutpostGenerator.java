@@ -6,16 +6,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class AbandonedOutpostGenerator {
 
     public static boolean generate(ServerLevel level, BlockPos origin) {
         RandomSource random = level.getRandom();
         int surfaceY = origin.getY();
-        int baseY = surfaceY - 2;
+        int buryDepth = 3 + (int) (Math.abs(origin.getX() ^ origin.getZ()) % 3);
+        int roofY = surfaceY - buryDepth;
+        int baseY = roofY - 5;
 
         BlockPos center = new BlockPos(origin.getX(), baseY, origin.getZ());
 
@@ -51,14 +58,21 @@ public class AbandonedOutpostGenerator {
                 }
 
                 BlockPos roofPos = center.offset(dx, 5, dz);
-                if (Math.abs(dx) <= 2 && Math.abs(dz) <= 2 && random.nextFloat() < 0.45f) {
-                    level.setBlock(roofPos, Blocks.AIR.defaultBlockState(), 2);
+                if (Math.abs(dx) <= 2 && Math.abs(dz) <= 2 && random.nextFloat() < 0.35f) {
+                    level.setBlock(roofPos, Blocks.SAND.defaultBlockState(), 2);
                     level.setBlock(center.offset(dx, 1, dz), Blocks.SAND.defaultBlockState(), 2);
                     if (random.nextBoolean()) {
                         level.setBlock(center.offset(dx, 2, dz), Blocks.SAND.defaultBlockState(), 2);
                     }
                 } else {
                     level.setBlock(roofPos, Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                }
+
+                for (int y = roofY + 1; y <= surfaceY; y++) {
+                    BlockPos sandCapPos = new BlockPos(center.getX() + dx, y, center.getZ() + dz);
+                    if (level.getBlockState(sandCapPos).isAir()) {
+                        level.setBlock(sandCapPos, Blocks.SAND.defaultBlockState(), 2);
+                    }
                 }
             }
         }
@@ -77,25 +91,47 @@ public class AbandonedOutpostGenerator {
         level.setBlock(center.offset(-3, 0, 2), SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
 
         BlockPos workbenchPos = center.offset(-3, 1, -2);
-        level.setBlock(workbenchPos, SandStormBlocks.PRINTER_3D.defaultBlockState(), 3);
+        level.setBlock(workbenchPos, SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
+        level.setBlock(center.offset(-3, 1, -1), SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
 
         BlockPos chestPos = center.offset(3, 1, 2);
         level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
-            chest.setItem(0, new ItemStack(SandStormItems.SCRAP_METAL, 2 + random.nextInt(4)));
-            chest.setItem(1, new ItemStack(SandStormItems.CIRCUIT_BOARD, 1 + random.nextInt(3)));
-            chest.setItem(2, new ItemStack(SandStormItems.RAW_SILICON, 4 + random.nextInt(6)));
-            chest.setItem(3, new ItemStack(SandStormItems.SILICON_WAFER, 1 + random.nextInt(2)));
-            if (random.nextFloat() < 0.70f) {
-                chest.setItem(4, new ItemStack(SandStormItems.TECH_DISC, 1));
+            List<Integer> slots = new ArrayList<>();
+            for (int i = 0; i < 27; i++) {
+                slots.add(i);
+            }
+            Collections.shuffle(slots);
+            int slotIdx = 0;
+
+            if (random.nextFloat() < 0.65f) {
+                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.SCRAP_METAL, 2 + random.nextInt(4)));
+            }
+            if (random.nextFloat() < 0.50f) {
+                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.RAW_SILICON, 3 + random.nextInt(5)));
+            }
+            if (random.nextFloat() < 0.45f) {
+                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.CIRCUIT_BOARD, 1 + random.nextInt(2)));
             }
             if (random.nextFloat() < 0.35f) {
+                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.SILICON_WAFER, 1 + random.nextInt(2)));
+            }
+            if (random.nextFloat() < 0.40f) {
+                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.TECH_DISC, 1));
+            }
+            if (random.nextFloat() < 0.25f) {
+                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.NANO_ACTUATOR, 1));
+            }
+            if (random.nextFloat() < 0.50f) {
+                chest.setItem(slots.get(slotIdx++), new ItemStack(Items.REDSTONE, 4 + random.nextInt(8)));
+            }
+            if (random.nextFloat() < 0.30f) {
                 ItemStack upgrade = switch (random.nextInt(3)) {
                     case 0 -> new ItemStack(SandStormItems.SUIT_UPGRADE_BATTERY);
                     case 1 -> new ItemStack(SandStormItems.SUIT_UPGRADE_VISOR);
                     default -> new ItemStack(SandStormItems.SUIT_UPGRADE_THERMAL);
                 };
-                chest.setItem(5, upgrade);
+                chest.setItem(slots.get(slotIdx++), upgrade);
             }
             chest.setChanged();
         }

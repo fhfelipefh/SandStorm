@@ -3,15 +3,17 @@
   "category": "misc",
   "key": {
     "A": "sandstorm:nano_actuator",
-    "B": "sandstorm:circuit_board",
-    "C": "sandstorm:sandworm_chitin",
-    "S": "sandstorm:scrap_metal",
-    "T": "sandstorm:tech_disc"
+    "C": "sandstorm:circuit_board",
+    "D": "sandstorm:tech_disc",
+    "E": "sandstorm:electric_component",
+    "H": "sandstorm:sandworm_chitin",
+    "M": "sandstorm:scrap_metal",
+    "R": "minecraft:redstone_block"
   },
   "pattern": [
-    "STS",
-    "BCB",
-    "SAS"
+    "MDM",
+    "AHA",
+    "CER"
   ],
   "result": {
     "count": 1,

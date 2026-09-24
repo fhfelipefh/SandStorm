@@ -31,8 +31,8 @@ class ProceduralRuinsManagerTest {
     void constantsShouldHaveExpectedRarities() {
         assertTrue(ProceduralRuinsManager.OUTPOST_RARITY > 0);
         assertTrue(ProceduralRuinsManager.FUEL_SILO_RARITY > 0);
-        assertEquals(75, ProceduralRuinsManager.OUTPOST_RARITY);
-        assertEquals(65, ProceduralRuinsManager.FUEL_SILO_RARITY);
+        assertEquals(180, ProceduralRuinsManager.OUTPOST_RARITY);
+        assertEquals(150, ProceduralRuinsManager.FUEL_SILO_RARITY);
     }
 
     @Test
