@@ -445,18 +445,36 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         }
     }
 
+    protected boolean hasOutputReady() {
+        for (Slot slot : this.menu.slots) {
+            if (slot.x >= 110 && slot.hasItem() && !slot.mayPlace(ItemStack.EMPTY)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean isMouseOverProgress(int mouseX, int mouseY, int x, int y) {
+        return mouseX >= x + 69 && mouseX <= x + 107 && mouseY >= y + 38 && mouseY <= y + 52;
+    }
+
     protected void renderProgressBar(GuiGraphicsExtractor extractor, int x, int y, int width, int height) {
         extractor.fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xFF1E293B);
         extractor.fill(x, y, x + width, y + height, 0xFF080C14);
 
         int progressWidth = this.menu.getProgressScaled(width - 2);
+        boolean ready = !this.menu.isProcessing() && hasOutputReady();
         if (progressWidth > 0) {
             extractor.fill(x + 1, y + 1, x + 1 + progressWidth, y + height - 1, 0xFF00E5FF);
             extractor.fill(x + progressWidth - 1, y + 1, x + 1 + progressWidth, y + height - 1, 0xFFFFFFFF);
+        } else if (ready) {
+            extractor.fill(x + 1, y + 1, x + width - 1, y + height - 1, 0xFF00E676);
+            extractor.fill(x + width - 2, y + 1, x + width - 1, y + height - 1, 0xFFB9F6CA);
         }
 
         int arrowY = y + height / 2;
-        extractor.fill(x + width - 4, arrowY - 2, x + width - 2, arrowY + 3, 0xFF00E5FF);
+        int arrowColor = ready ? 0xFF00E676 : 0xFF00E5FF;
+        extractor.fill(x + width - 4, arrowY - 2, x + width - 2, arrowY + 3, arrowColor);
     }
 
     protected void renderCustomTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -488,10 +506,14 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
                     : "§7WPT Offline";
             Component tooltip = Component.literal(wptStatus);
             extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
-        } else if (mouseX >= x + 69 && mouseX <= x + 107 && mouseY >= y + 38 && mouseY <= y + 52) {
+        } else if (isMouseOverProgress(mouseX, mouseY, x, y)) {
             int maxProg = this.menu.getMaxProgress();
             int pct = maxProg > 0 ? (this.menu.getProgress() * 100 / maxProg) : 0;
             String status = this.menu.isProcessing() ? " §a[PROCESSANDO]" : " §7[EM ESPERA]";
+            if (!this.menu.isProcessing() && hasOutputReady()) {
+                pct = 100;
+                status = " §a[PRONTO]";
+            }
             Component tooltip = Component.literal("§bProgresso: §f" + pct + "%" + status);
             extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
         } else if (mouseX >= x + 7 && mouseX <= x + 25 && mouseY >= y + 47 && mouseY <= y + 65) {

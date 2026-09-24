@@ -16,6 +16,11 @@ public class Printer3DScreen extends BaseMachineScreen<Printer3DMenu> {
     }
 
     @Override
+    protected boolean isMouseOverProgress(int mouseX, int mouseY, int x, int y) {
+        return mouseX >= x + 66 && mouseX <= x + 110 && mouseY >= y + 18 && mouseY <= y + 58;
+    }
+
+    @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         super.extractRenderState(extractor, mouseX, mouseY, delta);
         renderPrinterChamberPreview(extractor);
@@ -64,7 +69,7 @@ public class Printer3DScreen extends BaseMachineScreen<Printer3DMenu> {
             extractor.fill(toolX - 1, toolY + 2, toolX + 1, toolY + 4, 0xFFFFAB00);
             extractor.fill(toolX, toolY + 4, toolX + 1, pieceTop, 0xFF00E5FF);
             extractor.fill(toolX - 1, pieceTop, toolX + 2, pieceTop + 1, 0xFFFFFFFF);
-        } else if (this.menu.slots.get(2).hasItem()) {
+        } else if (hasOutputReady()) {
             int pieceTop = bedY - 14;
             extractor.fill(cx1 + 14, pieceTop, cx2 - 14, bedY, 0xFF00E676);
             extractor.fill(cx1 + 16, pieceTop, cx2 - 16, pieceTop + 1, 0xFFB9F6CA);
