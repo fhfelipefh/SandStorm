@@ -68,6 +68,16 @@ class SandStormWorldGenTest {
         assertEquals(Registries.PLACED_FEATURE, SandStormWorldGen.PIEZO_CAVERN_KEY.registryKey());
         assertEquals("sandstorm", SandStormWorldGen.PIEZO_CAVERN_KEY.identifier().getNamespace());
         assertEquals("piezo_cavern", SandStormWorldGen.PIEZO_CAVERN_KEY.identifier().getPath());
+
+        assertNotNull(SandStormWorldGen.FULGURITE_MONOLITH_KEY);
+        assertEquals(Registries.PLACED_FEATURE, SandStormWorldGen.FULGURITE_MONOLITH_KEY.registryKey());
+        assertEquals("sandstorm", SandStormWorldGen.FULGURITE_MONOLITH_KEY.identifier().getNamespace());
+        assertEquals("fulgurite_monolith", SandStormWorldGen.FULGURITE_MONOLITH_KEY.identifier().getPath());
+
+        assertNotNull(SandStormWorldGen.FOSSILIZED_OASIS_KEY);
+        assertEquals(Registries.PLACED_FEATURE, SandStormWorldGen.FOSSILIZED_OASIS_KEY.registryKey());
+        assertEquals("sandstorm", SandStormWorldGen.FOSSILIZED_OASIS_KEY.identifier().getNamespace());
+        assertEquals("fossilized_oasis", SandStormWorldGen.FOSSILIZED_OASIS_KEY.identifier().getPath());
     }
 
     @Test
@@ -124,7 +134,7 @@ class SandStormWorldGenTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"brackish_aquifer", "buried_tech_ruins", "ancient_data_core"})
+    @ValueSource(strings = {"brackish_aquifer", "buried_tech_ruins", "ancient_data_core", "piezo_cavern", "fulgurite_monolith", "fossilized_oasis"})
     void shouldHaveValidFeatureJson(String featureName) throws IOException {
         Path jsonPath = FEATURE_DIR.resolve(featureName + ".json");
         assertTrue(Files.exists(jsonPath), "Missing feature: " + jsonPath);
@@ -155,7 +165,7 @@ class SandStormWorldGenTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"brackish_aquifer", "buried_tech_ruins", "ancient_data_core"})
+    @ValueSource(strings = {"brackish_aquifer", "buried_tech_ruins", "ancient_data_core", "piezo_cavern", "fulgurite_monolith", "fossilized_oasis"})
     void shouldHaveValidPlacedFeatureJson(String featureName) throws IOException {
         Path jsonPath = PLACED_DIR.resolve(featureName + ".json");
         assertTrue(Files.exists(jsonPath), "Missing placed feature: " + jsonPath);

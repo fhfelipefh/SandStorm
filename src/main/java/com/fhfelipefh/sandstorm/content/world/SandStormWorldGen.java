@@ -23,6 +23,12 @@ public class SandStormWorldGen {
     public static final ResourceKey<PlacedFeature> PIEZO_CAVERN_KEY =
             ResourceKey.create(Registries.PLACED_FEATURE, SandStormMod.id("piezo_cavern"));
 
+    public static final ResourceKey<PlacedFeature> FULGURITE_MONOLITH_KEY =
+            ResourceKey.create(Registries.PLACED_FEATURE, SandStormMod.id("fulgurite_monolith"));
+
+    public static final ResourceKey<PlacedFeature> FOSSILIZED_OASIS_KEY =
+            ResourceKey.create(Registries.PLACED_FEATURE, SandStormMod.id("fossilized_oasis"));
+
     public static void initialize() {
         BiomeModifications.addFeature(
                 BiomeSelectors.includeByKey(Biomes.DESERT),
@@ -46,6 +52,18 @@ public class SandStormWorldGen {
                 BiomeSelectors.includeByKey(Biomes.DESERT),
                 GenerationStep.Decoration.UNDERGROUND_DECORATION,
                 PIEZO_CAVERN_KEY
+        );
+
+        BiomeModifications.addFeature(
+                BiomeSelectors.includeByKey(Biomes.DESERT),
+                GenerationStep.Decoration.SURFACE_STRUCTURES,
+                FULGURITE_MONOLITH_KEY
+        );
+
+        BiomeModifications.addFeature(
+                BiomeSelectors.includeByKey(Biomes.DESERT),
+                GenerationStep.Decoration.VEGETAL_DECORATION,
+                FOSSILIZED_OASIS_KEY
         );
     }
 }

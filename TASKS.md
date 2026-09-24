@@ -269,9 +269,9 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] Integração completa de telemetria com o Datapad (`DatapadClientHelper`, `SurvivalDatapadScreen`), fornecendo link orbital ativo e previsão de contagem regressiva para a próxima tempestade de areia iônica.
 
 ### 🌪️ Fase 16: Biomas Extremos, Ventos Radioativos & Oásis Fósseis
-- [ ] **Ermos de Fulgurito Líquido & Dunas Vitrificadas (`fulgurite_wastes`)**:
+- [x] **Ermos de Fulgurito Líquido & Dunas Vitrificadas (`fulgurite_wastes`)**:
   - Sub-bioma desértico hiper-radioativo formado por séculos de descargas iônicas contínuas, repleto de monólitos de vidro negro e areia eletrizada condutora.
-- [ ] **Oásis Fóssil Subterrâneo (`fossilized_oasis`)**:
+- [x] **Oásis Fóssil Subterrâneo (`fossilized_oasis`)**:
   - Cavernas ocultas com remanescentes botânicos preservados em âmbar e fontes termais minerais, fonte de sementes ancestrais para terraformação definitiva.
 
 ### 🚂 Fase 17: Logística Maglev, Linhas Industriais & Domos Coloniais
