@@ -1,0 +1,6 @@
+{
+  "model": {
+    "model": "sandstorm:item/solid_state_accumulator",
+    "type": "minecraft:model"
+  }
+}

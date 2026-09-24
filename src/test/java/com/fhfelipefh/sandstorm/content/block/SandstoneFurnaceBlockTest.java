@@ -71,11 +71,5 @@ class SandstoneFurnaceBlockTest {
             String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
             assertTrue(json.contains("sandstorm:sandstone_furnace"));
         }
-
-        try (InputStream stream = getClass().getResourceAsStream("/data/sandstorm/recipe/furnace_from_sandstone.json")) {
-            assertNotNull(stream);
-            String json = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-            assertTrue(json.contains("sandstorm:sandstone_furnace"));
-        }
     }
 }

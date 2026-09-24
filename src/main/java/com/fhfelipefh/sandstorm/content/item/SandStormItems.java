@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 
 public class SandStormItems {
@@ -34,6 +35,9 @@ public class SandStormItems {
     public static final Item SANDWORM_CHITIN = register("sandworm_chitin", new Item(properties("sandworm_chitin").rarity(Rarity.UNCOMMON)));
     public static final Item SANDWORM_TOOTH = register("sandworm_tooth", new Item(properties("sandworm_tooth").rarity(Rarity.RARE)));
     public static final Item RAW_SILICON = register("raw_silicon", new Item(properties("raw_silicon")));
+    public static final Item TOOL_BASE = register("tool_base", new Item(properties("tool_base")));
+    public static final Item ELECTRIC_COMPONENT = register("electric_component", new Item(properties("electric_component").rarity(Rarity.UNCOMMON)));
+    public static final Item SILICON_PICKAXE = register("silicon_pickaxe", new Item(properties("silicon_pickaxe").pickaxe(ToolMaterial.IRON, 1.0f, -2.8f).rarity(Rarity.UNCOMMON)));
     public static final Item SILICON_WAFER = register("silicon_wafer", new Item(properties("silicon_wafer")));
     public static final Item MINERAL_SALT = register("mineral_salt", new Item(properties("mineral_salt")));
     public static final PotableWaterBottleItem POTABLE_WATER_BOTTLE = register("potable_water_bottle", new PotableWaterBottleItem(properties("potable_water_bottle")));
@@ -97,6 +101,9 @@ public class SandStormItems {
                         entries.accept(POTABLE_WATER_BOTTLE);
                         entries.accept(MINERAL_SALT);
                         entries.accept(RAW_SILICON);
+                        entries.accept(TOOL_BASE);
+                        entries.accept(ELECTRIC_COMPONENT);
+                        entries.accept(SILICON_PICKAXE);
                         entries.accept(SILICON_WAFER);
                         entries.accept(CIRCUIT_BOARD);
                         entries.accept(NANO_ACTUATOR);

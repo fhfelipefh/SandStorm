@@ -114,6 +114,9 @@ class JeiCompatibilityTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "sandstorm:raw_silicon",
+            "sandstorm:tool_base",
+            "sandstorm:electric_component",
+            "sandstorm:silicon_pickaxe",
             "sandstorm:circuit_board",
             "sandstorm:silicon_wafer",
             "sandstorm:nano_actuator",

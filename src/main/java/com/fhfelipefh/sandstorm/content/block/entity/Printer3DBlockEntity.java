@@ -50,6 +50,16 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             ItemStack out = items.get(2);
             return out.isEmpty();
         }
+        if (in0.is(SandStormItems.RAW_SILICON)) {
+            if (!in1.is(SandStormItems.RAW_SILICON)) {
+                return false;
+            }
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                return true;
+            }
+            return out.is(SandStormItems.ELECTRIC_COMPONENT) && out.getCount() < out.getMaxStackSize();
+        }
         return false;
     }
 
@@ -73,6 +83,15 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             in0.shrink(1);
             in1.shrink(1);
             items.set(2, new ItemStack(SandStormItems.PLASMA_RIFLE));
+        } else if (in0.is(SandStormItems.RAW_SILICON)) {
+            in0.shrink(1);
+            in1.shrink(1);
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                items.set(2, new ItemStack(SandStormItems.ELECTRIC_COMPONENT));
+            } else {
+                out.grow(1);
+            }
         }
     }
 
@@ -91,6 +110,9 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             ItemStack in0 = items.get(0);
             if (in0.is(SandStormItems.CIRCUIT_BOARD)) {
                 return new ItemStack(SandStormItems.PLASMA_RIFLE);
+            }
+            if (in0.is(SandStormItems.RAW_SILICON)) {
+                return new ItemStack(SandStormItems.ELECTRIC_COMPONENT);
             }
             return new ItemStack(SandStormItems.CIRCUIT_BOARD);
         }
@@ -121,7 +143,7 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == 0) {
-            return stack.is(SandStormItems.SILICON_WAFER) || stack.is(SandStormItems.CIRCUIT_BOARD);
+            return stack.is(SandStormItems.SILICON_WAFER) || stack.is(SandStormItems.CIRCUIT_BOARD) || stack.is(SandStormItems.RAW_SILICON);
         }
         if (slot == 1) {
             return stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.SCRAP_METAL) || stack.is(SandStormItems.NANO_ACTUATOR);

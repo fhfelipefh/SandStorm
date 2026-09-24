@@ -1,0 +1,6 @@
+{
+  "model": {
+    "model": "sandstorm:item/grid_monitor_console",
+    "type": "minecraft:model"
+  }
+}

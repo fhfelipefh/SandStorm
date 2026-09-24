@@ -70,10 +70,25 @@ public class TechnologyToolRestrictionHandler {
         }
 
         if (requiresRoboticsToBreak(state)) {
-            return isPilotingMiningRobot(player);
+            if (isPilotingMiningRobot(player)) {
+                return true;
+            }
+            return isAuthorizedMiningTool(mainHandItem);
         }
 
         return true;
+    }
+
+    public static boolean isAuthorizedMiningTool(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return false;
+        }
+        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        return id != null && isAuthorizedMiningTool(id.getNamespace(), id.getPath());
+    }
+
+    public static boolean isAuthorizedMiningTool(String namespace, String path) {
+        return "sandstorm".equals(namespace) && "silicon_pickaxe".equals(path);
     }
 
     public static boolean requiresRoboticsToBreak(BlockState state) {

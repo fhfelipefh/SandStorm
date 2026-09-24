@@ -31,7 +31,8 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [x] Supressão de monstros vanilla (`VanillaMonsterSuppressionHandler`) para preservar a imersão de planeta alienígena hostil.
 - [x] Restrição tecnológica de ferramentas (`TechnologyToolRestrictionHandler`):
   - [x] Proibição de picaretas, machados, espadas e enxadas vanilla manuais.
-  - [x] Mineração de pedra/minérios restrita a robôs e maquinários (`ExcavatorVehicleEntity`, `MegazordEntity`).
+  - [x] Mineração de pedra/minérios restrita a robôs (`ExcavatorVehicleEntity`, `MegazordEntity`) ou à ferramenta tecnológica básica (`SiliconPickaxeItem` / `silicon_pickaxe`).
+  - [x] Progressão do Capítulo 1: Fornalha de arenito -> Base estrutural na bancada -> Matriz elétrica na Impressora 3D da cabine -> Picareta de Silício -> Mineração de Carvão fóssil.
   - [x] Permissão explícita de pás vanilla para movimentação e coleta de areia para a nave.
   - [x] Desativação das 24 receitas de ferramentas vanilla no `RecipeManager`.
 
@@ -511,7 +512,7 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 ---
 
 ### 3. Progressão Livre de Softlocks, Restrição Dimensional e Supressão de Phantoms
-- [x] **Desbloqueio de Fundição Primária**: Receita de Fornalha a partir de 8 blocos de arenito (`furnace_from_sandstone.json`), permitindo processar silício e cozinhar sem minerar pedras antes de montar maquinário robótico.
+- [x] **Desbloqueio de Fundição Primária**: Receita de Fornalha a partir de 8 blocos de arenito (`sandstone_furnace.json`), permitindo processar silício e cozinhar sem minerar pedras antes de montar maquinário robótico.
 - [x] **Metalurgia de Reciclagem**:
   - [x] Fundição e alto-forno de `scrap_metal` para `iron_ingot`.
   - [x] Extração e manufatura de `copper_ingot` a partir de `scrap_metal`.

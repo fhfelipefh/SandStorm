@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.survival;
 import com.fhfelipefh.sandstorm.content.block.SandstoneWorkbenchBlock;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.Bootstrap;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CraftingTableBlock;
@@ -104,5 +105,15 @@ class TechnologyToolRestrictionHandlerTest {
     void shouldNotRequireRoboticsToBreakWorkbenches() {
         assertFalse(TechnologyToolRestrictionHandler.requiresRoboticsToBreak(Blocks.CRAFTING_TABLE.defaultBlockState()));
         assertTrue(CraftingTableBlock.class.isAssignableFrom(SandstoneWorkbenchBlock.class));
+    }
+
+    @Test
+    void shouldAuthorizeSiliconPickaxeForMining() {
+        assertTrue(TechnologyToolRestrictionHandler.isAuthorizedMiningTool("sandstorm", "silicon_pickaxe"));
+        assertFalse(TechnologyToolRestrictionHandler.isAuthorizedMiningTool("minecraft", "iron_pickaxe"));
+        assertFalse(TechnologyToolRestrictionHandler.isAuthorizedMiningTool("minecraft", "diamond_pickaxe"));
+        assertFalse(TechnologyToolRestrictionHandler.isAuthorizedMiningTool(new ItemStack(Items.IRON_PICKAXE)));
+        assertFalse(TechnologyToolRestrictionHandler.isAuthorizedMiningTool(ItemStack.EMPTY));
+        assertFalse(TechnologyToolRestrictionHandler.isAuthorizedMiningTool(null));
     }
 }
