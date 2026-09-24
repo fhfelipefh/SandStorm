@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **598 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **610 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 70 receitas oficiais | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 70 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -707,6 +707,8 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - Catálogo nativo de 4 blueprints monumentais (`biosphere_dome`, `planetary_citadel`, `orbital_launch_silo`, `desert_tech_pyramid`).
     - Finalização épica com onda de choque sonora (`megastructure_complete.ogg`) e consagração do perímetro de 48m como Zona Segura Permanente imune a vermes de areia (`KineticShieldTracker`).
     - 3 novos eventos de som registrados (`MEGASTRUCTURE_CONSTRUCTOR_LASER`, `MEGASTRUCTURE_LAYER_COMPLETE`, `MEGASTRUCTURE_COMPLETE`), mapeamento de áudio em `sounds.json`, receitas, loot tables, i18n trilingue (pt_br, en_us, es_es), texturas PNG íntegras e suíte de testes `Fase19MegastructureTest`, expandindo a suíte para **598 testes automatizados** com 100% de sucesso.
+39. `2d07134` / `a3daec7`: Resolução e blindagem das receitas de fortificações perimétricas (uso de `titanium_chitin_composite` em vez de identificadores inexistentes), expansão do `JeiCompatibilityTest` para auditar a existência física de todos os itens e texturas de receitas data-driven, e formalização do *Protocolo de Integridade de Receitas Data-Driven* no `AGENTS.md`.
+40. `ce42c0b`: Implementação do **Catálogo de Projetos (Blueprints Drawer)** para a Impressora 3D e o Fabricador de Nanites (`MachineRecipeRegistry`, `MachineRecipe`, auto-preenchimento de insumos com 1 clique e drawer deslizante lateral), **Modelo Focal da Lanterna do Capacete** (`FlashlightFocalModel`, cone de 25°, 28m de alcance, atenuação angular/radial e renderizador de feixe/vinheta `FlashlightFocalRenderer`), revisão da descrição da missão da Picareta de Silício no Datapad (pt_br, en_us, es_es) e expansão da suíte para **610 testes automatizados** 100% aprovados.
 
 
 
