@@ -275,11 +275,11 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - Cavernas ocultas com remanescentes botânicos preservados em âmbar e fontes termais minerais, fonte de sementes ancestrais para terraformação definitiva.
 
 ### 🚂 Fase 17: Logística Maglev, Linhas Industriais & Domos Coloniais
-- [ ] **Sistema Ferroviário Magnético de Areia (`sand_maglev_rail`)**:
+- [x] **Sistema Ferroviário Magnético de Areia (`sand_maglev_rail`)**:
   - Trilhos de levitação magnética e vagões autônomos de alta velocidade para transporte expresso de minérios, fluidos e jogadores entre postos avançados distantes.
-- [ ] **Domo Residencial de Colonos (`habitat_dome`)**:
+- [x] **Domo Residencial de Colonos (`habitat_dome`)**:
   - Módulos habitacionais pressurizados com controle atmosférico integrado, recicladores de oxigênio e camas de criostase para suporte de vida prolongado.
-- [ ] **Linha de Montagem Industrial Automatizada (`auto_assembly_line`)**:
+- [x] **Linha de Montagem Industrial Automatizada (`auto_assembly_line`)**:
   - Esteiras industriais e braços manipuladores robóticos para manufatura contínua sem necessidade de intervenção do jogador em receitas em cadeia.
 
 ### 🚧 Fase 18: Fortificações Perimétricas, Muralhas de Espinhos & Contra-Medidas Físicas
