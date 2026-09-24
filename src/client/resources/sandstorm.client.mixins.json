@@ -9,7 +9,8 @@
 		"SandstormFogMixin",
 		"FlashlightLightMixin",
 		"CompassIonInterferenceMixin",
-		"SandStormWorldPresetSelectionMixin"
+		"SandStormWorldPresetSelectionMixin",
+		"FirstPersonSuitArmMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
