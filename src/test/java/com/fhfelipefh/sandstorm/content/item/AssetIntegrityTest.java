@@ -205,4 +205,70 @@ class AssetIntegrityTest {
             });
         }
     }
+
+    @Test
+    void everyItemDefinitionMustHaveACorrespondingItemTexture() throws IOException {
+        assertTrue(Files.exists(ITEMS_DIR));
+
+        Path itemTexturesDir = TEXTURES_DIR.resolve("item");
+        Path blockTexturesDir = TEXTURES_DIR.resolve("block");
+        assertTrue(Files.exists(itemTexturesDir));
+
+        try (Stream<Path> itemFiles = Files.list(ITEMS_DIR)) {
+            itemFiles.filter(p -> p.toString().endsWith(".json")).forEach(itemPath -> {
+                String itemName = itemPath.getFileName().toString().replace(".json", "");
+                Path modelPath = MODELS_ITEM_DIR.resolve(itemName + ".json");
+                assertTrue(Files.exists(modelPath),
+                        "Item '" + itemName + "' must have models/item/" + itemName + ".json (would show as barrier in JEI)");
+
+                try (FileReader reader = new FileReader(modelPath.toFile())) {
+                    JsonElement parsed = JsonParser.parseReader(reader);
+                    assertTrue(parsed.isJsonObject());
+                    JsonObject json = parsed.getAsJsonObject();
+
+                    boolean hasResolvedTexture = false;
+
+                    if (json.has("textures")) {
+                        JsonObject textures = json.getAsJsonObject("textures");
+                        String texRef = null;
+                        if (textures.has("layer0")) {
+                            texRef = textures.get("layer0").getAsString();
+                        } else if (textures.has("texture")) {
+                            texRef = textures.get("texture").getAsString();
+                        }
+                        if (texRef != null) {
+                            Path texFile = null;
+                            if (texRef.startsWith("sandstorm:item/")) {
+                                texFile = itemTexturesDir.resolve(texRef.substring("sandstorm:item/".length()) + ".png");
+                            } else if (texRef.startsWith("sandstorm:block/")) {
+                                texFile = blockTexturesDir.resolve(texRef.substring("sandstorm:block/".length()) + ".png");
+                            }
+                            if (texFile != null) {
+                                assertTrue(Files.exists(texFile),
+                                        "Item '" + itemName + "' -> textura ausente: " + texFile + " (icone de barreira no JEI)");
+                                byte[] header = new byte[8];
+                                try (FileInputStream fis = new FileInputStream(texFile.toFile())) {
+                                    assertEquals(8, fis.read(header));
+                                    assertArrayEquals(PNG_HEADER, header,
+                                            "Textura de '" + itemName + "' tem cabecalho PNG invalido (arquivo corrompido)");
+                                }
+                                hasResolvedTexture = true;
+                            }
+                        }
+                    }
+
+                    boolean hasInlineElements = json.has("elements");
+                    String parent = json.has("parent") ? json.get("parent").getAsString() : "";
+                    boolean usesBlockParent = parent.startsWith("sandstorm:block/");
+                    boolean usesVanillaParent = parent.startsWith("minecraft:item/") || parent.startsWith("minecraft:block/");
+
+                    assertTrue(hasResolvedTexture || usesBlockParent || usesVanillaParent || hasInlineElements,
+                            "Item '" + itemName + "' sem textura resolvida, sem parent valido e sem elementos 3D (icone de barreira no JEI)");
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
 }
