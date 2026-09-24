@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
@@ -97,45 +98,73 @@ public class AbandonedOutpostGenerator {
         BlockPos chestPos = center.offset(3, 1, 2);
         level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
-            List<Integer> slots = new ArrayList<>();
-            for (int i = 0; i < 27; i++) {
-                slots.add(i);
-            }
-            Collections.shuffle(slots);
-            int slotIdx = 0;
-
-            if (random.nextFloat() < 0.65f) {
-                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.SCRAP_METAL, 2 + random.nextInt(4)));
-            }
-            if (random.nextFloat() < 0.50f) {
-                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.RAW_SILICON, 3 + random.nextInt(5)));
-            }
-            if (random.nextFloat() < 0.45f) {
-                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.CIRCUIT_BOARD, 1 + random.nextInt(2)));
-            }
-            if (random.nextFloat() < 0.35f) {
-                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.SILICON_WAFER, 1 + random.nextInt(2)));
-            }
-            if (random.nextFloat() < 0.40f) {
-                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.TECH_DISC, 1));
-            }
-            if (random.nextFloat() < 0.25f) {
-                chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.NANO_ACTUATOR, 1));
-            }
-            if (random.nextFloat() < 0.50f) {
-                chest.setItem(slots.get(slotIdx++), new ItemStack(Items.REDSTONE, 4 + random.nextInt(8)));
-            }
-            if (random.nextFloat() < 0.30f) {
-                ItemStack upgrade = switch (random.nextInt(3)) {
-                    case 0 -> new ItemStack(SandStormItems.SUIT_UPGRADE_BATTERY);
-                    case 1 -> new ItemStack(SandStormItems.SUIT_UPGRADE_VISOR);
-                    default -> new ItemStack(SandStormItems.SUIT_UPGRADE_THERMAL);
-                };
-                chest.setItem(slots.get(slotIdx++), upgrade);
-            }
-            chest.setChanged();
+            populateChest(chest, random);
         }
 
         return true;
+    }
+
+    public static void populateChest(Container chest, RandomSource random) {
+        List<Integer> slots = new ArrayList<>();
+        for (int i = 0; i < 27; i++) {
+            slots.add(i);
+        }
+        Collections.shuffle(slots);
+        int slotIdx = 0;
+
+        if (random.nextFloat() < 0.65f) {
+            chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.SCRAP_METAL, 2 + random.nextInt(3)));
+        }
+        if (random.nextFloat() < 0.45f) {
+            chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.RAW_SILICON, 2 + random.nextInt(3)));
+        }
+        if (random.nextFloat() < 0.40f) {
+            chest.setItem(slots.get(slotIdx++), new ItemStack(Items.COPPER_INGOT, 1 + random.nextInt(3)));
+        }
+
+        int archetype = random.nextInt(6);
+        switch (archetype) {
+            case 0 -> {
+                if (random.nextBoolean()) {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(Items.REDSTONE_BLOCK, 1));
+                } else {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.CIRCUIT_BOARD, 1));
+                }
+            }
+            case 1 -> {
+                if (random.nextBoolean()) {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(Blocks.BLUE_ICE, 1));
+                } else {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(Blocks.MAGMA_BLOCK, 1));
+                }
+            }
+            case 2 -> {
+                if (random.nextBoolean()) {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(Items.AMETHYST_SHARD, 1));
+                } else {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(Blocks.TINTED_GLASS, 1));
+                }
+            }
+            case 3 -> {
+                if (random.nextBoolean()) {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.NANO_ACTUATOR, 1));
+                } else {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.SANDWORM_CHITIN, 1));
+                }
+            }
+            case 4 -> {
+                if (random.nextBoolean()) {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.TECH_DISC, 1));
+                } else {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE, 1));
+                }
+            }
+            default -> {
+                if (random.nextFloat() < 0.35f) {
+                    chest.setItem(slots.get(slotIdx++), new ItemStack(SandStormItems.SILICON_WAFER, 1));
+                }
+            }
+        }
+        chest.setChanged();
     }
 }
