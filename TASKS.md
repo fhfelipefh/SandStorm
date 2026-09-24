@@ -467,6 +467,83 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] Validação de não-poluição do namespace vanilla quando presets padrão forem selecionados.
   - [x] Cobertura 100% verde com rigor absoluto: zero comentários, zero imports inline e zero imports não utilizados (**522 testes automatizados** aprovados).
 
+### 💉 Fase 21: Bio-Farmacologia Tecnológica, Hipo-Injetores & Ampolas Estimulantes (Substituição de Poções Vanilla)
+- [ ] **Hipo-Injetor Pneumático Portátil (`hypo_injector`)**:
+  - [ ] Dispositivo médico ergonômico em liga de titânio escuro com cartucho pneumático pressurizado reutilizável.
+  - [ ] Mecânica de acionamento instantâneo (0.2s): carrega ampolas/stims no inventário e injeta diretamente no sistema circulatório do operador sem necessidade de desequipar o capacete do traje espacial.
+  - [ ] Suporte a atalho tático de emergência (uso direto com a mão secundária ou tecla rápida configurável).
+  - [ ] Sistema de barramento sonoro com sibilo pneumático característico de ejeção a gás estéril (`item.hypo_injector.use`).
+  - [ ] Integração com o `SurvivalHudOverlay`: visor LED com indicador de doses restantes e telemetria de saturação metabólica.
+- [ ] **Ampolas Bioquímicas & Stims de Alta Eficiência (Substitutos de Poções)**:
+  - [ ] **Ampola Neuro-Adrenérgica (`adrenal_stim`)** *(Substitui Speed / Velocidade)*:
+    - Estimula os impulsos nervosos e sobrecarrega temporariamente os servomotores dos membros inferiores por 3 minutos (+30% velocidade de movimento e +15% aceleração de sprint).
+    - Fabricação: Refinaria Química (`chemical_refinery`) a partir de seiva pesada concentrada (`heavy_sap_bottle`), sal mineral e silício refinado.
+  - [ ] **Bio-Espuma Coagulante Molecular (`biofoam_cartridge`)** *(Substitui Instant Health & Regeneration)*:
+    - Espuma hemostática enriquecida com micro-nanorobôs médicos que sela perfurações e traumas graves em combate.
+    - Aplica cura instantânea de 4 corações e regeneração celular acelerada por 15 segundos.
+    - Fabricação: Fabricador de Nanitas (`nanite_fabricator`) a partir de quitina micronizada (`sandworm_chitin`) e biopolímeros flexíveis (`flexible_biopolymer`).
+  - [ ] **Estimulador Miomecânico de Torque (`myomer_stim`)** *(Substitui Strength / Força)*:
+    - Injeta nanofibras de polímero contrátil nos membros superiores, multiplicando o torque e a tração mecânica do exoesqueleto em +40% por 3 minutos.
+    - Amplifica severamente o impacto cinético da Vibro-Crysknife, armas tecnológicas e golpes corpo a corpo.
+  - [ ] **Sérum Endotérmico Refratário (`endothermic_serum`)** *(Substitui Fire Resistance / Resistência ao Fogo)*:
+    - Nanogel de altíssima capacidade térmica que preenche as micro-câmaras do traje espacial, conferindo 5 minutos de imunidade total a chamas, radiação de plasma e insolação extrema no deserto.
+  - [ ] **Sérum Anti-Inercial Gravitacional (`grav_dampener_stim`)** *(Substitui Slow Falling & Jump Boost)*:
+    - Solução eletrolítica que sintoniza as solas das botas magnéticas com micro-campos repulsores: permite saltos verticais de 2.5 blocos e desaceleração terminal suave em quedas de penhascos e crateras rochosas.
+  - [ ] **Ampola de Desintoxicação Celular (`detox_ampoule`)** *(Substitui Leite / Cura de Efeitos Negativos)*:
+    - Agente quelante sintético de ação instantânea que neutraliza veneno ácido de verme de areia, radiação estática de fulgurito e estados de náusea em 1 segundo.
+  - [ ] **Emulsão de Refração Óptica Furtiva (`stealth_nano_drape`)** *(Substitui Invisibility / Invisibilidade)*:
+    - Revestimento fotônico que dobra feixes de luz visível ao redor do chassi do traje por 90 segundos, ocultando o jogador da linha de visão de sentinelas automáticas e criaturas mutantes da superfície.
+
+### 🔬 Fase 22: Bancada de Modificação Molecular, Overclocks de Hardware & Nanocoatings (Substituição de Encantamentos)
+- [ ] **Bancada de Modificação Molecular (`molecular_modifier`)**:
+  - [ ] Maquinário tecnológico de engenharia de precisão que substitui a Mesa de Encantamentos (`enchanting_table`) e a Bigorna (`anvil`) convencionais.
+  - [ ] Conexão à malha de energia sem fio WPT (consumo de 500 J por ciclo de calibração molecular).
+  - [ ] Interface gráfica modular cyberpunk com baia de ancoragem do equipamento e soquetes: 3 slots para microchips/overclocks de firmware + 1 slot para revestimento químico (nanocoating).
+  - [ ] Cabeçote laser litográfico embutido para gravação nanométrica em silício e titânio, eliminando penalidades cumulativas de custo de reparo ou mecânicas místicas de XP.
+- [ ] **Módulos de Hardware & Overclocks para Armas (Substitutos de Encantamentos de Combate)**:
+  - [ ] **Bobina Ressonadora de Alta Frequência (`vibro_resonator_module`)** *(Substitui Sharpness / Afiação)*:
+    - Induz vibração molecular a 80.000 Hz na lâmina ou no bocal de disparo, fragmentando ligações atômicas de blindagens (+1.5 de dano por nível de módulo, Tiers I a V).
+  - [ ] **Emissor Térmico de Plasma (`thermal_plasma_emitter`)** *(Substitui Fire Aspect & Flame)*:
+    - Superaquece o gume ou os projéteis disparados, incinerando matéria orgânica e derretendo armaduras biológicas no impacto.
+  - [ ] **Acelerador de Pulso Concussivo (`kinetic_focus_module`)** *(Substitui Knockback & Punch)*:
+    - Dispara uma onda de choque pneumática no ponto de contato que repele e desestabiliza monstros e mechas a até 6 blocos de distância.
+- [ ] **Microchips de Otimização para Ferramentas de Mineração (Substitutos de Encantamentos de Mineração)**:
+  - [ ] **Núcleo de Cavitação Ultrassônica (`cavitation_frequency_core`)** *(Substitui Efficiency / Eficiência)*:
+    - Sintoniza a frequência de impacto da Picareta de Silício com a densidade molecular da rocha, acelerando a taxa de extração em até 200%.
+  - [ ] **Desintegrador de Fase Atômica (`atomic_phase_disrupter`)** *(Substitui Silk Touch / Toque Suave)*:
+    - Dissocia os limites atômicos do bloco de forma controlada, permitindo a extração perfeitamente íntegra de vidros de fulgurito, colmeias fósseis e clusters de quartzo piezoelétrico.
+  - [ ] **Espectrômetro de Ressonância Densimétrica (`spectrometric_sifter`)** *(Substitui Fortune / Fortuna)*:
+    - Sensor espectrométrico microscópico que mapeia veios raros no ponto de impacto, maximizando o rendimento de silício, gemas piezoelétricas e carvão fóssil.
+- [ ] **Nanotecnologia Estrutural & Auto-Regeneração (Substitutos de Mending & Unbreaking)**:
+  - [ ] **Matriz de Nanorobôs Auto-Reparadores (`self_healing_nanite_matrix`)** *(Substitui Mending / Remendo)*:
+    - Micro-nanites integrados à estrutura do equipamento que reconstroem microfissuras consumindo pacotes de energia da rede sem fio WPT ou fragmentos de sucata metálica.
+  - [ ] **Revestimento Diamantado de Titânio (`titanium_lattice_coating`)** *(Substitui Unbreaking / Inquebrabilidade)*:
+    - Nanocamada de diamante sintético e titânio que triplica a rigidez estrutural, reduzindo a taxa de desgaste abrasivo das ferramentas em 75%.
+- [ ] **Placas de Chassi e Revestimentos de Blindagem para o Traje Espacial (Substitutos de Encantamentos de Armadura)**:
+  - [ ] **Grelha de Amortecimento Balístico (`ballistic_dampener_mesh`)** *(Substitui Proteção Geral / Protection)*:
+    - Malha de dispersão de impacto que dissipa energia cinética por toda a área do chassi.
+  - [ ] **Blindagem Cerâmica Ablativa (`ablative_thermal_plating`)** *(Substitui Proteção contra Fogo)*:
+    - Placas refratárias projetadas para absorver radiação solar extrema e chamas sem transferir calor ao operador.
+  - [ ] **Amortecedores Pneumáticos de Vácuo (`pneumatic_fall_dampers`)** *(Substitui Peso Pena / Feather Falling)*:
+    - Pistões hidráulicos de desaceleração montados nos calcanhares das Botas Magnéticas, eliminando até 80% do impacto de pousos abruptos.
+  - [ ] **Placas de Descarga Reativa de Chassi (`reactive_shock_plating`)** *(Substitui Espinhos / Thorns)*:
+    - Eletrodos perimétricos no traje que liberam um arco voltaico defensivo ciano contra agressores corpo a corpo, causando paralisia e choque elétrico.
+
+### 🏥 Fase 23: Estação Médica Bio-Regenerativa (MedBay Pod) & Purificação Tecnológica do Vanilla
+- [ ] **Cápsula de Regeneração Celular MedBay (`bio_regeneration_pod`)**:
+  - [ ] Cúpula hermética horizontal de criostase e terapia intensiva com visor curvo de vidro de fulgurito temperado.
+  - [ ] Funcionalidade de internação: O jogador deita-se na câmara para:
+    - Regeneração acelerada de saúde (cura completa em 8 segundos).
+    - Descontaminação biológica e purga instantânea de venenos e radiação.
+    - Recarga ultrarrápida dos tanques de oxigênio do traje e estabilização térmica corporal.
+  - [ ] Integração com a Fabric Transfer API (`FluidStorage.SIDED` e `ItemStorage.SIDED`): consome água potável e biopolímeros flexíveis para sintetizar soluções regenerativas.
+  - [ ] Animações de pressurização, névoa criogênica translúcida e telemetria holográfica com ECG no painel superior.
+- [ ] **Purificação Tecnológica & Desativação Definitiva de Magia Vanilla**:
+  - [ ] Remoção e anulação no `RecipeManager` das receitas do Suporte de Poções (`brewing_stand`) e da Mesa de Encantamentos (`enchanting_table`).
+  - [ ] Supressão de livros encantados em tabelas de saque de estruturas (substituídos por Data Cores, Discos de Firmware e Módulos de Overclock).
+  - [ ] Prevenção de spawn de bruxas, suportes arcanos e mecânicas mágicas que quebram a coerência hard sci-fi do planeta desértico.
+  - [ ] Suíte de testes dedicada: `Fase21BioPharmacologyTest`, `Fase22MolecularModifierTest` e `Fase23MedBayAndMagicSuppressionTest`.
+
 ---
 
 ## 🎧 Catálogo Completo de Efeitos Sonoros Necessários (SFX)
@@ -508,6 +585,11 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 | `entity.sandworm_larva.chitter` | `sandworm_larva_chitter.ogg` | `hostile` | 0.8s | Cliques rápidos e estalos sísmicos insectoides de comunicação em bando das larvas de verme. |
 | `entity.sandworm_larva.bite` | `sandworm_larva_bite.ogg` | `hostile` | 0.6s | Mordida rápida de mandíbula quitinosa tenra com sibilância de secreção ácida. |
 | `entity.juvenile_sandworm.submerge` | `juvenile_sandworm_submerge.ogg` | `hostile` | 2.0s | Deslocamento de dunas e mergulho rápido de espécime juvenil nas camadas superficiais de areia. |
+| `item.hypo_injector.use` | `hypo_injector_use.ogg` | `players` | 0.3s | Sibilo pneumático de alta pressão. Disparo rápido de injeção a gás estéril no traje espacial com click mecânico de trava. |
+| `block.molecular_modifier.work` | `molecular_modifier_work.ogg` | `blocks` | 1.6s | Zumbido harmônico de laser litográfico calibrando microchips e gravação em silício em nível atômico. |
+| `block.medbay_pod.enter` | `medbay_pod_enter.ogg` | `blocks` | 1.0s | Pressurização de cúpula médica. Fechamento hermético pneumático com descompressão a gás estéril. |
+| `block.medbay_pod.heal` | `medbay_pod_heal.ogg` | `ambient` | 2.0s (loop) | Circulação suave de fluido criogênico e biopolímeros regenerativos em tubulações estéreis. |
+| `item.stim.activate` | `stim_activate.ogg` | `players` | 0.8s | Pulso bio-elétrico com batimentos cardíacos sutilmente acelerados e tom harmônico ascendente de sobrecarga motora. |
 
 > [!NOTE]
 > **Status dos Efeitos Sonoros**: Todos os 20 arquivos `.mp3` foram convertidos com sucesso para Vorbis `.ogg` (mantendo os `.mp3` originais preservados).
@@ -546,6 +628,12 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `tool_base`: Base estrutural metálica para ferramentas do Capítulo 1.
   - [x] `electric_component`: Matriz elétrica montada para ferramentas de silício.
   - [x] `silicon_pickaxe`: Picareta de silício para mineração e quebra do softlock de pedra.
+  - [x] `geological_scanner`: Escâner portátil com visor de display ciano, laser espectrométrico e telemetria mineral.
+  - [x] `field_probe`: Sonda de telemetria portátil com haste sensora e anéis térmicos de cobre.
+  - [x] `repair_tool`: Multiferramenta ergonômica com arco voltaico duplo para solda e manutenção de campo.
+  - [x] `structural_plate`: Placa reforçada de titânio escuro com rebites chanfrados para blindagens e montagens.
+  - [x] `circuit_mount`: Suporte cerâmico com contatos de ouro e clipes de ancoragem para placas lógicas.
+  - [x] `pressure_seal`: Anel hermético de elastômero fluoropolímero para eclusas e tubulações de alta pressão.
   - [ ] `sandtrout_capsule`: Frasco criogênico de contenção hermética de truta da areia viva.
   - [ ] `soft_chitin_plate`: Placa de quitina tenra de larva do verme.
   - [ ] `larval_bile`: Frasco de secreção ácida digestiva larval.
