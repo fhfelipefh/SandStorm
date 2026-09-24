@@ -44,8 +44,21 @@ Ao criar, renomear ou registrar qualquer novo item ou bloco no SandStorm:
    - Qualquer novo item ou bloco deve ser coberto pelo `AssetIntegrityTest` e `JeiCompatibilityTest`.
    - Antes de dar a tarefa como concluída, `./gradlew test` deve validar a existência física de todos os arquivos de textura e JSONs referenciados.
 
+## 📜 Protocolo de Integridade de Receitas Data-Driven (Recipes & Registries)
+Ao criar, modificar ou adicionar qualquer receita em `data/sandstorm/recipe/`:
+
+1. **Resolução Estrita de Identificadores (`sandstorm:*`)**:
+   - Todo identificador referenciado como ingrediente (`key`, `ingredients`, `ingredient`) ou como resultado (`result.id`) com o namespace `sandstorm:` DEVE corresponder a um item ou bloco registrado em `SandStormItems` ou `SandStormBlocks`.
+   - É terminantemente proibido inventar nomes hipotéticos ou não registrados (ex: usar `sandstorm:titanium_ingot` quando o item real é `sandstorm:titanium_chitin_composite`).
+   - No Minecraft 1.21.4+, qualquer identificador inexistente causa crash irreversível de `IllegalStateException: Unknown registry key` no `RegistryDataLoader` durante a abertura do jogo.
+
+2. **Auditoria Obrigatória via `JeiCompatibilityTest`**:
+   - Toda receita data-driven é obrigatoriamente auditada por `JeiCompatibilityTest`, que verifica a presença do arquivo de definição `assets/sandstorm/items/<item>.json` correspondente.
+   - Qualquer discrepância entre chaves de receita e registros do mod quebra a build imediatamente.
+
 ## 🚀 Validação Obrigatória Antes de Envio Remoto
 Antes de concluir qualquer tarefa de desenvolvimento ou efetuar `git push` ao repositório remoto:
-1. Executar `./gradlew test` e garantir que todos os testes (incluindo testes de arquitetura) passem com 100% de sucesso.
+1. Executar `./gradlew test` e garantir que todos os testes (incluindo testes de arquitetura e compatibilidade JEI) passem com 100% de sucesso.
 2. Executar `./gradlew build` para validar empacotamento, compilação client/server e geração de recursos.
-3. Verificar com `git status` que a árvore de trabalho está limpa antes do envio.
+3. Se novas receitas foram adicionadas ou editadas, certificar-se de que todos os itens utilizados existem em `SandStormItems`.
+4. Verificar com `git status` que a árvore de trabalho está limpa antes do envio.
