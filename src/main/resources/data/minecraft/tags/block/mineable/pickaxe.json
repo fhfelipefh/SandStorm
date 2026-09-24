@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "sandstorm:sandstone_workbench",
     "sandstorm:piezo_quartz_block",
     "sandstorm:budding_piezo_quartz",
     "sandstorm:piezo_quartz_cluster",
-    "sandstorm:deep_core_drill"
+    "sandstorm:deep_core_drill",
+    "sandstorm:kinetic_shield_generator"
   ]
 }

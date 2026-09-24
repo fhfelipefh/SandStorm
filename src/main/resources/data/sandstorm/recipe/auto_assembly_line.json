@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "I": "minecraft:iron_block",
+    "N": "sandstorm:nano_actuator",
+    "S": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "NIN",
+    "SCS",
+    "NIN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:auto_assembly_line"
+  }
+}

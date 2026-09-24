@@ -1,11 +1,13 @@
 package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.core.SandStormMod;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAsset;
@@ -42,7 +44,8 @@ public class SpaceSuitItem extends Item {
         super(properties
                 .humanoidArmor(SPACE_SUIT_MATERIAL, armorType)
                 .durability(armorType.getDurability(BASE_DURABILITY_FACTOR))
-                .rarity(SUIT_RARITY));
+                .rarity(SUIT_RARITY)
+                .component(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT.withHidden(DataComponents.ENCHANTMENTS, true)));
         this.armorType = armorType;
     }
 

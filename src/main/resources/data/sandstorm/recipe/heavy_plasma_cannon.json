@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "C": "sandstorm:circuit_board",
+    "P": "sandstorm:piezo_resonator",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "TPT",
+    "TAC",
+    " T "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:heavy_plasma_cannon"
+  }
+}

@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.survival;
 
 import com.fhfelipefh.sandstorm.component.SeismicTrackerComponent;
 import com.fhfelipefh.sandstorm.content.block.SandstoneWorkbenchBlock;
+import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
@@ -82,6 +83,10 @@ public class SeismicSurvivalHandler {
         int blockX = player.getBlockX();
         int blockZ = player.getBlockZ();
         if (TRACKER.isInsideSafeZone(blockX, blockZ)) {
+            return;
+        }
+
+        if (KineticShieldTracker.isInsideShield(player.level().dimension(), player.blockPosition())) {
             return;
         }
 

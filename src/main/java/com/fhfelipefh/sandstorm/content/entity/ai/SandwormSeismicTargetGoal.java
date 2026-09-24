@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.entity.ai;
 
 import com.fhfelipefh.sandstorm.component.SeismicTrackerComponent;
+import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -164,6 +165,9 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
         if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(currentTarget.getBlockX(), currentTarget.getBlockZ())) {
             return false;
         }
+        if (KineticShieldTracker.isInsideShield(currentTarget.level().dimension(), currentTarget.blockPosition())) {
+            return false;
+        }
         return this.mob.distanceToSqr(currentTarget) <= MAX_CONTINUE_RANGE_SQR;
     }
 
@@ -178,6 +182,9 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
             return false;
         }
         if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(entity.getBlockX(), entity.getBlockZ())) {
+            return false;
+        }
+        if (KineticShieldTracker.isInsideShield(entity.level().dimension(), entity.blockPosition())) {
             return false;
         }
 

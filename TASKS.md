@@ -252,16 +252,20 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] Chassis industrial cyberpunk com interface holográfica (`DeepCoreDrillScreen`, `DeepCoreDrillMenu`) e monitoramento em tempo real.
 
 ### 🛡️ Fase 15: Tecnologia Militar de Plasma, Blindagens Exóticas & Defesa Orbital
-- [ ] **Canhão de Feixe de Plasma Pesado (`heavy_plasma_cannon`)**:
-  - Arma industrial/militar pesada que projeta feixes de plasma térmico concentrado a longas distâncias, com alto poder de penetração em carcaças de vermes e rochas densas.
-  - Alimentado por células de plasma recarregáveis em refinarias e acoplável em veículos e mechas.
-- [ ] **Gerador de Escudo de Força Cinético (`kinetic_shield_generator`)**:
-  - Estrutura de contenção defensiva para bases e postos avançados que cria uma cúpula eletromagnética deflectora de projéteis e amortecedora de investidas sísmicas.
-  - Drena energia contínua da malha WPT para sustentar o campo contra sobrecargas.
-- [ ] **Matriz de Blindagem Composta de Titânio e Quitina (`titanium_chitin_composite`)**:
-  - Superliga metalobiológica sintetizada na câmara de nanitas para forjar novos módulos de fuselagem, pranchas blindadas e blindagens de mechas de alta durabilidade.
-- [ ] **Satélite de Sensoriamento Remoto Orbital (`orbital_survey_satellite`)**:
-  - Dispositivo de lançamento para órbita baixa planetária que fornece escaneamento topográfico em larga escala, previsão de tempestades iônicas e telemetria para o Datapad.
+- [x] **Canhão de Feixe de Plasma Pesado (`heavy_plasma_cannon`)**:
+  - [x] Arma industrial/militar pesada que projeta feixes de plasma térmico concentrado a longas distâncias (alcance 72m, dano 32, custo 1.800 J), perfurando alinhamentos de alvos e vitrificando blocos de areia em vidro (`HeavyPlasmaCannonItem`).
+  - [x] Integrado ao sistema de energia e baterias do traje espacial, com recuo acústico e feixe de plasma com partículas de alta temperatura.
+- [x] **Gerador de Escudo de Força Cinético (`kinetic_shield_generator`)**:
+  - [x] Estrutura de contenção defensiva para bases e postos avançados (`KineticShieldGeneratorBlock`, `KineticShieldGeneratorBlockEntity`).
+  - [x] Projeta cúpula defensiva com raio de 20 blocos (`KineticShieldTracker`), defletindo e desintegrando projéteis hostis e amortecendo completamente as vibrações de passos no subsolo para suprimir ataques de vermes gigantes (`SeismicSurvivalHandler`, `SandwormSeismicTargetGoal`).
+  - [x] Sustentação contínua de energia (upkeep 5 J/t, deflexão 50 J) com buffer interno de 20.000 J alimentável pela rede WPT.
+- [x] **Matriz de Blindagem Composta de Titânio e Quitina (`titanium_chitin_composite`)**:
+  - [x] Superliga metalobiológica sintetizada na câmara do Fabricador de Nanitas a partir de placas de quitina de verme (`sandworm_chitin`) e liga metálica / atuadores (`scrap_metal`, `nano_actuator`).
+  - [x] Utilizada como ingrediente estrutural essencial para armamentos pesados, maquinário de blindagem e componentes orbitais.
+- [x] **Satélite de Sensoriamento Remoto Orbital (`orbital_survey_satellite`)**:
+  - [x] Dispositivo de lançamento aeroespacial sob céu aberto com propulsão e efeitos pirotécnicos (`OrbitalSurveySatelliteItem`).
+  - [x] Ativa o sistema de rede orbital planetária persistente (`SatelliteSavedData`, `SatelliteNetworkManager`).
+  - [x] Integração completa de telemetria com o Datapad (`DatapadClientHelper`, `SurvivalDatapadScreen`), fornecendo link orbital ativo e previsão de contagem regressiva para a próxima tempestade de areia iônica.
 
 ### 🌪️ Fase 16: Biomas Extremos, Ventos Radioativos & Oásis Fósseis
 - [ ] **Ermos de Fulgurito Líquido & Dunas Vitrificadas (`fulgurite_wastes`)**:

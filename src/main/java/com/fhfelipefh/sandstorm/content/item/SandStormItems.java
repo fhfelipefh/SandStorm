@@ -66,6 +66,11 @@ public class SandStormItems {
     public static final Item PIEZO_QUARTZ_SHARD = register("piezo_quartz_shard", new Item(properties("piezo_quartz_shard").rarity(Rarity.UNCOMMON)));
     public static final Item PIEZO_RESONATOR = register("piezo_resonator", new Item(properties("piezo_resonator").rarity(Rarity.RARE)));
     public static final Item PRESSURIZED_FOSSIL_FLUID_BUCKET = register("pressurized_fossil_fluid_bucket", new Item(properties("pressurized_fossil_fluid_bucket").craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final Item TITANIUM_CHITIN_COMPOSITE = register("titanium_chitin_composite", new Item(properties("titanium_chitin_composite").rarity(Rarity.RARE)));
+    public static final HeavyPlasmaCannonItem HEAVY_PLASMA_CANNON = register("heavy_plasma_cannon", new HeavyPlasmaCannonItem(properties("heavy_plasma_cannon")));
+    public static final OrbitalSurveySatelliteItem ORBITAL_SURVEY_SATELLITE = register("orbital_survey_satellite", new OrbitalSurveySatelliteItem(properties("orbital_survey_satellite")));
+    public static final Item ANCIENT_REED = register("ancient_reed", new Item(properties("ancient_reed")));
+    public static final Item ANCIENT_SEED = register("ancient_seed", new Item(properties("ancient_seed")));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -141,6 +146,20 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.BUDDING_PIEZO_QUARTZ);
                         entries.accept(SandStormBlocks.PIEZO_QUARTZ_CLUSTER);
                         entries.accept(SandStormBlocks.DEEP_CORE_DRILL);
+                        entries.accept(TITANIUM_CHITIN_COMPOSITE);
+                        entries.accept(HEAVY_PLASMA_CANNON);
+                        entries.accept(ORBITAL_SURVEY_SATELLITE);
+                        entries.accept(SandStormBlocks.THERMAL_SPRING_STONE);
+                        entries.accept(SandStormBlocks.ELECTRIFIED_SAND);
+                        entries.accept(SandStormBlocks.FOSSILIZED_AMBER);
+                        entries.accept(SandStormBlocks.FULGURITE_GLASS);
+                        entries.accept(SandStormBlocks.ANCIENT_REED_BLOCK);
+                        entries.accept(ANCIENT_REED);
+                        entries.accept(ANCIENT_SEED);
+                        entries.accept(SandStormBlocks.KINETIC_SHIELD_GENERATOR);
+                        entries.accept(SandStormBlocks.SAND_MAGLEV_RAIL);
+                        entries.accept(SandStormBlocks.HABITAT_DOME);
+                        entries.accept(SandStormBlocks.AUTO_ASSEMBLY_LINE);
                     })
                     .build()
     );

@@ -57,6 +57,11 @@ public class SandStormMenus {
             new MenuType<>(DeepCoreDrillMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<AutoAssemblyLineMenu> AUTO_ASSEMBLY_LINE_MENU = register(
+            "auto_assembly_line",
+            new MenuType<>(AutoAssemblyLineMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

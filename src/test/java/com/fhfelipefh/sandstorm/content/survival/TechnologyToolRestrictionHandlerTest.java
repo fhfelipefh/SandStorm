@@ -1,8 +1,11 @@
 package com.fhfelipefh.sandstorm.content.survival;
 
+import com.fhfelipefh.sandstorm.content.block.SandstoneWorkbenchBlock;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CraftingTableBlock;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -95,5 +98,11 @@ class TechnologyToolRestrictionHandlerTest {
     @Test
     void shouldSafelyHandleNullStateInRoboticsRequirementCheck() {
         assertFalse(TechnologyToolRestrictionHandler.requiresRoboticsToBreak(null));
+    }
+
+    @Test
+    void shouldNotRequireRoboticsToBreakWorkbenches() {
+        assertFalse(TechnologyToolRestrictionHandler.requiresRoboticsToBreak(Blocks.CRAFTING_TABLE.defaultBlockState()));
+        assertTrue(CraftingTableBlock.class.isAssignableFrom(SandstoneWorkbenchBlock.class));
     }
 }

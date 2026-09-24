@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sandstorm:block/auto_assembly_line"
+    },
+    "facing=south": {
+      "model": "sandstorm:block/auto_assembly_line",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/auto_assembly_line",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "sandstorm:block/auto_assembly_line",
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "sandstorm:block/sand_maglev_rail",
+      "y": 90
+    },
+    "axis=z": {
+      "model": "sandstorm:block/sand_maglev_rail"
+    }
+  }
+}

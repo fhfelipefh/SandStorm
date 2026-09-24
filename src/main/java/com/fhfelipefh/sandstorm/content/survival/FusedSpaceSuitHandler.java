@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public class FusedSpaceSuitHandler {
@@ -101,6 +102,17 @@ public class FusedSpaceSuitHandler {
         boolean feetOk = isMatchingSuitPiece(player.getItemBySlot(EquipmentSlot.FEET), EquipmentSlot.FEET);
 
         if (headOk && chestOk && legsOk && feetOk) {
+            for (EquipmentSlot slot : EquipmentSlot.values()) {
+                if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
+                    ItemStack currentStack = player.getItemBySlot(slot);
+                    if (!currentStack.isEmpty() && currentStack.getItem() instanceof SpaceSuitItem) {
+                        TooltipDisplay td = currentStack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT);
+                        if (td.shows(DataComponents.ENCHANTMENTS)) {
+                            currentStack.set(DataComponents.TOOLTIP_DISPLAY, td.withHidden(DataComponents.ENCHANTMENTS, true));
+                        }
+                    }
+                }
+            }
             return;
         }
 
@@ -130,6 +142,7 @@ public class FusedSpaceSuitHandler {
             });
         }
         stack.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, false);
+        stack.set(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT.withHidden(DataComponents.ENCHANTMENTS, true));
         return stack;
     }
 

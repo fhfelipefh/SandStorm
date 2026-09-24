@@ -50,6 +50,16 @@ public class NaniteFabricatorBlockEntity extends BaseMachineBlockEntity {
             ItemStack out = items.get(2);
             return out.isEmpty();
         }
+        if (in0.is(SandStormItems.SANDWORM_CHITIN)) {
+            if (!in1.is(SandStormItems.SCRAP_METAL) && !in1.is(SandStormItems.NANO_ACTUATOR)) {
+                return false;
+            }
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                return true;
+            }
+            return out.is(SandStormItems.TITANIUM_CHITIN_COMPOSITE) && out.getCount() < out.getMaxStackSize();
+        }
         return false;
     }
 
@@ -73,6 +83,15 @@ public class NaniteFabricatorBlockEntity extends BaseMachineBlockEntity {
             in0.shrink(1);
             in1.shrink(1);
             items.set(2, new ItemStack(SandStormItems.VIBRO_CRYSKNIFE));
+        } else if (in0.is(SandStormItems.SANDWORM_CHITIN)) {
+            in0.shrink(1);
+            in1.shrink(1);
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                items.set(2, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE));
+            } else {
+                out.grow(1);
+            }
         }
     }
 
@@ -91,6 +110,9 @@ public class NaniteFabricatorBlockEntity extends BaseMachineBlockEntity {
             ItemStack in0 = items.get(0);
             if (in0.is(SandStormItems.SANDWORM_TOOTH)) {
                 return new ItemStack(SandStormItems.VIBRO_CRYSKNIFE);
+            }
+            if (in0.is(SandStormItems.SANDWORM_CHITIN)) {
+                return new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE);
             }
             return new ItemStack(SandStormItems.NANO_ACTUATOR);
         }
@@ -121,7 +143,7 @@ public class NaniteFabricatorBlockEntity extends BaseMachineBlockEntity {
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == 0) {
-            return stack.is(SandStormItems.CIRCUIT_BOARD) || stack.is(SandStormItems.SANDWORM_TOOTH);
+            return stack.is(SandStormItems.CIRCUIT_BOARD) || stack.is(SandStormItems.SANDWORM_TOOTH) || stack.is(SandStormItems.SANDWORM_CHITIN);
         }
         if (slot == 1) {
             return stack.is(SandStormItems.SANDWORM_CHITIN) || stack.is(SandStormItems.SCRAP_METAL) || stack.is(SandStormItems.NANO_ACTUATOR);

@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client;
 
 import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
+import com.fhfelipefh.sandstorm.client.gui.AutoAssemblyLineScreen;
 import com.fhfelipefh.sandstorm.client.gui.AutonomousSonicTurretScreen;
 import com.fhfelipefh.sandstorm.client.gui.ChemicalRefineryScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreDrillScreen;
@@ -60,6 +61,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.SOLID_STATE_ACCUMULATOR_MENU, SolidStateAccumulatorScreen::new);
         MenuScreens.register(SandStormMenus.GRID_MONITOR_CONSOLE_MENU, GridMonitorConsoleScreen::new);
         MenuScreens.register(SandStormMenus.DEEP_CORE_DRILL_MENU, DeepCoreDrillScreen::new);
+        MenuScreens.register(SandStormMenus.AUTO_ASSEMBLY_LINE_MENU, AutoAssemblyLineScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

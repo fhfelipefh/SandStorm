@@ -60,4 +60,23 @@ public class DatapadClientHelper {
     public static Set<String> getCompletedConditions() {
         return Collections.unmodifiableSet(COMPLETED_CONDITIONS);
     }
+
+    private static boolean satelliteActive = false;
+    private static int nextStormSeconds = -1;
+
+    public static boolean isSatelliteActive() {
+        return satelliteActive || isConditionMet("sandstorm.satellite_active");
+    }
+
+    public static void setSatelliteActive(boolean active) {
+        satelliteActive = active;
+    }
+
+    public static int getNextStormSeconds() {
+        return nextStormSeconds;
+    }
+
+    public static void setNextStormSeconds(int seconds) {
+        nextStormSeconds = seconds;
+    }
 }

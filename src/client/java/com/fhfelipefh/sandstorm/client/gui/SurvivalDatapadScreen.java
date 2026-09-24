@@ -69,7 +69,9 @@ public class SurvivalDatapadScreen extends Screen {
         extractor.fill(right - 1, top, right, bottom, 0xFF00E5FF);
 
         Component titleComp = Component.literal("I.A.T.I. // ARRAKIS-IX");
-        Component statusComp = Component.literal("ONLINE // LINK ORBITAL OK");
+        boolean satLinked = DatapadClientHelper.isSatelliteActive();
+        Component statusComp = satLinked ? Component.literal("ONLINE // LINK ORBITAL OK [SAT-1]") : Component.literal("LOCAL // SEM LINK ORBITAL");
+        int statusColor = satLinked ? 0xFF76FF03 : 0xFFFFA000;
         int statusWidth = font.width(statusComp);
         int statusX = right - statusWidth - 10;
         float maxHeaderTitleWidth = statusX - (left + 10) - 12;
@@ -77,10 +79,10 @@ public class SurvivalDatapadScreen extends Screen {
         if (maxHeaderTitleWidth < 140) {
             float halfWidth = (right - left - 24) / 2f;
             drawScaledText(extractor, titleComp, left + 10, top + 8, halfWidth, 0xFF00E5FF);
-            drawScaledText(extractor, statusComp, left + 10 + halfWidth + 4, top + 8, halfWidth, 0xFF76FF03);
+            drawScaledText(extractor, statusComp, left + 10 + halfWidth + 4, top + 8, halfWidth, statusColor);
         } else {
             drawScaledText(extractor, titleComp, left + 10, top + 8, maxHeaderTitleWidth, 0xFF00E5FF);
-            extractor.text(font, statusComp, statusX, top + 8, 0xFF76FF03);
+            extractor.text(font, statusComp, statusX, top + 8, statusColor);
         }
 
         Component chapterComp = Component.translatable("gui.sandstorm.datapad.chapter." + currentChapter);
@@ -430,9 +432,22 @@ public class SurvivalDatapadScreen extends Screen {
         if (req != null && stack.is(req)) {
             return true;
         }
+        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        if (id != null && id.equals(quest.requiredItemId())) {
+            return true;
+        }
+        if ("compact_sandstone".equals(quest.id())) {
+            return id != null && (id.equals(SandStormMod.mcId("sandstone"))
+                    || id.equals(SandStormMod.id("sandstone_workbench"))
+                    || id.equals(SandStormMod.id("sandstone_furnace")));
+        }
+        if ("emergency_workbench".equals(quest.id())) {
+            return id != null && (id.equals(SandStormMod.id("sandstone_workbench"))
+                    || id.equals(SandStormMod.mcId("crafting_table")));
+        }
         if ("sandstone_furnace".equals(quest.id())) {
-            Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
-            return id.equals(SandStormMod.id("sandstone_furnace")) || id.equals(SandStormMod.mcId("furnace"));
+            return id != null && (id.equals(SandStormMod.id("sandstone_furnace"))
+                    || id.equals(SandStormMod.mcId("furnace")));
         }
         return false;
     }

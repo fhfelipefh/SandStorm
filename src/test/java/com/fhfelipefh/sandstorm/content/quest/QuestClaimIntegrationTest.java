@@ -249,4 +249,30 @@ class QuestClaimIntegrationTest {
         }
         assertTrue(found);
     }
+
+    @Test
+    void testSandstoneWorkbenchDetectionInInventory() {
+        Inventory inventory = new TestInventory();
+        QuestData quest = QuestRegistry.getQuest("emergency_workbench");
+        assertNotNull(quest);
+        assertEquals("sandstorm:sandstone_workbench", quest.iconId().toString());
+
+        inventory.setItem(5, new ItemStack(Items.CRAFTING_TABLE));
+        Item req = quest.getRequiredItem();
+
+        boolean found = false;
+        for (int i = 0; i < 36; i++) {
+            ItemStack stack = inventory.getItem(i);
+            if (!stack.isEmpty()) {
+                Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+                if ((req != null && stack.is(req))
+                        || (id != null && id.equals(quest.requiredItemId()))
+                        || ("emergency_workbench".equals(quest.id()) && (id != null && (id.equals(SandStormMod.id("sandstone_workbench")) || id.equals(SandStormMod.mcId("crafting_table")))))) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        assertTrue(found);
+    }
 }

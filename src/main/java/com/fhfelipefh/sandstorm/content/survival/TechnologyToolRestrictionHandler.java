@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.survival;
 
+import com.fhfelipefh.sandstorm.content.block.SandstoneFurnaceBlock;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CraftingTableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TechnologyToolRestrictionHandler {
@@ -76,6 +78,9 @@ public class TechnologyToolRestrictionHandler {
 
     public static boolean requiresRoboticsToBreak(BlockState state) {
         if (state == null) {
+            return false;
+        }
+        if (state.getBlock() instanceof CraftingTableBlock || state.getBlock() instanceof SandstoneFurnaceBlock) {
             return false;
         }
         return state.is(BlockTags.MINEABLE_WITH_PICKAXE);

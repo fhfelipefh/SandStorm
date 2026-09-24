@@ -1,11 +1,13 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.block.entity.AutoAssemblyLineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
@@ -14,6 +16,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockE
 import com.fhfelipefh.sandstorm.content.block.entity.ThermalGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.WirelessSolarReceiverBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.WptRelayTowerBlockEntity;
+
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -255,6 +258,70 @@ public class SandStormBlocks {
                     .strength(5.0f, 12.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .requiresCorrectToolForDrops()));
+    public static final ThermalSpringStoneBlock THERMAL_SPRING_STONE = register("thermal_spring_stone",
+            new ThermalSpringStoneBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("thermal_spring_stone")))
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(1.5f)
+                    .sound(SoundType.STONE)
+                    .lightLevel(state -> 4)));
+    public static final ElectrifiedSandBlock ELECTRIFIED_SAND = register("electrified_sand",
+            new ElectrifiedSandBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("electrified_sand")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(0.6f)
+                    .sound(SoundType.SAND)));
+    public static final FossilizedAmberBlock FOSSILIZED_AMBER = register("fossilized_amber",
+            new FossilizedAmberBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fossilized_amber")))
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(2.0f)
+                    .sound(SoundType.GLASS)
+                    .lightLevel(state -> 6)
+                    .noOcclusion()));
+    public static final FulguriteGlassBlock FULGURITE_GLASS = register("fulgurite_glass",
+            new FulguriteGlassBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fulgurite_glass")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(1.0f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final AncientReedBlock ANCIENT_REED_BLOCK = register("ancient_reed_block",
+            new AncientReedBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("ancient_reed_block")))
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(0.3f)
+                    .sound(SoundType.GRASS)
+                    .noOcclusion()));
+    public static final KineticShieldGeneratorBlock KINETIC_SHIELD_GENERATOR = register("kinetic_shield_generator",
+            new KineticShieldGeneratorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("kinetic_shield_generator")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(4.5f, 9.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final SandMaglevRailBlock SAND_MAGLEV_RAIL = register("sand_maglev_rail",
+            new SandMaglevRailBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("sand_maglev_rail")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(3.0f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
+    public static final HabitatDomeBlock HABITAT_DOME = register("habitat_dome",
+            new HabitatDomeBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("habitat_dome")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(3.5f)
+                    .lightLevel(state -> 8)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final AutoAssemblyLineBlock AUTO_ASSEMBLY_LINE = register("auto_assembly_line",
+            new AutoAssemblyLineBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("auto_assembly_line")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(4.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -326,6 +393,16 @@ public class SandStormBlocks {
             SandStormMod.id("deep_core_drill"),
             new BlockEntityType<>(DeepCoreDrillBlockEntity::new, Set.of(DEEP_CORE_DRILL))
     );
+    public static final BlockEntityType<KineticShieldGeneratorBlockEntity> KINETIC_SHIELD_GENERATOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("kinetic_shield_generator"),
+            new BlockEntityType<>(KineticShieldGeneratorBlockEntity::new, Set.of(KINETIC_SHIELD_GENERATOR))
+    );
+    public static final BlockEntityType<AutoAssemblyLineBlockEntity> AUTO_ASSEMBLY_LINE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("auto_assembly_line"),
+            new BlockEntityType<>(AutoAssemblyLineBlockEntity::new, Set.of(AUTO_ASSEMBLY_LINE))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -354,5 +431,7 @@ public class SandStormBlocks {
         FluidStorage.SIDED.registerForBlockEntity(SmartFluidPipeBlockEntity::getFluidStorage, SMART_FLUID_PIPE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, DEEP_CORE_DRILL_BE);
         FluidStorage.SIDED.registerForBlockEntity(DeepCoreDrillBlockEntity::getFluidStorage, DEEP_CORE_DRILL_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, KINETIC_SHIELD_GENERATOR_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, AUTO_ASSEMBLY_LINE_BE);
     }
 }

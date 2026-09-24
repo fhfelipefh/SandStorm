@@ -206,7 +206,7 @@ public class SpaceshipLandingManager {
 
     public static void ensureCabinWorkstations(ServerLevel level, BlockPos cabinSpawn) {
         level.setBlock(cabinSpawn.offset(-2, -1, 3), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(-2, 0, 3), Blocks.CRAFTING_TABLE.defaultBlockState(), 3);
+        level.setBlock(cabinSpawn.offset(-2, 0, 3), SandStormBlocks.SANDSTONE_WORKBENCH.defaultBlockState(), 3);
         level.setBlock(cabinSpawn.offset(-2, 1, 3), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(-2, -1, 2), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
@@ -222,7 +222,7 @@ public class SpaceshipLandingManager {
         level.setBlock(cabinSpawn.offset(2, 1, 2), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(2, -1, 1), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
-        level.setBlock(cabinSpawn.offset(2, 0, 1), Blocks.FURNACE.defaultBlockState().setValue(FurnaceBlock.FACING, Direction.WEST), 3);
+        level.setBlock(cabinSpawn.offset(2, 0, 1), SandStormBlocks.SANDSTONE_FURNACE.defaultBlockState().setValue(FurnaceBlock.FACING, Direction.WEST), 3);
         level.setBlock(cabinSpawn.offset(2, 1, 1), Blocks.AIR.defaultBlockState(), 3);
 
         level.setBlock(cabinSpawn.offset(-2, 3, 2), Blocks.SEA_LANTERN.defaultBlockState(), 3);

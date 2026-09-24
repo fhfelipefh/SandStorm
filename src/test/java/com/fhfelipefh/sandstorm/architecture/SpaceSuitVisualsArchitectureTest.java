@@ -65,4 +65,12 @@ class SpaceSuitVisualsArchitectureTest {
         String clientContent = Files.readString(clientJava);
         assertTrue(clientContent.contains("ArmorRenderer.register(new SpaceSuitArmorRenderer()"));
     }
+
+    @Test
+    void spaceSuitItemMustHideEnchantmentsInTooltip() throws IOException {
+        Path spaceSuitItemPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "item", "SpaceSuitItem.java");
+        assertTrue(Files.exists(spaceSuitItemPath));
+        String content = Files.readString(spaceSuitItemPath);
+        assertTrue(content.contains("withHidden(DataComponents.ENCHANTMENTS, true)"));
+    }
 }

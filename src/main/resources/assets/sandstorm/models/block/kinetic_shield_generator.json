@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/kinetic_shield_generator_front",
+    "down": "sandstorm:block/kinetic_shield_generator_bottom",
+    "up": "sandstorm:block/kinetic_shield_generator_top",
+    "north": "sandstorm:block/kinetic_shield_generator_front",
+    "south": "sandstorm:block/kinetic_shield_generator_side",
+    "west": "sandstorm:block/kinetic_shield_generator_side",
+    "east": "sandstorm:block/kinetic_shield_generator_side"
+  }
+}

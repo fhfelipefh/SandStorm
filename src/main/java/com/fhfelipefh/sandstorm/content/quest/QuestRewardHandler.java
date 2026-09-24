@@ -222,9 +222,22 @@ public class QuestRewardHandler {
         if (req != null && stack.is(req)) {
             return true;
         }
+        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        if (id != null && id.equals(quest.requiredItemId())) {
+            return true;
+        }
+        if ("compact_sandstone".equals(quest.id())) {
+            return id != null && (id.equals(SandStormMod.mcId("sandstone"))
+                    || id.equals(SandStormMod.id("sandstone_workbench"))
+                    || id.equals(SandStormMod.id("sandstone_furnace")));
+        }
+        if ("emergency_workbench".equals(quest.id())) {
+            return id != null && (id.equals(SandStormMod.id("sandstone_workbench"))
+                    || id.equals(SandStormMod.mcId("crafting_table")));
+        }
         if ("sandstone_furnace".equals(quest.id())) {
-            Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
-            return id.equals(SandStormMod.id("sandstone_furnace")) || id.equals(SandStormMod.mcId("furnace"));
+            return id != null && (id.equals(SandStormMod.id("sandstone_furnace"))
+                    || id.equals(SandStormMod.mcId("furnace")));
         }
         return false;
     }

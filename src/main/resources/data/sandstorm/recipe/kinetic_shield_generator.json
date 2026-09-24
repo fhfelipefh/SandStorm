@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "R": "sandstorm:piezo_resonator",
+    "S": "sandstorm:solid_state_accumulator",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "TRT",
+    "RCR",
+    "TST"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:kinetic_shield_generator"
+  }
+}

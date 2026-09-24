@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sandstorm:block/kinetic_shield_generator"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/kinetic_shield_generator",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/kinetic_shield_generator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/kinetic_shield_generator",
+      "y": 270
+    }
+  }
+}
