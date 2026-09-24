@@ -322,6 +322,48 @@ public class SandStormBlocks {
                     .strength(4.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .noOcclusion()));
+    public static final TitaniumSpikeWallBlock TITANIUM_SPIKE_WALL = register("titanium_spike_wall",
+            new TitaniumSpikeWallBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("titanium_spike_wall")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final RetractableSpikeWallBlock RETRACTABLE_SPIKE_WALL = register("retractable_spike_wall",
+            new RetractableSpikeWallBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("retractable_spike_wall")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.METAL)));
+    public static final ElectrifiedSpikeBarrierBlock ELECTRIFIED_SPIKE_BARRIER = register("electrified_spike_barrier",
+            new ElectrifiedSpikeBarrierBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("electrified_spike_barrier")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(3.0f, 5.0f)
+                    .sound(SoundType.COPPER)
+                    .lightLevel(state -> 4)
+                    .noOcclusion()));
+    public static final CorrosiveChitinSpikeWallBlock CORROSIVE_CHITIN_SPIKE_WALL = register("corrosive_chitin_spike_wall",
+            new CorrosiveChitinSpikeWallBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("corrosive_chitin_spike_wall")))
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(3.0f, 5.0f)
+                    .sound(SoundType.BONE_BLOCK)
+                    .noOcclusion()));
+    public static final KineticFloorSpikesBlock KINETIC_FLOOR_SPIKES = register("kinetic_floor_spikes",
+            new KineticFloorSpikesBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("kinetic_floor_spikes")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(2.5f, 4.0f)
+                    .sound(SoundType.ANVIL)
+                    .noOcclusion()));
+    public static final CrushingSpikeGateBlock CRUSHING_SPIKE_GATE = register("crushing_spike_gate",
+            new CrushingSpikeGateBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("crushing_spike_gate")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(4.0f, 8.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,

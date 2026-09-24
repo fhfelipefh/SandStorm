@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "sandstorm:block/corrosive_chitin_spike_wall",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "sandstorm:block/corrosive_chitin_spike_wall"
+    },
+    "facing=north": {
+      "model": "sandstorm:block/corrosive_chitin_spike_wall",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/corrosive_chitin_spike_wall",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/corrosive_chitin_spike_wall",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "sandstorm:block/corrosive_chitin_spike_wall",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

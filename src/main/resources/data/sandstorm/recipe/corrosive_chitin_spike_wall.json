@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:heavy_sap_bottle",
+    "C": "sandstorm:sandworm_chitin",
+    "S": "sandstorm:titanium_spike_wall"
+  },
+  "pattern": [
+    " C ",
+    " B ",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:corrosive_chitin_spike_wall"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "P": "minecraft:piston",
+    "R": "minecraft:redstone",
+    "S": "sandstorm:titanium_spike_wall",
+    "T": "sandstorm:titanium_ingot"
+  },
+  "pattern": [
+    "T T",
+    " S ",
+    "RPR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:crushing_spike_gate"
+  }
+}

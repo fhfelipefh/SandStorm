@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "P": "minecraft:heavy_weighted_pressure_plate",
+    "S": "sandstorm:titanium_spike_wall",
+    "T": "sandstorm:titanium_ingot"
+  },
+  "pattern": [
+    " S ",
+    " P ",
+    "TTT"
+  ],
+  "result": {
+    "count": 2,
+    "id": "sandstorm:kinetic_floor_spikes"
+  }
+}

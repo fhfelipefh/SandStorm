@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "E": "sandstorm:electrified_sand",
+    "S": "sandstorm:titanium_spike_wall",
+    "T": "sandstorm:titanium_ingot"
+  },
+  "pattern": [
+    " C ",
+    "ESE",
+    " T "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:electrified_spike_barrier"
+  }
+}

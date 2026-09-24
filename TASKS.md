@@ -283,30 +283,30 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - Esteiras industriais e braços manipuladores robóticos para manufatura contínua sem necessidade de intervenção do jogador em receitas em cadeia.
 
 ### 🚧 Fase 18: Fortificações Perimétricas, Muralhas de Espinhos & Contra-Medidas Físicas
-- [ ] **Paredes com Espinhos de Titânio Balístico (`titanium_spike_wall`)**:
+- [x] **Paredes com Espinhos de Titânio Balístico (`titanium_spike_wall`)**:
   - Painel modular de fortificação estrutural feito de liga pesada de titânio escuro (`#121820`) e pontas reforçadas de metal temperado.
   - **Dano Físico Contínuo Indiscriminado**: Qualquer entidade que encostar, colidir ou tentar atravessar (monstros invasores, outros jogadores ou o próprio operador da base desatento) sofre 6.0 pontos de dano cinético de perfuração por contato contínuo, além de desaceleração severa e efeito lacerante.
   - Suporte a posicionamento multidirecional: vertical como parede de barreira perimétrica, horizontal rente ao solo ou invertido em tetos de contenção.
   - Barreira física passiva imune a desgaste de baterias, ideal para defesa permanente de perímetros de assentamento.
-- [ ] **Paredes de Espinhos Retráteis Pneumáticos (`retractable_spike_wall`)**:
+- [x] **Paredes de Espinhos Retráteis Pneumáticos (`retractable_spike_wall`)**:
   - Bloco de contenção ativo dotado de pistões pneumáticos de alta pressão e estacas afiadas de perfuração.
   - Estado recolhido: As estacas permanecem alinhadas à superfície da parede, funcionando como bloco liso de passagem livre e inofensivo.
   - Ativação por Redstone/Sinal Lógico: Ejeção repentina e violenta das lâminas projetando-se em até 1.5 bloco para a frente.
   - **Dano Crítico de Empalamento & Repulsão**: Causa 14.0 de dano instantâneo de perfuração mecânica somado a alto recuo cinético (knockback), atingindo com letalidade qualquer criatura ou player (aliado ou inimigo) presente na área de projeção.
-- [ ] **Muralha de Espinhos Eletrizados de Alta Tensão (`electrified_spike_barrier`)**:
+- [x] **Muralha de Espinhos Eletrizados de Alta Tensão (`electrified_spike_barrier`)**:
   - Barreira metálica condutora conectada à malha de energia sem fio (WPT) ou cabeamento elétrico direto.
   - **Dano Duplo (Perfuração Mecânica + Arco Voltaico Ciano)**: Ao encostar, descarrega energia elétrica de alta densidade (arco voltaico emissivo `#00E5FF`), consumindo 50 J por pulso de descarga.
   - Causa dano físico mais choque elétrico e paralisia temporária (Stun / Lentidão extrema IV).
   - Indiscriminado e de alto risco: Eletrocuta qualquer ser vivo desprotegido (jogadores necessitam de Traje Espacial com módulo de isolamento para não sofrerem eletrocussão letal).
-- [ ] **Muralha de Espinhos com Revestimento Bio-Corrosivo (`corrosive_chitin_spike_wall`)**:
+- [x] **Muralha de Espinhos com Revestimento Bio-Corrosivo (`corrosive_chitin_spike_wall`)**:
   - Barreira avançada forjada no Fabricador de Nanitas com quitina afiada de verme (`sandworm_chitin`), biopolímeros flexíveis (`flexible_biopolymer`) e seiva pesada de cacto (`heavy_sap_bottle`).
   - **Dano de Corrosão Ácida e Degradação de Armaduras**: O contato com as pontas embebidas em ácido biológico inflige perfuração e o status "Corrosão Ácida", drenando vida ao longo do tempo e deteriorando aceleradamente a durabilidade da armadura equipada a cada tick.
   - Barreira altamente perigosa para contenção de espécimes hostis biológicos e dissuasão de invasores em ambientes desérticos.
-- [ ] **Armadilha de Espinhos de Chão Pressurizada (`kinetic_floor_spikes`)**:
+- [x] **Armadilha de Espinhos de Chão Pressurizada (`kinetic_floor_spikes`)**:
   - Grelha embutida de piso camuflável nas texturas de arenito ou placas de titânio de bases.
   - Ativação sísmica por pressão: Ao detectar o peso de passos de qualquer entidade (mobs, outros players ou o próprio construtor), ejeta estacas verticais afiadas do assoalho.
   - Dano perfurante ascendente com foco nos membros inferiores, ignorando proteções convencionais que não sejam botas reforçadas do traje espacial.
-- [ ] **Portão Fortificado com Grades de Espinhos Esmagadores (`crushing_spike_gate`)**:
+- [x] **Portão Fortificado com Grades de Espinhos Esmagadores (`crushing_spike_gate`)**:
   - Portão industrial motorizado de contenção com fileiras de dentes pontiagudos de titânio.
   - Projetado para fechamento hermético de emergência em hangares, garagens de rovers e eclusas de ar.
   - Causa dano crítico esmagador e perfurante se fechar sobre qualquer entidade que esteja sob o vão no momento da descida.
