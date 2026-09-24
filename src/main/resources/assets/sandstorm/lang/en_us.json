@@ -22,7 +22,7 @@
   "block.sandstorm.autonomous_sonic_turret": "Autonomous Sonic Turret",
   "item.sandstorm.autonomous_sonic_turret": "Autonomous Sonic Turret",
   "gui.sandstorm.machine.battery_slot_hint": "Battery Slot: insert Raw Silicon (+250 J), Redstone (+400 J) or Wafer (+1,000 J)",
-  "gui.sandstorm.machine.recipes_tooltip": "§bBlueprint Catalog\n§7Click to toggle recipe drawer.",
+  "gui.sandstorm.machine.recipes_tooltip": "Blueprints",
   "gui.sandstorm.machine.recipes_title": "BLUEPRINTS",
   "gui.sandstorm.machine.recipe_ready": "§aResources ready",
   "gui.sandstorm.machine.recipe_missing": "§8Missing resources",

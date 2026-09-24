@@ -46,91 +46,110 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         this.inventoryLabelY = 72;
     }
 
-    @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean isDouble) {
-        if (!event.isLeft()) {
-            return super.mouseClicked(event, isDouble);
-        }
-        double mx = event.x();
-        double my = event.y();
+    private boolean clickHandledOnPress = false;
 
+    private boolean handleCatalogClick(double mx, double my) {
         List<MachineRecipe> recipes = getRecipes();
-        if (!recipes.isEmpty()) {
-            int btnX = this.leftPos + this.imageWidth - 22;
-            int btnY = this.topPos + 4;
-            int btnW = 18;
-            int btnH = 12;
+        if (recipes.isEmpty()) {
+            return false;
+        }
 
-            if (mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH) {
-                this.recipeCatalogOpen = !this.recipeCatalogOpen;
+        int btnX = this.leftPos + this.imageWidth - 24;
+        int btnY = this.topPos + 3;
+        int btnW = 20;
+        int btnH = 13;
+
+        if (mx >= btnX - 1 && mx <= btnX + btnW + 1 && my >= btnY - 1 && my <= btnY + btnH + 1) {
+            this.recipeCatalogOpen = !this.recipeCatalogOpen;
+            if (this.minecraft != null) {
+                this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+            }
+            return true;
+        }
+
+        if (this.recipeCatalogOpen) {
+            int drawerW = 146;
+            int drawerH = this.imageHeight;
+            int drawerX = getDrawerX(drawerW);
+            int drawerY = this.topPos;
+
+            int closeX = drawerX + drawerW - 16;
+            int closeY = drawerY + 3;
+            if (mx >= closeX && mx <= closeX + 14 && my >= closeY && my <= closeY + 14) {
+                this.recipeCatalogOpen = false;
                 if (this.minecraft != null) {
                     this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
                 }
                 return true;
             }
 
-            if (this.recipeCatalogOpen) {
-                int drawerW = 146;
-                int drawerH = this.imageHeight;
-                int drawerX = getDrawerX(drawerW);
-                int drawerY = this.topPos;
-
-                int closeX = drawerX + drawerW - 14;
-                int closeY = drawerY + 4;
-                if (mx >= closeX && mx <= closeX + 10 && my >= closeY && my <= closeY + 12) {
-                    this.recipeCatalogOpen = false;
+            int totalPages = Math.max(1, (recipes.size() + 2) / 3);
+            if (totalPages > 1) {
+                int prevX = drawerX + drawerW - 44;
+                int nextX = drawerX + drawerW - 20;
+                int pageBtnY = drawerY + 3;
+                if (mx >= prevX && mx <= prevX + 14 && my >= pageBtnY && my <= pageBtnY + 14) {
+                    this.recipeCatalogPage = Math.max(0, this.recipeCatalogPage - 1);
                     if (this.minecraft != null) {
                         this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
                     }
                     return true;
                 }
-
-                int totalPages = Math.max(1, (recipes.size() + 2) / 3);
-                if (totalPages > 1) {
-                    int prevX = drawerX + drawerW - 42;
-                    int nextX = drawerX + drawerW - 20;
-                    int pageBtnY = drawerY + 4;
-                    if (mx >= prevX && mx <= prevX + 10 && my >= pageBtnY && my <= pageBtnY + 12) {
-                        this.recipeCatalogPage = Math.max(0, this.recipeCatalogPage - 1);
-                        if (this.minecraft != null) {
-                            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
-                        }
-                        return true;
+                if (mx >= nextX && mx <= nextX + 14 && my >= pageBtnY && my <= pageBtnY + 14) {
+                    this.recipeCatalogPage = Math.min(totalPages - 1, this.recipeCatalogPage + 1);
+                    if (this.minecraft != null) {
+                        this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
                     }
-                    if (mx >= nextX && mx <= nextX + 10 && my >= pageBtnY && my <= pageBtnY + 12) {
-                        this.recipeCatalogPage = Math.min(totalPages - 1, this.recipeCatalogPage + 1);
-                        if (this.minecraft != null) {
-                            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
-                        }
-                        return true;
-                    }
-                }
-
-                int cw = drawerW - 10;
-                int ch = 46;
-                for (int i = 0; i < 3; i++) {
-                    int recipeIdx = this.recipeCatalogPage * 3 + i;
-                    if (recipeIdx >= recipes.size()) {
-                        break;
-                    }
-                    int cx = drawerX + 5;
-                    int cy = drawerY + 19 + i * 48;
-                    if (mx >= cx && mx <= cx + cw && my >= cy && my <= cy + ch) {
-                        if (this.minecraft != null && this.minecraft.gameMode != null) {
-                            this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, recipeIdx);
-                            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
-                        }
-                        return true;
-                    }
-                }
-
-                if (mx >= drawerX && mx <= drawerX + drawerW && my >= drawerY && my <= drawerY + drawerH) {
                     return true;
                 }
             }
+
+            int cw = drawerW - 10;
+            int ch = 46;
+            for (int i = 0; i < 3; i++) {
+                int recipeIdx = this.recipeCatalogPage * 3 + i;
+                if (recipeIdx >= recipes.size()) {
+                    break;
+                }
+                int cx = drawerX + 5;
+                int cy = drawerY + 19 + i * 48;
+                if (mx >= cx && mx <= cx + cw && my >= cy && my <= cy + ch) {
+                    if (this.minecraft != null && this.minecraft.gameMode != null) {
+                        this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, recipeIdx);
+                        this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+                    }
+                    return true;
+                }
+            }
+
+            if (mx >= drawerX && mx <= drawerX + drawerW && my >= drawerY && my <= drawerY + drawerH) {
+                return true;
+            }
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean isDouble) {
+        if (handleCatalogClick(event.x(), event.y())) {
+            this.clickHandledOnPress = true;
+            return true;
+        }
+        this.clickHandledOnPress = false;
         return super.mouseClicked(event, isDouble);
+    }
+
+    @Override
+    public boolean mouseReleased(MouseButtonEvent event) {
+        if (this.clickHandledOnPress) {
+            this.clickHandledOnPress = false;
+            return true;
+        }
+        if (handleCatalogClick(event.x(), event.y())) {
+            return true;
+        }
+        return super.mouseReleased(event);
     }
 
     private int getDrawerX(int drawerW) {
@@ -145,8 +164,13 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         return Math.max(0, (this.width - drawerW) / 2);
     }
 
+    protected int lastMouseX;
+    protected int lastMouseY;
+
     @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
+        this.lastMouseX = mouseX;
+        this.lastMouseY = mouseY;
         renderChassis(extractor);
         super.extractRenderState(extractor, mouseX, mouseY, delta);
         if (this.recipeCatalogOpen && !getRecipes().isEmpty()) {
@@ -205,7 +229,7 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         extractor.fill(x + 11, y + 8, x + 13, y + 10, wptColor);
         extractor.fill(x + 17, y + 8, x + 19, y + 10, wptColor);
 
-        renderRecipeButton(extractor);
+        renderRecipeButton(extractor, this.lastMouseX, this.lastMouseY);
 
         for (Slot slot : this.menu.slots) {
             int sx = x + slot.x;
@@ -222,19 +246,21 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         renderProgressBar(extractor, x + 70, y + 39, 36, 12);
     }
 
-    private void renderRecipeButton(GuiGraphicsExtractor extractor) {
+    private void renderRecipeButton(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         List<MachineRecipe> recipes = getRecipes();
         if (recipes.isEmpty()) {
             return;
         }
 
-        int btnX = this.leftPos + this.imageWidth - 22;
-        int btnY = this.topPos + 4;
-        int btnW = 18;
-        int btnH = 12;
+        int btnX = this.leftPos + this.imageWidth - 24;
+        int btnY = this.topPos + 3;
+        int btnW = 20;
+        int btnH = 13;
 
-        int btnBg = this.recipeCatalogOpen ? 0xFF005B66 : 0xFF05080E;
-        int btnBorder = this.recipeCatalogOpen ? 0xFF00E5FF : 0xFF455A64;
+        boolean hovered = mouseX >= btnX - 1 && mouseX <= btnX + btnW + 1
+                && mouseY >= btnY - 1 && mouseY <= btnY + btnH + 1;
+        int btnBg = this.recipeCatalogOpen ? 0xFF006677 : (hovered ? 0xFF0A2234 : 0xFF05080E);
+        int btnBorder = (this.recipeCatalogOpen || hovered) ? 0xFF00E5FF : 0xFF455A64;
 
         extractor.fill(btnX, btnY, btnX + btnW, btnY + btnH, btnBg);
         extractor.fill(btnX, btnY, btnX + btnW, btnY + 1, btnBorder);
@@ -242,13 +268,14 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         extractor.fill(btnX, btnY, btnX + 1, btnY + btnH, btnBorder);
         extractor.fill(btnX + btnW - 1, btnY, btnX + btnW, btnY + btnH, btnBorder);
 
-        extractor.fill(btnX + 3, btnY + 2, btnX + 7, btnY + 10, 0xFF00E5FF);
-        extractor.fill(btnX + 8, btnY + 2, btnX + 10, btnY + 10, 0xFF101824);
-        extractor.fill(btnX + 11, btnY + 2, btnX + 15, btnY + 10, 0xFF00E5FF);
-        extractor.fill(btnX + 4, btnY + 4, btnX + 6, btnY + 5, 0xFF05080E);
-        extractor.fill(btnX + 4, btnY + 7, btnX + 6, btnY + 8, 0xFF05080E);
-        extractor.fill(btnX + 12, btnY + 4, btnX + 14, btnY + 5, 0xFF05080E);
-        extractor.fill(btnX + 12, btnY + 7, btnX + 14, btnY + 8, 0xFF05080E);
+        int iconColor = (this.recipeCatalogOpen || hovered) ? 0xFF80D8FF : 0xFF00E5FF;
+        extractor.fill(btnX + 4, btnY + 2, btnX + 9, btnY + 11, iconColor);
+        extractor.fill(btnX + 9, btnY + 2, btnX + 11, btnY + 11, 0xFF101824);
+        extractor.fill(btnX + 11, btnY + 2, btnX + 16, btnY + 11, iconColor);
+        extractor.fill(btnX + 5, btnY + 4, btnX + 8, btnY + 5, 0xFF05080E);
+        extractor.fill(btnX + 5, btnY + 7, btnX + 8, btnY + 8, 0xFF05080E);
+        extractor.fill(btnX + 12, btnY + 4, btnX + 15, btnY + 5, 0xFF05080E);
+        extractor.fill(btnX + 12, btnY + 7, btnX + 15, btnY + 8, 0xFF05080E);
     }
 
     private void renderRecipeDrawer(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -437,9 +464,11 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         int y = this.topPos;
 
         if (!getRecipes().isEmpty()) {
-            int btnX = x + this.imageWidth - 22;
-            int btnY = y + 4;
-            if (mouseX >= btnX && mouseX <= btnX + 18 && mouseY >= btnY && mouseY <= btnY + 12) {
+            int btnX = x + this.imageWidth - 24;
+            int btnY = y + 3;
+            int btnW = 20;
+            int btnH = 13;
+            if (mouseX >= btnX - 1 && mouseX <= btnX + btnW + 1 && mouseY >= btnY - 1 && mouseY <= btnY + btnH + 1) {
                 extractor.setTooltipForNextFrame(this.font, Component.translatable("gui.sandstorm.machine.recipes_tooltip"), mouseX, mouseY);
                 return;
             }

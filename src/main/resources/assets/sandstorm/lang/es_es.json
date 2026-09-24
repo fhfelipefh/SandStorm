@@ -22,7 +22,7 @@
   "block.sandstorm.autonomous_sonic_turret": "Torreta Sónica Automatizada",
   "item.sandstorm.autonomous_sonic_turret": "Torreta Sónica Automatizada",
   "gui.sandstorm.machine.battery_slot_hint": "Ranura de Batería: inserte Silicio (+250 J), Redstone (+400 J) o Wafer (+1.000 J)",
-  "gui.sandstorm.machine.recipes_tooltip": "§bCatálogo de Proyectos\n§7Haga clic para alternar el panel de recetas.",
+  "gui.sandstorm.machine.recipes_tooltip": "Proyectos",
   "gui.sandstorm.machine.recipes_title": "PROYECTOS",
   "gui.sandstorm.machine.recipe_ready": "§aRecursos disponibles",
   "gui.sandstorm.machine.recipe_missing": "§8Recursos insuficientes",
