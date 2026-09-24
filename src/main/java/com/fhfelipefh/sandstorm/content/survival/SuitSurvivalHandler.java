@@ -28,6 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -170,6 +171,7 @@ public class SuitSurvivalHandler {
             if (server != null) {
                 PlayerSuitSavedData.get(server).setSuitData(player.getUUID(), currentEnergy, currentTemp);
             }
+            updatePlayerSuitTags(player, currentEnergy, currentTemp);
         }
 
         if (suit.isFullSuitEquipped()) {
@@ -287,14 +289,44 @@ public class SuitSurvivalHandler {
         if (suit == null) {
             suit = new SuitPowerComponent();
             MinecraftServer server = player.level().getServer() != null ? player.level().getServer() : currentServer;
+            long restoredEnergy = -1L;
+            double restoredTemp = -1.0;
+
             if (server != null) {
                 PlayerSuitSavedData data = PlayerSuitSavedData.get(server);
                 PlayerSuitSavedData.Entry entry = data.getSuitData(uuid);
                 if (entry != null) {
-                    suit.getEnergyStorage().setStoredEnergy(entry.energy());
-                    suit.getThermal().setCurrentTemperature(entry.temperature());
+                    restoredEnergy = entry.energy();
+                    restoredTemp = entry.temperature();
                 }
             }
+
+            if (restoredEnergy < 0) {
+                for (String tag : player.entityTags()) {
+                    if (tag.startsWith("sandstorm.suit_energy:")) {
+                        try {
+                            restoredEnergy = Long.parseLong(tag.substring(22));
+                        } catch (NumberFormatException ignored) {
+                        }
+                    } else if (tag.startsWith("sandstorm.suit_temp:")) {
+                        try {
+                            restoredTemp = Double.parseDouble(tag.substring(20)) / 100.0;
+                        } catch (NumberFormatException ignored) {
+                        }
+                    }
+                }
+            }
+
+            if (restoredEnergy >= 0) {
+                suit.getEnergyStorage().setStoredEnergy(restoredEnergy);
+                if (restoredTemp > 0) {
+                    suit.getThermal().setCurrentTemperature(restoredTemp);
+                }
+            } else if (player.entityTags().contains("sandstorm.fused_suit")) {
+                suit.getEnergyStorage().setStoredEnergy(50000L);
+                suit.getThermal().setCurrentTemperature(37.0);
+            }
+
             PLAYER_SUIT_MAP.put(uuid, suit);
         }
         return suit;
@@ -303,12 +335,16 @@ public class SuitSurvivalHandler {
     public static void savePlayerSuit(ServerPlayer player, MinecraftServer server) {
         SuitPowerComponent suit = PLAYER_SUIT_MAP.get(player.getUUID());
         if (suit != null) {
+            long energy = suit.getEnergyStorage().getStoredEnergy();
+            double temp = suit.getThermal().getCurrentTemperature();
+            updatePlayerSuitTags(player, energy, temp);
+
             MinecraftServer s = server != null ? server : (player.level().getServer() != null ? player.level().getServer() : currentServer);
             if (s != null) {
                 PlayerSuitSavedData.get(s).setSuitData(
                         player.getUUID(),
-                        suit.getEnergyStorage().getStoredEnergy(),
-                        suit.getThermal().getCurrentTemperature()
+                        energy,
+                        temp
                 );
             }
         }
@@ -316,6 +352,16 @@ public class SuitSurvivalHandler {
 
     public static void savePlayerSuit(ServerPlayer player) {
         savePlayerSuit(player, null);
+    }
+
+    private static void updatePlayerSuitTags(ServerPlayer player, long energy, double temp) {
+        for (String tag : new ArrayList<>(player.entityTags())) {
+            if (tag.startsWith("sandstorm.suit_energy:") || tag.startsWith("sandstorm.suit_temp:")) {
+                player.removeTag(tag);
+            }
+        }
+        player.addTag("sandstorm.suit_energy:" + energy);
+        player.addTag("sandstorm.suit_temp:" + Math.round(temp * 100.0));
     }
 
     private static boolean hasPropellant(ServerPlayer player) {

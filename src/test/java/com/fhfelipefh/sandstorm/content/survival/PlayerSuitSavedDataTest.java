@@ -159,4 +159,18 @@ class PlayerSuitSavedDataTest {
         assertEquals(100000L, data.getSuitData(p1).energy());
         assertEquals(25000L, data.getSuitData(p2).energy());
     }
+
+    @Test
+    void shouldFallbackToSingleplayerEntryWhenUuidIsDifferent() {
+        PlayerSuitSavedData data = new PlayerSuitSavedData();
+        UUID oldUuid = UUID.randomUUID();
+        UUID newUuid = UUID.randomUUID();
+
+        data.setSuitData(oldUuid, 85000L, 36.8);
+        PlayerSuitSavedData.Entry fallbackEntry = data.getSuitData(newUuid);
+
+        assertNotNull(fallbackEntry);
+        assertEquals(85000L, fallbackEntry.energy());
+        assertEquals(36.8, fallbackEntry.temperature(), 0.001);
+    }
 }

@@ -14,6 +14,14 @@ loom {
 			sourceSet sourceSets.client
 		}
 	}
+
+	runs {
+		client {
+			client()
+			ideConfigGenerated(true)
+			programArgs("--username", "SandStormDev")
+		}
+	}
 }
 
 dependencies {
