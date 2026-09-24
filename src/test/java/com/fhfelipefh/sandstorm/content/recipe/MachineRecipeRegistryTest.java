@@ -55,7 +55,7 @@ class MachineRecipeRegistryTest {
 
         MachineRecipe r3 = recipes.get(2);
         assertEquals(240, r3.getEnergyCost());
-        assertEquals(120, r3.getProcessTicks());
+        assertEquals(1200, r3.getProcessTicks());
         assertEquals(1, r3.getSlot0InputCount());
         assertEquals(1, r3.getSlot1InputCount());
     }
