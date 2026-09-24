@@ -18,18 +18,28 @@ public class FlashlightLightMixin {
         }
         int mode = FlashlightState.getMode();
         float lightFactor = FlashlightState.getLightFactor();
-        float brightnessBoost = switch (mode) {
-            case FlashlightState.MODE_LOW -> 0.55f;
-            case FlashlightState.MODE_MEDIUM -> 1.0f;
-            case FlashlightState.MODE_HIGH -> 1.6f;
-            default -> 0.0f;
-        };
-        if (state.blockFactor < lightFactor) {
-            state.blockFactor = lightFactor;
+
+        switch (mode) {
+            case FlashlightState.MODE_LOW -> {
+                state.blockFactor = Math.max(state.blockFactor, 0.60f);
+                state.skyFactor = Math.max(state.skyFactor, 0.30f);
+                state.brightness = Math.max(state.brightness, 0.70f);
+                state.nightVisionEffectIntensity = Math.max(state.nightVisionEffectIntensity, 0.25f);
+            }
+            case FlashlightState.MODE_MEDIUM -> {
+                state.blockFactor = Math.max(state.blockFactor, 0.85f);
+                state.skyFactor = Math.max(state.skyFactor, 0.55f);
+                state.brightness = Math.max(state.brightness, 1.0f);
+                state.nightVisionEffectIntensity = Math.max(state.nightVisionEffectIntensity, 0.60f);
+            }
+            case FlashlightState.MODE_HIGH -> {
+                state.blockFactor = 1.0f;
+                state.skyFactor = 1.0f;
+                state.brightness = 1.0f;
+                state.nightVisionEffectIntensity = 1.0f;
+                state.darknessEffectScale = 0.0f;
+            }
+            default -> {}
         }
-        if (state.skyFactor < lightFactor * 0.5f) {
-            state.skyFactor = lightFactor * 0.5f;
-        }
-        state.brightness = Math.max(state.brightness, brightnessBoost);
     }
 }
