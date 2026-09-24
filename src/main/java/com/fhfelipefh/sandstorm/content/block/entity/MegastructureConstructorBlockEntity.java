@@ -115,6 +115,29 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
         setChanged();
     }
 
+    public int completeInstantly() {
+        if (level == null) {
+            return 0;
+        }
+        List<MegastructureBlueprint.BlockPlacement> placements = getBlueprint().getPlacements();
+        int placedCount = 0;
+        for (MegastructureBlueprint.BlockPlacement placement : placements) {
+            BlockPos target = getBlockPos().offset(placement.relativePos());
+            if (level.isLoaded(target) && !level.getBlockState(target).equals(placement.state())) {
+                level.setBlock(target, placement.state(), 3);
+                placedCount++;
+            }
+        }
+        this.placementIndex = placements.size();
+        this.buildState = STATE_COMPLETED;
+        MegastructureBlueprint bp = getBlueprint();
+        double radius = Math.max(bp.getSizeX(), bp.getSizeZ()) * 0.5 + 4.0;
+        KineticShieldTracker.registerShield(level.dimension(), getBlockPos(), radius);
+        level.playSound(null, getBlockPos(), SandStormSoundEvents.MEGASTRUCTURE_COMPLETE, SoundSource.BLOCKS, 2.0f, 1.0f);
+        setChanged();
+        return placedCount;
+    }
+
     public int getPlacementIndex() {
         return placementIndex;
     }

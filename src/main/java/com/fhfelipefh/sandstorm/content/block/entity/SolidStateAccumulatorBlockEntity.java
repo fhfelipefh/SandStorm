@@ -83,6 +83,11 @@ public class SolidStateAccumulatorBlockEntity extends BlockEntity implements Wor
         return storedEnergy;
     }
 
+    public void setStoredEnergy(int energy) {
+        this.storedEnergy = Math.min(this.maxEnergy, Math.max(0, energy));
+        setChanged();
+    }
+
     public int getMaxEnergy() {
         return maxEnergy;
     }

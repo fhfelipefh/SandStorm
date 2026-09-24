@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.core;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.command.SandstormBuildCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormClaimCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormWeatherCommand;
 import com.fhfelipefh.sandstorm.content.command.SandwormShowcaseCommand;
@@ -95,6 +96,7 @@ public class SandStormMod implements ModInitializer {
         SandwormShowcaseCommand.initialize();
         SandstormWeatherCommand.initialize();
         SandstormClaimCommand.initialize();
+        SandstormBuildCommand.initialize();
         RecipeUnlockHandler.initialize();
         ServerPlayNetworking.registerGlobalReceiver(
                 FlashlightTogglePayload.TYPE,

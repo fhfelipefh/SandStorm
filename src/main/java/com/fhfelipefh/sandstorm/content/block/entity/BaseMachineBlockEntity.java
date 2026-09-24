@@ -81,6 +81,11 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
         return energy;
     }
 
+    public void setEnergy(int energy) {
+        this.energy = Math.min(this.maxEnergy, Math.max(0, energy));
+        setChanged();
+    }
+
     public int getMaxEnergy() {
         return maxEnergy;
     }
