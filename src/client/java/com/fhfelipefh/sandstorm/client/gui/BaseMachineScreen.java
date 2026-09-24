@@ -152,6 +152,11 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
             String status = this.menu.isProcessing() ? " §a[PROCESSANDO]" : " §7[EM ESPERA]";
             Component tooltip = Component.literal("§bProgresso: §f" + pct + "%" + status);
             extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
+        } else if (mouseX >= x + 7 && mouseX <= x + 25 && mouseY >= y + 47 && mouseY <= y + 65) {
+            if (this.menu.slots.size() > 3 && !this.menu.slots.get(3).hasItem()) {
+                Component tooltip = Component.translatable("gui.sandstorm.machine.battery_slot_hint");
+                extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
+            }
         }
     }
 }
