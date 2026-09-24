@@ -75,6 +75,12 @@ public class SandStormItems {
     public static final OrbitalSurveySatelliteItem ORBITAL_SURVEY_SATELLITE = register("orbital_survey_satellite", new OrbitalSurveySatelliteItem(properties("orbital_survey_satellite")));
     public static final Item ANCIENT_REED = register("ancient_reed", new Item(properties("ancient_reed")));
     public static final Item ANCIENT_SEED = register("ancient_seed", new Item(properties("ancient_seed")));
+    public static final Item GEOLOGICAL_SCANNER = register("geological_scanner", new Item(properties("geological_scanner").rarity(Rarity.UNCOMMON)));
+    public static final Item FIELD_PROBE = register("field_probe", new Item(properties("field_probe").rarity(Rarity.UNCOMMON)));
+    public static final Item REPAIR_TOOL = register("repair_tool", new Item(properties("repair_tool").rarity(Rarity.UNCOMMON)));
+    public static final Item STRUCTURAL_PLATE = register("structural_plate", new Item(properties("structural_plate").rarity(Rarity.UNCOMMON)));
+    public static final Item CIRCUIT_MOUNT = register("circuit_mount", new Item(properties("circuit_mount").rarity(Rarity.UNCOMMON)));
+    public static final Item PRESSURE_SEAL = register("pressure_seal", new Item(properties("pressure_seal").rarity(Rarity.UNCOMMON)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -167,6 +173,12 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.SAND_MAGLEV_RAIL);
                         entries.accept(SandStormBlocks.HABITAT_DOME);
                         entries.accept(SandStormBlocks.AUTO_ASSEMBLY_LINE);
+                        entries.accept(GEOLOGICAL_SCANNER);
+                        entries.accept(FIELD_PROBE);
+                        entries.accept(REPAIR_TOOL);
+                        entries.accept(STRUCTURAL_PLATE);
+                        entries.accept(CIRCUIT_MOUNT);
+                        entries.accept(PRESSURE_SEAL);
                     })
                     .build()
     );

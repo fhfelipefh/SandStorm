@@ -14,7 +14,7 @@ class MachineRecipeRegistryTest {
     void testPrinter3DRecipes() {
         List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:printer_3d");
         assertFalse(recipes.isEmpty());
-        assertEquals(3, recipes.size());
+        assertEquals(9, recipes.size());
 
         MachineRecipe r1 = recipes.get(0);
         assertEquals(200, r1.getEnergyCost());
@@ -33,6 +33,42 @@ class MachineRecipeRegistryTest {
         assertEquals(100, r3.getProcessTicks());
         assertEquals(1, r3.getSlot0InputCount());
         assertEquals(1, r3.getSlot1InputCount());
+
+        MachineRecipe r4 = recipes.get(3);
+        assertEquals(200, r4.getEnergyCost());
+        assertEquals(300, r4.getProcessTicks());
+        assertEquals(1, r4.getSlot0InputCount());
+        assertEquals(1, r4.getSlot1InputCount());
+
+        MachineRecipe r5 = recipes.get(4);
+        assertEquals(200, r5.getEnergyCost());
+        assertEquals(200, r5.getProcessTicks());
+        assertEquals(1, r5.getSlot0InputCount());
+        assertEquals(1, r5.getSlot1InputCount());
+
+        MachineRecipe r6 = recipes.get(5);
+        assertEquals(200, r6.getEnergyCost());
+        assertEquals(200, r6.getProcessTicks());
+        assertEquals(1, r6.getSlot0InputCount());
+        assertEquals(1, r6.getSlot1InputCount());
+
+        MachineRecipe r7 = recipes.get(6);
+        assertEquals(150, r7.getEnergyCost());
+        assertEquals(100, r7.getProcessTicks());
+        assertEquals(1, r7.getSlot0InputCount());
+        assertEquals(1, r7.getSlot1InputCount());
+
+        MachineRecipe r8 = recipes.get(7);
+        assertEquals(150, r8.getEnergyCost());
+        assertEquals(150, r8.getProcessTicks());
+        assertEquals(1, r8.getSlot0InputCount());
+        assertEquals(1, r8.getSlot1InputCount());
+
+        MachineRecipe r9 = recipes.get(8);
+        assertEquals(150, r9.getEnergyCost());
+        assertEquals(150, r9.getProcessTicks());
+        assertEquals(1, r9.getSlot0InputCount());
+        assertEquals(1, r9.getSlot1InputCount());
     }
 
     @Test

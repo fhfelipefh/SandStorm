@@ -38,6 +38,48 @@ public class MachineRecipeRegistry {
                         List.of(() -> new ItemStack(SandStormItems.NANO_ACTUATOR)),
                         200,
                         100
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.GEOLOGICAL_SCANNER),
+                        List.of(() -> new ItemStack(SandStormItems.SILICON_WAFER)),
+                        List.of(() -> new ItemStack(SandStormItems.ELECTRIC_COMPONENT)),
+                        200,
+                        300
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.FIELD_PROBE),
+                        List.of(() -> new ItemStack(SandStormItems.CIRCUIT_BOARD)),
+                        List.of(() -> new ItemStack(SandStormItems.SILICON_WAFER)),
+                        200,
+                        200
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.REPAIR_TOOL),
+                        List.of(() -> new ItemStack(SandStormItems.SCRAP_METAL)),
+                        List.of(() -> new ItemStack(SandStormItems.ELECTRIC_COMPONENT)),
+                        200,
+                        200
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.STRUCTURAL_PLATE),
+                        List.of(() -> new ItemStack(SandStormItems.SCRAP_METAL)),
+                        List.of(() -> new ItemStack(SandStormItems.SCRAP_METAL)),
+                        150,
+                        100
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.CIRCUIT_MOUNT),
+                        List.of(() -> new ItemStack(SandStormItems.SCRAP_METAL)),
+                        List.of(() -> new ItemStack(SandStormItems.SILICON_WAFER)),
+                        150,
+                        150
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.PRESSURE_SEAL),
+                        List.of(() -> new ItemStack(SandStormItems.SCRAP_METAL)),
+                        List.of(() -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        150,
+                        150
                 )
         );
         RECIPES.put("sandstorm:printer_3d", Collections.unmodifiableList(list));

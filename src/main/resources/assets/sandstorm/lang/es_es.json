@@ -426,5 +426,11 @@
   "entity.sandstorm.builder_drone": "Dron Constructor",
   "subtitles.sandstorm.block.megastructure_constructor.laser": "Láser de megaestructura zumbando",
   "subtitles.sandstorm.block.megastructure_constructor.layer_complete": "Capa de megaestructura completada",
-  "subtitles.sandstorm.block.megastructure_constructor.complete": "Construcción de megaestructura finalizada"
+  "subtitles.sandstorm.block.megastructure_constructor.complete": "Construcción de megaestructura finalizada",
+  "item.sandstorm.geological_scanner": "Escáner Geológico",
+  "item.sandstorm.field_probe": "Sonda de Campo",
+  "item.sandstorm.repair_tool": "Herramienta de Reparación Tecnológica",
+  "item.sandstorm.structural_plate": "Placa Estructural",
+  "item.sandstorm.circuit_mount": "Soporte de Circuito",
+  "item.sandstorm.pressure_seal": "Sello de Presión"
 }

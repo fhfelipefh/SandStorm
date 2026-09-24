@@ -11,7 +11,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **610 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **627 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
 | **Receitas Data-Driven (JEI/REI)** | 70 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
@@ -38,8 +38,11 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 
 ### Fase 2: Automação, Energia e Robótica (Concluída - 100%)
 - [x] Processamento de silício: Minério bruto (`raw_silicon`), pastilha de silício (`silicon_wafer`), placa de circuito (`circuit_board`) e nanoatuadores (`nano_actuator`).
-- [x] Impressora 3D de bancada (`Printer3DBlock`) com processamento via energia.
-- [x] Fabricador de nanitas (`NaniteFabricatorBlock`) para criação de componentes avançados.
+- [x] Impressora 3D de bancada (`Printer3DBlock`) com processamento via energia e catálogo expandido de manufatura aditiva:
+  - [x] Ferramentas tecnológicas de campo: Escâner Geológico (`geological_scanner`), Sonda de Campo (`field_probe`) e Ferramenta de Reparo Tecnológico (`repair_tool`).
+  - [x] Componentes estruturais e mecânicos: Placa Estrutural (`structural_plate`), Suporte de Circuito (`circuit_mount`) e Vedação de Pressão Hermética (`pressure_seal`).
+  - [x] Matriz de componentes elétricos (`electric_component`), placas de circuito (`circuit_board`) e fuzil de plasma (`plasma_rifle`).
+- [x] Fabricador de nanitas (`NaniteFabricatorBlock`) para criação de componentes avançados e lâmina vibratória de dente de verme (`vibro_crysknife`) com tempo calibrado de 60s (1200 ticks).
 - [x] Receptor de Energia Solar Sem Fio (`WirelessSolarReceiverBlock` Tier 1 e Tier 2) para transmissão esférica WPT e recarga de traje na nave e postos avançados.
 - [x] Hangar de montagem (`AssemblyBayBlock`) e estação de drones (`DroneDockBlock`).
 - [x] Drone logístico de carga (`CargoDroneEntity`).
@@ -68,7 +71,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [x] `SpaceSuitItemTest`: Validação de durabilidade de armadura e raridade.
 - [x] `SuitSurvivalHandlerTest`: Validação do ciclo de vida dos componentes de jogadores.
 - [x] `TechnologyToolRestrictionHandlerTest`: Validação da exclusividade robótica e permissão de pás.
-- [x] `AssetIntegrityTest`: Validação sintática de modelos JSON e cabeçalhos de texturas PNG.
+- [x] `AssetIntegrityTest`: Validação sintática de modelos JSON, integridade de cabeçalhos PNG e auditoria estrita contra ícones de barreira no JEI/livro de receitas (`everyItemDefinitionMustHaveACorrespondingItemTexture`).
 - [x] `JeiCompatibilityTest`: Validação estrutural de compatibilidade do JEI/REI.
 - [x] `ZeroCommentsArchitectureTest`: Garantia contínua de zero comentários em todo o código Java.
 
@@ -709,6 +712,16 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - 3 novos eventos de som registrados (`MEGASTRUCTURE_CONSTRUCTOR_LASER`, `MEGASTRUCTURE_LAYER_COMPLETE`, `MEGASTRUCTURE_COMPLETE`), mapeamento de áudio em `sounds.json`, receitas, loot tables, i18n trilingue (pt_br, en_us, es_es), texturas PNG íntegras e suíte de testes `Fase19MegastructureTest`, expandindo a suíte para **598 testes automatizados** com 100% de sucesso.
 39. `2d07134` / `a3daec7`: Resolução e blindagem das receitas de fortificações perimétricas (uso de `titanium_chitin_composite` em vez de identificadores inexistentes), expansão do `JeiCompatibilityTest` para auditar a existência física de todos os itens e texturas de receitas data-driven, e formalização do *Protocolo de Integridade de Receitas Data-Driven* no `AGENTS.md`.
 40. `ce42c0b`: Implementação do **Catálogo de Projetos (Blueprints Drawer)** para a Impressora 3D e o Fabricador de Nanites (`MachineRecipeRegistry`, `MachineRecipe`, auto-preenchimento de insumos com 1 clique e drawer deslizante lateral), **Modelo Focal da Lanterna do Capacete** (`FlashlightFocalModel`, cone de 25°, 28m de alcance, atenuação angular/radial e renderizador de feixe/vinheta `FlashlightFocalRenderer`), revisão da descrição da missão da Picareta de Silício no Datapad (pt_br, en_us, es_es) e expansão da suíte para **610 testes automatizados** 100% aprovados.
+41. `f796d11`: Otimização visual da lanterna tática (`FlashlightLightMixin` com intensidade total de visão noturna `nightVisionEffectIntensity=1.0` no modo HIGH, eliminação da vinheta escura que obstruía a visão periférica e retenção limpa do anel focal ciano em `FlashlightFocalRenderer`).
+42. `0ef497c`: Saneamento de receitas e purificação hídrica: remoção da rota de fornalha para água potável, obrigatoriedade do Filtro de Dessalinização (`DesalinationFilterBlock`), adição da receita de confecção do refil `filter_cartridge`, receitas de pastilha de silício (`silicon_wafer`) via fundição/alto-forno e calibração do tempo de forja da Vibro-Crysknife para 60s (1200 ticks).
+43. `970f3bd`: Eliminação total de ícones de barreira no JEI e livro de receitas de receitas data-driven: geração e mapeamento de texturas de itens para 41 blocos, criação de texturas para máquinas avançadas e implementação do teste de regressão automatizado `everyItemDefinitionMustHaveACorrespondingItemTexture` no `AssetIntegrityTest`, auditando a cadeia completa de 97+ itens.
+44. `fase2-printer3d`: Expansão da manufatura aditiva da Impressora 3D (`sandstorm:printer_3d`):
+    - 3 Novas Ferramentas Tecnológicas: Escâner Geológico (`geological_scanner`), Sonda de Campo (`field_probe`) e Ferramenta de Reparo Tecnológico (`repair_tool`).
+    - 3 Novos Componentes de Construção: Placa Estrutural (`structural_plate`), Suporte de Circuito (`circuit_mount`) e Vedação de Pressão Hermética (`pressure_seal`).
+    - Texturas pixel-art 16x16, modelos JSON de item/renderização, registros em `SandStormItems` e aba criativa.
+    - Registro de 6 novas receitas funcionais de manufatura aditiva no `MachineRecipeRegistry`, elevando o catálogo da Impressora 3D para 9 receitas.
+    - Localização e nomenclatura trilingue (pt_br, en_us, es_es) com paridade 100% auditada por `I18nParityTest`.
+    - Expansão da suíte para **627 testes automatizados** com 100% de aprovação e zero comentários.
 
 
 

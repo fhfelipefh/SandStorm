@@ -426,5 +426,11 @@
   "entity.sandstorm.builder_drone": "Builder Drone",
   "subtitles.sandstorm.block.megastructure_constructor.laser": "Megastructure laser hums",
   "subtitles.sandstorm.block.megastructure_constructor.layer_complete": "Megastructure layer completed",
-  "subtitles.sandstorm.block.megastructure_constructor.complete": "Megastructure construction complete"
+  "subtitles.sandstorm.block.megastructure_constructor.complete": "Megastructure construction complete",
+  "item.sandstorm.geological_scanner": "Geological Scanner",
+  "item.sandstorm.field_probe": "Field Probe",
+  "item.sandstorm.repair_tool": "Tech Repair Tool",
+  "item.sandstorm.structural_plate": "Structural Plate",
+  "item.sandstorm.circuit_mount": "Circuit Mount",
+  "item.sandstorm.pressure_seal": "Pressure Seal"
 }
