@@ -101,7 +101,7 @@ public class SandStormMod implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(
                 FlashlightTogglePayload.TYPE,
                 (payload, context) -> {
-                    FlashlightStateServer.setFlashlight(context.player().getUUID(), payload.enabled());
+                    FlashlightStateServer.setFlashlightMode(context.player().getUUID(), payload.mode());
                 }
         );
         ServerPlayNetworking.registerGlobalReceiver(

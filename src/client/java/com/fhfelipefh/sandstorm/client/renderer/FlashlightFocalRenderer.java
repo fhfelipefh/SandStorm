@@ -10,7 +10,8 @@ public final class FlashlightFocalRenderer {
     private FlashlightFocalRenderer() {}
 
     public static void render(GuiGraphicsExtractor extractor, Minecraft client, int screenWidth, int screenHeight) {
-        if (!FlashlightState.isActive()) {
+        int mode = FlashlightState.getMode();
+        if (mode <= FlashlightState.MODE_OFF) {
             return;
         }
 
@@ -19,13 +20,14 @@ public final class FlashlightFocalRenderer {
             return;
         }
 
-        double hitDist = FlashlightFocalModel.DEFAULT_MAX_RANGE;
-        HitResult hit = player.pick(FlashlightFocalModel.DEFAULT_MAX_RANGE, 1.0f, false);
+        double maxRange = FlashlightFocalModel.getMaxRangeForMode(mode);
+        double hitDist = maxRange;
+        HitResult hit = player.pick(maxRange, 1.0f, false);
         if (hit != null && hit.getType() != HitResult.Type.MISS) {
             hitDist = hit.getLocation().distanceTo(player.getEyePosition());
         }
 
-        float radius = FlashlightFocalModel.calculateFocalApertureRadius(hitDist, screenWidth, screenHeight);
+        float radius = FlashlightFocalModel.calculateFocalApertureRadius(hitDist, screenWidth, screenHeight, mode);
         int cx = screenWidth / 2;
         int cy = screenHeight / 2;
 
@@ -87,7 +89,12 @@ public final class FlashlightFocalRenderer {
             }
         }
 
-        int ringColor = 0x3000E5FF;
+        int ringColor = switch (mode) {
+            case FlashlightState.MODE_LOW -> 0x2500E676;
+            case FlashlightState.MODE_MEDIUM -> 0x40FFD600;
+            case FlashlightState.MODE_HIGH -> 0x6500E5FF;
+            default -> 0x3000E5FF;
+        };
         int rx1 = cx - rInt;
         int rx2 = cx + rInt;
         int ry1 = cy - rInt;

@@ -43,6 +43,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 
 public class SandStormClient implements ClientModInitializer {
@@ -93,9 +96,12 @@ public class SandStormClient implements ClientModInitializer {
                     boolean helmetOn = client.player.getItemBySlot(EquipmentSlot.HEAD).is(SandStormItems.SPACE_SUIT_HELMET);
                     FlashlightState.setHelmetEquipped(helmetOn);
                     if (helmetOn) {
-                        boolean newState = !FlashlightState.isFlashlightOn();
-                        FlashlightState.setFlashlightOn(newState);
-                        ClientPlayNetworking.send(new FlashlightTogglePayload(newState));
+                        int newMode = FlashlightState.cycleMode();
+                        ClientPlayNetworking.send(new FlashlightTogglePayload(newMode));
+                        playFlashlightSound(client, newMode);
+                        client.player.sendOverlayMessage(getFlashlightFeedbackMessage(newMode));
+                    } else {
+                        client.player.sendOverlayMessage(Component.literal("§c[Lanterna] Requer Capacete do Traje Espacial!"));
                     }
                 }
             }
@@ -118,7 +124,7 @@ public class SandStormClient implements ClientModInitializer {
                     DatapadClientHelper.addCondition("sandstorm.battery_60");
                 }
                 if (payload.storedEnergy() == 0) {
-                    FlashlightState.setFlashlightOn(false);
+                    FlashlightState.setMode(FlashlightState.MODE_OFF);
                 }
             });
         });
@@ -136,5 +142,24 @@ public class SandStormClient implements ClientModInitializer {
                 }
             });
         });
+    }
+
+    private static void playFlashlightSound(Minecraft client, int mode) {
+        float pitch = switch (mode) {
+            case FlashlightState.MODE_LOW -> 0.90f;
+            case FlashlightState.MODE_MEDIUM -> 1.15f;
+            case FlashlightState.MODE_HIGH -> 1.40f;
+            default -> 0.65f;
+        };
+        client.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, pitch));
+    }
+
+    private static Component getFlashlightFeedbackMessage(int mode) {
+        return switch (mode) {
+            case FlashlightState.MODE_LOW -> Component.literal("§6[Lanterna] §fModo: §aFraco §7(1x Consumo)");
+            case FlashlightState.MODE_MEDIUM -> Component.literal("§6[Lanterna] §fModo: §eMédio §7(2x Consumo)");
+            case FlashlightState.MODE_HIGH -> Component.literal("§6[Lanterna] §fModo: §bForte §7(4x Consumo)");
+            default -> Component.literal("§6[Lanterna] §7Desligada");
+        };
     }
 }

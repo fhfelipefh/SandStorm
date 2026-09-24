@@ -159,4 +159,54 @@ class FlashlightFocalModelTest {
 
         assertEquals(0.0f, FlashlightFocalModel.calculateFocalIntensity(null, valid, valid, 25.0, 28.0));
     }
+
+    @Test
+    void shouldReturnCorrectRangeAndConeAnglePerMode() {
+        assertEquals(22.0, FlashlightFocalModel.getMaxRangeForMode(FlashlightFocalModel.MODE_LOW));
+        assertEquals(35.0, FlashlightFocalModel.getMaxRangeForMode(FlashlightFocalModel.MODE_MEDIUM));
+        assertEquals(50.0, FlashlightFocalModel.getMaxRangeForMode(FlashlightFocalModel.MODE_HIGH));
+        assertEquals(FlashlightFocalModel.DEFAULT_MAX_RANGE, FlashlightFocalModel.getMaxRangeForMode(FlashlightFocalModel.MODE_OFF));
+
+        assertEquals(22.0, FlashlightFocalModel.getConeAngleForMode(FlashlightFocalModel.MODE_LOW));
+        assertEquals(30.0, FlashlightFocalModel.getConeAngleForMode(FlashlightFocalModel.MODE_MEDIUM));
+        assertEquals(38.0, FlashlightFocalModel.getConeAngleForMode(FlashlightFocalModel.MODE_HIGH));
+        assertEquals(FlashlightFocalModel.DEFAULT_CONE_HALF_ANGLE_DEGREES, FlashlightFocalModel.getConeAngleForMode(FlashlightFocalModel.MODE_OFF));
+    }
+
+    @Test
+    void shouldScaleApertureRadiusAccordingToMode() {
+        int width = 1920;
+        int height = 1080;
+        double dist = 15.0;
+
+        float lowRadius = FlashlightFocalModel.calculateFocalApertureRadius(dist, width, height, FlashlightFocalModel.MODE_LOW);
+        float medRadius = FlashlightFocalModel.calculateFocalApertureRadius(dist, width, height, FlashlightFocalModel.MODE_MEDIUM);
+        float highRadius = FlashlightFocalModel.calculateFocalApertureRadius(dist, width, height, FlashlightFocalModel.MODE_HIGH);
+
+        assertTrue(lowRadius > 0);
+        assertTrue(medRadius > lowRadius);
+        assertTrue(highRadius > medRadius);
+    }
+
+    @Test
+    void shouldDifferentiateConeReachByMode() {
+        Vec3 eyePos = new Vec3(0, 10, 0);
+        Vec3 lookVec = new Vec3(0, 0, 1);
+        Vec3 targetAt30 = new Vec3(0, 10, 30);
+
+        boolean insideLow = FlashlightFocalModel.isInsideFocalCone(eyePos, lookVec, targetAt30,
+                FlashlightFocalModel.getConeAngleForMode(FlashlightFocalModel.MODE_LOW),
+                FlashlightFocalModel.getMaxRangeForMode(FlashlightFocalModel.MODE_LOW));
+        assertFalse(insideLow);
+
+        boolean insideMed = FlashlightFocalModel.isInsideFocalCone(eyePos, lookVec, targetAt30,
+                FlashlightFocalModel.getConeAngleForMode(FlashlightFocalModel.MODE_MEDIUM),
+                FlashlightFocalModel.getMaxRangeForMode(FlashlightFocalModel.MODE_MEDIUM));
+        assertTrue(insideMed);
+
+        boolean insideHigh = FlashlightFocalModel.isInsideFocalCone(eyePos, lookVec, targetAt30,
+                FlashlightFocalModel.getConeAngleForMode(FlashlightFocalModel.MODE_HIGH),
+                FlashlightFocalModel.getMaxRangeForMode(FlashlightFocalModel.MODE_HIGH));
+        assertTrue(insideHigh);
+    }
 }

@@ -182,12 +182,19 @@ public class SuitSurvivalHandler {
                 player.level().playSound(null, pos, SandStormSoundEvents.SUIT_SOLAR_CHARGE, SoundSource.PLAYERS, 0.10f, 1.0f);
             }
 
-            if (FlashlightStateServer.isActive(player.getUUID())) {
+            int flashlightMode = FlashlightStateServer.getMode(player.getUUID());
+            if (flashlightMode > 0) {
                 boolean hadEnergy = suit.getEnergyStorage().getStoredEnergy() > 0;
-                long drain = suitData.hasUpgrade(player.getUUID(), "visor") ? 1L : 2L;
+                long baseDrain = suitData.hasUpgrade(player.getUUID(), "visor") ? 1L : 2L;
+                long multiplier = switch (flashlightMode) {
+                    case 2 -> 2L;
+                    case 3 -> 4L;
+                    default -> 1L;
+                };
+                long drain = baseDrain * multiplier;
                 suit.consumeEnergy(drain);
                 if (hadEnergy && suit.getEnergyStorage().getStoredEnergy() == 0) {
-                    FlashlightStateServer.setFlashlight(player.getUUID(), false);
+                    FlashlightStateServer.setFlashlightMode(player.getUUID(), 0);
                 }
             }
         }

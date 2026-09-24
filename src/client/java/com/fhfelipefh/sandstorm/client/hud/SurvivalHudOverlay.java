@@ -108,6 +108,7 @@ public class SurvivalHudOverlay implements HudElement {
         }
 
         float maxAllowed = screenWidth - (margin * 2f);
+        int flashMode = FlashlightState.getMode();
         if (maxTextWidth > maxAllowed && maxAllowed > 0) {
             float scale = maxAllowed / (float) maxTextWidth;
             extractor.pose().pushMatrix();
@@ -115,16 +116,39 @@ public class SurvivalHudOverlay implements HudElement {
             extractor.pose().scale(scale, scale);
             extractor.text(client.font, cachedEnergyComp, 0, 0, cachedBatteryColor);
             extractor.text(client.font, cachedTempComp, 0, 11, cachedTempColor);
+            if (flashMode != FlashlightState.MODE_OFF) {
+                extractor.text(client.font, getFlashlightComponent(flashMode), 0, 22, getFlashlightColor(flashMode));
+            }
             extractor.pose().popMatrix();
         } else {
             extractor.text(client.font, cachedEnergyComp, x, y, cachedBatteryColor);
             extractor.text(client.font, cachedTempComp, x, y + 11, cachedTempColor);
-            if (FlashlightState.isActive()) {
-                Component flashComp = Component.literal("[LAMP]");
-                int flashColor = 0xFFFFEE44;
-                extractor.text(client.font, flashComp, x, y + 22, flashColor);
+            if (flashMode != FlashlightState.MODE_OFF) {
+                extractor.text(client.font, getFlashlightComponent(flashMode), x, y + 22, getFlashlightColor(flashMode));
             }
         }
+    }
+
+    public static Component getFlashlightComponent(int mode) {
+        if (mode == FlashlightState.MODE_LOW) {
+            return Component.literal("[LAMP: FRACO]");
+        } else if (mode == FlashlightState.MODE_MEDIUM) {
+            return Component.literal("[LAMP: MÉDIO]");
+        } else if (mode == FlashlightState.MODE_HIGH) {
+            return Component.literal("[LAMP: FORTE]");
+        }
+        return Component.empty();
+    }
+
+    public static int getFlashlightColor(int mode) {
+        if (mode == FlashlightState.MODE_LOW) {
+            return 0xFF00E676;
+        } else if (mode == FlashlightState.MODE_MEDIUM) {
+            return 0xFFFFD600;
+        } else if (mode == FlashlightState.MODE_HIGH) {
+            return 0xFF00E5FF;
+        }
+        return 0xFFFFEE44;
     }
 
     public static int getBatteryColor(double percent) {

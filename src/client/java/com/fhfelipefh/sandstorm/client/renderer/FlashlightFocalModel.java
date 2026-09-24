@@ -3,12 +3,35 @@ package com.fhfelipefh.sandstorm.client.renderer;
 import net.minecraft.world.phys.Vec3;
 
 public final class FlashlightFocalModel {
+    public static final int MODE_OFF = 0;
+    public static final int MODE_LOW = 1;
+    public static final int MODE_MEDIUM = 2;
+    public static final int MODE_HIGH = 3;
+
     public static final double DEFAULT_CONE_HALF_ANGLE_DEGREES = 25.0;
     public static final double DEFAULT_MAX_RANGE = 28.0;
     public static final int MIN_LIGHT_LEVEL = 0;
     public static final int MAX_LIGHT_LEVEL = 15;
 
     private FlashlightFocalModel() {}
+
+    public static double getMaxRangeForMode(int mode) {
+        return switch (mode) {
+            case MODE_LOW -> 22.0;
+            case MODE_MEDIUM -> 35.0;
+            case MODE_HIGH -> 50.0;
+            default -> DEFAULT_MAX_RANGE;
+        };
+    }
+
+    public static double getConeAngleForMode(int mode) {
+        return switch (mode) {
+            case MODE_LOW -> 22.0;
+            case MODE_MEDIUM -> 30.0;
+            case MODE_HIGH -> 38.0;
+            default -> DEFAULT_CONE_HALF_ANGLE_DEGREES;
+        };
+    }
 
     public static boolean isInsideFocalCone(Vec3 eyePos, Vec3 lookVec, Vec3 targetPos, double halfAngleDegrees, double maxRange) {
         if (eyePos == null || lookVec == null || targetPos == null) {
@@ -49,11 +72,22 @@ public final class FlashlightFocalModel {
         return eyePos.add(lookVec.normalize().scale(distance));
     }
 
-    public static float calculateFocalApertureRadius(double hitDistance, int screenWidth, int screenHeight) {
+    public static float calculateFocalApertureRadius(double hitDistance, int screenWidth, int screenHeight, int mode) {
         float minDim = Math.min(screenWidth, screenHeight);
-        double clampedDist = Math.clamp(hitDistance, 2.0, DEFAULT_MAX_RANGE);
-        double t = (clampedDist - 2.0) / (DEFAULT_MAX_RANGE - 2.0);
-        return (float) (minDim * (0.28 + t * 0.18));
+        double maxRange = getMaxRangeForMode(mode);
+        double clampedDist = Math.clamp(hitDistance, 2.0, maxRange);
+        double t = (clampedDist - 2.0) / Math.max(1.0, maxRange - 2.0);
+        float baseScale = switch (mode) {
+            case MODE_LOW -> (float) (0.24 + t * 0.14);
+            case MODE_MEDIUM -> (float) (0.32 + t * 0.20);
+            case MODE_HIGH -> (float) (0.40 + t * 0.26);
+            default -> (float) (0.28 + t * 0.18);
+        };
+        return minDim * baseScale;
+    }
+
+    public static float calculateFocalApertureRadius(double hitDistance, int screenWidth, int screenHeight) {
+        return calculateFocalApertureRadius(hitDistance, screenWidth, screenHeight, MODE_OFF);
     }
 
     public static float calculateVignetteAlpha(float distFromCenter, float apertureRadius) {
