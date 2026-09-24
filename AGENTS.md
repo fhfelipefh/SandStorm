@@ -19,6 +19,31 @@ Ao criar ou editar qualquer arquivo `.java` em `src/main/java`, `src/client/java
 1. Scripts temporários (ex: scripts Python de geração procedural de texturas, conversores descartáveis) devem ser colocados no diretório scratch do agente ou excluídos imediatamente após a geração dos arquivos finais.
 2. Não deixe pastas ou arquivos temporários não rastreados no workspace (`scratch/`, `.tmp`, etc.). Mantenha o `git status` sempre limpo.
 
+## 🎨 Protocolo de Integridade de Texturas e Assets (Minecraft 1.21.4+)
+Ao criar, renomear ou registrar qualquer novo item ou bloco no SandStorm:
+
+1. **Cadeia Completa Obrigatória de Itens**:
+   - Todo item registrado em `SandStormItems` exige rigorosamente três arquivos:
+     - `assets/sandstorm/items/<item>.json`: definição de modelo no padrão 1.21.4 (`{"model": {"type": "minecraft:model", "model": "sandstorm:item/<item>"}}`). Sem este arquivo, o item fica sem textura no livro de receitas!
+     - `assets/sandstorm/models/item/<item>.json`: modelo base apontando para a camada de textura (`layer0`).
+     - `assets/sandstorm/textures/item/<item>.png`: textura válida.
+
+2. **Cadeia Completa Obrigatória de Blocos**:
+   - Todo bloco registrado em `SandStormBlocks` exige:
+     - `assets/sandstorm/blockstates/<block>.json`: mapeamento de variantes.
+     - `assets/sandstorm/models/block/<block>.json`: modelo do bloco referenciando texturas existentes.
+     - `assets/sandstorm/items/<block>.json`: definição de renderização do item do bloco no inventário.
+     - Texturas PNG válidas em `assets/sandstorm/textures/block/`.
+
+3. **Validação de Assinatura e Integridade dos PNGs**:
+   - É terminantemente proibido criar arquivos PNG vazios (0 bytes) ou com cabeçalhos corrompidos.
+   - Todo arquivo PNG gerado processualmente deve conter a assinatura padrão `89 50 4E 47 0D 0A 1A 0A` e resolução compatível (16x16 ou 32x32).
+   - Scripts descartáveis para gerar texturas devem rodar e ser limpos imediatamente, deixando a textura final íntegra.
+
+4. **Auditoria Automatizada via Testes (`AssetIntegrityTest`)**:
+   - Qualquer novo item ou bloco deve ser coberto pelo `AssetIntegrityTest` e `JeiCompatibilityTest`.
+   - Antes de dar a tarefa como concluída, `./gradlew test` deve validar a existência física de todos os arquivos de textura e JSONs referenciados.
+
 ## 🚀 Validação Obrigatória Antes de Envio Remoto
 Antes de concluir qualquer tarefa de desenvolvimento ou efetuar `git push` ao repositório remoto:
 1. Executar `./gradlew test` e garantir que todos os testes (incluindo testes de arquitetura) passem com 100% de sucesso.
