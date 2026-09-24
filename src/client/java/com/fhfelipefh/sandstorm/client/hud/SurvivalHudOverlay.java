@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client.hud;
 
 import com.fhfelipefh.sandstorm.client.FlashlightState;
+import com.fhfelipefh.sandstorm.client.renderer.FlashlightFocalRenderer;
 import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
@@ -64,6 +65,8 @@ public class SurvivalHudOverlay implements HudElement {
             extractor.fill(0, 0, screenWidth, screenHeight, sandColor);
             renderSandGrains(extractor, client, screenWidth, screenHeight, weather.getIntensity());
         }
+
+        FlashlightFocalRenderer.render(extractor, client, screenWidth, screenHeight);
 
         boolean energyChanged = storedEnergy != lastStoredEnergy || capacity != lastCapacity;
         if (energyChanged) {

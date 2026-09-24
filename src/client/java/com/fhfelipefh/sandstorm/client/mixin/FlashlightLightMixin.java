@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = LightmapRenderStateExtractor.class, priority = 1050)
 public class FlashlightLightMixin {
 
-    private static final float FLASHLIGHT_BLOCK_FACTOR = 1.0f;
+    private static final float FLASHLIGHT_BLOCK_FACTOR = 0.45f;
 
     @Inject(method = "extract", at = @At("RETURN"))
     private void applyFlashlightLight(LightmapRenderState state, float partialTicks, CallbackInfo ci) {

@@ -1,5 +1,7 @@
 package com.fhfelipefh.sandstorm.content.gui;
 
+import com.fhfelipefh.sandstorm.content.recipe.MachineRecipe;
+import com.fhfelipefh.sandstorm.content.recipe.MachineRecipeRegistry;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -10,6 +12,8 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
 
 public class Printer3DMenu extends AbstractContainerMenu implements MachineMenu {
     private final Container container;
@@ -135,5 +139,65 @@ public class Printer3DMenu extends AbstractContainerMenu implements MachineMenu 
             slot.onTake(player, stackInSlot);
         }
         return itemStack;
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:printer_3d");
+        if (id >= 0 && id < recipes.size()) {
+            MachineRecipe recipe = recipes.get(id);
+            fillSlot(0, recipe.getSlot0Inputs());
+            fillSlot(1, recipe.getSlot1Inputs());
+            return true;
+        }
+        return super.clickMenuButton(player, id);
+    }
+
+    private void fillSlot(int targetSlotIndex, List<ItemStack> accepted) {
+        Slot targetSlot = this.slots.get(targetSlotIndex);
+        if (targetSlot.hasItem()) {
+            boolean matches = false;
+            for (ItemStack candidate : accepted) {
+                if (targetSlot.getItem().is(candidate.getItem())) {
+                    matches = true;
+                    break;
+                }
+            }
+            if (matches) {
+                return;
+            }
+            ItemStack current = targetSlot.getItem();
+            if (this.moveItemStackTo(current, 4, 40, false)) {
+                if (current.isEmpty()) {
+                    targetSlot.set(ItemStack.EMPTY);
+                } else {
+                    targetSlot.setChanged();
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+        for (int i = 4; i < 40; i++) {
+            Slot invSlot = this.slots.get(i);
+            if (invSlot.hasItem()) {
+                ItemStack invStack = invSlot.getItem();
+                for (ItemStack candidate : accepted) {
+                    if (invStack.is(candidate.getItem())) {
+                        if (!targetSlot.hasItem()) {
+                            ItemStack moved = invSlot.remove(1);
+                            targetSlot.set(moved);
+                            return;
+                        } else if (ItemStack.isSameItemSameComponents(targetSlot.getItem(), invStack)
+                                && targetSlot.getItem().getCount() < targetSlot.getItem().getMaxStackSize()) {
+                            invSlot.remove(1);
+                            targetSlot.getItem().grow(1);
+                            targetSlot.setChanged();
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

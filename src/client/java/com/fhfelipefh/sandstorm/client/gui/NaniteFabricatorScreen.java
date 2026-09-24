@@ -8,4 +8,9 @@ public class NaniteFabricatorScreen extends BaseMachineScreen<NaniteFabricatorMe
     public NaniteFabricatorScreen(NaniteFabricatorMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
     }
+
+    @Override
+    protected String getMachineId() {
+        return "sandstorm:nanite_fabricator";
+    }
 }
