@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/megastructure_constructor_front",
+    "down": "sandstorm:block/megastructure_constructor_bottom",
+    "up": "sandstorm:block/megastructure_constructor_top",
+    "north": "sandstorm:block/megastructure_constructor_front",
+    "south": "sandstorm:block/megastructure_constructor_side",
+    "west": "sandstorm:block/megastructure_constructor_side",
+    "east": "sandstorm:block/megastructure_constructor_side"
+  }
+}

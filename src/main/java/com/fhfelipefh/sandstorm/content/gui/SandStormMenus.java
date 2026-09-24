@@ -62,6 +62,11 @@ public class SandStormMenus {
             new MenuType<>(AutoAssemblyLineMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<MegastructureConstructorMenu> MEGASTRUCTURE_CONSTRUCTOR_MENU = register(
+            "megastructure_constructor",
+            new MenuType<>(MegastructureConstructorMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

@@ -198,5 +198,26 @@
     "sounds": [
       "sandstorm:desalination_process"
     ]
+  },
+  "block.megastructure_constructor.laser": {
+    "category": "blocks",
+    "subtitle": "subtitles.sandstorm.block.megastructure_constructor.laser",
+    "sounds": [
+      "sandstorm:printer_3d_craft"
+    ]
+  },
+  "block.megastructure_constructor.layer_complete": {
+    "category": "blocks",
+    "subtitle": "subtitles.sandstorm.block.megastructure_constructor.layer_complete",
+    "sounds": [
+      "sandstorm:assembly_construct"
+    ]
+  },
+  "block.megastructure_constructor.complete": {
+    "category": "blocks",
+    "subtitle": "subtitles.sandstorm.block.megastructure_constructor.complete",
+    "sounds": [
+      "sandstorm:megazord_shockwave"
+    ]
   }
 }

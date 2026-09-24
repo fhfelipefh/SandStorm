@@ -58,6 +58,9 @@ class SandStormSoundEventsTest {
         assertNotNull(SandStormSoundEvents.EXCAVATOR_ENGINE);
         assertNotNull(SandStormSoundEvents.SUIT_BATTERY_LOW);
         assertNotNull(SandStormSoundEvents.SUIT_SOLAR_CHARGE);
+        assertNotNull(SandStormSoundEvents.MEGASTRUCTURE_CONSTRUCTOR_LASER);
+        assertNotNull(SandStormSoundEvents.MEGASTRUCTURE_LAYER_COMPLETE);
+        assertNotNull(SandStormSoundEvents.MEGASTRUCTURE_COMPLETE);
     }
 
     @Test

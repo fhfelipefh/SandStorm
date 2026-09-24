@@ -414,5 +414,13 @@
   "item.sandstorm.crushing_spike_gate": "Crushing Spike Gate",
   "tooltip.sandstorm.crushing_spike_gate_desc": "Motorized heavy industrial gate dealing crushing damage when closing over entities.",
   "subtitles.sandstorm.block.wpt_relay.hum": "WPT Relay hums",
-  "subtitles.sandstorm.block.smart_fluid_pipe.flow": "Fluid flows through pipe"
+  "subtitles.sandstorm.block.smart_fluid_pipe.flow": "Fluid flows through pipe",
+  "block.sandstorm.megastructure_constructor": "Megastructure Constructor",
+  "item.sandstorm.megastructure_constructor": "Megastructure Constructor",
+  "container.sandstorm.megastructure_constructor": "Megastructure Constructor",
+  "tooltip.sandstorm.megastructure_constructor_desc": "Autonomous megastructure 3D printer deploying builder drones and additive manufacturing.",
+  "entity.sandstorm.builder_drone": "Builder Drone",
+  "subtitles.sandstorm.block.megastructure_constructor.laser": "Megastructure laser hums",
+  "subtitles.sandstorm.block.megastructure_constructor.layer_complete": "Megastructure layer completed",
+  "subtitles.sandstorm.block.megastructure_constructor.complete": "Megastructure construction complete"
 }

@@ -414,5 +414,13 @@
   "item.sandstorm.crushing_spike_gate": "Portón de Púas Aplastantes",
   "tooltip.sandstorm.crushing_spike_gate_desc": "Portón industrial motorizado que inflige daño aplastante al cerrarse sobre invasores.",
   "subtitles.sandstorm.block.wpt_relay.hum": "Repetidor WPT zumbando",
-  "subtitles.sandstorm.block.smart_fluid_pipe.flow": "Fluido fluyendo por la tubería"
+  "subtitles.sandstorm.block.smart_fluid_pipe.flow": "Fluido fluyendo por la tubería",
+  "block.sandstorm.megastructure_constructor": "Constructor de Megaestructuras",
+  "item.sandstorm.megastructure_constructor": "Constructor de Megaestructuras",
+  "container.sandstorm.megastructure_constructor": "Constructor de Megaestructuras",
+  "tooltip.sandstorm.megastructure_constructor_desc": "Impresora 3D de megaestructuras autónoma con drones constructores y manufactura aditiva.",
+  "entity.sandstorm.builder_drone": "Dron Constructor",
+  "subtitles.sandstorm.block.megastructure_constructor.laser": "Láser de megaestructura zumbando",
+  "subtitles.sandstorm.block.megastructure_constructor.layer_complete": "Capa de megaestructura completada",
+  "subtitles.sandstorm.block.megastructure_constructor.complete": "Construcción de megaestructura finalizada"
 }

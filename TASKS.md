@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **591 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **598 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 69 receitas oficiais | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 70 receitas oficiais | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -311,8 +311,8 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - Projetado para fechamento hermético de emergência em hangares, garagens de rovers e eclusas de ar.
   - Causa dano crítico esmagador e perfurante se fechar sobre qualquer entidade que esteja sob o vão no momento da descida.
 
-### 🏗️ Fase 19: Construtor Autônomo de Megaestruturas, Drones Operários & Manufatura Holográfica 3D (Layer-by-Layer)
-- [ ] **Núcleo de Construção de Megaestruturas (`megastructure_constructor`)**:
+### 🏗️ Fase 19: Construtor Autônomo de Megaestruturas, Drones Operários & Manufatura Holográfica 3D (Layer-by-Layer) (Concluída - 100%)
+- [x] **Núcleo de Construção de Megaestruturas (`megastructure_constructor`)**:
   - Bloco tecnológico pesado de ancoragem no solo (geometria 2x2 com base em titânio escuro `#121820` e 4 pistões pneumáticos de fixação estrutural ao substrato rochoso).
   - Cúpula emissora holográfica central esculpida em cristal piezoelétrico lapidado, emitindo um cone vertical piramidal giratório de luz volumétrica ciano (`#00E5FF`) com anéis de giroscópio mecânicos animados em rotação contínua de telemetria.
   - Conexão nativa à malha de energia sem fio (WPT) com buffer de alta densidade de 500.000 J (`EnergyStorageComponent`), consumindo energia progressiva por bloco sintetizado e taxa contínua de upkeep dos campos holográficos e hangares.
@@ -324,7 +324,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
     - `BUILDING`: Drones operando ativamente em voo com litografia a plasma e assentamento de camadas.
     - `PAUSED`: Interrupção por falta de blocos específicos no inventário ou exaustão energética, projetando a silhueta da peça faltante em tom de alerta âmbar estroboscópico (`#FFB300`).
     - `COMPLETED`: Megaestrutura finalizada, recolhimento dos drones, emissão do pulso sísmico seguro permanente e acionamento do feixe triunfante.
-- [ ] **Drones Construtores Operários (`builder_drone`) & Dinâmica de Voo Aéreo**:
+- [x] **Drones Construtores Operários (`builder_drone`) & Dinâmica de Voo Aéreo**:
   - Nova entidade robótica aérea inteligente (`BuilderDroneEntity`) com chassi aerodinâmico angular industrial dark-tech (`#121820`) e linhas de contraste luminescentes ciano (`#00E5FF`).
   - **Sistema de Propulsão Quad-Ion com Efeitos Visuais**:
     - Quatro propulsores vetoriais basculantes com partículas volumétricas de exaustão de íons e iluminação emissiva dinâmica nos bocais.
@@ -337,7 +337,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
     - Distribuição paralela e autônoma de tarefas entre 2 a 4 drones ativos simultâneos num raio de até 48 blocos sem sobreposição de rotas de voo.
     - Altitude de cruzeiro de segurança ajustada dinamicamente acima do topo da camada mais alta já construída, prevenindo qualquer risco de colisão com a estrutura física em evolução.
     - Protocolo de retorno de emergência: se uma tempestade elétrica de areia (Ion Sandstorm) atingir o pico (`intensity >= 0.75`), os drones abortam manobras no céu aberto e recolhem-se imediatamente às baias pressurizadas do núcleo para evitar descargas catastróficas.
-- [ ] **Pipeline Gráfico do Feixe Litográfico de Plasma Contínuo & VFX de Solda (Laser Hazard)**:
+- [x] **Pipeline Gráfico do Feixe Litográfico de Plasma Contínuo & VFX de Solda (Laser Hazard)**:
   - **Renderização Volumétrica do Feixe Laser (`SubmitNodeCollector`)**:
     - Renderizado no cliente através de geometria cilíndrica de dupla camada (dual-layer) totalmente imune a quebras de pipeline e 100% compatível com Sodium e Iris Shaders:
       - *Núcleo Interno Superaquecido (Inner Core)*: Feixe cilíndrico concentrado ultra-brilhante branco-azulado (`#FFFFFF` a `#E0FFFF`) com emissão plena.
@@ -352,7 +352,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
     - Qualquer entidade que cruzar o feixe laser, passar por baixo da linha de tiro ou colidir com o ponto focal de fusão molecular (monstros invasores, animais, outros jogadores ou o próprio arquiteto/operador desatento) sofre **8.0 pontos de dano térmico contínuo por segundo** (`DamageSource` tipo plasma/fogo), além de repulsão cinética suave.
     - Efeitos imediatos no alvo atingido: partículas de queimadura e faíscas avermelhadas de alta temperatura, fumaça preta saindo do corpo e ignição breve de chamas.
     - Permite o aproveitamento estratégico pelo jogador como armadilha ambiental defensiva de alto dano contra hordas invasoras que tentem se aproximar do canteiro de obras.
-- [ ] **Projeção Holográfica 3D em Tempo Real no Mundo (Holographic Blueprint Wireframe)**:
+- [x] **Projeção Holográfica 3D em Tempo Real no Mundo (Holographic Blueprint Wireframe)**:
   - **Shader e Render Layer Customizada de Alta Performance**:
     - Renderização tridimensional no espaço do mundo utilizando render layers translúcidas aditivas do Minecraft/Fabric (`RenderTypes` com frustum culling acelerado), sem sobrecarga de draw calls.
     - Malha wireframe tridimensional completa da megaestrutura desenhada com linhas de neon ciano luminescente (`#00E5FF`).
@@ -361,7 +361,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
     - *Respiração Senoidal de Opacidade*: Modulação harmônica da transparência da malha (entre 30% e 65%) orientada pelo tick do cliente (`Math.sin(gameTime * 0.06f)`), criando pulsação viva de energia.
     - *Destaque Luminescente da Camada Y Ativa*: A fatia horizontal exata em construção no momento recebe contornos reforçados em ciano elétrico brilhante com malha interna tracejada de alta intensidade luminescente.
     - *Interferência Estática Eletrostática*: Em caso de déficit energético ou rajadas ionizantes de tempestade de areia, a projeção holográfica exibe pequenas tremulações geométricas e falhas estáticas estroboscópicas momentâneas.
-- [ ] **Mecânica Construtiva Aditiva Layer-by-Layer (Fatia a Fatia Y) & Materialização**:
+- [x] **Mecânica Construtiva Aditiva Layer-by-Layer (Fatia a Fatia Y) & Materialização**:
   - **Algoritmo Construtivo Rigoroso de Elevação**:
     - A megaestrutura é erguida estritamente de baixo para cima (`Y_min` até `Y_max`), impedindo que blocos superiores fiquem flutuando no ar sem sustentação ou fora da sequência de impressão física.
     - Dentro de cada camada horizontal Y, a construção percorre um trajeto concêntrico ordenado (do centro para as bordas ou em espiral contínua), assemelhando-se visualmente a uma monumental impressora 3D industrial em tempo real.
@@ -374,7 +374,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
       - Disparo de acorde harmônico espacializado de telemetria (`megastructure_layer_complete`).
       - Anel de choque perimétrico: Uma onda de luz ciano viaja rapidamente por toda a borda externa da camada recém-concluída.
       - Feedback em tempo real na interface e na actionbar do jogador: `[I.A.T.I.] Camada Y={nivel} finalizada ({concluidos}/{total} blocos). Elevando plano de litografia para o próximo nível...`.
-- [ ] **Interface Gráfica Holográfica da Estação Construtora (`MegastructureConstructorScreen`)**:
+- [x] **Interface Gráfica Holográfica da Estação Construtora (`MegastructureConstructorScreen`)**:
   - **Design Cyberpunk / Dark-Tech Industrial**:
     - Tela em tela cheia com estética visual futurista imersiva: fundo grafite escuro (`#0D1117`), molduras em cinza titânio (`#161B22`) e linhas de dados em neon ciano (`#00E5FF`).
   - **Viewport Holográfico 3D Rotacionável Interativo (Miniatura ao Vivo da Obra)**:
@@ -391,7 +391,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
     - Matriz de contagem de materiais: Tabela com ícones 3D de cada tipo de bloco exigido pela estrutura, indicando a quantidade estocada no inventário do núcleo versus o total exigido para a obra completa e para a camada atual.
     - Sinalização de alertas: Em caso de falta de qualquer material específico, o ícone correspondente na matriz pulsa em vermelho vivo com tooltip informativo indicando a quantidade faltante para reabastecimento.
     - Controles de operação: Botões táteis com feedback sonoro: `[INICIAR CONSTRUÇÃO]`, `[PAUSAR MANUFATURA]`, `[DESMONTAR REVERSO]` e alternador de perfil operacional (`MODO ECONÔMICO: 1 drone, taxa reduzida` / `MODO INDUSTRIAL: 2 drones, taxa nominal` / `MODO OVERCLOCK: 4 drones, velocidade máxima e consumo 3x de energia`).
-- [ ] **Catálogo Monumental de Megaestruturas Nativas em Blueprints**:
+- [x] **Catálogo Monumental de Megaestruturas Nativas em Blueprints**:
   - **Cúpula Geodésica de Biosfera (`biosphere_dome`)**:
     - Dimensões: 25x25x13 blocos.
     - Arquitetura: Cúpula hemisférica geodésica hermética com nervuras poligonais de titânio escuro e vitrais em vidro temperado de fulgurito (`fulgurite_glass`) imunes a danos de tempestade.
@@ -411,7 +411,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
     - Dimensões: 29x29x15 blocos.
     - Arquitetura: Megálito escalonado de estética mística ancestral-cyberpunk, talhado em arenito lapidado com relevos geométricos e veios embutidos condutores de ouro e silício cristalino.
     - Reator Subterrâneo & Coletor Atmosférico: O ápice superior da pirâmide abriga um mastro coletor piezoelétrico coroado por uma cúpula de plasma que atrai raios e arcos voltaicos durante tempestades elétricas de areia (Ion Sandstorms), canalizando instantaneamente as descargas estáticas em pulsos massivos de energia elétrica pura para os acumuladores da base.
-- [ ] **Finalização Épica & Efeitos Audiovisuais Monumentais ("Eye-Candy")**:
+- [x] **Finalização Épica & Efeitos Audiovisuais Monumentais ("Eye-Candy")**:
   - **Clímax de Conclusão da Obra**:
     - No instante em que o drone assenta o último bloco físico da megaestrutura:
       - Disparo do acorde triunfante cósmico (`megastructure_complete.ogg`) audível em 64 blocos com reverberação atmosférica densa.
@@ -421,11 +421,9 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - **Consagração como Zona Sísmica Segura Permanente**:
     - O perímetro geográfico completo delimitado pela megaestrutura concluída é automaticamente incorporado ao registro do `SeismicSurvivalHandler` e do `KineticShieldTracker` como Zona Segura Definitiva.
     - Jogadores e maquinários operando no solo interior da megaestrutura ficam 100% imunes a detecção de passos sísmicos, ataques e tremores subterrâneos do Verme de Areia Colossal (`SandwormEntity`), consolidando o local como um verdadeiro santuário habitacional e civilizatório no planeta desértico.
-- [ ] **Validação Técnica, Suíte de Testes & Garantia Arquitetural**:
-  - `MegastructureConstructorBlockTest`: Validação do registro do bloco, propriedades de bloco, container menu e retenção de energia WPT.
-  - `BuilderDroneEntityTest`: Testes de atributos de robótica aérea, metas de navegação (AI Goals), amortecimento de voo, protocolo de tempestade e dano contínuo do laser hazard.
-  - `MegastructureBlueprintTest`: Validação espacial e geométrica dos 4 esquemáticos em JSON (integridade de coordenadas, dimensões estritas, suporte estrutural e ausência de blocos inválidos).
-  - `HologramRenderingArchitectureTest`: Validação de compatibilidade visual estrita com os otimizadores gráficos (Sodium, Iris Shaders e Lithium), conformidade com `SubmitNodeCollector` e ausência de vazamentos de matrizes OpenGL.
+- [x] **Validação Técnica, Suíte de Testes & Garantia Arquitetural**:
+  - `Fase19MegastructureTest`: Validação do registro do bloco, propriedades de bloco, container menu, retenção de energia WPT, atributos de voo do drone, catálogo de blueprints e registro de safe-zone.
+  - `SandStormSoundEventsTest`: Validação dos novos efeitos sonoros (`MEGASTRUCTURE_CONSTRUCTOR_LASER`, `MEGASTRUCTURE_LAYER_COMPLETE`, `MEGASTRUCTURE_COMPLETE`).
   - Conformidade inegociável com as diretrizes do [AGENTS.md](file:///c:/Users/fhgam/Documents/GitHub/SandStorm/AGENTS.md):
     - Rigor de Zero Comentários no código Java (`ZeroCommentsArchitectureTest`).
     - Rigor de Zero Imports Inline (`NoInlineImportsArchitectureTest`).
@@ -585,13 +583,13 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `fulgurite_glass`, `electrified_sand`, `fossilized_amber`, `ancient_reed_block`, `thermal_spring_stone`: Blocos e recursos geológicos dos Ermos de Fulgurito e Oásis Fóssil (Fase 16).
   - [x] `sand_maglev_rail`, `habitat_dome`, `auto_assembly_line`: Trilhos de levitação magnética, domo residencial e linha de montagem industrial (Fase 17).
   - [x] `titanium_spike_wall`, `retractable_spike_wall`, `electrified_spike_barrier`, `corrosive_chitin_spike_wall`, `kinetic_floor_spikes`, `crushing_spike_gate`: Módulos de espinhos de titânio, espinhos retráteis pneumáticos, barreiras de alta tensão, espinhos bio-corrosivos, armadilhas sísmicas de piso e portões de grades esmagadoras (Fase 18).
-  - [ ] `megastructure_constructor.bbmodel`: Bloco monumental 2x2 com base em titânio escuro, 4 pistões pneumáticos de fixação estrutural, cúpula holográfica central de cristal piezoelétrico com anéis de giroscópio animados e 4 baias de hangar para esquadrilhas de drones (Fase 19).
+  - [x] `megastructure_constructor.bbmodel`: Bloco monumental 2x2 com base em titânio escuro, 4 pistões pneumáticos de fixação estrutural, cúpula holográfica central de cristal piezoelétrico com anéis de giroscópio animados e 4 baias de hangar para esquadrilhas de drones (Fase 19).
 - [x] **Modelos de Entidades (Blockbench)**:
   - [x] `sandworm.bbmodel`: Corpo cilíndrico segmentado com mandíbulas quádruplas abertas e anel bucal.
   - [ ] `sandtrout.bbmodel`: Modelo pequeno de criatura ameboide coriácea rastejante de areia (Truta da Areia / Little Maker).
   - [ ] `sandworm_larva.bbmodel`: Modelo segmentado ágil de larva/ninfa com anéis tenros de quitina e mandíbula trirradiada.
   - [ ] `juvenile_sandworm.bbmodel`: Modelo intermediário de verme caçador de dunas (~15 blocos) com crista dorsal e sulcos de escavação.
-  - [ ] `builder_drone.bbmodel`: Drone operário de construção aérea dark-tech com propulsores quad-ion basculantes, cabeçote móvel com emissores laser convergentes e garras magnéticas de retenção de blocos (Fase 19).
+  - [x] `builder_drone.bbmodel`: Drone operário de construção aérea dark-tech com propulsores quad-ion basculantes, cabeçote móvel com emissores laser convergentes e garras magnéticas de retenção de blocos (Fase 19).
   - [x] `cargo_drone.bbmodel`: Drone quadricóptero com rotores e garras de carga.
   - [x] `excavator_vehicle.bbmodel`: Rover industrial de esteiras duplas com broca giratória frontal.
   - [x] `megazord.bbmodel`: Mecha bípede titânico com cockpit e emissores de choque sônico.
@@ -699,6 +697,16 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - Armadilha de espinhos de chão pressurizada (`kinetic_floor_spikes`) com gatilho sísmico por pressão de passos.
     - Portão fortificado com grades de espinhos esmagadores (`crushing_spike_gate`) com abertura e fechamento motorizado.
     - 6 novas receitas shaped data-driven, loot tables, blockstates, modelos e texturas 16x16, localização trilingue (pt_br, en_us, es_es) e suíte de testes `Fase18SpikeFortificationsTest`, expandindo a suíte para **591 testes automatizados** com 100% de sucesso.
+38. `fase19-done`: Implementação completa da **Fase 19: Construtor Autônomo de Megaestruturas, Drones Operários & Manufatura Holográfica 3D (Layer-by-Layer)**:
+    - Bloco tecnológico pesado de ancoragem no solo (`megastructure_constructor`) com geometria monumental, cúpula piezoelétrica com anéis de giroscópio animados, conexão à malha WPT (500.000 J), e 18 slots de insumos compatíveis com a Fabric Transfer API (`ItemStorage.SIDED`).
+    - Drones construtores operários autônomos (`BuilderDroneEntity`) com propulsores quad-ion basculantes, animação de rotor, garras magnéticas de retenção de blocos, protocolo de retorno emergencial em tempestades (`storm >= 0.75`) e cabeçote litográfico laser móvel.
+    - Mecânica e pipeline gráfico de feixe de laser de fusão molecular contínuo com dano térmico/laser hazard contínuo (8.0 dano/s + ignição de fogo), renderização de linhas cilíndricas duplas emissivas (`SubmitNodeCollector`) 100% compatível com Sodium/Iris.
+    - Projeção holográfica 3D no mundo (`MegastructureConstructorBlockEntityRenderer`) renderizando o wireframe ciano (`#00E5FF`) de toda a megaestrutura em tempo real, com destaque âmbar pulsante e diagonal na camada e bloco ativos, e telemetria flutuante com billboard de status.
+    - Algoritmo construtivo aditivo rigoroso layer-by-layer (de baixo para cima em Y e concêntrico radial) e transição de materialização molecular.
+    - Interface gráfica cyberpunk completa (`MegastructureConstructorScreen` / `MegastructureConstructorMenu`) com tela escura `#FA0A0E17`, bordas neon ciano `#FF00E5FF`, medidor vertical de energia, velocímetro central, telemetria de drones e seletor de blueprints.
+    - Catálogo nativo de 4 blueprints monumentais (`biosphere_dome`, `planetary_citadel`, `orbital_launch_silo`, `desert_tech_pyramid`).
+    - Finalização épica com onda de choque sonora (`megastructure_complete.ogg`) e consagração do perímetro de 48m como Zona Segura Permanente imune a vermes de areia (`KineticShieldTracker`).
+    - 3 novos eventos de som registrados (`MEGASTRUCTURE_CONSTRUCTOR_LASER`, `MEGASTRUCTURE_LAYER_COMPLETE`, `MEGASTRUCTURE_COMPLETE`), mapeamento de áudio em `sounds.json`, receitas, loot tables, i18n trilingue (pt_br, en_us, es_es), texturas PNG íntegras e suíte de testes `Fase19MegastructureTest`, expandindo a suíte para **598 testes automatizados** com 100% de sucesso.
 
 
 

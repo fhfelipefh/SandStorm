@@ -89,11 +89,25 @@ public class SandStormEntities {
                     .build(SANDBOARD_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> BUILDER_DRONE_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("builder_drone")
+    );
+
+    public static final EntityType<BuilderDroneEntity> BUILDER_DRONE = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("builder_drone"),
+            EntityType.Builder.of(BuilderDroneEntity::new, MobCategory.MISC)
+                    .sized(1.0f, 0.6f)
+                    .build(BUILDER_DRONE_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(EXCAVATOR_VEHICLE, ExcavatorVehicleEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(MEGAZORD, MegazordEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SANDBOARD, SandboardEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(BUILDER_DRONE, BuilderDroneEntity.createAttributes());
     }
 }

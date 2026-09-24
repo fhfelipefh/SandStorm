@@ -414,5 +414,13 @@
   "item.sandstorm.crushing_spike_gate": "Portão de Espinhos Esmagadores",
   "tooltip.sandstorm.crushing_spike_gate_desc": "Portão industrial motorizado que causa dano esmagador ao fechar sobre invasores.",
   "subtitles.sandstorm.block.wpt_relay.hum": "Repetidor WPT zumbindo",
-  "subtitles.sandstorm.block.smart_fluid_pipe.flow": "Fluido fluindo pelo cano"
+  "subtitles.sandstorm.block.smart_fluid_pipe.flow": "Fluido fluindo pelo cano",
+  "block.sandstorm.megastructure_constructor": "Construtor de Megaestruturas",
+  "item.sandstorm.megastructure_constructor": "Construtor de Megaestruturas",
+  "container.sandstorm.megastructure_constructor": "Construtor de Megaestruturas",
+  "tooltip.sandstorm.megastructure_constructor_desc": "Impressora 3D de megaestruturas autônoma com drones construtores e manufatura aditiva.",
+  "entity.sandstorm.builder_drone": "Drone Construtor",
+  "subtitles.sandstorm.block.megastructure_constructor.laser": "Laser de megaestrutura zumbindo",
+  "subtitles.sandstorm.block.megastructure_constructor.layer_complete": "Camada de megaestrutura concluída",
+  "subtitles.sandstorm.block.megastructure_constructor.complete": "Construção de megaestrutura finalizada"
 }

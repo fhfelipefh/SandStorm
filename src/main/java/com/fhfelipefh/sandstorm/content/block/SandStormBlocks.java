@@ -8,6 +8,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEnti
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
@@ -364,6 +365,13 @@ public class SandStormBlocks {
                     .strength(4.0f, 8.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .noOcclusion()));
+    public static final MegastructureConstructorBlock MEGASTRUCTURE_CONSTRUCTOR = register("megastructure_constructor",
+            new MegastructureConstructorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("megastructure_constructor")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(5.0f, 10.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -445,6 +453,11 @@ public class SandStormBlocks {
             SandStormMod.id("auto_assembly_line"),
             new BlockEntityType<>(AutoAssemblyLineBlockEntity::new, Set.of(AUTO_ASSEMBLY_LINE))
     );
+    public static final BlockEntityType<MegastructureConstructorBlockEntity> MEGASTRUCTURE_CONSTRUCTOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("megastructure_constructor"),
+            new BlockEntityType<>(MegastructureConstructorBlockEntity::new, Set.of(MEGASTRUCTURE_CONSTRUCTOR))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -475,5 +488,6 @@ public class SandStormBlocks {
         FluidStorage.SIDED.registerForBlockEntity(DeepCoreDrillBlockEntity::getFluidStorage, DEEP_CORE_DRILL_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, KINETIC_SHIELD_GENERATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, AUTO_ASSEMBLY_LINE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, MEGASTRUCTURE_CONSTRUCTOR_BE);
     }
 }

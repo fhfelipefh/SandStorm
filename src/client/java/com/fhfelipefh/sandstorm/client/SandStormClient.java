@@ -8,6 +8,7 @@ import com.fhfelipefh.sandstorm.client.gui.DeepCoreDrillScreen;
 import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
 import com.fhfelipefh.sandstorm.client.gui.GridMonitorConsoleScreen;
 import com.fhfelipefh.sandstorm.client.gui.HydroponicChamberScreen;
+import com.fhfelipefh.sandstorm.client.gui.MegastructureConstructorScreen;
 import com.fhfelipefh.sandstorm.client.gui.NaniteFabricatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.Printer3DScreen;
 import com.fhfelipefh.sandstorm.client.gui.SolidStateAccumulatorScreen;
@@ -15,8 +16,10 @@ import com.fhfelipefh.sandstorm.client.gui.ThermalGeneratorScreen;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
+import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DesalinationFilterBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.HydroponicChamberBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.MegastructureConstructorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.NaniteFabricatorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.Printer3DBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandwormRenderer;
@@ -62,11 +65,13 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.GRID_MONITOR_CONSOLE_MENU, GridMonitorConsoleScreen::new);
         MenuScreens.register(SandStormMenus.DEEP_CORE_DRILL_MENU, DeepCoreDrillScreen::new);
         MenuScreens.register(SandStormMenus.AUTO_ASSEMBLY_LINE_MENU, AutoAssemblyLineScreen::new);
+        MenuScreens.register(SandStormMenus.MEGASTRUCTURE_CONSTRUCTOR_MENU, MegastructureConstructorScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.DESALINATION_FILTER_BE, DesalinationFilterBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.HYDROPONIC_CHAMBER_BE, HydroponicChamberBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR_BE, MegastructureConstructorBlockEntityRenderer::new);
 
         ArmorRenderer.register(new SpaceSuitArmorRenderer(),
                 SandStormItems.SPACE_SUIT_HELMET,
@@ -80,6 +85,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.EXCAVATOR_VEHICLE, NoopRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.MEGAZORD, NoopRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDBOARD, NoopRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.BUILDER_DRONE, BuilderDroneEntityRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

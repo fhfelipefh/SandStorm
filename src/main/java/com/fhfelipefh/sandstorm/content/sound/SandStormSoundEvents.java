@@ -35,6 +35,9 @@ public class SandStormSoundEvents {
     public static final SoundEvent WEATHER_SANDSTORM_WIND_MEDIUM = register("weather.sandstorm.wind.medium");
     public static final SoundEvent WEATHER_SANDSTORM_WIND_HEAVY = register("weather.sandstorm.wind.heavy");
     public static final SoundEvent WEATHER_SANDSTORM_WIND_HOWL = register("weather.sandstorm.wind.howl");
+    public static final SoundEvent MEGASTRUCTURE_CONSTRUCTOR_LASER = register("block.megastructure_constructor.laser");
+    public static final SoundEvent MEGASTRUCTURE_LAYER_COMPLETE = register("block.megastructure_constructor.layer_complete");
+    public static final SoundEvent MEGASTRUCTURE_COMPLETE = register("block.megastructure_constructor.complete");
 
     private static SoundEvent register(String path) {
         Identifier id = SandStormMod.id(path);
