@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **533 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **571 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 53 receitas oficiais | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 62 receitas oficiais | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -580,6 +580,11 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - Console Holográfico de Monitoramento (`grid_monitor_console` / `GridMonitorConsoleScreen`) com telemetria ao vivo de geração solar, térmica, torres, acumuladores, energia estocada e diagnóstico de estabilidade da grade energética.
     - Acumulador de Estado Sólido Industrial (`solid_state_accumulator` / `SolidStateAccumulatorScreen`) com capacidade de 500.000 J, modos AUTO, CHARGE e DISCHARGE (raio WPT de 48 blocos).
     - 4 novas receitas shaped data-driven, loot tables, modelos 3D com rotação isométrica para GUI e expansão da suíte para **533 testes automatizados** com 100% de aprovação.
+30. `970b6f8`: Adição de assets de biomas, sons e texturas (vidro de fulgurito, âmbar fossilizado, juncos ancestrais, areia eletrizada).
+31. `a0aa5f7`: Progressão de ferramentas de silício e manufatura aditiva no Capítulo 1: `tool_base`, `electric_component`, `silicon_pickaxe`, autorização no `TechnologyToolRestrictionHandler`, balanceamento do livro de receitas e expansão da suíte para **571 testes automatizados** (0 falhas).
+32. `af25991`: Adição do Protocolo de Integridade de Texturas e Assets para Minecraft 1.21.4+ no `AGENTS.md`.
+33. `490302e`: Resolução do crash crítico de renderização de linhas (`RenderTypes.LINES`) com `.setLineWidth(1.0f)` em `Printer3DBlockEntityRenderer`, `NaniteFabricatorBlockEntityRenderer` e `DesalinationFilterBlockEntityRenderer`.
+34. `b2164a6`: Melhorias de ergonomia da interface (tooltip de slot de bateria, título de container `container.sandstorm.printer_3d` e notas detalhadas de uso da impressora 3D em português, inglês e espanhol).
 
 
 
