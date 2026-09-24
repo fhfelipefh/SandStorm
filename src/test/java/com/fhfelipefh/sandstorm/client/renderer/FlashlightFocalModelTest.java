@@ -1,4 +1,4 @@
-package com.fhfelipefh.sandstorm.content.survival;
+package com.fhfelipefh.sandstorm.client.renderer;
 
 import net.minecraft.world.phys.Vec3;
 import org.junit.jupiter.api.Test;

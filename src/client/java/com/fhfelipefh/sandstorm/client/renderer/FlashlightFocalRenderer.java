@@ -1,7 +1,6 @@
 package com.fhfelipefh.sandstorm.client.renderer;
 
 import com.fhfelipefh.sandstorm.client.FlashlightState;
-import com.fhfelipefh.sandstorm.content.survival.FlashlightFocalModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +21,7 @@ public final class FlashlightFocalRenderer {
 
         double hitDist = FlashlightFocalModel.DEFAULT_MAX_RANGE;
         HitResult hit = player.pick(FlashlightFocalModel.DEFAULT_MAX_RANGE, 1.0f, false);
-        if (hit.getType() != HitResult.Type.MISS) {
+        if (hit != null && hit.getType() != HitResult.Type.MISS) {
             hitDist = hit.getLocation().distanceTo(player.getEyePosition());
         }
 
@@ -74,10 +73,18 @@ public final class FlashlightFocalRenderer {
             int inY1 = Math.max(0, cy - stepInt);
             int inY2 = Math.min(screenHeight, cy + stepInt);
 
-            extractor.fill(x1, y1, inX1, y2, color);
-            extractor.fill(inX2, y1, x2, y2, color);
-            extractor.fill(inX1, y1, inX2, inY1, color);
-            extractor.fill(inX1, inY2, inX2, y2, color);
+            if (x1 < inX1) {
+                extractor.fill(x1, y1, inX1, y2, color);
+            }
+            if (inX2 < x2) {
+                extractor.fill(inX2, y1, x2, y2, color);
+            }
+            if (inX1 < inX2 && y1 < inY1) {
+                extractor.fill(inX1, y1, inX2, inY1, color);
+            }
+            if (inX1 < inX2 && inY2 < y2) {
+                extractor.fill(inX1, inY2, inX2, y2, color);
+            }
         }
 
         int ringColor = 0x3000E5FF;
