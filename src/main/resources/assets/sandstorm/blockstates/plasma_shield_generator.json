@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "active=false,facing=north": { "model": "sandstorm:block/plasma_shield_generator" },
+    "active=false,facing=south": { "model": "sandstorm:block/plasma_shield_generator", "y": 180 },
+    "active=false,facing=west": { "model": "sandstorm:block/plasma_shield_generator", "y": 270 },
+    "active=false,facing=east": { "model": "sandstorm:block/plasma_shield_generator", "y": 90 },
+    "active=true,facing=north": { "model": "sandstorm:block/plasma_shield_generator_active" },
+    "active=true,facing=south": { "model": "sandstorm:block/plasma_shield_generator_active", "y": 180 },
+    "active=true,facing=west": { "model": "sandstorm:block/plasma_shield_generator_active", "y": 270 },
+    "active=true,facing=east": { "model": "sandstorm:block/plasma_shield_generator_active", "y": 90 }
+  }
+}

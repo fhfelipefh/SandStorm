@@ -122,6 +122,9 @@ public class SandStormItems {
     public static final Item NEURAL_SYNAPSE_LINK = register("neural_synapse_link", new Item(properties("neural_synapse_link").rarity(Rarity.EPIC).stacksTo(1)));
     public static final Item ORBITAL_RECON_PROBE = register("orbital_recon_probe", new Item(properties("orbital_recon_probe").rarity(Rarity.RARE).stacksTo(16)));
     public static final Item QUANTUM_MIND_MATRIX = register("quantum_mind_matrix", new Item(properties("quantum_mind_matrix").rarity(Rarity.EPIC)));
+    public static final Item KINETIC_SLUG = register("kinetic_slug", new Item(properties("kinetic_slug").rarity(Rarity.UNCOMMON).stacksTo(64)));
+    public static final Item SUPERCONDUCTOR_TOROID = register("superconductor_toroid", new Item(properties("superconductor_toroid").rarity(Rarity.RARE).stacksTo(16)));
+    public static final Item PLASMA_FOCUS_CRYSTAL = register("plasma_focus_crystal", new Item(properties("plasma_focus_crystal").rarity(Rarity.EPIC).stacksTo(16)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -273,6 +276,12 @@ public class SandStormItems {
                         entries.accept(ORBITAL_RECON_PROBE);
                         entries.accept(SandStormBlocks.QUANTUM_SLEEPER_POD);
                         entries.accept(QUANTUM_MIND_MATRIX);
+                        entries.accept(SandStormBlocks.PLASMA_SHIELD_GENERATOR);
+                        entries.accept(SandStormBlocks.KINETIC_RAILGUN);
+                        entries.accept(SandStormBlocks.ACOUSTIC_DEFENSE_PYLON);
+                        entries.accept(KINETIC_SLUG);
+                        entries.accept(SUPERCONDUCTOR_TOROID);
+                        entries.accept(PLASMA_FOCUS_CRYSTAL);
                     })
                     .build()
     );

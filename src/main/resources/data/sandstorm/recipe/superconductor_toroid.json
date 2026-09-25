@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " E ",
+    "EPE",
+    " E "
+  ],
+  "key": {
+    "E": "sandstorm:electric_component",
+    "P": "sandstorm:piezo_resonator"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:superconductor_toroid"
+  }
+}

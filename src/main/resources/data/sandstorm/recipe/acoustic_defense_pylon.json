@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " P ",
+    "SRS",
+    "SMS"
+  ],
+  "key": {
+    "P": "sandstorm:piezo_resonator",
+    "S": "sandstorm:structural_plate",
+    "R": "sandstorm:electric_component",
+    "M": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:acoustic_defense_pylon"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " T ",
+    " T ",
+    " S "
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "S": "sandstorm:structural_plate"
+  },
+  "result": {
+    "count": 4,
+    "id": "sandstorm:kinetic_slug"
+  }
+}

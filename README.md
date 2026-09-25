@@ -25,6 +25,9 @@ No entanto, há um revés: os sistemas da nave acusam falha crítica nos motores
 
 | Máquina / Instalação | Textura Nativa do Jogo | Função e Arquitetura no Jogo | Comando de Spawn In-Game |
 |:---:|:---:|---|---|
+| **Gerador de Escudo de Plasma**<br>*(Plasma Shield Generator)* | <img src="src/main/resources/assets/sandstorm/textures/block/plasma_shield_generator_front_active.png" width="64" height="64" alt="Plasma Shield Generator" /> | Gerador planetário de 1.000.000 J conectado à malha WPT. Projeta domo de contenção com repulsão dinâmica de vermes de areia colossais, desintegração de projéteis e choque cinético em ameaças. | `/sandstorm debug setup plasma_defense_complex` |
+| **Canhão Cinético Anti-Titã**<br>*(Kinetic Railgun)* | <img src="src/main/resources/assets/sandstorm/textures/block/kinetic_railgun_front_lit.png" width="64" height="64" alt="Kinetic Railgun" /><br><img src="src/main/resources/assets/sandstorm/textures/item/kinetic_slug.png" width="48" height="48" alt="Kinetic Slug" /> | Artilharia pesada ferroviária de 250.000 J. Varredura automática em 64m priorizando Sandworms, disparando projéteis hipercinéticos com 50.0 de dano e repulsão vetorial. | `/sandstorm debug setup plasma_defense_complex` |
+| **Pilão de Defesa Acústica**<br>*(Acoustic Defense Pylon)* | <img src="src/main/resources/assets/sandstorm/textures/block/acoustic_defense_pylon_side_active.png" width="64" height="64" alt="Acoustic Defense Pylon" /> | Torre perimétrica de cancelamento de ressonância sísmica em 32m de raio, suprimindo o acúmulo de passos e mineração que atrai predadores do subsolo. | `/sandstorm debug setup plasma_defense_complex` |
 | **Cápsula de Estase Quântica**<br>*(Quantum Sleeper Pod)* | <img src="src/main/resources/assets/sandstorm/textures/block/quantum_sleeper_pod_front_active.png" width="64" height="64" alt="Quantum Sleeper Pod Ativo" /><br><img src="src/main/resources/assets/sandstorm/textures/block/quantum_sleeper_pod_front_occupied.png" width="64" height="64" alt="Quantum Sleeper Pod Ocupado" /> | Câmara criogênica de 100.000 J conectada à malha WPT sem fio. Realiza a bio-síntese do corpo do clone consumindo nutrientes da Fase 21 e permite o **Ego-Casting** (transferência instantânea da mente com isolamento total de inventário e respawn por proximidade). | `/sandstorm debug setup clone_facility` |
 | **Torre Holo-Tática & Radar 3D**<br>*(Holo-Tactical Spire)* | <img src="src/main/resources/assets/sandstorm/textures/block/holo_tactical_spire_side.png" width="64" height="64" alt="Holo-Tactical Spire" /><br><img src="src/main/resources/assets/sandstorm/textures/item/neural_synapse_link.png" width="48" height="48" alt="Neural Synapse Link" /> | Pilar de comando militar com cúpula holográfica. Conecta-se à mente de ciborgues autônomos via `neural_synapse_link`, transmitindo ordens macro-estratégicas e rastreando vibrações sísmicas em um raio de 48 blocos. | `/sandstorm debug setup cyborg_outpost` |
 | **Incubadora Criogênica de Ciborgues**<br>*(Cyborg Incubator Vat)* | <img src="src/main/resources/assets/sandstorm/textures/block/cyborg_incubator_vat_front_active.png" width="64" height="64" alt="Cyborg Incubator" /> | Tanque biônico com fluido eletrolítico de titânio para montagem e impressão celular de ciborgues especialistas (mineradores, construtores e coletores de biomassa). | `/sandstorm debug setup cyborg_outpost` |
@@ -246,6 +249,42 @@ graph TD;
 ```
 </details>
 
+<details>
+<summary><b>9. Fluxo de Grade de Defesa Planetária de Plasma, Canhão Cinético Anti-Titã & Grade Acústica (Fase 30)</b></summary>
+
+```mermaid
+graph TD;
+    subgraph "Capacitação Energética & Detecção"
+        WPT["Malha de Energia WPT (1.000.000 J)"] --> GEN["Gerador de Escudo de Plasma (plasma_shield_generator)"]
+        GEN --> TOROID["Bobina Toroidal Supercondutora (superconductor_toroid)"]
+        GEN --> CRYSTAL["Cristal Piezoelétrico de Foco de Plasma (plasma_focus_crystal)"]
+        TRACKER["Rastreador de Defesa Planetária (KineticShieldTracker)"] --> GEN
+    end
+
+    subgraph "Escudo Dinâmico de Plasma (Raio 48m)"
+        GEN -->|Cúpula de Plasma Ionizado| DOME["Domo Protetor Ciano"]
+        PROJ["Flechas, Projéteis e Fogo Hostil"] -->|Impacto na Borda| DIS["Desintegração Instantânea de Projéteis"]
+        MOBS["Monstros & Invasores Hostis"] -->|Tentativa de Travessia| REP["Repulsão por Choque de Plasma (4.0 Dano)"]
+        WORMS["Vermes de Areia Colossais"] -->|Colisão com o Domo| DEFLECT["Deflexão Sísmica & Ricochete"]
+    end
+
+    subgraph "Canhão Cinético Anti-Titã (Railgun)"
+        WPT --> RAIL["Canhão Ferroviário Hipersônico (kinetic_railgun)"]
+        SLUG["Munição Pesada de Liga Titânio-Quitina (kinetic_slug)"] --> RAIL
+        SCAN["Varredura Automática de Ameaças em 64m"] --> RAIL
+        RAIL -->|Disparo de Alta Velocidade| SHOT["Projétil Hipercinético (50.0 Dano + Impulso Vetorial)"]
+        SHOT --> TARGET["Alvos Prioritários: Sandworms > Monstros Hostis"]
+    end
+
+    subgraph "Grade Acústica Perimétrica"
+        WPT --> PYLON["Pilão de Defesa Acústica (acoustic_defense_pylon)"]
+        PYLON --> DAMP["Amortecimento de Ressonância Sísmica em 32m"]
+        DAMP --> NOISE["Cancelamento de Vibrações de Passos, Mineração e Motores"]
+        NOISE --> WORM_SAFE["Invisibilidade Acústica Total contra Predadores do Subsolo"]
+    end
+```
+</details>
+
 ---
 
 ## 📦 Itens, Blocos e Entidades do Mod
@@ -277,6 +316,9 @@ graph TD;
 | **Bloco**    | `cyborg_docking_station`| Doca de Recarga de Ciborgues | Ponto de ancoragem rápida e telemetria |
 | **Bloco**    | `holo_tactical_spire`  | Torre Holo-Tática | Radar 3D holográfico e ordens para o enxame |
 | **Bloco**    | `quantum_sleeper_pod`  | Cápsula de Estase Quântica | Clonagem do jogador, Ego-Casting e respawn |
+| **Bloco**    | `plasma_shield_generator`| Gerador de Escudo de Plasma | Domo planetário de 1.000.000 J anti-projéteis e anti-titã |
+| **Bloco**    | `kinetic_railgun`      | Canhão Cinético Anti-Titã | Artilharia ferroviária de alta energia contra vermes |
+| **Bloco**    | `acoustic_defense_pylon`| Pilão de Defesa Acústica | Cancelamento perimétrico de vibrações sísmicas |
 | **Item**     | `raw_silicon`          | Silício Bruto | Mineral extraído da areia desértica |
 | **Item**     | `silicon_wafer`        | Wafer de Silício | Pastilha para eletrônica avançada |
 | **Item**     | `mineral_salt`         | Sal Mineral | Subproduto mineral purificado |
@@ -288,6 +330,9 @@ graph TD;
 | **Item**     | `sonic_cannon`         | Canhão Sônico de Pulso | Emissor de ondas acústicas de choque |
 | **Item**     | `atmospheric_analyzer` | Analisador Atmosférico | Leitor diagnóstico de microclima e cúpula local |
 | **Item**     | `quantum_mind_matrix`  | Matriz de Consciência | Interface de acoplamento neural para clonagem |
+| **Item**     | `kinetic_slug`         | Projétil Cinético Hiperdenso | Munição perfurante pesada para Railgun |
+| **Item**     | `superconductor_toroid`| Toroide Supercondutor | Bobina de contenção magnética de plasma |
+| **Item**     | `plasma_focus_crystal` | Cristal de Foco de Plasma | Foco piezoelétrico de alta frequência |
 | **Entidade** | `sandworm`             | Verme de Areia | Predador apex (300 HP, 18 dano) |
 | **Entidade** | `cargo_drone`          | Drone de Carga Aérea | Transporte aéreo com ruído sísmico zero |
 | **Entidade** | `builder_drone`        | Drone Construtor | Montagem litográfica a laser de megaestruturas |
@@ -305,6 +350,7 @@ Para criadores de conteúdo, desenvolvedores e administradores, o mod inclui com
 
 | Instalação / Complexo | Comando In-Game | Estrutura Gerada |
 |---|---|---|
+| **Complexo de Defesa de Plasma** | `/sandstorm debug setup plasma_defense_complex` | Cúpula de escudo de plasma, canhão cinético municiado com slugs e pilões acústicos anti-verme |
 | **Complexo de Clonagem Quântica** | `/sandstorm debug setup clone_facility` | Duas Cápsulas de Estase (`quantum_sleeper_pod`) conectadas, telemetria e insumos para teste imediato de Ego-Casting |
 | **Canteiro de Megaestrutura** | `/sandstorm debug setup megastructure_site` | Construtor de Megaestruturas ancorado com blueprints e baús de insumos |
 | **Posto Avançado de Ciborgues** | `/sandstorm debug setup cyborg_outpost` | Docas de ancoragem, incubadora criogênica, telemetria e ciborgues operantes |
@@ -317,7 +363,7 @@ Para criadores de conteúdo, desenvolvedores e administradores, o mod inclui com
 | **Fortaleza de Espinhos** | `/sandstorm debug setup spike_fortress` | Perímetro com paredes de titânio, espinhos eletrizados e portões motorizados |
 | **Base Inicial de Sobrevivência** | `/sandstorm debug setup starter_base` | Posto balanceado com filtro de dessalinização, água e energia solar |
 
-> **Kits de Inventário por Fase:** Obtenha os equipamentos e blocos de qualquer fase com `/sandstorm debug phase <1..29>` (ou `/sandstorm debug phase all` para o kit mestre completo).
+> **Kits de Inventário por Fase:** Obtenha os equipamentos e blocos de qualquer fase com `/sandstorm debug phase <1..30>` (ou `/sandstorm debug phase all` para o kit mestre completo).
 
 ---
 

@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.block.entity.AcousticDefensePylonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutoAssemblyLineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEntity;
@@ -12,10 +13,12 @@ import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEnti
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.KineticRailgunBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MolecularModifierBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
@@ -464,6 +467,30 @@ public class SandStormBlocks {
                     .sound(SoundType.NETHERITE_BLOCK)
                     .lightLevel(state -> state.getValue(QuantumSleeperPodBlock.ACTIVE) ? 8 : 0)
                     .noOcclusion()));
+    public static final PlasmaShieldGeneratorBlock PLASMA_SHIELD_GENERATOR = register("plasma_shield_generator",
+            new PlasmaShieldGeneratorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("plasma_shield_generator")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(5.0f, 12.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .lightLevel(state -> state.getValue(PlasmaShieldGeneratorBlock.ACTIVE) ? 14 : 0)
+                    .noOcclusion()));
+    public static final KineticRailgunBlock KINETIC_RAILGUN = register("kinetic_railgun",
+            new KineticRailgunBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("kinetic_railgun")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(6.0f, 15.0f)
+                    .sound(SoundType.HEAVY_CORE)
+                    .lightLevel(state -> state.getValue(KineticRailgunBlock.LIT) ? 10 : 0)
+                    .noOcclusion()));
+    public static final AcousticDefensePylonBlock ACOUSTIC_DEFENSE_PYLON = register("acoustic_defense_pylon",
+            new AcousticDefensePylonBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("acoustic_defense_pylon")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(4.0f, 8.0f)
+                    .sound(SoundType.COPPER)
+                    .lightLevel(state -> state.getValue(AcousticDefensePylonBlock.ACTIVE) ? 8 : 0)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -585,6 +612,21 @@ public class SandStormBlocks {
             SandStormMod.id("quantum_sleeper_pod"),
             new BlockEntityType<>(QuantumSleeperPodBlockEntity::new, Set.of(QUANTUM_SLEEPER_POD))
     );
+    public static final BlockEntityType<PlasmaShieldGeneratorBlockEntity> PLASMA_SHIELD_GENERATOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("plasma_shield_generator"),
+            new BlockEntityType<>(PlasmaShieldGeneratorBlockEntity::new, Set.of(PLASMA_SHIELD_GENERATOR))
+    );
+    public static final BlockEntityType<KineticRailgunBlockEntity> KINETIC_RAILGUN_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("kinetic_railgun"),
+            new BlockEntityType<>(KineticRailgunBlockEntity::new, Set.of(KINETIC_RAILGUN))
+    );
+    public static final BlockEntityType<AcousticDefensePylonBlockEntity> ACOUSTIC_DEFENSE_PYLON_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("acoustic_defense_pylon"),
+            new BlockEntityType<>(AcousticDefensePylonBlockEntity::new, Set.of(ACOUSTIC_DEFENSE_PYLON))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -624,5 +666,6 @@ public class SandStormBlocks {
         FluidStorage.SIDED.registerForBlockEntity(CyborgIncubatorVatBlockEntity::getFluidStorage, CYBORG_INCUBATOR_VAT_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, HOLO_TACTICAL_SPIRE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, QUANTUM_SLEEPER_POD_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, KINETIC_RAILGUN_BE);
     }
 }

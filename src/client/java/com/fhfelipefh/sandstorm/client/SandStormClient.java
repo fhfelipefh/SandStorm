@@ -14,9 +14,11 @@ import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
 import com.fhfelipefh.sandstorm.client.gui.GridMonitorConsoleScreen;
 import com.fhfelipefh.sandstorm.client.gui.HoloTacticalSpireScreen;
 import com.fhfelipefh.sandstorm.client.gui.HydroponicChamberScreen;
+import com.fhfelipefh.sandstorm.client.gui.KineticRailgunScreen;
 import com.fhfelipefh.sandstorm.client.gui.MegastructureConstructorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MolecularModifierScreen;
 import com.fhfelipefh.sandstorm.client.gui.NaniteFabricatorScreen;
+import com.fhfelipefh.sandstorm.client.gui.PlasmaShieldScreen;
 import com.fhfelipefh.sandstorm.client.gui.Printer3DScreen;
 import com.fhfelipefh.sandstorm.client.gui.QuantumSleeperScreen;
 import com.fhfelipefh.sandstorm.client.gui.SolidStateAccumulatorScreen;
@@ -86,6 +88,8 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.CYBORG_DOCKING_STATION_MENU, CyborgDockingStationScreen::new);
         MenuScreens.register(SandStormMenus.HOLO_TACTICAL_SPIRE_MENU, HoloTacticalSpireScreen::new);
         MenuScreens.register(SandStormMenus.QUANTUM_SLEEPER_MENU, QuantumSleeperScreen::new);
+        MenuScreens.register(SandStormMenus.PLASMA_SHIELD_MENU, PlasmaShieldScreen::new);
+        MenuScreens.register(SandStormMenus.KINETIC_RAILGUN_MENU, KineticRailgunScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

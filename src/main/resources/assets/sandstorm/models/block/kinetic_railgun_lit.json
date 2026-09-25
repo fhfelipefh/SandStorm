@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/kinetic_railgun_front_lit",
+    "north": "sandstorm:block/kinetic_railgun_front_lit",
+    "south": "sandstorm:block/kinetic_railgun_side",
+    "east": "sandstorm:block/kinetic_railgun_side",
+    "west": "sandstorm:block/kinetic_railgun_side",
+    "up": "sandstorm:block/kinetic_railgun_top",
+    "down": "sandstorm:block/kinetic_railgun_bottom"
+  }
+}

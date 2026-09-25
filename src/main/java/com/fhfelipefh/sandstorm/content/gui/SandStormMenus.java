@@ -107,6 +107,16 @@ public class SandStormMenus {
             new MenuType<>(QuantumSleeperMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<PlasmaShieldMenu> PLASMA_SHIELD_MENU = register(
+            "plasma_shield_generator",
+            new MenuType<>(PlasmaShieldMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<KineticRailgunMenu> KINETIC_RAILGUN_MENU = register(
+            "kinetic_railgun",
+            new MenuType<>(KineticRailgunMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

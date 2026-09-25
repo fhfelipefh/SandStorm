@@ -1,8 +1,14 @@
 package com.fhfelipefh.sandstorm.content.command;
 
+import com.fhfelipefh.sandstorm.content.block.AcousticDefensePylonBlock;
 import com.fhfelipefh.sandstorm.content.block.HoloTacticalSpireBlock;
+import com.fhfelipefh.sandstorm.content.block.KineticRailgunBlock;
+import com.fhfelipefh.sandstorm.content.block.PlasmaShieldGeneratorBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.entity.AcousticDefensePylonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.KineticRailgunBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
@@ -52,7 +58,7 @@ public class SandstormDebugCommand {
     private static final List<String> PHASES = List.of(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
             "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-            "21", "22", "23", "24", "25", "26", "27", "28", "29", "all"
+            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "all"
     );
 
     private static final List<String> SPAWNABLES = List.of(
@@ -83,7 +89,8 @@ public class SandstormDebugCommand {
             "maglev_station",
             "starter_base",
             "ancient_ruin_site",
-            "clone_facility"
+            "clone_facility",
+            "plasma_defense_complex"
     );
 
     public static void initialize() {
@@ -573,6 +580,17 @@ public class SandstormDebugCommand {
             giveItem(player, SandStormItems.POTABLE_WATER_BOTTLE, 8);
         }
 
+        if (isAll || "30".equals(normalized)) {
+            giveItem(player, SandStormBlocks.PLASMA_SHIELD_GENERATOR, 1);
+            giveItem(player, SandStormBlocks.KINETIC_RAILGUN, 2);
+            giveItem(player, SandStormBlocks.ACOUSTIC_DEFENSE_PYLON, 4);
+            giveItem(player, SandStormItems.KINETIC_SLUG, 64);
+            giveItem(player, SandStormItems.SUPERCONDUCTOR_TOROID, 4);
+            giveItem(player, SandStormItems.PLASMA_FOCUS_CRYSTAL, 4);
+            giveItem(player, SandStormBlocks.SOLID_STATE_ACCUMULATOR, 2);
+            giveItem(player, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2, 2);
+        }
+
         player.containerMenu.broadcastChanges();
         player.inventoryMenu.broadcastChanges();
 
@@ -1023,6 +1041,63 @@ public class SandstormDebugCommand {
                 source.sendSuccess(() -> Component.literal("§a[SandStorm] Complexo Biocibernético de Clonagem Quântica montado com sucesso! (Casulos Alpha e Beta vinculados)"), true);
                 return 1;
             }
+            case "plasma_defense_complex" -> {
+                for (int dx = -4; dx <= 4; dx++) {
+                    for (int dz = -4; dz <= 4; dz++) {
+                        level.setBlock(center.offset(dx, 0, dz), Blocks.POLISHED_DEEPSLATE.defaultBlockState(), 3);
+                        for (int dy = 1; dy <= 4; dy++) {
+                            level.setBlock(center.offset(dx, dy, dz), Blocks.AIR.defaultBlockState(), 3);
+                        }
+                    }
+                }
+                BlockPos shieldPos = center.offset(0, 1, 0);
+                level.setBlock(shieldPos, SandStormBlocks.PLASMA_SHIELD_GENERATOR.defaultBlockState().setValue(PlasmaShieldGeneratorBlock.ACTIVE, true), 3);
+                if (level.getBlockEntity(shieldPos) instanceof PlasmaShieldGeneratorBlockEntity shieldBe) {
+                    shieldBe.setStoredEnergy(500000);
+                    shieldBe.setShieldActive(true);
+                    shieldBe.setFieldRadius(48);
+                }
+
+                BlockPos railgunPos1 = center.offset(3, 1, 0);
+                BlockPos railgunPos2 = center.offset(-3, 1, 0);
+                level.setBlock(railgunPos1, SandStormBlocks.KINETIC_RAILGUN.defaultBlockState().setValue(KineticRailgunBlock.LIT, true), 3);
+                level.setBlock(railgunPos2, SandStormBlocks.KINETIC_RAILGUN.defaultBlockState().setValue(KineticRailgunBlock.LIT, true), 3);
+                if (level.getBlockEntity(railgunPos1) instanceof KineticRailgunBlockEntity rgBe1) {
+                    rgBe1.setStoredEnergy(100000);
+                    rgBe1.setItem(0, new ItemStack(SandStormItems.KINETIC_SLUG, 32));
+                }
+                if (level.getBlockEntity(railgunPos2) instanceof KineticRailgunBlockEntity rgBe2) {
+                    rgBe2.setStoredEnergy(100000);
+                    rgBe2.setItem(0, new ItemStack(SandStormItems.KINETIC_SLUG, 32));
+                }
+
+                BlockPos pylon1 = center.offset(3, 1, 3);
+                BlockPos pylon2 = center.offset(-3, 1, 3);
+                BlockPos pylon3 = center.offset(3, 1, -3);
+                BlockPos pylon4 = center.offset(-3, 1, -3);
+                level.setBlock(pylon1, SandStormBlocks.ACOUSTIC_DEFENSE_PYLON.defaultBlockState().setValue(AcousticDefensePylonBlock.ACTIVE, true), 3);
+                level.setBlock(pylon2, SandStormBlocks.ACOUSTIC_DEFENSE_PYLON.defaultBlockState().setValue(AcousticDefensePylonBlock.ACTIVE, true), 3);
+                level.setBlock(pylon3, SandStormBlocks.ACOUSTIC_DEFENSE_PYLON.defaultBlockState().setValue(AcousticDefensePylonBlock.ACTIVE, true), 3);
+                level.setBlock(pylon4, SandStormBlocks.ACOUSTIC_DEFENSE_PYLON.defaultBlockState().setValue(AcousticDefensePylonBlock.ACTIVE, true), 3);
+                if (level.getBlockEntity(pylon1) instanceof AcousticDefensePylonBlockEntity pylBe1) {
+                    pylBe1.setStoredEnergy(50000);
+                }
+                if (level.getBlockEntity(pylon2) instanceof AcousticDefensePylonBlockEntity pylBe2) {
+                    pylBe2.setStoredEnergy(50000);
+                }
+                if (level.getBlockEntity(pylon3) instanceof AcousticDefensePylonBlockEntity pylBe3) {
+                    pylBe3.setStoredEnergy(50000);
+                }
+                if (level.getBlockEntity(pylon4) instanceof AcousticDefensePylonBlockEntity pylBe4) {
+                    pylBe4.setStoredEnergy(50000);
+                }
+
+                level.setBlock(center.offset(0, 1, 3), SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+                level.setBlock(center.offset(0, 1, -3), SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState(), 3);
+
+                source.sendSuccess(() -> Component.literal("§a[SandStorm] Complexo Planetário de Defesa de Plasma montado com sucesso! (Escudo 48m, 2 Railguns com Slugs, 4 Pilones Acústicos e Energia WPT)"), true);
+                return 1;
+            }
             default -> {
                 source.sendFailure(Component.literal("§c[SandStorm] Instalação desconhecida. Opções: " + String.join(", ", FACILITIES)));
                 return 0;
@@ -1144,7 +1219,7 @@ public class SandstormDebugCommand {
     private static int executeList(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
         source.sendSuccess(() -> Component.literal("§6=== SandStorm Debug Suite ==="), false);
-        source.sendSuccess(() -> Component.literal("§b/sandstorm debug phase <1..28|all>§r: Kits de teste de todas as 28 fases"), false);
+        source.sendSuccess(() -> Component.literal("§b/sandstorm debug phase <1..30|all>§r: Kits de teste de todas as 30 fases"), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug spawn|robot <entidade>§r: " + String.join(", ", SPAWNABLES)), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug setup|structure <instalação>§r: " + String.join(", ", FACILITIES)), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug suit refill|drain§r: Controle de energia/temperatura do traje"), false);

@@ -1419,3 +1419,24 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
       - `/sandstorm debug setup clone_facility`: Geração automatizada de complexo laboratorial com duas cápsulas operacionais interligadas (Pod Alpha e Pod Beta) para teste imediato de ego-casting.
     - **Validação Automatizada de Testes**:
       - Suíte de testes dedicada `Fase29QuantumCloningTest` e ampliação de `SandstormDebugTest`, elevando o total do repositório para **892 testes automatizados** com 100% de aprovação e zero comentários.
+56. `fase30-done`: Implementação completa da **Fase 30: Domo de Escudo de Plasma Planetário, Canhão Cinético Anti-Titã & Grade Acústica Perimétrica (Planetary Plasma Defense Grid & Anti-Titan Kinetic Railgun)**:
+    - **Gerador de Escudo de Plasma Planetário (`plasma_shield_generator` / `PlasmaShieldGeneratorBlockEntity` / `PlasmaShieldGeneratorBlock`)**:
+      - Buffer de 1.000.000 J WPT, upkeep de 100 J/tick e deflexão de projéteis e repulsão dinâmica de monstros e vermes de areia colossais num raio configurável de até 48 blocos.
+      - Sincronização em tempo real com `KineticShieldTracker` e interface `PlasmaShieldScreen` com telemetria de ameaças repelidas e medidor de energia.
+    - **Canhão Cinético Anti-Titã / Railgun Ferroviário (`kinetic_railgun` / `KineticRailgunBlockEntity` / `KineticRailgunBlock`)**:
+      - Buffer de 250.000 J WPT, compartimento de munição interna de 9 slots (`WorldlyContainer` / Transfer API) para projéteis `kinetic_slug`.
+      - Sistema de mira automática em 64 blocos com prioridade absoluta para Sandworms e ameaças hostis, causando 50.0 de dano com hipervelocidade cinética e repulsão vetorial.
+    - **Pilão de Defesa Acústica Perimétrica (`acoustic_defense_pylon` / `AcousticDefensePylonBlockEntity` / `AcousticDefensePylonBlock`)**:
+      - 50.000 J buffer, 10 J/tick de consumo e raio de 32 blocos de amortecimento sísmico total.
+      - Integração com `AcousticDefenseTracker` e `SeismicSurvivalHandler`, anulando acúmulo de vibrações que atraem vermes colossais.
+    - **Itens e Componentes**:
+      - `kinetic_slug` (Projétil hiperdenso de liga titânio-quitina), `superconductor_toroid` (Bobina toroidal supercondutora de plasma), `plasma_focus_crystal` (Cristal piezelétrico de foco de plasma).
+    - **Cadeia Completa de Assets 1.21.4 & Data-Driven Recipes**:
+      - 3 blockstates, 6 modelos de bloco (ativos e inativos), 6 modelos de item, 6 definições em `assets/sandstorm/items/` e 17 texturas PNG geradas com headers válidos.
+      - 6 receitas em `data/sandstorm/recipe/` e 3 tabelas de saque de bloco.
+      - Paridade linguística (`en_us`, `pt_br`, `es_es`).
+    - **Suíte de Debug & Teste**:
+      - `/sandstorm debug phase 30`: Kit completo com todas as defesas de plasma, munições, toroides e cristais.
+      - `/sandstorm debug setup plasma_defense_complex`: Criação imediata do complexo fortificado de defesa com gerador de plasma, railgun carregado e pilões perimétricos.
+    - **Validação de Testes**:
+      - Suíte `Fase30PlasmaDefenseTest` e `SandstormDebugTest`, elevando o mod para **916 testes automatizados** com 100% de sucesso, conformidade de arquitetura e zero comentários.
