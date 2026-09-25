@@ -755,6 +755,153 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [ ] Efeitos sonoros customizados: zumbido de plasma harmônico (`aegis_shield_hum.ogg`), impacto no escudo (`aegis_shield_impact.ogg`) e disparo cinético do canhão (`railcannon_fire.ogg`).
   - [ ] Suíte de testes dedicada `Fase29PlanetaryAegisTest`.
 
+### 🌋 Fase 30: Mineração Geotérmica Profunda, Poço do Manto Planetário & Extratores Magmáticos de Lítio-Plasma (Deep Core Geothermal Well, Mantle Borehole & Litho-Plasma Siphon)
+*A conquista do subsolo profundo: perfuração em escala abissal através da rocha consolidada até as camadas do manto planetário, extração de fluidos térmicos supercríticos e condensação de lítio-plasma para gerar energia quase infinita e ligas superdensas.*
+
+- [ ] **Broca de Perfuração do Manto Planetário (`deep_core_borehole`)**:
+  - [ ] Maquinário monumental 3x3x3 instalado na rocha basal (Y <= 0) ancorado por pistões de amortecimento sísmico em titânio e cerâmica.
+  - [ ] Cabeçote de perfuração articulado com dentes de diamante policristalino e carbeto de tungstênio (`geothermal_core_drill_bit`), estendendo colunas de tubulação até a rocha-mãe (Bedrock, Y = -64).
+  - [ ] Capacitância interna WPT de 500.000 J (consumo de 250 J/tick durante avanço de perfuração) e conexão de dutos de fluidos inteligentes (`FluidStorage.SIDED`).
+  - [ ] **Efeitos Visuais e Físicos de Perfuração em Tempo Real**:
+    - [ ] Vibração contínua do maquinário com feixes de faíscas incandescentes e colunas verticais de vapor superaquecido subindo através das canaletas de ventilação.
+    - [ ] Sismologia ativa: operar a broca em potência máxima aumenta temporariamente a probabilidade de alertas sísmicos de vermes ancestrais nas imediações geológicas.
+- [ ] **Extrator Magmático de Lítio-Plasma (`litho_plasma_extractor`)**:
+  - [ ] Centrífuga térmica hermética de alta pressão em compósito de tungstênio para enriquecimento de fluidos de manto.
+  - [ ] Separação submersa de plasma silicatado e condensação do sal de lítio isotópico em cápsulas criogênicas seladas (`superheated_lithium_capsule`).
+  - [ ] Rendimento térmico extremo: gera vapor geotérmico de alta entalpia e subprodutos minerais raros (fósforo fóssil, cristais piezoelétricos e traços de metais pesados).
+- [ ] **Trocador de Calor Supercrítico (`supercritical_heat_exchanger`)**:
+  - [ ] Bloco industrial 2x2x2 com feixe de tubos de circulação e matriz de dissipação térmica com aletas cerâmicas (`thermal_radiator_fin`).
+  - [ ] Converte água potável fria injetada em vapor supercrítico de alta rotação, acionando geradores térmicos que injetam até **10.000 J/tick** diretamente na malha de energia sem fio WPT da base.
+- [ ] **Superligas do Manto & Componentes Geotérmicos**:
+  - [ ] Lingote de Superliga do Manto (`mantle_alloy_ingot`): forjado sob pressões gigapascal e temperaturas extremas, entregando dureza 5x superior ao titânio convencional.
+  - [ ] Cápsula Criogênica de Lítio Superaquecido (`superheated_lithium_capsule`): fluido isotópico de alta densidade energética para reatores planetários e propelentes iônicos avançados.
+  - [ ] Aleta Cerâmica de Dissipação Térmica (`thermal_radiator_fin`): radiador ablativo de alta condutividade térmica.
+  - [ ] Broca de Diamante Policristalino do Manto (`geothermal_core_drill_bit`): ponta intercambiável de extrema resistência abrasiva.
+- [ ] **Interface Gráfica de Monitoramento Geotérmico (`DeepCoreBoreholeScreen` / `DeepCoreBoreholeMenu`)**:
+  - [ ] Painel industrial dark-tech com osciloscópio de pressão sísmica subterrânea, gráfico em tempo real de profundidade do cabeçote (Y: 0 a -64), manômetro de pressão (Bar / GPa) e termostato digital em Kelvin (300 K a 1800 K).
+  - [ ] Válvula tátil de descompressão emergencial para purga de vapor abrasivo e alarme acústico de sobrepressão.
+- [ ] **Cadeia Completa de Assets 1.21.4, Modelos 3D, SFX & Testes**:
+  - [ ] Modelos BBModel detalhados da broca monumental com pistões animados, extrator centrífugo e trocador de calor com aletas.
+  - [ ] Efeitos sonoros customizados: perfuração profunda rotativa contínua (`deep_borehole_drill.ogg`), centrifugação centrípeta (`litho_extractor_spin.ogg`) e escape de vapor superaquecido (`steam_purge.ogg`).
+  - [ ] Suíte de testes dedicada `Fase30GeothermalWellTest`.
+
+### 🛰️ Fase 31: Rede Orbital de Satélites, Telescópio Espacial de Varredura & Lançador de Cargas Eletromagnético (Orbital Mass Driver, Satellite Constellation & Spectral Survey Telescope)
+*Rompendo a barreira atmosférica: catapulta eletromagnética linear para lançamento de satélites em órbita baixa e geoestacionária, estação terrena de telemetria e rede de sensoriamento remoto para controle absoluto do planeta a partir do espaço.*
+
+- [ ] **Catapulta Eletromagnética de Massa ("Orbital Mass Driver" - `orbital_mass_driver`)**:
+  - [ ] Rampa vertical monumental de aceleração linear com trilhos magnéticos de bobinas Gauss duplas de 12 blocos de altura.
+  - [ ] Capacitor de descarga de pulso de alta capacitância: armazena **500.000 J** para efetuar cada disparo orbital hipersônico.
+  - [ ] **Mecânica Cinemática de Lançamento Espacial**:
+    - [ ] A carga útil (satélite) é inserida no berço da catapulta. Ao acionar o botão de lançamento, uma contagem regressiva sonora de 5 segundos é disparada.
+    - [ ] Disparo: O satélite é acelerado verticalmente a Mach 15 com arco voltaico ofuscante, estampido sônico estrondoso e coluna de condensação iônica que perfura as nuvens do céu do deserto.
+- [ ] **Estação Terrena de Comunicação Orbital (`orbital_ground_station`)**:
+  - [ ] Console de telecomunicações espaciais com antena parabólica rastreadora motorizada de 3 metros montada no teto.
+  - [ ] Sincronização contínua com a malha da Torre Holo-Tática (`HoloTacticalSpire`), transmitindo telemetria orbital em tempo real para o enxame de ciborgues e para o Datapad do jogador.
+  - [ ] Registro e controle de constelação de até 16 satélites ativos em órbita simultânea.
+- [ ] **Telescópio Espacial de Varredura Espectral (`spectral_survey_telescope`)**:
+  - [ ] Cúpula de observatório astronômico pressurizada com espelho primário de berílio polido e matriz CCD infravermelha criogênica.
+  - [ ] Varredura do céu profundo: identifica órbitas de detritos espaciais, trajetórias de meteoritos e anomalias gravitacionais exoplanetárias.
+- [ ] **Constelação de Satélites Orbitais (Cargas Úteis Modulares)**:
+  - [ ] **Satélite de Sensoriamento Meteorológico Global (`weather_recon_satellite`)**:
+    - [ ] Mapeia frentes de vento térmico na alta atmosfera, prevendo tempestades de areia iônicas com 10 minutos de antecedência e exibindo o vetor de aproximação no radar holográfico.
+  - [ ] **Satélite de Espelho Solar Orbital ("Orbital Solar Reflector" - `orbital_solar_reflector_satellite`)**:
+    - [ ] Espelho de filme de mylar aluminizado ultrafino de 50 metros em órbita geoestacionária.
+    - [ ] Foca feixes de luz solar contínua sobre a base mesmo durante a noite polar do deserto ou sob nuvens de poeira, mantendo a geração solar WPT a 100% 24 horas por dia.
+  - [ ] **Satélite de Radar de Abertura Sintética ("SAR Geological Satellite" - `sar_geological_satellite`)**:
+    - [ ] Emite micro-ondas de penetração de solo: revela jazidas profundas de quartzo piezoelétrico, aquíferos subterrâneos e câmaras de ruínas soterradas em raio de 512 blocos.
+  - [ ] **Satélite de Bombardeio Cinético ("Orbital Kinetic Lance" - `orbital_kinetic_lance_satellite`)**:
+    - [ ] Satélite de armamento pesado armado com projéteis densos de tungstênio.
+    - [ ] Permite ao operador marcar um alvo na superfície com o Datapad ou com a Torre Holo-Tática para invocar um ataque orbital hipersônico ("Vara de Deus"), desferindo dano catastrófico contra vermes de areia colossais.
+- [ ] **Interface Gráfica Orbital Interativa (`OrbitalGroundStationScreen` / `OrbitalGroundStationMenu`)**:
+  - [ ] Globo tridimensional holográfico em tempo real do planeta desértico girando no centro da tela com trajetórias orbitais elípticas coloridas por satélite.
+  - [ ] Lista lateral de satélites ativos com telemetria (altitude, período orbital, telemetria de sinal e integridade da bateria solar).
+  - [ ] Painel de comandos orbitais: calibração de mira, foco de espelho solar e histórico de tempestades monitoradas.
+- [ ] **Cadeia Completa de Assets 1.21.4, Modelos 3D, SFX & Testes**:
+  - [ ] Modelos BBModel detalhados para a rampa Gauss do Mass Driver, antena parabólica motorizada e chassi orbital com painéis solares dobráveis.
+  - [ ] Efeitos sonoros customizados: pulso eletromagnético hipersônico de lançamento (`mass_driver_launch.ogg`), rastreamento mecânico de antena parabólica (`ground_station_track.ogg`) e disparo cinético orbital vindo do céu (`orbital_lance_strike.ogg`).
+  - [ ] Suíte de testes dedicada `Fase31OrbitalSatellitesTest`.
+
+### 🌧️ Fase 32: Atmosfera Artificial, Condensação de Nuvens em Escala Continental & O Primeiro Dilúvio (Planetary Atmospheric Genesis, Cloud Seeding & The Great Rain)
+*O clímax ecológico do planeta deserto: alteração em grande escala da composição gasosa troposférica, semeadura de núcleos de condensação de chuva e a chegada histórica da primeira chuva, transformando areia estéril em solo vivo e rios de água doce.*
+
+- [ ] **Reator de Gênese Atmosférica Megalítico (`atmospheric_genesis_reactor`)**:
+  - [ ] Complexo industrial de craqueamento catalítico de gases atmosféricos de 4x4x6 blocos de altura com chaminé ionizante de plasma.
+  - [ ] Consumo de energia WPT massivo (250.000 J por ciclo de saturação de aerossóis) e conexão à malha de fluidos potáveis e biopolímeros.
+  - [ ] Rompimento da inversão térmica desértica: dissocia óxidos estéreis e injeta vapor d'água ionizado e ozônio na média troposfera.
+- [ ] **Obuseiro Balístico de Semeadura de Nuvens (`cloud_seeding_howitzer`)**:
+  - [ ] Canhão de artilharia atmosférica montado em pedestal giratório reforçado com mira angular vertical (45° a 90°).
+  - [ ] Dispara cápsulas balísticas de semeadura higroscópica (`cloud_seeding_shell`) diretamente no coração das frentes térmicas identificadas pelos satélites meteorológicos.
+  - [ ] Dispersão em altitude: Cada cápsula detonada na altitude Y=192 a 256 libera uma nuvem de micropartículas que aglutinam a umidade dispersa em núcleos de condensação de chuva.
+- [ ] **Condensador Troposférico de Umidade Estática (`tropospheric_condenser`)**:
+  - [ ] Torre de condensação estática com redes hidrofílicas tecidas em biopolímeros flexíveis e refrigeradas por hemolinfa criogênica.
+  - [ ] Captação massiva de água aérea durante a precipitação, alimentando automaticamente cisternas e reservatórios subterrâneos da base (`rainwater_collection_cistern`).
+- [ ] **O Grande Cataclismo Ecológico: O Primeiro Dilúvio ("The First Rain")**:
+  - [ ] **Transição Visual e Atmosférica Espetacular**:
+    - [ ] Ao atingir o índice crítico de saturação troposférica (100%), o céu do planeta escurece gradualmente, substituindo a poeira alaranjada por nuvens cinzentas volumétricas densas.
+    - [ ] Trovões distantes ecoam pelas dunas com estrondo e reverberação ressonante (`first_rain_thunder.ogg`).
+    - [ ] As primeiras gotas pesadas de chuva caem sobre a areia incandescente, gerando micro-névoas e colunas de vapor térmico ascendente.
+    - [ ] A chuva torrencial cai de forma generalizada sobre o setor por 30 minutos contínuos (`first_rain_downpour.ogg`), extinguindo o efeito de calor extremo de 48°C e estabilizando a temperatura ambiente em amenos 22°C.
+  - [ ] **Biorremediação e Transformação Territorial Permanente**:
+    - [ ] A areia desértica exposta à chuva torrencial em um raio de 128 blocos do reator é hidratada e enriquecida, convertendo-se em solo fértil e terra vegetal (`xeno_grass_block` e `farmland`).
+    - [ ] Depressões topográficas de areia e crateras de antigas ruínas enchem-se com poças e lagos perenes de água doce pura e potável.
+    - [ ] Florescimento biológico espontâneo: brotamento de juncos ancestrais, acácias xerófilas e flores extremófilas nativas sem necessidade de plantio manual.
+- [ ] **Munições & Compostos Químicos**:
+  - [ ] Projétil Balístico de Semeadura de Nuvens (`cloud_seeding_shell`): cartucho propelente estocado com iodeto de prata sintético, glicerol osmoprotetor e pó de quartzo piezoelétrico.
+  - [ ] Núcleo Catalisador Atmosférico de Platina-Titânio (`atmospheric_catalyst_core`): elemento filtrante de cerâmica sinterizada para reatores de gases.
+  - [ ] Cisterna de Coleta Pluvial de Alta Capacidade (`rainwater_collection_cistern`): tanque selado de 32.000 mB de água limpa com drenagem automática.
+- [ ] **Interface Gráfica de Gênese Climática (`AtmosphericGenesisScreen` / `AtmosphericGenesisMenu`)**:
+  - [ ] Monitor de composição gasosa em tempo real (% de O2, CO2, umidade relativa do ar e densidade barométrica).
+  - [ ] Radar de saturação troposférica com contagem regressiva para formação da frente de chuva e seletor de vetor de disparo do obuseiro.
+- [ ] **Cadeia Completa de Assets 1.21.4, Modelos 3D, SFX & Testes**:
+  - [ ] Modelos BBModel detalhados para o reator de gênese com chaminé de plasma, obuseiro de semeadura e torre condensadora.
+  - [ ] Efeitos sonoros customizados: trovão ressonante do dilúvio (`first_rain_thunder.ogg`), tempestade de chuva torrencial (`first_rain_downpour.ogg`) e disparo sibilante do obuseiro (`cloud_howitzer_fire.ogg`).
+  - [ ] Suíte de testes dedicada `Fase32AtmosphericGenesisTest`.
+
+### 🚀 Fase 33: Elevador Espacial Planetário, Farol Quântico Subespacial & Transmissão Interestelar de Resgate (Planetary Space Elevator, Deep Space Beacon & The Final Odyssey)
+*A apoteose final da sobrevivência e da engenharia cósmica: construção de uma âncora colossal de elevador espacial ligada por nanotubos de carbono à órbita geoestacionária, ativação do farol quântico de táquions e estabelecimento de contato definitivo com a Federação Interestelar.*
+
+- [ ] **Âncora de Base do Elevador Espacial ("Space Elevator Base Anchor" - `space_elevator_base_anchor`)**:
+  - [ ] Estrutura monumental 4x4x4 de ancoragem ultra-pesada cravada no leito de rocha sólida com 8 sapatas hidráulicas de titânio e superligas do manto.
+  - [ ] Sistema de tensão ativa magnética mantendo o cabo de nanotubos de carbono esticado sob tensão de múltiplos gigapascals rumo ao zênite cósmico.
+  - [ ] Buffer de energia colossal de **2.000.000 J WPT** alimentado pela rede integrada da base (reatores solares, geotérmicos e acumuladores de estado sólido).
+- [ ] **Vagão Suborbital Maglev Vertical ("Orbital Climber Car" - `orbital_climber_car`)**:
+  - [ ] Cápsula pressurizada de transporte vertical que percorre o cabo de nanotubos em levitação magnética linear.
+  - [ ] Permite ao operador embarcar para uma subida contínua e triunfante através de todas as camadas atmosféricas (troposfera -> estratosfera -> mesosfera -> termosfera -> órbita negra estrelada em Y=500+).
+  - [ ] Interior com assento ergonômico, visor panorâmico de vidro de fulgurito temperado e display HUD de altitude, velocidade (m/s) e aceleração G.
+- [ ] **Farol Quântico de Comunicação Subespacial (`quantum_subspace_beacon`)**:
+  - [ ] Dispositivo topo de linha acoplado à plataforma superior do elevador espacial ou ao topo da torre de transmissão.
+  - [ ] Emissor de ondas gravitacionais moduladas e feixe helicoidal de táquions superluminais capazes de propagar sinal através de hiperespaço sem defasagem relativística de tempo.
+- [ ] **Materiais Exóticos & Engenharia Quântica**:
+  - [ ] Bobina Trançada de Nanotubos de Carbono-Grafeno (`graphene_nanotube_tether`): fio de espessura nanométrica e resistência mecânica sem precedentes, capaz de sustentar o peso do elevador orbital.
+  - [ ] Matriz de Qubits Entrelaçados ("Entangled Qubit Array" - `quantum_entangled_qbit_array`): processador quântico de criptografia e transmissão subespacial instantânea.
+  - [ ] Cronômetro Estelar Sincronizado (`stellar_chronometer`): relógio atômico de navegação cósmica para alinhamento de vetores de salto em dobra.
+- [ ] **O Grande Clímax: A Transmissão Interestelar & A Conquista Planetária**:
+  - [ ] **Sequência Cinemática de Ativação do Farol**:
+    - [ ] Ao energizar o Farol Quântico com 100% de carga WPT e inserir a Matriz Qbit:
+    - [ ] Um feixe helicoidal ofuscante duplo de luz ciano luminescente e âmbar dourado irrompe verticalmente em direção ao céu, perfurando nuvens e atmosfera até o infinito sideral (`BeaconBeam` estendido).
+    - [ ] Disparo de um acorde sinfônico triunfante espacializado audível em todo o mundo (`quantum_beacon_transmit.ogg`).
+    - [ ] O anel de choque perimétrico dissipa qualquer tempestade de areia residual e estabiliza a ionosfera do planeta.
+  - [ ] **Mensagem de Resgate da Frota Estelar**:
+    - [ ] Transmissão holográfica no HUD do operador e na tela do Datapad:
+      ```text
+      ================================================================
+      [TRANSMISSÃO SUBESPACIAL RECEBIDA - PROTOCOLO SEC-ALPHA]
+      ORIGEM: NAU-CAPITÂNIA CIENTÍFICA "AURORA IX" - FEDERAÇÃO ESTELAR
+      COORDENADAS CONFIRMADAS: SETOR DESÉRTICO PLANETÁRIO OMEGA-7
+      SITUAÇÃO: SINAL DE EMERGÊNCIA IDENTIFICADO A 4.2 ANOS-LUZ.
+      VETOR DE SALTO EM DOBRA HIPERESPACIAL CALCULADO COM SUCESSO.
+      TEMPO ESTIMADO DE CHEGADA: 48 HORAS PADRÃO.
+      MENSAGEM: PARABÉNS, OPERADOR. VOCÊ SOBREVIVEU AO CATACLISMO,
+      DOMINOU A ECOLOGIA, DOMOU OS TITÃS E CONQUISTOU ESTE PLANETA.
+      STATUS DA MISSÃO: TRIUNFO ABSOLUTO.
+      ================================================================
+      ```
+    - [ ] Concessão da Conquista Máxima do SandStorm: **"Soberano do Deserto" ("Desert Sovereign")**.
+- [ ] **Cadeia Completa de Assets 1.21.4, Modelos 3D, SFX & Testes**:
+  - [ ] Modelos BBModel detalhados para a âncora monumental do elevador, vagão climber e farol quântico com anéis giroscópicos.
+  - [ ] Efeitos sonoros customizados: zumbido maglev de subida vertiginosa (`elevator_ascend.ogg`), acionamento de telemetria quântica (`quantum_beacon_transmit.ogg`) e acorde triunfante de conclusão estelar (`space_rescue_fanfare.ogg`).
+  - [ ] Suíte de testes dedicada `Fase33SpaceElevatorTest`.
+
 ---
 
 ## 🎧 Catálogo Completo de Efeitos Sonoros Necessários (SFX)
@@ -809,6 +956,19 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 | `entity.cyborg.voice_ack` | `cyborg_voice_ack.ogg` | `neutral` | 0.6s | Resposta vocal sintética em frequência filtrada. Beep melódico eletrônico confirmando recebimento de diretriz do jogador. |
 | `item.command_uplink.ping` | `command_uplink_ping.ogg` | `players` | 0.4s | Sinal sonoro de alta tecnologia emitido pelo uplink holográfico ao traçar vértices de bounding boxes no mundo. |
 | `block.cyborg_dock.clamp` | `cyborg_dock_clamp.ogg` | `blocks` | 0.9s | Travamento pneumático de pinças metálicas abraçando as pernas do ciborgue na plataforma com sibilo de despressurização. |
+| `block.aegis_shield.hum` | `aegis_shield_hum.ogg` | `blocks` | 3.0s (loop) | Zumbido ressonante harmônico de plasma de confinamento magnético em cúpula protetora de alta tensão. |
+| `block.aegis_shield.impact` | `aegis_shield_impact.ogg` | `blocks` | 1.0s | Deflexão energética instantânea no escudo de plasma ao interceptar projéteis ou raios iônicos com estalo de dissipação. |
+| `block.railcannon.fire` | `railcannon_fire.ogg` | `hostile` | 2.5s | Disparo devastador do canhão ferroviário cinético hipersônico com estrondo sônico violento e descarga elétrica. |
+| `block.deep_borehole.drill` | `deep_borehole_drill.ogg` | `blocks` | 3.5s (loop) | Rotação pesada de broca de carbeto de tungstênio triturando rocha ultra-densa em profundidades abissais do manto. |
+| `block.litho_extractor.spin` | `litho_extractor_spin.ogg` | `blocks` | 2.2s (loop) | Centrífuga térmica magnética de alta rotação separando sais de lítio e plasma de silicatos sob alta pressão. |
+| `block.steam.purge` | `steam_purge.ogg` | `blocks` | 1.5s | Escape sibilante e violento de vapor superaquecido de trocadores de calor geotérmicos sob alívio de pressão. |
+| `block.mass_driver.launch` | `mass_driver_launch.ogg` | `players` | 2.0s | Descarga em arco voltaico e aceleração linear em trilho Gauss ejetando cargas úteis rumo à órbita estelar. |
+| `block.ground_station.track` | `ground_station_track.ogg` | `blocks` | 1.8s | Servomotores de precisão girando e calibrando a antena parabólica de rastreamento de satélites orbitais. |
+| `weather.first_rain.thunder` | `first_rain_thunder.ogg` | `weather` | 4.0s | Trovão atmosférico distante e grave que reverbera por todo o deserto anunciando a chegada da primeira frente de chuva. |
+| `weather.first_rain.downpour` | `first_rain_downpour.ogg` | `weather` | 6.0s (loop) | Chuva torrencial contínua e densa caindo sobre dunas, rochas e tetos de maquinários com chiado de vaporização. |
+| `block.elevator.ascend` | `elevator_ascend.ogg` | `players` | 4.0s (loop) | Zumbido aerodinâmico e indução eletromagnética linear do vagão subindo verticalmente pelo cabo de nanotubos. |
+| `block.quantum_beacon.transmit` | `quantum_beacon_transmit.ogg` | `players` | 3.8s | Emissão ressonante de ondas gravitacionais e feixes táquions helicoidais com eco harmônico rasgando a atmosfera. |
+| `ambient.space_rescue_fanfare` | `space_rescue_fanfare.ogg` | `ambient` | 6.5s | Acorde orquestral triunfante em ressonância cósmica comemorando o resgate estelar e a vitória definitiva do operador. |
 
 > [!NOTE]
 > **Status dos Efeitos Sonoros**: Todos os 20 arquivos `.mp3` foram convertidos com sucesso para Vorbis `.ogg` (mantendo os `.mp3` originais preservados).
@@ -941,6 +1101,11 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `bio_regeneration_pod`: Cápsula médica MedBay hermética de criostase, monitor cardíaco ECG e perfusão de bio-soluções (Fase 24).
   - [x] `cyborg_docking_station`: Plataforma pesada de ancoragem e recarga WPT no solo com conector indutivo, garras mecânicas de fixação pneumática e leds de status (Fase 27).
   - [x] `holo_tactical_spire`: Torre monumental de projeção holo-tática com antena ressonante de titânio escuro, emissor holográfico ciano e console de radar vetorial (Fase 28).
+  - [ ] `planetary_aegis_generator`, `titan_kinetic_railcannon`, `point_defense_node`: Gerador de escudo de plasma com bobinas toroidais, canhão ferroviário de titã e nós sônicos de defesa de ponto (Fase 29).
+  - [ ] `deep_core_borehole`, `litho_plasma_extractor`, `supercritical_heat_exchanger`: Broca monumental do manto, centrífuga de lítio-plasma e trocador térmico com aletas cerâmicas (Fase 30).
+  - [ ] `orbital_mass_driver`, `orbital_ground_station`, `spectral_survey_telescope`: Catapulta eletromagnética Gauss linear de 12 blocos, console de antena parabólica rastreadora e observatório astronômico (Fase 31).
+  - [ ] `atmospheric_genesis_reactor`, `cloud_seeding_howitzer`, `tropospheric_condenser`: Reator catalítico de plasma com chaminé, obuseiro de semeadura higroscópica e torre condensadora de chuva (Fase 32).
+  - [ ] `space_elevator_base_anchor`, `orbital_climber_car`, `quantum_subspace_beacon`: Âncora 4x4x4 com tensão ativa magnética, vagão suborbital maglev e farol quântico helicoidal de táquions (Fase 33).
 - [x] **Modelos de Entidades (Blockbench & Java Models)**:
   - [x] `sandworm.bbmodel`: Corpo cilíndrico segmentado com mandíbulas quádruplas abertas e anel bucal.
   - [ ] `sandtrout.bbmodel`: Modelo pequeno de criatura ameboide coriácea rastejante de areia (Truta da Areia / Little Maker).
@@ -954,6 +1119,8 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `cyborg_excavator`: Chassi bípede biomecânico reforçado de titânio escuro com feixes musculares carmesim expostos, braço broca de vibro-cavitação atômica e visor adaptativo (`CyborgModel` / `CyborgRenderer`, Fase 26).
   - [x] `cyborg_builder`: Chassi biomecânico ágil com manipulador magnético no braço esquerdo, tocha de solda de plasma molecular no braço direito, compartimento dorsal de carga e visor adaptativo (`CyborgModel` / `CyborgRenderer`, Fase 26).
   - [x] `cyborg_harvester`: Chassi esguio e veloz com garras cirúrgicas articuladas, sensor fitossanitário e cesto traseiro selado de coleta hermética de biomassa (`CyborgModel` / `CyborgRenderer`, Fase 26).
+  - [ ] `orbital_satellites`: Modelos de satélites modulares (meteorológico, espelho solar, radar SAR e lança cinética) com painéis fotovoltaicos desdobráveis (Fase 31).
+  - [ ] `orbital_climber_car`: Cápsula pressurizada aerodinâmica com visor panorâmico de vidro de fulgurito (Fase 33).
 
 ---
 
@@ -1218,6 +1385,19 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
       - `/sandstorm debug list`: Catálogo in-game de todos os comandos e parâmetros.
     - **Validação Automatizada de Testes**:
       - Suíte de testes dedicada `SandstormDebugTest`, elevando o total do repositório para **877 testes automatizados** com 100% de sucesso e zero comentários.
+54. `fases-29-33-roadmap`: Concepção arquitetural e planejamento monumental das **Fases 29 a 33** no `TASKS.md`:
+    - **Fase 29 (Domo de Escudo de Plasma Planetário, Canhão Cinético Anti-Titã & Defesa de Ponto Sônica)**:
+      - Gerador de escudo de plasma com bobinas toroidais supercondutoras (1.000.000 J WPT), projeção holográfica de cúpula com hexágonos dinâmicos, repulsão de vermes e projéteis; canhão ferroviário hipersônico duplo de cerco anti-titã e grade de defesa acústica.
+    - **Fase 30 (Mineração Geotérmica Profunda, Poço do Manto Planetário & Extratores Magmáticos de Lítio-Plasma)**:
+      - Broca monumental de perfuração até a rocha-mãe (Bedrock, Y=-64) com amortecedores sísmicos, centrífuga térmica de enriquecimento de plasma e trocador de calor supercrítico gerando 10.000 J/tick, superligas do manto e cápsulas criogênicas de lítio.
+    - **Fase 31 (Rede Orbital de Satélites, Telescópio Espacial de Varredura & Lançador de Cargas Eletromagnético)**:
+      - Catapulta eletromagnética Gauss linear (Mass Driver) de 12 blocos de altura com aceleração hipersônica, console de estação terrena com antena parabólica rastreadora, telescópio espacial de varredura profunda e 4 satélites de carga útil (meteorológico, espelho solar 24/7, radar SAR geológico e lança cinética orbital "Vara de Deus").
+    - **Fase 32 (Atmosfera Artificial, Condensação de Nuvens em Escala Continental & O Primeiro Dilúvio)**:
+      - Reator de craqueamento catalítico de plasma com chaminé ionizante, obuseiro balístico de semeadura higroscópica de nuvens com cápsulas de iodeto de prata e glicerol, torre condensadora e o clímax ecológico: "O Primeiro Dilúvio" (trovões distantes, chuva torrencial, extinção do calor de 48°C, conversão em solo fértil e formação de lagos de água doce).
+    - **Fase 33 (Elevador Espacial Planetário, Farol Quântico Subespacial & Transmissão Interestelar de Resgate)**:
+      - Âncora megalítica 4x4x4 com tensão ativa magnética, cabos trançados de nanotubos de carbono-grafeno, vagão suborbital maglev vertical com subida triunfante pela atmosfera até a órbita estrelada (Y=500+), farol quântico de comunicação superluminal em feixe helicoidal de táquions e clímax da missão com mensagem de resgate da Federação Interestelar e conquista "Soberano do Deserto".
+    - Expansão do catálogo oficial de efeitos sonoros com 13 novos áudios customizados e planejamento de kits e comandos `/sandstorm debug phase <29..33>`.
+
 
 
 
