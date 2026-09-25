@@ -2,6 +2,8 @@ package com.fhfelipefh.sandstorm.content.gui;
 
 import com.fhfelipefh.sandstorm.content.block.entity.BaseMachineBlockEntity;
 import com.fhfelipefh.sandstorm.content.item.MolecularUpgradeItem;
+import com.fhfelipefh.sandstorm.content.recipe.MachineRecipe;
+import com.fhfelipefh.sandstorm.content.recipe.MachineRecipeRegistry;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,6 +14,8 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
 
 public class MolecularModifierMenu extends AbstractContainerMenu implements MachineMenu {
     private final Container container;
@@ -158,5 +162,73 @@ public class MolecularModifierMenu extends AbstractContainerMenu implements Mach
             slot.onTake(player, stackInSlot);
         }
         return itemStack;
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:molecular_modifier");
+        if (id >= 0 && id < recipes.size()) {
+            MachineRecipe recipe = recipes.get(id);
+            fillSlot(0, recipe.getSlot0Inputs());
+            List<ItemStack> slot1Inputs = recipe.getSlot1Inputs();
+            if (!slot1Inputs.isEmpty()) {
+                ItemStack first = slot1Inputs.get(0);
+                if (first.getItem() instanceof MolecularUpgradeItem up && up.getUpgradeType().getSlotType() == MolecularUpgradeItem.ModuleSlotType.NANOCOATING) {
+                    fillSlot(4, slot1Inputs);
+                } else {
+                    fillSlot(1, slot1Inputs);
+                }
+            }
+            return true;
+        }
+        return super.clickMenuButton(player, id);
+    }
+
+    private void fillSlot(int targetSlotIndex, List<ItemStack> accepted) {
+        Slot targetSlot = this.slots.get(targetSlotIndex);
+        if (targetSlot.hasItem()) {
+            boolean matches = false;
+            for (ItemStack candidate : accepted) {
+                if (targetSlot.getItem().is(candidate.getItem())) {
+                    matches = true;
+                    break;
+                }
+            }
+            if (matches) {
+                return;
+            }
+            ItemStack current = targetSlot.getItem();
+            if (this.moveItemStackTo(current, 7, 43, false)) {
+                if (current.isEmpty()) {
+                    targetSlot.set(ItemStack.EMPTY);
+                } else {
+                    targetSlot.setChanged();
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+        for (int i = 7; i < 43; i++) {
+            Slot invSlot = this.slots.get(i);
+            if (invSlot.hasItem()) {
+                ItemStack invStack = invSlot.getItem();
+                for (ItemStack candidate : accepted) {
+                    if (invStack.is(candidate.getItem())) {
+                        if (!targetSlot.hasItem()) {
+                            ItemStack moved = invSlot.remove(1);
+                            targetSlot.set(moved);
+                            return;
+                        } else if (ItemStack.isSameItemSameComponents(targetSlot.getItem(), invStack)
+                                && targetSlot.getItem().getCount() < targetSlot.getItem().getMaxStackSize()) {
+                            invSlot.remove(1);
+                            targetSlot.getItem().grow(1);
+                            targetSlot.setChanged();
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

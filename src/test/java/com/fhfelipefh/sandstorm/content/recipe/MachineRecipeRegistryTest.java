@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MachineRecipeRegistryTest {
@@ -94,6 +95,21 @@ class MachineRecipeRegistryTest {
         assertEquals(1200, r3.getProcessTicks());
         assertEquals(1, r3.getSlot0InputCount());
         assertEquals(1, r3.getSlot1InputCount());
+    }
+
+    @Test
+    void testMolecularModifierRecipes() {
+        List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:molecular_modifier");
+        assertFalse(recipes.isEmpty());
+        assertEquals(12, recipes.size());
+
+        for (MachineRecipe recipe : recipes) {
+            assertEquals(500, recipe.getEnergyCost());
+            assertEquals(50, recipe.getProcessTicks());
+            assertTrue(recipe.getSlot0InputCount() > 0);
+            assertEquals(1, recipe.getSlot1InputCount());
+            assertNotNull(recipe.getTitle());
+        }
     }
 
     @Test

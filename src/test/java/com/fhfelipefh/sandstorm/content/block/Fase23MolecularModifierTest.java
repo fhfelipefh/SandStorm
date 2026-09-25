@@ -170,6 +170,7 @@ class Fase23MolecularModifierTest {
         assertTrue(menu.isProcessing());
         assertEquals(50, menu.getProgressScaled(100));
         assertFalse(menu.slots.get(6).mayPlace(ItemStack.EMPTY));
+        assertFalse(menu.clickMenuButton(null, 99));
     }
 
     @ParameterizedTest

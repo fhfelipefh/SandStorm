@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.content.gui.MachineMenu;
+import com.fhfelipefh.sandstorm.content.item.MolecularUpgradeItem;
 import com.fhfelipefh.sandstorm.content.recipe.MachineRecipe;
 import com.fhfelipefh.sandstorm.content.recipe.MachineRecipeRegistry;
 import com.fhfelipefh.sandstorm.util.NumberFormat;
@@ -341,7 +342,7 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
             extractor.fill(cx, cy, cx + 1, cy + ch, border);
             extractor.fill(cx + cw - 1, cy, cx + cw, cy + ch, border);
 
-            drawAdaptiveText(extractor, recipe.getOutput().getHoverName(), cx + 4, cy + 3, cw - 20, cardHovered ? 0xFFFFFFFF : 0xFFFFD54F);
+            drawAdaptiveText(extractor, recipe.getTitle(), cx + 4, cy + 3, cw - 20, cardHovered ? 0xFFFFFFFF : 0xFFFFD54F);
 
             if (hasInputs) {
                 extractor.text(this.font, Component.literal("✓"), cx + cw - 12, cy + 3, 0xFF00E676, false);
@@ -370,6 +371,9 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
 
             if (cardHovered) {
                 drawAdaptiveText(extractor, Component.translatable("gui.sandstorm.machine.recipe_click_hint"), cx + 4, cy + 36, cw - 8, 0xFFFFD54F);
+            } else if (in1.getItem() instanceof MolecularUpgradeItem upgrade) {
+                String effectKey = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".effect";
+                drawAdaptiveText(extractor, Component.translatable(effectKey), cx + 4, cy + 36, cw - 8, hasInputs ? 0xFF00E676 : 0xFF81C784);
             } else if (hasInputs) {
                 drawAdaptiveText(extractor, Component.translatable("gui.sandstorm.machine.recipe_ready"), cx + 4, cy + 36, cw - 8, 0xFF00E676);
             } else {
@@ -379,9 +383,30 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
             if (mouseX >= cx + 4 && mouseX <= cx + 22 && mouseY >= cy + 15 && mouseY <= cy + 33) {
                 extractor.setTooltipForNextFrame(this.font, in0.getHoverName(), mouseX, mouseY);
             } else if (mouseX >= cx + 32 && mouseX <= cx + 50 && mouseY >= cy + 15 && mouseY <= cy + 33) {
-                extractor.setTooltipForNextFrame(this.font, in1.getHoverName(), mouseX, mouseY);
+                if (in1.getItem() instanceof MolecularUpgradeItem upgrade) {
+                    String descKey = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".desc";
+                    String effectKey = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".effect";
+                    Component tip = Component.empty()
+                            .append(in1.getHoverName())
+                            .append("\n§a")
+                            .append(Component.translatable(effectKey))
+                            .append("\n§7")
+                            .append(Component.translatable(descKey));
+                    extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+                } else {
+                    extractor.setTooltipForNextFrame(this.font, in1.getHoverName(), mouseX, mouseY);
+                }
             } else if (mouseX >= cx + 62 && mouseX <= cx + 82 && mouseY >= cy + 14 && mouseY <= cy + 34) {
-                extractor.setTooltipForNextFrame(this.font, out.getHoverName(), mouseX, mouseY);
+                if (in1.getItem() instanceof MolecularUpgradeItem upgrade) {
+                    String effectKey = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".effect";
+                    Component tip = Component.empty()
+                            .append(out.getHoverName())
+                            .append("\n§a")
+                            .append(Component.translatable(effectKey));
+                    extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+                } else {
+                    extractor.setTooltipForNextFrame(this.font, out.getHoverName(), mouseX, mouseY);
+                }
             } else if (mouseX >= infoX && mouseX <= cx + cw && mouseY >= cy + 15 && mouseY <= cy + 35) {
                 Component costTooltip = Component.literal("§bEnergia: " + recipe.getEnergyCost() + " J (" + recipe.getProcessTicks() + " ticks)");
                 extractor.setTooltipForNextFrame(this.font, costTooltip, mouseX, mouseY);
