@@ -21,6 +21,7 @@ import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import com.fhfelipefh.sandstorm.content.survival.BedRestrictionHandler;
 import com.fhfelipefh.sandstorm.content.survival.FusedSpaceSuitHandler;
+import com.fhfelipefh.sandstorm.content.survival.MagicSuppressionHandler;
 import com.fhfelipefh.sandstorm.content.survival.MultiplayerSpawnHandler;
 import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
@@ -86,6 +87,7 @@ public class SandStormMod implements ModInitializer {
         SeismicSurvivalHandler.initialize();
         TechnologyToolRestrictionHandler.initialize();
         BedRestrictionHandler.initialize();
+        MagicSuppressionHandler.initialize();
         SandStormWorldGen.initialize();
         ProceduralRuinsManager.initialize();
         SpaceshipLandingManager.initialize();

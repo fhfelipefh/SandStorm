@@ -74,7 +74,8 @@ class SandStormItemsTest {
             "ballistic_dampener_mesh",
             "ablative_thermal_plating",
             "pneumatic_fall_dampers",
-            "reactive_shock_plating"
+            "reactive_shock_plating",
+            "bio_regeneration_pod"
     })
     void shouldGenerateCorrectResourceKeysForCoreItems(String itemPath) {
         ResourceKey<Item> key = SandStormMod.itemKey(itemPath);

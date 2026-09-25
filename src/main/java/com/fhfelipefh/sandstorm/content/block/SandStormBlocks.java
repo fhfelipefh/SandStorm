@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.AutoAssemblyLineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
@@ -422,6 +423,13 @@ public class SandStormBlocks {
                     .strength(3.5f, 6.0f)
                     .sound(SoundType.METAL)
                     .noOcclusion()));
+    public static final BioRegenerationPodBlock BIO_REGENERATION_POD = register("bio_regeneration_pod",
+            new BioRegenerationPodBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("bio_regeneration_pod")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -518,6 +526,11 @@ public class SandStormBlocks {
             SandStormMod.id("molecular_modifier"),
             new BlockEntityType<>(MolecularModifierBlockEntity::new, Set.of(MOLECULAR_MODIFIER))
     );
+    public static final BlockEntityType<BioRegenerationPodBlockEntity> BIO_REGENERATION_POD_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("bio_regeneration_pod"),
+            new BlockEntityType<>(BioRegenerationPodBlockEntity::new, Set.of(BIO_REGENERATION_POD))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -551,5 +564,7 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, MEGASTRUCTURE_CONSTRUCTOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, BIOREACTOR_VAT_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, MOLECULAR_MODIFIER_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, BIO_REGENERATION_POD_BE);
+        FluidStorage.SIDED.registerForBlockEntity(BioRegenerationPodBlockEntity::getFluidStorage, BIO_REGENERATION_POD_BE);
     }
 }

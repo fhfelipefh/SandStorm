@@ -536,5 +536,13 @@
   "tooltip.sandstorm.molecular_upgrade.pneumatic_fall_dampers.effect": "+ Desaceleração Terminal de Queda (Peso Pena IV)",
   "item.sandstorm.reactive_shock_plating": "Placas de Descarga Reativa de Chassi",
   "tooltip.sandstorm.molecular_upgrade.reactive_shock_plating.desc": "Eletrodos perimétricos que liberam arcos de alta tensão ciano contra agressores corpo a corpo.",
-  "tooltip.sandstorm.molecular_upgrade.reactive_shock_plating.effect": "+ Descarga Eletrostática Defensiva (Espinhos III)"
+  "tooltip.sandstorm.molecular_upgrade.reactive_shock_plating.effect": "+ Descarga Eletrostática Defensiva (Espinhos III)",
+  "block.sandstorm.bio_regeneration_pod": "Cápsula de Bio-Regeneração Médica",
+  "item.sandstorm.bio_regeneration_pod": "Cápsula de Bio-Regeneração Médica",
+  "container.sandstorm.bio_regeneration_pod": "Cápsula de Bio-Regeneração Médica",
+  "tooltip.sandstorm.bio_regeneration_pod_desc": "Estação médica criogênica de recuperação celular acelerada, purificação biológica e restauração de traje.",
+  "telemetry.sandstorm.medbay_entered": "§a[Cápsula Médica] Ocupante estabilizado. Iniciando protocolo de bio-regeneração celular.",
+  "telemetry.sandstorm.magic_suppressed": "§c[Aviso Científico] A magia arcaica foi suprimida neste mundo. Use o Modificador Molecular!",
+  "telemetry.sandstorm.magic_suppressed_potions": "§c[Aviso Científico] Alquimia mística foi suprimida. Utilize o Biorreator e o Injetor de Fármacos!",
+  "telemetry.sandstorm.anvil_redirect": "§e[Aviso Científico] Bigornas arcaicas foram suprimidas. Aprimore ferramentas no Modificador Molecular!"
 }

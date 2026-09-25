@@ -102,6 +102,20 @@ public class SandStormEntities {
                     .build(BUILDER_DRONE_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> MEDBAY_SEAT_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("medbay_seat")
+    );
+
+    public static final EntityType<MedBaySeatEntity> MEDBAY_SEAT = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("medbay_seat"),
+            EntityType.Builder.<MedBaySeatEntity>of(MedBaySeatEntity::new, MobCategory.MISC)
+                    .sized(0.01f, 0.01f)
+                    .noSave()
+                    .build(MEDBAY_SEAT_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());

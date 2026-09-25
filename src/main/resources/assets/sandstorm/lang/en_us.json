@@ -536,5 +536,13 @@
   "tooltip.sandstorm.molecular_upgrade.pneumatic_fall_dampers.effect": "+ Terminal Fall Deceleration (Feather Falling IV)",
   "item.sandstorm.reactive_shock_plating": "Chassis Reactive Shock Plating",
   "tooltip.sandstorm.molecular_upgrade.reactive_shock_plating.desc": "Perimeter micro-electrodes releasing high-voltage cyan arcs against melee assailants.",
-  "tooltip.sandstorm.molecular_upgrade.reactive_shock_plating.effect": "+ Defensive Electrostatic Discharge (Thorns III)"
+  "tooltip.sandstorm.molecular_upgrade.reactive_shock_plating.effect": "+ Defensive Electrostatic Discharge (Thorns III)",
+  "block.sandstorm.bio_regeneration_pod": "Bio-Regeneration Pod",
+  "item.sandstorm.bio_regeneration_pod": "Bio-Regeneration Pod",
+  "container.sandstorm.bio_regeneration_pod": "Bio-Regeneration Pod",
+  "tooltip.sandstorm.bio_regeneration_pod_desc": "Cryogenic medical station for accelerated cellular repair, biological purging, and suit restoration.",
+  "telemetry.sandstorm.medbay_entered": "§a[MedBay] Occupant stabilized. Initiating cellular bio-regeneration protocol.",
+  "telemetry.sandstorm.magic_suppressed": "§c[Scientific Notice] Archaic magic has been suppressed in this world. Use the Molecular Modifier!",
+  "telemetry.sandstorm.magic_suppressed_potions": "§c[Scientific Notice] Mystic alchemy has been suppressed. Utilize the Bioreactor Vat and Hypo-Injector!",
+  "telemetry.sandstorm.anvil_redirect": "§e[Scientific Notice] Archaic anvils have been suppressed. Upgrade equipment in the Molecular Modifier!"
 }

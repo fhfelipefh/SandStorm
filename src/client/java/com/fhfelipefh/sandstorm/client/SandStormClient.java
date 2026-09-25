@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.client;
 import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
 import com.fhfelipefh.sandstorm.client.gui.AutoAssemblyLineScreen;
 import com.fhfelipefh.sandstorm.client.gui.AutonomousSonicTurretScreen;
+import com.fhfelipefh.sandstorm.client.gui.BioRegenerationPodScreen;
 import com.fhfelipefh.sandstorm.client.gui.BioreactorVatScreen;
 import com.fhfelipefh.sandstorm.client.gui.ChemicalRefineryScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreDrillScreen;
@@ -73,6 +74,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.MEGASTRUCTURE_CONSTRUCTOR_MENU, MegastructureConstructorScreen::new);
         MenuScreens.register(SandStormMenus.BIOREACTOR_VAT_MENU, BioreactorVatScreen::new);
         MenuScreens.register(SandStormMenus.MOLECULAR_MODIFIER_MENU, MolecularModifierScreen::new);
+        MenuScreens.register(SandStormMenus.BIO_REGENERATION_POD_MENU, BioRegenerationPodScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
@@ -93,6 +95,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.MEGAZORD, NoopRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDBOARD, NoopRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.BUILDER_DRONE, BuilderDroneEntityRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.MEDBAY_SEAT, NoopRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

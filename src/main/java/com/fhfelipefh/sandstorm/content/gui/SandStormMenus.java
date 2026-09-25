@@ -77,6 +77,11 @@ public class SandStormMenus {
             new MenuType<>(MolecularModifierMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<BioRegenerationPodMenu> BIO_REGENERATION_POD_MENU = register(
+            "bio_regeneration_pod",
+            new MenuType<>(BioRegenerationPodMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }
