@@ -6,11 +6,13 @@ import com.fhfelipefh.sandstorm.client.gui.AutonomousSonicTurretScreen;
 import com.fhfelipefh.sandstorm.client.gui.BioRegenerationPodScreen;
 import com.fhfelipefh.sandstorm.client.gui.BioreactorVatScreen;
 import com.fhfelipefh.sandstorm.client.gui.ChemicalRefineryScreen;
+import com.fhfelipefh.sandstorm.client.gui.CyborgDockingStationScreen;
 import com.fhfelipefh.sandstorm.client.gui.CyborgIncubatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.CyborgTelemetryScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreDrillScreen;
 import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
 import com.fhfelipefh.sandstorm.client.gui.GridMonitorConsoleScreen;
+import com.fhfelipefh.sandstorm.client.gui.HoloTacticalSpireScreen;
 import com.fhfelipefh.sandstorm.client.gui.HydroponicChamberScreen;
 import com.fhfelipefh.sandstorm.client.gui.MegastructureConstructorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MolecularModifierScreen;
@@ -80,6 +82,8 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.BIO_REGENERATION_POD_MENU, BioRegenerationPodScreen::new);
         MenuScreens.register(SandStormMenus.CYBORG_INCUBATOR_MENU, CyborgIncubatorScreen::new);
         MenuScreens.register(SandStormMenus.CYBORG_TELEMETRY_MENU, CyborgTelemetryScreen::new);
+        MenuScreens.register(SandStormMenus.CYBORG_DOCKING_STATION_MENU, CyborgDockingStationScreen::new);
+        MenuScreens.register(SandStormMenus.HOLO_TACTICAL_SPIRE_MENU, HoloTacticalSpireScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -69,6 +70,9 @@ public class CyborgBuilderEntity extends CyborgEntity {
 
     private void tickAutonomousBuilding(ServerLevel level) {
         if (currentTargetPos == null || !level.isEmptyBlock(currentTargetPos)) {
+            if (currentTargetPos != null) {
+                CyborgSwarmManager.getInstance().releaseBlock(this.getUUID(), currentTargetPos);
+            }
             currentTargetPos = findNextPositionToBuild(level);
             buildTicks = 0;
         }
@@ -97,6 +101,7 @@ public class CyborgBuilderEntity extends CyborgEntity {
             if (buildTicks >= 30) {
                 buildTicks = 0;
                 placeBlockFromInventory(level, currentTargetPos);
+                CyborgSwarmManager.getInstance().releaseBlock(this.getUUID(), currentTargetPos);
                 currentTargetPos = null;
             }
         }
@@ -124,12 +129,20 @@ public class CyborgBuilderEntity extends CyborgEntity {
                 for (int z = min.getZ(); z <= max.getZ(); ++z) {
                     BlockPos pos = new BlockPos(x, y, z);
                     if (level.isEmptyBlock(pos) && level.getBlockState(pos.below()).isSolid()) {
-                        return pos;
+                        if (CyborgSwarmManager.getInstance().tryReserveBlock(this.getUUID(), pos)) {
+                            return pos;
+                        }
                     }
                 }
             }
         }
         return null;
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        CyborgSwarmManager.getInstance().releaseAll(this.getUUID());
     }
 
     private void tickFollowOperator() {

@@ -92,6 +92,16 @@ public class SandStormMenus {
             new MenuType<>(CyborgTelemetryMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<CyborgDockingStationMenu> CYBORG_DOCKING_STATION_MENU = register(
+            "cyborg_docking_station",
+            new MenuType<>(CyborgDockingStationMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<HoloTacticalSpireMenu> HOLO_TACTICAL_SPIRE_MENU = register(
+            "holo_tactical_spire",
+            new MenuType<>(HoloTacticalSpireMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

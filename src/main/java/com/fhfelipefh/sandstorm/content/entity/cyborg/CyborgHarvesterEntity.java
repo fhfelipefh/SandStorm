@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -96,6 +97,9 @@ public class CyborgHarvesterEntity extends CyborgEntity {
         }
 
         if (currentTargetCrop == null || !isMatureCrop(level, currentTargetCrop)) {
+            if (currentTargetCrop != null) {
+                CyborgSwarmManager.getInstance().releaseBlock(this.getUUID(), currentTargetCrop);
+            }
             currentTargetCrop = findMatureCrop(level);
             harvestTicks = 0;
         }
@@ -124,6 +128,7 @@ public class CyborgHarvesterEntity extends CyborgEntity {
             if (harvestTicks >= 25) {
                 harvestTicks = 0;
                 harvestAndReplant(level, currentTargetCrop);
+                CyborgSwarmManager.getInstance().releaseBlock(this.getUUID(), currentTargetCrop);
                 currentTargetCrop = null;
             }
         }
@@ -155,12 +160,20 @@ public class CyborgHarvesterEntity extends CyborgEntity {
                 for (int z = min.getZ(); z <= max.getZ(); ++z) {
                     BlockPos pos = new BlockPos(x, y, z);
                     if (isMatureCrop(level, pos)) {
-                        return pos;
+                        if (CyborgSwarmManager.getInstance().tryReserveBlock(this.getUUID(), pos)) {
+                            return pos;
+                        }
                     }
                 }
             }
         }
         return null;
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        CyborgSwarmManager.getInstance().releaseAll(this.getUUID());
     }
 
     private void tickFollowOperator() {

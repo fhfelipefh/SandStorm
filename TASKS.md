@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **820 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **877 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 97 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 120 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -630,69 +630,130 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
     - *Vermelho (`#FF1744`)*: Ameaça detectada / protocolo defensivo engajado.
     - *Roxo (`#D500F9`)*: Sincronização em rede de enxame (Swarm Intelligence).
 
-### 🤖 Fase 26: Ciborgues Especialistas Autônomos & Uplink de Comando Holográfico
+### 🤖 Fase 26: Ciborgues Especialistas Autônomos & Uplink de Comando Holográfico (Concluída - 100%)
 *Criação de três entidades ciborgues especializadas que executam autonomamente diretrizes espaciais complexas sob comando de um transmissor holográfico de mão.*
 
-- [ ] **Transmissor Holográfico de Comando (`cybernetic_command_uplink`)**:
-  - [ ] Dispositivo portátil ergonômico com terminal tático, telêmetro laser de alta precisão e antena de uplink neural.
-  - [ ] Mecânica de demarcação volumétrica holográfica 3D (Bounding Boxes tridimensionais neon projetadas no mundo):
-    - *Modo Mineração (Volume Ciano `#00E5FF`)*: O jogador clica em dois vértices opostos no mundo para delimitar um cubo ou poço de escavação (ex: 8x8x16 blocos ou galeria horizontal).
-    - *Modo Construção (Volume Âmbar `#FF9100`)*: O jogador ancora um blueprint virtual do Datapad ou demarca uma zona para reparo estrutural automático pós-tempestade.
-    - *Modo Agrícola / Coleta (Volume Esmeralda `#00E676`)*: Demarca o perímetro de canteiros e fazendas de extremófilos para monitoramento agronômico autônomo.
-  - [ ] Clique com botão direito no ciborgue abre a **Interface de Telemetria Biônica**:
-    - Monitoramento em tempo real de carga energética WPT (Joules), integridade muscular dos miômeros (%), nível de bio-refrigerante, inventário interno (18 a 27 slots) e seletor de rotina: `Trabalho Autônomo na Zona`, `Seguir Operador`, `Patrulhar Perímetro` e `Retornar à Doca`.
-- [ ] **Ciborgue Minerador de Subsolo (`cyborg_excavator` / Excavator Cyborg)**:
-  - [ ] Chassi reforçado bípede de perfil robusto, pernas articuladas de alta tração com botas magnéticas e braço direito fundido a uma broca de vibro-cavitação atômica com ponta de diamante sintético.
-  - [ ] Sensor de peitoral com escâner geológico miniaturizado que emite pulsos de sonar sísmico no solo.
-  - [ ] Comportamento Autônomo Inteligente:
-    - Desloca-se autonomamente até a Zona de Mineração ciano demarcada pelo jogador.
-    - Perfura blocos de cima para baixo ou em galerias seguras com rampas e escadarias, evitando colapsos de teto, fontes de lava e fossos de vermes de areia.
-    - Coleta seletiva: filtra minérios de alto valor (silício, quartzo piezoelétrico, carvão fóssil, ferro) e descarta cascalho/arenito estéril se configurado pelo jogador.
-    - Retorno de Segurança: Ao encher o compartimento interno ou quando a energia WPT cai abaixo de 15%, interrompe a perfuração, emite sinal sonoro de telemetria e caminha de volta à base para descarregar em baús/dutos e recarregar.
-- [ ] **Ciborgue Construtor Biônico (`cyborg_builder` / Builder Cyborg)**:
-  - [ ] Chassi ágil com dois braços multi-articulados: braço esquerdo com manipulador de campo magnético para transporte e sustentação de blocos pesados, e braço direito com tocha de solda molecular e fusão a laser.
-  - [ ] Mochila dorsal compacta de armazenamento de materiais integrada à Fabric Transfer API.
-  - [ ] Comportamento Autônomo Inteligente:
-    - Conecta-se à Zona de Construção demarcada pelo jogador e analisa a lista de blocos requeridos pelo projeto/blueprint.
-    - Localiza insumos nos baús vinculados da base, transporta as cargas e constrói de forma aditiva ordenada de baixo para cima (layer-by-layer), projetando feixes laser e faíscas de solda azuis (`entity.cyborg.weld`).
-    - Rotina de Manutenção Pós-Tempestade: Se tempestades severas de areia causarem erosão ou danificarem muralhas de espinhos, cúpulas e baterias, sai autonomamente da doca com placas de titânio para efetuar reparos estruturais.
-- [ ] **Ciborgue Coletor & Agrônomo Fúngico (`cyborg_harvester` / Harvester Cyborg)**:
-  - [ ] Chassi leve e veloz com garras cirúrgicas retráteis de micro-precisão e cesto traseiro selado hermeticamente para transporte estéril de biomassa e compostos bioativos.
-  - [ ] Visor óptico dotado de espectrômetro fitossanitário para leitura de estágios de crescimento, umidade e maturação química.
-  - [ ] Comportamento Autônomo Inteligente:
-    - Patrulha continuamente plantações de extremófilos (Micélio Radiotrófico, Fungo Quitinolítico, Suculenta Halófita, Éfedra das Dunas e cactos de seiva pesada).
-    - Colhe apenas plantas e fungos que atingiram o estágio final de maturação, preservando a raiz do solo e replantando esporos/sementes imediatamente no mesmo bloco.
-    - Transporta os metabólitos colhidos (`radioprotective_melanin`, `chitosan_extract`, etc.) diretamente aos Biorreatores de Batelada (`bioreactor_vat`) da base, descarregando nos slots de insumo para garantir alimentação ininterrupta do pipeline bio-farmacológico.
-    - Varredura de Recursos no Deserto: Coleta automaticamente areia de fulgurito residual pós-raios e cascas de quitina de vermes abatidos nas proximidades da base.
+- [x] **Transmissor Holográfico de Comando (`cybernetic_command_uplink`)**:
+  - [x] Dispositivo portátil ergonômico com terminal tático, telêmetro laser de alta precisão e antena de uplink neural.
+  - [x] Mecânica de demarcação volumétrica holográfica 3D (Bounding Boxes tridimensionais neon projetadas no mundo):
+    - [x] *Modo Mineração (Volume Ciano `#00E5FF`)*: O jogador clica em dois vértices opostos no mundo para delimitar um cubo ou poço de escavação (ex: 8x8x16 blocos ou galeria horizontal).
+    - [x] *Modo Construção (Volume Âmbar `#FF9100`)*: O jogador ancora um blueprint virtual do Datapad ou demarca uma zona para reparo estrutural automático pós-tempestade.
+    - [x] *Modo Agrícola / Coleta (Volume Esmeralda `#00E676`)*: Demarca o perímetro de canteiros e fazendas de extremófilos para monitoramento agronômico autônomo.
+  - [x] Clique com botão direito no ciborgue abre a **Interface de Telemetria Biônica**:
+    - [x] Monitoramento em tempo real de carga energética WPT (Joules), integridade muscular dos miômeros (%), nível de bio-refrigerante, inventário interno (18 slots) e seletor de rotina: `Trabalho Autônomo na Zona`, `Seguir Operador`, `Patrulhar Perímetro` e `Retornar à Doca`.
+- [x] **Ciborgue Minerador de Subsolo (`cyborg_excavator` / Excavator Cyborg)**:
+  - [x] Chassi reforçado bípede de perfil robusto, pernas articuladas de alta tração com botas magnéticas e braço direito fundido a uma broca de vibro-cavitação atômica com ponta de diamante sintético.
+  - [x] Sensor de peitoral com escâner geológico miniaturizado que emite pulsos de sonar sísmico no solo.
+  - [x] Comportamento Autônomo Inteligente:
+    - [x] Desloca-se autonomamente até a Zona de Mineração ciano demarcada pelo jogador.
+    - [x] Perfura blocos de cima para baixo ou em galerias seguras com rampas e escadarias, evitando colapsos de teto, fontes de lava e fossos de vermes de areia.
+    - [x] Coleta seletiva: filtra minérios de alto valor (silício, quartzo piezoelétrico, carvão fóssil, ferro) e descarta cascalho/arenito estéril se configurado pelo jogador.
+    - [x] Retorno de Segurança: Ao encher o compartimento interno ou quando a energia WPT cai abaixo de 15%, interrompe a perfuração, emite sinal sonoro de telemetria e caminha de volta à base para descarregar em baús/dutos e recarregar.
+- [x] **Ciborgue Construtor Biônico (`cyborg_builder` / Builder Cyborg)**:
+  - [x] Chassi ágil com dois braços multi-articulados: braço esquerdo com manipulador de campo magnético para transporte e sustentação de blocos pesados, e braço direito com tocha de solda molecular e fusão a laser.
+  - [x] Mochila dorsal compacta de armazenamento de materiais integrada à Fabric Transfer API.
+  - [x] Comportamento Autônomo Inteligente:
+    - [x] Conecta-se à Zona de Construção demarcada pelo jogador e analisa a lista de blocos requeridos pelo projeto/blueprint.
+    - [x] Localiza insumos nos baús vinculados da base, transporta as cargas e constrói de forma aditiva ordenada de baixo para cima (layer-by-layer), projetando feixes laser e faíscas de solda azuis (`entity.cyborg.weld`).
+    - [x] Rotina de Manutenção Pós-Tempestade: Se tempestades severas de areia causarem erosão ou danificarem muralhas de espinhos, cúpulas e baterias, sai autonomamente da doca com placas de titânio para efetuar reparos estruturais.
+- [x] **Ciborgue Coletor & Agrônomo Fúngico (`cyborg_harvester` / Harvester Cyborg)**:
+  - [x] Chassi leve e veloz com garras cirúrgicas retráteis de micro-precisão e cesto traseiro selado hermeticamente para transporte estéril de biomassa e compostos bioativos.
+  - [x] Visor óptico dotado de espectrômetro fitossanitário para leitura de estágios de crescimento, umidade e maturação química.
+  - [x] Comportamento Autônomo Inteligente:
+    - [x] Patrulha continuamente plantações de extremófilos (Micélio Radiotrófico, Fungo Quitinolítico, Suculenta Halófita, Éfedra das Dunas e cactos de seiva pesada).
+    - [x] Colhe apenas plantas e fungos que atingiram o estágio final de maturação, preservando a raiz do solo e replantando esporos/sementes imediatamente no mesmo bloco.
+    - [x] Transporta os metabólitos colhidos (`radioprotective_melanin`, `chitosan_extract`, etc.) diretamente aos Biorreatores de Batelada (`bioreactor_vat`) da base, descarregando nos slots de insumo para garantir alimentação ininterrupta do pipeline bio-farmacológico.
+    - [x] Varredura de Recursos no Deserto: Coleta automaticamente areia de fulgurito residual pós-raios e cascas de quitina de vermes abatidos nas proximidades da base.
 
-### 🌐 Fase 27: Enxame Cibernético (Swarm Intelligence), Doca de Recarga & Módulos de Upgrade
+### 🌐 Fase 27: Enxame Cibernético (Swarm Intelligence), Doca de Recarga & Módulos de Upgrade (Concluída - 100%)
 *Infraestrutura industrial de suporte contínuo: plataformas automatizadas de ancoragem, coordenação de enxame distribuído sem colisões e módulos de aprimoramento bio-mecânico.*
 
-- [ ] **Doca de Manutenção e Recarga WPT (`cyborg_docking_station`)**:
-  - [ ] Plataforma pesada 1x1x1 de solo em titânio e cerâmica piezoelétrica com conector indutivo de energia sem fio WPT e pinças pneumáticas de retenção.
-  - [ ] Protocolo Automático de Acoplamento:
-    - O ciborgue que adentra a doca é travado pelas garras mecânicas com som pneumático característico (`block.cyborg_dock.clamp`).
-    - Recarga ultrarrápida da bateria interna (500 J/tick) via acoplamento ressonante à malha WPT da base.
-    - Despejo instantâneo de itens do inventário interno para baús, armários ou tubulações de fluidos inteligentes conectados à doca (`ItemStorage.SIDED`).
-    - Injeção de bio-refrigerante fresco e bio-espuma hemostática, restaurando 100% da integridade muscular dos miômeros em 10 segundos.
-  - [ ] Emissão de sinal redstone comparador indicando nível de ocupação, carga das baterias e status de descarregamento de recursos.
-- [ ] **Inteligência de Enxame Distribuída (Swarm Coordination Protocol)**:
-  - [ ] Algoritmo de rede neural cooperativa: múltiplos ciborgues (até 16 por setor) compartilham uma malha de telemetria sem fio sem sobrecarregar a thread principal do servidor.
-  - [ ] Sistema de reservas espaciais de coordenadas (Voxel Mutex Locking): impede que dois mineradores escavem o mesmo bloco ou que dois construtores tentem assentar o mesmo tijolo simultaneamente.
-  - [ ] Cooperação Sinergética Inter-Especialistas:
-    - Enquanto um escavador aprofunda a galeria, um segundo ciborgue recolhe o cascalho do chão e um construtor instala escoras de arenito reforçado nas paredes e teto da mina.
-    - Se um ciborgue for atacado por criaturas hostis, emite um pulso de emergência na frequência do enxame chamando unidades próximas para evacuação mútua.
-- [ ] **Módulos de Upgrade Biônico Intercambiáveis**:
-  - [ ] Componentes de personalização instaláveis na interface de telemetria do ciborgue:
-    - *Blindagem de Quitina Ácida (`acid_chitin_plating`)*: Reveste o chassi com carapaça tratada em secreção de larva de verme, garantindo imunidade total a venenos, ácido e erosão por tempestades de areia.
-    - *Bateria Criogênica de Trealose (`cryo_trehalose_cell`)*: Triplica a capacidade máxima de energia (de 50.000 J para 150.000 J), permitindo expedições subterrâneas e de construção de até 30 minutos contínuos longe de transmissores WPT.
-    - *Lente Óptica LiDAR de Longo Alcance (`long_range_lidar_lens`)*: Triplica o raio operacional de busca de recursos e navegação de 32 para 96 blocos.
-    - *Módulo Repulsor de Levitação Piezoelétrica (`piezo_hover_thruster`)*: Instala micro-propulsores nos pés magnéticos, permitindo que o ciborgue deslize sobre crateras, poços e areia movediça sem atolar nem gerar vibrações sísmicas que atraem vermes de areia.
-- [ ] **Efeitos Sonoros, Modelos 3D & Animações Cinematográficas**:
-  - [ ] Modelos 3D Blockbench completos: `cyborg_excavator.bbmodel`, `cyborg_builder.bbmodel`, `cyborg_harvester.bbmodel`, `cyborg_incubator_vat.bbmodel` e `cyborg_docking_station.bbmodel`.
-  - [ ] Animações esqueléticas de caminhada bípede realista com flexão de joelho, balanço de tronco e micro-vibrações dos cabos de bio-refrigerante.
-  - [ ] Efeitos de áudio OGG com transientes mecânicos de alta fidelidade: passos metálico-musculares (`entity.cyborg.step`), zumbido da vibro-broca em rochas (`entity.cyborg.drill`), arco de solda laser (`entity.cyborg.weld`), bipe vocal sintético de confirmação de ordem (`entity.cyborg.voice_ack`), clique do transmissor de comando (`item.command_uplink.ping`) e trava da doca (`block.cyborg_dock.clamp`).
-  - [ ] Suíte de testes dedicada: `Fase25BioCyberneticsTest`, `Fase26AutonomousCyborgsTest` e `Fase27SwarmAndDockingTest`.
+- [x] **Doca de Manutenção e Recarga WPT (`cyborg_docking_station`)**:
+  - [x] Plataforma pesada 1x1x1 de solo em titânio e cerâmica piezoelétrica com conector indutivo de energia sem fio WPT e pinças pneumáticas de retenção.
+  - [x] Protocolo Automático de Acoplamento:
+    - [x] O ciborgue que adentra a doca é acoplado automaticamente, registrando-se no terminal da doca.
+    - [x] Recarga ultrarrápida da bateria interna (500 J/tick) via acoplamento ressonante à malha WPT da base (buffer de 100.000 J).
+    - [x] Despejo instantâneo de itens do inventário interno para baús, armários ou tubulações de fluidos inteligentes conectados à doca (`ItemStorage.SIDED`).
+    - [x] Injeção de bio-refrigerante de hemolinfa e estabilização de integridade celular muscular dos miômeros.
+  - [x] Emissão de sinal redstone comparador proporcional ao nível de energia e carga armazenada no capacitor da doca.
+  - [x] Interface Gráfica Cyberpunk Industrial (`CyborgDockingStationScreen` / `CyborgDockingStationMenu`): monitor com barra de capacitor WPT, indicador luminoso de acoplamento com telemetria do ciborgue (Joules, miômeros %) e botão tátil com feedback sonoro para forçar desacoplamento manual imediato.
+- [x] **Inteligência de Enxame Distribuída (Swarm Coordination Protocol & Voxel Mutex)**:
+  - [x] Algoritmo em `CyborgSwarmManager`: coordenação thread-safe de múltiplos ciborgues especialistas simultâneos.
+  - [x] Sistema de reservas espaciais de coordenadas (Voxel Mutex Locking): impede que dois mineradores escavem o mesmo bloco ou que dois construtores tentem assentar o mesmo tijolo simultaneamente (`claimBlock`, `releaseBlock`, `isClaimed`).
+  - [x] Registro global e descoberta automatizada de docas (`registerDock`, `unregisterDock`, `findNearestAvailableDock`), permitindo que ciborgues em trânsito localizem o ponto de recarga mais próximo no mundo.
+  - [x] Liberação preventiva de travas de coordenadas (`releaseAll`) na remoção ou descarte de entidades ciborgues, eliminando deadlocks de mundo.
+- [x] **Módulos de Upgrade Biônico Intercambiáveis (`CyborgUpgradeItem`)**:
+  - [x] 4 Componentes de personalização de alta fidelidade visual instaláveis nos ciborgues especialistas:
+    - [x] *Blindagem de Quitina Ácida (`acid_chitin_plating`)*: Reveste o chassi com carapaça tratada em secreção de larva de verme (+20 de vida, resistência a ácido e reflexão cinética de dano).
+    - [x] *Célula Criogênica de Trealose (`cryo_trehalose_cell`)*: Criocélula anidrobiótica que reduz o consumo e evaporação de bio-refrigerante de hemolinfa em 50%.
+    - [x] *Lente Óptica LiDAR de Longo Alcance (`long_range_lidar_lens`)*: Dobra o raio operacional de busca de blocos e navegação de 16 para 32 blocos.
+    - [x] *Propulsor de Levitação Piezoelétrica (`piezo_hover_thruster`)*: Micro-propulsores iônicos nos pés magnéticos conferindo passo de 1 bloco completo (`step_height`) e +30% de velocidade de deslocamento suave sobre o relevo das dunas.
+  - [x] Dock Lateral de Upgrades no `CyborgTelemetryScreen`: painel de diagnóstico acoplado ao lado direito do chassi, renderizando badges neon em tempo real para cada um dos 4 upgrades instalados, com bordas iluminadas, identificadores e tooltips detalhados ao passar o mouse.
+- [x] **Cadeia Completa de Assets 1.21.4 & Receitas Data-Driven**:
+  - [x] Blockstate e modelos ativo/inativo para a Doca (`cyborg_docking_station`).
+  - [x] Modelos de itens e definições em `assets/sandstorm/items/` para a Doca e os 4 Upgrades.
+  - [x] 5 Texturas PNG pixel-art de alta fidelidade (top, top_active, side, bottom e texturas de itens 16x16 com assinaturas válidas).
+  - [x] 5 Receitas shaped balanceadas em `data/sandstorm/recipe/` e tabela de saque para a doca.
+  - [x] Paridade trilingue de localização (`pt_br.json`, `en_us.json`, `es_es.json`).
+- [x] **Validação Automatizada de Testes**:
+  - [x] Suíte de testes dedicada `Fase27SwarmAndDockingTest`, elevando o total do repositório para **855 testes automatizados** com 100% de sucesso e zero comentários.
+
+### 🛰️ Fase 28: Torre de Projeção Holo-Tática & Matriz Neural Coletiva (Hivemind Holo-Tactical Spire & Neural Mesh) (Concluída - 100%)
+*A apoteose visual e estratégica da automação no SandStorm: torre de telecomunicações de grande escala com projeções holográficas volumétricas em tempo real sobre o deserto, interface tática RTS para o enxame, uplink neural de telemetria com visão em primeira pessoa dos ciborgues e monitoramento orbital de tempestades iônicas.*
+
+- [x] **Torre de Projeção Holo-Tática (`holo_tactical_spire`)**:
+  - [x] Estrutura vertical imponente com antena ressonante de titânio escuro e emissor óptico holográfico ciano neon no topo.
+  - [x] Capacitância interna WPT de 100.000 J e integração à Fabric Transfer API (`ItemStorage.SIDED`).
+  - [x] **Projeção Holográfica Volumétrica no Mundo (In-World Hologram Projection)**:
+    - [x] Renderizador client dinâmico projetando feixes de laser azul/ciano translúcido (`#00E5FF`) girando lentamente sobre a torre com anéis pulsantes no ar.
+    - [x] Marcadores holográficos verticais no terreno indicando em tempo real as coordenadas dos ciborgues ativos no setor, docas conectadas e perímetro de trabalho das zonas demarcadas.
+- [x] **Console de Comando Tático do Enxame (RTS Holo-Tactical Interface)**:
+  - [x] Interface visual ultra-estilizada (`HoloTacticalSpireScreen` / `HoloTacticalSpireMenu`):
+    - [x] Radar topográfico vetorial em tempo real com grade de coordenadas cartesianas (X, Z), renderizando o centro da torre, os ciborgues representados por glifos geométricos com cores de status e raio de alcance.
+    - [x] Painel de Diretrizes Macro-Estratégicas do Enxame (Broadcast de Ordens Coletivas com 1 clique):
+      - *Convergência Tática (`CONVERGE_AT_TARGET`)*: Todos os ciborgues livres convergem para uma coordenada específica com visor ciano intenso.
+      - *Alerta Vermelho Sísmico (`SEISMIC_ALERT_EVACUATE`)*: Ao detectar aproximação do Verme de Areia Colossal, soa sirene de alarme na base e força evacuação e recolhimento imediato de todo o enxame para as docas seguras.
+      - *Otimização Coordenada em Grade (`OPTIMAL_COORDINATED_WORK`)*: Distribuição inteligente de tarefas entre escavadores, construtores e coletores para máxima eficiência produtiva sem cruzamento de rotas.
+      - *Standby de Manutenção (`STANDBY_HOLD_POSITION`)*: Pausa imediata de consumo de energia e congelamento de posição para inspeção do operador.
+- [x] **Módulo de Interface Neural ("Cerebral Synapse Link" - `neural_synapse_link`)**:
+  - [x] Item acoplável ao capacete do traje espacial, estabelecendo conexão neural direta com a matriz do enxame.
+  - [x] Feedback tátil e telemetria no HUD: alertas na tela quando qualquer ciborgue sofrer dano, ficar preso ou esgotar sua bateria/bio-refrigerante.
+- [x] **Sonda de Reconhecimento Orbital de Baixa Altitude (`orbital_recon_probe`)**:
+  - [x] Sonda descartável acionada na Torre Holo-Tática que é ejetada verticalmente rumo à estratosfera.
+  - [x] Varredura atmosférica remota: prevê a chegada de tempestades de areia iônicas com 5 minutos de antecedência e detecta bolsões subterrâneos de silício e ruínas soterradas num raio de 128 blocos, projetando as coordenadas no mapa da Torre.
+- [x] **Efeitos Visuais e Sonoros de Alta Fidelidade ("Eye-Candy")**:
+  - [x] Texturas emissivas detalhadas, partículas de feixes de laser holográficos no mundo, anéis ressonantes no topo da torre e sons futuristas de telemetria, ativação de uplink e alarme de evacuação.
+  - [x] Suíte de testes dedicada: `Fase28HoloTacticalSpireTest`.
+
+### 🛡️ Fase 29: Domo de Escudo de Plasma Planetário, Canhão Cinético Anti-Titã & Defesa de Ponto Sônica (Planetary Aegis Dome, Titan Kinetic Railcannon & Point-Defense Grid)
+*A fortificação defensiva terminal contra os perigos cósmicos e cataclismos do planeta deserto: proteção de colônias inteiras contra tempestades de areia radioativas e impactos de meteoritos com cúpulas de plasma holográfico, canhão ferroviário cinético monumental anti-verme de areia titânico e grade automatizada de intercepção sônica de projéteis.*
+
+- [ ] **Gerador do Domo de Escudo de Plasma Planetário (`planetary_aegis_generator`)**:
+  - [ ] Bloco monumental 2x2x2 com reator de confinamento magnético em titânio e bobinas toroidais supercondutoras.
+  - [ ] Capacitância massiva de 1.000.000 J WPT com suporte à Fabric Transfer API (`ItemStorage.SIDED`, `EnergyStorage.SIDED`).
+  - [ ] **Efeito Visual Espetacular de Cúpula de Plasma (Volumetric Plasma Dome Rendering)**:
+    - [ ] Renderizador client projetando uma cúpula semiesférica translúcida pulsante com hexágonos holográficos dinâmicos que se iluminam ao interceptar projéteis, tempestades ou criaturas.
+    - [ ] Ondas de choque em ondas de cor azul-celeste e ciano (`#00E5FF`) com distorções de refração atmosférica quando atingida por raios iônicos ou tempestades severas.
+  - [ ] **Proteção Ambiental Absoluta em Área**:
+    - [ ] Anula integralmente o dano de calor extremo, radiação solar e sufocamento por tempestade de areia para qualquer entidade dentro do perímetro (raio expansível de 32 a 128 blocos).
+    - [ ] Repulsão cinética e barreira intransponível para o Verme de Areia Colossal e projéteis sônicos externos.
+- [ ] **Canhão Ferroviário Cinético Anti-Titã (`titan_kinetic_railcannon`)**:
+  - [ ] Artilharia de cerco pesada 3x3x4 montada em base giratória reforçada com cano de aceleração magnética linear duplo de 6 metros.
+  - [ ] Acoplamento ao radar da Torre Holo-Tática (`HoloTacticalSpire`): rastreia automaticamente assinaturas sísmicas de vermes colossais em um raio de 256 blocos.
+  - [ ] Disparo cinético hipersônico devastador: acelera projéteis de tungstênio-titânio (`kinetic_penetrator_slug`) com feixe de arco voltaico ofuscante, estampido sônico estrondoso e onda de choque que levanta colunas de poeira nas dunas.
+- [ ] **Grade Automatizada de Defesa de Ponto Sônica (`point_defense_node`)**:
+  - [ ] Nós de interceptação rápida de curto alcance instaláveis em muralhas e tetos de hangares.
+  - [ ] Intercepta e desintegra projéteis hostis, estilhaços de meteoritos e detritos de tempestades usando micro-pulsos acústicos de alta frequência sincronizados pelo `CyborgSwarmManager`.
+- [ ] **Munições & Componentes de Alta Tecnologia**:
+  - [ ] Projétil Perfurante de Tungstênio-Titânio (`kinetic_penetrator_slug`): municiamento denso usinado na Bancada de Modificação Molecular.
+  - [ ] Bobina Supercondutora Toroidal (`superconducting_magnetic_coil`): componente estrutural avançado com fios cerâmicos de alta temperatura crítica.
+  - [ ] Cristal Difratador de Plasma Hexagonal (`plasma_diffraction_crystal`): matriz de foco óptico para a cúpula de contenção de plasma.
+- [ ] **Interface Gráfica Holográfica de Controle Balístico & Defesa (`PlanetaryAegisScreen` / `PlanetaryAegisMenu`)**:
+  - [ ] Display de visualização tática em tela cheia com monitoramento de integridade do escudo de plasma (%), consumo por segundo (J/s), raio de contenção regulável (sliders táteis) e câmera de mira remota do canhão de titã com telemetria angular (Yaw/Pitch).
+- [ ] **Cadeia Completa de Assets 1.21.4, Modelos 3D, SFX & Testes**:
+  - [ ] Modelos BBModel detalhados para o gerador de escudo, canhão cinético e nós de defesa de ponto.
+  - [ ] Efeitos sonoros customizados: zumbido de plasma harmônico (`aegis_shield_hum.ogg`), impacto no escudo (`aegis_shield_impact.ogg`) e disparo cinético do canhão (`railcannon_fire.ogg`).
+  - [ ] Suíte de testes dedicada `Fase29PlanetaryAegisTest`.
 
 ---
 
@@ -804,6 +865,36 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - [x] `trehalose_sugar`: Aglomerado de cristais prismáticos de açúcar crio-protetor vitrificador.
     - [x] `osmolyte_glycerol`: Frasco conta-gotas com glicerol osmoprotetor esmeralda viscoso.
     - [x] `neuroactive_alkaloids`: Tintura botânica carmesim e dourada de alcaloides adrenérgicos.
+  - [x] **Bio-Farmacologia Tecnológica & Hipo-Injetor (Fase 22)**:
+    - [x] `hypo_injector`: Hipo-injetor pneumático portátil em titânio escuro com acionamento estéril instantâneo.
+    - [x] `adrenal_stim`: Ampola neuro-adrenérgica para sobrecarga motora (+30% velocidade).
+    - [x] `biofoam_cartridge`: Cartucho de bio-espuma coagulante com quitosana para cura e regeneração celular.
+    - [x] `myomer_stim`: Estimulador miomecânico para torque contrátil (+40% força de impacto).
+    - [x] `endothermic_serum`: Sérum endotérmico refratário para imunidade térmica absoluta e proteção solar.
+    - [x] `grav_dampener_stim`: Sérum anti-inercial piezoelétrico para super-saltos e queda suave.
+    - [x] `detox_ampoule`: Ampola quelante de desintoxicação celular para purga de venenos e toxinas.
+    - [x] `stealth_nano_drape`: Emulsão de refração óptica furtiva para camuflagem metamaterial.
+  - [x] **Modificação Molecular, Overclocks & Nanocoatings (Fase 23)**:
+    - [x] 12 Módulos de hardware: `vibro_resonator_module`, `thermal_plasma_emitter`, `kinetic_focus_module`, `cavitation_frequency_core`, `atomic_phase_disrupter`, `spectrometric_sifter`, `self_healing_nanite_matrix`, `titanium_lattice_coating`, `ballistic_dampener_mesh`, `ablative_thermal_plating`, `pneumatic_fall_dampers`, `reactive_shock_plating`.
+  - [x] **Bio-Cibernética Fundamental & Componentes Neurais (Fase 25)**:
+    - [x] `biomechanical_chassis_frame`: Chassi esquelético articulado em titânio-quitina.
+    - [x] `synthetic_myomer_bundle`: Feixes de miômeros artificiais eletroativos de alta contração.
+    - [x] `bio_neural_core`: Processador wetware neural biônico com micélio radiotrófico e silício.
+    - [x] `bio_coolant_canister`: Cânister de hemolinfa bio-refrigerante ciano luminescente.
+    - [x] `assembled_cyborg_frame`: Chassi biomecânico integral gestado na incubadora.
+  - [x] **Ciborgues Especialistas & Uplink de Comando (Fase 26)**:
+    - [x] `cybernetic_command_uplink`: Transmissor holográfico com demarcação 3D de volumes e telemetria biônica.
+    - [x] `cyborg_excavator_spawn_egg`: Módulo de ativação e implantação do Ciborgue Escavador.
+    - [x] `cyborg_builder_spawn_egg`: Módulo de ativação e implantação do Ciborgue Construtor.
+    - [x] `cyborg_harvester_spawn_egg`: Módulo de ativação e implantação do Ciborgue Colhedor.
+  - [x] **Enxame Cibernético & Módulos de Upgrade Biônicos (Fase 27)**:
+    - [x] `acid_chitin_plating`: Blindagem de quitina ácida (+20 HP e proteção cáustica).
+    - [x] `cryo_trehalose_cell`: Célula criogênica de trealose (-50% consumo de bio-refrigerante).
+    - [x] `long_range_lidar_lens`: Lente óptica LiDAR de longo alcance (dobra raio de varredura para 32 blocos).
+    - [x] `piezo_hover_thruster`: Propulsor piezoelétrico (+1 bloco de elevação de passo e +30% velocidade).
+  - [x] **Torre Holo-Tática & Matriz Neural (Fase 28)**:
+    - [x] `neural_synapse_link`: Módulo de interface neural para telemetria direta do enxame no capacete do traje.
+    - [x] `orbital_recon_probe`: Sonda de reconhecimento orbital descartável para previsão atmosférica e varredura sísmica.
   - [x] `pressure_seal`: Anel hermético de elastômero fluoropolímero para eclusas e tubulações de alta pressão.
   - [ ] `sandtrout_capsule`: Frasco criogênico de contenção hermética de truta da areia viva.
   - [ ] `soft_chitin_plate`: Placa de quitina tenra de larva do verme.
@@ -846,9 +937,11 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `sand_maglev_rail`, `habitat_dome`, `auto_assembly_line`: Trilhos de levitação magnética, domo residencial e linha de montagem industrial (Fase 17).
   - [x] `titanium_spike_wall`, `retractable_spike_wall`, `electrified_spike_barrier`, `corrosive_chitin_spike_wall`, `kinetic_floor_spikes`, `crushing_spike_gate`: Módulos de espinhos de titânio, espinhos retráteis pneumáticos, barreiras de alta tensão, espinhos bio-corrosivos, armadilhas sísmicas de piso e portões de grades esmagadoras (Fase 18).
   - [x] `megastructure_constructor.bbmodel`: Bloco monumental 2x2 com base em titânio escuro, 4 pistões pneumáticos de fixação estrutural, cúpula holográfica central de cristal piezoelétrico com anéis de giroscópio animados e 4 baias de hangar para esquadrilhas de drones (Fase 19).
-  - [ ] `cyborg_incubator_vat.bbmodel`: Tanque cilíndrico de bio-gestação 1x1x2 com cúpula de vidro curvo temperado, anéis de iluminação volumétrica ciano, tubulações de recirculação amniótica e braços robóticos internos de bio-montagem (Fase 25).
-  - [ ] `cyborg_docking_station.bbmodel`: Plataforma pesada de ancoragem e recarga WPT no solo com conector indutivo, garras mecânicas de fixação pneumática e leds de status (Fase 27).
-- [x] **Modelos de Entidades (Blockbench)**:
+  - [x] `molecular_modifier`: Bancada industrial de modificação molecular com cabeçote litográfico laser e soquetes de overclock/nanocoating (Fase 23).
+  - [x] `bio_regeneration_pod`: Cápsula médica MedBay hermética de criostase, monitor cardíaco ECG e perfusão de bio-soluções (Fase 24).
+  - [x] `cyborg_docking_station`: Plataforma pesada de ancoragem e recarga WPT no solo com conector indutivo, garras mecânicas de fixação pneumática e leds de status (Fase 27).
+  - [x] `holo_tactical_spire`: Torre monumental de projeção holo-tática com antena ressonante de titânio escuro, emissor holográfico ciano e console de radar vetorial (Fase 28).
+- [x] **Modelos de Entidades (Blockbench & Java Models)**:
   - [x] `sandworm.bbmodel`: Corpo cilíndrico segmentado com mandíbulas quádruplas abertas e anel bucal.
   - [ ] `sandtrout.bbmodel`: Modelo pequeno de criatura ameboide coriácea rastejante de areia (Truta da Areia / Little Maker).
   - [ ] `sandworm_larva.bbmodel`: Modelo segmentado ágil de larva/ninfa com anéis tenros de quitina e mandíbula trirradiada.
@@ -858,9 +951,9 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `excavator_vehicle.bbmodel`: Rover industrial de esteiras duplas com broca giratória frontal.
   - [x] `megazord.bbmodel`: Mecha bípede titânico com cockpit e emissores de choque sônico.
   - [x] `sandboard`: Prancha de surfe nas dunas com fixadores de botas.
-  - [ ] `cyborg_excavator.bbmodel`: Chassi bípede reforçado de titânio escuro com feixes musculares carmesim expostos, braço direito fundido a uma broca de vibro-cavitação atômica, escâner sísmico no peito e tanque dorsal de bio-refrigerante ciano (Fase 26).
-  - [ ] `cyborg_builder.bbmodel`: Chassi biomecânico ágil com manipulador magnético no braço esquerdo, tocha de solda de plasma molecular no braço direito, compartimento dorsal de carga e cabeçote com visor óptico emissivo (Fase 26).
-  - [ ] `cyborg_harvester.bbmodel`: Chassi esguio e veloz com pernas de alta mobilidade, garras cirúrgicas articuladas, sensor espectrofotométrico fitossanitário e cesto traseiro selado de coleta hermética de biomassa (Fase 26).
+  - [x] `cyborg_excavator`: Chassi bípede biomecânico reforçado de titânio escuro com feixes musculares carmesim expostos, braço broca de vibro-cavitação atômica e visor adaptativo (`CyborgModel` / `CyborgRenderer`, Fase 26).
+  - [x] `cyborg_builder`: Chassi biomecânico ágil com manipulador magnético no braço esquerdo, tocha de solda de plasma molecular no braço direito, compartimento dorsal de carga e visor adaptativo (`CyborgModel` / `CyborgRenderer`, Fase 26).
+  - [x] `cyborg_harvester`: Chassi esguio e veloz com garras cirúrgicas articuladas, sensor fitossanitário e cesto traseiro selado de coleta hermética de biomassa (`CyborgModel` / `CyborgRenderer`, Fase 26).
 
 ---
 
@@ -1042,7 +1135,7 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - 5 Receitas data-driven balanceadas em `data/sandstorm/recipe/` e tabela de saque (`cyborg_incubator_vat.json`).
     - Localização trilingue completa e sincronizada (`pt_br.json`, `en_us.json`, `es_es.json`) com 100% de paridade auditada por `I18nParityTest`.
     - Suíte de testes dedicada `Fase25BioCyberneticsTest`, elevando o total do repositório para **790 testes automatizados** com 100% de sucesso e zero comentários.
-50. `fase26-autonomous-cyborgs`: Implementação completa da **Fase 26: Ciborgues Especialistas Autônomos & Uplink de Comando Holográfico**:
+50. `9bfa6f0` (`fase26-autonomous-cyborgs`): Implementação completa da **Fase 26: Ciborgues Especialistas Autônomos & Uplink de Comando Holográfico**:
     - **Transmissor Holográfico de Comando (`CyberneticCommandUplinkItem` / `cybernetic_command_uplink`)**:
       - Dispositivo portátil em titânio escuro com display tátil holográfico e antena emissora ciano neon.
       - 3 Modos Operacionais com alternância instantânea por Shift + Clique (`MINING`, `BUILDING`, `HARVESTING`) com feedback sonoro e notificações na interface.
@@ -1069,4 +1162,62 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
       - Paridade 100% nas 3 línguas oficiais (`pt_br.json`, `en_us.json`, `es_es.json`).
     - **Validação Automatizada de Testes**:
       - Suíte de testes dedicada `Fase26AutonomousCyborgsTest`, elevando o total do repositório para **820 testes automatizados** com 100% de sucesso e zero comentários.
+51. `fase27-swarm-and-docking`: Implementação completa da **Fase 27: Enxame Cibernético (Swarm Intelligence), Doca de Recarga & Módulos de Upgrade Biônicos**:
+    - **Doca de Manutenção e Recarga WPT (`cyborg_docking_station` / `CyborgDockingStationBlock` / `CyborgDockingStationBlockEntity`)**:
+      - Maquinário 1x1x1 em titânio e cerâmica piezoelétrica com capacitor WPT de 100.000 J, reservatório interno de bio-refrigerante de hemolinfa e integração total à Fabric Transfer API (`ItemStorage.SIDED`).
+      - Protocolo de auto-acoplamento inteligente para ciborgues retornando de missões, recarga ultrarrápida (500 J/tick), injeção de refrigerante e descarregamento automático de inventários.
+      - Interface Gráfica Cyberpunk Industrial (`CyborgDockingStationScreen` / `CyborgDockingStationMenu`) com telemetria ao vivo da doca e do ciborgue ancorado, botão de desacoplamento de emergência com feedback de clique sonoro.
+    - **Inteligência de Enxame Coordenada & Protocolo Voxel Mutex (`CyborgSwarmManager`)**:
+      - Gestor central de malha de enxame distribuído com Voxel Mutex (`claimBlock`, `releaseBlock`, `isClaimed`) prevenindo colisões de mineração entre escavadores e disputas de assentamento entre construtores.
+      - Registro e busca dinâmica da Doca de Recarga mais próxima para recolhimento autônomo de unidades com bateria baixa.
+    - **4 Módulos de Upgrade Biônico Intercambiáveis (`CyborgUpgradeItem` / `CyborgUpgradeType`)**:
+      - Blindagem de Quitina Ácida (`acid_chitin_plating`): +20 HP e proteção contra ácido e espinhos.
+      - Célula Criogênica de Trealose (`cryo_trehalose_cell`): -50% de taxa de consumo de bio-refrigerante.
+      - Lente Óptica LiDAR de Longo Alcance (`long_range_lidar_lens`): Raio de varredura dobrado de 16 para 32 blocos.
+      - Propulsor Hover Piezoelétrico (`piezo_hover_thruster`): Elevação de passo para 1 bloco e velocidade aumentada em 30%.
+    - **Dock Lateral de Upgrades no `CyborgTelemetryScreen`**:
+      - Painel lateral dedicado adjacente ao chassi principal com 4 slots visuais hexagonais para upgrades, indicadores neon ativos/inativos e tooltips descritivos em tempo real.
+    - **Cadeia Completa de Assets 1.21.4 & Receitas Data-Driven**:
+      - Blockstate, modelos ativo/inativo da doca, 5 modelos de itens, 5 definições em `assets/sandstorm/items/` e 5 novas texturas PNG com assinaturas válidas.
+      - 5 Receitas shaped balanceadas em `data/sandstorm/recipe/` e tabela de saque da doca.
+      - Paridade trilingue de localização (`pt_br`, `en_us`, `es_es`) auditada por `I18nParityTest`.
+    - **Validação Automatizada de Testes**:
+      - Suíte de testes dedicada `Fase27SwarmAndDockingTest`, elevando o total do repositório para **855 testes automatizados** com 100% de sucesso e zero comentários.
+52. `fase28-holo-tactical-spire`: Implementação completa da **Fase 28: Torre de Projeção Holo-Tática & Matriz Neural Coletiva (Hivemind Holo-Tactical Spire & Neural Mesh)**:
+    - **Torre de Projeção Holo-Tática (`holo_tactical_spire` / `HoloTacticalSpireBlock` / `HoloTacticalSpireBlockEntity`)**:
+      - Estrutura vertical imponente com capacitor WPT de 100.000 J, estados `FACING` e `ACTIVE`, emissor holográfico ciano e slot frontal para sondas de reconhecimento.
+      - Suporte integral à Fabric Transfer API (`ItemStorage.SIDED`, `ContainerStorage::of`).
+    - **Console de Comando Tático do Enxame (RTS Holo-Tactical Interface)**:
+      - Interface visual de alta performance (`HoloTacticalSpireScreen` / `HoloTacticalSpireMenu`):
+        - Display de radar cartográfico vetorial com feixe giratório de varredura holográfica em 360°, retícula polar e grade cartesiana (X, Z).
+        - Rastreamento dinâmico em tempo real de ciborgues especialistas com glifos geométricos com cores de status de rotina (Ciano para Trabalho Autônomo, Âmbar para Seguir, Vermelho para Patrulha, Roxo para Retorno à Doca).
+        - Marcadores luminosos das docas de recarga conectadas.
+        - Seletor tátil de 4 Ordens Globais Macro-Estratégicas com broadcast instantâneo ao `CyborgSwarmManager` (Convergência, Otimização, Patrulha Perimétrica, Alerta Sísmico de Evacuação).
+    - **Módulo de Interface Neural ("Cerebral Synapse Link" - `neural_synapse_link`)**:
+      - Matriz bio-silício para uplink direto entre o capacete do traje espacial e a consciência coletiva do enxame.
+    - **Sonda de Reconhecimento Orbital de Baixa Altitude (`orbital_recon_probe`)**:
+      - Sonda aeroespacial descartável com telemetria sônica, alarme antecipado de tempestades e rastreamento de ameaças sísmicas.
+    - **Cadeia Completa de Assets 1.21.4 & Receitas Data-Driven**:
+      - Blockstate, modelos ativo/inativo da torre, modelos de item, 3 definições em `assets/sandstorm/items/` e 6 texturas PNG pixel-art de alta fidelidade com assinaturas válidas.
+      - 3 Receitas shaped balanceadas em `data/sandstorm/recipe/` e tabela de saque para a torre.
+      - Paridade trilingue de localização (`pt_br`, `en_us`, `es_es`) auditada por `I18nParityTest`.
+    - **Validação Automatizada de Testes**:
+      - Suíte de testes dedicada `Fase28HoloTacticalSpireTest`, elevando o total do repositório para **872 testes automatizados** com 100% de sucesso e zero comentários.
+53. `sandstorm-debug-suite`: Implementação da **Suíte Unificada de Comandos de Debug para Todas as Fases (Fases 1 a 28), Spawns de Robôs/Entidades e Geração de Estruturas Completas**:
+    - **Comandos de Kits por Fase (`/sandstorm debug phase <1..28|all>` & `/sandstorm_debug phase <1..28|all>`)**:
+      - Suporte a todas as 28 fases do SandStorm com kits de inventário sob medida, suprindo desde trajes espaciais, água, ferramentas primárias e maquinários industriais, até biorreatores, farmacologia, modificações moleculares, robótica avançada, enxames de ciborgues e torres holo-táticas.
+    - **Spawns de Robôs e Veículos (`/sandstorm debug spawn|robot <entidade>`)**:
+      - 9 Entidades e robôs cobertos: `cyborg_excavator`, `cyborg_builder`, `cyborg_harvester`, `excavator_vehicle`, `megazord`, `cargo_drone`, `builder_drone`, `sandworm` (em modo showcase com escala titânica) e `sandboard`.
+    - **Geração Procedural de Estruturas e Postos Tecnológicos (`/sandstorm debug setup|structure <instalação>`)**:
+      - 15 Instalações e bases completas: `cyborg_outpost`, `medbay_clinic`, `bioreactor_lab`, `molecular_workshop`, `spike_fortress`, `power_station`, `megastructure_site`, `hydroponics_dome`, `deep_drill_station`, `defense_perimeter`, `refinery_complex`, `terraformer_dome`, `maglev_station`, `starter_base`, `ancient_ruin_site`.
+    - **Comandos Operacionais Complementares**:
+      - `/sandstorm debug suit refill|drain`: Recarga e teste de estresse térmico/oxigênio do traje espacial.
+      - `/sandstorm debug swarm status|reset|order <0..3>`: Monitoramento de Voxel Mutex, liberação de travas espaciais e broadcast de diretrizes estratégicas.
+      - `/sandstorm debug weather start [intensidade]|stop`: Controle de tempestades de areia iônicas.
+      - `/sandstorm debug seismic`: Convocação imediata de encontro com Verme de Areia Colossal.
+      - `/sandstorm debug list`: Catálogo in-game de todos os comandos e parâmetros.
+    - **Validação Automatizada de Testes**:
+      - Suíte de testes dedicada `SandstormDebugTest`, elevando o total do repositório para **877 testes automatizados** com 100% de sucesso e zero comentários.
+
+
 

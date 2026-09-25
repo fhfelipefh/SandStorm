@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "CSC",
+    "STS",
+    "CSC"
+  ],
+  "key": {
+    "C": "sandstorm:sandworm_chitin",
+    "S": "sandstorm:heavy_sap_bottle",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "result": {
+    "id": "sandstorm:acid_chitin_plating",
+    "count": 1
+  }
+}

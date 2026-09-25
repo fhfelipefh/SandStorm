@@ -115,6 +115,12 @@ public class SandStormItems {
     public static final SpawnEggItem CYBORG_EXCAVATOR_SPAWN_EGG = register("cyborg_excavator_spawn_egg", new SpawnEggItem(properties("cyborg_excavator_spawn_egg").spawnEgg(SandStormEntities.CYBORG_EXCAVATOR)));
     public static final SpawnEggItem CYBORG_BUILDER_SPAWN_EGG = register("cyborg_builder_spawn_egg", new SpawnEggItem(properties("cyborg_builder_spawn_egg").spawnEgg(SandStormEntities.CYBORG_BUILDER)));
     public static final SpawnEggItem CYBORG_HARVESTER_SPAWN_EGG = register("cyborg_harvester_spawn_egg", new SpawnEggItem(properties("cyborg_harvester_spawn_egg").spawnEgg(SandStormEntities.CYBORG_HARVESTER)));
+    public static final CyborgUpgradeItem ACID_CHITIN_PLATING = register("acid_chitin_plating", new CyborgUpgradeItem(CyborgUpgradeItem.CyborgUpgradeType.ACID_CHITIN_PLATING, properties("acid_chitin_plating")));
+    public static final CyborgUpgradeItem CRYO_TREHALOSE_CELL = register("cryo_trehalose_cell", new CyborgUpgradeItem(CyborgUpgradeItem.CyborgUpgradeType.CRYO_TREHALOSE_CELL, properties("cryo_trehalose_cell")));
+    public static final CyborgUpgradeItem LONG_RANGE_LIDAR_LENS = register("long_range_lidar_lens", new CyborgUpgradeItem(CyborgUpgradeItem.CyborgUpgradeType.LONG_RANGE_LIDAR_LENS, properties("long_range_lidar_lens")));
+    public static final CyborgUpgradeItem PIEZO_HOVER_THRUSTER = register("piezo_hover_thruster", new CyborgUpgradeItem(CyborgUpgradeItem.CyborgUpgradeType.PIEZO_HOVER_THRUSTER, properties("piezo_hover_thruster")));
+    public static final Item NEURAL_SYNAPSE_LINK = register("neural_synapse_link", new Item(properties("neural_synapse_link").rarity(Rarity.EPIC).stacksTo(1)));
+    public static final Item ORBITAL_RECON_PROBE = register("orbital_recon_probe", new Item(properties("orbital_recon_probe").rarity(Rarity.RARE).stacksTo(16)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -256,6 +262,14 @@ public class SandStormItems {
                         entries.accept(CYBORG_EXCAVATOR_SPAWN_EGG);
                         entries.accept(CYBORG_BUILDER_SPAWN_EGG);
                         entries.accept(CYBORG_HARVESTER_SPAWN_EGG);
+                        entries.accept(SandStormBlocks.CYBORG_DOCKING_STATION);
+                        entries.accept(ACID_CHITIN_PLATING);
+                        entries.accept(CRYO_TREHALOSE_CELL);
+                        entries.accept(LONG_RANGE_LIDAR_LENS);
+                        entries.accept(PIEZO_HOVER_THRUSTER);
+                        entries.accept(SandStormBlocks.HOLO_TACTICAL_SPIRE);
+                        entries.accept(NEURAL_SYNAPSE_LINK);
+                        entries.accept(ORBITAL_RECON_PROBE);
                     })
                     .build()
     );

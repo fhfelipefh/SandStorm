@@ -1,25 +1,31 @@
 package com.fhfelipefh.sandstorm.content.entity.cyborg;
 
 import com.fhfelipefh.sandstorm.content.gui.CyborgTelemetryMenu;
+import com.fhfelipefh.sandstorm.content.item.CyborgUpgradeItem;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -39,6 +45,7 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
     private static final EntityDataAccessor<BlockPos> DATA_ZONE_MIN = SynchedEntityData.defineId(CyborgEntity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<BlockPos> DATA_ZONE_MAX = SynchedEntityData.defineId(CyborgEntity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<String> DATA_OWNER_UUID = SynchedEntityData.defineId(CyborgEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> DATA_UPGRADES_MASK = SynchedEntityData.defineId(CyborgEntity.class, EntityDataSerializers.INT);
 
     protected final SimpleContainer inventory = new SimpleContainer(CyborgTelemetryMenu.CYBORG_SLOTS);
 
@@ -62,6 +69,7 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
         builder.define(DATA_ZONE_MIN, BlockPos.ZERO);
         builder.define(DATA_ZONE_MAX, BlockPos.ZERO);
         builder.define(DATA_OWNER_UUID, "");
+        builder.define(DATA_UPGRADES_MASK, 0);
     }
 
     public CyborgRoutine getRoutine() {
@@ -95,8 +103,16 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
         return this.entityData.get(DATA_ENERGY);
     }
 
+    public int getMaxEnergy() {
+        return hasUpgrade(CyborgUpgradeItem.CyborgUpgradeType.CRYO_TREHALOSE_CELL) ? MAX_ENERGY * 3 : MAX_ENERGY;
+    }
+
+    public double getOperationalRadius() {
+        return hasUpgrade(CyborgUpgradeItem.CyborgUpgradeType.LONG_RANGE_LIDAR_LENS) ? 96.0 : 32.0;
+    }
+
     public void setEnergy(int energy) {
-        this.entityData.set(DATA_ENERGY, Math.clamp(energy, 0, MAX_ENERGY));
+        this.entityData.set(DATA_ENERGY, Math.clamp(energy, 0, getMaxEnergy()));
     }
 
     public int consumeEnergy(int amount) {
@@ -131,6 +147,48 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
 
     public void setIntegrity(int integrity) {
         this.entityData.set(DATA_INTEGRITY, Math.clamp(integrity, 0, MAX_INTEGRITY));
+    }
+
+    public void chargeEnergy(int amount) {
+        addEnergy(amount);
+    }
+
+    public void repairIntegrity(int amount) {
+        setIntegrity(getIntegrity() + amount);
+    }
+
+    public int getUpgradesMask() {
+        return this.entityData.get(DATA_UPGRADES_MASK);
+    }
+
+    public void setUpgradesMask(int mask) {
+        this.entityData.set(DATA_UPGRADES_MASK, mask);
+    }
+
+    public boolean hasUpgrade(CyborgUpgradeItem.CyborgUpgradeType type) {
+        if (type == null) {
+            return false;
+        }
+        return (getUpgradesMask() & type.getMaskBit()) != 0;
+    }
+
+    public boolean installUpgrade(CyborgUpgradeItem.CyborgUpgradeType type) {
+        if (type == null || hasUpgrade(type)) {
+            return false;
+        }
+        setUpgradesMask(getUpgradesMask() | type.getMaskBit());
+        return true;
+    }
+
+    public boolean uninstallUpgrade(CyborgUpgradeItem.CyborgUpgradeType type) {
+        if (type == null || !hasUpgrade(type)) {
+            return false;
+        }
+        setUpgradesMask(getUpgradesMask() & ~type.getMaskBit());
+        if (getEnergy() > getMaxEnergy()) {
+            setEnergy(getMaxEnergy());
+        }
+        return true;
     }
 
     public BlockPos getZoneMin() {
@@ -213,13 +271,14 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
             public int get(int index) {
                 return switch (index) {
                     case 0 -> getEnergy();
-                    case 1 -> MAX_ENERGY;
+                    case 1 -> getMaxEnergy();
                     case 2 -> getCoolant();
                     case 3 -> MAX_COOLANT;
                     case 4 -> getIntegrity();
                     case 5 -> getRoutine().ordinal();
                     case 6 -> getVisorColor();
                     case 7 -> getSpecialty().ordinal();
+                    case 8 -> getUpgradesMask();
                     default -> 0;
                 };
             }
@@ -232,6 +291,7 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
                     case 4 -> setIntegrity(value);
                     case 5 -> setRoutine(CyborgRoutine.fromOrdinal(value));
                     case 6 -> setVisorState(value);
+                    case 8 -> setUpgradesMask(value);
                     default -> {
                     }
                 }
@@ -239,9 +299,54 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
 
             @Override
             public int getCount() {
-                return 8;
+                return 9;
             }
         };
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (hasUpgrade(CyborgUpgradeItem.CyborgUpgradeType.PIEZO_HOVER_THRUSTER)) {
+            this.resetFallDistance();
+            Level currentLevel = this.level();
+            if (!currentLevel.isClientSide() && this.getDeltaMovement().horizontalDistanceSqr() > 0.005) {
+                if (this.random.nextFloat() < 0.25f) {
+                    ((ServerLevel) currentLevel).sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                            this.getX(), this.getY() + 0.05, this.getZ(),
+                            2, 0.15, 0.05, 0.15, 0.02);
+                }
+            }
+        }
+    }
+
+    protected void tickReturnToDock(ServerLevel level) {
+        BlockPos dock = CyborgSwarmManager.getInstance().findNearestAvailableDock(level, this.blockPosition(), 64.0);
+        if (dock != null) {
+            double distSq = this.distanceToSqr(dock.getX() + 0.5, dock.getY() + 0.5, dock.getZ() + 0.5);
+            if (distSq > 2.0) {
+                this.getNavigation().moveTo(dock.getX() + 0.5, dock.getY() + 0.5, dock.getZ() + 0.5, 1.15);
+                setVisorState(3);
+            }
+        }
+    }
+
+    @Override
+    public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        if (hasUpgrade(CyborgUpgradeItem.CyborgUpgradeType.ACID_CHITIN_PLATING)) {
+            amount *= 0.75f;
+        }
+        CyborgSwarmManager.getInstance().broadcastEmergency(level, this, source);
+        return super.hurtServer(level, source, amount);
+    }
+
+    @Override
+    public boolean canBeAffected(MobEffectInstance effectInstance) {
+        if (hasUpgrade(CyborgUpgradeItem.CyborgUpgradeType.ACID_CHITIN_PLATING) && effectInstance.getEffect().equals(MobEffects.POISON)) {
+            return false;
+        }
+        return super.canBeAffected(effectInstance);
     }
 
     @Override
@@ -250,7 +355,24 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
             return InteractionResult.PASS;
         }
 
-        if (player.getItemInHand(hand).is(SandStormItems.CYBERNETIC_COMMAND_UPLINK) || player.isShiftKeyDown() || isOwner(player)) {
+        ItemStack held = player.getItemInHand(hand);
+        if (held.getItem() instanceof CyborgUpgradeItem upgradeItem) {
+            CyborgUpgradeItem.CyborgUpgradeType type = upgradeItem.getUpgradeType();
+            if (!hasUpgrade(type)) {
+                if (!this.level().isClientSide()) {
+                    installUpgrade(type);
+                    if (!player.hasInfiniteMaterials()) {
+                        held.shrink(1);
+                    }
+                    this.playSound(SoundEvents.ARMOR_EQUIP_NETHERITE.value(), 1.0f, 1.0f);
+                    player.sendSystemMessage(Component.translatable("message.sandstorm.cyborg_upgrade_installed",
+                            Component.translatable(upgradeItem.getDescriptionId())));
+                }
+                return InteractionResult.SUCCESS;
+            }
+        }
+
+        if (held.is(SandStormItems.CYBERNETIC_COMMAND_UPLINK) || player.isShiftKeyDown() || isOwner(player)) {
             if (!this.level().isClientSide()) {
                 if (getOwnerUUID() == null) {
                     setOwnerUUID(player.getUUID());
@@ -273,6 +395,7 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
         output.putInt("VisorState", getVisorColor());
         output.putLong("ZoneMin", getZoneMin().asLong());
         output.putLong("ZoneMax", getZoneMax().asLong());
+        output.putInt("UpgradesMask", getUpgradesMask());
         String owner = this.entityData.get(DATA_OWNER_UUID);
         if (owner != null && !owner.isEmpty()) {
             output.putString("OwnerUUID", owner);
@@ -282,6 +405,7 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
+        setUpgradesMask(input.getIntOr("UpgradesMask", 0));
         setEnergy(input.getIntOr("Energy", 0));
         setCoolant(input.getIntOr("Coolant", 0));
         setIntegrity(input.getIntOr("Integrity", 100));
@@ -295,6 +419,7 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
     @Override
     protected void dropCustomDeathLoot(ServerLevel level, DamageSource damageSource, boolean recentlyHit) {
         super.dropCustomDeathLoot(level, damageSource, recentlyHit);
+        CyborgSwarmManager.getInstance().releaseAll(this.getUUID());
         Containers.dropContents(this.level(), this, this.inventory);
     }
 }

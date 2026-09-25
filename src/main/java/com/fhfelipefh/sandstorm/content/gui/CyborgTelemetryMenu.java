@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.gui;
 
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgRoutine;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgSpecialty;
+import com.fhfelipefh.sandstorm.content.item.CyborgUpgradeItem;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,7 +23,7 @@ public class CyborgTelemetryMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public CyborgTelemetryMenu(int syncId, Inventory playerInventory) {
-        this(SandStormMenus.CYBORG_TELEMETRY_MENU, syncId, playerInventory, new SimpleContainer(CYBORG_SLOTS), new SimpleContainerData(8));
+        this(SandStormMenus.CYBORG_TELEMETRY_MENU, syncId, playerInventory, new SimpleContainer(CYBORG_SLOTS), new SimpleContainerData(9));
     }
 
     public CyborgTelemetryMenu(int syncId, Inventory playerInventory, Container container, ContainerData data) {
@@ -32,7 +33,7 @@ public class CyborgTelemetryMenu extends AbstractContainerMenu {
     public CyborgTelemetryMenu(MenuType<?> menuType, int syncId, Inventory playerInventory, Container container, ContainerData data) {
         super(menuType, syncId);
         checkContainerSize(container, CYBORG_SLOTS);
-        checkContainerDataCount(data, 8);
+        checkContainerDataCount(data, 9);
         this.container = container;
         this.data = data;
 
@@ -103,6 +104,14 @@ public class CyborgTelemetryMenu extends AbstractContainerMenu {
 
     public CyborgSpecialty getSpecialty() {
         return CyborgSpecialty.fromOrdinal(this.data.get(7));
+    }
+
+    public int getUpgradesMask() {
+        return this.data.get(8);
+    }
+
+    public boolean hasUpgrade(CyborgUpgradeItem.CyborgUpgradeType type) {
+        return (getUpgradesMask() & type.getBitmask()) != 0;
     }
 
     public int getEnergyScaled(int pixels) {

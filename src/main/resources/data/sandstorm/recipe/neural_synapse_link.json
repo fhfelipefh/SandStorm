@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " N ",
+    "ACA",
+    " G "
+  ],
+  "key": {
+    "N": "sandstorm:bio_neural_core",
+    "A": "sandstorm:nano_actuator",
+    "C": "sandstorm:circuit_board",
+    "G": "sandstorm:fulgurite_glass"
+  },
+  "result": {
+    "id": "sandstorm:neural_synapse_link",
+    "count": 1
+  }
+}

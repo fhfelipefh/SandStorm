@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "sandstorm:item/long_range_lidar_lens"
+  }
+}

@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.client.gui;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgRoutine;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgSpecialty;
 import com.fhfelipefh.sandstorm.content.gui.CyborgTelemetryMenu;
+import com.fhfelipefh.sandstorm.content.item.CyborgUpgradeItem;
 import com.fhfelipefh.sandstorm.util.NumberFormat;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -59,6 +60,7 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         super.extractRenderState(extractor, mouseX, mouseY, delta);
         renderTelemetryGauges(extractor);
         renderRoutineButtons(extractor, mouseX, mouseY);
+        renderUpgradeBadges(extractor, mouseX, mouseY);
         renderTelemetryTooltips(extractor, mouseX, mouseY);
     }
 
@@ -203,6 +205,43 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         }
     }
 
+    private void renderUpgradeBadges(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
+        int x = this.leftPos + CHASSIS_WIDTH + 2;
+        int y = this.topPos + 19;
+        int width = 24;
+        int height = 90;
+
+        extractor.fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xFF1E293B);
+        extractor.fill(x, y, x + width, y + height, 0xFA0A0E17);
+        extractor.fill(x, y, x + width, y + 1, 0xFF00E5FF);
+        extractor.fill(x, y + height - 1, x + width, y + height, 0xFF00E5FF);
+
+        CyborgUpgradeItem.CyborgUpgradeType[] types = CyborgUpgradeItem.CyborgUpgradeType.values();
+        String[] badgeLabels = new String[]{"AC", "CR", "LR", "PZ"};
+        int[] activeColors = new int[]{0xFF76FF03, 0xFF00E5FF, 0xFFFFD600, 0xFFD500F9};
+        int[] activeBgs = new int[]{0x33103810, 0x3300384D, 0x334D3C00, 0x333D004D};
+
+        for (int i = 0; i < types.length; i++) {
+            boolean installed = this.menu.hasUpgrade(types[i]);
+            int bx = x + 3;
+            int by = y + 4 + i * 21;
+            int bw = 18;
+            int bh = 18;
+
+            int border = installed ? activeColors[i] : 0xFF1E293B;
+            int bg = installed ? activeBgs[i] : 0xFF080C14;
+            int textCol = installed ? activeColors[i] : 0xFF475569;
+
+            extractor.fill(bx - 1, by - 1, bx + bw + 1, by + bh + 1, border);
+            extractor.fill(bx, by, bx + bw, by + bh, bg);
+
+            int textW = this.font.width(badgeLabels[i]);
+            int tx = bx + (bw - textW) / 2;
+            int ty = by + 5;
+            extractor.text(this.font, Component.literal(badgeLabels[i]), tx, ty, textCol, false);
+        }
+    }
+
     private void renderTelemetryTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         int x = this.leftPos;
         int y = this.topPos;
@@ -219,6 +258,40 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         } else if (mouseX >= x + 156 && mouseX <= x + 168 && mouseY >= y + 19 && mouseY <= y + 33) {
             Component tip = Component.literal("Visor Óptico: " + this.menu.getRoutine().name());
             extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+        } else {
+            int ux = this.leftPos + CHASSIS_WIDTH + 2;
+            int uy = this.topPos + 19;
+            CyborgUpgradeItem.CyborgUpgradeType[] types = CyborgUpgradeItem.CyborgUpgradeType.values();
+            String[] upgradeNames = new String[]{
+                "Blindagem de Quitina Ácida",
+                "Célula Crio-Trealose",
+                "Lente LiDAR Longo Alcance",
+                "Propulsor Hover Piezoelétrico"
+            };
+            String[] upgradeEffects = new String[]{
+                "+50% Resistência Dano/Ácido & Imunidade Veneno",
+                "Energia Expandida: 150.000 J (3x Buffer)",
+                "Radar Operacional Expandido: 96m (3x Alcance)",
+                "Supressão Total Dano de Queda & Levitação"
+            };
+
+            for (int i = 0; i < types.length; i++) {
+                int bx = ux + 3;
+                int by = uy + 4 + i * 21;
+                int bw = 18;
+                int bh = 18;
+                if (mouseX >= bx && mouseX <= bx + bw && mouseY >= by && mouseY <= by + bh) {
+                    boolean installed = this.menu.hasUpgrade(types[i]);
+                    if (installed) {
+                        Component tip = Component.literal("§a[INSTALADO] §b" + upgradeNames[i] + "\n§7" + upgradeEffects[i]);
+                        extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+                    } else {
+                        Component tip = Component.literal("§8[VAZIO] §7Slot de Módulo: " + upgradeNames[i] + "\n§8Clique com o item no ciborgue para instalar.");
+                        extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+                    }
+                    return;
+                }
+            }
         }
     }
 }

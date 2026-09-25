@@ -94,7 +94,7 @@ class Fase26AutonomousCyborgsTest {
     @Test
     void shouldVerifyTelemetryMenuSlotsAndDataChannels() {
         SimpleContainer container = new SimpleContainer(CyborgTelemetryMenu.CYBORG_SLOTS);
-        SimpleContainerData data = new SimpleContainerData(8);
+        SimpleContainerData data = new SimpleContainerData(9);
         data.set(0, 35000);
         data.set(1, 50000);
         data.set(2, 2500);
@@ -103,6 +103,7 @@ class Fase26AutonomousCyborgsTest {
         data.set(5, 0);
         data.set(6, 2);
         data.set(7, 1);
+        data.set(8, 0);
 
         CyborgTelemetryMenu menu = new CyborgTelemetryMenu(null, 1, new Inventory(null, null), container, data);
 

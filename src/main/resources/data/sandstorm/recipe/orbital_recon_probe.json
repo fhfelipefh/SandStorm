@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " L ",
+    "TCT",
+    " P "
+  ],
+  "key": {
+    "L": "sandstorm:long_range_lidar_lens",
+    "T": "sandstorm:titanium_chitin_composite",
+    "C": "sandstorm:circuit_board",
+    "P": "sandstorm:propellant_cartridge"
+  },
+  "result": {
+    "id": "sandstorm:orbital_recon_probe",
+    "count": 2
+  }
+}

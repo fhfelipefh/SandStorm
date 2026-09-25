@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -68,6 +69,9 @@ public class CyborgExcavatorEntity extends CyborgEntity {
 
     private void tickAutonomousMining(ServerLevel level) {
         if (currentTargetBlock == null || level.isEmptyBlock(currentTargetBlock)) {
+            if (currentTargetBlock != null) {
+                CyborgSwarmManager.getInstance().releaseBlock(this.getUUID(), currentTargetBlock);
+            }
             currentTargetBlock = findNextBlockToMine(level);
             miningTicks = 0;
         }
@@ -96,6 +100,7 @@ public class CyborgExcavatorEntity extends CyborgEntity {
             if (miningTicks >= 40) {
                 miningTicks = 0;
                 consumeEnergy(25);
+                CyborgSwarmManager.getInstance().releaseBlock(this.getUUID(), currentTargetBlock);
                 level.destroyBlock(currentTargetBlock, true, this);
                 currentTargetBlock = null;
             }
@@ -124,12 +129,20 @@ public class CyborgExcavatorEntity extends CyborgEntity {
                     BlockPos pos = new BlockPos(x, y, z);
                     BlockState state = level.getBlockState(pos);
                     if (!state.isAir() && !state.is(Blocks.BEDROCK) && state.getDestroySpeed(level, pos) >= 0) {
-                        return pos;
+                        if (CyborgSwarmManager.getInstance().tryReserveBlock(this.getUUID(), pos)) {
+                            return pos;
+                        }
                     }
                 }
             }
         }
         return null;
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        CyborgSwarmManager.getInstance().releaseAll(this.getUUID());
     }
 
     @Override

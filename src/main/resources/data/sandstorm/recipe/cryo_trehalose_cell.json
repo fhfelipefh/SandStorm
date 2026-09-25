@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " T ",
+    "CBC",
+    " T "
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "C": "sandstorm:bio_coolant_canister",
+    "B": "sandstorm:bio_neural_core"
+  },
+  "result": {
+    "id": "sandstorm:cryo_trehalose_cell",
+    "count": 1
+  }
+}
