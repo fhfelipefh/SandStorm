@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **634 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **671 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 71 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 79 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -596,6 +596,104 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [ ] Prevenção de spawn de bruxas, suportes arcanos e mecânicas mágicas que quebram a coerência hard sci-fi do planeta desértico.
   - [ ] Suíte de testes dedicada: `Fase21ExtremophileMycologyTest`, `Fase22BioPharmacologyTest`, `Fase23MolecularModifierTest` e `Fase24MedBayAndMagicSuppressionTest`.
 
+### 🦾 Fase 25: Bio-Cibernética Fundamental, Incubadora de Chassis & Núcleos Neurais Biônicos
+*Fusão entre a biologia avançada de extremófilos (Fase 21), a farmacologia de estimulantes (Fase 22) e a robótica pesada: criação de tecidos sintéticos eletroativos, órgãos bio-refrigerantes e computação neural orgânica ("wetware") para dar vida a ciborgues industriais autônomos.*
+
+- [ ] **Incubadora Bio-Cibernética (`cyborg_incubator_vat`)**:
+  - [ ] Maquinário monumental 1x1x2 de biogestação e montagem molecular biomecânica em liga de titânio escuro e cúpula de vidro de fulgurito temperado.
+  - [ ] Conexão direta à malha de energia sem fio WPT (buffer de 25.000 J, consumo de 50 J/tick durante a bio-síntese) e à Fabric Transfer API (`FluidStorage.SIDED`, `ItemStorage.SIDED`).
+  - [ ] Câmara de perfusão hidrostática estéril contendo meio amniótico enriquecido com glicerol osmoprotetor (`osmolyte_glycerol`) e açúcar trealose anidrobiótico (`trehalose_sugar`) para manter células e miômeros viáveis durante a sinterização de conectores eletrônicos.
+  - [ ] Processo de montagem biomecânica sequencial (estágios de gestação do chassi):
+    - *Estágio 1 - Endoesqueleto*: Chassi Esquelético de Titânio-Quitina (`biomechanical_chassis_frame`).
+    - *Estágio 2 - Atuação Muscular*: Injeção de Feixes de Miômeros Artificiais (`synthetic_myomer_bundle`).
+    - *Estágio 3 - Sistema Nervoso Autônomo*: Acoplamento do Núcleo Neural Biônico ("Wetware" AI Core - `bio_neural_core`).
+    - *Estágio 4 - Homeostase Circulatória*: Conexão de Cânister de Hemolinfa Bio-Refrigerante (`bio_coolant_canister`).
+  - [ ] Interface gráfica cyberpunk imersiva (`CyborgIncubatorScreen` / `CyborgIncubatorMenu`) com silhueta holográfica do ciborgue sendo sintetizado, monitor de compatibilidade tecidual celular, barra de perfusão líquida e botão de ativação de firmware neural.
+  - [ ] Efeitos visuais e acústicos volumétricos no mundo: iluminação ciano estroboscópica, bolhas de oxigenação em ascensão no fluido e sibilo de pressurização hidrostática (`block.cyborg_incubator.loop`).
+- [ ] **Componentes Biológicos & Cibernéticos Fundamentais**:
+  - [ ] **Feixes de Miômeros Artificiais Eletroativos (`synthetic_myomer_bundle`)**:
+    - Fibras musculares sintéticas de polímeros eletroativos dopados com nanotubos de carbono, extrato de quitosana (`chitosan_extract`) e estimulador de torque (`myomer_stim`).
+    - Mecânica de contração eletro-induzida em milissegundos sem folga mecânica ou engrenagens vulneráveis à areia, entregando torque brutal para mineração e transporte de materiais.
+  - [ ] **Núcleo Neural Biônico de Processamento ("Wetware" Core - `bio_neural_core`)**:
+    - Processador biocomputacional não-binário: redes vivas de micélio radiotrófico cultivado (`radioprotective_melanin`) integradas a micro-canais de silício e banhadas em alcaloides neuro-ativos (`neuroactive_alkaloids`).
+    - Oferece tomada de decisão autônoma instantânea, algoritmo de pathfinding tridimensional heurístico adaptativo (desvio de precipícios, areia movediça e tempestades de areia) e independência operacional sem sobrecarga de CPU do servidor Minecraft.
+  - [ ] **Cânister de Hemolinfa Bio-Refrigerante (`bio_coolant_canister`)**:
+    - Fluido de circulação ciano luminescente derivado de glicerol osmoprotetor, biopolímeros flexíveis e água potável desmineralizada.
+    - Dissipa calor dos feixes de miômeros e impede superaquecimento do núcleo neural sob a temperatura ambiente de 48°C do deserto.
+  - [ ] **Chassi Esquelético de Compósito Titânio-Quitina (`biomechanical_chassis_frame`)**:
+    - Endoesqueleto articulado fabricado em compósito de titânio e quitina (`titanium_chitin_composite`), projetado com canaletas internas seladas de cabeamento e fixadores angulares de miômeros.
+- [ ] **Estética Visual Dark-Tech & Biomecânica de Alto Impacto**:
+  - [ ] Contraste visual marcante entre blindagem metálica cinza/titânio escuro fosco (`#1E232A`), feixes musculares carmesim/fibrosos expostos nas articulações (joelhos, cotovelos, vértebras) e tubulações translúcidas pulsando com fluido ciano fluorescente (`#00E5FF`).
+  - [ ] Cabeçote robótico com visor óptico emissivo adaptativo que muda dinamicamente de tom conforme o estado operacional da entidade:
+    - *Ciano (`#00E5FF`)*: Operação normal / minerando / construindo / colhendo.
+    - *Âmbar (`#FF9100`)*: Alerta / em trânsito logístico / nível baixo de bateria WPT.
+    - *Vermelho (`#FF1744`)*: Ameaça detectada / protocolo defensivo engajado.
+    - *Roxo (`#D500F9`)*: Sincronização em rede de enxame (Swarm Intelligence).
+
+### 🤖 Fase 26: Ciborgues Especialistas Autônomos & Uplink de Comando Holográfico
+*Criação de três entidades ciborgues especializadas que executam autonomamente diretrizes espaciais complexas sob comando de um transmissor holográfico de mão.*
+
+- [ ] **Transmissor Holográfico de Comando (`cybernetic_command_uplink`)**:
+  - [ ] Dispositivo portátil ergonômico com terminal tático, telêmetro laser de alta precisão e antena de uplink neural.
+  - [ ] Mecânica de demarcação volumétrica holográfica 3D (Bounding Boxes tridimensionais neon projetadas no mundo):
+    - *Modo Mineração (Volume Ciano `#00E5FF`)*: O jogador clica em dois vértices opostos no mundo para delimitar um cubo ou poço de escavação (ex: 8x8x16 blocos ou galeria horizontal).
+    - *Modo Construção (Volume Âmbar `#FF9100`)*: O jogador ancora um blueprint virtual do Datapad ou demarca uma zona para reparo estrutural automático pós-tempestade.
+    - *Modo Agrícola / Coleta (Volume Esmeralda `#00E676`)*: Demarca o perímetro de canteiros e fazendas de extremófilos para monitoramento agronômico autônomo.
+  - [ ] Clique com botão direito no ciborgue abre a **Interface de Telemetria Biônica**:
+    - Monitoramento em tempo real de carga energética WPT (Joules), integridade muscular dos miômeros (%), nível de bio-refrigerante, inventário interno (18 a 27 slots) e seletor de rotina: `Trabalho Autônomo na Zona`, `Seguir Operador`, `Patrulhar Perímetro` e `Retornar à Doca`.
+- [ ] **Ciborgue Minerador de Subsolo (`cyborg_excavator` / Excavator Cyborg)**:
+  - [ ] Chassi reforçado bípede de perfil robusto, pernas articuladas de alta tração com botas magnéticas e braço direito fundido a uma broca de vibro-cavitação atômica com ponta de diamante sintético.
+  - [ ] Sensor de peitoral com escâner geológico miniaturizado que emite pulsos de sonar sísmico no solo.
+  - [ ] Comportamento Autônomo Inteligente:
+    - Desloca-se autonomamente até a Zona de Mineração ciano demarcada pelo jogador.
+    - Perfura blocos de cima para baixo ou em galerias seguras com rampas e escadarias, evitando colapsos de teto, fontes de lava e fossos de vermes de areia.
+    - Coleta seletiva: filtra minérios de alto valor (silício, quartzo piezoelétrico, carvão fóssil, ferro) e descarta cascalho/arenito estéril se configurado pelo jogador.
+    - Retorno de Segurança: Ao encher o compartimento interno ou quando a energia WPT cai abaixo de 15%, interrompe a perfuração, emite sinal sonoro de telemetria e caminha de volta à base para descarregar em baús/dutos e recarregar.
+- [ ] **Ciborgue Construtor Biônico (`cyborg_builder` / Builder Cyborg)**:
+  - [ ] Chassi ágil com dois braços multi-articulados: braço esquerdo com manipulador de campo magnético para transporte e sustentação de blocos pesados, e braço direito com tocha de solda molecular e fusão a laser.
+  - [ ] Mochila dorsal compacta de armazenamento de materiais integrada à Fabric Transfer API.
+  - [ ] Comportamento Autônomo Inteligente:
+    - Conecta-se à Zona de Construção demarcada pelo jogador e analisa a lista de blocos requeridos pelo projeto/blueprint.
+    - Localiza insumos nos baús vinculados da base, transporta as cargas e constrói de forma aditiva ordenada de baixo para cima (layer-by-layer), projetando feixes laser e faíscas de solda azuis (`entity.cyborg.weld`).
+    - Rotina de Manutenção Pós-Tempestade: Se tempestades severas de areia causarem erosão ou danificarem muralhas de espinhos, cúpulas e baterias, sai autonomamente da doca com placas de titânio para efetuar reparos estruturais.
+- [ ] **Ciborgue Coletor & Agrônomo Fúngico (`cyborg_harvester` / Harvester Cyborg)**:
+  - [ ] Chassi leve e veloz com garras cirúrgicas retráteis de micro-precisão e cesto traseiro selado hermeticamente para transporte estéril de biomassa e compostos bioativos.
+  - [ ] Visor óptico dotado de espectrômetro fitossanitário para leitura de estágios de crescimento, umidade e maturação química.
+  - [ ] Comportamento Autônomo Inteligente:
+    - Patrulha continuamente plantações de extremófilos (Micélio Radiotrófico, Fungo Quitinolítico, Suculenta Halófita, Éfedra das Dunas e cactos de seiva pesada).
+    - Colhe apenas plantas e fungos que atingiram o estágio final de maturação, preservando a raiz do solo e replantando esporos/sementes imediatamente no mesmo bloco.
+    - Transporta os metabólitos colhidos (`radioprotective_melanin`, `chitosan_extract`, etc.) diretamente aos Biorreatores de Batelada (`bioreactor_vat`) da base, descarregando nos slots de insumo para garantir alimentação ininterrupta do pipeline bio-farmacológico.
+    - Varredura de Recursos no Deserto: Coleta automaticamente areia de fulgurito residual pós-raios e cascas de quitina de vermes abatidos nas proximidades da base.
+
+### 🌐 Fase 27: Enxame Cibernético (Swarm Intelligence), Doca de Recarga & Módulos de Upgrade
+*Infraestrutura industrial de suporte contínuo: plataformas automatizadas de ancoragem, coordenação de enxame distribuído sem colisões e módulos de aprimoramento bio-mecânico.*
+
+- [ ] **Doca de Manutenção e Recarga WPT (`cyborg_docking_station`)**:
+  - [ ] Plataforma pesada 1x1x1 de solo em titânio e cerâmica piezoelétrica com conector indutivo de energia sem fio WPT e pinças pneumáticas de retenção.
+  - [ ] Protocolo Automático de Acoplamento:
+    - O ciborgue que adentra a doca é travado pelas garras mecânicas com som pneumático característico (`block.cyborg_dock.clamp`).
+    - Recarga ultrarrápida da bateria interna (500 J/tick) via acoplamento ressonante à malha WPT da base.
+    - Despejo instantâneo de itens do inventário interno para baús, armários ou tubulações de fluidos inteligentes conectados à doca (`ItemStorage.SIDED`).
+    - Injeção de bio-refrigerante fresco e bio-espuma hemostática, restaurando 100% da integridade muscular dos miômeros em 10 segundos.
+  - [ ] Emissão de sinal redstone comparador indicando nível de ocupação, carga das baterias e status de descarregamento de recursos.
+- [ ] **Inteligência de Enxame Distribuída (Swarm Coordination Protocol)**:
+  - [ ] Algoritmo de rede neural cooperativa: múltiplos ciborgues (até 16 por setor) compartilham uma malha de telemetria sem fio sem sobrecarregar a thread principal do servidor.
+  - [ ] Sistema de reservas espaciais de coordenadas (Voxel Mutex Locking): impede que dois mineradores escavem o mesmo bloco ou que dois construtores tentem assentar o mesmo tijolo simultaneamente.
+  - [ ] Cooperação Sinergética Inter-Especialistas:
+    - Enquanto um escavador aprofunda a galeria, um segundo ciborgue recolhe o cascalho do chão e um construtor instala escoras de arenito reforçado nas paredes e teto da mina.
+    - Se um ciborgue for atacado por criaturas hostis, emite um pulso de emergência na frequência do enxame chamando unidades próximas para evacuação mútua.
+- [ ] **Módulos de Upgrade Biônico Intercambiáveis**:
+  - [ ] Componentes de personalização instaláveis na interface de telemetria do ciborgue:
+    - *Blindagem de Quitina Ácida (`acid_chitin_plating`)*: Reveste o chassi com carapaça tratada em secreção de larva de verme, garantindo imunidade total a venenos, ácido e erosão por tempestades de areia.
+    - *Bateria Criogênica de Trealose (`cryo_trehalose_cell`)*: Triplica a capacidade máxima de energia (de 50.000 J para 150.000 J), permitindo expedições subterrâneas e de construção de até 30 minutos contínuos longe de transmissores WPT.
+    - *Lente Óptica LiDAR de Longo Alcance (`long_range_lidar_lens`)*: Triplica o raio operacional de busca de recursos e navegação de 32 para 96 blocos.
+    - *Módulo Repulsor de Levitação Piezoelétrica (`piezo_hover_thruster`)*: Instala micro-propulsores nos pés magnéticos, permitindo que o ciborgue deslize sobre crateras, poços e areia movediça sem atolar nem gerar vibrações sísmicas que atraem vermes de areia.
+- [ ] **Efeitos Sonoros, Modelos 3D & Animações Cinematográficas**:
+  - [ ] Modelos 3D Blockbench completos: `cyborg_excavator.bbmodel`, `cyborg_builder.bbmodel`, `cyborg_harvester.bbmodel`, `cyborg_incubator_vat.bbmodel` e `cyborg_docking_station.bbmodel`.
+  - [ ] Animações esqueléticas de caminhada bípede realista com flexão de joelho, balanço de tronco e micro-vibrações dos cabos de bio-refrigerante.
+  - [ ] Efeitos de áudio OGG com transientes mecânicos de alta fidelidade: passos metálico-musculares (`entity.cyborg.step`), zumbido da vibro-broca em rochas (`entity.cyborg.drill`), arco de solda laser (`entity.cyborg.weld`), bipe vocal sintético de confirmação de ordem (`entity.cyborg.voice_ack`), clique do transmissor de comando (`item.command_uplink.ping`) e trava da doca (`block.cyborg_dock.clamp`).
+  - [ ] Suíte de testes dedicada: `Fase25BioCyberneticsTest`, `Fase26AutonomousCyborgsTest` e `Fase27SwarmAndDockingTest`.
+
 ---
 
 ## 🎧 Catálogo Completo de Efeitos Sonoros Necessários (SFX)
@@ -643,6 +741,13 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
 | `block.medbay_pod.heal` | `medbay_pod_heal.ogg` | `ambient` | 2.0s (loop) | Circulação suave de fluido criogênico e biopolímeros regenerativos em tubulações estéreis. |
 | `block.bioreactor.bubble` | `bioreactor_bubble.ogg` | `ambient` | 2.5s (loop) | Borbulhamento e circulação de caldo nutritivo estéril em tanque de fermentação com zumbido magnético suave. |
 | `item.stim.activate` | `stim_activate.ogg` | `players` | 0.8s | Pulso bio-elétrico com batimentos cardíacos sutilmente acelerados e tom harmônico ascendente de sobrecarga motora. |
+| `block.cyborg_incubator.loop` | `cyborg_incubator_loop.ogg` | `blocks` | 3.0s (loop) | Borbulhamento hidrostático e zumbido ressonante de fluido amniótico sintético e laser de bio-montagem. |
+| `entity.cyborg.step` | `cyborg_step.ogg` | `neutral` | 0.5s | Passada bípede biomecânica. Impacto metálico seco de titânio amortecido pela contração elástica de miômeros. |
+| `entity.cyborg.drill` | `cyborg_drill.ogg` | `neutral` | 2.0s (loop) | Vibro-broca de cavitação molecular triturando rocha dura e areia com estalos piezoelétricos de alta rotação. |
+| `entity.cyborg.weld` | `cyborg_weld.ogg` | `neutral` | 1.8s (loop) | Tocha de plasma molecular e arco elétrico de solda assentando blocos com crepitação estática e zumbido ciano. |
+| `entity.cyborg.voice_ack` | `cyborg_voice_ack.ogg` | `neutral` | 0.6s | Resposta vocal sintética em frequência filtrada. Beep melódico eletrônico confirmando recebimento de diretriz do jogador. |
+| `item.command_uplink.ping` | `command_uplink_ping.ogg` | `players` | 0.4s | Sinal sonoro de alta tecnologia emitido pelo uplink holográfico ao traçar vértices de bounding boxes no mundo. |
+| `block.cyborg_dock.clamp` | `cyborg_dock_clamp.ogg` | `blocks` | 0.9s | Travamento pneumático de pinças metálicas abraçando as pernas do ciborgue na plataforma com sibilo de despressurização. |
 
 > [!NOTE]
 > **Status dos Efeitos Sonoros**: Todos os 20 arquivos `.mp3` foram convertidos com sucesso para Vorbis `.ogg` (mantendo os `.mp3` originais preservados).
@@ -741,6 +846,8 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `sand_maglev_rail`, `habitat_dome`, `auto_assembly_line`: Trilhos de levitação magnética, domo residencial e linha de montagem industrial (Fase 17).
   - [x] `titanium_spike_wall`, `retractable_spike_wall`, `electrified_spike_barrier`, `corrosive_chitin_spike_wall`, `kinetic_floor_spikes`, `crushing_spike_gate`: Módulos de espinhos de titânio, espinhos retráteis pneumáticos, barreiras de alta tensão, espinhos bio-corrosivos, armadilhas sísmicas de piso e portões de grades esmagadoras (Fase 18).
   - [x] `megastructure_constructor.bbmodel`: Bloco monumental 2x2 com base em titânio escuro, 4 pistões pneumáticos de fixação estrutural, cúpula holográfica central de cristal piezoelétrico com anéis de giroscópio animados e 4 baias de hangar para esquadrilhas de drones (Fase 19).
+  - [ ] `cyborg_incubator_vat.bbmodel`: Tanque cilíndrico de bio-gestação 1x1x2 com cúpula de vidro curvo temperado, anéis de iluminação volumétrica ciano, tubulações de recirculação amniótica e braços robóticos internos de bio-montagem (Fase 25).
+  - [ ] `cyborg_docking_station.bbmodel`: Plataforma pesada de ancoragem e recarga WPT no solo com conector indutivo, garras mecânicas de fixação pneumática e leds de status (Fase 27).
 - [x] **Modelos de Entidades (Blockbench)**:
   - [x] `sandworm.bbmodel`: Corpo cilíndrico segmentado com mandíbulas quádruplas abertas e anel bucal.
   - [ ] `sandtrout.bbmodel`: Modelo pequeno de criatura ameboide coriácea rastejante de areia (Truta da Areia / Little Maker).
@@ -751,6 +858,9 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
   - [x] `excavator_vehicle.bbmodel`: Rover industrial de esteiras duplas com broca giratória frontal.
   - [x] `megazord.bbmodel`: Mecha bípede titânico com cockpit e emissores de choque sônico.
   - [x] `sandboard`: Prancha de surfe nas dunas com fixadores de botas.
+  - [ ] `cyborg_excavator.bbmodel`: Chassi bípede reforçado de titânio escuro com feixes musculares carmesim expostos, braço direito fundido a uma broca de vibro-cavitação atômica, escâner sísmico no peito e tanque dorsal de bio-refrigerante ciano (Fase 26).
+  - [ ] `cyborg_builder.bbmodel`: Chassi biomecânico ágil com manipulador magnético no braço esquerdo, tocha de solda de plasma molecular no braço direito, compartimento dorsal de carga e cabeçote com visor óptico emissivo (Fase 26).
+  - [ ] `cyborg_harvester.bbmodel`: Chassi esguio e veloz com pernas de alta mobilidade, garras cirúrgicas articuladas, sensor espectrofotométrico fitossanitário e cesto traseiro selado de coleta hermética de biomassa (Fase 26).
 
 ---
 
@@ -885,6 +995,17 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - Receita shaped data-driven e loot tables de blocos configuradas.
     - Paridade 100% de i18n nas 3 línguas oficiais (`pt_br.json`, `en_us.json`, `es_es.json`).
     - Suíte de testes dedicada `Fase21ExtremophileMycologyTest`, expandindo a suíte para **634 testes automatizados** com 100% de sucesso e zero comentários.
-
-
-
+46. `27b62d0`: Implementação completa da **Fase 22: Bio-Farmacologia Tecnológica, Hipo-Injetores & Síntese Farmacêutica (Substituição de Poções Vanilla)**:
+    - Criação do Hipo-Injetor Pneumático Portátil (`hypo_injector` / `HypoInjectorItem`) em liga de titânio escuro com cartucho pneumático pressurizado reutilizável, acionamento estéril instantâneo (0.2s), compatibilidade com mão secundária, som pneumático característico (`item.hypo_injector.use`) e telemetria no HUD de sobrevivência (`SurvivalHudOverlay`).
+    - Formulação científica de 7 ampolas e estimulantes farmacológicos fundamentados em biologia real e compostos purificados na Fase 21:
+      - Ampola Neuro-Adrenérgica (`adrenal_stim`): Alcaloides adrenérgicos + solução salina -> +30% velocidade de movimento e sprint (+15%) *(substitui Speed)*.
+      - Bio-Espuma Coagulante Molecular (`biofoam_cartridge`): Quitosana catiônica + biopolímeros flexíveis -> cura imediata de 4 corações e regeneração tecidual acelerada *(substitui Healing & Regen)*.
+      - Estimulador Miomecânico de Torque (`myomer_stim`): Alcaloides neuro-ativos + quitina de verme -> +40% de força muscular e torque cinético *(substitui Strength)*.
+      - Sérum Endotérmico Refratário (`endothermic_serum`): Glicerol osmoprotetor + seiva pesada -> imunidade completa a chamas e radiação solar por 5 minutos *(substitui Fire Resistance)*.
+      - Sérum Anti-Inercial Gravitacional (`grav_dampener_stim`): Concentrado de trealose + quartzo piezoelétrico -> saltos de 2.5 blocos e desaceleração terminal suave *(substitui Jump Boost & Slow Falling)*.
+      - Ampola de Desintoxicação Celular (`detox_ampoule`): Matriz de melanina quelante + água pura -> purga imediata de venenos, choque e náuseas *(substitui Antídotos / Leite)*.
+      - Emulsão de Refração Óptica Furtiva (`stealth_nano_drape`): Biopolímeros + vidro de fulgurito micronizado -> invisibilidade de 90s contra radares e sensores térmicos *(substitui Invisibility)*.
+    - 7 receitas shaped data-driven balanceadas em `data/sandstorm/recipe/` e integração ao JEI e livro de receitas.
+    - 8 novas texturas pixel-art 16x16 com assinaturas PNG válidas, modelos JSON de item e definições em `assets/sandstorm/items/`.
+    - Localização trilingue completa e sincronizada (`pt_br.json`, `en_us.json`, `es_es.json`).
+    - Suíte de testes automatizados `Fase22BioPharmacologyTest`, elevando o total do repositório para **671 testes automatizados** com 100% de sucesso e zero comentários.
