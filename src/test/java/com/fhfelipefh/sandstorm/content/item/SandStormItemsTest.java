@@ -75,7 +75,13 @@ class SandStormItemsTest {
             "ablative_thermal_plating",
             "pneumatic_fall_dampers",
             "reactive_shock_plating",
-            "bio_regeneration_pod"
+            "bio_regeneration_pod",
+            "cyborg_incubator_vat",
+            "biomechanical_chassis_frame",
+            "synthetic_myomer_bundle",
+            "bio_neural_core",
+            "bio_coolant_canister",
+            "assembled_cyborg_frame"
     })
     void shouldGenerateCorrectResourceKeysForCoreItems(String itemPath) {
         ResourceKey<Item> key = SandStormMod.itemKey(itemPath);

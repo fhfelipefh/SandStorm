@@ -11,7 +11,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **745 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **790 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
 | **Receitas Data-Driven (JEI/REI)** | 93 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
@@ -596,35 +596,35 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] Prevenção de spawn de bruxas e entidades arcanas em desertos alienígenas hostis.
   - [x] Suíte de testes dedicada: `Fase24MedBayAndMagicSuppressionTest` com 14 testes cobrindo todas as mecânicas, elevando a suíte para **745 testes automatizados (100% de sucesso)**.
 
-### 🦾 Fase 25: Bio-Cibernética Fundamental, Incubadora de Chassis & Núcleos Neurais Biônicos
+### 🦾 Fase 25: Bio-Cibernética Fundamental, Incubadora de Chassis & Núcleos Neurais Biônicos (Concluída - 100%)
 *Fusão entre a biologia avançada de extremófilos (Fase 21), a farmacologia de estimulantes (Fase 22) e a robótica pesada: criação de tecidos sintéticos eletroativos, órgãos bio-refrigerantes e computação neural orgânica ("wetware") para dar vida a ciborgues industriais autônomos.*
 
-- [ ] **Incubadora Bio-Cibernética (`cyborg_incubator_vat`)**:
-  - [ ] Maquinário monumental 1x1x2 de biogestação e montagem molecular biomecânica em liga de titânio escuro e cúpula de vidro de fulgurito temperado.
-  - [ ] Conexão direta à malha de energia sem fio WPT (buffer de 25.000 J, consumo de 50 J/tick durante a bio-síntese) e à Fabric Transfer API (`FluidStorage.SIDED`, `ItemStorage.SIDED`).
-  - [ ] Câmara de perfusão hidrostática estéril contendo meio amniótico enriquecido com glicerol osmoprotetor (`osmolyte_glycerol`) e açúcar trealose anidrobiótico (`trehalose_sugar`) para manter células e miômeros viáveis durante a sinterização de conectores eletrônicos.
-  - [ ] Processo de montagem biomecânica sequencial (estágios de gestação do chassi):
+- [x] **Incubadora Bio-Cibernética (`cyborg_incubator_vat`)**:
+  - [x] Maquinário monumental 1x1x2 de biogestação e montagem molecular biomecânica em liga de titânio escuro e cúpula de vidro de fulgurito temperado.
+  - [x] Conexão direta à malha de energia sem fio WPT (buffer de 25.000 J, consumo de 50 J/tick durante a bio-síntese) e à Fabric Transfer API (`FluidStorage.SIDED`, `ItemStorage.SIDED`).
+  - [x] Câmara de perfusão hidrostática estéril contendo meio amniótico enriquecido com glicerol osmoprotetor (`osmolyte_glycerol`) e açúcar trealose anidrobiótico (`trehalose_sugar`) para manter células e miômeros viáveis durante a sinterização de conectores eletrônicos.
+  - [x] Processo de montagem biomecânica sequencial (estágios de gestação do chassi):
     - *Estágio 1 - Endoesqueleto*: Chassi Esquelético de Titânio-Quitina (`biomechanical_chassis_frame`).
     - *Estágio 2 - Atuação Muscular*: Injeção de Feixes de Miômeros Artificiais (`synthetic_myomer_bundle`).
     - *Estágio 3 - Sistema Nervoso Autônomo*: Acoplamento do Núcleo Neural Biônico ("Wetware" AI Core - `bio_neural_core`).
     - *Estágio 4 - Homeostase Circulatória*: Conexão de Cânister de Hemolinfa Bio-Refrigerante (`bio_coolant_canister`).
-  - [ ] Interface gráfica cyberpunk imersiva (`CyborgIncubatorScreen` / `CyborgIncubatorMenu`) com silhueta holográfica do ciborgue sendo sintetizado, monitor de compatibilidade tecidual celular, barra de perfusão líquida e botão de ativação de firmware neural.
-  - [ ] Efeitos visuais e acústicos volumétricos no mundo: iluminação ciano estroboscópica, bolhas de oxigenação em ascensão no fluido e sibilo de pressurização hidrostática (`block.cyborg_incubator.loop`).
-- [ ] **Componentes Biológicos & Cibernéticos Fundamentais**:
-  - [ ] **Feixes de Miômeros Artificiais Eletroativos (`synthetic_myomer_bundle`)**:
+  - [x] Interface gráfica cyberpunk imersiva (`CyborgIncubatorScreen` / `CyborgIncubatorMenu`) com silhueta holográfica do ciborgue sendo sintetizado, monitor de compatibilidade tecidual celular, barra de perfusão líquida e botão de ativação de firmware neural.
+  - [x] Efeitos visuais e acústicos volumétricos no mundo: iluminação ciano estroboscópica, bolhas de oxigenação em ascensão no fluido e sibilo de pressurização hidrostática (`block.cyborg_incubator.loop`).
+- [x] **Componentes Biológicos & Cibernéticos Fundamentais**:
+  - [x] **Feixes de Miômeros Artificiais Eletroativos (`synthetic_myomer_bundle`)**:
     - Fibras musculares sintéticas de polímeros eletroativos dopados com nanotubos de carbono, extrato de quitosana (`chitosan_extract`) e estimulador de torque (`myomer_stim`).
     - Mecânica de contração eletro-induzida em milissegundos sem folga mecânica ou engrenagens vulneráveis à areia, entregando torque brutal para mineração e transporte de materiais.
-  - [ ] **Núcleo Neural Biônico de Processamento ("Wetware" Core - `bio_neural_core`)**:
+  - [x] **Núcleo Neural Biônico de Processamento ("Wetware" Core - `bio_neural_core`)**:
     - Processador biocomputacional não-binário: redes vivas de micélio radiotrófico cultivado (`radioprotective_melanin`) integradas a micro-canais de silício e banhadas em alcaloides neuro-ativos (`neuroactive_alkaloids`).
     - Oferece tomada de decisão autônoma instantânea, algoritmo de pathfinding tridimensional heurístico adaptativo (desvio de precipícios, areia movediça e tempestades de areia) e independência operacional sem sobrecarga de CPU do servidor Minecraft.
-  - [ ] **Cânister de Hemolinfa Bio-Refrigerante (`bio_coolant_canister`)**:
+  - [x] **Cânister de Hemolinfa Bio-Refrigerante (`bio_coolant_canister`)**:
     - Fluido de circulação ciano luminescente derivado de glicerol osmoprotetor, biopolímeros flexíveis e água potável desmineralizada.
     - Dissipa calor dos feixes de miômeros e impede superaquecimento do núcleo neural sob a temperatura ambiente de 48°C do deserto.
-  - [ ] **Chassi Esquelético de Compósito Titânio-Quitina (`biomechanical_chassis_frame`)**:
+  - [x] **Chassi Esquelético de Compósito Titânio-Quitina (`biomechanical_chassis_frame`)**:
     - Endoesqueleto articulado fabricado em compósito de titânio e quitina (`titanium_chitin_composite`), projetado com canaletas internas seladas de cabeamento e fixadores angulares de miômeros.
-- [ ] **Estética Visual Dark-Tech & Biomecânica de Alto Impacto**:
-  - [ ] Contraste visual marcante entre blindagem metálica cinza/titânio escuro fosco (`#1E232A`), feixes musculares carmesim/fibrosos expostos nas articulações (joelhos, cotovelos, vértebras) e tubulações translúcidas pulsando com fluido ciano fluorescente (`#00E5FF`).
-  - [ ] Cabeçote robótico com visor óptico emissivo adaptativo que muda dinamicamente de tom conforme o estado operacional da entidade:
+- [x] **Estética Visual Dark-Tech & Biomecânica de Alto Impacto**:
+  - [x] Contraste visual marcante entre blindagem metálica cinza/titânio escuro fosco (`#1E232A`), feixes musculares carmesim/fibrosos expostos nas articulações (joelhos, cotovelos, vértebras) e tubulações translúcidas pulsando com fluido ciano fluorescente (`#00E5FF`).
+  - [x] Cabeçote robótico com visor óptico emissivo adaptativo que muda dinamicamente de tom conforme o estado operacional da entidade:
     - *Ciano (`#00E5FF`)*: Operação normal / minerando / construindo / colhendo.
     - *Âmbar (`#FF9100`)*: Alerta / em trânsito logístico / nível baixo de bateria WPT.
     - *Vermelho (`#FF1744`)*: Ameaça detectada / protocolo defensivo engajado.
@@ -1029,4 +1029,17 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - Cadeia completa de assets 1.21.4 (blockstate, modelos de bloco ativo/inativo, modelo de item, definição de renderização em `assets/sandstorm/items/` e 6 texturas PNG com assinaturas válidas).
     - Localização trilingue completa e sincronizada (`pt_br.json`, `en_us.json`, `es_es.json`).
     - Suíte de testes automatizados `Fase24MedBayAndMagicSuppressionTest`, elevando o total do repositório para **745 testes automatizados** com 100% de sucesso e zero comentários.
+49. `fase25-bio-cybernetics`: Implementação completa da **Fase 25: Bio-Cibernética Fundamental, Incubadora de Chassis & Núcleos Neurais Biônicos**:
+    - Incubadora Bio-Cibernética (`cyborg_incubator_vat` / `CyborgIncubatorVatBlock` / `CyborgIncubatorVatBlockEntity`): maquinário monumental de biogestação e montagem molecular biomecânica com suporte WPT (25.000 J), reservatório de fluidos (8000 mB) com Fabric Transfer API (`FluidStorage.SIDED`, `ItemStorage.SIDED`), e máquina de 4 estágios de gestação de ciborgue.
+    - 5 Novos componentes e itens cibernéticos em `SandStormItems`:
+      - Chassi Esquelético de Titânio-Quitina (`biomechanical_chassis_frame`, Rarity.RARE).
+      - Feixes de Miômeros Artificiais Eletroativos (`synthetic_myomer_bundle`, Rarity.RARE).
+      - Núcleo Neural Biônico "Wetware" (`bio_neural_core`, Rarity.EPIC).
+      - Cânister de Hemolinfa Bio-Refrigerante (`bio_coolant_canister`, Rarity.UNCOMMON).
+      - Chassi Cibernético Biogestado (`assembled_cyborg_frame`, Rarity.EPIC).
+    - Interface Gráfica Cyberpunk Dark-Tech (`CyborgIncubatorScreen` / `CyborgIncubatorMenu`): câmara de gestação holográfica vetorial dinâmica com silhueta do endoesqueleto, miômeros carmesim, núcleo neural pulsante em roxo/ciano, bio-refrigerante com bolhas em ascensão e scanline vertical em tempo real, monitor de sincronização tecidual (%), tanque vertical de 8000 mB e barra de perfusão.
+    - Cadeia completa de assets 1.21.4 (blockstate, 2 modelos de bloco, 6 modelos de item, 6 definições em `assets/sandstorm/items/` e 11 texturas PNG pixel-art 16x16 com assinaturas válidas).
+    - 5 Receitas data-driven balanceadas em `data/sandstorm/recipe/` e tabela de saque (`cyborg_incubator_vat.json`).
+    - Localização trilingue completa e sincronizada (`pt_br.json`, `en_us.json`, `es_es.json`) com 100% de paridade auditada por `I18nParityTest`.
+    - Suíte de testes dedicada `Fase25BioCyberneticsTest`, elevando o total do repositório para **790 testes automatizados** com 100% de sucesso e zero comentários.
 

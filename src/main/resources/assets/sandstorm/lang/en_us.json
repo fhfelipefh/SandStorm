@@ -544,5 +544,18 @@
   "telemetry.sandstorm.medbay_entered": "§a[MedBay] Occupant stabilized. Initiating cellular bio-regeneration protocol.",
   "telemetry.sandstorm.magic_suppressed": "§c[Scientific Notice] Archaic magic has been suppressed in this world. Use the Molecular Modifier!",
   "telemetry.sandstorm.magic_suppressed_potions": "§c[Scientific Notice] Mystic alchemy has been suppressed. Utilize the Bioreactor Vat and Hypo-Injector!",
-  "telemetry.sandstorm.anvil_redirect": "§e[Scientific Notice] Archaic anvils have been suppressed. Upgrade equipment in the Molecular Modifier!"
+  "telemetry.sandstorm.anvil_redirect": "§e[Scientific Notice] Archaic anvils have been suppressed. Upgrade equipment in the Molecular Modifier!",
+  "block.sandstorm.cyborg_incubator_vat": "Bio-Cybernetic Incubator",
+  "item.sandstorm.biomechanical_chassis_frame": "Titanium-Chitin Chassis Frame",
+  "item.sandstorm.synthetic_myomer_bundle": "Synthetic Electroactive Myomer Bundle",
+  "item.sandstorm.bio_neural_core": "Bionic Bio-Neural Core",
+  "item.sandstorm.bio_coolant_canister": "Bio-Coolant Hemolymph Canister",
+  "item.sandstorm.assembled_cyborg_frame": "Assembled Cybernetic Frame",
+  "container.sandstorm.cyborg_incubator_vat": "Bio-Cybernetic Incubator",
+  "tooltip.sandstorm.cyborg_incubator.stage_0": "Stage 0: Empty / Awaiting Inputs",
+  "tooltip.sandstorm.cyborg_incubator.stage_1": "Stage 1: Skeletal Frame Anchored",
+  "tooltip.sandstorm.cyborg_incubator.stage_2": "Stage 2: Electroactive Myomers Injected",
+  "tooltip.sandstorm.cyborg_incubator.stage_3": "Stage 3: Neural Core Synced",
+  "tooltip.sandstorm.cyborg_incubator.stage_4": "Stage 4: Bio-Coolant Perfusion Active",
+  "tooltip.sandstorm.cyborg_incubator.sync": "Tissue Sync: %s%%"
 }

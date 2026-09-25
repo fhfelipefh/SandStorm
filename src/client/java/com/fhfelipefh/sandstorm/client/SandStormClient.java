@@ -6,6 +6,7 @@ import com.fhfelipefh.sandstorm.client.gui.AutonomousSonicTurretScreen;
 import com.fhfelipefh.sandstorm.client.gui.BioRegenerationPodScreen;
 import com.fhfelipefh.sandstorm.client.gui.BioreactorVatScreen;
 import com.fhfelipefh.sandstorm.client.gui.ChemicalRefineryScreen;
+import com.fhfelipefh.sandstorm.client.gui.CyborgIncubatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreDrillScreen;
 import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
 import com.fhfelipefh.sandstorm.client.gui.GridMonitorConsoleScreen;
@@ -75,6 +76,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.BIOREACTOR_VAT_MENU, BioreactorVatScreen::new);
         MenuScreens.register(SandStormMenus.MOLECULAR_MODIFIER_MENU, MolecularModifierScreen::new);
         MenuScreens.register(SandStormMenus.BIO_REGENERATION_POD_MENU, BioRegenerationPodScreen::new);
+        MenuScreens.register(SandStormMenus.CYBORG_INCUBATOR_MENU, CyborgIncubatorScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

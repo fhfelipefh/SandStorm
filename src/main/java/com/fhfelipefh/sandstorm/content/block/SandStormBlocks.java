@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockE
 import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.CyborgIncubatorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
@@ -430,6 +431,13 @@ public class SandStormBlocks {
                     .strength(3.5f, 6.0f)
                     .sound(SoundType.METAL)
                     .noOcclusion()));
+    public static final CyborgIncubatorVatBlock CYBORG_INCUBATOR_VAT = register("cyborg_incubator_vat",
+            new CyborgIncubatorVatBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("cyborg_incubator_vat")))
+                    .mapColor(MapColor.COLOR_BLUE)
+                    .strength(4.5f, 8.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -531,6 +539,11 @@ public class SandStormBlocks {
             SandStormMod.id("bio_regeneration_pod"),
             new BlockEntityType<>(BioRegenerationPodBlockEntity::new, Set.of(BIO_REGENERATION_POD))
     );
+    public static final BlockEntityType<CyborgIncubatorVatBlockEntity> CYBORG_INCUBATOR_VAT_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("cyborg_incubator_vat"),
+            new BlockEntityType<>(CyborgIncubatorVatBlockEntity::new, Set.of(CYBORG_INCUBATOR_VAT))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -566,5 +579,7 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, MOLECULAR_MODIFIER_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, BIO_REGENERATION_POD_BE);
         FluidStorage.SIDED.registerForBlockEntity(BioRegenerationPodBlockEntity::getFluidStorage, BIO_REGENERATION_POD_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, CYBORG_INCUBATOR_VAT_BE);
+        FluidStorage.SIDED.registerForBlockEntity(CyborgIncubatorVatBlockEntity::getFluidStorage, CYBORG_INCUBATOR_VAT_BE);
     }
 }

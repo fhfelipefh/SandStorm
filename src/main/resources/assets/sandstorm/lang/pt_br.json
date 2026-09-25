@@ -544,5 +544,18 @@
   "telemetry.sandstorm.medbay_entered": "§a[Cápsula Médica] Ocupante estabilizado. Iniciando protocolo de bio-regeneração celular.",
   "telemetry.sandstorm.magic_suppressed": "§c[Aviso Científico] A magia arcaica foi suprimida neste mundo. Use o Modificador Molecular!",
   "telemetry.sandstorm.magic_suppressed_potions": "§c[Aviso Científico] Alquimia mística foi suprimida. Utilize o Biorreator e o Injetor de Fármacos!",
-  "telemetry.sandstorm.anvil_redirect": "§e[Aviso Científico] Bigornas arcaicas foram suprimidas. Aprimore ferramentas no Modificador Molecular!"
+  "telemetry.sandstorm.anvil_redirect": "§e[Aviso Científico] Bigornas arcaicas foram suprimidas. Aprimore ferramentas no Modificador Molecular!",
+  "block.sandstorm.cyborg_incubator_vat": "Incubadora Bio-Cibernética",
+  "item.sandstorm.biomechanical_chassis_frame": "Chassi Esquelético de Titânio-Quitina",
+  "item.sandstorm.synthetic_myomer_bundle": "Feixes de Miômeros Artificiais Eletroativos",
+  "item.sandstorm.bio_neural_core": "Núcleo Neural Biônico",
+  "item.sandstorm.bio_coolant_canister": "Cânister de Hemolinfa Bio-Refrigerante",
+  "item.sandstorm.assembled_cyborg_frame": "Chassi Cibernético Biogestado",
+  "container.sandstorm.cyborg_incubator_vat": "Incubadora Bio-Cibernética",
+  "tooltip.sandstorm.cyborg_incubator.stage_0": "Estágio 0: Vazio / Aguardando Insumos",
+  "tooltip.sandstorm.cyborg_incubator.stage_1": "Estágio 1: Endoesqueleto Ancorado",
+  "tooltip.sandstorm.cyborg_incubator.stage_2": "Estágio 2: Miômeros Eletroativos Injetados",
+  "tooltip.sandstorm.cyborg_incubator.stage_3": "Estágio 3: Núcleo Neural Acoplado",
+  "tooltip.sandstorm.cyborg_incubator.stage_4": "Estágio 4: Perfusão de Bio-Coolant Ativa",
+  "tooltip.sandstorm.cyborg_incubator.sync": "Sincronização Tecidual: %s%%"
 }

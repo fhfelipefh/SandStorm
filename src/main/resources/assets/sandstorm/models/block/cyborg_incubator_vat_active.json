@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/cyborg_incubator_vat_front_active",
+    "north": "sandstorm:block/cyborg_incubator_vat_front_active",
+    "south": "sandstorm:block/cyborg_incubator_vat_side",
+    "east": "sandstorm:block/cyborg_incubator_vat_side",
+    "west": "sandstorm:block/cyborg_incubator_vat_side",
+    "up": "sandstorm:block/cyborg_incubator_vat_top_active",
+    "down": "sandstorm:block/cyborg_incubator_vat_bottom"
+  }
+}

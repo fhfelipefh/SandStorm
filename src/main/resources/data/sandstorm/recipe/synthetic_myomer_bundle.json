@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " B ",
+    "CMC",
+    " S "
+  ],
+  "key": {
+    "B": "sandstorm:flexible_biopolymer",
+    "C": "sandstorm:chitosan_extract",
+    "M": "sandstorm:myomer_stim",
+    "S": "sandstorm:circuit_board"
+  },
+  "result": {
+    "id": "sandstorm:synthetic_myomer_bundle",
+    "count": 1
+  }
+}

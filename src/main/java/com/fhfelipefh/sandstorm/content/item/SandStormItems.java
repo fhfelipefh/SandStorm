@@ -106,6 +106,11 @@ public class SandStormItems {
     public static final MolecularUpgradeItem ABLATIVE_THERMAL_PLATING = register("ablative_thermal_plating", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.ABLATIVE_PLATING, properties("ablative_thermal_plating").rarity(Rarity.RARE)));
     public static final MolecularUpgradeItem PNEUMATIC_FALL_DAMPERS = register("pneumatic_fall_dampers", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.FALL_DAMPERS, properties("pneumatic_fall_dampers").rarity(Rarity.RARE)));
     public static final MolecularUpgradeItem REACTIVE_SHOCK_PLATING = register("reactive_shock_plating", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.REACTIVE_SHOCK, properties("reactive_shock_plating").rarity(Rarity.RARE)));
+    public static final Item BIOMECHANICAL_CHASSIS_FRAME = register("biomechanical_chassis_frame", new Item(properties("biomechanical_chassis_frame").rarity(Rarity.RARE)));
+    public static final Item SYNTHETIC_MYOMER_BUNDLE = register("synthetic_myomer_bundle", new Item(properties("synthetic_myomer_bundle").rarity(Rarity.RARE)));
+    public static final Item BIO_NEURAL_CORE = register("bio_neural_core", new Item(properties("bio_neural_core").rarity(Rarity.EPIC)));
+    public static final Item BIO_COOLANT_CANISTER = register("bio_coolant_canister", new Item(properties("bio_coolant_canister").rarity(Rarity.UNCOMMON)));
+    public static final Item ASSEMBLED_CYBORG_FRAME = register("assembled_cyborg_frame", new Item(properties("assembled_cyborg_frame").rarity(Rarity.EPIC)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -236,6 +241,13 @@ public class SandStormItems {
                         entries.accept(ABLATIVE_THERMAL_PLATING);
                         entries.accept(PNEUMATIC_FALL_DAMPERS);
                         entries.accept(REACTIVE_SHOCK_PLATING);
+                        entries.accept(SandStormBlocks.BIO_REGENERATION_POD);
+                        entries.accept(SandStormBlocks.CYBORG_INCUBATOR_VAT);
+                        entries.accept(BIOMECHANICAL_CHASSIS_FRAME);
+                        entries.accept(SYNTHETIC_MYOMER_BUNDLE);
+                        entries.accept(BIO_NEURAL_CORE);
+                        entries.accept(BIO_COOLANT_CANISTER);
+                        entries.accept(ASSEMBLED_CYBORG_FRAME);
                     })
                     .build()
     );

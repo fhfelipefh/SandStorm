@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " P ",
+    "TCT",
+    " P "
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "P": "sandstorm:structural_plate",
+    "C": "sandstorm:circuit_mount"
+  },
+  "result": {
+    "id": "sandstorm:biomechanical_chassis_frame",
+    "count": 1
+  }
+}

@@ -544,5 +544,18 @@
   "telemetry.sandstorm.medbay_entered": "§a[Cápsula Médica] Ocupante estabilizado. Iniciando protocolo de biorregeneración celular.",
   "telemetry.sandstorm.magic_suppressed": "§c[Aviso Científico] La magia arcaica ha sido suprimida en este mundo. ¡Usa el Modificador Molecular!",
   "telemetry.sandstorm.magic_suppressed_potions": "§c[Aviso Científico] La alquimia mística ha sido suprimida. ¡Utiliza el Biorreactor y el Inyector Hipodérmico!",
-  "telemetry.sandstorm.anvil_redirect": "§e[Aviso Científico] Los yunques arcaicos han sido suprimidos. ¡Mejora tu equipo en el Modificador Molecular!"
+  "telemetry.sandstorm.anvil_redirect": "§e[Aviso Científico] Los yunques arcaicos han sido suprimidos. ¡Mejora tu equipo en el Modificador Molecular!",
+  "block.sandstorm.cyborg_incubator_vat": "Incubadora Bio-Cibernética",
+  "item.sandstorm.biomechanical_chassis_frame": "Chasis Esquelético de Titanio-Quitina",
+  "item.sandstorm.synthetic_myomer_bundle": "Haz de Miómeros Artificiales Electroactivos",
+  "item.sandstorm.bio_neural_core": "Núcleo Neural Biónico",
+  "item.sandstorm.bio_coolant_canister": "Cánister de Hemolinfa Bio-Refrigerante",
+  "item.sandstorm.assembled_cyborg_frame": "Chasis Cibernético Biogestado",
+  "container.sandstorm.cyborg_incubator_vat": "Incubadora Bio-Cibernética",
+  "tooltip.sandstorm.cyborg_incubator.stage_0": "Etapa 0: Vacío / Esperando Insumos",
+  "tooltip.sandstorm.cyborg_incubator.stage_1": "Etapa 1: Endoesqueleto Anclado",
+  "tooltip.sandstorm.cyborg_incubator.stage_2": "Etapa 2: Miómeros Electroactivos Inyectados",
+  "tooltip.sandstorm.cyborg_incubator.stage_3": "Etapa 3: Núcleo Neural Acoplado",
+  "tooltip.sandstorm.cyborg_incubator.stage_4": "Etapa 4: Perfusión de Bio-Coolant Activa",
+  "tooltip.sandstorm.cyborg_incubator.sync": "Sincronización Tisular: %s%%"
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TGT",
+    "PBP",
+    "TCT"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "G": "sandstorm:fulgurite_glass",
+    "P": "sandstorm:pressure_seal",
+    "B": "sandstorm:bioreactor_vat",
+    "C": "sandstorm:circuit_board"
+  },
+  "result": {
+    "id": "sandstorm:cyborg_incubator_vat",
+    "count": 1
+  }
+}

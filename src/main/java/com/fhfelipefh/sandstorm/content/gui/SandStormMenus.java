@@ -82,6 +82,11 @@ public class SandStormMenus {
             new MenuType<>(BioRegenerationPodMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<CyborgIncubatorMenu> CYBORG_INCUBATOR_MENU = register(
+            "cyborg_incubator_vat",
+            new MenuType<>(CyborgIncubatorMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }
