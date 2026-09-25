@@ -14,6 +14,28 @@ No entanto, há um revés: os sistemas da nave acusam falha crítica nos motores
 
 ---
 
+## 📸 Demonstração Visual: Máquinas, Construções & Engenharia Planetária
+
+Explore algumas das principais instalações industriais, maquinários pesados e estruturas tecnológicas desenvolvidas no **SandStorm**:
+
+### 1. Complexo Industrial & Cúpulas de Terraformação Atmosférica
+![Complexo Industrial e Cúpula de Oásis](docs/images/sandstorm_industrial_base.jpg)
+*Visualização panorâmica de uma base industrial avançada nas dunas: o **Processador Atmosférico** gera uma cúpula ecológica e microclima seguro transformando areia desértica em solo fértil e lagos de água doce, cercado por matrizes fotovoltaicas, torres de craqueamento químico com dutos de plasma, domos hidropônicos e drones de carga aérea.*
+
+---
+
+### 2. Construtor Autônomo de Megaestruturas & Manufatura Holográfica 3D
+![Construtor de Megaestruturas e Drones Construtores](docs/images/megastructure_constructor.jpg)
+*O monumental **Megastructure Constructor** projetando a malha wireframe holográfica 3D ciano de uma cidadela planetária no céu noturno do deserto. **Drones Construtores Operários** sobrevoam o local utilizando feixes litográficos a laser de fusão molecular para materializar blocos camada por camada.*
+
+---
+
+### 3. Laboratório de Clonagem Quântica & Cápsulas de Estase ("Ego-Casting")
+![Laboratório de Clonagem Quântica e Sleeper Pods](docs/images/quantum_cloning_facility.jpg)
+*Interior de uma instalação biomédica avançada abrigando as **Cápsulas de Estase Quântica (Quantum Sleeper Pods)**. O corpo do clone é mantido em animação suspensa em fluido bio-nutritivo pressurizado. A tecnologia de **Ego-Casting** permite ao astronauta transferir instantaneamente sua mente entre corpos físicos distantes com inventários físicos isolados e respawn de emergência por proximidade.*
+
+---
+
 ## ⚙️ Mecânicas Principais
 
 * **Traje Espacial de Suporte à Vida (Fase 1):** Esqueça monstros vanilla (zumbis e esqueletos são suprimidos). A verdadeira ameaça é o ambiente térmico. O traje é energizado por luz solar direta e regula sua temperatura corporal. No subsolo, a energia solar não chega e a bateria é consumida continuamente.
@@ -118,6 +140,14 @@ graph TD;
 | **Bloco**    | `drone_dock`           | Doca de Drones | Estação de ancoragem e recarga de drones |
 | **Bloco**    | `assembly_bay`         | Pátio de Montagem | Plataforma de fabricação de veículos pesados |
 | **Bloco**    | `atmospheric_terraformer`| Processador Atmosférico| Usina de terraformação e cúpula de oásis local |
+| **Bloco**    | `megastructure_constructor`| Construtor de Megaestruturas | Manufatura aditiva holográfica 3D layer-by-layer |
+| **Bloco**    | `bioreactor_vat`       | Biorreator de Batelada | Quimiostato industrial de fermentação celular |
+| **Bloco**    | `molecular_modifier`   | Modificador Molecular | Transmutação subatômica catalítica de ligas |
+| **Bloco**    | `bio_regeneration_pod` | Pod de Bio-Regeneração | Câmara de cura celular rápida para exploradores |
+| **Bloco**    | `cyborg_incubator_vat` | Incubadora de Ciborgues | Síntese biônica de robôs auxiliares autônomos |
+| **Bloco**    | `cyborg_docking_station`| Doca de Recarga de Ciborgues | Ponto de ancoragem rápida e telemetria |
+| **Bloco**    | `holo_tactical_spire`  | Torre Holo-Tática | Radar 3D holográfico e ordens para o enxame |
+| **Bloco**    | `quantum_sleeper_pod`  | Cápsula de Estase Quântica | Clonagem do jogador, Ego-Casting e respawn |
 | **Item**     | `raw_silicon`          | Silício Bruto | Mineral extraído da areia desértica |
 | **Item**     | `silicon_wafer`        | Wafer de Silício | Pastilha para eletrônica avançada |
 | **Item**     | `mineral_salt`         | Sal Mineral | Subproduto mineral purificado |
@@ -128,10 +158,37 @@ graph TD;
 | **Item**     | `scrap_metal`          | Sucata Metálica | Liga reforçada resistente a dunas |
 | **Item**     | `sonic_cannon`         | Canhão Sônico de Pulso | Emissor de ondas acústicas de choque |
 | **Item**     | `atmospheric_analyzer` | Analisador Atmosférico | Leitor diagnóstico de microclima e cúpula local |
+| **Item**     | `quantum_mind_matrix`  | Matriz de Consciência | Interface de acoplamento neural para clonagem |
 | **Entidade** | `sandworm`             | Verme de Areia | Predador apex (300 HP, 18 dano) |
 | **Entidade** | `cargo_drone`          | Drone de Carga Aérea | Transporte aéreo com ruído sísmico zero |
+| **Entidade** | `builder_drone`        | Drone Construtor | Montagem litográfica a laser de megaestruturas |
 | **Entidade** | `excavator_vehicle`    | Veículo de Escavação | Escavadeira industrial pilotável (120 HP) |
 | **Entidade** | `megazord`             | Megazord de Combate | Mecha titânico pilotável (500 HP, choque sônico)|
+| **Entidade** | `cyborg_excavator`     | Ciborgue Minerador | Robô bípede autônomo especialista em escavação |
+| **Entidade** | `cyborg_builder`       | Ciborgue Construtor | Robô bípede autônomo especialista em edificação |
+| **Entidade** | `cyborg_harvester`     | Ciborgue Coletor | Robô bípede autônomo especialista em biomassa |
+
+---
+
+## 🏗️ Catálogo de Instalações & Comandos de Demonstração Rápida (Debug)
+
+Para criadores de conteúdo, desenvolvedores e administradores, o mod inclui comandos para geração instantânea de instalações tecnológicas completas e kits de desenvolvimento:
+
+| Instalação / Complexo | Comando In-Game | Estrutura Gerada |
+|---|---|---|
+| **Complexo de Clonagem Quântica** | `/sandstorm debug setup clone_facility` | Duas Cápsulas de Estase (`quantum_sleeper_pod`) conectadas, telemetria e insumos para teste imediato de Ego-Casting |
+| **Canteiro de Megaestrutura** | `/sandstorm debug setup megastructure_site` | Construtor de Megaestruturas ancorado com blueprints e baús de insumos |
+| **Posto Avançado de Ciborgues** | `/sandstorm debug setup cyborg_outpost` | Docas de ancoragem, incubadora criogênica, telemetria e ciborgues operantes |
+| **Clínica Médica e MedBay** | `/sandstorm debug setup medbay_clinic` | Câmara de bio-regeneração estéril e ampolas farmacológicas avançadas |
+| **Laboratório de Biorreatores** | `/sandstorm debug setup bioreactor_lab` | Quimiostato industrial, cepas extremófilas e insumos de fermentação |
+| **Oficina Molecular** | `/sandstorm debug setup molecular_workshop` | Modificador molecular com catalisadores de fissão e transmutação |
+| **Usina de Energia Planetária** | `/sandstorm debug setup power_station` | Matriz solar de alta eficiência e acumuladores de estado sólido |
+| **Complexo de Refinaria** | `/sandstorm debug setup refinery_complex` | Torres de craqueamento térmico e tanques de hidrocarbonetos pesados |
+| **Domo de Oásis Terraformado** | `/sandstorm debug setup terraformer_dome` | Processador Atmosférico com cúpula de microclima e oásis verdejante |
+| **Fortaleza de Espinhos** | `/sandstorm debug setup spike_fortress` | Perímetro com paredes de titânio, espinhos eletrizados e portões motorizados |
+| **Base Inicial de Sobrevivência** | `/sandstorm debug setup starter_base` | Posto balanceado com filtro de dessalinização, água e energia solar |
+
+> **Kits de Inventário por Fase:** Obtenha os equipamentos e blocos de qualquer fase com `/sandstorm debug phase <1..29>` (ou `/sandstorm debug phase all` para o kit mestre completo).
 
 ---
 

@@ -1397,7 +1397,25 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - **Fase 33 (Elevador Espacial Planetário, Farol Quântico Subespacial & Transmissão Interestelar de Resgate)**:
       - Âncora megalítica 4x4x4 com tensão ativa magnética, cabos trançados de nanotubos de carbono-grafeno, vagão suborbital maglev vertical com subida triunfante pela atmosfera até a órbita estrelada (Y=500+), farol quântico de comunicação superluminal em feixe helicoidal de táquions e clímax da missão com mensagem de resgate da Federação Interestelar e conquista "Soberano do Deserto".
     - Expansão do catálogo oficial de efeitos sonoros com 13 novos áudios customizados e planejamento de kits e comandos `/sandstorm debug phase <29..33>`.
-
-
-
-
+55. `fase29-done`: Implementação completa da **Fase 29: Clonagem Quântica do Jogador, Cápsulas de Estase ("Quantum Sleeper Pods"), Transferência de Consciência ("Ego-Casting") & Respawn por Proximidade**:
+    - **Cápsula de Estase e Gestação Biológica (`quantum_sleeper_pod` / `QuantumSleeperPodBlockEntity` / `QuantumSleeperPodBlock`)**:
+      - Maquinário bio-quântico de 100.000 J conectado à malha WPT sem fio, com câmara de estase para corpos clonados e propriedades `FACING`, `ACTIVE`, `OCCUPIED`.
+      - Sistema de nutrição biológica e bio-síntese celular consumindo metabólitos da Fase 21 (quitosana, trehalose, glicerol e água potável) para gestação orgânica do clone.
+      - 42 slots dedicados de armazenamento físico por cápsula: inventário completo isolado (36 slots), armadura (4 slots), mão secundária (1 slot) e slot de insumos biológicos (1 slot). Suporte total à Fabric Transfer API (`ItemStorage.SIDED`).
+    - **Matriz de Consciência Quântica (`quantum_mind_matrix`)**:
+      - Componente tecnológico de alta densidade manufaturado com matriz de silício, circuitos de liga titânio-quitina e neuro-alcaloides, permitindo o emparelhamento sináptico com a malha quântica.
+    - **Rede de Consciência Quântica Persistente (`CloneNetworkSavedData`)**:
+      - Persistência de dados mundiais conforme o padrão moderno 1.21.4 (`SavedDataType` com `RecordCodecBuilder`), mantendo o mapeamento de cápsulas registradas por UUID de jogador e dimensão.
+      - Algoritmo de busca euclidiana de proximidade (`findNearestReadyPod`) e busca de alvo de transferência remota (`findTargetPodForTransfer`).
+    - **Mecânica de Transferência de Consciência ("Ego-Casting")**:
+      - Teletransporte instantâneo da consciência do jogador entre corpos físicos mantidos em cápsulas conectadas à rede.
+      - Isolamento estrito de inventário físico: ao transferir a mente, todo o inventário atual (itens, armadura, offhand) permanece armazenado na cápsula de partida com o corpo adormecido, enquanto o corpo receptor descarrega seu inventário específico para o jogador, eliminando qualquer duplicação de itens.
+    - **Protocolo de Respawn de Emergência por Proximidade (`FusedSpaceSuitHandler`)**:
+      - No evento de morte do jogador (`ServerPlayerEvents.AFTER_RESPAWN`), o sistema localiza a cápsula com clone pronto fisicamente mais próxima das coordenadas de óbito. O jogador reanima diretamente na cápsula mais próxima com os equipamentos que estavam nela pré-equipados.
+    - **Interface Gráfica Cyberpunk (`QuantumSleeperMenu` / `QuantumSleeperScreen`)**:
+      - Monitor de telemetria com medidor vertical de energia WPT ciano, medidor de bio-nutrientes âmbar, status de ocupação do clone e botões de ação ("Gestar Clone" e "Transferir Consciência").
+    - **Comandos de Debug e Teste Automatizado (`SandstormDebugCommand`)**:
+      - `/sandstorm debug phase 29` (ou `/sandstorm_debug phase 29`): Entrega de kit completo de clonagem.
+      - `/sandstorm debug setup clone_facility`: Geração automatizada de complexo laboratorial com duas cápsulas operacionais interligadas (Pod Alpha e Pod Beta) para teste imediato de ego-casting.
+    - **Validação Automatizada de Testes**:
+      - Suíte de testes dedicada `Fase29QuantumCloningTest` e ampliação de `SandstormDebugTest`, elevando o total do repositório para **892 testes automatizados** com 100% de aprovação e zero comentários.

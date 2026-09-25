@@ -121,6 +121,7 @@ public class SandStormItems {
     public static final CyborgUpgradeItem PIEZO_HOVER_THRUSTER = register("piezo_hover_thruster", new CyborgUpgradeItem(CyborgUpgradeItem.CyborgUpgradeType.PIEZO_HOVER_THRUSTER, properties("piezo_hover_thruster")));
     public static final Item NEURAL_SYNAPSE_LINK = register("neural_synapse_link", new Item(properties("neural_synapse_link").rarity(Rarity.EPIC).stacksTo(1)));
     public static final Item ORBITAL_RECON_PROBE = register("orbital_recon_probe", new Item(properties("orbital_recon_probe").rarity(Rarity.RARE).stacksTo(16)));
+    public static final Item QUANTUM_MIND_MATRIX = register("quantum_mind_matrix", new Item(properties("quantum_mind_matrix").rarity(Rarity.EPIC)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -270,6 +271,8 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.HOLO_TACTICAL_SPIRE);
                         entries.accept(NEURAL_SYNAPSE_LINK);
                         entries.accept(ORBITAL_RECON_PROBE);
+                        entries.accept(SandStormBlocks.QUANTUM_SLEEPER_POD);
+                        entries.accept(QUANTUM_MIND_MATRIX);
                     })
                     .build()
     );

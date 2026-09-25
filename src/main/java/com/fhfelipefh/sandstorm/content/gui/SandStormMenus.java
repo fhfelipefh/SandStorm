@@ -102,6 +102,11 @@ public class SandStormMenus {
             new MenuType<>(HoloTacticalSpireMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<QuantumSleeperMenu> QUANTUM_SLEEPER_MENU = register(
+            "quantum_sleeper_pod",
+            new MenuType<>(QuantumSleeperMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

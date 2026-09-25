@@ -18,6 +18,7 @@ import com.fhfelipefh.sandstorm.client.gui.MegastructureConstructorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MolecularModifierScreen;
 import com.fhfelipefh.sandstorm.client.gui.NaniteFabricatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.Printer3DScreen;
+import com.fhfelipefh.sandstorm.client.gui.QuantumSleeperScreen;
 import com.fhfelipefh.sandstorm.client.gui.SolidStateAccumulatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.ThermalGeneratorScreen;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
@@ -84,6 +85,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.CYBORG_TELEMETRY_MENU, CyborgTelemetryScreen::new);
         MenuScreens.register(SandStormMenus.CYBORG_DOCKING_STATION_MENU, CyborgDockingStationScreen::new);
         MenuScreens.register(SandStormMenus.HOLO_TACTICAL_SPIRE_MENU, HoloTacticalSpireScreen::new);
+        MenuScreens.register(SandStormMenus.QUANTUM_SLEEPER_MENU, QuantumSleeperScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

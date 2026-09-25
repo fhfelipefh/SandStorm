@@ -595,5 +595,13 @@
   "item.sandstorm.neural_synapse_link": "Módulo de Interface Neural",
   "tooltip.sandstorm.neural_synapse_link_desc": "Uplink biocibernético de conexão direta entre o traje espacial e a matriz de inteligência do enxame.",
   "item.sandstorm.orbital_recon_probe": "Sonda de Reconhecimento Orbital",
-  "tooltip.sandstorm.orbital_recon_probe_desc": "Sonda ejetável de monitoramento estratosférico para detecção antecipada de tempestades iônicas e ruínas."
+  "tooltip.sandstorm.orbital_recon_probe_desc": "Sonda ejetável de monitoramento estratosférico para detecção antecipada de tempestades iônicas e ruínas.",
+  "block.sandstorm.quantum_sleeper_pod": "Casulo de Sono Quântico",
+  "item.sandstorm.quantum_sleeper_pod": "Casulo de Sono Quântico",
+  "container.sandstorm.quantum_sleeper_pod": "Casulo de Sono Quântico // Ego-Cast",
+  "tooltip.sandstorm.quantum_sleeper_pod_desc": "Receptor de consciência subatômica e cuba de gestação biométrica. Permite transferência de consciência entre corpos e re-ancoragem por proximidade após a morte.",
+  "item.sandstorm.quantum_mind_matrix": "Matriz Mental Quântica",
+  "tooltip.sandstorm.quantum_mind_matrix_desc": "Malha de processamento neural emaranhado que codifica a identidade subjetiva do operador em superposição quântica.",
+  "message.sandstorm.consciousness_transferred": "CONSCIÊNCIA TRANSFERIDA: Ego-cast re-ancorado com sucesso ao casulo quântico remoto.",
+  "message.sandstorm.clone_respawned": "CONSCIÊNCIA RE-ANCORADA: Transferida para o clone quântico mais próximo '%s'."
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SMS",
+    "PGP",
+    "SBS"
+  ],
+  "key": {
+    "S": "sandstorm:structural_plate",
+    "M": "sandstorm:quantum_mind_matrix",
+    "P": "sandstorm:pressure_seal",
+    "G": "minecraft:glass",
+    "B": "sandstorm:bio_regeneration_pod"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:quantum_sleeper_pod"
+  }
+}

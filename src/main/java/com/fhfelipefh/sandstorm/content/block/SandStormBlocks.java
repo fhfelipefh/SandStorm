@@ -17,6 +17,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlo
 import com.fhfelipefh.sandstorm.content.block.entity.MolecularModifierBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SmartFluidPipeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
@@ -455,6 +456,14 @@ public class SandStormBlocks {
                     .sound(SoundType.NETHERITE_BLOCK)
                     .lightLevel(state -> state.getValue(HoloTacticalSpireBlock.ACTIVE) ? 12 : 0)
                     .noOcclusion()));
+    public static final QuantumSleeperPodBlock QUANTUM_SLEEPER_POD = register("quantum_sleeper_pod",
+            new QuantumSleeperPodBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("quantum_sleeper_pod")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(4.5f, 9.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .lightLevel(state -> state.getValue(QuantumSleeperPodBlock.ACTIVE) ? 8 : 0)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -571,6 +580,11 @@ public class SandStormBlocks {
             SandStormMod.id("holo_tactical_spire"),
             new BlockEntityType<>(HoloTacticalSpireBlockEntity::new, Set.of(HOLO_TACTICAL_SPIRE))
     );
+    public static final BlockEntityType<QuantumSleeperPodBlockEntity> QUANTUM_SLEEPER_POD_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("quantum_sleeper_pod"),
+            new BlockEntityType<>(QuantumSleeperPodBlockEntity::new, Set.of(QUANTUM_SLEEPER_POD))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -609,5 +623,6 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, CYBORG_INCUBATOR_VAT_BE);
         FluidStorage.SIDED.registerForBlockEntity(CyborgIncubatorVatBlockEntity::getFluidStorage, CYBORG_INCUBATOR_VAT_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, HOLO_TACTICAL_SPIRE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, QUANTUM_SLEEPER_POD_BE);
     }
 }

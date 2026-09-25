@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.command;
 import com.fhfelipefh.sandstorm.content.block.HoloTacticalSpireBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
@@ -39,6 +40,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
@@ -50,7 +52,7 @@ public class SandstormDebugCommand {
     private static final List<String> PHASES = List.of(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
             "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-            "21", "22", "23", "24", "25", "26", "27", "28", "all"
+            "21", "22", "23", "24", "25", "26", "27", "28", "29", "all"
     );
 
     private static final List<String> SPAWNABLES = List.of(
@@ -80,7 +82,8 @@ public class SandstormDebugCommand {
             "terraformer_dome",
             "maglev_station",
             "starter_base",
-            "ancient_ruin_site"
+            "ancient_ruin_site",
+            "clone_facility"
     );
 
     public static void initialize() {
@@ -561,6 +564,15 @@ public class SandstormDebugCommand {
             giveItem(player, SandStormItems.ORBITAL_RECON_PROBE, 4);
         }
 
+        if (isAll || "29".equals(normalized)) {
+            giveItem(player, SandStormBlocks.QUANTUM_SLEEPER_POD, 2);
+            giveItem(player, SandStormItems.QUANTUM_MIND_MATRIX, 2);
+            giveItem(player, SandStormItems.CHITOSAN_EXTRACT, 8);
+            giveItem(player, SandStormItems.TREHALOSE_SUGAR, 8);
+            giveItem(player, SandStormItems.OSMOLYTE_GLYCEROL, 8);
+            giveItem(player, SandStormItems.POTABLE_WATER_BOTTLE, 8);
+        }
+
         player.containerMenu.broadcastChanges();
         player.inventoryMenu.broadcastChanges();
 
@@ -972,6 +984,43 @@ public class SandstormDebugCommand {
                 level.setBlock(center.offset(1, 1, -1), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
                 level.setBlock(center.offset(-1, 1, 1), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
                 source.sendSuccess(() -> Component.literal("§a[SandStorm] Sítio Arqueológico com Ruínas Tecnológicas e Núcleo montado com sucesso!"), true);
+                return 1;
+            }
+            case "clone_facility" -> {
+                for (int dx = -3; dx <= 3; dx++) {
+                    for (int dz = -3; dz <= 3; dz++) {
+                        level.setBlock(center.offset(dx, 0, dz), Blocks.SMOOTH_BASALT.defaultBlockState(), 3);
+                        for (int dy = 1; dy <= 4; dy++) {
+                            level.setBlock(center.offset(dx, dy, dz), Blocks.AIR.defaultBlockState(), 3);
+                        }
+                    }
+                }
+                BlockPos podPos1 = center.offset(-1, 1, 0);
+                BlockPos podPos2 = center.offset(1, 1, 0);
+                level.setBlock(podPos1, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState(), 3);
+                level.setBlock(podPos2, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState(), 3);
+                level.setBlock(center.offset(0, 1, 2), SandStormBlocks.WPT_RELAY_TOWER.defaultBlockState(), 3);
+                level.setBlock(center.offset(0, 1, -2), SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState(), 3);
+                level.setBlock(center.offset(-2, 1, 2), SandStormBlocks.BIOREACTOR_VAT.defaultBlockState(), 3);
+                level.setBlock(center.offset(2, 1, 2), SandStormBlocks.HOLO_TACTICAL_SPIRE.defaultBlockState(), 3);
+
+                BlockEntity be1 = level.getBlockEntity(podPos1);
+                if (be1 instanceof QuantumSleeperPodBlockEntity podBe1) {
+                    podBe1.setCustomPodName("Alpha-Station Pod");
+                    podBe1.setOwnerUuid(player.getUUID());
+                    podBe1.setStoredEnergy(100000);
+                    podBe1.setBioNutrients(100);
+                    podBe1.setHasClone(true);
+                }
+                BlockEntity be2 = level.getBlockEntity(podPos2);
+                if (be2 instanceof QuantumSleeperPodBlockEntity podBe2) {
+                    podBe2.setCustomPodName("Beta-Station Pod");
+                    podBe2.setOwnerUuid(player.getUUID());
+                    podBe2.setStoredEnergy(100000);
+                    podBe2.setBioNutrients(100);
+                    podBe2.setHasClone(false);
+                }
+                source.sendSuccess(() -> Component.literal("§a[SandStorm] Complexo Biocibernético de Clonagem Quântica montado com sucesso! (Casulos Alpha e Beta vinculados)"), true);
                 return 1;
             }
             default -> {

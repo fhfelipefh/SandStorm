@@ -17,8 +17,17 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import com.fhfelipefh.sandstorm.content.block.QuantumSleeperPodBlock;
+import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
+import com.fhfelipefh.sandstorm.content.clone.CloneNetworkSavedData;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.entity.BlockEntity;
+
+import java.util.Optional;
 
 public class FusedSpaceSuitHandler {
 
@@ -36,7 +45,7 @@ public class FusedSpaceSuitHandler {
                 }
                 QuestRewardHandler.syncPlayerQuests(newPlayer, data);
             }
-            onPlayerRespawn(newPlayer);
+            onPlayerRespawn(oldPlayer, newPlayer);
         });
     }
 
@@ -70,10 +79,51 @@ public class FusedSpaceSuitHandler {
     }
 
     public static void onPlayerRespawn(ServerPlayer player) {
+        onPlayerRespawn(player, player);
+    }
+
+    public static void onPlayerRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer) {
+        MinecraftServer server = newPlayer.level().getServer();
+        if (server != null) {
+            String dim = oldPlayer.level().dimension().identifier().toString();
+            BlockPos deathPos = oldPlayer.blockPosition();
+            Optional<GlobalPos> deathLoc = oldPlayer.getLastDeathLocation();
+            if (deathLoc.isPresent()) {
+                dim = deathLoc.get().dimension().identifier().toString();
+                deathPos = deathLoc.get().pos();
+            }
+            CloneNetworkSavedData cloneData = CloneNetworkSavedData.get(server);
+            Optional<CloneNetworkSavedData.ClonePodRecord> podRecordOpt = cloneData.findNearestReadyPod(newPlayer.getUUID(), deathPos, dim);
+            if (podRecordOpt.isPresent()) {
+                CloneNetworkSavedData.ClonePodRecord podRecord = podRecordOpt.get();
+                ServerLevel targetLevel = null;
+                for (ServerLevel lvl : server.getAllLevels()) {
+                    if (lvl.dimension().identifier().toString().equals(podRecord.dimensionId())) {
+                        targetLevel = lvl;
+                        break;
+                    }
+                }
+                if (targetLevel != null) {
+                    BlockPos podPos = podRecord.pos();
+                    BlockEntity be = targetLevel.getBlockEntity(podPos);
+                    if (be instanceof QuantumSleeperPodBlockEntity podBe && podBe.hasClone()) {
+                        BlockPos arrivalPos = podPos.relative(targetLevel.getBlockState(podPos).getValue(QuantumSleeperPodBlock.FACING));
+                        if (!SpawnSafety.isSafePosition(targetLevel, arrivalPos)) {
+                            arrivalPos = podPos.above();
+                        }
+                        SpawnSafety.teleportSafely(newPlayer, arrivalPos);
+                        podBe.deployCloneToPlayer(newPlayer);
+                        enforceFusedSuit(newPlayer);
+                        newPlayer.sendSystemMessage(Component.translatable("message.sandstorm.clone_respawned", podRecord.name()), false);
+                        return;
+                    }
+                }
+            }
+        }
         BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
-        SpawnSafety.teleportSafely(player, spawnPos);
-        equipFusedSuit(player);
-        enforceFusedSuit(player);
+        SpawnSafety.teleportSafely(newPlayer, spawnPos);
+        equipFusedSuit(newPlayer);
+        enforceFusedSuit(newPlayer);
     }
 
     public static void equipFusedSuit(ServerPlayer player) {

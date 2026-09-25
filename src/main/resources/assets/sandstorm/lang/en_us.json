@@ -595,5 +595,13 @@
   "item.sandstorm.neural_synapse_link": "Neural Synapse Link",
   "tooltip.sandstorm.neural_synapse_link_desc": "Biocybernetic direct link between the space suit and the swarm intelligence mesh.",
   "item.sandstorm.orbital_recon_probe": "Orbital Recon Probe",
-  "tooltip.sandstorm.orbital_recon_probe_desc": "Ejectable stratospheric monitoring probe for early detection of ion sandstorms and subterranean ruins."
+  "tooltip.sandstorm.orbital_recon_probe_desc": "Ejectable stratospheric monitoring probe for early detection of ion sandstorms and subterranean ruins.",
+  "block.sandstorm.quantum_sleeper_pod": "Quantum Sleeper Pod",
+  "item.sandstorm.quantum_sleeper_pod": "Quantum Sleeper Pod",
+  "container.sandstorm.quantum_sleeper_pod": "Quantum Sleeper Pod // Ego-Cast",
+  "tooltip.sandstorm.quantum_sleeper_pod_desc": "Sub-atomic consciousness receiver and biometric gestation vat. Enables ego-casting across sleeper pods and local proximity re-anchoring upon death.",
+  "item.sandstorm.quantum_mind_matrix": "Quantum Mind Matrix",
+  "tooltip.sandstorm.quantum_mind_matrix_desc": "Entangled neural processing lattice that encodes the operator's subjective identity and state into quantum superposition.",
+  "message.sandstorm.consciousness_transferred": "CONSCIOUSNESS TRANSFERRED: Ego-cast successfully re-anchored to remote quantum pod.",
+  "message.sandstorm.clone_respawned": "CONSCIOUSNESS RE-ANCHORED: Transferred to nearest quantum clone '%s'."
 }
