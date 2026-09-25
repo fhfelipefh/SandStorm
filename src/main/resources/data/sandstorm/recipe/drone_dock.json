@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "M M",
+    "SCS",
+    "MMM"
+  ],
+  "key": {
+    "M": "sandstorm:scrap_metal",
+    "S": "sandstorm:structural_plate",
+    "C": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:drone_dock"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " R ",
+    "SMS",
+    " R "
+  ],
+  "key": {
+    "R": "sandstorm:raw_silicon",
+    "S": "minecraft:sandstone",
+    "M": "sandstorm:scrap_metal"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:electric_component"
+  }
+}

@@ -428,7 +428,7 @@ public class SurvivalDatapadScreen extends Screen {
         return false;
     }
 
-    private static boolean matchesQuestItem(QuestData quest, ItemStack stack, Item req) {
+    public static boolean matchesQuestItem(QuestData quest, ItemStack stack, Item req) {
         if (req != null && stack.is(req)) {
             return true;
         }
@@ -438,6 +438,10 @@ public class SurvivalDatapadScreen extends Screen {
         }
         if ("compact_sandstone".equals(quest.id())) {
             return id != null && (id.equals(SandStormMod.mcId("sandstone"))
+                    || id.equals(SandStormMod.mcId("red_sandstone"))
+                    || id.equals(SandStormMod.mcId("smooth_sandstone"))
+                    || id.equals(SandStormMod.mcId("cut_sandstone"))
+                    || id.equals(SandStormMod.mcId("chiseled_sandstone"))
                     || id.equals(SandStormMod.id("sandstone_workbench"))
                     || id.equals(SandStormMod.id("sandstone_furnace")));
         }
@@ -449,8 +453,21 @@ public class SurvivalDatapadScreen extends Screen {
             return id != null && (id.equals(SandStormMod.id("sandstone_furnace"))
                     || id.equals(SandStormMod.mcId("furnace")));
         }
+        if ("glass_canister".equals(quest.id())) {
+            return id != null && (id.equals(SandStormMod.mcId("glass_bottle"))
+                    || id.equals(SandStormMod.id("brackish_water_bottle"))
+                    || id.equals(SandStormMod.id("potable_water_bottle"))
+                    || id.equals(SandStormMod.mcId("potion")));
+        }
+        if ("planetary_genesis".equals(quest.id())) {
+            return id != null && (id.equals(SandStormMod.mcId("grass_block"))
+                    || id.equals(SandStormMod.mcId("dirt"))
+                    || id.equals(SandStormMod.id("xeno_grass_block"))
+                    || id.equals(SandStormMod.id("xeno_grass_seeds")));
+        }
         return false;
     }
+
 
     private boolean arePrerequisitesClaimed(QuestData quest) {
         if (quest.prerequisiteIds().isEmpty()) {
