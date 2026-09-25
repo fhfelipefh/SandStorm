@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " B ",
+    "NCN",
+    " B "
+  ],
+  "key": {
+    "B": "sandstorm:flexible_biopolymer",
+    "N": "sandstorm:nano_actuator",
+    "C": "sandstorm:chitosan_extract"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:self_healing_nanite_matrix"
+  }
+}

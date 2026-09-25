@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " T ",
+    "CPC",
+    "NAN"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "C": "sandstorm:circuit_board",
+    "P": "sandstorm:printer_3d",
+    "N": "sandstorm:nano_actuator",
+    "A": "sandstorm:structural_plate"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:molecular_modifier"
+  }
+}

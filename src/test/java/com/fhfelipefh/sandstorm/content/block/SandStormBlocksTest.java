@@ -37,7 +37,8 @@ class SandStormBlocksTest {
             "ancient_data_core",
             "drone_dock",
             "assembly_bay",
-            "atmospheric_terraformer"
+            "atmospheric_terraformer",
+            "molecular_modifier"
     })
     void shouldCreateValidBlockKeysForCoreBlocks(String blockPath) {
         ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, SandStormMod.id(blockPath));

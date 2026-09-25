@@ -62,7 +62,19 @@ class SandStormItemsTest {
             "endothermic_serum",
             "grav_dampener_stim",
             "detox_ampoule",
-            "stealth_nano_drape"
+            "stealth_nano_drape",
+            "vibro_resonator_module",
+            "thermal_plasma_emitter",
+            "kinetic_focus_module",
+            "cavitation_frequency_core",
+            "atomic_phase_disrupter",
+            "spectrometric_sifter",
+            "self_healing_nanite_matrix",
+            "titanium_lattice_coating",
+            "ballistic_dampener_mesh",
+            "ablative_thermal_plating",
+            "pneumatic_fall_dampers",
+            "reactive_shock_plating"
     })
     void shouldGenerateCorrectResourceKeysForCoreItems(String itemPath) {
         ResourceKey<Item> key = SandStormMod.itemKey(itemPath);

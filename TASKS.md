@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **671 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **729 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 79 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 92 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -544,41 +544,41 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
     - *Fórmula*: Biopolímeros Flexíveis + Partículas micronizadas de Vidro de Fulgurito (`fulgurite_glass`).
     - *Efeito Farmacológico*: Película metamaterial translúcida que curva feixes de luz ao redor do chassi do traje por 90 segundos, tornando o operador indetectável para radares e sensores visuais de criaturas da superfície.
 
-### 🔬 Fase 23: Bancada de Modificação Molecular, Overclocks de Hardware & Nanocoatings (Substituição de Encantamentos)
+### 🔬 Fase 23: Bancada de Modificação Molecular, Overclocks de Hardware & Nanocoatings (Substituição de Encantamentos) (Concluída - 100%)
 *Substituição da Mesa de Encantamentos, Bigorna e livros mágicos por engenharia física de semicondutores, overclocks de firmware e nanocamadas estruturais.*
 
-- [ ] **Bancada de Modificação Molecular (`molecular_modifier`)**:
-  - [ ] Maquinário tecnológico de engenharia de precisão que substitui a Mesa de Encantamentos (`enchanting_table`) e a Bigorna (`anvil`) convencionais.
-  - [ ] Conexão à malha de energia sem fio WPT (consumo de 500 J por ciclo de calibração molecular).
-  - [ ] Interface gráfica modular cyberpunk com baia de ancoragem do equipamento e soquetes: 3 slots para microchips/overclocks de firmware + 1 slot para revestimento químico (nanocoating).
-  - [ ] Cabeçote laser litográfico embutido para gravação nanométrica em silício e titânio, eliminando penalidades cumulativas de custo de reparo ou mecânicas místicas de XP.
-- [ ] **Módulos de Hardware & Overclocks para Armas (Substitutos de Encantamentos de Combate)**:
-  - [ ] **Bobina Ressonadora de Alta Frequência (`vibro_resonator_module`)** *(Substitui Sharpness / Afiação)*:
+- [x] **Bancada de Modificação Molecular (`molecular_modifier`)**:
+  - [x] Maquinário tecnológico de engenharia de precisão que substitui a Mesa de Encantamentos (`enchanting_table`) e a Bigorna (`anvil`) convencionais.
+  - [x] Conexão à malha de energia sem fio WPT (consumo de 500 J por ciclo de calibração molecular).
+  - [x] Interface gráfica modular cyberpunk com baia de ancoragem do equipamento e soquetes: 3 slots para microchips/overclocks de firmware + 1 slot para revestimento químico (nanocoating).
+  - [x] Cabeçote laser litográfico embutido para gravação nanométrica em silício e titânio, eliminando penalidades cumulativas de custo de reparo ou mecânicas místicas de XP.
+- [x] **Módulos de Hardware & Overclocks para Armas (Substitutos de Encantamentos de Combate)**:
+  - [x] **Bobina Ressonadora de Alta Frequência (`vibro_resonator_module`)** *(Substitui Sharpness / Afiação)*:
     - Induz vibração molecular a 80.000 Hz na lâmina ou no bocal de disparo, fragmentando ligações atômicas de blindagens (+1.5 de dano por nível de módulo, Tiers I a V).
-  - [ ] **Emissor Térmico de Plasma (`thermal_plasma_emitter`)** *(Substitui Fire Aspect & Flame)*:
+  - [x] **Emissor Térmico de Plasma (`thermal_plasma_emitter`)** *(Substitui Fire Aspect & Flame)*:
     - Superaquece o gume ou os projéteis disparados, incinerando matéria orgânica e derretendo armaduras biológicas no impacto.
-  - [ ] **Acelerador de Pulso Concussivo (`kinetic_focus_module`)** *(Substitui Knockback & Punch)*:
+  - [x] **Acelerador de Pulso Concussivo (`kinetic_focus_module`)** *(Substitui Knockback & Punch)*:
     - Dispara uma onda de choque pneumática no ponto de contato que repele e desestabiliza monstros e mechas a até 6 blocos de distância.
-- [ ] **Microchips de Otimização para Ferramentas de Mineração (Substitutos de Encantamentos de Mineração)**:
-  - [ ] **Núcleo de Cavitação Ultrassônica (`cavitation_frequency_core`)** *(Substitui Efficiency / Eficiência)*:
+- [x] **Microchips de Otimização para Ferramentas de Mineração (Substitutos de Encantamentos de Mineração)**:
+  - [x] **Núcleo de Cavitação Ultrassônica (`cavitation_frequency_core`)** *(Substitui Efficiency / Eficiência)*:
     - Sintoniza a frequência de impacto da Picareta de Silício com a densidade molecular da rocha, acelerando a taxa de extração em até 200%.
-  - [ ] **Desintegrador de Fase Atômica (`atomic_phase_disrupter`)** *(Substitui Silk Touch / Toque Suave)*:
+  - [x] **Desintegrador de Fase Atômica (`atomic_phase_disrupter`)** *(Substitui Silk Touch / Toque Suave)*:
     - Dissocia as ligações químicas sem fraturar o bloco, permitindo a extração perfeitamente íntegra de vidros de fulgurito, colmeias fósseis e clusters de quartzo piezoelétrico.
-  - [ ] **Espectrômetro de Ressonância Densimétrica (`spectrometric_sifter`)** *(Substitui Fortune / Fortuna)*:
+  - [x] **Espectrômetro de Ressonância Densimétrica (`spectrometric_sifter`)** *(Substitui Fortune / Fortuna)*:
     - Sensor espectrométrico microscópico que mapeia veios raros no ponto de impacto, maximizando o rendimento de silício, gemas piezoelétricas e carvão fóssil.
-- [ ] **Nanotecnologia Estrutural & Auto-Regeneração (Substitutos de Mending & Unbreaking)**:
-  - [ ] **Matriz de Nanorobôs Auto-Reparadores (`self_healing_nanite_matrix`)** *(Substitui Mending / Remendo)*:
+- [x] **Nanotecnologia Estrutural & Auto-Regeneração (Substitutos de Mending & Unbreaking)**:
+  - [x] **Matriz de Nanorobôs Auto-Reparadores (`self_healing_nanite_matrix`)** *(Substitui Mending / Remendo)*:
     - Micro-nanites integrados à estrutura do equipamento que reconstroem microfissuras consumindo pacotes de energia da rede sem fio WPT ou fragmentos de sucata metálica.
-  - [ ] **Revestimento Diamantado de Titânio (`titanium_lattice_coating`)** *(Substitui Unbreaking / Inquebrabilidade)*:
+  - [x] **Revestimento Diamantado de Titânio (`titanium_lattice_coating`)** *(Substitui Unbreaking / Inquebrabilidade)*:
     - Nanocamada de diamante sintético e titânio que triplica a rigidez estrutural, reduzindo a taxa de desgaste abrasivo das ferramentas em 75%.
-- [ ] **Placas de Chassi e Revestimentos de Blindagem para o Traje Espacial (Substitutos de Encantamentos de Armadura)**:
-  - [ ] **Grelha de Amortecimento Balístico (`ballistic_dampener_mesh`)** *(Substitui Proteção Geral / Protection)*:
+- [x] **Placas de Chassi e Revestimentos de Blindagem para o Traje Espacial (Substitutos de Encantamentos de Armadura)**:
+  - [x] **Grelha de Amortecimento Balístico (`ballistic_dampener_mesh`)** *(Substitui Proteção Geral / Protection)*:
     - Malha de dispersão de impacto que dissipa energia cinética por toda a área do chassi.
-  - [ ] **Blindagem Cerâmica Ablativa (`ablative_thermal_plating`)** *(Substitui Proteção contra Fogo)*:
+  - [x] **Blindagem Cerâmica Ablativa (`ablative_thermal_plating`)** *(Substitui Proteção contra Fogo)*:
     - Placas refratárias enriquecidas com melanina radiotrófica projetadas para absorver radiação solar extrema e chamas sem transferir calor ao operador.
-  - [ ] **Amortecedores Pneumáticos de Vácuo (`pneumatic_fall_dampers`)** *(Substitui Peso Pena / Feather Falling)*:
+  - [x] **Amortecedores Pneumáticos de Vácuo (`pneumatic_fall_dampers`)** *(Substitui Peso Pena / Feather Falling)*:
     - Pistões hidráulicos de desaceleração montados nos calcanhares das Botas Magnéticas, eliminando até 80% do impacto de pousos abruptos.
-  - [ ] **Placas de Descarga Reativa de Chassi (`reactive_shock_plating`)** *(Substitui Espinhos / Thorns)*:
+  - [x] **Placas de Descarga Reativa de Chassi (`reactive_shock_plating`)** *(Substitui Espinhos / Thorns)*:
     - Eletrodos perimétricos no traje que liberam um arco voltaico defensivo ciano contra agressores corpo a corpo, causando paralisia e choque elétrico.
 
 ### 🏥 Fase 24: Estação Médica Bio-Regenerativa (MedBay Pod) & Purificação Tecnológica do Vanilla
@@ -1009,3 +1009,15 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - 8 novas texturas pixel-art 16x16 com assinaturas PNG válidas, modelos JSON de item e definições em `assets/sandstorm/items/`.
     - Localização trilingue completa e sincronizada (`pt_br.json`, `en_us.json`, `es_es.json`).
     - Suíte de testes automatizados `Fase22BioPharmacologyTest`, elevando o total do repositório para **671 testes automatizados** com 100% de sucesso e zero comentários.
+47. `fase23-molecular-modifier`: Implementação completa da **Fase 23: Bancada de Modificação Molecular, Overclocks de Hardware & Nanocoatings (Substituição de Encantamentos Vanilla)**:
+    - Bancada de Modificação Molecular (`molecular_modifier` / `MolecularModifierBlock` / `MolecularModifierBlockEntity`): maquinário industrial de engenharia de precisão com suporte a WPT (buffer de 10.000 J, consumo de 500 J / 10 J/t por ciclo), queima de baterias/células de combustível, integração com a Fabric Transfer API (`ItemStorage.SIDED`), e partículas dinâmicas no cliente (arcos elétricos e feixes).
+    - 12 Módulos de Hardware, Overclocks e Nanocoatings (`MolecularUpgradeItem` / `UpgradeType`):
+      - 3 Overclocks de Armas: Bobina Ressonadora de Alta Frequência (`vibro_resonator_module` -> Afiação III), Emissor Térmico de Plasma (`thermal_plasma_emitter` -> Aspecto Flamejante II), Acelerador de Pulso Concussivo (`kinetic_focus_module` -> Repulsão II).
+      - 3 Overclocks de Mineração: Núcleo de Cavitação Ultrassônica (`cavitation_frequency_core` -> Eficiência IV), Desintegrador de Fase Atômica (`atomic_phase_disrupter` -> Toque Suave I), Espectrômetro de Ressonância Densimétrica (`spectrometric_sifter` -> Fortuna III).
+      - 2 Nanocoatings Universais: Matriz de Nanorobôs Auto-Reparadores (`self_healing_nanite_matrix` -> Remendo I), Revestimento Diamantado de Titânio (`titanium_lattice_coating` -> Inquebrabilidade III).
+      - 4 Revestimentos de Chassi/Armadura: Grelha de Amortecimento Balístico (`ballistic_dampener_mesh` -> Proteção IV), Blindagem Cerâmica Ablativa (`ablative_thermal_plating` -> Proteção contra Fogo IV), Amortecedores Pneumáticos de Vácuo (`pneumatic_fall_dampers` -> Peso Pena IV), Placas de Descarga Reativa (`reactive_shock_plating` -> Espinhos III).
+    - Interface Gráfica Cyberpunk Industrial (`MolecularModifierMenu` / `MolecularModifierScreen`): câmara de feixes litográficos animados, soquetes dedicados de overclock e nanocoating, monitor de buffer WPT, proteção de slot de saída e ContainerData sincronizado.
+    - 13 Receitas shaped data-driven balanceadas em `data/sandstorm/recipe/` e tabela de saque (`molecular_modifier.json`).
+    - 17 Novas texturas pixel-art 16x16 com assinaturas PNG válidas, modelos JSON de bloco e item, e definições em `assets/sandstorm/items/`.
+    - Localização trilingue completa e sincronizada (`pt_br.json`, `en_us.json`, `es_es.json`).
+    - Suíte de testes automatizados `Fase23MolecularModifierTest`, elevando o total do repositório para **729 testes automatizados** com 100% de sucesso e zero comentários.

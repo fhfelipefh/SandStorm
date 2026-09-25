@@ -10,6 +10,7 @@ import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
 import com.fhfelipefh.sandstorm.client.gui.GridMonitorConsoleScreen;
 import com.fhfelipefh.sandstorm.client.gui.HydroponicChamberScreen;
 import com.fhfelipefh.sandstorm.client.gui.MegastructureConstructorScreen;
+import com.fhfelipefh.sandstorm.client.gui.MolecularModifierScreen;
 import com.fhfelipefh.sandstorm.client.gui.NaniteFabricatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.Printer3DScreen;
 import com.fhfelipefh.sandstorm.client.gui.SolidStateAccumulatorScreen;
@@ -71,6 +72,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.AUTO_ASSEMBLY_LINE_MENU, AutoAssemblyLineScreen::new);
         MenuScreens.register(SandStormMenus.MEGASTRUCTURE_CONSTRUCTOR_MENU, MegastructureConstructorScreen::new);
         MenuScreens.register(SandStormMenus.BIOREACTOR_VAT_MENU, BioreactorVatScreen::new);
+        MenuScreens.register(SandStormMenus.MOLECULAR_MODIFIER_MENU, MolecularModifierScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

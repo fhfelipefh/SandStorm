@@ -94,6 +94,18 @@ public class SandStormItems {
     public static final PharmacologicalStimItem GRAV_DAMPENER_STIM = register("grav_dampener_stim", new PharmacologicalStimItem(PharmacologicalStimItem.StimType.GRAV_DAMPENER, properties("grav_dampener_stim")));
     public static final PharmacologicalStimItem DETOX_AMPOULE = register("detox_ampoule", new PharmacologicalStimItem(PharmacologicalStimItem.StimType.DETOX, properties("detox_ampoule")));
     public static final PharmacologicalStimItem STEALTH_NANO_DRAPE = register("stealth_nano_drape", new PharmacologicalStimItem(PharmacologicalStimItem.StimType.STEALTH, properties("stealth_nano_drape")));
+    public static final MolecularUpgradeItem VIBRO_RESONATOR_MODULE = register("vibro_resonator_module", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.VIBRO_RESONATOR, properties("vibro_resonator_module").rarity(Rarity.RARE)));
+    public static final MolecularUpgradeItem THERMAL_PLASMA_EMITTER = register("thermal_plasma_emitter", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.THERMAL_PLASMA, properties("thermal_plasma_emitter").rarity(Rarity.RARE)));
+    public static final MolecularUpgradeItem KINETIC_FOCUS_MODULE = register("kinetic_focus_module", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.KINETIC_FOCUS, properties("kinetic_focus_module").rarity(Rarity.RARE)));
+    public static final MolecularUpgradeItem CAVITATION_FREQUENCY_CORE = register("cavitation_frequency_core", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.CAVITATION_CORE, properties("cavitation_frequency_core").rarity(Rarity.RARE)));
+    public static final MolecularUpgradeItem ATOMIC_PHASE_DISRUPTER = register("atomic_phase_disrupter", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.ATOMIC_PHASE, properties("atomic_phase_disrupter").rarity(Rarity.EPIC)));
+    public static final MolecularUpgradeItem SPECTROMETRIC_SIFTER = register("spectrometric_sifter", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.SPECTROMETRIC_SIFTER, properties("spectrometric_sifter").rarity(Rarity.RARE)));
+    public static final MolecularUpgradeItem SELF_HEALING_NANITE_MATRIX = register("self_healing_nanite_matrix", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.SELF_HEALING_NANITES, properties("self_healing_nanite_matrix").rarity(Rarity.EPIC)));
+    public static final MolecularUpgradeItem TITANIUM_LATTICE_COATING = register("titanium_lattice_coating", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.TITANIUM_LATTICE, properties("titanium_lattice_coating").rarity(Rarity.RARE)));
+    public static final MolecularUpgradeItem BALLISTIC_DAMPENER_MESH = register("ballistic_dampener_mesh", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.BALLISTIC_DAMPENER, properties("ballistic_dampener_mesh").rarity(Rarity.RARE)));
+    public static final MolecularUpgradeItem ABLATIVE_THERMAL_PLATING = register("ablative_thermal_plating", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.ABLATIVE_PLATING, properties("ablative_thermal_plating").rarity(Rarity.RARE)));
+    public static final MolecularUpgradeItem PNEUMATIC_FALL_DAMPERS = register("pneumatic_fall_dampers", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.FALL_DAMPERS, properties("pneumatic_fall_dampers").rarity(Rarity.RARE)));
+    public static final MolecularUpgradeItem REACTIVE_SHOCK_PLATING = register("reactive_shock_plating", new MolecularUpgradeItem(MolecularUpgradeItem.UpgradeType.REACTIVE_SHOCK, properties("reactive_shock_plating").rarity(Rarity.RARE)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -211,6 +223,19 @@ public class SandStormItems {
                         entries.accept(GRAV_DAMPENER_STIM);
                         entries.accept(DETOX_AMPOULE);
                         entries.accept(STEALTH_NANO_DRAPE);
+                        entries.accept(SandStormBlocks.MOLECULAR_MODIFIER);
+                        entries.accept(VIBRO_RESONATOR_MODULE);
+                        entries.accept(THERMAL_PLASMA_EMITTER);
+                        entries.accept(KINETIC_FOCUS_MODULE);
+                        entries.accept(CAVITATION_FREQUENCY_CORE);
+                        entries.accept(ATOMIC_PHASE_DISRUPTER);
+                        entries.accept(SPECTROMETRIC_SIFTER);
+                        entries.accept(SELF_HEALING_NANITE_MATRIX);
+                        entries.accept(TITANIUM_LATTICE_COATING);
+                        entries.accept(BALLISTIC_DAMPENER_MESH);
+                        entries.accept(ABLATIVE_THERMAL_PLATING);
+                        entries.accept(PNEUMATIC_FALL_DAMPERS);
+                        entries.accept(REACTIVE_SHOCK_PLATING);
                     })
                     .build()
     );

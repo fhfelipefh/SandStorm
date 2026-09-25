@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " E ",
+    "SCS",
+    " E "
+  ],
+  "key": {
+    "E": "sandstorm:electrified_sand",
+    "S": "sandstorm:scrap_metal",
+    "C": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:reactive_shock_plating"
+  }
+}

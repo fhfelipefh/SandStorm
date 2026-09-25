@@ -10,6 +10,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEnti
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.MolecularModifierBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
@@ -414,6 +415,13 @@ public class SandStormBlocks {
                     .strength(3.5f, 6.0f)
                     .sound(SoundType.METAL)
                     .noOcclusion()));
+    public static final MolecularModifierBlock MOLECULAR_MODIFIER = register("molecular_modifier",
+            new MolecularModifierBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("molecular_modifier")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -505,6 +513,11 @@ public class SandStormBlocks {
             SandStormMod.id("bioreactor_vat"),
             new BlockEntityType<>(BioreactorVatBlockEntity::new, Set.of(BIOREACTOR_VAT))
     );
+    public static final BlockEntityType<MolecularModifierBlockEntity> MOLECULAR_MODIFIER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("molecular_modifier"),
+            new BlockEntityType<>(MolecularModifierBlockEntity::new, Set.of(MOLECULAR_MODIFIER))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -537,5 +550,6 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, AUTO_ASSEMBLY_LINE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, MEGASTRUCTURE_CONSTRUCTOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, BIOREACTOR_VAT_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, MOLECULAR_MODIFIER_BE);
     }
 }

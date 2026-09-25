@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " P ",
+    "NCN",
+    " S "
+  ],
+  "key": {
+    "P": "sandstorm:pressure_seal",
+    "N": "sandstorm:nano_actuator",
+    "C": "sandstorm:circuit_board",
+    "S": "sandstorm:structural_plate"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:kinetic_focus_module"
+  }
+}

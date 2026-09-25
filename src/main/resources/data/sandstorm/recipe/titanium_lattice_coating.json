@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " T ",
+    "SCS",
+    " T "
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "S": "sandstorm:structural_plate",
+    "C": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:titanium_lattice_coating"
+  }
+}
