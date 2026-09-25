@@ -725,37 +725,67 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [x] Texturas emissivas detalhadas, partículas de feixes de laser holográficos no mundo, anéis ressonantes no topo da torre e sons futuristas de telemetria, ativação de uplink e alarme de evacuação.
   - [x] Suíte de testes dedicada: `Fase28HoloTacticalSpireTest`.
 
-### 🛡️ Fase 29: Domo de Escudo de Plasma Planetário, Canhão Cinético Anti-Titã & Defesa de Ponto Sônica (Planetary Aegis Dome, Titan Kinetic Railcannon & Point-Defense Grid)
-*A fortificação defensiva terminal contra os perigos cósmicos e cataclismos do planeta deserto: proteção de colônias inteiras contra tempestades de areia radioativas e impactos de meteoritos com cúpulas de plasma holográfico, canhão ferroviário cinético monumental anti-verme de areia titânico e grade automatizada de intercepção sônica de projéteis.*
+### 🧬 Fase 29: Clonagem Quântica do Jogador, Cápsulas de Estase ("Quantum Sleeper Pods"), Transferência de Consciência ("Ego-Casting") & Respawn por Proximidade (Concluída - 100%)
+*A superação definitiva da fragilidade biológica e da morte no planeta inóspito: o operador transcende o corpo físico através de câmaras de estase biológica conectadas em rede quântica, permitindo o teletransporte instantâneo de sua consciência ("Ego-Casting") entre bases distantes e o despertar automático no clone mais próximo em caso de óbito.*
 
-- [ ] **Gerador do Domo de Escudo de Plasma Planetário (`planetary_aegis_generator`)**:
-  - [ ] Bloco monumental 2x2x2 com reator de confinamento magnético em titânio e bobinas toroidais supercondutoras.
-  - [ ] Capacitância massiva de 1.000.000 J WPT com suporte à Fabric Transfer API (`ItemStorage.SIDED`, `EnergyStorage.SIDED`).
-  - [ ] **Efeito Visual Espetacular de Cúpula de Plasma (Volumetric Plasma Dome Rendering)**:
-    - [ ] Renderizador client projetando uma cúpula semiesférica translúcida pulsante com hexágonos holográficos dinâmicos que se iluminam ao interceptar projéteis, tempestades ou criaturas.
-    - [ ] Ondas de choque em ondas de cor azul-celeste e ciano (`#00E5FF`) com distorções de refração atmosférica quando atingida por raios iônicos ou tempestades severas.
-  - [ ] **Proteção Ambiental Absoluta em Área**:
-    - [ ] Anula integralmente o dano de calor extremo, radiação solar e sufocamento por tempestade de areia para qualquer entidade dentro do perímetro (raio expansível de 32 a 128 blocos).
-    - [ ] Repulsão cinética e barreira intransponível para o Verme de Areia Colossal e projéteis sônicos externos.
-- [ ] **Canhão Ferroviário Cinético Anti-Titã (`titan_kinetic_railcannon`)**:
-  - [ ] Artilharia de cerco pesada 3x3x4 montada em base giratória reforçada com cano de aceleração magnética linear duplo de 6 metros.
-  - [ ] Acoplamento ao radar da Torre Holo-Tática (`HoloTacticalSpire`): rastreia automaticamente assinaturas sísmicas de vermes colossais em um raio de 256 blocos.
-  - [ ] Disparo cinético hipersônico devastador: acelera projéteis de tungstênio-titânio (`kinetic_penetrator_slug`) com feixe de arco voltaico ofuscante, estampido sônico estrondoso e onda de choque que levanta colunas de poeira nas dunas.
-- [ ] **Grade Automatizada de Defesa de Ponto Sônica (`point_defense_node`)**:
-  - [ ] Nós de interceptação rápida de curto alcance instaláveis em muralhas e tetos de hangares.
-  - [ ] Intercepta e desintegra projéteis hostis, estilhaços de meteoritos e detritos de tempestades usando micro-pulsos acústicos de alta frequência sincronizados pelo `CyborgSwarmManager`.
-- [ ] **Munições & Componentes de Alta Tecnologia**:
-  - [ ] Projétil Perfurante de Tungstênio-Titânio (`kinetic_penetrator_slug`): municiamento denso usinado na Bancada de Modificação Molecular.
-  - [ ] Bobina Supercondutora Toroidal (`superconducting_magnetic_coil`): componente estrutural avançado com fios cerâmicos de alta temperatura crítica.
-  - [ ] Cristal Difratador de Plasma Hexagonal (`plasma_diffraction_crystal`): matriz de foco óptico para a cúpula de contenção de plasma.
-- [ ] **Interface Gráfica Holográfica de Controle Balístico & Defesa (`PlanetaryAegisScreen` / `PlanetaryAegisMenu`)**:
-  - [ ] Display de visualização tática em tela cheia com monitoramento de integridade do escudo de plasma (%), consumo por segundo (J/s), raio de contenção regulável (sliders táteis) e câmera de mira remota do canhão de titã com telemetria angular (Yaw/Pitch).
-- [ ] **Cadeia Completa de Assets 1.21.4, Modelos 3D, SFX & Testes**:
-  - [ ] Modelos BBModel detalhados para o gerador de escudo, canhão cinético e nós de defesa de ponto.
-  - [ ] Efeitos sonoros customizados: zumbido de plasma harmônico (`aegis_shield_hum.ogg`), impacto no escudo (`aegis_shield_impact.ogg`) e disparo cinético do canhão (`railcannon_fire.ogg`).
-  - [ ] Suíte de testes dedicada `Fase29PlanetaryAegisTest`.
+- [x] **Cápsula de Estase e Gestação Biológica (`quantum_sleeper_pod` / `QuantumSleeperPodBlockEntity` / `QuantumSleeperPodBlock`)**:
+  - [x] Maquinário bio-quântico de 100.000 J conectado à malha WPT sem fio, com câmara de estase para corpos clonados e propriedades `FACING`, `ACTIVE`, `OCCUPIED`.
+  - [x] Sistema de nutrição biológica e bio-síntese celular consumindo metabólitos da Fase 21 (quitosana, trehalose, glicerol e água potável) para gestação orgânica do clone.
+  - [x] 42 slots dedicados de armazenamento físico por cápsula: inventário completo isolado (36 slots), armadura (4 slots), mão secundária (1 slot) e slot de insumos biológicos (1 slot). Suporte total à Fabric Transfer API (`ItemStorage.SIDED`).
+- [x] **Matriz de Consciência Quântica (`quantum_mind_matrix`)**:
+  - [x] Componente tecnológico de alta densidade manufaturado com matriz de silício, circuitos de liga titânio-quitina e neuro-alcaloides, permitindo o emparelhamento sináptico com a malha quântica.
+- [x] **Rede de Consciência Quântica Persistente (`CloneNetworkSavedData`)**:
+  - [x] Persistência de dados mundiais conforme o padrão moderno 1.21.4 (`SavedDataType` com `RecordCodecBuilder`), mantendo o mapeamento de cápsulas registradas por UUID de jogador e dimensão.
+  - [x] Algoritmo de busca euclidiana de proximidade (`findNearestReadyPod`) e busca de alvo de transferência remota (`findTargetPodForTransfer`).
+- [x] **Mecânica de Transferência de Consciência ("Ego-Casting")**:
+  - [x] Teletransporte instantâneo da consciência do jogador entre corpos físicos mantidos em cápsulas conectadas à rede.
+  - [x] Isolamento estrito de inventário físico: ao transferir a mente, todo o inventário atual (itens, armadura, offhand) permanece armazenado na cápsula de partida com o corpo adormecido, enquanto o corpo receptor descarrega seu inventário específico para o jogador, eliminando qualquer duplicação de itens.
+- [x] **Protocolo de Respawn de Emergência por Proximidade (`FusedSpaceSuitHandler`)**:
+  - [x] No evento de morte do jogador (`ServerPlayerEvents.AFTER_RESPAWN`), o sistema localiza a cápsula com clone pronto fisicamente mais próxima das coordenadas de óbito. O jogador reanima diretamente na cápsula mais próxima com os equipamentos que estavam nela pré-equipados.
+- [x] **Interface Gráfica Cyberpunk (`QuantumSleeperMenu` / `QuantumSleeperScreen`)**:
+  - [x] Monitor de telemetria com medidor vertical de energia WPT ciano, medidor de bio-nutrientes âmbar, status de ocupação do clone e botões de ação ("Gestar Clone" e "Transferir Consciência").
+- [x] **Comandos de Debug e Teste Automatizado (`SandstormDebugCommand`)**:
+  - [x] `/sandstorm debug phase 29` (ou `/sandstorm_debug phase 29`): Entrega de kit completo de clonagem.
+  - [x] `/sandstorm debug setup clone_facility`: Geração automatizada de complexo laboratorial com duas cápsulas operacionais interligadas (Pod Alpha e Pod Beta) para teste imediato de ego-casting.
+- [x] **Validação Automatizada de Testes**:
+  - [x] Suíte de testes dedicada `Fase29QuantumCloningTest` e ampliação de `SandstormDebugTest`, com 100% de aprovação e zero comentários.
 
-### 🌋 Fase 30: Mineração Geotérmica Profunda, Poço do Manto Planetário & Extratores Magmáticos de Lítio-Plasma (Deep Core Geothermal Well, Mantle Borehole & Litho-Plasma Siphon)
+### 🛡️ Fase 30: Domo de Escudo de Plasma Planetário, Canhão Cinético Anti-Titã & Grade Acústica Perimétrica (Planetary Plasma Defense Grid & Anti-Titan Kinetic Railgun) (Concluída - 100%)
+*A fortificação defensiva terminal contra os perigos cósmicos e cataclismos do planeta deserto: proteção de colônias inteiras contra projéteis e incursões hostis com cúpula de plasma magnético, canhão ferroviário hipersônico de alta energia anti-verme titânico e grade automatizada de cancelamento de ressonância sísmica.*
+
+- [x] **Gerador de Escudo de Plasma Planetário (`plasma_shield_generator` / `PlasmaShieldGeneratorBlock` / `PlasmaShieldGeneratorBlockEntity`)**:
+  - [x] Bloco industrial com reator de confinamento magnético em titânio e bobinas toroidais supercondutoras.
+  - [x] Capacitância massiva de 1.000.000 J WPT, upkeep contínuo de 100 J/tick e raio de proteção ajustável de até 48 blocos.
+  - [x] Deflexão e desintegração instantânea de flechas, bolas de fogo e projéteis balísticos externos.
+  - [x] Repulsão cinética por choque de plasma causando 4.0 de dano e forte impulso em monstros invasores.
+  - [x] Barreira de deflexão e ricochete contra colisões de Vermes de Areia Colossais (`sandworm`).
+- [x] **Canhão Cinético Anti-Titã / Railgun Ferroviário (`kinetic_railgun` / `KineticRailgunBlock` / `KineticRailgunBlockEntity`)**:
+  - [x] Artilharia pesada ferroviária com capacitor de 250.000 J WPT e compartimento de munição interna de 9 slots (`WorldlyContainer` / Fabric Transfer API).
+  - [x] Sistema de mira e varredura automática em raio de 64 blocos com prioridade absoluta para Sandworms e ameaças hostis.
+  - [x] Disparo hipersônico consumindo 5.000 J e 1 projétil `kinetic_slug`, desferindo 50.0 de dano com feixe elétrico e vetor de repulsão física acentuado.
+- [x] **Pilão de Defesa Acústica Perimétrica (`acoustic_defense_pylon` / `AcousticDefensePylonBlock` / `AcousticDefensePylonBlockEntity`)**:
+  - [x] Torre de amortecimento sísmico com 50.000 J de buffer e consumo operacional de 10 J/tick.
+  - [x] Cobertura hemisférica de 32 blocos de raio com cancelamento acústico de ressonância sísmica.
+  - [x] Integração concorrente com `AcousticDefenseTracker` e `SeismicSurvivalHandler`, anulando acúmulo de vibrações de passos, corrida e mineração que atraem o despertar de vermes.
+- [x] **Componentes e Munições de Ponta**:
+  - [x] Projétil Cinético Hiperdenso (`kinetic_slug`): munição penetrante forjada em liga titânio-quitina.
+  - [x] Bobina Toroidal Supercondutora (`superconductor_toroid`): anel magnético supercondutor para aceleração de partículas e contenção de plasma.
+  - [x] Cristal de Foco de Plasma (`plasma_focus_crystal`): difratador piezoelétrico para colimação do feixe energético.
+- [x] **Interfaces Gráficas de Controle Tático**:
+  - [x] `PlasmaShieldScreen` / `PlasmaShieldMenu`: telemetria de energia WPT, indicador de estado ativo/inativo, leitura de ameaças repelidas e seletor tátil de raio de cobertura.
+  - [x] `KineticRailgunScreen` / `KineticRailgunMenu`: grade de munição 3x3, medidor de energia, status de resfriamento e contador de tiros disparados.
+- [x] **Cadeia Completa de Assets 1.21.4 & Data-Driven Recipes**:
+  - [x] 3 blockstates, 6 modelos de bloco com estados ativos/lit, 6 modelos de item e 6 definições em `assets/sandstorm/items/`.
+  - [x] 17 texturas PNG pixel-art de alta fidelidade com assinaturas binárias válidas (`89 50 4E 47 0D 0A 1A 0A`).
+  - [x] 6 receitas de fabricação balanceadas em `data/sandstorm/recipe/` e 3 tabelas de saque de bloco.
+  - [x] Paridade de localização em português (`pt_br`), inglês (`en_us`) e espanhol (`es_es`).
+- [x] **Comandos de Demonstração e Testes In-Game**:
+  - [x] `/sandstorm debug phase 30`: Kit de inventário completo com armas, defesas, munições e toroides.
+  - [x] `/sandstorm debug setup plasma_defense_complex`: Geração imediata de complexo militar com gerador de plasma, railgun municiado e pilões acústicos.
+- [x] **Validação Automatizada de Testes**:
+  - [x] Suíte dedicada `Fase30PlasmaDefenseTest` e expansão de `SandstormDebugTest`, elevando o mod para **916 testes automatizados** com 100% de aprovação e zero comentários.
+
+### 🌋 Fase 31: Mineração Geotérmica Profunda, Poço do Manto Planetário & Extratores Magmáticos de Lítio-Plasma (Deep Core Geothermal Well, Mantle Borehole & Litho-Plasma Siphon)
 *A conquista do subsolo profundo: perfuração em escala abissal através da rocha consolidada até as camadas do manto planetário, extração de fluidos térmicos supercríticos e condensação de lítio-plasma para gerar energia quase infinita e ligas superdensas.*
 
 - [ ] **Broca de Perfuração do Manto Planetário (`deep_core_borehole`)**:
@@ -783,9 +813,9 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [ ] **Cadeia Completa de Assets 1.21.4, Modelos 3D, SFX & Testes**:
   - [ ] Modelos BBModel detalhados da broca monumental com pistões animados, extrator centrífugo e trocador de calor com aletas.
   - [ ] Efeitos sonoros customizados: perfuração profunda rotativa contínua (`deep_borehole_drill.ogg`), centrifugação centrípeta (`litho_extractor_spin.ogg`) e escape de vapor superaquecido (`steam_purge.ogg`).
-  - [ ] Suíte de testes dedicada `Fase30GeothermalWellTest`.
+  - [ ] Suíte de testes dedicada `Fase31GeothermalWellTest`.
 
-### 🛰️ Fase 31: Rede Orbital de Satélites, Telescópio Espacial de Varredura & Lançador de Cargas Eletromagnético (Orbital Mass Driver, Satellite Constellation & Spectral Survey Telescope)
+### 🛰️ Fase 32: Rede Orbital de Satélites, Telescópio Espacial de Varredura & Lançador de Cargas Eletromagnético (Orbital Mass Driver, Satellite Constellation & Spectral Survey Telescope)
 *Rompendo a barreira atmosférica: catapulta eletromagnética linear para lançamento de satélites em órbita baixa e geoestacionária, estação terrena de telemetria e rede de sensoriamento remoto para controle absoluto do planeta a partir do espaço.*
 
 - [ ] **Catapulta Eletromagnética de Massa ("Orbital Mass Driver" - `orbital_mass_driver`)**:
@@ -819,9 +849,9 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [ ] **Cadeia Completa de Assets 1.21.4, Modelos 3D, SFX & Testes**:
   - [ ] Modelos BBModel detalhados para a rampa Gauss do Mass Driver, antena parabólica motorizada e chassi orbital com painéis solares dobráveis.
   - [ ] Efeitos sonoros customizados: pulso eletromagnético hipersônico de lançamento (`mass_driver_launch.ogg`), rastreamento mecânico de antena parabólica (`ground_station_track.ogg`) e disparo cinético orbital vindo do céu (`orbital_lance_strike.ogg`).
-  - [ ] Suíte de testes dedicada `Fase31OrbitalSatellitesTest`.
+  - [ ] Suíte de testes dedicada `Fase32OrbitalSatellitesTest`.
 
-### 🌧️ Fase 32: Atmosfera Artificial, Condensação de Nuvens em Escala Continental & O Primeiro Dilúvio (Planetary Atmospheric Genesis, Cloud Seeding & The Great Rain)
+### 🌧️ Fase 33: Atmosfera Artificial, Condensação de Nuvens em Escala Continental & O Primeiro Dilúvio (Planetary Atmospheric Genesis, Cloud Seeding & The Great Rain)
 *O clímax ecológico do planeta deserto: alteração em grande escala da composição gasosa troposférica, semeadura de núcleos de condensação de chuva e a chegada histórica da primeira chuva, transformando areia estéril em solo vivo e rios de água doce.*
 
 - [ ] **Reator de Gênese Atmosférica Megalítico (`atmospheric_genesis_reactor`)**:
@@ -855,9 +885,9 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [ ] **Cadeia Completa de Assets 1.21.4, Modelos 3D, SFX & Testes**:
   - [ ] Modelos BBModel detalhados para o reator de gênese com chaminé de plasma, obuseiro de semeadura e torre condensadora.
   - [ ] Efeitos sonoros customizados: trovão ressonante do dilúvio (`first_rain_thunder.ogg`), tempestade de chuva torrencial (`first_rain_downpour.ogg`) e disparo sibilante do obuseiro (`cloud_howitzer_fire.ogg`).
-  - [ ] Suíte de testes dedicada `Fase32AtmosphericGenesisTest`.
+  - [ ] Suíte de testes dedicada `Fase33AtmosphericGenesisTest`.
 
-### 🚀 Fase 33: Elevador Espacial Planetário, Farol Quântico Subespacial & Transmissão Interestelar de Resgate (Planetary Space Elevator, Deep Space Beacon & The Final Odyssey)
+### 🚀 Fase 34: Elevador Espacial Planetário, Farol Quântico Subespacial & Transmissão Interestelar de Resgate (Planetary Space Elevator, Deep Space Beacon & The Final Odyssey)
 *A apoteose final da sobrevivência e da engenharia cósmica: construção de uma âncora colossal de elevador espacial ligada por nanotubos de carbono à órbita geoestacionária, ativação do farol quântico de táquions e estabelecimento de contato definitivo com a Federação Interestelar.*
 
 - [ ] **Âncora de Base do Elevador Espacial ("Space Elevator Base Anchor" - `space_elevator_base_anchor`)**:
@@ -868,6 +898,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
   - [ ] Cápsula pressurizada de transporte vertical que percorre o cabo de nanotubos em levitação magnética linear.
   - [ ] Permite ao operador embarcar para uma subida contínua e triunfante através de todas as camadas atmosféricas (troposfera -> estratosfera -> mesosfera -> termosfera -> órbita negra estrelada em Y=500+).
   - [ ] Interior com assento ergonômico, visor panorâmico de vidro de fulgurito temperado e display HUD de altitude, velocidade (m/s) e aceleração G.
+
 - [ ] **Farol Quântico de Comunicação Subespacial (`quantum_subspace_beacon`)**:
   - [ ] Dispositivo topo de linha acoplado à plataforma superior do elevador espacial ou ao topo da torre de transmissão.
   - [ ] Emissor de ondas gravitacionais moduladas e feixe helicoidal de táquions superluminais capazes de propagar sinal através de hiperespaço sem defasagem relativística de tempo.
