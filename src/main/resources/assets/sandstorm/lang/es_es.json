@@ -557,5 +557,17 @@
   "tooltip.sandstorm.cyborg_incubator.stage_2": "Etapa 2: Miómeros Electroactivos Inyectados",
   "tooltip.sandstorm.cyborg_incubator.stage_3": "Etapa 3: Núcleo Neural Acoplado",
   "tooltip.sandstorm.cyborg_incubator.stage_4": "Etapa 4: Perfusión de Bio-Coolant Activa",
-  "tooltip.sandstorm.cyborg_incubator.sync": "Sincronización Tisular: %s%%"
+  "tooltip.sandstorm.cyborg_incubator.sync": "Sincronización Tisular: %s%%",
+  "item.sandstorm.cybernetic_command_uplink": "Transmisor Holográfico de Comando",
+  "item.sandstorm.cyborg_excavator_spawn_egg": "Huevo Generador de Cíborg Excavador",
+  "item.sandstorm.cyborg_builder_spawn_egg": "Huevo Generador de Cíborg Constructor",
+  "item.sandstorm.cyborg_harvester_spawn_egg": "Huevo Generador de Cíborg Cosechador",
+  "entity.sandstorm.cyborg_excavator": "Cíborg Especialista Excavador",
+  "entity.sandstorm.cyborg_builder": "Cíborg Especialista Constructor",
+  "entity.sandstorm.cyborg_harvester": "Cíborg Especialista Cosechador",
+  "gui.sandstorm.cyborg_telemetry.title": "Telemetría y Comando Biónico",
+  "cyborg.routine.autonomous_work": "Trabajo Autónomo",
+  "cyborg.routine.follow_operator": "Seguir Operador",
+  "cyborg.routine.patrol_perimeter": "Patrullar Perímetro",
+  "cyborg.routine.return_to_dock": "Regresar al Muelle"
 }

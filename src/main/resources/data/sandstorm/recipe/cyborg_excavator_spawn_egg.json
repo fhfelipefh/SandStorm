@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "CBC",
+    " N "
+  ],
+  "key": {
+    "P": "sandstorm:silicon_pickaxe",
+    "C": "sandstorm:bio_coolant_canister",
+    "B": "sandstorm:assembled_cyborg_frame",
+    "N": "sandstorm:bio_neural_core"
+  },
+  "result": {
+    "id": "sandstorm:cyborg_excavator_spawn_egg",
+    "count": 1
+  }
+}

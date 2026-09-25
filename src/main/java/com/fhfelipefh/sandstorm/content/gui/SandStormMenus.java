@@ -87,6 +87,11 @@ public class SandStormMenus {
             new MenuType<>(CyborgIncubatorMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<CyborgTelemetryMenu> CYBORG_TELEMETRY_MENU = register(
+            "cyborg_telemetry",
+            new MenuType<>(CyborgTelemetryMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

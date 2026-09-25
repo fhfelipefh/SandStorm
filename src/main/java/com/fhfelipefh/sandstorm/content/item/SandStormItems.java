@@ -111,6 +111,10 @@ public class SandStormItems {
     public static final Item BIO_NEURAL_CORE = register("bio_neural_core", new Item(properties("bio_neural_core").rarity(Rarity.EPIC)));
     public static final Item BIO_COOLANT_CANISTER = register("bio_coolant_canister", new Item(properties("bio_coolant_canister").rarity(Rarity.UNCOMMON)));
     public static final Item ASSEMBLED_CYBORG_FRAME = register("assembled_cyborg_frame", new Item(properties("assembled_cyborg_frame").rarity(Rarity.EPIC)));
+    public static final CyberneticCommandUplinkItem CYBERNETIC_COMMAND_UPLINK = register("cybernetic_command_uplink", new CyberneticCommandUplinkItem(properties("cybernetic_command_uplink").rarity(Rarity.EPIC).stacksTo(1)));
+    public static final SpawnEggItem CYBORG_EXCAVATOR_SPAWN_EGG = register("cyborg_excavator_spawn_egg", new SpawnEggItem(properties("cyborg_excavator_spawn_egg").spawnEgg(SandStormEntities.CYBORG_EXCAVATOR)));
+    public static final SpawnEggItem CYBORG_BUILDER_SPAWN_EGG = register("cyborg_builder_spawn_egg", new SpawnEggItem(properties("cyborg_builder_spawn_egg").spawnEgg(SandStormEntities.CYBORG_BUILDER)));
+    public static final SpawnEggItem CYBORG_HARVESTER_SPAWN_EGG = register("cyborg_harvester_spawn_egg", new SpawnEggItem(properties("cyborg_harvester_spawn_egg").spawnEgg(SandStormEntities.CYBORG_HARVESTER)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -248,6 +252,10 @@ public class SandStormItems {
                         entries.accept(BIO_NEURAL_CORE);
                         entries.accept(BIO_COOLANT_CANISTER);
                         entries.accept(ASSEMBLED_CYBORG_FRAME);
+                        entries.accept(CYBERNETIC_COMMAND_UPLINK);
+                        entries.accept(CYBORG_EXCAVATOR_SPAWN_EGG);
+                        entries.accept(CYBORG_BUILDER_SPAWN_EGG);
+                        entries.accept(CYBORG_HARVESTER_SPAWN_EGG);
                     })
                     .build()
     );

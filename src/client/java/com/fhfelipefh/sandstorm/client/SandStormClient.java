@@ -7,6 +7,7 @@ import com.fhfelipefh.sandstorm.client.gui.BioRegenerationPodScreen;
 import com.fhfelipefh.sandstorm.client.gui.BioreactorVatScreen;
 import com.fhfelipefh.sandstorm.client.gui.ChemicalRefineryScreen;
 import com.fhfelipefh.sandstorm.client.gui.CyborgIncubatorScreen;
+import com.fhfelipefh.sandstorm.client.gui.CyborgTelemetryScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreDrillScreen;
 import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
 import com.fhfelipefh.sandstorm.client.gui.GridMonitorConsoleScreen;
@@ -21,6 +22,7 @@ import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
 import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.CyborgRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DesalinationFilterBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.HydroponicChamberBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MegastructureConstructorBlockEntityRenderer;
@@ -77,6 +79,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.MOLECULAR_MODIFIER_MENU, MolecularModifierScreen::new);
         MenuScreens.register(SandStormMenus.BIO_REGENERATION_POD_MENU, BioRegenerationPodScreen::new);
         MenuScreens.register(SandStormMenus.CYBORG_INCUBATOR_MENU, CyborgIncubatorScreen::new);
+        MenuScreens.register(SandStormMenus.CYBORG_TELEMETRY_MENU, CyborgTelemetryScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
@@ -98,6 +101,9 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.SANDBOARD, NoopRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.BUILDER_DRONE, BuilderDroneEntityRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.MEDBAY_SEAT, NoopRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.CYBORG_EXCAVATOR, CyborgRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.CYBORG_BUILDER, CyborgRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.CYBORG_HARVESTER, CyborgRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

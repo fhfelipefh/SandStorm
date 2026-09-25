@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " T ",
+    "CBC",
+    " A "
+  ],
+  "key": {
+    "T": "sandstorm:electric_component",
+    "C": "sandstorm:circuit_board",
+    "B": "sandstorm:assembled_cyborg_frame",
+    "A": "sandstorm:nano_actuator"
+  },
+  "result": {
+    "id": "sandstorm:cybernetic_command_uplink",
+    "count": 1
+  }
+}

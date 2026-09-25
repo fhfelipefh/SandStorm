@@ -557,5 +557,17 @@
   "tooltip.sandstorm.cyborg_incubator.stage_2": "Stage 2: Electroactive Myomers Injected",
   "tooltip.sandstorm.cyborg_incubator.stage_3": "Stage 3: Neural Core Synced",
   "tooltip.sandstorm.cyborg_incubator.stage_4": "Stage 4: Bio-Coolant Perfusion Active",
-  "tooltip.sandstorm.cyborg_incubator.sync": "Tissue Sync: %s%%"
+  "tooltip.sandstorm.cyborg_incubator.sync": "Tissue Sync: %s%%",
+  "item.sandstorm.cybernetic_command_uplink": "Cybernetic Command Uplink",
+  "item.sandstorm.cyborg_excavator_spawn_egg": "Cyborg Excavator Spawn Egg",
+  "item.sandstorm.cyborg_builder_spawn_egg": "Cyborg Builder Spawn Egg",
+  "item.sandstorm.cyborg_harvester_spawn_egg": "Cyborg Harvester Spawn Egg",
+  "entity.sandstorm.cyborg_excavator": "Cyborg Specialist Excavator",
+  "entity.sandstorm.cyborg_builder": "Cyborg Specialist Builder",
+  "entity.sandstorm.cyborg_harvester": "Cyborg Specialist Harvester",
+  "gui.sandstorm.cyborg_telemetry.title": "Biometric Cyborg Telemetry & Command",
+  "cyborg.routine.autonomous_work": "Autonomous Work",
+  "cyborg.routine.follow_operator": "Follow Operator",
+  "cyborg.routine.patrol_perimeter": "Patrol Perimeter",
+  "cyborg.routine.return_to_dock": "Return to Dock"
 }

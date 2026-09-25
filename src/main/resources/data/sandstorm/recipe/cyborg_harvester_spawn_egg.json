@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " F ",
+    "CBC",
+    " N "
+  ],
+  "key": {
+    "F": "sandstorm:flexible_biopolymer",
+    "C": "sandstorm:bio_coolant_canister",
+    "B": "sandstorm:assembled_cyborg_frame",
+    "N": "sandstorm:bio_neural_core"
+  },
+  "result": {
+    "id": "sandstorm:cyborg_harvester_spawn_egg",
+    "count": 1
+  }
+}

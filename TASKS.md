@@ -11,10 +11,10 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **790 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **820 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
-| **Receitas Data-Driven (JEI/REI)** | 93 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
+| **Receitas Data-Driven (JEI/REI)** | 97 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
 | **Geração de Mundo (Worldgen)** | Aquíferos, Ruínas e Núcleos em desertos | Totalmente Integrado | ✅ Concluído |
 | **Progresso Estimado do MVP** | **100%** | **100%** | ✅ Concluído |
 
@@ -1042,4 +1042,31 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
     - 5 Receitas data-driven balanceadas em `data/sandstorm/recipe/` e tabela de saque (`cyborg_incubator_vat.json`).
     - Localização trilingue completa e sincronizada (`pt_br.json`, `en_us.json`, `es_es.json`) com 100% de paridade auditada por `I18nParityTest`.
     - Suíte de testes dedicada `Fase25BioCyberneticsTest`, elevando o total do repositório para **790 testes automatizados** com 100% de sucesso e zero comentários.
+50. `fase26-autonomous-cyborgs`: Implementação completa da **Fase 26: Ciborgues Especialistas Autônomos & Uplink de Comando Holográfico**:
+    - **Transmissor Holográfico de Comando (`CyberneticCommandUplinkItem` / `cybernetic_command_uplink`)**:
+      - Dispositivo portátil em titânio escuro com display tátil holográfico e antena emissora ciano neon.
+      - 3 Modos Operacionais com alternância instantânea por Shift + Clique (`MINING`, `BUILDING`, `HARVESTING`) com feedback sonoro e notificações na interface.
+      - Demarcação tridimensional de zonas de trabalho: registro de Corner A e Corner B no mundo com cálculo dinâmico do volume delimitado (X x Y x Z) e feedback sônico de sinos e carrilhões.
+      - Atribuição de diretrizes operacionais e zoneamento por clique direito direto em qualquer ciborgue especialista, com vinculação automática de operador (`OwnerUUID`) e abertura do menu de comando.
+    - **3 Entidades de Ciborgues Especialistas Autônomos (`CyborgEntity` base / `PathfinderMob`)**:
+      - **Ciborgue Escavador (`cyborg_excavator` / `CyborgExcavatorEntity`)**: 80 HP, 12 armadura, 8 dano; IA autônoma de perfuração vertical descendente segura de minérios e blocos na zona demarcada, evitando quebras acidentais e colapsos, braço broca de vibro-cavitação atômica e navegação precisa.
+      - **Ciborgue Construtor (`cyborg_builder` / `CyborgBuilderEntity`)**: 60 HP, 10 armadura, 6 dano; IA autônoma de assentamento de blocos de baixo para cima consumindo `BlockItem`s de seu inventário interno de 18 slots e emitindo faíscas de solda laser.
+      - **Ciborgue Colhedor (`cyborg_harvester` / `CyborgHarvesterEntity`)**: 50 HP, 8 armadura, 5 dano; IA de identificação e colheita seletiva de culturas agrícolas e extremófilos maduros, replantio imediato e sucção de `ItemEntity`s soltos na zona demarcada.
+    - **Rotinas Comportamentais & Visor Óptico Adaptativo**:
+      - Rotinas em `CyborgRoutine`: Trabalho Autônomo (`AUTONOMOUS_WORK`), Seguir Operador (`FOLLOW_OPERATOR`), Patrulha Perimétrica (`PATROL_PERIMETER`) e Retorno à Doca (`RETURN_TO_DOCK`).
+      - Visor óptico adaptativo sincronizado dinamicamente por SynchedEntityData (Ciano para Trabalho Autônomo, Âmbar para Seguir, Vermelho para Patrulha, Roxo para Retorno à Doca).
+    - **Interface Gráfica de Telemetria Biônica (`CyborgTelemetryMenu` / `CyborgTelemetryScreen`)**:
+      - Chassi futurista de 176x186 com bordas neon `#00E5FF`, 18 slots internos do ciborgue e 36 do operador.
+      - Telemetria em tempo real de Joules WPT (0 a 50.000 J), bio-refrigerante de hemolinfa (0 a 4.000 mB) e integridade miomérica tecidual (0 a 100%).
+      - Seletor tátil de rotina com 4 botões remotos com feedback de clique e highlight de estado ativo.
+    - **Modelos e Renderers Client 1.21.4 (`CyborgModel`, `CyborgRenderState`, `CyborgRenderer`)**:
+      - Malha bípede biomecânica detalhada com exo-coluna dorsal, reator de arco peitoral emissivo, braço mecânico especializado por classe e animações dinâmicas de respiração, marcha e trabalho.
+    - **Cadeia Completa de Assets 1.21.4 & Receitas Data-Driven**:
+      - 4 Definições em `assets/sandstorm/items/` e 4 modelos de itens em `assets/sandstorm/models/item/`.
+      - 4 Texturas de itens 16x16 pixel-art com assinaturas PNG válidas e 3 skins de entidades ciborgues 64x64 em `textures/entity/cyborg/`.
+      - 4 Receitas shaped balanceadas em `data/sandstorm/recipe/` (uplink e 3 spawn eggs de montagem cibernética).
+    - **Localização Trilingue**:
+      - Paridade 100% nas 3 línguas oficiais (`pt_br.json`, `en_us.json`, `es_es.json`).
+    - **Validação Automatizada de Testes**:
+      - Suíte de testes dedicada `Fase26AutonomousCyborgsTest`, elevando o total do repositório para **820 testes automatizados** com 100% de sucesso e zero comentários.
 

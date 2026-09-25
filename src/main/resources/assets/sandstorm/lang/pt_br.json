@@ -557,5 +557,17 @@
   "tooltip.sandstorm.cyborg_incubator.stage_2": "Estágio 2: Miômeros Eletroativos Injetados",
   "tooltip.sandstorm.cyborg_incubator.stage_3": "Estágio 3: Núcleo Neural Acoplado",
   "tooltip.sandstorm.cyborg_incubator.stage_4": "Estágio 4: Perfusão de Bio-Coolant Ativa",
-  "tooltip.sandstorm.cyborg_incubator.sync": "Sincronização Tecidual: %s%%"
+  "tooltip.sandstorm.cyborg_incubator.sync": "Sincronização Tecidual: %s%%",
+  "item.sandstorm.cybernetic_command_uplink": "Transmissor Holográfico de Comando",
+  "item.sandstorm.cyborg_excavator_spawn_egg": "Ovo Gerador de Ciborgue Escavador",
+  "item.sandstorm.cyborg_builder_spawn_egg": "Ovo Gerador de Ciborgue Construtor",
+  "item.sandstorm.cyborg_harvester_spawn_egg": "Ovo Gerador de Ciborgue Colhedor",
+  "entity.sandstorm.cyborg_excavator": "Ciborgue Especialista Escavador",
+  "entity.sandstorm.cyborg_builder": "Ciborgue Especialista Construtor",
+  "entity.sandstorm.cyborg_harvester": "Ciborgue Especialista Colhedor",
+  "gui.sandstorm.cyborg_telemetry.title": "Telemetria & Comando Biônico",
+  "cyborg.routine.autonomous_work": "Trabalho Autônomo",
+  "cyborg.routine.follow_operator": "Seguir Operador",
+  "cyborg.routine.patrol_perimeter": "Patrulhar Perímetro",
+  "cyborg.routine.return_to_dock": "Retornar à Doca"
 }
