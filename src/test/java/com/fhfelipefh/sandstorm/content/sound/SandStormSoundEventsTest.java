@@ -61,6 +61,7 @@ class SandStormSoundEventsTest {
         assertNotNull(SandStormSoundEvents.MEGASTRUCTURE_CONSTRUCTOR_LASER);
         assertNotNull(SandStormSoundEvents.MEGASTRUCTURE_LAYER_COMPLETE);
         assertNotNull(SandStormSoundEvents.MEGASTRUCTURE_COMPLETE);
+        assertNotNull(SandStormSoundEvents.HYPO_INJECTOR_USE);
     }
 
     @Test

@@ -515,32 +515,32 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 ### 💉 Fase 22: Bio-Farmacologia Tecnológica, Hipo-Injetores & Síntese Farmacêutica (Substituição de Poções Vanilla)
 *Utilizando os compostos bioativos reais cultivados e purificados na Fase 21, o operador formula medicamentos de alta tecnologia para injeção estéril no traje espacial.*
 
-- [ ] **Hipo-Injetor Pneumático Portátil (`hypo_injector`)**:
-  - [ ] Dispositivo médico ergonômico em liga de titânio escuro com cartucho pneumático pressurizado reutilizável.
-  - [ ] Mecânica de acionamento instantâneo (0.2s): carrega ampolas/stims no inventário e injeta diretamente no sistema circulatório do operador sem necessidade de desequipar o capacete do traje espacial.
-  - [ ] Suporte a atalho tático de emergência (uso direto com a mão secundária ou tecla rápida configurável).
-  - [ ] Sistema de barramento sonoro com sibilo pneumático característico de ejeção a gás estéril (`item.hypo_injector.use`).
-  - [ ] Integração com o `SurvivalHudOverlay`: visor LED com indicador de doses restantes e telemetria de saturação metabólica.
-- [ ] **Formulação Científica das Ampolas & Stims (Substitutos de Poções)**:
-  - [ ] **Ampola Neuro-Adrenérgica (`adrenal_stim`)** *(Substitui Speed / Velocidade)*:
+- [x] **Hipo-Injetor Pneumático Portátil (`hypo_injector`)**:
+  - [x] Dispositivo médico ergonômico em liga de titânio escuro com cartucho pneumático pressurizado reutilizável.
+  - [x] Mecânica de acionamento instantâneo (0.2s): carrega ampolas/stims no inventário e injeta diretamente no sistema circulatório do operador sem necessidade de desequipar o capacete do traje espacial.
+  - [x] Suporte a atalho tático de emergência (uso direto com a mão secundária ou tecla rápida configurável).
+  - [x] Sistema de barramento sonoro com sibilo pneumático característico de ejeção a gás estéril (`item.hypo_injector.use`).
+  - [x] Integração com o `SurvivalHudOverlay`: visor LED com indicador de doses restantes e telemetria de saturação metabólica.
+- [x] **Formulação Científica das Ampolas & Stims (Substitutos de Poções)**:
+  - [x] **Ampola Neuro-Adrenérgica (`adrenal_stim`)** *(Substitui Speed / Velocidade)*:
     - *Fórmula*: Alcaloides Neuro-Ativos (`neuroactive_alkaloids`) + Solução Salina Mineralizada (`mineral_salt`).
     - *Efeito Farmacológico*: Vasodilatação periférica e sobrecarga controlada dos servomotores dos membros inferiores por 3 minutos (+30% velocidade de movimento e +15% aceleração de sprint).
-  - [ ] **Bio-Espuma Coagulante Molecular (`biofoam_cartridge`)** *(Substitui Instant Health & Regeneration)*:
+  - [x] **Bio-Espuma Coagulante Molecular (`biofoam_cartridge`)** *(Substitui Instant Health & Regeneration)*:
     - *Fórmula*: Solução Hemostática de Quitosana (`chitosan_extract`) + Biopolímeros Flexíveis (`flexible_biopolymer`) + Micro-nanitas médicos.
     - *Efeito Farmacológico*: A quitosana catiônica atrai as células sanguíneas formando um tampão gelatinoso instantâneo, selando hemorragias internas (cura imediata de 4 corações + regeneração acelerada de tecidos por 15s).
-  - [ ] **Estimulador Miomecânico de Torque (`myomer_stim`)** *(Substitui Strength / Força)*:
+  - [x] **Estimulador Miomecânico de Torque (`myomer_stim`)** *(Substitui Strength / Força)*:
     - *Fórmula*: Alcaloides Neuro-Ativos (`neuroactive_alkaloids`) + Nanotubos de Carbono / Quitina de Verme (`sandworm_chitin`).
     - *Efeito Farmacológico*: Aumenta temporariamente o limiar contrátil muscular e o torque do exoesqueleto em +40% por 3 minutos, amplificando o dano de armas brancas e impacto cinético.
-  - [ ] **Sérum Endotérmico Refratário (`endothermic_serum`)** *(Substitui Fire Resistance / Resistência ao Fogo)*:
+  - [x] **Sérum Endotérmico Refratário (`endothermic_serum`)** *(Substitui Fire Resistance / Resistência ao Fogo)*:
     - *Fórmula*: Glicerol Osmoprotetor (`osmolyte_glycerol`) + Seiva Pesada de Cacto (`heavy_sap_bottle`).
     - *Efeito Farmacológico*: Nanogel de altíssima capacidade endotérmica que satura as micro-câmaras do traje espacial, conferindo 5 minutos de imunidade total a chamas, radiação de plasma e insolação extrema no deserto.
-  - [ ] **Sérum Anti-Inercial Gravitacional (`grav_dampener_stim`)** *(Substitui Slow Falling & Jump Boost)*:
+  - [x] **Sérum Anti-Inercial Gravitacional (`grav_dampener_stim`)** *(Substitui Slow Falling & Jump Boost)*:
     - *Fórmula*: Concentrado de Trealose Anidrobiótica (`trehalose_sugar`) + Fragmento de Quartzo Piezoelétrico lapidado (`piezo_quartz_shard`).
     - *Efeito Farmacológico*: Solução eletrolítica que sintoniza as solas das botas magnéticas com micro-campos repulsores piezoelétricos: permite saltos de 2.5 blocos e desaceleração terminal suave em quedas de desfiladeiros.
-  - [ ] **Ampola de Desintoxicação Celular (`detox_ampoule`)** *(Substitui Leite / Antídoto de Venenos)*:
+  - [x] **Ampola de Desintoxicação Celular (`detox_ampoule`)** *(Substitui Leite / Antídoto de Venenos)*:
     - *Fórmula*: Matriz de Melanina Radioprotetora (`radioprotective_melanin`) + Água Potável Pura (`potable_water_bottle`).
     - *Efeito Farmacológico*: A melanina quelante sequestra moléculas de ácido e toxinas de verme de areia, restaurando a homeostase celular e purgando venenos, choque estático e náuseas em 1.0s.
-  - [ ] **Emulsão de Refração Óptica Furtiva (`stealth_nano_drape`)** *(Substitui Invisibility / Invisibilidade)*:
+  - [x] **Emulsão de Refração Óptica Furtiva (`stealth_nano_drape`)** *(Substitui Invisibility / Invisibilidade)*:
     - *Fórmula*: Biopolímeros Flexíveis + Partículas micronizadas de Vidro de Fulgurito (`fulgurite_glass`).
     - *Efeito Farmacológico*: Película metamaterial translúcida que curva feixes de luz ao redor do chassi do traje por 90 segundos, tornando o operador indetectável para radares e sensores visuais de criaturas da superfície.
 

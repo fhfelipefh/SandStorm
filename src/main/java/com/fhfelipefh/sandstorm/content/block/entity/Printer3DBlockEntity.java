@@ -60,6 +60,13 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             }
             return out.is(SandStormItems.ELECTRIC_COMPONENT) && out.getCount() < out.getMaxStackSize();
         }
+        if (in0.is(SandStormItems.TITANIUM_CHITIN_COMPOSITE)) {
+            if (!in1.is(SandStormItems.PRESSURE_SEAL)) {
+                return false;
+            }
+            ItemStack out = items.get(2);
+            return out.isEmpty();
+        }
         return false;
     }
 
@@ -92,6 +99,10 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             } else {
                 out.grow(1);
             }
+        } else if (in0.is(SandStormItems.TITANIUM_CHITIN_COMPOSITE)) {
+            in0.shrink(1);
+            in1.shrink(1);
+            items.set(2, new ItemStack(SandStormItems.HYPO_INJECTOR));
         }
     }
 
@@ -108,6 +119,9 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
     public ItemStack getPrintingItem() {
         if (this.isProcessing()) {
             ItemStack in0 = items.get(0);
+            if (in0.is(SandStormItems.TITANIUM_CHITIN_COMPOSITE)) {
+                return new ItemStack(SandStormItems.HYPO_INJECTOR);
+            }
             if (in0.is(SandStormItems.CIRCUIT_BOARD)) {
                 return new ItemStack(SandStormItems.PLASMA_RIFLE);
             }
@@ -143,10 +157,10 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == 0) {
-            return stack.is(SandStormItems.SILICON_WAFER) || stack.is(SandStormItems.CIRCUIT_BOARD) || stack.is(SandStormItems.RAW_SILICON);
+            return stack.is(SandStormItems.SILICON_WAFER) || stack.is(SandStormItems.CIRCUIT_BOARD) || stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.TITANIUM_CHITIN_COMPOSITE);
         }
         if (slot == 1) {
-            return stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.SCRAP_METAL) || stack.is(SandStormItems.NANO_ACTUATOR);
+            return stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.SCRAP_METAL) || stack.is(SandStormItems.NANO_ACTUATOR) || stack.is(SandStormItems.PRESSURE_SEAL);
         }
         if (slot == 3) {
             return getFuelEnergy(stack) > 0;

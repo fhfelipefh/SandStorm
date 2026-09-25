@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " T ",
+    "NCN",
+    " P "
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "N": "sandstorm:nano_actuator",
+    "C": "sandstorm:empty_cartridge",
+    "P": "sandstorm:pressure_seal"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:hypo_injector"
+  }
+}

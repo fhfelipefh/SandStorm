@@ -13,6 +13,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
+import com.fhfelipefh.sandstorm.content.item.HypoInjectorItem;
+import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import net.minecraft.world.item.ItemStack;
+
 import java.util.Locale;
 
 public class SurvivalHudOverlay implements HudElement {
@@ -97,6 +101,21 @@ public class SurvivalHudOverlay implements HudElement {
         int x = screenWidth - maxTextWidth - margin;
         int y = screenHeight - 34;
 
+        boolean holdsHypo = client.player.getMainHandItem().is(SandStormItems.HYPO_INJECTOR) || client.player.getOffhandItem().is(SandStormItems.HYPO_INJECTOR);
+        Component hypoComponent = Component.empty();
+        int hypoColor = 0xFF00E5FF;
+        if (holdsHypo) {
+            ItemStack stimStack = HypoInjectorItem.findStim(client.player);
+            if (stimStack != null && !stimStack.isEmpty()) {
+                int total = HypoInjectorItem.countTotalStims(client.player);
+                hypoComponent = Component.literal(String.format(Locale.ROOT, "HYPO: %s [%d]", stimStack.getHoverName().getString().toUpperCase(Locale.ROOT), total));
+                hypoColor = 0xFF00E5FF;
+            } else {
+                hypoComponent = Component.literal("HYPO: VAZIO [0]");
+                hypoColor = 0xFFFF5252;
+            }
+        }
+
         int hotbarRight = (screenWidth / 2) + 95;
         if (x < hotbarRight) {
             if (screenHeight > 160) {
@@ -119,12 +138,18 @@ public class SurvivalHudOverlay implements HudElement {
             if (flashMode != FlashlightState.MODE_OFF) {
                 extractor.text(client.font, getFlashlightComponent(flashMode), 0, 22, getFlashlightColor(flashMode));
             }
+            if (holdsHypo) {
+                extractor.text(client.font, hypoComponent, 0, flashMode != FlashlightState.MODE_OFF ? 33 : 22, hypoColor);
+            }
             extractor.pose().popMatrix();
         } else {
             extractor.text(client.font, cachedEnergyComp, x, y, cachedBatteryColor);
             extractor.text(client.font, cachedTempComp, x, y + 11, cachedTempColor);
             if (flashMode != FlashlightState.MODE_OFF) {
                 extractor.text(client.font, getFlashlightComponent(flashMode), x, y + 22, getFlashlightColor(flashMode));
+            }
+            if (holdsHypo) {
+                extractor.text(client.font, hypoComponent, x, y + (flashMode != FlashlightState.MODE_OFF ? 33 : 22), hypoColor);
             }
         }
     }

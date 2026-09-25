@@ -86,6 +86,14 @@ public class SandStormItems {
     public static final Item TREHALOSE_SUGAR = register("trehalose_sugar", new Item(properties("trehalose_sugar").rarity(Rarity.UNCOMMON)));
     public static final Item OSMOLYTE_GLYCEROL = register("osmolyte_glycerol", new Item(properties("osmolyte_glycerol").rarity(Rarity.UNCOMMON)));
     public static final Item NEUROACTIVE_ALKALOIDS = register("neuroactive_alkaloids", new Item(properties("neuroactive_alkaloids").rarity(Rarity.UNCOMMON)));
+    public static final HypoInjectorItem HYPO_INJECTOR = register("hypo_injector", new HypoInjectorItem(properties("hypo_injector")));
+    public static final PharmacologicalStimItem ADRENAL_STIM = register("adrenal_stim", new PharmacologicalStimItem(PharmacologicalStimItem.StimType.ADRENAL, properties("adrenal_stim")));
+    public static final PharmacologicalStimItem BIOFOAM_CARTRIDGE = register("biofoam_cartridge", new PharmacologicalStimItem(PharmacologicalStimItem.StimType.BIOFOAM, properties("biofoam_cartridge")));
+    public static final PharmacologicalStimItem MYOMER_STIM = register("myomer_stim", new PharmacologicalStimItem(PharmacologicalStimItem.StimType.MYOMER, properties("myomer_stim")));
+    public static final PharmacologicalStimItem ENDOTHERMIC_SERUM = register("endothermic_serum", new PharmacologicalStimItem(PharmacologicalStimItem.StimType.ENDOTHERMIC, properties("endothermic_serum")));
+    public static final PharmacologicalStimItem GRAV_DAMPENER_STIM = register("grav_dampener_stim", new PharmacologicalStimItem(PharmacologicalStimItem.StimType.GRAV_DAMPENER, properties("grav_dampener_stim")));
+    public static final PharmacologicalStimItem DETOX_AMPOULE = register("detox_ampoule", new PharmacologicalStimItem(PharmacologicalStimItem.StimType.DETOX, properties("detox_ampoule")));
+    public static final PharmacologicalStimItem STEALTH_NANO_DRAPE = register("stealth_nano_drape", new PharmacologicalStimItem(PharmacologicalStimItem.StimType.STEALTH, properties("stealth_nano_drape")));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -195,6 +203,14 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.HALOPHYTE_SUCCULENT);
                         entries.accept(SandStormBlocks.DUNE_EPHEDRA);
                         entries.accept(SandStormBlocks.BIOREACTOR_VAT);
+                        entries.accept(HYPO_INJECTOR);
+                        entries.accept(ADRENAL_STIM);
+                        entries.accept(BIOFOAM_CARTRIDGE);
+                        entries.accept(MYOMER_STIM);
+                        entries.accept(ENDOTHERMIC_SERUM);
+                        entries.accept(GRAV_DAMPENER_STIM);
+                        entries.accept(DETOX_AMPOULE);
+                        entries.accept(STEALTH_NANO_DRAPE);
                     })
                     .build()
     );

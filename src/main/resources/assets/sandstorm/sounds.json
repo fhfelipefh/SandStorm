@@ -219,5 +219,12 @@
     "sounds": [
       "sandstorm:megazord_shockwave"
     ]
+  },
+  "item.hypo_injector.use": {
+    "category": "players",
+    "subtitle": "subtitles.sandstorm.item.hypo_injector.use",
+    "sounds": [
+      "sandstorm:terraformer_hum"
+    ]
   }
 }

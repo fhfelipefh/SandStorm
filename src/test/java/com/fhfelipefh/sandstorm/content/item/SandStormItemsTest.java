@@ -54,7 +54,15 @@ class SandStormItemsTest {
             "repair_tool",
             "structural_plate",
             "circuit_mount",
-            "pressure_seal"
+            "pressure_seal",
+            "hypo_injector",
+            "adrenal_stim",
+            "biofoam_cartridge",
+            "myomer_stim",
+            "endothermic_serum",
+            "grav_dampener_stim",
+            "detox_ampoule",
+            "stealth_nano_drape"
     })
     void shouldGenerateCorrectResourceKeysForCoreItems(String itemPath) {
         ResourceKey<Item> key = SandStormMod.itemKey(itemPath);
