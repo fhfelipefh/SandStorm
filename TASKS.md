@@ -506,6 +506,11 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
     - *Meio Caldo-Criogênico*: Líquen Crio-Xerófilo / Sal mineral + água potável -> colheita de `trehalose_sugar`.
     - *Meio Caldo-Adrenérgico*: Éfedra das Dunas / Sementes ancestrais + sal mineral / água potável -> colheita de `neuroactive_alkaloids`.
   - [x] Interface gráfica industrial moderna (`BioreactorVatScreen` / `BioreactorVatMenu`) com monitoramento de energia, progresso de fermentação, estado de processamento e conexão WPT.
+- [x] **Comando de Plantação Linear da Flora e Fungos (`/sandstorm plants` / `/plantar`)**:
+  - [x] Comando operacional para demonstração e cultivo rápido de todas as 9 espécies botânicas e fúngicas extremófilas do mod em estado maduro sobre seus respectivos substratos.
+  - [x] Suporte aos modos linear contínuo com irrigação e passarela de arenito (`line` / `strip`) e campo agrícola em fileiras paralelas (`rows` / `field`).
+  - [x] Aliases e atalhos completos: `/sandstorm plants`, `/sandstorm_plants`, `/sandstorm plant_field`, `/plantar`, `/plant_field`.
+  - [x] Cobertura automatizada por testes unitários (`SandstormPlantCommandTest.java`).
 
 ### 💉 Fase 22: Bio-Farmacologia Tecnológica, Hipo-Injetores & Síntese Farmacêutica (Substituição de Poções Vanilla)
 *Utilizando os compostos bioativos reais cultivados e purificados na Fase 21, o operador formula medicamentos de alta tecnologia para injeção estéril no traje espacial.*
