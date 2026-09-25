@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/litho_plasma_extractor_front",
+    "north": "sandstorm:block/litho_plasma_extractor_front",
+    "south": "sandstorm:block/litho_plasma_extractor_side",
+    "east": "sandstorm:block/litho_plasma_extractor_side",
+    "west": "sandstorm:block/litho_plasma_extractor_side",
+    "up": "sandstorm:block/litho_plasma_extractor_top",
+    "down": "sandstorm:block/litho_plasma_extractor_top"
+  }
+}

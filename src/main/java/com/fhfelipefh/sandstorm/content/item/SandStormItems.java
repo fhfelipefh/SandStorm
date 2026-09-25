@@ -125,6 +125,11 @@ public class SandStormItems {
     public static final Item KINETIC_SLUG = register("kinetic_slug", new Item(properties("kinetic_slug").rarity(Rarity.UNCOMMON).stacksTo(64)));
     public static final Item SUPERCONDUCTOR_TOROID = register("superconductor_toroid", new Item(properties("superconductor_toroid").rarity(Rarity.RARE).stacksTo(16)));
     public static final Item PLASMA_FOCUS_CRYSTAL = register("plasma_focus_crystal", new Item(properties("plasma_focus_crystal").rarity(Rarity.EPIC).stacksTo(16)));
+    public static final Item GEOTHERMAL_CORE_DRILL_BIT = register("geothermal_core_drill_bit", new Item(properties("geothermal_core_drill_bit").rarity(Rarity.RARE).stacksTo(16)));
+    public static final Item MANTLE_ALLOY_INGOT = register("mantle_alloy_ingot", new Item(properties("mantle_alloy_ingot").rarity(Rarity.EPIC)));
+    public static final Item SUPERHEATED_LITHIUM_CAPSULE = register("superheated_lithium_capsule", new Item(properties("superheated_lithium_capsule").rarity(Rarity.RARE).stacksTo(16)));
+    public static final Item THERMAL_RADIATOR_FIN = register("thermal_radiator_fin", new Item(properties("thermal_radiator_fin").rarity(Rarity.UNCOMMON).stacksTo(64)));
+    public static final Item RAW_LITHIUM_SALTS = register("raw_lithium_salts", new Item(properties("raw_lithium_salts").rarity(Rarity.UNCOMMON).stacksTo(64)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -282,6 +287,14 @@ public class SandStormItems {
                         entries.accept(KINETIC_SLUG);
                         entries.accept(SUPERCONDUCTOR_TOROID);
                         entries.accept(PLASMA_FOCUS_CRYSTAL);
+                        entries.accept(SandStormBlocks.DEEP_CORE_BOREHOLE);
+                        entries.accept(GEOTHERMAL_CORE_DRILL_BIT);
+                        entries.accept(RAW_LITHIUM_SALTS);
+                        entries.accept(SandStormBlocks.LITHO_PLASMA_EXTRACTOR);
+                        entries.accept(SUPERHEATED_LITHIUM_CAPSULE);
+                        entries.accept(MANTLE_ALLOY_INGOT);
+                        entries.accept(SandStormBlocks.SUPERCRITICAL_HEAT_EXCHANGER);
+                        entries.accept(THERMAL_RADIATOR_FIN);
                     })
                     .build()
     );

@@ -8,6 +8,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CyborgDockingStationBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CyborgIncubatorVatBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreBoreholeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
@@ -15,6 +16,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntit
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticRailgunBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.LithoPlasmaExtractorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MolecularModifierBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
@@ -24,6 +26,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntit
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SmartFluidPipeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SupercriticalHeatExchangerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ThermalGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.WirelessSolarReceiverBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.WptRelayTowerBlockEntity;
@@ -491,6 +494,30 @@ public class SandStormBlocks {
                     .sound(SoundType.COPPER)
                     .lightLevel(state -> state.getValue(AcousticDefensePylonBlock.ACTIVE) ? 8 : 0)
                     .noOcclusion()));
+    public static final DeepCoreBoreholeBlock DEEP_CORE_BOREHOLE = register("deep_core_borehole",
+            new DeepCoreBoreholeBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("deep_core_borehole")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(5.0f, 12.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .lightLevel(state -> state.getValue(DeepCoreBoreholeBlock.LIT) ? 10 : 0)
+                    .noOcclusion()));
+    public static final LithoPlasmaExtractorBlock LITHO_PLASMA_EXTRACTOR = register("litho_plasma_extractor",
+            new LithoPlasmaExtractorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("litho_plasma_extractor")))
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(4.5f, 10.0f)
+                    .sound(SoundType.HEAVY_CORE)
+                    .lightLevel(state -> state.getValue(LithoPlasmaExtractorBlock.LIT) ? 8 : 0)
+                    .noOcclusion()));
+    public static final SupercriticalHeatExchangerBlock SUPERCRITICAL_HEAT_EXCHANGER = register("supercritical_heat_exchanger",
+            new SupercriticalHeatExchangerBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("supercritical_heat_exchanger")))
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(4.0f, 9.0f)
+                    .sound(SoundType.METAL)
+                    .lightLevel(state -> state.getValue(SupercriticalHeatExchangerBlock.LIT) ? 12 : 0)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -627,6 +654,21 @@ public class SandStormBlocks {
             SandStormMod.id("acoustic_defense_pylon"),
             new BlockEntityType<>(AcousticDefensePylonBlockEntity::new, Set.of(ACOUSTIC_DEFENSE_PYLON))
     );
+    public static final BlockEntityType<DeepCoreBoreholeBlockEntity> DEEP_CORE_BOREHOLE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("deep_core_borehole"),
+            new BlockEntityType<>(DeepCoreBoreholeBlockEntity::new, Set.of(DEEP_CORE_BOREHOLE))
+    );
+    public static final BlockEntityType<LithoPlasmaExtractorBlockEntity> LITHO_PLASMA_EXTRACTOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("litho_plasma_extractor"),
+            new BlockEntityType<>(LithoPlasmaExtractorBlockEntity::new, Set.of(LITHO_PLASMA_EXTRACTOR))
+    );
+    public static final BlockEntityType<SupercriticalHeatExchangerBlockEntity> SUPERCRITICAL_HEAT_EXCHANGER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("supercritical_heat_exchanger"),
+            new BlockEntityType<>(SupercriticalHeatExchangerBlockEntity::new, Set.of(SUPERCRITICAL_HEAT_EXCHANGER))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -667,5 +709,10 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, HOLO_TACTICAL_SPIRE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, QUANTUM_SLEEPER_POD_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, KINETIC_RAILGUN_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, DEEP_CORE_BOREHOLE_BE);
+        FluidStorage.SIDED.registerForBlockEntity(DeepCoreBoreholeBlockEntity::getFluidStorage, DEEP_CORE_BOREHOLE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, LITHO_PLASMA_EXTRACTOR_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SUPERCRITICAL_HEAT_EXCHANGER_BE);
+        FluidStorage.SIDED.registerForBlockEntity(SupercriticalHeatExchangerBlockEntity::getFluidStorage, SUPERCRITICAL_HEAT_EXCHANGER_BE);
     }
 }

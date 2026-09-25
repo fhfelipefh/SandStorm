@@ -70,11 +70,11 @@ class SandstormDebugTest {
     void shouldValidateSupportedPhasesList() {
         List<String> phases = SandstormDebugCommand.getSupportedPhases();
         assertNotNull(phases);
-        for (int i = 1; i <= 30; i++) {
+        for (int i = 1; i <= 31; i++) {
             assertTrue(phases.contains(String.valueOf(i)));
         }
         assertTrue(phases.contains("all"));
-        assertEquals(31, phases.size());
+        assertEquals(32, phases.size());
     }
 
     @Test
@@ -114,7 +114,8 @@ class SandstormDebugTest {
         assertTrue(facilities.contains("ancient_ruin_site"));
         assertTrue(facilities.contains("clone_facility"));
         assertTrue(facilities.contains("plasma_defense_complex"));
-        assertEquals(17, facilities.size());
+        assertTrue(facilities.contains("geothermal_well"));
+        assertEquals(18, facilities.size());
     }
 
     @Test

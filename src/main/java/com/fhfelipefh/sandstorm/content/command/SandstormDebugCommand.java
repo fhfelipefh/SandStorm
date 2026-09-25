@@ -1,15 +1,21 @@
 package com.fhfelipefh.sandstorm.content.command;
 
 import com.fhfelipefh.sandstorm.content.block.AcousticDefensePylonBlock;
+import com.fhfelipefh.sandstorm.content.block.DeepCoreBoreholeBlock;
 import com.fhfelipefh.sandstorm.content.block.HoloTacticalSpireBlock;
 import com.fhfelipefh.sandstorm.content.block.KineticRailgunBlock;
+import com.fhfelipefh.sandstorm.content.block.LithoPlasmaExtractorBlock;
 import com.fhfelipefh.sandstorm.content.block.PlasmaShieldGeneratorBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.SupercriticalHeatExchangerBlock;
 import com.fhfelipefh.sandstorm.content.block.entity.AcousticDefensePylonBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreBoreholeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticRailgunBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.LithoPlasmaExtractorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SupercriticalHeatExchangerBlockEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
@@ -44,6 +50,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -58,7 +65,7 @@ public class SandstormDebugCommand {
     private static final List<String> PHASES = List.of(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
             "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "all"
+            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "all"
     );
 
     private static final List<String> SPAWNABLES = List.of(
@@ -90,7 +97,8 @@ public class SandstormDebugCommand {
             "starter_base",
             "ancient_ruin_site",
             "clone_facility",
-            "plasma_defense_complex"
+            "plasma_defense_complex",
+            "geothermal_well"
     );
 
     public static void initialize() {
@@ -589,6 +597,21 @@ public class SandstormDebugCommand {
             giveItem(player, SandStormItems.PLASMA_FOCUS_CRYSTAL, 4);
             giveItem(player, SandStormBlocks.SOLID_STATE_ACCUMULATOR, 2);
             giveItem(player, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2, 2);
+        }
+
+        if (isAll || "31".equals(normalized)) {
+            giveItem(player, SandStormBlocks.DEEP_CORE_BOREHOLE, 1);
+            giveItem(player, SandStormBlocks.LITHO_PLASMA_EXTRACTOR, 1);
+            giveItem(player, SandStormBlocks.SUPERCRITICAL_HEAT_EXCHANGER, 1);
+            giveItem(player, SandStormItems.GEOTHERMAL_CORE_DRILL_BIT, 2);
+            giveItem(player, SandStormItems.RAW_LITHIUM_SALTS, 16);
+            giveItem(player, SandStormItems.SUPERHEATED_LITHIUM_CAPSULE, 8);
+            giveItem(player, SandStormItems.MANTLE_ALLOY_INGOT, 8);
+            giveItem(player, SandStormItems.THERMAL_RADIATOR_FIN, 4);
+            giveItem(player, SandStormBlocks.SMART_FLUID_PIPE, 16);
+            giveItem(player, SandStormBlocks.WPT_RELAY_TOWER, 2);
+            giveItem(player, SandStormBlocks.SOLID_STATE_ACCUMULATOR, 2);
+            giveItem(player, Items.WATER_BUCKET, 4);
         }
 
         player.containerMenu.broadcastChanges();
@@ -1098,6 +1121,47 @@ public class SandstormDebugCommand {
                 source.sendSuccess(() -> Component.literal("§a[SandStorm] Complexo Planetário de Defesa de Plasma montado com sucesso! (Escudo 48m, 2 Railguns com Slugs, 4 Pilones Acústicos e Energia WPT)"), true);
                 return 1;
             }
+            case "geothermal_well" -> {
+                for (int dx = -3; dx <= 3; dx++) {
+                    for (int dz = -3; dz <= 3; dz++) {
+                        level.setBlock(center.offset(dx, 0, dz), Blocks.POLISHED_BLACKSTONE_BRICKS.defaultBlockState(), 3);
+                        for (int dy = 1; dy <= 4; dy++) {
+                            level.setBlock(center.offset(dx, dy, dz), Blocks.AIR.defaultBlockState(), 3);
+                        }
+                    }
+                }
+                BlockPos boreholePos = center.offset(0, 1, 0);
+                level.setBlock(boreholePos, SandStormBlocks.DEEP_CORE_BOREHOLE.defaultBlockState().setValue(DeepCoreBoreholeBlock.LIT, true), 3);
+                BlockEntity boreholeBe = level.getBlockEntity(boreholePos);
+                if (boreholeBe instanceof DeepCoreBoreholeBlockEntity be) {
+                    be.setItem(DeepCoreBoreholeBlockEntity.SLOT_DRILL_BIT, new ItemStack(SandStormItems.GEOTHERMAL_CORE_DRILL_BIT));
+                    be.setItem(DeepCoreBoreholeBlockEntity.SLOT_COOLANT_IN, new ItemStack(Items.WATER_BUCKET));
+                }
+
+                BlockPos extractorPos = center.offset(2, 1, 0);
+                level.setBlock(extractorPos, SandStormBlocks.LITHO_PLASMA_EXTRACTOR.defaultBlockState().setValue(LithoPlasmaExtractorBlock.LIT, true), 3);
+                BlockEntity extractorBe = level.getBlockEntity(extractorPos);
+                if (extractorBe instanceof LithoPlasmaExtractorBlockEntity be) {
+                    be.setItem(LithoPlasmaExtractorBlockEntity.SLOT_SALT_IN, new ItemStack(SandStormItems.RAW_LITHIUM_SALTS, 16));
+                    be.setItem(LithoPlasmaExtractorBlockEntity.SLOT_CANISTER_IN, new ItemStack(Items.BUCKET, 4));
+                }
+
+                BlockPos exchangerPos = center.offset(-2, 1, 0);
+                level.setBlock(exchangerPos, SandStormBlocks.SUPERCRITICAL_HEAT_EXCHANGER.defaultBlockState().setValue(SupercriticalHeatExchangerBlock.LIT, true), 3);
+                BlockEntity exchangerBe = level.getBlockEntity(exchangerPos);
+                if (exchangerBe instanceof SupercriticalHeatExchangerBlockEntity be) {
+                    be.setItem(SupercriticalHeatExchangerBlockEntity.SLOT_WATER_IN, new ItemStack(Items.WATER_BUCKET));
+                    be.setItem(SupercriticalHeatExchangerBlockEntity.SLOT_THERMAL_CORE, new ItemStack(SandStormItems.THERMAL_RADIATOR_FIN, 2));
+                }
+
+                level.setBlock(center.offset(0, 1, 2), SandStormBlocks.WPT_RELAY_TOWER.defaultBlockState(), 3);
+                level.setBlock(center.offset(0, 1, -2), SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState(), 3);
+                level.setBlock(center.offset(1, 1, 0), SandStormBlocks.SMART_FLUID_PIPE.defaultBlockState(), 3);
+                level.setBlock(center.offset(-1, 1, 0), SandStormBlocks.SMART_FLUID_PIPE.defaultBlockState(), 3);
+
+                source.sendSuccess(() -> Component.literal("§a[SandStorm] Complexo Geotérmico de Poço do Manto & Sifão Lito-Plasmático montado com sucesso! (Perfuratriz, Extrator Lito-Plasma e Trocador Térmico)"), true);
+                return 1;
+            }
             default -> {
                 source.sendFailure(Component.literal("§c[SandStorm] Instalação desconhecida. Opções: " + String.join(", ", FACILITIES)));
                 return 0;
@@ -1219,7 +1283,7 @@ public class SandstormDebugCommand {
     private static int executeList(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
         source.sendSuccess(() -> Component.literal("§6=== SandStorm Debug Suite ==="), false);
-        source.sendSuccess(() -> Component.literal("§b/sandstorm debug phase <1..30|all>§r: Kits de teste de todas as 30 fases"), false);
+        source.sendSuccess(() -> Component.literal("§b/sandstorm debug phase <1..31|all>§r: Kits de teste de todas as 31 fases"), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug spawn|robot <entidade>§r: " + String.join(", ", SPAWNABLES)), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug setup|structure <instalação>§r: " + String.join(", ", FACILITIES)), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug suit refill|drain§r: Controle de energia/temperatura do traje"), false);

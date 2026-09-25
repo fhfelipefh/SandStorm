@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,lit=false": { "model": "sandstorm:block/deep_core_borehole" },
+    "facing=south,lit=false": { "model": "sandstorm:block/deep_core_borehole", "y": 180 },
+    "facing=west,lit=false": { "model": "sandstorm:block/deep_core_borehole", "y": 270 },
+    "facing=east,lit=false": { "model": "sandstorm:block/deep_core_borehole", "y": 90 },
+    "facing=north,lit=true": { "model": "sandstorm:block/deep_core_borehole_lit" },
+    "facing=south,lit=true": { "model": "sandstorm:block/deep_core_borehole_lit", "y": 180 },
+    "facing=west,lit=true": { "model": "sandstorm:block/deep_core_borehole_lit", "y": 270 },
+    "facing=east,lit=true": { "model": "sandstorm:block/deep_core_borehole_lit", "y": 90 }
+  }
+}

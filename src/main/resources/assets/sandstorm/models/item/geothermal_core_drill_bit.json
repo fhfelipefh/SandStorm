@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "sandstorm:item/geothermal_core_drill_bit"
+  }
+}

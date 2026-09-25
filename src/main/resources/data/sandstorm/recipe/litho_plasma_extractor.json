@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TPT",
+    "SCS",
+    "TMT"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "P": "sandstorm:plasma_focus_crystal",
+    "S": "sandstorm:structural_plate",
+    "C": "sandstorm:chemical_refinery",
+    "M": "sandstorm:superconductor_toroid"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:litho_plasma_extractor"
+  }
+}

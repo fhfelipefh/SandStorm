@@ -785,35 +785,39 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 - [x] **Validação Automatizada de Testes**:
   - [x] Suíte dedicada `Fase30PlasmaDefenseTest` e expansão de `SandstormDebugTest`, elevando o mod para **916 testes automatizados** com 100% de aprovação e zero comentários.
 
-### 🌋 Fase 31: Mineração Geotérmica Profunda, Poço do Manto Planetário & Extratores Magmáticos de Lítio-Plasma (Deep Core Geothermal Well, Mantle Borehole & Litho-Plasma Siphon)
+### 🌋 Fase 31: Mineração Geotérmica Profunda, Poço do Manto Planetário & Extratores Magmáticos de Lítio-Plasma (Deep Core Geothermal Well, Mantle Borehole & Litho-Plasma Siphon) (Concluída - 100%)
 *A conquista do subsolo profundo: perfuração em escala abissal através da rocha consolidada até as camadas do manto planetário, extração de fluidos térmicos supercríticos e condensação de lítio-plasma para gerar energia quase infinita e ligas superdensas.*
 
-- [ ] **Broca de Perfuração do Manto Planetário (`deep_core_borehole`)**:
-  - [ ] Maquinário monumental 3x3x3 instalado na rocha basal (Y <= 0) ancorado por pistões de amortecimento sísmico em titânio e cerâmica.
-  - [ ] Cabeçote de perfuração articulado com dentes de diamante policristalino e carbeto de tungstênio (`geothermal_core_drill_bit`), estendendo colunas de tubulação até a rocha-mãe (Bedrock, Y = -64).
-  - [ ] Capacitância interna WPT de 500.000 J (consumo de 250 J/tick durante avanço de perfuração) e conexão de dutos de fluidos inteligentes (`FluidStorage.SIDED`).
-  - [ ] **Efeitos Visuais e Físicos de Perfuração em Tempo Real**:
-    - [ ] Vibração contínua do maquinário com feixes de faíscas incandescentes e colunas verticais de vapor superaquecido subindo através das canaletas de ventilação.
-    - [ ] Sismologia ativa: operar a broca em potência máxima aumenta temporariamente a probabilidade de alertas sísmicos de vermes ancestrais nas imediações geológicas.
-- [ ] **Extrator Magmático de Lítio-Plasma (`litho_plasma_extractor`)**:
-  - [ ] Centrífuga térmica hermética de alta pressão em compósito de tungstênio para enriquecimento de fluidos de manto.
-  - [ ] Separação submersa de plasma silicatado e condensação do sal de lítio isotópico em cápsulas criogênicas seladas (`superheated_lithium_capsule`).
-  - [ ] Rendimento térmico extremo: gera vapor geotérmico de alta entalpia e subprodutos minerais raros (fósforo fóssil, cristais piezoelétricos e traços de metais pesados).
-- [ ] **Trocador de Calor Supercrítico (`supercritical_heat_exchanger`)**:
-  - [ ] Bloco industrial 2x2x2 com feixe de tubos de circulação e matriz de dissipação térmica com aletas cerâmicas (`thermal_radiator_fin`).
-  - [ ] Converte água potável fria injetada em vapor supercrítico de alta rotação, acionando geradores térmicos que injetam até **10.000 J/tick** diretamente na malha de energia sem fio WPT da base.
-- [ ] **Superligas do Manto & Componentes Geotérmicos**:
-  - [ ] Lingote de Superliga do Manto (`mantle_alloy_ingot`): forjado sob pressões gigapascal e temperaturas extremas, entregando dureza 5x superior ao titânio convencional.
-  - [ ] Cápsula Criogênica de Lítio Superaquecido (`superheated_lithium_capsule`): fluido isotópico de alta densidade energética para reatores planetários e propelentes iônicos avançados.
-  - [ ] Aleta Cerâmica de Dissipação Térmica (`thermal_radiator_fin`): radiador ablativo de alta condutividade térmica.
-  - [ ] Broca de Diamante Policristalino do Manto (`geothermal_core_drill_bit`): ponta intercambiável de extrema resistência abrasiva.
-- [ ] **Interface Gráfica de Monitoramento Geotérmico (`DeepCoreBoreholeScreen` / `DeepCoreBoreholeMenu`)**:
-  - [ ] Painel industrial dark-tech com osciloscópio de pressão sísmica subterrânea, gráfico em tempo real de profundidade do cabeçote (Y: 0 a -64), manômetro de pressão (Bar / GPa) e termostato digital em Kelvin (300 K a 1800 K).
-  - [ ] Válvula tátil de descompressão emergencial para purga de vapor abrasivo e alarme acústico de sobrepressão.
-- [ ] **Cadeia Completa de Assets 1.21.4, Modelos 3D, SFX & Testes**:
-  - [ ] Modelos BBModel detalhados da broca monumental com pistões animados, extrator centrífugo e trocador de calor com aletas.
-  - [ ] Efeitos sonoros customizados: perfuração profunda rotativa contínua (`deep_borehole_drill.ogg`), centrifugação centrípeta (`litho_extractor_spin.ogg`) e escape de vapor superaquecido (`steam_purge.ogg`).
-  - [ ] Suíte de testes dedicada `Fase31GeothermalWellTest`.
+- [x] **Broca de Perfuração do Manto Planetário (`deep_core_borehole` / `DeepCoreBoreholeBlock` / `DeepCoreBoreholeBlockEntity`)**:
+  - [x] Maquinário monumental industrial instalado na rocha basal (Y <= 0) ancorado por pistões de amortecimento sísmico em titânio e cerâmica.
+  - [x] Cabeçote de perfuração articulado consumindo broca de diamante policristalino (`geothermal_core_drill_bit`), estendendo colunas de tubulação até o manto profundo (Y = -64).
+  - [x] Capacitância interna WPT de 500.000 J (consumo de 250 J/tick durante avanço de perfuração) e conexão de dutos de fluidos inteligentes (`FluidStorage.SIDED` com 8.000 mB de capacidade).
+  - [x] Extração periódica de sais brutos de lítio (`raw_lithium_salts`) e fluidos geotérmicos supercríticos com ciclo térmico e dinâmicas sísmicas.
+- [x] **Extrator Magmático de Lítio-Plasma (`litho_plasma_extractor` / `LithoPlasmaExtractorBlock` / `LithoPlasmaExtractorBlockEntity`)**:
+  - [x] Centrífuga térmica hermética de alta pressão em compósito de tungstênio para enriquecimento de fluidos de manto.
+  - [x] Separação centrífuga consumindo 150 J/tick e sais de lítio brutos com recipientes criogênicos para condensar cápsulas de lítio superaquecido (`superheated_lithium_capsule`).
+  - [x] Condensação piezoelétrica sob alta pressão gerando lingotes de superliga do manto (`mantle_alloy_ingot`) e subprodutos minerais refinados.
+- [x] **Trocador de Calor Supercrítico (`supercritical_heat_exchanger` / `SupercriticalHeatExchangerBlock` / `SupercriticalHeatExchangerBlockEntity`)**:
+  - [x] Usina térmica com matriz de dissipação para aletas cerâmicas (`thermal_radiator_fin`) e câmara de água pura.
+  - [x] Converte água potável e fluidos de manto em vapor supercrítico de altíssima entalpia, gerando de 2.500 J/tick a **10.000 J/tick** diretamente na malha de energia sem fio WPT da base.
+- [x] **Superligas do Manto & Componentes Geotérmicos**:
+  - [x] Lingote de Superliga do Manto (`mantle_alloy_ingot`): forjado sob pressões gigapascal e temperaturas extremas.
+  - [x] Cápsula Criogênica de Lítio Superaquecido (`superheated_lithium_capsule`): fluido isotópico de alta densidade energética para reatores e geradores supercríticos.
+  - [x] Aleta Cerâmica de Dissipação Térmica (`thermal_radiator_fin`): radiador ablativo de alta condutividade térmica.
+  - [x] Broca de Diamante Policristalino do Manto (`geothermal_core_drill_bit`): ponta intercambiável de extrema dureza abrasiva.
+- [x] **Interfaces Gráficas de Monitoramento Industrial**:
+  - [x] `DeepCoreBoreholeScreen` / `DeepCoreBoreholeMenu`: painel com telemetria de profundidade, termômetro em Kelvin, manômetro de pressão (Bar), medidores de energia e fluido refrigerante.
+  - [x] `LithoPlasmaExtractorScreen` / `LithoPlasmaExtractorMenu`: interface de enriquecimento isotópico com progresso centrífugo e compartimentos de produtos.
+  - [x] `SupercriticalHeatExchangerScreen` / `SupercriticalHeatExchangerMenu`: mostrador de taxa de geração térmica (J/t), pressão de vapor e compartimento para aletas de dissipação e cápsulas.
+- [x] **Cadeia Completa de Assets 1.21.4 & Data-Driven Recipes**:
+  - [x] 3 blockstates, 6 modelos de bloco com estados lit, 8 modelos de item, 8 definições em `assets/sandstorm/items/` e 20 texturas PNG geradas com integridade binária.
+  - [x] 7 receitas balanceadas em `data/sandstorm/recipe/` e 3 tabelas de saque de bloco.
+  - [x] Paridade linguística multilíngue (`pt_br`, `en_us`, `es_es`).
+- [x] **Comandos de Demonstração e Testes In-Game**:
+  - [x] `/sandstorm debug phase 31`: Kit de inventário completo com maquinários geotérmicos, brocas, aletas e superligas.
+  - [x] `/sandstorm debug setup geothermal_well`: Geração instantânea de complexo geotérmico com perfuratriz, extrator lito-plasma e trocador térmico com conexões operacionais.
+- [x] **Validação Automatizada de Testes**:
+  - [x] Suíte dedicada `Fase31GeothermalWellTest` e expansão de `SandstormDebugTest`, elevando o mod para **940 testes automatizados** com 100% de sucesso e zero comentários.
 
 ### 🛰️ Fase 32: Rede Orbital de Satélites, Telescópio Espacial de Varredura & Lançador de Cargas Eletromagnético (Orbital Mass Driver, Satellite Constellation & Spectral Survey Telescope)
 *Rompendo a barreira atmosférica: catapulta eletromagnética linear para lançamento de satélites em órbita baixa e geoestacionária, estação terrena de telemetria e rede de sensoriamento remoto para controle absoluto do planeta a partir do espaço.*
@@ -1471,3 +1475,20 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
       - `/sandstorm debug setup plasma_defense_complex`: Criação imediata do complexo fortificado de defesa com gerador de plasma, railgun carregado e pilões perimétricos.
     - **Validação de Testes**:
       - Suíte `Fase30PlasmaDefenseTest` e `SandstormDebugTest`, elevando o mod para **916 testes automatizados** com 100% de sucesso, conformidade de arquitetura e zero comentários.
+57. `fase31-done`: Implementação completa da **Fase 31: Mineração Geotérmica Profunda, Poço do Manto Planetário & Extratores Magmáticos de Lítio-Plasma (Deep Core Geothermal Well, Mantle Borehole & Litho-Plasma Siphon)**:
+    - **Broca de Perfuração do Manto Planetário (`deep_core_borehole` / `DeepCoreBoreholeBlockEntity` / `DeepCoreBoreholeBlock`)**:
+      - Buffer de 500.000 J WPT, 250 J/tick de consumo operacional, tanque interno de fluido de 8.000 mB compatível com Fabric Transfer API (`FluidStorage.SIDED`).
+      - Cabeçote com broca de diamante policristalino (`geothermal_core_drill_bit`) estendendo poço até a rocha-mãe (Y <= -64), operando com refrigeração por água e gerando sais brutos de lítio (`raw_lithium_salts`).
+    - **Extrator Magmático de Lítio-Plasma (`litho_plasma_extractor` / `LithoPlasmaExtractorBlockEntity` / `LithoPlasmaExtractorBlock`)**:
+      - Buffer de 250.000 J WPT, 150 J/tick de consumo de centrifugação térmica, refinando sais brutos com recipientes criogênicos para obter cápsulas criogênicas de lítio superaquecido (`superheated_lithium_capsule`), lingotes de superliga do manto (`mantle_alloy_ingot`) e subprodutos minerais raros.
+    - **Trocador de Calor Supercrítico (`supercritical_heat_exchanger` / `SupercriticalHeatExchangerBlockEntity` / `SupercriticalHeatExchangerBlock`)**:
+      - Buffer de 1.000.000 J WPT, câmara de 8.000 mB de água e matriz dissipadora para aletas térmicas (`thermal_radiator_fin`) e cápsulas de lítio, gerando entre 2.500 J/tick e **10.000 J/tick** diretamente na malha sem fio WPT.
+    - **Cadeia Completa de Assets 1.21.4 & Data-Driven Recipes**:
+      - 3 blockstates, 6 modelos de bloco com estados lit, 8 modelos de item, 8 definições em `assets/sandstorm/items/` e 20 texturas PNG com cabeçalhos binários válidos.
+      - 7 receitas balanceadas em `data/sandstorm/recipe/` e 3 tabelas de saque de bloco.
+      - Paridade linguística nos 3 idiomas suportados (`pt_br`, `en_us`, `es_es`).
+    - **Suíte de Debug & Teste**:
+      - `/sandstorm debug phase 31`: Kit completo com perfuratriz, extrator, trocador, brocas, aletas e superligas.
+      - `/sandstorm debug setup geothermal_well`: Complexo geotérmico pronto com perfuratriz carregada, extrator centrifugador, trocador e tubulações inteligentes conectadas à rede WPT.
+    - **Validação de Testes**:
+      - Suíte dedicada `Fase31GeothermalWellTest` e atualização de `SandstormDebugTest`, elevando o mod para **940 testes automatizados** com 100% de sucesso, conformidade estrita de arquitetura e zero comentários.

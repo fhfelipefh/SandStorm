@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " D ",
+    "DCD",
+    "TST"
+  ],
+  "key": {
+    "D": "minecraft:diamond",
+    "C": "sandstorm:titanium_chitin_composite",
+    "T": "sandstorm:scrap_metal",
+    "S": "sandstorm:structural_plate"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:geothermal_core_drill_bit"
+  }
+}

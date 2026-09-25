@@ -117,6 +117,21 @@ public class SandStormMenus {
             new MenuType<>(KineticRailgunMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<DeepCoreBoreholeMenu> DEEP_CORE_BOREHOLE_MENU = register(
+            "deep_core_borehole",
+            new MenuType<>(DeepCoreBoreholeMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<LithoPlasmaExtractorMenu> LITHO_PLASMA_EXTRACTOR_MENU = register(
+            "litho_plasma_extractor",
+            new MenuType<>(LithoPlasmaExtractorMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<SupercriticalHeatExchangerMenu> SUPERCRITICAL_HEAT_EXCHANGER_MENU = register(
+            "supercritical_heat_exchanger",
+            new MenuType<>(SupercriticalHeatExchangerMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

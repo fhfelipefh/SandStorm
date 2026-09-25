@@ -285,6 +285,38 @@ graph TD;
 ```
 </details>
 
+<details>
+<summary><b>10. Fluxo de Mineração Geotérmica Profunda, Poço do Manto & Sifão Lito-Plasmático (Fase 31)</b></summary>
+
+```mermaid
+graph TD;
+    subgraph "Perfuração do Manto Planetário"
+        BORE["Broca de Poço do Manto (deep_core_borehole)"] --> BIT["Broca de Diamante Policristalino (geothermal_core_drill_bit)"]
+        BORE --> COOL["Injeção de Água/Refrigerante (8.000 mB)"]
+        BORE --> WPT_IN["Alimentação WPT (500.000 J / 250 J/t)"]
+        BORE -->|Penetração em Y: 0 a -64| MANTLE["Extração Contínua do Manto Planetário"]
+        MANTLE --> SALTS["Sais Brutos de Lítio (raw_lithium_salts)"]
+        MANTLE --> STEAM["Fluidos Térmicos Supercríticos"]
+    end
+
+    subgraph "Fracionamento & Condensação de Lito-Plasma"
+        SALTS --> EXTRACTOR["Extrator Magmático de Lito-Plasma (litho_plasma_extractor)"]
+        EXTRACTOR --> WPT_EXT["Alimentação WPT (250.000 J / 150 J/t)"]
+        EXTRACTOR -->|Centrifugação Térmica| CAPSULE["Cápsula Criogênica de Lítio Superaquecido (superheated_lithium_capsule)"]
+        EXTRACTOR -->|Condensação de Alta Pressão| ALLOY["Lingote de Superliga do Manto (mantle_alloy_ingot)"]
+        EXTRACTOR --> BYPROD["Subprodutos Minerais (Quartzo Piezoelétrico, Fósforo e Minérios)"]
+    end
+
+    subgraph "Geração Térmica Supercrítica de Energia"
+        STEAM & COOL --> EXCHANGER["Trocador de Calor Supercrítico (supercritical_heat_exchanger)"]
+        FIN["Aletas Cerâmicas de Dissipação (thermal_radiator_fin)"] --> EXCHANGER
+        CAPSULE -->|Catalisador de Potência Máxima| EXCHANGER
+        EXCHANGER -->|Geração Massiva de Energia| POWER["Geração de 2.500 a 10.000 J/tick"]
+        POWER --> WPT_OUT["Injeção Direta na Rede Sem Fio WPT da Base"]
+    end
+```
+</details>
+
 ---
 
 ## 📦 Itens, Blocos e Entidades do Mod
@@ -319,6 +351,9 @@ graph TD;
 | **Bloco**    | `plasma_shield_generator`| Gerador de Escudo de Plasma | Domo planetário de 1.000.000 J anti-projéteis e anti-titã |
 | **Bloco**    | `kinetic_railgun`      | Canhão Cinético Anti-Titã | Artilharia ferroviária de alta energia contra vermes |
 | **Bloco**    | `acoustic_defense_pylon`| Pilão de Defesa Acústica | Cancelamento perimétrico de vibrações sísmicas |
+| **Bloco**    | `deep_core_borehole`   | Broca de Perfuração do Manto | Perfuratriz colossal até a rocha-mãe (Y <= 0) |
+| **Bloco**    | `litho_plasma_extractor`| Extrator Magmático de Lito-Plasma | Centrífuga térmica para enriquecimento de lítio e superligas |
+| **Bloco**    | `supercritical_heat_exchanger`| Trocador de Calor Supercrítico | Usina térmica com aletas gerando até 10.000 J/t |
 | **Item**     | `raw_silicon`          | Silício Bruto | Mineral extraído da areia desértica |
 | **Item**     | `silicon_wafer`        | Wafer de Silício | Pastilha para eletrônica avançada |
 | **Item**     | `mineral_salt`         | Sal Mineral | Subproduto mineral purificado |
@@ -333,6 +368,11 @@ graph TD;
 | **Item**     | `kinetic_slug`         | Projétil Cinético Hiperdenso | Munição perfurante pesada para Railgun |
 | **Item**     | `superconductor_toroid`| Toroide Supercondutor | Bobina de contenção magnética de plasma |
 | **Item**     | `plasma_focus_crystal` | Cristal de Foco de Plasma | Foco piezoelétrico de alta frequência |
+| **Item**     | `geothermal_core_drill_bit`| Broca do Manto em Diamante | Cabeçote de perfuração de extrema dureza abrasiva |
+| **Item**     | `raw_lithium_salts`    | Sais Brutos de Lítio | Mineral fóssil extraído das profundezas do manto |
+| **Item**     | `superheated_lithium_capsule`| Cápsula de Lítio Superaquecido | Fluido isotópico térmico de altíssima entalpia |
+| **Item**     | `mantle_alloy_ingot`   | Superliga do Manto | Liga superdensa forjada sob pressões gigapascal |
+| **Item**     | `thermal_radiator_fin` | Aleta Cerâmica de Dissipação | Radiador térmico de dissipação com aletas cerâmicas |
 | **Entidade** | `sandworm`             | Verme de Areia | Predador apex (300 HP, 18 dano) |
 | **Entidade** | `cargo_drone`          | Drone de Carga Aérea | Transporte aéreo com ruído sísmico zero |
 | **Entidade** | `builder_drone`        | Drone Construtor | Montagem litográfica a laser de megaestruturas |
@@ -350,6 +390,7 @@ Para criadores de conteúdo, desenvolvedores e administradores, o mod inclui com
 
 | Instalação / Complexo | Comando In-Game | Estrutura Gerada |
 |---|---|---|
+| **Complexo Geotérmico e Lito-Plasma** | `/sandstorm debug setup geothermal_well` | Perfuratriz de poço do manto, extrator de lito-plasma, trocador térmico supercrítico e circuito de fluidos |
 | **Complexo de Defesa de Plasma** | `/sandstorm debug setup plasma_defense_complex` | Cúpula de escudo de plasma, canhão cinético municiado com slugs e pilões acústicos anti-verme |
 | **Complexo de Clonagem Quântica** | `/sandstorm debug setup clone_facility` | Duas Cápsulas de Estase (`quantum_sleeper_pod`) conectadas, telemetria e insumos para teste imediato de Ego-Casting |
 | **Canteiro de Megaestrutura** | `/sandstorm debug setup megastructure_site` | Construtor de Megaestruturas ancorado com blueprints e baús de insumos |
@@ -363,7 +404,7 @@ Para criadores de conteúdo, desenvolvedores e administradores, o mod inclui com
 | **Fortaleza de Espinhos** | `/sandstorm debug setup spike_fortress` | Perímetro com paredes de titânio, espinhos eletrizados e portões motorizados |
 | **Base Inicial de Sobrevivência** | `/sandstorm debug setup starter_base` | Posto balanceado com filtro de dessalinização, água e energia solar |
 
-> **Kits de Inventário por Fase:** Obtenha os equipamentos e blocos de qualquer fase com `/sandstorm debug phase <1..30>` (ou `/sandstorm debug phase all` para o kit mestre completo).
+> **Kits de Inventário por Fase:** Obtenha os equipamentos e blocos de qualquer fase com `/sandstorm debug phase <1..31>` (ou `/sandstorm debug phase all` para o kit mestre completo).
 
 ---
 

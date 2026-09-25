@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SPS",
+    "TBT",
+    "SMS"
+  ],
+  "key": {
+    "S": "sandstorm:structural_plate",
+    "P": "sandstorm:geothermal_core_drill_bit",
+    "T": "sandstorm:titanium_chitin_composite",
+    "B": "sandstorm:deep_core_drill",
+    "M": "sandstorm:superconductor_toroid"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:deep_core_borehole"
+  }
+}
