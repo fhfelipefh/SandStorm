@@ -14,27 +14,27 @@ No entanto, há um revés: os sistemas da nave acusam falha crítica nos motores
 
 ---
 
-## 📸 Demonstração Visual: Máquinas, Construções & Engenharia Planetária
-
-Explore algumas das principais instalações industriais, maquinários pesados e estruturas tecnológicas desenvolvidas no **SandStorm**:
-
-### 1. Complexo Industrial & Cúpulas de Terraformação Atmosférica
-![Complexo Industrial e Cúpula de Oásis](docs/images/sandstorm_industrial_base.jpg)
-*Visualização panorâmica de uma base industrial avançada nas dunas: o **Processador Atmosférico** gera uma cúpula ecológica e microclima seguro transformando areia desértica em solo fértil e lagos de água doce, cercado por matrizes fotovoltaicas, torres de craqueamento químico com dutos de plasma, domos hidropônicos e drones de carga aérea.*
-
 ---
 
-### 2. Construtor Autônomo de Megaestruturas & Manufatura Holográfica 3D
-![Construtor de Megaestruturas e Drones Construtores](docs/images/megastructure_constructor.jpg)
-*O monumental **Megastructure Constructor** projetando a malha wireframe holográfica 3D ciano de uma cidadela planetária no céu noturno do deserto. **Drones Construtores Operários** sobrevoam o local utilizando feixes litográficos a laser de fusão molecular para materializar blocos camada por camada.*
+## 🎮 Demonstração Visual das Máquinas & Construções (Assets do Jogo)
 
----
+> [!NOTE]
+> Todos os recursos visuais do SandStorm são obtidos **100% diretamente dos assets nativos e da engine do jogo** (Minecraft 1.21.4 / Fabric). Nenhuma imagem sintética ou externa é utilizada. Para visualizar qualquer uma das construções e máquinas completas no seu próprio mundo, utilize os comandos in-game `/sandstorm debug setup <instalação>`.
 
-### 3. Laboratório de Clonagem Quântica & Cápsulas de Estase ("Ego-Casting")
-![Laboratório de Clonagem Quântica e Sleeper Pods](docs/images/quantum_cloning_facility.jpg)
-*Interior de uma instalação biomédica avançada abrigando as **Cápsulas de Estase Quântica (Quantum Sleeper Pods)**. O corpo do clone é mantido em animação suspensa em fluido bio-nutritivo pressurizado. A tecnologia de **Ego-Casting** permite ao astronauta transferir instantaneamente sua mente entre corpos físicos distantes com inventários físicos isolados e respawn de emergência por proximidade.*
+### 🔬 Galeria de Maquinários Tecnológicos Nativos
 
----
+| Máquina / Instalação | Textura Nativa do Jogo | Função e Arquitetura no Jogo | Comando de Spawn In-Game |
+|:---:|:---:|---|---|
+| **Cápsula de Estase Quântica**<br>*(Quantum Sleeper Pod)* | <img src="src/main/resources/assets/sandstorm/textures/block/quantum_sleeper_pod_front_active.png" width="64" height="64" alt="Quantum Sleeper Pod Ativo" /><br><img src="src/main/resources/assets/sandstorm/textures/block/quantum_sleeper_pod_front_occupied.png" width="64" height="64" alt="Quantum Sleeper Pod Ocupado" /> | Câmara criogênica de 100.000 J conectada à malha WPT sem fio. Realiza a bio-síntese do corpo do clone consumindo nutrientes da Fase 21 e permite o **Ego-Casting** (transferência instantânea da mente com isolamento total de inventário e respawn por proximidade). | `/sandstorm debug setup clone_facility` |
+| **Torre Holo-Tática & Radar 3D**<br>*(Holo-Tactical Spire)* | <img src="src/main/resources/assets/sandstorm/textures/block/holo_tactical_spire_side.png" width="64" height="64" alt="Holo-Tactical Spire" /><br><img src="src/main/resources/assets/sandstorm/textures/item/neural_synapse_link.png" width="48" height="48" alt="Neural Synapse Link" /> | Pilar de comando militar com cúpula holográfica. Conecta-se à mente de ciborgues autônomos via `neural_synapse_link`, transmitindo ordens macro-estratégicas e rastreando vibrações sísmicas em um raio de 48 blocos. | `/sandstorm debug setup cyborg_outpost` |
+| **Incubadora Criogênica de Ciborgues**<br>*(Cyborg Incubator Vat)* | <img src="src/main/resources/assets/sandstorm/textures/block/cyborg_incubator_vat_front_active.png" width="64" height="64" alt="Cyborg Incubator" /> | Tanque biônico com fluido eletrolítico de titânio para montagem e impressão celular de ciborgues especialistas (mineradores, construtores e coletores de biomassa). | `/sandstorm debug setup cyborg_outpost` |
+| **Doca de Recarga Rápida**<br>*(Cyborg Docking Station)* | <img src="src/main/resources/assets/sandstorm/textures/block/cyborg_docking_station_top_active.png" width="64" height="64" alt="Cyborg Docking Station" /> | Plataforma de indução eletromagnética para carregamento rápido e sincronização de telemetria dos robôs em operação autônoma contínua. | `/sandstorm debug setup cyborg_outpost` |
+| **Pod de Bio-Regeneração**<br>*(Bio-Regeneration Pod)* | <img src="src/main/resources/assets/sandstorm/textures/block/bio_regeneration_pod_front_active.png" width="64" height="64" alt="Bio-Regeneration Pod" /> | Câmara estéril médica para purificação celular e regeneração rápida de tecidos biológicos do explorador espacial, eliminando toxinas e ferimentos de combate. | `/sandstorm debug setup medbay_clinic` |
+| **Biorreator de Batelada Quimiostato**<br>*(Bioreactor Vat)* | <img src="src/main/resources/assets/sandstorm/textures/block/bioreactor_vat_front.png" width="64" height="64" alt="Bioreactor Vat" /> | Quimiostato industrial de fermentação celular contínua para cultivo de extremófilos botânicos (quitosana, trehalose, glicerol e neuro-alcaloides). | `/sandstorm debug setup bioreactor_lab` |
+| **Processador Atmosférico**<br>*(Atmospheric Terraformer)* | <img src="src/main/resources/assets/sandstorm/textures/block/atmospheric_terraformer.png" width="64" height="64" alt="Atmospheric Terraformer" /> | Usina planetária de terraformação setorial. Projeta uma cúpula de microclima dinâmico (raio de 18 blocos) que transforma areia em solo fértil e lagos de água doce. | `/sandstorm debug setup terraformer_dome` |
+| **Filtro de Dessalinização**<br>*(Desalination Filter)* | <img src="src/main/resources/assets/sandstorm/textures/block/desalination_filter.png" width="64" height="64" alt="Desalination Filter" /> | Unidade de filtração osmótica que purifica aquíferos salobres subterrâneos em água potável estéril e subprodutos de sal mineral. | `/sandstorm debug setup starter_base` |
+| **Impressora 3D Industrial**<br>*(Printer 3D)* | <img src="src/main/resources/assets/sandstorm/textures/block/printer_3d.png" width="64" height="64" alt="3D Printer" /> | Manufatura aditiva de precisão para wafers de silício, placas de circuito integrado e ferramentas científicas. | `/sandstorm debug setup starter_base` |
+| **Fabricador de Nanorobôs**<br>*(Nanite Fabricator)* | <img src="src/main/resources/assets/sandstorm/textures/block/nanite_fabricator.png" width="64" height="64" alt="Nanite Fabricator" /> | Síntese de nano-atuadores e circuitos avançados para maquinário pesado e montagem de mechas. | `/sandstorm debug setup starter_base` |
 
 ## ⚙️ Mecânicas Principais
 
