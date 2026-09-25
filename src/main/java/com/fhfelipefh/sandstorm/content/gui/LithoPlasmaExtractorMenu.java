@@ -1,6 +1,8 @@
 package com.fhfelipefh.sandstorm.content.gui;
 
+import com.fhfelipefh.sandstorm.content.block.entity.BaseMachineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.LithoPlasmaExtractorBlockEntity;
+import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -34,12 +36,44 @@ public class LithoPlasmaExtractorMenu extends AbstractContainerMenu {
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_SALT_IN, 44, 22));
-        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_CANISTER_IN, 44, 48));
-        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_BATTERY, 16, 35));
-        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_LITHIUM_OUT, 116, 22));
-        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_ALLOY_OUT, 116, 48));
-        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_BYPRODUCT_OUT, 140, 35));
+        container.startOpen(playerInventory.player);
+
+        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_SALT_IN, 24, 32) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.is(SandStormItems.RAW_LITHIUM_SALTS);
+            }
+        });
+        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_CANISTER_IN, 44, 32) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.is(SandStormItems.BIO_COOLANT_CANISTER) || stack.is(SandStormItems.EMPTY_CARTRIDGE);
+            }
+        });
+        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_BATTERY, 24, 52) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return BaseMachineBlockEntity.getFuelEnergy(stack) > 0;
+            }
+        });
+        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_LITHIUM_OUT, 112, 32) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+        });
+        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_ALLOY_OUT, 132, 32) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+        });
+        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_BYPRODUCT_OUT, 122, 52) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+        });
 
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
@@ -118,7 +152,23 @@ public class LithoPlasmaExtractorMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (!this.moveItemStackTo(stackInSlot, 0, containerSlots, false)) {
+                if (stackInSlot.is(SandStormItems.RAW_LITHIUM_SALTS)) {
+                    if (!this.moveItemStackTo(stackInSlot, LithoPlasmaExtractorBlockEntity.SLOT_SALT_IN, LithoPlasmaExtractorBlockEntity.SLOT_SALT_IN + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (stackInSlot.is(SandStormItems.BIO_COOLANT_CANISTER) || stackInSlot.is(SandStormItems.EMPTY_CARTRIDGE)) {
+                    if (!this.moveItemStackTo(stackInSlot, LithoPlasmaExtractorBlockEntity.SLOT_CANISTER_IN, LithoPlasmaExtractorBlockEntity.SLOT_CANISTER_IN + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (BaseMachineBlockEntity.getFuelEnergy(stackInSlot) > 0) {
+                    if (!this.moveItemStackTo(stackInSlot, LithoPlasmaExtractorBlockEntity.SLOT_BATTERY, LithoPlasmaExtractorBlockEntity.SLOT_BATTERY + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index < containerSlots + 27) {
+                    if (!this.moveItemStackTo(stackInSlot, containerSlots + 27, totalSlots, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (!this.moveItemStackTo(stackInSlot, containerSlots, containerSlots + 27, false)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -128,8 +178,20 @@ public class LithoPlasmaExtractorMenu extends AbstractContainerMenu {
             } else {
                 slot.setChanged();
             }
+
+            if (stackInSlot.getCount() == itemStack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, stackInSlot);
         }
         return itemStack;
+    }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+        this.container.stopOpen(player);
     }
 
     public LithoPlasmaExtractorBlockEntity getBlockEntity() {

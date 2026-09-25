@@ -60,9 +60,9 @@ public class DeepCoreBoreholeScreen extends AbstractContainerScreen<DeepCoreBore
             extractor.fill(gx, gy, gx + energyW, gy + gh, 0xFF00E5FF);
         }
 
-        int fx = x + 74;
-        int fy = y + 56;
-        int fw = 18;
+        int fx = x + 72;
+        int fy = y + 48;
+        int fw = 14;
         int fh = 18;
         extractor.fill(fx - 1, fy - 1, fx + fw + 1, fy + fh + 1, 0xFF1E293B);
         extractor.fill(fx, fy, fx + fw, fy + fh, 0xFF0B1220);
@@ -95,16 +95,13 @@ public class DeepCoreBoreholeScreen extends AbstractContainerScreen<DeepCoreBore
             statusText = "SISTEMA PRONTO";
             statusColor = 0xFF00E5FF;
         }
-        extractor.text(this.font, Component.literal(statusText), x + 8, y + 21, statusColor, false);
+        extractor.text(this.font, Component.literal(statusText), x + 12, y + 21, statusColor, false);
 
-        String depthText = String.format("PROF: Y=%d", this.menu.getCurrentDepth());
-        extractor.text(this.font, Component.literal(depthText), x + 8, y + 31, 0xFFF59E0B, false);
+        String depthText = String.format("PROF: Y=%d  PRES: %d GPa", this.menu.getCurrentDepth(), this.menu.getPressure());
+        extractor.text(this.font, Component.literal(depthText), x + 12, y + 30, 0xFFF59E0B, false);
 
         String tempText = String.format("TEMP: %d K", this.menu.getTemperature());
-        extractor.text(this.font, Component.literal(tempText), x + 8, y + 41, 0xFFEF4444, false);
-
-        String presText = String.format("PRES: %d GPa", this.menu.getPressure());
-        extractor.text(this.font, Component.literal(presText), x + 50, y + 41, 0xFF94A3B8, false);
+        extractor.text(this.font, Component.literal(tempText), x + 12, y + 39, 0xFFEF4444, false);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -116,7 +113,7 @@ public class DeepCoreBoreholeScreen extends AbstractContainerScreen<DeepCoreBore
             extractor.setTooltipForNextFrame(this.font, Component.literal(energyTip), mouseX, mouseY);
         }
 
-        if (mouseX >= x + 74 && mouseX <= x + 92 && mouseY >= y + 56 && mouseY <= y + 74) {
+        if (mouseX >= x + 72 && mouseX <= x + 86 && mouseY >= y + 48 && mouseY <= y + 66) {
             String fluidTip = String.format("Fluido Refrigerante: %d / 8000 mB", this.menu.getFluidAmount());
             extractor.setTooltipForNextFrame(this.font, Component.literal(fluidTip), mouseX, mouseY);
         }

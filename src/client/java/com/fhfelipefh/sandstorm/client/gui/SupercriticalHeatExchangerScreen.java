@@ -60,10 +60,10 @@ public class SupercriticalHeatExchangerScreen extends AbstractContainerScreen<Su
             extractor.fill(gx, gy, gx + energyW, gy + gh, 0xFF00E5FF);
         }
 
-        int fx = x + 66;
-        int fy = y + 22;
+        int fx = x + 40;
+        int fy = y + 32;
         int fw = 14;
-        int fh = 48;
+        int fh = 36;
         extractor.fill(fx - 1, fy - 1, fx + fw + 1, fy + fh + 1, 0xFF1E293B);
         extractor.fill(fx, fy, fx + fw, fy + fh, 0xFF0B1220);
         int fluidH = this.menu.getWaterScaled(fh);
@@ -95,13 +95,13 @@ public class SupercriticalHeatExchangerScreen extends AbstractContainerScreen<Su
             statusText = "CAPACITOR CHEIO";
             statusColor = 0xFF00E5FF;
         }
-        extractor.text(this.font, Component.literal(statusText), x + 8, y + 22, statusColor, false);
+        extractor.text(this.font, Component.literal(statusText), x + 8, y + 21, statusColor, false);
 
-        String genText = String.format("GERAÇÃO: +%s J/t", NumberFormat.compact(this.menu.getCurrentGenRate()));
-        extractor.text(this.font, Component.literal(genText), x + 88, y + 22, 0xFFF59E0B, false);
+        String genText = String.format("+%s J/t", NumberFormat.compact(this.menu.getCurrentGenRate()));
+        extractor.text(this.font, Component.literal(genText), x + 116, y + 36, 0xFFF59E0B, false);
 
         String presText = String.format("VAPOR: %d%%", this.menu.getSteamPressure());
-        extractor.text(this.font, Component.literal(presText), x + 88, y + 54, 0xFFEF4444, false);
+        extractor.text(this.font, Component.literal(presText), x + 116, y + 48, 0xFFEF4444, false);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -113,7 +113,7 @@ public class SupercriticalHeatExchangerScreen extends AbstractContainerScreen<Su
             extractor.setTooltipForNextFrame(this.font, Component.literal(energyTip), mouseX, mouseY);
         }
 
-        if (mouseX >= x + 66 && mouseX <= x + 80 && mouseY >= y + 22 && mouseY <= y + 70) {
+        if (mouseX >= x + 40 && mouseX <= x + 54 && mouseY >= y + 32 && mouseY <= y + 68) {
             String fluidTip = String.format("Água Potável: %d / 8000 mB", this.menu.getWaterAmount());
             extractor.setTooltipForNextFrame(this.font, Component.literal(fluidTip), mouseX, mouseY);
         }

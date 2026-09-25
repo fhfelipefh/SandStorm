@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 
 import com.fhfelipefh.sandstorm.content.block.LithoPlasmaExtractorBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.gui.LithoPlasmaExtractorMenu;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
@@ -92,6 +93,20 @@ public class LithoPlasmaExtractorBlockEntity extends BlockEntity implements Worl
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide()) {
             return;
+        }
+
+        ItemStack batteryStack = this.items.get(SLOT_BATTERY);
+        int fuelValue = BaseMachineBlockEntity.getFuelEnergy(batteryStack);
+        if (fuelValue > 0 && this.storedEnergy + fuelValue <= MAX_ENERGY) {
+            this.storedEnergy += fuelValue;
+            batteryStack.shrink(1);
+            setChanged();
+        }
+
+        long wptCharge = WirelessSolarReceiverManager.getWptChargeAt(level, pos);
+        if (wptCharge > 0 && this.storedEnergy < MAX_ENERGY) {
+            int toAdd = (int) Math.min(500, wptCharge * 10);
+            this.storedEnergy = Math.min(MAX_ENERGY, this.storedEnergy + Math.max(1, toAdd));
         }
 
         boolean canProcess = hasInputMaterials() && this.storedEnergy >= ENERGY_COST_PER_TICK && hasOutputRoom();
@@ -189,6 +204,15 @@ public class LithoPlasmaExtractorBlockEntity extends BlockEntity implements Worl
         setChanged();
     }
 
+    public int getProgress() {
+        return this.progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+        setChanged();
+    }
+
     public int getPlasmaConcentration() {
         return this.plasmaConcentration;
     }
@@ -266,12 +290,15 @@ public class LithoPlasmaExtractorBlockEntity extends BlockEntity implements Worl
         if (slot == SLOT_CANISTER_IN) {
             return stack.is(SandStormItems.BIO_COOLANT_CANISTER) || stack.is(SandStormItems.EMPTY_CARTRIDGE);
         }
-        return slot == SLOT_BATTERY;
+        if (slot == SLOT_BATTERY) {
+            return BaseMachineBlockEntity.getFuelEnergy(stack) > 0;
+        }
+        return false;
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
-        return slot >= SLOT_LITHIUM_OUT;
+        return slot >= SLOT_LITHIUM_OUT || slot == SLOT_BATTERY;
     }
 
     @Override

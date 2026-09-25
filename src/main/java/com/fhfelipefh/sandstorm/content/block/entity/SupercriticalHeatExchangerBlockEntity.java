@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.SupercriticalHeatExchangerBlock;
+import com.fhfelipefh.sandstorm.content.block.SupercriticalHeatExchangerManager;
 import com.fhfelipefh.sandstorm.content.gui.SupercriticalHeatExchangerMenu;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import java.util.Collections;
@@ -185,6 +186,14 @@ public class SupercriticalHeatExchangerBlockEntity extends BlockEntity implement
 
         handleWaterBucket();
 
+        ItemStack batteryStack = this.items.get(SLOT_BATTERY);
+        int fuelValue = BaseMachineBlockEntity.getFuelEnergy(batteryStack);
+        if (fuelValue > 0 && this.storedEnergy + fuelValue <= MAX_ENERGY) {
+            this.storedEnergy += fuelValue;
+            batteryStack.shrink(1);
+            setChanged();
+        }
+
         boolean operating = this.waterAmount > 0 && this.storedEnergy < MAX_ENERGY;
         if (operating) {
             int rate = calculateGenerationRate();
@@ -192,6 +201,7 @@ public class SupercriticalHeatExchangerBlockEntity extends BlockEntity implement
             this.storedEnergy = Math.min(MAX_ENERGY, this.storedEnergy + rate);
             this.waterAmount = Math.max(0, this.waterAmount - 5);
             this.steamPressure = Math.min(100, (this.currentGenRate * 100) / LITHIUM_GEN_RATE);
+            SupercriticalHeatExchangerManager.registerExchanger(level.dimension(), pos, this.currentGenRate);
 
             if (level instanceof ServerLevel serverLevel && serverLevel.getRandom().nextFloat() < 0.25f) {
                 serverLevel.sendParticles(ParticleTypes.CLOUD, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 2, 0.1, 0.2, 0.1, 0.05);
@@ -204,6 +214,7 @@ public class SupercriticalHeatExchangerBlockEntity extends BlockEntity implement
         } else {
             this.currentGenRate = 0;
             this.steamPressure = Math.max(0, this.steamPressure - 2);
+            SupercriticalHeatExchangerManager.registerExchanger(level.dimension(), pos, 0);
         }
 
         boolean active = operating;
@@ -353,7 +364,18 @@ public class SupercriticalHeatExchangerBlockEntity extends BlockEntity implement
         if (slot == SLOT_THERMAL_CORE) {
             return stack.is(SandStormItems.THERMAL_RADIATOR_FIN) || stack.is(SandStormItems.SUPERHEATED_LITHIUM_CAPSULE);
         }
-        return slot == SLOT_BATTERY;
+        if (slot == SLOT_BATTERY) {
+            return BaseMachineBlockEntity.getFuelEnergy(stack) > 0;
+        }
+        return false;
+    }
+
+    @Override
+    public void setRemoved() {
+        if (this.level != null && !this.level.isClientSide()) {
+            SupercriticalHeatExchangerManager.unregisterExchanger(this.level.dimension(), getBlockPos());
+        }
+        super.setRemoved();
     }
 
     @Override

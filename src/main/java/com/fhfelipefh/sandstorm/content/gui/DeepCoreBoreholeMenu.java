@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.gui;
 
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreBoreholeBlockEntity;
+import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -11,6 +12,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class DeepCoreBoreholeMenu extends AbstractContainerMenu {
     public static final int CONTAINER_SLOTS_COUNT = 12;
@@ -34,14 +36,36 @@ public class DeepCoreBoreholeMenu extends AbstractContainerMenu {
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, DeepCoreBoreholeBlockEntity.SLOT_DRILL_BIT, 26, 20));
-        this.addSlot(new Slot(container, DeepCoreBoreholeBlockEntity.SLOT_COOLANT_IN, 26, 56));
-        this.addSlot(new Slot(container, DeepCoreBoreholeBlockEntity.SLOT_COOLANT_OUT, 50, 56));
+        container.startOpen(playerInventory.player);
+
+        this.addSlot(new Slot(container, DeepCoreBoreholeBlockEntity.SLOT_DRILL_BIT, 12, 48) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.is(SandStormItems.GEOTHERMAL_CORE_DRILL_BIT);
+            }
+        });
+        this.addSlot(new Slot(container, DeepCoreBoreholeBlockEntity.SLOT_COOLANT_IN, 34, 48) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.is(Items.WATER_BUCKET);
+            }
+        });
+        this.addSlot(new Slot(container, DeepCoreBoreholeBlockEntity.SLOT_COOLANT_OUT, 52, 48) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+        });
 
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 3; ++col) {
                 int index = DeepCoreBoreholeBlockEntity.OUTPUT_START + col + row * 3;
-                this.addSlot(new Slot(container, index, 98 + col * 18, 20 + row * 18));
+                this.addSlot(new Slot(container, index, 98 + col * 18, 20 + row * 18) {
+                    @Override
+                    public boolean mayPlace(ItemStack stack) {
+                        return false;
+                    }
+                });
             }
         }
 
@@ -142,7 +166,19 @@ public class DeepCoreBoreholeMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (!this.moveItemStackTo(stackInSlot, 0, containerSlots, false)) {
+                if (stackInSlot.is(SandStormItems.GEOTHERMAL_CORE_DRILL_BIT)) {
+                    if (!this.moveItemStackTo(stackInSlot, DeepCoreBoreholeBlockEntity.SLOT_DRILL_BIT, DeepCoreBoreholeBlockEntity.SLOT_DRILL_BIT + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (stackInSlot.is(Items.WATER_BUCKET)) {
+                    if (!this.moveItemStackTo(stackInSlot, DeepCoreBoreholeBlockEntity.SLOT_COOLANT_IN, DeepCoreBoreholeBlockEntity.SLOT_COOLANT_IN + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index < containerSlots + 27) {
+                    if (!this.moveItemStackTo(stackInSlot, containerSlots + 27, totalSlots, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (!this.moveItemStackTo(stackInSlot, containerSlots, containerSlots + 27, false)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -152,8 +188,20 @@ public class DeepCoreBoreholeMenu extends AbstractContainerMenu {
             } else {
                 slot.setChanged();
             }
+
+            if (stackInSlot.getCount() == itemStack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, stackInSlot);
         }
         return itemStack;
+    }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+        this.container.stopOpen(player);
     }
 
     public DeepCoreBoreholeBlockEntity getBlockEntity() {

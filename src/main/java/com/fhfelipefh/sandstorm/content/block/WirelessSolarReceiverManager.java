@@ -59,7 +59,8 @@ public class WirelessSolarReceiverManager {
     public static long getPrimaryWptChargeAt(Level level, BlockPos pos) {
         long thermalCharge = ThermalGeneratorManager.getWptChargeAt(level, pos);
         long accumulatorCharge = SolidStateAccumulatorManager.getWptChargeAt(level, pos);
-        long maxCharge = Math.max(thermalCharge, accumulatorCharge);
+        long exchangerCharge = SupercriticalHeatExchangerManager.getWptChargeAt(level, pos);
+        long maxCharge = Math.max(thermalCharge, Math.max(accumulatorCharge, exchangerCharge));
         Map<BlockPos, Integer> map = RECEIVER_MAP.get(level.dimension());
         if (map == null || map.isEmpty()) {
             return maxCharge;

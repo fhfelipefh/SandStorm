@@ -60,8 +60,8 @@ public class LithoPlasmaExtractorScreen extends AbstractContainerScreen<LithoPla
             extractor.fill(gx, gy, gx + energyW, gy + gh, 0xFF00E5FF);
         }
 
-        int px = x + 72;
-        int py = y + 36;
+        int px = x + 68;
+        int py = y + 38;
         int pw = 36;
         int ph = 6;
         extractor.fill(px - 1, py - 1, px + pw + 1, py + ph + 1, 0xFF1E293B);
@@ -92,13 +92,13 @@ public class LithoPlasmaExtractorScreen extends AbstractContainerScreen<LithoPla
             statusText = "SEM ENERGIA";
             statusColor = 0xFFEF4444;
         } else {
-            statusText = "INSIRA SAIS E CÂNISTER";
+            statusText = "AGUARDANDO SAIS";
             statusColor = 0xFF94A3B8;
         }
-        extractor.text(this.font, Component.literal(statusText), x + 8, y + 22, statusColor, false);
+        extractor.text(this.font, Component.literal(statusText), x + 8, y + 21, statusColor, false);
 
         String plasmaText = String.format("PLASMA: %d%%", this.menu.getPlasmaConcentration());
-        extractor.text(this.font, Component.literal(plasmaText), x + 72, y + 46, 0xFFA855F7, false);
+        extractor.text(this.font, Component.literal(plasmaText), x + 70, y + 48, 0xFFA855F7, false);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {

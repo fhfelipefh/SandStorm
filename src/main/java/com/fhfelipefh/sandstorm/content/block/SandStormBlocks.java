@@ -679,6 +679,7 @@ public class SandStormBlocks {
     public static void initialize() {
         WirelessSolarReceiverManager.initialize();
         ThermalGeneratorManager.initialize();
+        SupercriticalHeatExchangerManager.initialize();
         registerTransferApi();
     }
 

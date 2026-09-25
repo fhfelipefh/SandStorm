@@ -1,6 +1,8 @@
 package com.fhfelipefh.sandstorm.content.gui;
 
+import com.fhfelipefh.sandstorm.content.block.entity.BaseMachineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SupercriticalHeatExchangerBlockEntity;
+import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -11,6 +13,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class SupercriticalHeatExchangerMenu extends AbstractContainerMenu {
     public static final int CONTAINER_SLOTS_COUNT = 4;
@@ -34,10 +37,32 @@ public class SupercriticalHeatExchangerMenu extends AbstractContainerMenu {
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_WATER_IN, 44, 22));
-        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_WATER_OUT, 44, 52));
-        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_THERMAL_CORE, 88, 35));
-        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_BATTERY, 132, 35));
+        container.startOpen(playerInventory.player);
+
+        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_WATER_IN, 18, 32) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.is(Items.WATER_BUCKET);
+            }
+        });
+        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_WATER_OUT, 18, 52) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+        });
+        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_THERMAL_CORE, 68, 42) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.is(SandStormItems.THERMAL_RADIATOR_FIN) || stack.is(SandStormItems.SUPERHEATED_LITHIUM_CAPSULE);
+            }
+        });
+        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_BATTERY, 92, 42) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return BaseMachineBlockEntity.getFuelEnergy(stack) > 0;
+            }
+        });
 
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
@@ -112,7 +137,23 @@ public class SupercriticalHeatExchangerMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (!this.moveItemStackTo(stackInSlot, 0, containerSlots, false)) {
+                if (stackInSlot.is(Items.WATER_BUCKET)) {
+                    if (!this.moveItemStackTo(stackInSlot, SupercriticalHeatExchangerBlockEntity.SLOT_WATER_IN, SupercriticalHeatExchangerBlockEntity.SLOT_WATER_IN + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (stackInSlot.is(SandStormItems.THERMAL_RADIATOR_FIN) || stackInSlot.is(SandStormItems.SUPERHEATED_LITHIUM_CAPSULE)) {
+                    if (!this.moveItemStackTo(stackInSlot, SupercriticalHeatExchangerBlockEntity.SLOT_THERMAL_CORE, SupercriticalHeatExchangerBlockEntity.SLOT_THERMAL_CORE + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (BaseMachineBlockEntity.getFuelEnergy(stackInSlot) > 0) {
+                    if (!this.moveItemStackTo(stackInSlot, SupercriticalHeatExchangerBlockEntity.SLOT_BATTERY, SupercriticalHeatExchangerBlockEntity.SLOT_BATTERY + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index < containerSlots + 27) {
+                    if (!this.moveItemStackTo(stackInSlot, containerSlots + 27, totalSlots, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (!this.moveItemStackTo(stackInSlot, containerSlots, containerSlots + 27, false)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -122,8 +163,20 @@ public class SupercriticalHeatExchangerMenu extends AbstractContainerMenu {
             } else {
                 slot.setChanged();
             }
+
+            if (stackInSlot.getCount() == itemStack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, stackInSlot);
         }
         return itemStack;
+    }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+        this.container.stopOpen(player);
     }
 
     public SupercriticalHeatExchangerBlockEntity getBlockEntity() {

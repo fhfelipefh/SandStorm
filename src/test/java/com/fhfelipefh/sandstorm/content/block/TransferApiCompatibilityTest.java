@@ -1,9 +1,12 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreBoreholeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.LithoPlasmaExtractorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SupercriticalHeatExchangerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ThermalGeneratorBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -62,6 +65,21 @@ class TransferApiCompatibilityTest {
         Storage<ItemVariant> drillStorage = ContainerStorage.of(drill, Direction.UP);
         assertNotNull(drillStorage);
         assertTrue(drillStorage.supportsInsertion());
+
+        DeepCoreBoreholeBlockEntity borehole = new DeepCoreBoreholeBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<ItemVariant> boreholeStorage = ContainerStorage.of(borehole, Direction.UP);
+        assertNotNull(boreholeStorage);
+        assertTrue(boreholeStorage.supportsInsertion());
+
+        LithoPlasmaExtractorBlockEntity extractor = new LithoPlasmaExtractorBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<ItemVariant> extractorStorage = ContainerStorage.of(extractor, Direction.UP);
+        assertNotNull(extractorStorage);
+        assertTrue(extractorStorage.supportsInsertion());
+
+        SupercriticalHeatExchangerBlockEntity exchanger = new SupercriticalHeatExchangerBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<ItemVariant> exchangerStorage = ContainerStorage.of(exchanger, Direction.UP);
+        assertNotNull(exchangerStorage);
+        assertTrue(exchangerStorage.supportsInsertion());
     }
 
     @Test
@@ -168,5 +186,74 @@ class TransferApiCompatibilityTest {
             tx.commit();
         }
         assertEquals(1000, filter.getWaterOutput());
+    }
+
+    @Test
+    void shouldExposeFluidStorageForPhase31Machines() {
+        DeepCoreBoreholeBlockEntity borehole = new DeepCoreBoreholeBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<FluidVariant> boreholeStorage = borehole.getFluidStorage(Direction.UP);
+        assertNotNull(boreholeStorage);
+        assertTrue(boreholeStorage.supportsInsertion());
+        assertTrue(boreholeStorage.supportsExtraction());
+
+        SupercriticalHeatExchangerBlockEntity exchanger = new SupercriticalHeatExchangerBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<FluidVariant> exchangerStorage = exchanger.getFluidStorage(Direction.UP);
+        assertNotNull(exchangerStorage);
+        assertTrue(exchangerStorage.supportsInsertion());
+        assertFalse(exchangerStorage.supportsExtraction());
+    }
+
+    @Test
+    void shouldInsertWaterIntoPhase31MachinesWithTransactions() {
+        DeepCoreBoreholeBlockEntity borehole = new DeepCoreBoreholeBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<FluidVariant> boreholeStorage = borehole.getFluidStorage(Direction.UP);
+        assertNotNull(boreholeStorage);
+
+        FluidVariant waterVariant = new FluidVariantImpl(Fluids.WATER, DataComponentPatch.EMPTY);
+        FluidVariant lavaVariant = new FluidVariantImpl(Fluids.LAVA, DataComponentPatch.EMPTY);
+
+        try (Transaction tx = Transaction.openOuter()) {
+            long inserted = boreholeStorage.insert(waterVariant, FluidConstants.BUCKET, tx);
+            assertEquals(FluidConstants.BUCKET, inserted);
+            tx.commit();
+        }
+        assertEquals(1000, borehole.getFluidAmount());
+
+        try (Transaction tx = Transaction.openOuter()) {
+            long inserted = boreholeStorage.insert(waterVariant, FluidConstants.BUCKET, tx);
+            assertEquals(FluidConstants.BUCKET, inserted);
+        }
+        assertEquals(1000, borehole.getFluidAmount());
+
+        long lavaBorehole;
+        try (Transaction tx = Transaction.openOuter()) {
+            lavaBorehole = boreholeStorage.insert(lavaVariant, FluidConstants.BUCKET, tx);
+            tx.commit();
+        }
+        assertEquals(0, lavaBorehole);
+
+        SupercriticalHeatExchangerBlockEntity exchanger = new SupercriticalHeatExchangerBlockEntity(BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState());
+        Storage<FluidVariant> exchangerStorage = exchanger.getFluidStorage(Direction.UP);
+        assertNotNull(exchangerStorage);
+
+        try (Transaction tx = Transaction.openOuter()) {
+            long inserted = exchangerStorage.insert(waterVariant, FluidConstants.BUCKET, tx);
+            assertEquals(FluidConstants.BUCKET, inserted);
+            tx.commit();
+        }
+        assertEquals(1000, exchanger.getWaterAmount());
+
+        try (Transaction tx = Transaction.openOuter()) {
+            long inserted = exchangerStorage.insert(waterVariant, FluidConstants.BUCKET, tx);
+            assertEquals(FluidConstants.BUCKET, inserted);
+        }
+        assertEquals(1000, exchanger.getWaterAmount());
+
+        long lavaExchanger;
+        try (Transaction tx = Transaction.openOuter()) {
+            lavaExchanger = exchangerStorage.insert(lavaVariant, FluidConstants.BUCKET, tx);
+            tx.commit();
+        }
+        assertEquals(0, lavaExchanger);
     }
 }

@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 
 import com.fhfelipefh.sandstorm.content.block.DeepCoreBoreholeBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.gui.DeepCoreBoreholeMenu;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import java.util.Collections;
@@ -211,6 +212,12 @@ public class DeepCoreBoreholeBlockEntity extends BlockEntity implements WorldlyC
 
         handleBucketInput();
 
+        long wptCharge = WirelessSolarReceiverManager.getWptChargeAt(level, pos);
+        if (wptCharge > 0 && this.storedEnergy < MAX_ENERGY) {
+            int toAdd = (int) Math.min(1000, wptCharge * 10);
+            this.storedEnergy = Math.min(MAX_ENERGY, this.storedEnergy + Math.max(1, toAdd));
+        }
+
         boolean canOperate = hasDrillBit() && this.storedEnergy >= ENERGY_COST_PER_TICK && hasOutputSpace();
         if (canOperate) {
             this.storedEnergy -= ENERGY_COST_PER_TICK;
@@ -354,6 +361,15 @@ public class DeepCoreBoreholeBlockEntity extends BlockEntity implements WorldlyC
         setChanged();
     }
 
+    public int getProgress() {
+        return this.progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+        setChanged();
+    }
+
     public int getCurrentDepth() {
         return this.currentDepth;
     }
@@ -448,7 +464,7 @@ public class DeepCoreBoreholeBlockEntity extends BlockEntity implements WorldlyC
         if (slot == SLOT_COOLANT_IN) {
             return stack.is(Items.WATER_BUCKET);
         }
-        return slot >= OUTPUT_START;
+        return false;
     }
 
     @Override

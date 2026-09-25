@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "sandstorm:salinized_sand",
+    "sandstorm:electrified_sand",
+    "sandstorm:xeno_grass_block",
+    "sandstorm:radiotrophic_mycelium"
+  ]
+}

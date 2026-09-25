@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 import com.fhfelipefh.sandstorm.component.WirelessChargerComponent;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.SolidStateAccumulatorManager;
+import com.fhfelipefh.sandstorm.content.block.SupercriticalHeatExchangerManager;
 import com.fhfelipefh.sandstorm.content.block.ThermalGeneratorManager;
 import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.block.WptRelayTowerManager;
@@ -120,8 +121,16 @@ public class GridMonitorConsoleBlockEntity extends BlockEntity implements MenuPr
                 activeThermal++;
             }
         }
+        Map<BlockPos, Integer> exchangerMap = SupercriticalHeatExchangerManager.getExchangers(level.dimension());
+        int activeExchangerRate = 0;
+        for (int genRate : exchangerMap.values()) {
+            if (genRate > 0) {
+                activeThermal++;
+                activeExchangerRate += genRate;
+            }
+        }
         entity.thermalCount = activeThermal;
-        entity.thermalGenRate = (int) (activeThermal * ThermalGeneratorManager.TRANSFER_RATE_PER_TICK);
+        entity.thermalGenRate = (int) (activeThermal * ThermalGeneratorManager.TRANSFER_RATE_PER_TICK) + activeExchangerRate;
 
         entity.relayCount = WptRelayTowerManager.getTowers(level.dimension()).size();
         entity.accumulatorCount = SolidStateAccumulatorManager.getAccumulators(level.dimension()).size();

@@ -608,6 +608,7 @@ public class SandstormDebugCommand {
             giveItem(player, SandStormItems.SUPERHEATED_LITHIUM_CAPSULE, 8);
             giveItem(player, SandStormItems.MANTLE_ALLOY_INGOT, 8);
             giveItem(player, SandStormItems.THERMAL_RADIATOR_FIN, 4);
+            giveItem(player, SandStormItems.BIO_COOLANT_CANISTER, 8);
             giveItem(player, SandStormBlocks.SMART_FLUID_PIPE, 16);
             giveItem(player, SandStormBlocks.WPT_RELAY_TOWER, 2);
             giveItem(player, SandStormBlocks.SOLID_STATE_ACCUMULATOR, 2);
@@ -1143,7 +1144,7 @@ public class SandstormDebugCommand {
                 BlockEntity extractorBe = level.getBlockEntity(extractorPos);
                 if (extractorBe instanceof LithoPlasmaExtractorBlockEntity be) {
                     be.setItem(LithoPlasmaExtractorBlockEntity.SLOT_SALT_IN, new ItemStack(SandStormItems.RAW_LITHIUM_SALTS, 16));
-                    be.setItem(LithoPlasmaExtractorBlockEntity.SLOT_CANISTER_IN, new ItemStack(Items.BUCKET, 4));
+                    be.setItem(LithoPlasmaExtractorBlockEntity.SLOT_CANISTER_IN, new ItemStack(SandStormItems.BIO_COOLANT_CANISTER, 4));
                 }
 
                 BlockPos exchangerPos = center.offset(-2, 1, 0);
