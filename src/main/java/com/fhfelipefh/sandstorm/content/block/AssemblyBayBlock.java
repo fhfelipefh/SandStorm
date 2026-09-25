@@ -92,6 +92,63 @@ public class AssemblyBayBlock extends Block {
             return InteractionResult.SUCCESS;
         }
 
+        if (stack.is(SandStormItems.MEGAZORD_FLIGHT_MODULE) && energyStorage.hasEnergy(35000L)) {
+            if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
+                stack.shrink(1);
+                energyStorage.extractEnergy(35000L);
+
+                MegazordEntity megazord = new MegazordEntity(SandStormEntities.MEGAZORD, serverLevel);
+                megazord.setPos(pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5);
+                megazord.setFlightModule(true);
+                serverLevel.addFreshEntity(megazord);
+
+                if (player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.bay_assembled_megazord_flight"), true);
+                }
+                level.playSound(null, pos, SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 0.35f, 1.0f);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        if (stack.is(SandStormItems.MEGAZORD_SUBMERSIBLE_HULL) && energyStorage.hasEnergy(35000L)) {
+            if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
+                stack.shrink(1);
+                energyStorage.extractEnergy(35000L);
+
+                MegazordEntity megazord = new MegazordEntity(SandStormEntities.MEGAZORD, serverLevel);
+                megazord.setPos(pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5);
+                megazord.setSubmersibleModule(true);
+                serverLevel.addFreshEntity(megazord);
+
+                if (player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.bay_assembled_megazord_sub"), true);
+                }
+                level.playSound(null, pos, SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 0.35f, 1.0f);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        if (stack.is(SandStormItems.MEGAZORD_TACTICAL_OVERDRIVE) && energyStorage.hasEnergy(50000L)) {
+            if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
+                stack.shrink(1);
+                energyStorage.extractEnergy(50000L);
+
+                MegazordEntity megazord = new MegazordEntity(SandStormEntities.MEGAZORD, serverLevel);
+                megazord.setPos(pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5);
+                megazord.setFlightModule(true);
+                megazord.setSubmersibleModule(true);
+                megazord.setOverdriveModule(true);
+                megazord.getEnergyStorage().receiveEnergy(MegazordEntity.OVERDRIVE_BATTERY_CAPACITY);
+                serverLevel.addFreshEntity(megazord);
+
+                if (player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.sendSystemMessage(Component.translatable("telemetry.sandstorm.bay_assembled_megazord_apex"), true);
+                }
+                level.playSound(null, pos, SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 0.35f, 1.0f);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 

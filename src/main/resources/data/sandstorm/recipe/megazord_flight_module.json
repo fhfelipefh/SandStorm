@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "V": "sandstorm:vectored_thruster",
+    "M": "sandstorm:mantle_alloy_ingot",
+    "P": "sandstorm:plasma_focus_crystal",
+    "S": "sandstorm:superconductor_toroid"
+  },
+  "pattern": [
+    "VMV",
+    "SPS",
+    "VMV"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:megazord_flight_module"
+  }
+}

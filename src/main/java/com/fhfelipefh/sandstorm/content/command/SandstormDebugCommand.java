@@ -65,7 +65,7 @@ public class SandstormDebugCommand {
     private static final List<String> PHASES = List.of(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
             "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "all"
+            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "all"
     );
 
     private static final List<String> SPAWNABLES = List.of(
@@ -74,6 +74,9 @@ public class SandstormDebugCommand {
             "cyborg_harvester",
             "excavator_vehicle",
             "megazord",
+            "megazord_flight",
+            "megazord_sub",
+            "megazord_apex",
             "cargo_drone",
             "builder_drone",
             "sandworm",
@@ -615,6 +618,19 @@ public class SandstormDebugCommand {
             giveItem(player, Items.WATER_BUCKET, 4);
         }
 
+        if (isAll || "32".equals(normalized)) {
+            giveItem(player, SandStormItems.MEGAZORD_FLIGHT_MODULE, 1);
+            giveItem(player, SandStormItems.MEGAZORD_SUBMERSIBLE_HULL, 1);
+            giveItem(player, SandStormItems.MEGAZORD_TACTICAL_OVERDRIVE, 1);
+            giveItem(player, SandStormItems.VECTORED_THRUSTER, 4);
+            giveItem(player, SandStormItems.HYDRO_BALLAST_PUMP, 4);
+            giveItem(player, SandStormBlocks.ASSEMBLY_BAY, 1);
+            giveItem(player, SandStormBlocks.ANCIENT_DATA_CORE, 2);
+            giveItem(player, SandStormItems.MANTLE_ALLOY_INGOT, 8);
+            giveItem(player, SandStormItems.SUPERCONDUCTOR_TOROID, 4);
+            giveItem(player, SandStormBlocks.SOLID_STATE_ACCUMULATOR, 2);
+        }
+
         player.containerMenu.broadcastChanges();
         player.inventoryMenu.broadcastChanges();
 
@@ -691,6 +707,41 @@ public class SandstormDebugCommand {
                     mecha.getEnergyStorage().receiveEnergy(100000L);
                     level.addFreshEntity(mecha);
                     source.sendSuccess(() -> Component.literal("§a[SandStorm] Mecha Titânico Megazord instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "megazord_flight" -> {
+                MegazordEntity mecha = SandStormEntities.MEGAZORD.create(level, EntitySpawnReason.COMMAND);
+                if (mecha != null) {
+                    mecha.setPos(pos.x, pos.y, pos.z);
+                    mecha.setFlightModule(true);
+                    mecha.getEnergyStorage().receiveEnergy(100000L);
+                    level.addFreshEntity(mecha);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Megazord Aero Striker (Voador) instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "megazord_sub" -> {
+                MegazordEntity mecha = SandStormEntities.MEGAZORD.create(level, EntitySpawnReason.COMMAND);
+                if (mecha != null) {
+                    mecha.setPos(pos.x, pos.y, pos.z);
+                    mecha.setSubmersibleModule(true);
+                    mecha.getEnergyStorage().receiveEnergy(100000L);
+                    level.addFreshEntity(mecha);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Megazord Subaquático Abissal instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "megazord_apex" -> {
+                MegazordEntity mecha = SandStormEntities.MEGAZORD.create(level, EntitySpawnReason.COMMAND);
+                if (mecha != null) {
+                    mecha.setPos(pos.x, pos.y, pos.z);
+                    mecha.setFlightModule(true);
+                    mecha.setSubmersibleModule(true);
+                    mecha.setOverdriveModule(true);
+                    mecha.getEnergyStorage().receiveEnergy(MegazordEntity.OVERDRIVE_BATTERY_CAPACITY);
+                    level.addFreshEntity(mecha);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Megazord Apex Dominator instanciado com sucesso!"), true);
                     return 1;
                 }
             }
@@ -1284,7 +1335,7 @@ public class SandstormDebugCommand {
     private static int executeList(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
         source.sendSuccess(() -> Component.literal("§6=== SandStorm Debug Suite ==="), false);
-        source.sendSuccess(() -> Component.literal("§b/sandstorm debug phase <1..31|all>§r: Kits de teste de todas as 31 fases"), false);
+        source.sendSuccess(() -> Component.literal("§b/sandstorm debug phase <1..32|all>§r: Kits de teste de todas as 32 fases"), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug spawn|robot <entidade>§r: " + String.join(", ", SPAWNABLES)), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug setup|structure <instalação>§r: " + String.join(", ", FACILITIES)), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug suit refill|drain§r: Controle de energia/temperatura do traje"), false);

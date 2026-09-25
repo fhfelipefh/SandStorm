@@ -70,11 +70,11 @@ class SandstormDebugTest {
     void shouldValidateSupportedPhasesList() {
         List<String> phases = SandstormDebugCommand.getSupportedPhases();
         assertNotNull(phases);
-        for (int i = 1; i <= 31; i++) {
+        for (int i = 1; i <= 32; i++) {
             assertTrue(phases.contains(String.valueOf(i)));
         }
         assertTrue(phases.contains("all"));
-        assertEquals(32, phases.size());
+        assertEquals(33, phases.size());
     }
 
     @Test
@@ -86,11 +86,14 @@ class SandstormDebugTest {
         assertTrue(spawnables.contains("cyborg_harvester"));
         assertTrue(spawnables.contains("excavator_vehicle"));
         assertTrue(spawnables.contains("megazord"));
+        assertTrue(spawnables.contains("megazord_flight"));
+        assertTrue(spawnables.contains("megazord_sub"));
+        assertTrue(spawnables.contains("megazord_apex"));
         assertTrue(spawnables.contains("cargo_drone"));
         assertTrue(spawnables.contains("builder_drone"));
         assertTrue(spawnables.contains("sandworm"));
         assertTrue(spawnables.contains("sandboard"));
-        assertEquals(9, spawnables.size());
+        assertEquals(12, spawnables.size());
     }
 
     @Test

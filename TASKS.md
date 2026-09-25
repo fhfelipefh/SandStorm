@@ -1492,3 +1492,36 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
       - `/sandstorm debug setup geothermal_well`: Complexo geotérmico pronto com perfuratriz carregada, extrator centrifugador, trocador e tubulações inteligentes conectadas à rede WPT.
     - **Validação de Testes**:
       - Suíte dedicada `Fase31GeothermalWellTest` e atualização de `SandstormDebugTest`, elevando o mod para **940 testes automatizados** com 100% de sucesso, conformidade estrita de arquitetura e zero comentários.
+58. `fase32-done`: Implementação completa da **Fase 32: Aprimoramento e Variantes Titânicas de Megazords (Megazord Specialized Upgrade Modules: Aerospace Flight & Deep Submersible Aquatic Operation)**:
+    - **Aprimoramentos Modulares de Mecha (`MegazordEntity` & `MegazordVariant`)**:
+      - Suporte modular a upgrades instaláveis em tempo de execução via interação direta com a mão principal do jogador ou montagem guiada no Pátio de Montagem (`AssemblyBayBlock`).
+      - Variantes sincronizadas em tempo real via `SynchedEntityData` (`DATA_VARIANT`, `DATA_FLIGHT_MODULE`, `DATA_SUBMERSIBLE_MODULE`, `DATA_OVERDRIVE_MODULE`):
+        - `STANDARD`: Bípede titânico de assalto terrestre.
+        - `AERO_STRIKER`: Mecha voador aeroespacial equipado com propulsão a jato e asas de empuxo vetorial.
+        - `ABYSSAL_SUB`: Submersível abissal com selagem hidrostática hiperbárica e bombas de lastro.
+        - `APEX_DOMINATOR`: Chassi anfíbio e aeroespacial com todos os módulos instalados e reator de sobrecarga tática.
+    - **Capacidade de Voo Tridimensional (Megazords Voadores)**:
+      - Ao equipar o Módulo de Voo Aeroespacial (`megazord_flight_module`), a gravidade é anulada em voo sob controle do piloto (`setNoGravity(true)`).
+      - Navegação tridimensional livre seguindo o vetor de visão do jogador (`player.getLookAngle()`), subida vertical com tecla de pulo (`jumping`), flutuação estável (hovering) e ejeção de partículas de plasma e faíscas elétricas.
+      - Consumo balanceado de energia (6 J/tick em aceleração aerodinâmica).
+    - **Capacidade Subaquática Infinita (Megazords Subaquáticos Abissais)**:
+      - Ao equipar o Casco Subaquático Abissal (`megazord_submersible_hull`), o Megazord opera infinitamente debaixo d'água sem qualquer risco de asfixia ou perda de ar para o piloto.
+      - O suprimento de oxigênio do jogador é travado no valor máximo a cada tick (`player.setAirSupply(player.getMaxAirSupply())`) e recebe os efeitos contínuos de `CONDUIT_POWER` e `WATER_BREATHING`.
+      - Flutuabilidade neutra e propulsão hidrostática 3D que permite mergulhar e emergir suavemente em aquíferos, trincheiras oceânicas e reservatórios subterrâneos.
+    - **Módulo de Sobrecarga Tática (`megazord_tactical_overdrive`)**:
+      - Expansão colossal da bateria do Megazord de 100.000 J para **250.000 J** (`OVERDRIVE_BATTERY_CAPACITY`).
+      - Amplificação de velocidade de locomoção em 35% e potencialização do Canhão de Choque Sônico (`triggerSonicShockwave`), elevando o dano de 25.0 para **45.0** e o raio de dispersão de 16.0 para **24.0 blocos** com repulsão vetorial aumentada.
+    - **Pátio de Montagem Avançado (`AssemblyBayBlock`)**:
+      - Montagem direta de Megazords pré-equipados: `megazord_flight_module` monta Aero Striker (35.000 J), `megazord_submersible_hull` monta Submersível Abissal (35.000 J) e `megazord_tactical_overdrive` monta o Apex Dominator completo (50.000 J).
+    - **Itens e Componentes da Fase 32**:
+      - `megazord_flight_module`, `megazord_submersible_hull`, `megazord_tactical_overdrive`, `vectored_thruster`, `hydro_ballast_pump`.
+    - **Cadeia Completa de Assets 1.21.4 & Data-Driven Recipes**:
+      - 5 definições em `assets/sandstorm/items/`, 5 modelos de item e 5 texturas PNG válidas com cabeçalho binário padrão.
+      - 5 receitas data-driven em `data/sandstorm/recipe/` utilizando exclusivamente identificadores válidos dos registros do mod.
+      - Paridade linguística absoluta entre `pt_br.json`, `en_us.json` e `es_es.json`.
+    - **Sistema de Quests & Datapad**:
+      - Quest `megazord_upgrades` adicionada ao Capítulo 4 ("Era dos Mechas e Fortificações").
+    - **Comandos de Debug e Suíte de Testes**:
+      - `/sandstorm debug phase 32`: Kit completo de módulos, propulsores e ligas.
+      - `/sandstorm debug spawn megazord_flight`, `/sandstorm debug spawn megazord_sub`, `/sandstorm debug spawn megazord_apex`.
+      - Suíte dedicada `Fase32MegazordUpgradesTest` e atualização de `SandstormDebugTest`, elevando o projeto para mais de **970 testes automatizados** com 100% de sucesso, integridade física de assets e conformidade arquitetural com zero comentários.

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:solid_state_accumulator",
+    "P": "sandstorm:plasma_focus_crystal",
+    "Q": "sandstorm:quantum_mind_matrix",
+    "S": "sandstorm:superconductor_toroid"
+  },
+  "pattern": [
+    "SPS",
+    "AQA",
+    "SPS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:megazord_tactical_overdrive"
+  }
+}

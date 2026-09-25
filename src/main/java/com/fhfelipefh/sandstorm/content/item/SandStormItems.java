@@ -130,6 +130,11 @@ public class SandStormItems {
     public static final Item SUPERHEATED_LITHIUM_CAPSULE = register("superheated_lithium_capsule", new Item(properties("superheated_lithium_capsule").rarity(Rarity.RARE).stacksTo(16)));
     public static final Item THERMAL_RADIATOR_FIN = register("thermal_radiator_fin", new Item(properties("thermal_radiator_fin").rarity(Rarity.UNCOMMON).stacksTo(64)));
     public static final Item RAW_LITHIUM_SALTS = register("raw_lithium_salts", new Item(properties("raw_lithium_salts").rarity(Rarity.UNCOMMON).stacksTo(64)));
+    public static final Item MEGAZORD_FLIGHT_MODULE = register("megazord_flight_module", new Item(properties("megazord_flight_module").rarity(Rarity.EPIC).stacksTo(1)));
+    public static final Item MEGAZORD_SUBMERSIBLE_HULL = register("megazord_submersible_hull", new Item(properties("megazord_submersible_hull").rarity(Rarity.EPIC).stacksTo(1)));
+    public static final Item MEGAZORD_TACTICAL_OVERDRIVE = register("megazord_tactical_overdrive", new Item(properties("megazord_tactical_overdrive").rarity(Rarity.EPIC).stacksTo(1)));
+    public static final Item VECTORED_THRUSTER = register("vectored_thruster", new Item(properties("vectored_thruster").rarity(Rarity.RARE).stacksTo(16)));
+    public static final Item HYDRO_BALLAST_PUMP = register("hydro_ballast_pump", new Item(properties("hydro_ballast_pump").rarity(Rarity.RARE).stacksTo(16)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -295,6 +300,11 @@ public class SandStormItems {
                         entries.accept(MANTLE_ALLOY_INGOT);
                         entries.accept(SandStormBlocks.SUPERCRITICAL_HEAT_EXCHANGER);
                         entries.accept(THERMAL_RADIATOR_FIN);
+                        entries.accept(MEGAZORD_FLIGHT_MODULE);
+                        entries.accept(MEGAZORD_SUBMERSIBLE_HULL);
+                        entries.accept(MEGAZORD_TACTICAL_OVERDRIVE);
+                        entries.accept(VECTORED_THRUSTER);
+                        entries.accept(HYDRO_BALLAST_PUMP);
                     })
                     .build()
     );
