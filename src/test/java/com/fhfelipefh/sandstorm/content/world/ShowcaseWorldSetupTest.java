@@ -63,10 +63,12 @@ class ShowcaseWorldSetupTest {
         data.putByte("allowCommands", (byte) 1);
 
         CompoundTag diff = data.getCompoundOrEmpty("difficulty_settings");
-        diff.putString("difficulty", "peaceful");
-        diff.putByte("locked", (byte) 1);
+        diff.putString("difficulty", "normal");
+        diff.putByte("locked", (byte) 0);
         diff.putByte("hardcore", (byte) 0);
         data.put("difficulty_settings", diff);
+        data.putByte("Difficulty", (byte) 2);
+        data.putByte("DifficultyLocked", (byte) 0);
 
         CompoundTag spawn = data.getCompoundOrEmpty("spawn");
         spawn.putIntArray("pos", new int[]{0, 162, 0});
