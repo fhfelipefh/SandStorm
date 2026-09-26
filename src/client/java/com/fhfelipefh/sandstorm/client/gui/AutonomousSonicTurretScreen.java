@@ -28,6 +28,9 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
     public record EntityEntry(String id, Component displayName, MobCategory category) {
     }
 
+    private record ControlsLayout(int modeX, int modeW, int stratX, int stratW, int hostilesX, int hostilesW, int clearX, int clearW) {
+    }
+
     private final List<EntityEntry> allEntities = new ArrayList<>();
     private final List<EntityEntry> filteredEntities = new ArrayList<>();
     private final Set<String> selectedTargets = new HashSet<>();
@@ -53,7 +56,7 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
         loadTurretEntityData();
         buildEntityCatalog();
 
-        int searchW = 160;
+        int searchW = Math.max(90, Math.min(130, width / 4));
         int searchX = width - searchW - 20;
         int searchY = 38;
         this.searchBox = new EditBox(this.font, searchX, searchY, searchW, 16, Component.literal("Search"));
@@ -62,6 +65,26 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
         this.addRenderableWidget(this.searchBox);
 
         updateFilteredList("");
+    }
+
+    private ControlsLayout getControlsLayout() {
+        int searchW = Math.max(90, Math.min(130, width / 4));
+        int searchX = width - searchW - 20;
+        int availW = searchX - 6 - 20;
+        int btnSpacing = 4;
+        int usableW = Math.max(100, availW - btnSpacing * 3);
+
+        int modeW = (int) (usableW * 0.36);
+        int stratW = (int) (usableW * 0.36);
+        int hostilesW = (int) (usableW * 0.15);
+        int clearW = usableW - modeW - stratW - hostilesW;
+
+        int modeX = 20;
+        int stratX = modeX + modeW + btnSpacing;
+        int hostilesX = stratX + stratW + btnSpacing;
+        int clearX = hostilesX + hostilesW + btnSpacing;
+
+        return new ControlsLayout(modeX, modeW, stratX, stratW, hostilesX, hostilesW, clearX, clearW);
     }
 
     private void loadTurretEntityData() {
@@ -138,34 +161,35 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
     }
 
     private boolean handleControlsClick(double mx, double my) {
-        int left = 20;
         int top = 38;
+        if (my < top || my > top + 16) {
+            return false;
+        }
 
-        if (mx >= left && mx <= left + 140 && my >= top && my <= top + 16) {
+        ControlsLayout cl = getControlsLayout();
+
+        if (mx >= cl.modeX && mx <= cl.modeX + cl.modeW) {
             filterMode = (filterMode == 0) ? 1 : 0;
             sendConfig();
             playClickSound();
             return true;
         }
 
-        int stratX = left + 148;
-        if (mx >= stratX && mx <= stratX + 150 && my >= top && my <= top + 16) {
+        if (mx >= cl.stratX && mx <= cl.stratX + cl.stratW) {
             targetingStrategy = (targetingStrategy + 1) % 3;
             sendConfig();
             playClickSound();
             return true;
         }
 
-        int quickHostilesX = stratX + 158;
-        if (mx >= quickHostilesX && mx <= quickHostilesX + 110 && my >= top && my <= top + 16) {
+        if (mx >= cl.hostilesX && mx <= cl.hostilesX + cl.hostilesW) {
             selectHostilesOnly();
             sendConfig();
             playClickSound();
             return true;
         }
 
-        int clearX = quickHostilesX + 118;
-        if (mx >= clearX && mx <= clearX + 70 && my >= top && my <= top + 16) {
+        if (mx >= cl.clearX && mx <= cl.clearX + cl.clearW) {
             selectedTargets.clear();
             sendConfig();
             playClickSound();
@@ -186,7 +210,7 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
 
     private boolean handleCardClick(double mx, double my) {
         int listTop = 62;
-        int listBottom = height - 48;
+        int listBottom = height - 44;
         if (my < listTop || my > listBottom) {
             return false;
         }
@@ -267,45 +291,42 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
         extractor.text(font, wptComp, width - energyW - wptW - 32, 14, wptColor, false);
 
         int btnTop = 38;
-        int btnLeft = 20;
+        ControlsLayout cl = getControlsLayout();
 
         int modeColor = (filterMode == 0) ? 0xFF00E5FF : 0xFFFFAB40;
         String modeText = (filterMode == 0) ? "MODO: ALVOS (WHITELIST)" : "MODO: IGNORADOS (BLACKLIST)";
-        extractor.fill(btnLeft, btnTop, btnLeft + 140, btnTop + 16, 0x44000000);
-        extractor.fill(btnLeft, btnTop, btnLeft + 140, btnTop + 1, modeColor);
-        extractor.fill(btnLeft, btnTop + 15, btnLeft + 140, btnTop + 16, modeColor);
-        extractor.fill(btnLeft, btnTop, btnLeft + 1, btnTop + 16, modeColor);
-        extractor.fill(btnLeft + 139, btnTop, btnLeft + 140, btnTop + 16, modeColor);
-        drawScaledCenteredText(extractor, Component.literal(modeText), btnLeft + 70, btnTop + 4, 134, modeColor);
+        extractor.fill(cl.modeX, btnTop, cl.modeX + cl.modeW, btnTop + 16, 0x44000000);
+        extractor.fill(cl.modeX, btnTop, cl.modeX + cl.modeW, btnTop + 1, modeColor);
+        extractor.fill(cl.modeX, btnTop + 15, cl.modeX + cl.modeW, btnTop + 16, modeColor);
+        extractor.fill(cl.modeX, btnTop, cl.modeX + 1, btnTop + 16, modeColor);
+        extractor.fill(cl.modeX + cl.modeW - 1, btnTop, cl.modeX + cl.modeW, btnTop + 16, modeColor);
+        drawScaledCenteredText(extractor, Component.literal(modeText), cl.modeX + cl.modeW / 2f, btnTop + 4, cl.modeW - 6, modeColor);
 
-        int stratX = btnLeft + 148;
         String stratText = switch (targetingStrategy) {
             case 1 -> "FOCO: MENOR VIDA";
             case 2 -> "FOCO: MAIOR AMEAÇA";
             default -> "FOCO: MAIS PRÓXIMO";
         };
-        extractor.fill(stratX, btnTop, stratX + 150, btnTop + 16, 0x44000000);
-        extractor.fill(stratX, btnTop, stratX + 150, btnTop + 1, 0xFF81D4FA);
-        extractor.fill(stratX, btnTop + 15, stratX + 150, btnTop + 16, 0xFF81D4FA);
-        extractor.fill(stratX, btnTop, stratX + 1, btnTop + 16, 0xFF81D4FA);
-        extractor.fill(stratX + 149, btnTop, stratX + 150, btnTop + 16, 0xFF81D4FA);
-        drawScaledCenteredText(extractor, Component.literal(stratText), stratX + 75, btnTop + 4, 144, 0xFF81D4FA);
+        extractor.fill(cl.stratX, btnTop, cl.stratX + cl.stratW, btnTop + 16, 0x44000000);
+        extractor.fill(cl.stratX, btnTop, cl.stratX + cl.stratW, btnTop + 1, 0xFF81D4FA);
+        extractor.fill(cl.stratX, btnTop + 15, cl.stratX + cl.stratW, btnTop + 16, 0xFF81D4FA);
+        extractor.fill(cl.stratX, btnTop, cl.stratX + 1, btnTop + 16, 0xFF81D4FA);
+        extractor.fill(cl.stratX + cl.stratW - 1, btnTop, cl.stratX + cl.stratW, btnTop + 16, 0xFF81D4FA);
+        drawScaledCenteredText(extractor, Component.literal(stratText), cl.stratX + cl.stratW / 2f, btnTop + 4, cl.stratW - 6, 0xFF81D4FA);
 
-        int quickHostilesX = stratX + 158;
-        extractor.fill(quickHostilesX, btnTop, quickHostilesX + 110, btnTop + 16, 0x44000000);
-        extractor.fill(quickHostilesX, btnTop, quickHostilesX + 110, btnTop + 1, 0xFFFF7043);
-        extractor.fill(quickHostilesX, btnTop + 15, quickHostilesX + 110, btnTop + 16, 0xFFFF7043);
-        extractor.fill(quickHostilesX, btnTop, quickHostilesX + 1, btnTop + 16, 0xFFFF7043);
-        extractor.fill(quickHostilesX + 109, btnTop, quickHostilesX + 110, btnTop + 16, 0xFFFF7043);
-        drawScaledCenteredText(extractor, Component.literal("MONSTROS"), quickHostilesX + 55, btnTop + 4, 104, 0xFFFF7043);
+        extractor.fill(cl.hostilesX, btnTop, cl.hostilesX + cl.hostilesW, btnTop + 16, 0x44000000);
+        extractor.fill(cl.hostilesX, btnTop, cl.hostilesX + cl.hostilesW, btnTop + 1, 0xFFFF7043);
+        extractor.fill(cl.hostilesX, btnTop + 15, cl.hostilesX + cl.hostilesW, btnTop + 16, 0xFFFF7043);
+        extractor.fill(cl.hostilesX, btnTop, cl.hostilesX + 1, btnTop + 16, 0xFFFF7043);
+        extractor.fill(cl.hostilesX + cl.hostilesW - 1, btnTop, cl.hostilesX + cl.hostilesW, btnTop + 16, 0xFFFF7043);
+        drawScaledCenteredText(extractor, Component.literal("MONSTROS"), cl.hostilesX + cl.hostilesW / 2f, btnTop + 4, cl.hostilesW - 4, 0xFFFF7043);
 
-        int clearX = quickHostilesX + 118;
-        extractor.fill(clearX, btnTop, clearX + 70, btnTop + 16, 0x44000000);
-        extractor.fill(clearX, btnTop, clearX + 70, btnTop + 1, 0xFFB0BEC5);
-        extractor.fill(clearX, btnTop + 15, clearX + 70, btnTop + 16, 0xFFB0BEC5);
-        extractor.fill(clearX, btnTop, clearX + 1, btnTop + 16, 0xFFB0BEC5);
-        extractor.fill(clearX + 69, btnTop, clearX + 70, btnTop + 16, 0xFFB0BEC5);
-        drawScaledCenteredText(extractor, Component.literal("LIMPAR"), clearX + 35, btnTop + 4, 66, 0xFFB0BEC5);
+        extractor.fill(cl.clearX, btnTop, cl.clearX + cl.clearW, btnTop + 16, 0x44000000);
+        extractor.fill(cl.clearX, btnTop, cl.clearX + cl.clearW, btnTop + 1, 0xFFB0BEC5);
+        extractor.fill(cl.clearX, btnTop + 15, cl.clearX + cl.clearW, btnTop + 16, 0xFFB0BEC5);
+        extractor.fill(cl.clearX, btnTop, cl.clearX + 1, btnTop + 16, 0xFFB0BEC5);
+        extractor.fill(cl.clearX + cl.clearW - 1, btnTop, cl.clearX + cl.clearW, btnTop + 16, 0xFFB0BEC5);
+        drawScaledCenteredText(extractor, Component.literal("LIMPAR"), cl.clearX + cl.clearW / 2f, btnTop + 4, cl.clearW - 4, 0xFFB0BEC5);
 
         renderCardsGrid(extractor, mouseX, mouseY);
         renderFooter(extractor);
@@ -319,10 +340,12 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
 
     private void renderCardsGrid(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         int listTop = 62;
-        int listBottom = height - 48;
+        int listBottom = height - 44;
         int cols = Math.max(1, (width - 40) / 190);
         int colWidth = (width - 40 - (cols - 1) * 8) / cols;
         int cardH = 38;
+
+        extractor.enableScissor(12, listTop, width - 12, listBottom);
 
         for (int i = 0; i < filteredEntities.size(); i++) {
             int col = i % cols;
@@ -382,10 +405,13 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
                 drawScaledCenteredText(extractor, Component.literal("IGNORAR"), badgeX + badgeW / 2f, badgeY + 5, badgeW - 4, 0xFF78909C);
             }
         }
+
+        extractor.disableScissor();
     }
 
     private void renderFooter(GuiGraphicsExtractor extractor) {
-        int barY = height - 32;
+        int barY = height - 36;
+        extractor.fill(12, barY - 4, width - 12, height - 8, 0xFA101824);
         extractor.fill(20, barY, width - 20, barY + 1, 0x5500E5FF);
 
         String stats = "Alvos: " + selectedTargets.size() + " / " + allEntities.size();

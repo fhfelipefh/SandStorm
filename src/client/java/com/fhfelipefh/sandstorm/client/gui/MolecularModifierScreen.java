@@ -17,7 +17,11 @@ public class MolecularModifierScreen extends BaseMachineScreen<MolecularModifier
 
     @Override
     protected boolean isMouseOverProgress(int mouseX, int mouseY, int x, int y) {
-        return mouseX >= x + 104 && mouseX <= x + 128 && mouseY >= y + 33 && mouseY <= y + 43;
+        return mouseX >= x + 102 && mouseX <= x + 136 && mouseY >= y + 33 && mouseY <= y + 53;
+    }
+
+    @Override
+    protected void renderProgressBar(GuiGraphicsExtractor extractor, int x, int y, int width, int height) {
     }
 
     @Override
@@ -30,10 +34,10 @@ public class MolecularModifierScreen extends BaseMachineScreen<MolecularModifier
         int x = this.leftPos;
         int y = this.topPos;
 
-        int cx1 = x + 104;
+        int cx1 = x + 102;
         int cy1 = y + 33;
-        int cx2 = x + 128;
-        int cy2 = y + 43;
+        int cx2 = x + 136;
+        int cy2 = y + 53;
 
         extractor.fill(cx1 - 1, cy1 - 1, cx2 + 1, cy2 + 1, 0xFF00E5FF);
         extractor.fill(cx1, cy1, cx2, cy2, 0xF005080E);
@@ -56,15 +60,16 @@ public class MolecularModifierScreen extends BaseMachineScreen<MolecularModifier
             extractor.fill(beamX - 1, cy1 + 1, beamX + 2, cy2 - 1, 0x88FFFFFF);
         }
 
-        renderCircuitTrace(extractor, x + 42, y + 43, x + 62, y + 25);
-        renderCircuitTrace(extractor, x + 42, y + 43, x + 62, y + 43);
-        renderCircuitTrace(extractor, x + 42, y + 43, x + 62, y + 61);
-        renderCircuitTrace(extractor, x + 78, y + 43, x + 84, y + 43);
-    }
+        int traceColor = processing ? 0xFF00E5FF : 0xFF1C2836;
+        extractor.fill(x + 49, y + 42, x + 53, y + 44, traceColor);
+        extractor.fill(x + 52, y + 24, x + 54, y + 62, traceColor);
+        extractor.fill(x + 54, y + 24, x + 57, y + 26, traceColor);
+        extractor.fill(x + 54, y + 42, x + 57, y + 44, traceColor);
+        extractor.fill(x + 54, y + 60, x + 57, y + 62, traceColor);
 
-    private void renderCircuitTrace(GuiGraphicsExtractor extractor, int x1, int y1, int x2, int y2) {
-        int color = this.menu.isProcessing() ? 0xFF00E5FF : 0xFF1C2836;
-        extractor.fill(Math.min(x1, x2), Math.min(y1, y2), Math.max(x1, x2) + 1, Math.min(y1, y2) + 1, color);
-        extractor.fill(x2, Math.min(y1, y2), x2 + 1, Math.max(y1, y2) + 1, color);
+        extractor.fill(x + 75, y + 42, x + 79, y + 44, traceColor);
+        extractor.fill(x + 97, y + 42, x + 101, y + 44, traceColor);
+        extractor.fill(x + 137, y + 42, x + 143, y + 44, traceColor);
+        extractor.text(this.font, Component.literal("»"), x + 138, y + 38, traceColor, false);
     }
 }

@@ -86,17 +86,20 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
 
             int totalPages = Math.max(1, (recipes.size() + 2) / 3);
             if (totalPages > 1) {
-                int prevX = drawerX + drawerW - 44;
-                int nextX = drawerX + drawerW - 20;
+                String pageStr = (this.recipeCatalogPage + 1) + "/" + totalPages;
+                int pageStrW = this.font.width(pageStr);
+                int pageStrX = drawerX + drawerW - 28 - pageStrW / 2;
+                int prevX = pageStrX - 14;
+                int nextX = pageStrX + pageStrW;
                 int pageBtnY = drawerY + 3;
-                if (mx >= prevX && mx <= prevX + 14 && my >= pageBtnY && my <= pageBtnY + 14) {
+                if (mx >= prevX && mx <= prevX + 12 && my >= pageBtnY && my <= pageBtnY + 14) {
                     this.recipeCatalogPage = Math.max(0, this.recipeCatalogPage - 1);
                     if (this.minecraft != null) {
                         this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
                     }
                     return true;
                 }
-                if (mx >= nextX && mx <= nextX + 14 && my >= pageBtnY && my <= pageBtnY + 14) {
+                if (mx >= nextX && mx <= nextX + 12 && my >= pageBtnY && my <= pageBtnY + 14) {
                     this.recipeCatalogPage = Math.min(totalPages - 1, this.recipeCatalogPage + 1);
                     if (this.minecraft != null) {
                         this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
@@ -235,7 +238,7 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         for (Slot slot : this.menu.slots) {
             int sx = x + slot.x;
             int sy = y + slot.y;
-            boolean isMachineSlot = slot.index < 4;
+            boolean isMachineSlot = slot.index < this.menu.slots.size() - 36;
             int borderColor = isMachineSlot ? 0xFF00E5FF : 0xFF1E293B;
             int bgColor = isMachineSlot ? 0xDD0D131F : 0xAA080C14;
 
@@ -304,14 +307,18 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         extractor.fill(drawerX + 4, drawerY + 4, drawerX + drawerW - 4, drawerY + 16, 0xDD101824);
         extractor.fill(drawerX + 4, drawerY + 16, drawerX + drawerW - 4, drawerY + 17, 0x8800E5FF);
 
-        drawAdaptiveText(extractor, Component.translatable("gui.sandstorm.machine.recipes_title"), drawerX + 8, drawerY + 6, drawerW - 48, 0xFF00E5FF);
+        drawAdaptiveText(extractor, Component.translatable("gui.sandstorm.machine.recipes_title"), drawerX + 8, drawerY + 6, drawerW - 68, 0xFF00E5FF);
 
         int totalPages = Math.max(1, (recipes.size() + 2) / 3);
         if (totalPages > 1) {
-            extractor.text(this.font, Component.literal("<"), drawerX + drawerW - 42, drawerY + 6, 0xFF80D8FF, false);
             String pageStr = (this.recipeCatalogPage + 1) + "/" + totalPages;
-            extractor.text(this.font, Component.literal(pageStr), drawerX + drawerW - 32, drawerY + 6, 0xFF78909C, false);
-            extractor.text(this.font, Component.literal(">"), drawerX + drawerW - 18, drawerY + 6, 0xFF80D8FF, false);
+            int pageStrW = this.font.width(pageStr);
+            int pageStrX = drawerX + drawerW - 28 - pageStrW / 2;
+            int prevArrowX = pageStrX - 10;
+            int nextArrowX = pageStrX + pageStrW + 4;
+            extractor.text(this.font, Component.literal("<"), prevArrowX, drawerY + 6, 0xFF80D8FF, false);
+            extractor.text(this.font, Component.literal(pageStr), pageStrX, drawerY + 6, 0xFF78909C, false);
+            extractor.text(this.font, Component.literal(">"), nextArrowX, drawerY + 6, 0xFF80D8FF, false);
         } else {
             boolean closeHover = mouseX >= drawerX + drawerW - 14 && mouseX <= drawerX + drawerW - 4
                     && mouseY >= drawerY + 4 && mouseY <= drawerY + 16;

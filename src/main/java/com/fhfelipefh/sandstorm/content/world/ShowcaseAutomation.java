@@ -24,6 +24,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -40,6 +41,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
@@ -270,12 +272,12 @@ public class ShowcaseAutomation {
             BlockPos targetPos = pedestalCenter.above();
             level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
             spawnBlockHologram(level, targetPos, targetBlock);
-            placeIdentificationSign(level, pedestalCenter.offset(0, 1, -1), targetBlock);
+            placeIdentificationSign(level, pedestalCenter.offset(0, 0, -2), targetBlock);
         }
     }
 
     private static void placeIdentificationSign(ServerLevel level, BlockPos signPos, Block block) {
-        level.setBlock(signPos, Blocks.OAK_SIGN.defaultBlockState(), 3);
+        level.setBlock(signPos, Blocks.OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, Direction.NORTH), 3);
         if (level.getBlockEntity(signPos) instanceof SignBlockEntity signBe) {
             String name = block.getName().getString();
             String role = getBlockExplanation(block);

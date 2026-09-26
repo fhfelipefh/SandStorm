@@ -36,13 +36,13 @@ public class MolecularModifierMenu extends AbstractContainerMenu implements Mach
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, 0, 26, 35));
-        this.addSlot(new Slot(container, 1, 62, 17));
-        this.addSlot(new Slot(container, 2, 62, 35));
-        this.addSlot(new Slot(container, 3, 62, 53));
-        this.addSlot(new Slot(container, 4, 84, 35));
+        this.addSlot(new Slot(container, 0, 32, 35));
+        this.addSlot(new Slot(container, 1, 58, 17));
+        this.addSlot(new Slot(container, 2, 58, 35));
+        this.addSlot(new Slot(container, 3, 58, 53));
+        this.addSlot(new Slot(container, 4, 80, 35));
         this.addSlot(new Slot(container, 5, 8, 53));
-        this.addSlot(new Slot(container, 6, 134, 35) {
+        this.addSlot(new Slot(container, 6, 144, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
