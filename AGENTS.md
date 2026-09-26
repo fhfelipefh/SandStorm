@@ -61,6 +61,18 @@ Ao criar, modificar ou adicionar qualquer receita em `data/sandstorm/recipe/`:
    - Toda receita data-driven é obrigatoriamente auditada por `JeiCompatibilityTest`, que verifica a presença do arquivo de definição `assets/sandstorm/items/<item>.json` correspondente.
    - Qualquer discrepância entre chaves de receita e registros do mod quebra a build imediatamente.
 
+## 📦 Protocolo de Exibição de Itens e Blocos em GUI/Inventário Criativo
+1. **Inclusão Obrigatória em Abas Criativas (`displayItems`)**:
+   - Todo item registrado em `SandStormItems` e todo bloco registrado em `SandStormBlocks` DEVE ser obrigatoriamente registrado no `displayItems` da aba criativa (`SANDSTORM_TAB`).
+   - Nenhum item ou bloco pode ficar sem exibição no inventário criativo ou na barra de busca do criativo.
+   - Violações quebram `ItemGuiExhibitionArchitectureTest`.
+2. **Modelos de Itens de Trilhos (`_rail`)**:
+   - Modelos de item de trilhos (`assets/sandstorm/models/item/*_rail.json`) devem herdar estritamente de `minecraft:item/generated` com `layer0` apontando para a textura do trilho.
+   - É terminantemente proibido herdar diretamente de modelos de blocos planos (`rail_flat` ou `sandstorm:block/*`), pois estes não possuem rotação ou transformações de GUI para exibição 2D e ficam invisíveis no inventário.
+   - Violações quebram `ItemGuiExhibitionArchitectureTest`.
+3. **Cultura de Prevenção por Testes de Arquitetura**:
+   - Sempre que um comportamento globalmente indesejado for identificado no repositório, é mandatório criar um teste de arquitetura dedicado para impedir regressões futuras permanentemente.
+
 ## 🚀 Validação Obrigatória Antes de Envio Remoto
 Antes de concluir qualquer tarefa de desenvolvimento ou efetuar `git push` ao repositório remoto:
 1. Executar `./gradlew test` e garantir que todos os testes (incluindo testes de arquitetura e compatibilidade JEI) passem com 100% de sucesso.
