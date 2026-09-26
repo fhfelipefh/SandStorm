@@ -79,22 +79,11 @@ public enum MegastructureBlueprint {
 
     private void generateBiosphereDome(List<BlockPlacement> list) {
         int radius = 12;
-        BlockState dirt = Blocks.DIRT.defaultBlockState();
-        BlockState xenoGrass = Blocks.MOSS_BLOCK.defaultBlockState();
         BlockState iron = Blocks.IRON_BLOCK.defaultBlockState();
         BlockState glass = Blocks.TINTED_GLASS.defaultBlockState();
         BlockState lantern = Blocks.SEA_LANTERN.defaultBlockState();
 
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
-                if (x * x + z * z <= radius * radius) {
-                    BlockState floor = (Math.abs(x) <= 3 && Math.abs(z) <= 3) ? xenoGrass : dirt;
-                    list.add(new BlockPlacement(new BlockPos(x, 0, z), floor));
-                }
-            }
-        }
-
-        for (int y = 1; y <= radius; y++) {
+        for (int y = 0; y <= radius; y++) {
             for (int x = -radius; x <= radius; x++) {
                 for (int z = -radius; z <= radius; z++) {
                     double dist = Math.sqrt(x * x + y * y + z * z);
@@ -102,7 +91,7 @@ public enum MegastructureBlueprint {
                         BlockState block;
                         if (y == radius) {
                             block = lantern;
-                        } else if (x % 4 == 0 || z % 4 == 0) {
+                        } else if (y == 0 || x % 4 == 0 || z % 4 == 0) {
                             block = iron;
                         } else {
                             block = glass;
