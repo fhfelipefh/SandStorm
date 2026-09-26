@@ -110,13 +110,13 @@ public class DeepCoreBoreholeScreen extends AbstractContainerScreen<DeepCoreBore
             statusText = "SISTEMA PRONTO";
             statusColor = 0xFF00E5FF;
         }
-        extractor.text(this.font, Component.literal(statusText), x + 12, y + 21, statusColor, false);
+        drawAdaptiveText(extractor, Component.literal(statusText), x + 12, y + 21, CHASSIS_WIDTH - 24, statusColor);
 
         String depthText = String.format("PROF: Y=%d  PRES: %d GPa", this.menu.getCurrentDepth(), this.menu.getPressure());
-        extractor.text(this.font, Component.literal(depthText), x + 12, y + 30, 0xFFF59E0B, false);
+        drawAdaptiveText(extractor, Component.literal(depthText), x + 12, y + 30, CHASSIS_WIDTH - 24, 0xFFF59E0B);
 
         String tempText = String.format("TEMP: %d K", this.menu.getTemperature());
-        extractor.text(this.font, Component.literal(tempText), x + 12, y + 39, 0xFFEF4444, false);
+        drawAdaptiveText(extractor, Component.literal(tempText), x + 12, y + 39, CHASSIS_WIDTH - 24, 0xFFEF4444);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {

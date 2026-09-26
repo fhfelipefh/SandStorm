@@ -112,6 +112,11 @@ public class SandStormMenus {
             new MenuType<>(PlasmaShieldMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<KineticShieldMenu> KINETIC_SHIELD_MENU = register(
+            "kinetic_shield_generator",
+            new MenuType<>(KineticShieldMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     public static final MenuType<KineticRailgunMenu> KINETIC_RAILGUN_MENU = register(
             "kinetic_railgun",
             new MenuType<>(KineticRailgunMenu::new, FeatureFlags.VANILLA_SET)

@@ -127,7 +127,7 @@ public class SolidStateAccumulatorScreen extends AbstractContainerScreen<SolidSt
             statusText = "STATUS: BUFFER ESTAVEL";
             statusColor = 0xFF78909C;
         }
-        extractor.text(this.font, Component.literal(statusText), x + 14, y + 56, statusColor, false);
+        drawAdaptiveText(extractor, Component.literal(statusText), x + 14, y + 56, this.imageWidth - 28, statusColor);
     }
 
     private void renderSlotFrame(GuiGraphicsExtractor extractor, int sx, int sy) {

@@ -124,26 +124,29 @@ public class PlasmaShieldScreen extends AbstractContainerScreen<PlasmaShieldMenu
         boolean active = this.menu.isShieldActive();
         String statusText = active ? "SHIELD: ONLINE" : "SHIELD: OFFLINE";
         int statusColor = active ? 0xFF00E5FF : 0xFF64748B;
-        extractor.text(this.font, Component.literal(statusText), x + 16, y + 26, statusColor, false);
+        drawAdaptiveText(extractor, Component.literal(statusText), x + 16, y + 26, 60, statusColor);
 
         int radius = this.menu.getShieldRadius();
         String radText = String.format("RADIUS: %dm", radius);
-        extractor.text(this.font, Component.literal(radText), x + 16, y + 35, 0xFF94A3B8, false);
+        drawAdaptiveText(extractor, Component.literal(radText), x + 16, y + 35, 60, 0xFF94A3B8);
 
         String threatText = String.format("THREATS: %d", this.menu.getThreatCount());
-        extractor.text(this.font, Component.literal(threatText), x + 82, y + 35, 0xFFFFB300, false);
+        drawAdaptiveText(extractor, Component.literal(threatText), x + 82, y + 35, 60, 0xFFFFB300);
 
         int b0x = x + 16;
         int b0y = y + 44;
         boolean b0Hover = mouseX >= b0x && mouseX <= b0x + 60 && mouseY >= b0y && mouseY <= b0y + 14;
-        extractor.fill(b0x, b0y, b0x + 60, b0y + 14, b0Hover ? 0xFF0284C7 : 0xFF0F172A);
-        extractor.text(this.font, Component.literal(active ? "DESATIVAR" : "ATIVAR"), b0x + 6, b0y + 3, 0xFFFFFFFF, false);
+        String b0Text = active ? "DESATIVAR" : "ATIVAR";
+        int tw0 = this.font.width(b0Text);
+        extractor.text(this.font, Component.literal(b0Text), b0x + (60 - tw0) / 2, b0y + 3, 0xFFFFFFFF, false);
 
         int b1x = x + 82;
         int b1y = y + 44;
         boolean b1Hover = mouseX >= b1x && mouseX <= b1x + 60 && mouseY >= b1y && mouseY <= b1y + 14;
         extractor.fill(b1x, b1y, b1x + 60, b1y + 14, b1Hover ? 0xFF0284C7 : 0xFF0F172A);
-        extractor.text(this.font, Component.literal("RAIO +/-"), b1x + 12, b1y + 3, 0xFFFFFFFF, false);
+        String b1Text = "RAIO +/-";
+        int tw1 = this.font.width(b1Text);
+        extractor.text(this.font, Component.literal(b1Text), b1x + (60 - tw1) / 2, b1y + 3, 0xFFFFFFFF, false);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {

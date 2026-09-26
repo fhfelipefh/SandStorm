@@ -170,7 +170,8 @@ public class OrbitalGroundStationScreen extends AbstractContainerScreen<OrbitalG
         extractor.fill(bx, by, bx + 1, by + bh, borderColor);
         extractor.fill(bx + bw - 1, by, bx + bw, by + bh, borderColor);
 
-        extractor.text(this.font, Component.literal("DISPARO"), bx + 14, by + 3, textColor, false);
+        int tw = this.font.width("DISPARO");
+        extractor.text(this.font, Component.literal("DISPARO"), bx + (bw - tw) / 2, by + 3, textColor, false);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {

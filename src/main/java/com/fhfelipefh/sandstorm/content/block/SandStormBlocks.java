@@ -182,7 +182,8 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(3.5f)
                     .lightLevel(state -> state.getValue(HydroponicChamberBlock.LIT) ? 12 : 0)
-                    .sound(SoundType.METAL)));
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
     public static final XenoGrassBlock XENO_GRASS_BLOCK = register("xeno_grass_block",
             new XenoGrassBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("xeno_grass_block")))

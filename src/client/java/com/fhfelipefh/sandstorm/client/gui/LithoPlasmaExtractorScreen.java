@@ -110,10 +110,10 @@ public class LithoPlasmaExtractorScreen extends AbstractContainerScreen<LithoPla
             statusText = "AGUARDANDO SAIS";
             statusColor = 0xFF94A3B8;
         }
-        extractor.text(this.font, Component.literal(statusText), x + 8, y + 21, statusColor, false);
+        drawAdaptiveText(extractor, Component.literal(statusText), x + 8, y + 21, 95, statusColor);
 
         String plasmaText = String.format("PLASMA: %d%%", this.menu.getPlasmaConcentration());
-        extractor.text(this.font, Component.literal(plasmaText), x + 70, y + 48, 0xFFA855F7, false);
+        drawAdaptiveText(extractor, Component.literal(plasmaText), x + 106, y + 21, 60, 0xFFA855F7);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -123,6 +123,32 @@ public class LithoPlasmaExtractorScreen extends AbstractContainerScreen<LithoPla
         if (mouseX >= x + 8 && mouseX <= x + 168 && mouseY >= y + 14 && mouseY <= y + 20) {
             String energyTip = String.format("Energia: %s / %s J", NumberFormat.compact(this.menu.getStoredEnergy()), NumberFormat.compact(this.menu.getMaxEnergy()));
             extractor.setTooltipForNextFrame(this.font, Component.literal(energyTip), mouseX, mouseY);
+        } else if (mouseX >= x + 68 && mouseX <= x + 104 && mouseY >= y + 37 && mouseY <= y + 45) {
+            extractor.setTooltipForNextFrame(this.font, Component.literal("Centrífuga de Separação de Plasma"), mouseX, mouseY);
+        } else if (mouseX >= x + 23 && mouseX <= x + 41 && mouseY >= y + 31 && mouseY <= y + 49) {
+            if (!this.menu.slots.get(0).hasItem()) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal("Sal de Lítio Bruto"), mouseX, mouseY);
+            }
+        } else if (mouseX >= x + 43 && mouseX <= x + 61 && mouseY >= y + 31 && mouseY <= y + 49) {
+            if (!this.menu.slots.get(1).hasItem()) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal("Recipiente de Coleta"), mouseX, mouseY);
+            }
+        } else if (mouseX >= x + 33 && mouseX <= x + 51 && mouseY >= y + 51 && mouseY <= y + 69) {
+            if (!this.menu.slots.get(2).hasItem()) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal("Célula de Energia / Bateria"), mouseX, mouseY);
+            }
+        } else if (mouseX >= x + 111 && mouseX <= x + 129 && mouseY >= y + 31 && mouseY <= y + 49) {
+            if (!this.menu.slots.get(3).hasItem()) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal("Lítio Purificado"), mouseX, mouseY);
+            }
+        } else if (mouseX >= x + 131 && mouseX <= x + 149 && mouseY >= y + 31 && mouseY <= y + 49) {
+            if (!this.menu.slots.get(4).hasItem()) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal("Liga de Lítio-Plasma"), mouseX, mouseY);
+            }
+        } else if (mouseX >= x + 121 && mouseX <= x + 139 && mouseY >= y + 51 && mouseY <= y + 69) {
+            if (!this.menu.slots.get(5).hasItem()) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal("Subprodutos Minerais"), mouseX, mouseY);
+            }
         }
     }
 }

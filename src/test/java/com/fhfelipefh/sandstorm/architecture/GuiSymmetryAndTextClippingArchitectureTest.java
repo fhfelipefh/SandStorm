@@ -547,4 +547,165 @@ class GuiSymmetryAndTextClippingArchitectureTest {
         assertTrue(violations.isEmpty(),
                 "Found specialized widgets overlapping menu slots:\n" + String.join("\n", violations));
     }
+
+    private static int estimateMinecraftFontWidth(String text) {
+        int width = 0;
+        for (char c : text.toCharArray()) {
+            if (c == 'i' || c == ':' || c == '.' || c == '|' || c == '!' || c == '\'') {
+                width += 2;
+            } else if (c == 'l' || c == 'I' || c == '[' || c == ']' || c == ' ') {
+                width += 4;
+            } else if (c == 'f' || c == 'k' || c == '\"' || c == '*') {
+                width += 5;
+            } else if (c == '@' || c == '~' || c == '%' || c == 'M' || c == 'W') {
+                width += 8;
+            } else {
+                width += 6;
+            }
+        }
+        return width;
+    }
+
+    private static final Pattern LITERAL_TEXT_AT_OFFSET = Pattern.compile(
+            "extractor\\.text\\s*\\([^,]+,\\s*Component\\.literal\\s*\\(\\s*\"([^\"]+)\"\\s*\\)\\s*,\\s*(?:x\\s*\\+\\s*|this\\.leftPos\\s*\\+\\s*)?(\\d+)\\s*,");
+
+    private static final Pattern HIGH_OFFSET_RAW_TEXT = Pattern.compile(
+            "extractor\\.text\\s*\\([^,]+,\\s*(?:Component\\.literal\\s*\\([^)]+\\)|[A-Za-z0-9_]+)\\s*,\\s*(?:x\\s*\\+\\s*|this\\.leftPos\\s*\\+\\s*)(\\d+)\\s*,");
+
+    private static final Pattern ADAPTIVE_TEXT_AT_OFFSET = Pattern.compile(
+            "drawAdaptiveText\\s*\\([^,]+,\\s*[^,]+,\\s*(?:x\\s*\\+\\s*|this\\.leftPos\\s*\\+\\s*)?(\\d+)\\s*,\\s*[^,]+,\\s*(\\d+)\\s*,");
+
+    @Test
+    void noTextRenderingMayOverflowOrClipChassisBounds() throws IOException {
+        List<String> violations = new ArrayList<>();
+        if (!Files.exists(GUI_DIR)) {
+            return;
+        }
+
+        try (Stream<Path> paths = Files.list(GUI_DIR)) {
+            paths.filter(p -> p.toString().endsWith("Screen.java")).forEach(path -> {
+                String fileName = path.getFileName().toString();
+                if (fileName.equals("SurvivalDatapadScreen.java") || fileName.equals("AutonomousSonicTurretScreen.java") || fileName.equals("DatapadClientHelper.java")) {
+                    return;
+                }
+
+                try {
+                    List<String> lines = Files.readAllLines(path);
+                    String content = String.join("\n", lines);
+
+                    int chassisWidth = 176;
+                    Matcher widthMatcher = Pattern.compile("CHASSIS_WIDTH\\s*=\\s*(\\d+)").matcher(content);
+                    if (widthMatcher.find()) {
+                        chassisWidth = Integer.parseInt(widthMatcher.group(1));
+                    }
+
+                    for (int i = 0; i < lines.size(); i++) {
+                        String line = lines.get(i);
+
+                        Matcher literalMatcher = LITERAL_TEXT_AT_OFFSET.matcher(line);
+                        if (literalMatcher.find()) {
+                            String literal = literalMatcher.group(1);
+                            int xOffset = Integer.parseInt(literalMatcher.group(2));
+                            int textW = estimateMinecraftFontWidth(literal);
+                            if (xOffset + textW > chassisWidth - 8) {
+                                violations.add(fileName + ":" + (i + 1) + " -> Raw literal text \"" + literal +
+                                        "\" rendered at x=" + xOffset + " has estimated width " + textW +
+                                        "px, reaching x=" + (xOffset + textW) + " which overflows chassis width (" +
+                                        chassisWidth + " - 8 = " + (chassisWidth - 8) + ")!");
+                            }
+                        } else {
+                            Matcher highOffsetMatcher = HIGH_OFFSET_RAW_TEXT.matcher(line);
+                            if (highOffsetMatcher.find()) {
+                                int xOffset = Integer.parseInt(highOffsetMatcher.group(1));
+                                if (xOffset >= 110 && !line.contains("(bw - ") && !line.contains("(w - ") && !line.contains("drawAdaptiveText")) {
+                                    violations.add(fileName + ":" + (i + 1) + " -> Dynamic text rendered at high x=" + xOffset +
+                                            " must use drawAdaptiveText() or centering to prevent clipping past chassis border!");
+                                }
+                            }
+                        }
+
+                        Matcher adaptiveMatcher = ADAPTIVE_TEXT_AT_OFFSET.matcher(line);
+                        if (adaptiveMatcher.find()) {
+                            int xOffset = Integer.parseInt(adaptiveMatcher.group(1));
+                            int maxW = Integer.parseInt(adaptiveMatcher.group(2));
+                            if (xOffset + maxW > chassisWidth - 6) {
+                                violations.add(fileName + ":" + (i + 1) + " -> drawAdaptiveText at x=" + xOffset +
+                                        " with maxPixelWidth=" + maxW + " reaches x=" + (xOffset + maxW) +
+                                        " which exceeds chassis width " + chassisWidth + "!");
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
+        assertTrue(violations.isEmpty(),
+                "Found text rendering overflowing or clipping screen chassis bounds:\n" + String.join("\n", violations));
+    }
+
+    @Test
+    void screenTitlesMustHaveMinimumPaddingFromRightChassisBorder() throws IOException {
+        List<String> violations = new ArrayList<>();
+        if (!Files.exists(GUI_DIR)) {
+            return;
+        }
+
+        Pattern titleAdaptivePattern = Pattern.compile(
+                "drawAdaptiveText\\s*\\(\\s*extractor\\s*,\\s*this\\.title\\s*,\\s*(?:this\\.titleLabelX|(\\d+))\\s*,\\s*[^,]+,\\s*([^,]+)\\s*,");
+
+        try (Stream<Path> paths = Files.list(GUI_DIR)) {
+            paths.filter(p -> p.toString().endsWith("Screen.java")).forEach(path -> {
+                String fileName = path.getFileName().toString();
+                if (fileName.equals("SurvivalDatapadScreen.java") || fileName.equals("AutonomousSonicTurretScreen.java") || fileName.equals("DatapadClientHelper.java")) {
+                    return;
+                }
+
+                try {
+                    String content = Files.readString(path);
+                    if (!content.contains("extends AbstractContainerScreen<") && !content.contains("extends BaseMachineScreen<")) {
+                        return;
+                    }
+
+                    int chassisWidth = 176;
+                    Matcher widthMatcher = Pattern.compile("CHASSIS_WIDTH\\s*=\\s*(\\d+)").matcher(content);
+                    if (widthMatcher.find()) {
+                        chassisWidth = Integer.parseInt(widthMatcher.group(1));
+                    }
+
+                    int titleX = 8;
+                    Matcher titleXMatcher = Pattern.compile("this\\.titleLabelX\\s*=\\s*(\\d+)").matcher(content);
+                    if (titleXMatcher.find()) {
+                        titleX = Integer.parseInt(titleXMatcher.group(1));
+                    }
+
+                    Matcher titleMatcher = titleAdaptivePattern.matcher(content);
+                    if (titleMatcher.find()) {
+                        String maxWExpr = titleMatcher.group(2).trim();
+                        int maxW = -1;
+                        if (maxWExpr.matches("\\d+")) {
+                            maxW = Integer.parseInt(maxWExpr);
+                        } else if (maxWExpr.contains("CHASSIS_WIDTH - ")) {
+                            int sub = Integer.parseInt(maxWExpr.replace("CHASSIS_WIDTH - ", "").trim());
+                            maxW = chassisWidth - sub;
+                        } else if (maxWExpr.contains("imageWidth - ")) {
+                            int sub = Integer.parseInt(maxWExpr.replaceAll(".*imageWidth\\s*-\\s*(?:this\\.titleLabelX\\s*-\\s*)?(\\d+).*", "$1").trim());
+                            maxW = chassisWidth - titleX - sub;
+                        }
+
+                        if (maxW > 0 && titleX + maxW > chassisWidth - 6) {
+                            violations.add(fileName + " -> Title rendering reaches x=" + (titleX + maxW) +
+                                    " exceeding right chassis bound " + (chassisWidth - 6) + " (lacks right padding)!");
+                        }
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
+        assertTrue(violations.isEmpty(),
+                "Found screens where title rendering lacks right chassis padding:\n" + String.join("\n", violations));
+    }
 }

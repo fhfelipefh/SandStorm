@@ -217,7 +217,7 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
         int sy = y + 84;
         boolean threat = this.menu.isSeismicThreat();
         String sMsg = threat ? "§c⚠ ALERTA SÍSMICO" : "§a● SÍSMICO: SEGURO";
-        extractor.text(this.font, Component.literal(sMsg), sx, sy, threat ? 0xFFFF1744 : 0xFF76FF03, false);
+        drawAdaptiveText(extractor, Component.literal(sMsg), sx, sy, CHASSIS_WIDTH - 68 - 8, threat ? 0xFFFF1744 : 0xFF76FF03);
     }
 
     private void renderSpireTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {

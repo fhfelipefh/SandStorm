@@ -110,13 +110,13 @@ public class SupercriticalHeatExchangerScreen extends AbstractContainerScreen<Su
             statusText = "CAPACITOR CHEIO";
             statusColor = 0xFF00E5FF;
         }
-        extractor.text(this.font, Component.literal(statusText), x + 8, y + 21, statusColor, false);
+        drawAdaptiveText(extractor, Component.literal(statusText), x + 8, y + 21, 100, statusColor);
 
         String genText = String.format("+%s J/t", NumberFormat.compact(this.menu.getCurrentGenRate()));
-        extractor.text(this.font, Component.literal(genText), x + 116, y + 36, 0xFFF59E0B, false);
+        drawAdaptiveText(extractor, Component.literal(genText), x + 116, y + 36, 50, 0xFFF59E0B);
 
         String presText = String.format("VAPOR: %d%%", this.menu.getSteamPressure());
-        extractor.text(this.font, Component.literal(presText), x + 116, y + 48, 0xFFEF4444, false);
+        drawAdaptiveText(extractor, Component.literal(presText), x + 116, y + 48, 50, 0xFFEF4444);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {

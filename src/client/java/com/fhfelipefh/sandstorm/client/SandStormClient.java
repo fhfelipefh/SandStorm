@@ -16,6 +16,7 @@ import com.fhfelipefh.sandstorm.client.gui.GridMonitorConsoleScreen;
 import com.fhfelipefh.sandstorm.client.gui.HoloTacticalSpireScreen;
 import com.fhfelipefh.sandstorm.client.gui.HydroponicChamberScreen;
 import com.fhfelipefh.sandstorm.client.gui.KineticRailgunScreen;
+import com.fhfelipefh.sandstorm.client.gui.KineticShieldScreen;
 import com.fhfelipefh.sandstorm.client.gui.LithoPlasmaExtractorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MegastructureConstructorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MolecularModifierScreen;
@@ -96,6 +97,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.HOLO_TACTICAL_SPIRE_MENU, HoloTacticalSpireScreen::new);
         MenuScreens.register(SandStormMenus.QUANTUM_SLEEPER_MENU, QuantumSleeperScreen::new);
         MenuScreens.register(SandStormMenus.PLASMA_SHIELD_MENU, PlasmaShieldScreen::new);
+        MenuScreens.register(SandStormMenus.KINETIC_SHIELD_MENU, KineticShieldScreen::new);
         MenuScreens.register(SandStormMenus.KINETIC_RAILGUN_MENU, KineticRailgunScreen::new);
         MenuScreens.register(SandStormMenus.DEEP_CORE_BOREHOLE_MENU, DeepCoreBoreholeScreen::new);
         MenuScreens.register(SandStormMenus.LITHO_PLASMA_EXTRACTOR_MENU, LithoPlasmaExtractorScreen::new);

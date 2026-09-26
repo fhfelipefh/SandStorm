@@ -20,7 +20,7 @@ public class KineticRailgunScreen extends AbstractContainerScreen<KineticRailgun
     @Override
     protected void init() {
         super.init();
-        this.titleLabelX = 8;
+        this.titleLabelX = 10;
         this.titleLabelY = 5;
         this.inventoryLabelX = 8;
         this.inventoryLabelY = 72;
@@ -36,7 +36,7 @@ public class KineticRailgunScreen extends AbstractContainerScreen<KineticRailgun
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
-        drawAdaptiveText(extractor, this.title, this.titleLabelX, this.titleLabelY, CHASSIS_WIDTH - 16, 0xFF00E5FF);
+        drawAdaptiveText(extractor, this.title, this.titleLabelX, this.titleLabelY, CHASSIS_WIDTH - 20, 0xFF00E5FF);
         drawAdaptiveText(extractor, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, CHASSIS_WIDTH - 16, 0xFF78909C);
     }
 
@@ -64,6 +64,11 @@ public class KineticRailgunScreen extends AbstractContainerScreen<KineticRailgun
         extractor.fill(x, y + CHASSIS_HEIGHT - 1, x + CHASSIS_WIDTH, y + CHASSIS_HEIGHT, 0xFF00E5FF);
         extractor.fill(x, y + 1, x + 1, y + CHASSIS_HEIGHT, 0xFF00E5FF);
         extractor.fill(x + CHASSIS_WIDTH - 1, y, x + CHASSIS_WIDTH, y + CHASSIS_HEIGHT, 0xFF00E5FF);
+
+        extractor.fill(x + 1, y + 1, x + 4, y + 4, 0xFF00E5FF);
+        extractor.fill(x + CHASSIS_WIDTH - 4, y + 1, x + CHASSIS_WIDTH - 1, y + 4, 0xFF00E5FF);
+        extractor.fill(x + 1, y + CHASSIS_HEIGHT - 4, x + 4, y + CHASSIS_HEIGHT - 1, 0xFF00E5FF);
+        extractor.fill(x + CHASSIS_WIDTH - 4, y + CHASSIS_HEIGHT - 4, x + CHASSIS_WIDTH - 1, y + CHASSIS_HEIGHT - 1, 0xFF00E5FF);
 
         int gx = x + 8;
         int gy = y + 16;
@@ -101,12 +106,13 @@ public class KineticRailgunScreen extends AbstractContainerScreen<KineticRailgun
             statusText = "STATUS: PRONTO";
             statusColor = 0xFF10B981;
         }
-        extractor.text(this.font, Component.literal(statusText), x + 8, y + 26, statusColor, false);
+        drawAdaptiveText(extractor, Component.literal(statusText), x + 8, y + 26, 50, statusColor);
 
         String shotsText = String.format("DISPAROS: %d", this.menu.getTotalShotsFired());
-        extractor.text(this.font, Component.literal(shotsText), x + 8, y + 38, 0xFF94A3B8, false);
+        drawAdaptiveText(extractor, Component.literal(shotsText), x + 8, y + 38, 50, 0xFF94A3B8);
 
-        extractor.text(this.font, Component.literal("MUNIÇÃO 3x3"), x + 118, y + 26, 0xFF64748B, false);
+        drawAdaptiveText(extractor, Component.literal("MUNIÇÃO"), x + 118, y + 26, 48, 0xFF64748B);
+        drawAdaptiveText(extractor, Component.literal("GRADE 3x3"), x + 118, y + 38, 48, 0xFF475569);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {

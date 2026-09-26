@@ -91,20 +91,20 @@ public class GridMonitorConsoleScreen extends AbstractContainerScreen<GridMonito
 
         int solarGen = this.menu.getSolarGenRate();
         int solarUnits = this.menu.getSolarCount();
-        extractor.text(this.font, Component.literal("Solar: " + solarGen + " J/t (" + solarUnits + ")"), panelX + 4, panelY + 4, 0xFFFFD54F, false);
+        drawAdaptiveText(extractor, Component.literal("Solar: " + solarGen + " J/t (" + solarUnits + ")"), panelX + 4, panelY + 4, panelW - 8, 0xFFFFD54F);
 
         int thermalGen = this.menu.getThermalGenRate();
         int thermalUnits = this.menu.getThermalCount();
-        extractor.text(this.font, Component.literal("Thermal: " + thermalGen + " J/t (" + thermalUnits + ")"), panelX + 4, panelY + 14, 0xFFFF7043, false);
+        drawAdaptiveText(extractor, Component.literal("Thermal: " + thermalGen + " J/t (" + thermalUnits + ")"), panelX + 4, panelY + 14, panelW - 8, 0xFFFF7043);
 
         int relays = this.menu.getRelayCount();
         int localWpt = this.menu.getLocalCoverageCharge();
-        extractor.text(this.font, Component.literal("Torres WPT: " + relays + " | Local: " + localWpt + " J/t"), panelX + 4, panelY + 24, 0xFF4DD0E1, false);
+        drawAdaptiveText(extractor, Component.literal("Torres WPT: " + relays + " | Local: " + localWpt + " J/t"), panelX + 4, panelY + 24, panelW - 8, 0xFF4DD0E1);
 
         int stored = this.menu.getTotalStoredEnergy();
         int cap = this.menu.getTotalCapacity();
         int accumulators = this.menu.getAccumulatorCount();
-        extractor.text(this.font, Component.literal("Baterias: " + NumberFormat.compact(stored) + " / " + NumberFormat.compact(cap) + " J (" + accumulators + ")"), panelX + 4, panelY + 34, 0xFF81C784, false);
+        drawAdaptiveText(extractor, Component.literal("Baterias: " + NumberFormat.compact(stored) + " / " + NumberFormat.compact(cap) + " J (" + accumulators + ")"), panelX + 4, panelY + 34, panelW - 8, 0xFF81C784);
 
         int barX = panelX + 4;
         int barY = panelY + 45;
