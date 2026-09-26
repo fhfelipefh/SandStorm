@@ -147,7 +147,7 @@ public class ShowcaseAutomation {
 
         level.playSound(null, center, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS, 1.0f, 1.0f);
         player.sendSystemMessage(Component.literal("§6=================================================="));
-        player.sendSystemMessage(Component.literal("§e§l SandStorm - Vitrine Void do Mod (Fases 1 a 32)"));
+        player.sendSystemMessage(Component.literal("§e§l SandStorm - Vitrine Void do Mod (Fases 1 a 33)"));
         player.sendSystemMessage(Component.literal("§b Todos os blocos, maquinarios, itens e entidades"));
         player.sendSystemMessage(Component.literal("§b posicionados em tabuleiro de xadrez no vacuo absoluto!"));
         player.sendSystemMessage(Component.literal("§a Androides operacionais e mineracao em loop ativo!"));
@@ -193,6 +193,13 @@ public class ShowcaseAutomation {
             chest.setItem(8, new ItemStack(SandStormItems.MEGAZORD_TACTICAL_OVERDRIVE));
             chest.setItem(9, new ItemStack(SandStormItems.ANOMALY_RADAR));
             chest.setItem(10, new ItemStack(SandStormItems.SANDBOARD));
+            chest.setItem(11, new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE));
+            chest.setItem(12, new ItemStack(SandStormItems.ORBITAL_SOLAR_REFLECTOR_SATELLITE));
+            chest.setItem(13, new ItemStack(SandStormItems.SAR_GEOLOGICAL_SATELLITE));
+            chest.setItem(14, new ItemStack(SandStormItems.ORBITAL_KINETIC_LANCE_SATELLITE));
+            chest.setItem(15, new ItemStack(SandStormBlocks.ORBITAL_MASS_DRIVER));
+            chest.setItem(16, new ItemStack(SandStormBlocks.ORBITAL_GROUND_STATION));
+            chest.setItem(17, new ItemStack(SandStormBlocks.SPECTRAL_SURVEY_TELESCOPE));
         }
 
         AABB clearBox = new AABB(center).inflate(8.0);
