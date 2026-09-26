@@ -1,8 +1,10 @@
 package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgEntity;
+import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgRoutine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -13,8 +15,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -22,7 +26,9 @@ public class CyberneticCommandUplinkItem extends Item {
     public enum UplinkMode {
         MINING("mining", 0x00E5FF),
         BUILDING("building", 0xFF9100),
-        HARVESTING("harvesting", 0x00E676);
+        HARVESTING("harvesting", 0x00E676),
+        PATROL("patrol", 0xD500F9),
+        MOVE_ORDER("move_order", 0xFFFFFF);
 
         private final String id;
         private final int color;
@@ -45,7 +51,25 @@ public class CyberneticCommandUplinkItem extends Item {
         }
 
         public UplinkMode cycle() {
-            return next();
+            return switch (this) {
+                case MINING -> BUILDING;
+                case BUILDING -> HARVESTING;
+                case HARVESTING -> MINING;
+                case PATROL -> MOVE_ORDER;
+                case MOVE_ORDER -> PATROL;
+            };
+        }
+
+        public Component getDisplayName() {
+            return Component.translatable("uplink.mode.sandstorm." + id);
+        }
+
+        public static UplinkMode fromOrdinal(int ordinal) {
+            UplinkMode[] values = values();
+            if (ordinal < 0 || ordinal >= values.length) {
+                return MINING;
+            }
+            return values[ordinal];
         }
     }
 
@@ -110,6 +134,20 @@ public class CyberneticCommandUplinkItem extends Item {
         }
 
         if (!level.isClientSide()) {
+            UplinkMode mode = getPlayerMode(player);
+            if (mode == UplinkMode.MOVE_ORDER) {
+                ServerLevel serverLevel = (ServerLevel) level;
+                AABB range = new AABB(player.blockPosition()).inflate(64.0);
+                List<CyborgEntity> ownedCyborgs = serverLevel.getEntitiesOfClass(CyborgEntity.class, range, c -> player.getUUID().equals(c.getOwnerUUID()));
+                for (CyborgEntity c : ownedCyborgs) {
+                    c.getNavigation().moveTo(clickedPos.getX() + 0.5, clickedPos.getY() + 1.0, clickedPos.getZ() + 0.5, 1.2);
+                    c.setVisorState(1);
+                }
+                level.playSound(null, clickedPos, SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.PLAYERS, 1.0f, 1.6f);
+                player.sendSystemMessage(Component.translatable("telemetry.sandstorm.uplink_move_command", ownedCyborgs.size(), clickedPos.getX(), clickedPos.getY(), clickedPos.getZ()));
+                return InteractionResult.SUCCESS;
+            }
+
             UUID uuid = player.getUUID();
             BlockPos cornerA = PLAYER_CORNER_A.get(uuid);
 
@@ -144,6 +182,9 @@ public class CyberneticCommandUplinkItem extends Item {
 
                 if (cornerA != null && cornerB != null) {
                     cyborg.setDemarcatedZone(cornerA, cornerB);
+                    if (getPlayerMode(player) == UplinkMode.PATROL) {
+                        cyborg.setRoutine(CyborgRoutine.PATROL_PERIMETER);
+                    }
                     player.sendSystemMessage(Component.translatable("telemetry.sandstorm.uplink_zone_assigned"));
                     level.playSound(null, cyborg.blockPosition(), SoundEvents.NOTE_BLOCK_PLING.value(), SoundSource.PLAYERS, 1.0f, 1.5f);
                 }

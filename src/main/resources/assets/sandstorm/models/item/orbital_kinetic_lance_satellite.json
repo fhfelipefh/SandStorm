@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "sandstorm:item/orbital_kinetic_lance_satellite"
+  }
+}

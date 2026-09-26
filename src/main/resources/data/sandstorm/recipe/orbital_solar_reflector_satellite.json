@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GGG",
+    "ACA",
+    " T "
+  ],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "A": "sandstorm:silicon_wafer",
+    "C": "sandstorm:circuit_board",
+    "T": "sandstorm:superconductor_toroid"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:orbital_solar_reflector_satellite"
+  }
+}

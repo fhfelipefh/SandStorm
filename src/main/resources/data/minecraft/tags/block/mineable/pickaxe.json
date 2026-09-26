@@ -54,6 +54,9 @@
     "sandstorm:acoustic_defense_pylon",
     "sandstorm:deep_core_borehole",
     "sandstorm:litho_plasma_extractor",
-    "sandstorm:supercritical_heat_exchanger"
+    "sandstorm:supercritical_heat_exchanger",
+    "sandstorm:orbital_mass_driver",
+    "sandstorm:orbital_ground_station",
+    "sandstorm:spectral_survey_telescope"
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "ACA",
+    " P "
+  ],
+  "key": {
+    "S": "sandstorm:silicon_wafer",
+    "A": "sandstorm:electric_component",
+    "C": "sandstorm:circuit_board",
+    "P": "sandstorm:orbital_recon_probe"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:weather_recon_satellite"
+  }
+}

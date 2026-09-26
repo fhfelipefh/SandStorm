@@ -4,7 +4,12 @@ public enum CyborgRoutine {
     AUTONOMOUS_WORK,
     FOLLOW_OPERATOR,
     PATROL_PERIMETER,
-    RETURN_TO_DOCK;
+    RETURN_TO_DOCK,
+    STANDBY;
+
+    public String getId() {
+        return name().toLowerCase();
+    }
 
     public static CyborgRoutine fromOrdinal(int ordinal) {
         CyborgRoutine[] values = values();

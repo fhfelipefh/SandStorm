@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -57,27 +56,19 @@ public class CyborgHarvesterEntity extends CyborgEntity {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        Level lvl = this.level();
-        if (lvl.isClientSide()) {
+    protected void tickAutonomousWork(ServerLevel level) {
+        if (isInventoryFull()) {
+            tickReturnToDock(level);
             return;
         }
 
-        if (getRoutine() == CyborgRoutine.AUTONOMOUS_WORK && hasZone() && getEnergy() > 0) {
-            tickAutonomousHarvesting((ServerLevel) lvl);
-        } else if (getRoutine() == CyborgRoutine.FOLLOW_OPERATOR) {
-            tickFollowOperator();
-        }
-    }
+        BlockPos center = hasZone() ? getZoneMin() : this.blockPosition();
+        AABB scanBox = hasZone()
+                ? new AABB(getZoneMin().getX(), getZoneMin().getY(), getZoneMin().getZ(),
+                getZoneMax().getX() + 1.0, getZoneMax().getY() + 1.0, getZoneMax().getZ() + 1.0).inflate(2.0)
+                : this.getBoundingBox().inflate(8.0);
 
-    private void tickAutonomousHarvesting(ServerLevel level) {
-        BlockPos min = getZoneMin();
-        BlockPos max = getZoneMax();
-        AABB zoneBox = new AABB(min.getX(), min.getY(), min.getZ(), max.getX() + 1.0, max.getY() + 1.0, max.getZ() + 1.0);
-        List<ItemEntity> nearbyItems = level.getEntitiesOfClass(ItemEntity.class, zoneBox.inflate(2.0));
-
+        List<ItemEntity> nearbyItems = level.getEntitiesOfClass(ItemEntity.class, scanBox);
         if (!nearbyItems.isEmpty()) {
             ItemEntity closestItem = nearbyItems.getFirst();
             double distSq = this.distanceToSqr(closestItem);
@@ -134,6 +125,15 @@ public class CyborgHarvesterEntity extends CyborgEntity {
         }
     }
 
+    private boolean isInventoryFull() {
+        for (int i = 0; i < this.inventory.getContainerSize(); i++) {
+            if (this.inventory.getItem(i).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean isMatureCrop(ServerLevel level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         if (state.getBlock() instanceof CropBlock cropBlock) {
@@ -152,16 +152,33 @@ public class CyborgHarvesterEntity extends CyborgEntity {
     }
 
     private BlockPos findMatureCrop(ServerLevel level) {
-        BlockPos min = getZoneMin();
-        BlockPos max = getZoneMax();
+        if (hasZone()) {
+            BlockPos min = getZoneMin();
+            BlockPos max = getZoneMax();
 
-        for (int y = min.getY(); y <= max.getY(); ++y) {
-            for (int x = min.getX(); x <= max.getX(); ++x) {
-                for (int z = min.getZ(); z <= max.getZ(); ++z) {
-                    BlockPos pos = new BlockPos(x, y, z);
-                    if (isMatureCrop(level, pos)) {
-                        if (CyborgSwarmManager.getInstance().tryReserveBlock(this.getUUID(), pos)) {
-                            return pos;
+            for (int y = min.getY(); y <= max.getY(); ++y) {
+                for (int x = min.getX(); x <= max.getX(); ++x) {
+                    for (int z = min.getZ(); z <= max.getZ(); ++z) {
+                        BlockPos pos = new BlockPos(x, y, z);
+                        if (isMatureCrop(level, pos)) {
+                            if (CyborgSwarmManager.getInstance().tryReserveBlock(this.getUUID(), pos)) {
+                                return pos;
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            BlockPos center = this.blockPosition();
+            int rad = 8;
+            for (int dy = -1; dy <= 2; dy++) {
+                for (int dx = -rad; dx <= rad; dx++) {
+                    for (int dz = -rad; dz <= rad; dz++) {
+                        BlockPos pos = center.offset(dx, dy, dz);
+                        if (isMatureCrop(level, pos)) {
+                            if (CyborgSwarmManager.getInstance().tryReserveBlock(this.getUUID(), pos)) {
+                                return pos;
+                            }
                         }
                     }
                 }
@@ -174,18 +191,6 @@ public class CyborgHarvesterEntity extends CyborgEntity {
     public void remove(RemovalReason reason) {
         super.remove(reason);
         CyborgSwarmManager.getInstance().releaseAll(this.getUUID());
-    }
-
-    private void tickFollowOperator() {
-        Player owner = null;
-        if (getOwnerUUID() != null) {
-            owner = this.level().getPlayerByUUID(getOwnerUUID());
-        }
-
-        if (owner != null && this.distanceToSqr(owner) > 16.0) {
-            this.getNavigation().moveTo(owner, 1.1);
-            setVisorState(1);
-        }
     }
 
     @Override

@@ -5,8 +5,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CyborgBuilderEntity extends CyborgEntity {
@@ -53,22 +54,11 @@ public class CyborgBuilderEntity extends CyborgEntity {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        Level lvl = this.level();
-        if (lvl.isClientSide()) {
-            return;
+    protected void tickAutonomousWork(ServerLevel level) {
+        if (!hasBuildingMaterialsInInventory()) {
+            pullMaterialsFromNearbyContainer(level);
         }
 
-        if (getRoutine() == CyborgRoutine.AUTONOMOUS_WORK && hasZone() && getEnergy() > 0) {
-            tickAutonomousBuilding((ServerLevel) lvl);
-        } else if (getRoutine() == CyborgRoutine.FOLLOW_OPERATOR) {
-            tickFollowOperator();
-        }
-    }
-
-    private void tickAutonomousBuilding(ServerLevel level) {
         if (currentTargetPos == null || !level.isEmptyBlock(currentTargetPos)) {
             if (currentTargetPos != null) {
                 CyborgSwarmManager.getInstance().releaseBlock(this.getUUID(), currentTargetPos);
@@ -107,6 +97,44 @@ public class CyborgBuilderEntity extends CyborgEntity {
         }
     }
 
+    private boolean hasBuildingMaterialsInInventory() {
+        for (int i = 0; i < this.inventory.getContainerSize(); i++) {
+            ItemStack stack = this.inventory.getItem(i);
+            if (!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void pullMaterialsFromNearbyContainer(ServerLevel level) {
+        BlockPos center = this.blockPosition();
+        int searchRad = 8;
+        for (int dx = -searchRad; dx <= searchRad; dx++) {
+            for (int dy = -2; dy <= 2; dy++) {
+                for (int dz = -searchRad; dz <= searchRad; dz++) {
+                    BlockPos p = center.offset(dx, dy, dz);
+                    BlockEntity be = level.getBlockEntity(p);
+                    if (be instanceof Container container) {
+                        for (int slot = 0; slot < container.getContainerSize(); slot++) {
+                            ItemStack item = container.getItem(slot);
+                            if (!item.isEmpty() && item.getItem() instanceof BlockItem) {
+                                ItemStack taken = item.split(Math.min(16, item.getCount()));
+                                ItemStack remainder = this.inventory.addItem(taken);
+                                if (!remainder.isEmpty()) {
+                                    item.grow(remainder.getCount());
+                                }
+                                container.setChanged();
+                                this.inventory.setChanged();
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void placeBlockFromInventory(ServerLevel level, BlockPos pos) {
         for (int i = 0; i < this.inventory.getContainerSize(); ++i) {
             ItemStack stack = this.inventory.getItem(i);
@@ -121,6 +149,10 @@ public class CyborgBuilderEntity extends CyborgEntity {
     }
 
     private BlockPos findNextPositionToBuild(ServerLevel level) {
+        if (!hasZone()) {
+            return null;
+        }
+
         BlockPos min = getZoneMin();
         BlockPos max = getZoneMax();
 
@@ -143,18 +175,6 @@ public class CyborgBuilderEntity extends CyborgEntity {
     public void remove(RemovalReason reason) {
         super.remove(reason);
         CyborgSwarmManager.getInstance().releaseAll(this.getUUID());
-    }
-
-    private void tickFollowOperator() {
-        Player owner = null;
-        if (getOwnerUUID() != null) {
-            owner = this.level().getPlayerByUUID(getOwnerUUID());
-        }
-
-        if (owner != null && this.distanceToSqr(owner) > 16.0) {
-            this.getNavigation().moveTo(owner, 1.1);
-            setVisorState(1);
-        }
     }
 
     @Override

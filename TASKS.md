@@ -11,7 +11,7 @@ Este documento consolida o andamento das fases de desenvolvimento do mod **SandS
 | **Versão Alvo** | Minecraft 26.3 | Minecraft 26.3 | ✅ Atingido |
 | **Fabric Loader / API** | 0.19.5 / 0.160.7+26.3 | Compatibilidade Estável | ✅ Atingido |
 | **Java SDK** | Java 25 | Java 25 | ✅ Atingido |
-| **Testes Automatizados** | **877 testes** (0 falhas) | > 150 testes | ✅ Superado |
+| **Testes Automatizados** | **1009 testes** (0 falhas) | > 150 testes | ✅ Superado |
 | **Rigor de Código (Zero Comentários)** | **0 linhas de comentários** | 0 linhas | ✅ 100% Auditado |
 | **Arquitetura Desacoplada** | 100% isolamento de componentes | Zero acoplamento | ✅ Validado |
 | **Receitas Data-Driven (JEI/REI)** | 120 receitas oficiais + Catálogo Interno de Projetos | Cobertura total | ✅ Concluído |
@@ -1525,3 +1525,51 @@ A tabela abaixo detalha todos os arquivos de áudio necessários para a imersão
       - `/sandstorm debug phase 32`: Kit completo de módulos, propulsores e ligas.
       - `/sandstorm debug spawn megazord_flight`, `/sandstorm debug spawn megazord_sub`, `/sandstorm debug spawn megazord_apex`.
       - Suíte dedicada `Fase32MegazordUpgradesTest` e atualização de `SandstormDebugTest`, elevando o projeto para mais de **970 testes automatizados** com 100% de sucesso, integridade física de assets e conformidade arquitetural com zero comentários.
+59. `showcase-automation-done`: Automação da Vitrine Void Completa do Mod SandStorm (`ShowcaseAutomation.java` e Mundo Void `SandStorm_Showcase`):
+    - **Mundo Void Puro no Vácuo Absoluto**:
+      - Save pré-configurado em `run/saves/SandStorm_Showcase` com preset `minecraft:the_void`, camadas de ar puro e sem terreno vanilla gerado.
+      - Inicialização em Modo Criativo (`GameType = 1`), comandos habilitados (`allowCommands = 1`) e dificuldade Pacífica (`peaceful`).
+    - **Tabuleiro de Xadrez Suspenso (Checkerboard Grid)**:
+      - Todos os blocos, maquinários e estações de trabalho de todas as fases do mod dispostos em pedestais 3x3 flutuantes (Y=64).
+      - Iluminação em xadrez alternando Froglights e Sea Lanterns com bordas de arenito talhado e liso.
+    - **Ala de Itens & Recursos (Item Wing)**:
+      - Baterias de baús temáticos com stacks completos (64x) de absolutamente todos os itens, ligas, circuitos, drogas farmacológicas, módulos moleculares e robóticos de todas as 32 fases do mod.
+    - **Ala de Entidades & Mechas (Entity Wing)**:
+      - Demonstração viva de todos os veículos e entidades do mod: Megazord Standard, Megazord Aero Striker (voador), Megazord Submersible (subaquático infinito), Megazord Apex Dominator (sobrecarga tática total), Rover Escavador, Sandboard, Drone de Carga, Drone Construtor, Cyborgs (Escavador, Construtor, Ceifador) e Verme de Areia em modo vitrine estático.
+    - **Praça Central de Spawn & Automação**:
+      - Praça 9x9 no centro com baú de boas-vindas (traje espacial completo, datapad de sobrevivência, uplink cibernético, módulos táticos de megazord e radar).
+      - Transição do jogador para modo criativo e baú de boas-vindas com todos os equipamentos.
+      - **Isolamento de Produção & Não-Intrusão**: A classe `ShowcaseAutomation.java` permanece no repositório como ferramenta de desenvolvimento e demonstração sob demanda, sem inicialização automática no ciclo de vida padrão do mod (`onInitialize()`), garantindo que os usuários finais tenham a experiência original pura sem qualquer interferência ou carregamento desnecessário.
+60. `fase33-done`: Implementação completa da **Fase 33: Rede Orbital de Satélites, Telescópio Espacial de Varredura & Lançador de Cargas Eletromagnético (Orbital Mass Driver, Satellite Constellation, Ground Station & Spectral Survey Telescope)** e **Aprimoramento da Inteligência & Ordens Remotas dos Androids (Autonomous Cyborgs Enhanced AI & Remote UI Uplink)**:
+    - **Lançador Eletromagnético Orbital (`orbital_mass_driver` / `OrbitalMassDriverBlockEntity` / `OrbitalMassDriverBlock` / `OrbitalMassDriverMenu` / `OrbitalMassDriverScreen`)**:
+      - Buffer de 500.000 J WPT, custo de lançamento de 250.000 J e contagem regressiva de carga magnética (100 ticks).
+      - Lançamento vertical balístico com partículas de explosão de plasma e aceleração hipersônica, inserindo satélites em órbita baixa planetária sincronizados com `SatelliteSavedData`.
+    - **Estação Terrestre de Telemetria e Comando Orbital (`orbital_ground_station` / `OrbitalGroundStationBlockEntity` / `OrbitalGroundStationBlock` / `OrbitalGroundStationMenu` / `OrbitalGroundStationScreen`)**:
+      - Buffer de 100.000 J WPT, painel de status de telemetria orbital em tempo real (tempo exato até a próxima tempestade via satélite meteorológico, amplificação solar WPT, mineração geológica SAR e satélite de lança cinética).
+      - Acionamento de Ataque Cinético Orbital (`triggerKineticStrike`): dispara impacto cinético orbital hiperdenso de Tungstênio no alvo com raio de 12 blocos, causando 80.0 de dano a inimigos e dispersão vetorial.
+    - **Telescópio Espacial de Varredura Espectral (`spectral_survey_telescope` / `SpectralSurveyTelescopeBlockEntity` / `SpectralSurveyTelescopeBlock`)**:
+      - Buffer de 50.000 J, escaneamento celeste contínuo com detecção de céu aberto, emissão de faíscas espectrais e sincronização com a rede de dados.
+    - **Constelação de Satélites Orbitais**:
+      - `weather_recon_satellite`: Satélite de Reconhecimento Meteorológico (previsão precisa e telemetria de tempestades de areia).
+      - `orbital_solar_reflector_satellite`: Satélite Refletor Solar Orbital (amplifica recepção fotovoltaica WPT).
+      - `sar_geological_satellite`: Satélite Geológico SAR (Radar de Abertura Sintética para identificação de veios subterrâneos e priorização para cyborgs mineradores).
+      - `orbital_kinetic_lance_satellite`: Satélite de Lança Cinética Orbital (projétil de tungstênio orbital para apoio tático contra vermes e titãs).
+    - **Inteligência dos Androids e Ordens Remotas Aprimoradas (`CyborgEntity`, `CyborgRoutine`, `CyborgTelemetryMenu`, `CyborgTelemetryScreen`, `CyberneticCommandUplinkItem`)**:
+      - Nova rotina `STANDBY` (ordinal 4): congelamento seguro no lugar sob ordens remotas.
+      - Auto-ancoragem por baixa energia (<10% ou <5000 J): androids retornam autonomamente à doca (`DroneDockBlock`) mais próxima para recarga, reparos e descarga de inventário em baús adjacentes.
+      - Evasão a alertas sísmicos globais (`TacticalSpireAlert.SEISMIC_ALERT_EVACUATE` recua à doca; `STANDBY_HOLD_POSITION` para imediatamente).
+      - Acompanhamento inteligente do operador com correspondência de velocidade ao sprint do jogador, defesa cooperativa e teleporte de recuperação.
+      - Mineração inteligente com detecção de minérios e priorização guiada por satélite SAR.
+      - Colheita e replantio autônomo de lavouras e halófitas com auto-ancoragem em inventário cheio.
+      - Construção estrutural com coleta automática de materiais de baús adjacentes.
+      - Uplink Cibernético (`CyberneticCommandUplinkItem`) com modos `PATROL` e `MOVE_ORDER` para ordens remotas por clique no terreno.
+      - Interface de Telemetria (`CyborgTelemetryScreen` / `CyborgTelemetryMenu`): botões de controle de rotina (AUTO, SEGUIR, PATRUL, DOCA, ESPERA), botão rápido `DESPEJAR` (descarrega itens para o operador) e botão rápido `LIMPAR ZONA`.
+    - **Cadeia Completa de Assets 1.21.4 & Data-Driven Recipes**:
+      - 3 blockstates, 6 modelos de bloco com estados lit/active, 7 modelos de item, 7 definições em `assets/sandstorm/items/` e 14 texturas PNG com cabeçalho binário padrão `89 50 4E 47 0D 0A 1A 0A`.
+      - 7 receitas balanceadas em `data/sandstorm/recipe/` e 3 tabelas de saque de bloco.
+      - Paridade linguística absoluta entre `pt_br.json`, `en_us.json` e `es_es.json`.
+    - **Suíte de Debug & Testes**:
+      - `/sandstorm debug phase 33` e `/sandstorm debug phase orbital`: Kit orbital completo.
+      - `/sandstorm debug setup orbital_array`: Matriz orbital completa com lançador de massas, estação terrestre e telescópio espectral.
+      - Suítes de testes `Fase33OrbitalSatellitesTest` e `AndroidIntelligenceAndOrderTest`, elevando o mod para **1009 testes automatizados** com 100% de sucesso, conformidade de arquitetura com zero comentários e integridade total.
+

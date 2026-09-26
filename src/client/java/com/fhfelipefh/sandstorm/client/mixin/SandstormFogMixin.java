@@ -2,8 +2,10 @@ package com.fhfelipefh.sandstorm.client.mixin;
 
 import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import com.fhfelipefh.sandstorm.content.world.ShowcaseAutomation;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.client.renderer.fog.FogRenderer;
@@ -24,6 +26,24 @@ public class SandstormFogMixin {
     private void applySandstormFog(Camera camera, int i, DeltaTracker deltaTracker, float f, ClientLevel clientLevel, CallbackInfoReturnable<FogData> cir) {
         FogData data = cir.getReturnValue();
         if (data == null || clientLevel == null) {
+            return;
+        }
+
+        Minecraft mc = Minecraft.getInstance();
+        boolean isShowcase = ShowcaseAutomation.isShowcaseActive();
+        if (!isShowcase && mc.getSingleplayerServer() != null) {
+            String levelName = mc.getSingleplayerServer().getWorldData().getLevelName();
+            if (levelName != null && levelName.toLowerCase().contains("showcase")) {
+                isShowcase = true;
+            }
+        }
+        if (isShowcase) {
+            data.renderDistanceStart = 10000.0f;
+            data.renderDistanceEnd = 10000.0f;
+            data.environmentalStart = 10000.0f;
+            data.environmentalEnd = 10000.0f;
+            data.skyEnd = 10000.0f;
+            data.cloudEnd = 10000.0f;
             return;
         }
 

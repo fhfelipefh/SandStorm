@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "sandstorm:item/orbital_solar_reflector_satellite"
+  }
+}

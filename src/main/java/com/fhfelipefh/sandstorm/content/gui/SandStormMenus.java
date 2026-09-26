@@ -132,6 +132,16 @@ public class SandStormMenus {
             new MenuType<>(SupercriticalHeatExchangerMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<OrbitalMassDriverMenu> ORBITAL_MASS_DRIVER_MENU = register(
+            "orbital_mass_driver",
+            new MenuType<>(OrbitalMassDriverMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<OrbitalGroundStationMenu> ORBITAL_GROUND_STATION_MENU = register(
+            "orbital_ground_station",
+            new MenuType<>(OrbitalGroundStationMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

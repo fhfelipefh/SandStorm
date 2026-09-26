@@ -38,11 +38,11 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         int x = this.leftPos;
         int y = this.topPos;
 
-        for (int i = 0; i < 4; i++) {
-            int bx = x + 8 + i * 40;
-            int bw = 38;
-            int by = y + 37;
-            int bh = 13;
+        for (int i = 0; i < 5; i++) {
+            int bx = x + 7 + i * 33;
+            int bw = 31;
+            int by = y + 36;
+            int bh = 14;
             if (mx >= bx && mx <= bx + bw && my >= by && my <= by + bh) {
                 if (this.minecraft != null && this.minecraft.gameMode != null) {
                     this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, i);
@@ -51,6 +51,27 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
                 return true;
             }
         }
+
+        int dx = x + 74;
+        int dy = y + 91;
+        if (mx >= dx && mx <= dx + 45 && my >= dy && my <= dy + 11) {
+            if (this.minecraft != null && this.minecraft.gameMode != null) {
+                this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 5);
+                this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.1f));
+            }
+            return true;
+        }
+
+        int cx = x + 122;
+        int cy = y + 91;
+        if (mx >= cx && mx <= cx + 46 && my >= cy && my <= cy + 11) {
+            if (this.minecraft != null && this.minecraft.gameMode != null) {
+                this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 6);
+                this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.9f));
+            }
+            return true;
+        }
+
         return super.mouseClicked(event, isDouble);
     }
 
@@ -60,6 +81,7 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         super.extractRenderState(extractor, mouseX, mouseY, delta);
         renderTelemetryGauges(extractor);
         renderRoutineButtons(extractor, mouseX, mouseY);
+        renderQuickActionButtons(extractor, mouseX, mouseY);
         renderUpgradeBadges(extractor, mouseX, mouseY);
         renderTelemetryTooltips(extractor, mouseX, mouseY);
     }
@@ -178,12 +200,12 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         int y = this.topPos;
         CyborgRoutine currentRoutine = this.menu.getRoutine();
 
-        String[] labels = new String[]{"AUTO", "SEGUIR", "PATRULHA", "DOCA"};
-        for (int i = 0; i < 4; i++) {
-            int bx = x + 8 + i * 40;
-            int bw = 38;
-            int by = y + 37;
-            int bh = 13;
+        String[] labels = new String[]{"AUTO", "SEGUIR", "PATRUL", "DOCA", "ESPERA"};
+        for (int i = 0; i < 5; i++) {
+            int bx = x + 7 + i * 33;
+            int bw = 31;
+            int by = y + 36;
+            int bh = 14;
 
             boolean isCurrent = currentRoutine.ordinal() == i;
             boolean hovered = mouseX >= bx && mouseX <= bx + bw && mouseY >= by && mouseY <= by + bh;
@@ -203,6 +225,35 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
             int ty = by + 3;
             extractor.text(this.font, Component.literal(labels[i]), tx, ty, textCol, false);
         }
+    }
+
+    private void renderQuickActionButtons(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
+        int x = this.leftPos;
+        int y = this.topPos;
+
+        int dx = x + 74;
+        int dy = y + 91;
+        int dw = 45;
+        int dh = 11;
+        boolean dHovered = mouseX >= dx && mouseX <= dx + dw && mouseY >= dy && mouseY <= dy + dh;
+        extractor.fill(dx, dy, dx + dw, dy + dh, dHovered ? 0xFF152A38 : 0xFF0C1720);
+        extractor.fill(dx, dy, dx + dw, dy + 1, dHovered ? 0xFF00E5FF : 0xFF2B4C60);
+        extractor.fill(dx, dy + dh - 1, dx + dw, dy + dh, dHovered ? 0xFF00E5FF : 0xFF2B4C60);
+        extractor.fill(dx, dy, dx + 1, dy + dh, dHovered ? 0xFF00E5FF : 0xFF2B4C60);
+        extractor.fill(dx + dw - 1, dy, dx + dw, dy + dh, dHovered ? 0xFF00E5FF : 0xFF2B4C60);
+        extractor.text(this.font, Component.literal("DESPEJAR"), dx + 4, dy + 2, dHovered ? 0xFF00E5FF : 0xFF80CBC4, false);
+
+        int cx = x + 122;
+        int cy = y + 91;
+        int cw = 46;
+        int ch = 11;
+        boolean cHovered = mouseX >= cx && mouseX <= cx + cw && mouseY >= cy && mouseY <= cy + ch;
+        extractor.fill(cx, cy, cx + cw, cy + ch, cHovered ? 0xFF351C20 : 0xFF1F1114);
+        extractor.fill(cx, cy, cx + cw, cy + 1, cHovered ? 0xFFFF5252 : 0xFF5D282D);
+        extractor.fill(cx, cy + ch - 1, cx + cw, cy + ch, cHovered ? 0xFFFF5252 : 0xFF5D282D);
+        extractor.fill(cx, cy, cx + 1, cy + ch, cHovered ? 0xFFFF5252 : 0xFF5D282D);
+        extractor.fill(cx + cw - 1, cy, cx + cw, cy + ch, cHovered ? 0xFFFF5252 : 0xFF5D282D);
+        extractor.text(this.font, Component.literal("LIMPAR ZONA"), cx + 2, cy + 2, cHovered ? 0xFFFF8A80 : 0xFFE57373, false);
     }
 
     private void renderUpgradeBadges(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -263,16 +314,16 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
             int uy = this.topPos + 19;
             CyborgUpgradeItem.CyborgUpgradeType[] types = CyborgUpgradeItem.CyborgUpgradeType.values();
             String[] upgradeNames = new String[]{
-                "Blindagem de Quitina Ácida",
-                "Célula Crio-Trealose",
-                "Lente LiDAR Longo Alcance",
-                "Propulsor Hover Piezoelétrico"
+                    "Blindagem de Quitina Ácida",
+                    "Célula Crio-Trealose",
+                    "Lente LiDAR Longo Alcance",
+                    "Propulsor Hover Piezoelétrico"
             };
             String[] upgradeEffects = new String[]{
-                "+50% Resistência Dano/Ácido & Imunidade Veneno",
-                "Energia Expandida: 150.000 J (3x Buffer)",
-                "Radar Operacional Expandido: 96m (3x Alcance)",
-                "Supressão Total Dano de Queda & Levitação"
+                    "+50% Resistência Dano/Ácido & Imunidade Veneno",
+                    "Energia Expandida: 150.000 J (3x Buffer)",
+                    "Radar Operacional Expandido: 96m (3x Alcance)",
+                    "Supressão Total Dano de Queda & Levitação"
             };
 
             for (int i = 0; i < types.length; i++) {

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " Q ",
+    "ACA",
+    " P "
+  ],
+  "key": {
+    "Q": "sandstorm:piezo_quartz_block",
+    "A": "sandstorm:silicon_wafer",
+    "C": "sandstorm:circuit_board",
+    "P": "sandstorm:orbital_recon_probe"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:sar_geological_satellite"
+  }
+}

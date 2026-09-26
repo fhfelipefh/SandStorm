@@ -20,9 +20,12 @@ import com.fhfelipefh.sandstorm.content.block.entity.LithoPlasmaExtractorBlockEn
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MolecularModifierBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.OrbitalGroundStationBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.OrbitalMassDriverBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SpectralSurveyTelescopeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SmartFluidPipeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
@@ -518,6 +521,27 @@ public class SandStormBlocks {
                     .sound(SoundType.METAL)
                     .lightLevel(state -> state.getValue(SupercriticalHeatExchangerBlock.LIT) ? 12 : 0)
                     .noOcclusion()));
+    public static final OrbitalMassDriverBlock ORBITAL_MASS_DRIVER = register("orbital_mass_driver",
+            new OrbitalMassDriverBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("orbital_mass_driver")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(5.0f, 12.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final OrbitalGroundStationBlock ORBITAL_GROUND_STATION = register("orbital_ground_station",
+            new OrbitalGroundStationBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("orbital_ground_station")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(4.5f, 10.0f)
+                    .sound(SoundType.COPPER)
+                    .noOcclusion()));
+    public static final SpectralSurveyTelescopeBlock SPECTRAL_SURVEY_TELESCOPE = register("spectral_survey_telescope",
+            new SpectralSurveyTelescopeBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("spectral_survey_telescope")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(4.0f, 8.0f)
+                    .sound(SoundType.HEAVY_CORE)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -669,6 +693,21 @@ public class SandStormBlocks {
             SandStormMod.id("supercritical_heat_exchanger"),
             new BlockEntityType<>(SupercriticalHeatExchangerBlockEntity::new, Set.of(SUPERCRITICAL_HEAT_EXCHANGER))
     );
+    public static final BlockEntityType<OrbitalMassDriverBlockEntity> ORBITAL_MASS_DRIVER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("orbital_mass_driver"),
+            new BlockEntityType<>(OrbitalMassDriverBlockEntity::new, Set.of(ORBITAL_MASS_DRIVER))
+    );
+    public static final BlockEntityType<OrbitalGroundStationBlockEntity> ORBITAL_GROUND_STATION_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("orbital_ground_station"),
+            new BlockEntityType<>(OrbitalGroundStationBlockEntity::new, Set.of(ORBITAL_GROUND_STATION))
+    );
+    public static final BlockEntityType<SpectralSurveyTelescopeBlockEntity> SPECTRAL_SURVEY_TELESCOPE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("spectral_survey_telescope"),
+            new BlockEntityType<>(SpectralSurveyTelescopeBlockEntity::new, Set.of(SPECTRAL_SURVEY_TELESCOPE))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -715,5 +754,7 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, LITHO_PLASMA_EXTRACTOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SUPERCRITICAL_HEAT_EXCHANGER_BE);
         FluidStorage.SIDED.registerForBlockEntity(SupercriticalHeatExchangerBlockEntity::getFluidStorage, SUPERCRITICAL_HEAT_EXCHANGER_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ORBITAL_MASS_DRIVER_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ORBITAL_GROUND_STATION_BE);
     }
 }

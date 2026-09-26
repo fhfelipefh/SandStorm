@@ -135,6 +135,10 @@ public class SandStormItems {
     public static final Item MEGAZORD_TACTICAL_OVERDRIVE = register("megazord_tactical_overdrive", new Item(properties("megazord_tactical_overdrive").rarity(Rarity.EPIC).stacksTo(1)));
     public static final Item VECTORED_THRUSTER = register("vectored_thruster", new Item(properties("vectored_thruster").rarity(Rarity.RARE).stacksTo(16)));
     public static final Item HYDRO_BALLAST_PUMP = register("hydro_ballast_pump", new Item(properties("hydro_ballast_pump").rarity(Rarity.RARE).stacksTo(16)));
+    public static final WeatherReconSatelliteItem WEATHER_RECON_SATELLITE = register("weather_recon_satellite", new WeatherReconSatelliteItem(properties("weather_recon_satellite").rarity(Rarity.RARE).stacksTo(16)));
+    public static final OrbitalSolarReflectorSatelliteItem ORBITAL_SOLAR_REFLECTOR_SATELLITE = register("orbital_solar_reflector_satellite", new OrbitalSolarReflectorSatelliteItem(properties("orbital_solar_reflector_satellite").rarity(Rarity.RARE).stacksTo(16)));
+    public static final SarGeologicalSatelliteItem SAR_GEOLOGICAL_SATELLITE = register("sar_geological_satellite", new SarGeologicalSatelliteItem(properties("sar_geological_satellite").rarity(Rarity.RARE).stacksTo(16)));
+    public static final OrbitalKineticLanceSatelliteItem ORBITAL_KINETIC_LANCE_SATELLITE = register("orbital_kinetic_lance_satellite", new OrbitalKineticLanceSatelliteItem(properties("orbital_kinetic_lance_satellite").rarity(Rarity.EPIC).stacksTo(16)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -305,6 +309,13 @@ public class SandStormItems {
                         entries.accept(MEGAZORD_TACTICAL_OVERDRIVE);
                         entries.accept(VECTORED_THRUSTER);
                         entries.accept(HYDRO_BALLAST_PUMP);
+                        entries.accept(WEATHER_RECON_SATELLITE);
+                        entries.accept(ORBITAL_SOLAR_REFLECTOR_SATELLITE);
+                        entries.accept(SAR_GEOLOGICAL_SATELLITE);
+                        entries.accept(ORBITAL_KINETIC_LANCE_SATELLITE);
+                        entries.accept(SandStormBlocks.ORBITAL_MASS_DRIVER);
+                        entries.accept(SandStormBlocks.ORBITAL_GROUND_STATION);
+                        entries.accept(SandStormBlocks.SPECTRAL_SURVEY_TELESCOPE);
                     })
                     .build()
     );

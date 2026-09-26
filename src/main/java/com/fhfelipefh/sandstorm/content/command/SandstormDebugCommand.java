@@ -5,14 +5,19 @@ import com.fhfelipefh.sandstorm.content.block.DeepCoreBoreholeBlock;
 import com.fhfelipefh.sandstorm.content.block.HoloTacticalSpireBlock;
 import com.fhfelipefh.sandstorm.content.block.KineticRailgunBlock;
 import com.fhfelipefh.sandstorm.content.block.LithoPlasmaExtractorBlock;
+import com.fhfelipefh.sandstorm.content.block.OrbitalGroundStationBlock;
+import com.fhfelipefh.sandstorm.content.block.OrbitalMassDriverBlock;
 import com.fhfelipefh.sandstorm.content.block.PlasmaShieldGeneratorBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.SpectralSurveyTelescopeBlock;
 import com.fhfelipefh.sandstorm.content.block.SupercriticalHeatExchangerBlock;
 import com.fhfelipefh.sandstorm.content.block.entity.AcousticDefensePylonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreBoreholeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticRailgunBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.LithoPlasmaExtractorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.OrbitalGroundStationBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.OrbitalMassDriverBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SupercriticalHeatExchangerBlockEntity;
@@ -65,7 +70,7 @@ public class SandstormDebugCommand {
     private static final List<String> PHASES = List.of(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
             "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "all"
+            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "all"
     );
 
     private static final List<String> SPAWNABLES = List.of(
@@ -101,7 +106,8 @@ public class SandstormDebugCommand {
             "ancient_ruin_site",
             "clone_facility",
             "plasma_defense_complex",
-            "geothermal_well"
+            "geothermal_well",
+            "orbital_array"
     );
 
     public static void initialize() {
@@ -230,7 +236,7 @@ public class SandstormDebugCommand {
                                         .executes(SandstormDebugCommand::executeSwarmReset)
                                 )
                                 .then(Commands.literal("order")
-                                        .then(Commands.argument("orderId", IntegerArgumentType.integer(0, 3))
+                                        .then(Commands.argument("orderId", IntegerArgumentType.integer(0, 4))
                                                 .executes(ctx -> executeSwarmOrder(ctx, IntegerArgumentType.getInteger(ctx, "orderId")))
                                         )
                                 )
@@ -629,6 +635,18 @@ public class SandstormDebugCommand {
             giveItem(player, SandStormItems.MANTLE_ALLOY_INGOT, 8);
             giveItem(player, SandStormItems.SUPERCONDUCTOR_TOROID, 4);
             giveItem(player, SandStormBlocks.SOLID_STATE_ACCUMULATOR, 2);
+        }
+
+        if (isAll || "33".equals(normalized) || "orbital".equals(normalized)) {
+            giveItem(player, SandStormBlocks.ORBITAL_MASS_DRIVER, 1);
+            giveItem(player, SandStormBlocks.ORBITAL_GROUND_STATION, 1);
+            giveItem(player, SandStormBlocks.SPECTRAL_SURVEY_TELESCOPE, 1);
+            giveItem(player, SandStormItems.WEATHER_RECON_SATELLITE, 2);
+            giveItem(player, SandStormItems.ORBITAL_SOLAR_REFLECTOR_SATELLITE, 2);
+            giveItem(player, SandStormItems.SAR_GEOLOGICAL_SATELLITE, 2);
+            giveItem(player, SandStormItems.ORBITAL_KINETIC_LANCE_SATELLITE, 2);
+            giveItem(player, SandStormBlocks.SOLID_STATE_ACCUMULATOR, 4);
+            giveItem(player, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2, 2);
         }
 
         player.containerMenu.broadcastChanges();
@@ -1214,6 +1232,39 @@ public class SandstormDebugCommand {
                 source.sendSuccess(() -> Component.literal("§a[SandStorm] Complexo Geotérmico de Poço do Manto & Sifão Lito-Plasmático montado com sucesso! (Perfuratriz, Extrator Lito-Plasma e Trocador Térmico)"), true);
                 return 1;
             }
+            case "orbital_array" -> {
+                for (int dx = -3; dx <= 3; dx++) {
+                    for (int dz = -3; dz <= 3; dz++) {
+                        level.setBlock(center.offset(dx, 0, dz), Blocks.POLISHED_ANDESITE.defaultBlockState(), 3);
+                        for (int dy = 1; dy <= 4; dy++) {
+                            level.setBlock(center.offset(dx, dy, dz), Blocks.AIR.defaultBlockState(), 3);
+                        }
+                    }
+                }
+                BlockPos driverPos = center.offset(-2, 1, 0);
+                level.setBlock(driverPos, SandStormBlocks.ORBITAL_MASS_DRIVER.defaultBlockState().setValue(OrbitalMassDriverBlock.LIT, true), 3);
+                BlockEntity driverBe = level.getBlockEntity(driverPos);
+                if (driverBe instanceof OrbitalMassDriverBlockEntity be) {
+                    be.setEnergy(200000);
+                    be.setItem(0, new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE, 1));
+                }
+
+                BlockPos stationPos = center.offset(0, 1, 0);
+                level.setBlock(stationPos, SandStormBlocks.ORBITAL_GROUND_STATION.defaultBlockState().setValue(OrbitalGroundStationBlock.ACTIVE, true), 3);
+                BlockEntity stationBe = level.getBlockEntity(stationPos);
+                if (stationBe instanceof OrbitalGroundStationBlockEntity be) {
+                    be.setEnergy(150000);
+                }
+
+                BlockPos telescopePos = center.offset(2, 1, 0);
+                level.setBlock(telescopePos, SandStormBlocks.SPECTRAL_SURVEY_TELESCOPE.defaultBlockState().setValue(SpectralSurveyTelescopeBlock.ACTIVE, true), 3);
+
+                level.setBlock(center.offset(0, 1, 2), SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+                level.setBlock(center.offset(0, 1, -2), SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState(), 3);
+
+                source.sendSuccess(() -> Component.literal("§a[SandStorm] Complexo de Matriz Orbital montado com sucesso! (Acelerador de Cargas, Estação Terrena e Telescópio Espectral)"), true);
+                return 1;
+            }
             default -> {
                 source.sendFailure(Component.literal("§c[SandStorm] Instalação desconhecida. Opções: " + String.join(", ", FACILITIES)));
                 return 0;
@@ -1278,6 +1329,7 @@ public class SandstormDebugCommand {
             case 1 -> "OPTIMAL_COORDINATED_WORK";
             case 2 -> "PATROL_PERIMETER";
             case 3 -> "SEISMIC_ALERT_EVACUATE";
+            case 4 -> "STANDBY_HOLD_POSITION";
             default -> "UNKNOWN";
         };
 
@@ -1300,6 +1352,7 @@ public class SandstormDebugCommand {
             case 1 -> "OPTIMAL_COORDINATED_WORK";
             case 2 -> "PATROL_PERIMETER";
             case 3 -> "SEISMIC_ALERT_EVACUATE";
+            case 4 -> "STANDBY_HOLD_POSITION";
             default -> "CUSTOM";
         };
         source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§6[SandStorm Swarm]§r Nova diretriz tática global transmitida: §b%d (%s)§r!", orderId, orderName)), true);

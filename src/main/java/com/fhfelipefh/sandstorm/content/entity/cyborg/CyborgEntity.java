@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.gui.CyborgTelemetryMenu;
 import com.fhfelipefh.sandstorm.content.item.CyborgUpgradeItem;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -11,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -20,16 +22,21 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 
+import java.util.List;
 import java.util.UUID;
 
 public abstract class CyborgEntity extends PathfinderMob implements MenuProvider {
@@ -48,6 +55,8 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
     private static final EntityDataAccessor<Integer> DATA_UPGRADES_MASK = SynchedEntityData.defineId(CyborgEntity.class, EntityDataSerializers.INT);
 
     protected final SimpleContainer inventory = new SimpleContainer(CyborgTelemetryMenu.CYBORG_SLOTS);
+    private int patrolWaypointIndex = 0;
+    private int patrolScanTicks = 0;
 
     public CyborgEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -57,6 +66,8 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
     }
 
     public abstract CyborgSpecialty getSpecialty();
+
+    protected abstract void tickAutonomousWork(ServerLevel level);
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
@@ -87,6 +98,7 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
             case FOLLOW_OPERATOR -> 1;
             case PATROL_PERIMETER -> 2;
             case RETURN_TO_DOCK -> 3;
+            case STANDBY -> 0;
         };
         this.entityData.set(DATA_VISOR_STATE, colorCode);
     }
@@ -215,6 +227,11 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
         return hasOperationalZone();
     }
 
+    public void clearZone() {
+        setZoneMin(BlockPos.ZERO);
+        setZoneMax(BlockPos.ZERO);
+    }
+
     public void setDemarcatedZone(BlockPos cornerA, BlockPos cornerB) {
         int minX = Math.min(cornerA.getX(), cornerB.getX());
         int minY = Math.min(cornerA.getY(), cornerB.getY());
@@ -253,6 +270,27 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
 
     public boolean isWorking() {
         return getRoutine() == CyborgRoutine.AUTONOMOUS_WORK && getEnergy() > 0;
+    }
+
+    public void unloadInventory(Player player) {
+        Level currentLevel = this.level();
+        if (currentLevel.isClientSide()) {
+            return;
+        }
+        for (int i = 0; i < this.inventory.getContainerSize(); i++) {
+            ItemStack stack = this.inventory.getItem(i);
+            if (!stack.isEmpty()) {
+                if (player != null) {
+                    if (!player.getInventory().add(stack)) {
+                        Containers.dropItemStack(currentLevel, this.getX(), this.getY() + 0.5, this.getZ(), stack);
+                    }
+                } else {
+                    Containers.dropItemStack(currentLevel, this.getX(), this.getY() + 0.5, this.getZ(), stack);
+                }
+                this.inventory.setItem(i, ItemStack.EMPTY);
+            }
+        }
+        this.inventory.setChanged();
     }
 
     @Override
@@ -308,28 +346,196 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
     public void tick() {
         super.tick();
 
+        Level currentLevel = this.level();
+        if (currentLevel.isClientSide()) {
+            return;
+        }
+
+        ServerLevel serverLevel = (ServerLevel) currentLevel;
+
         if (hasUpgrade(CyborgUpgradeItem.CyborgUpgradeType.PIEZO_HOVER_THRUSTER)) {
             this.resetFallDistance();
-            Level currentLevel = this.level();
-            if (!currentLevel.isClientSide() && this.getDeltaMovement().horizontalDistanceSqr() > 0.005) {
-                if (this.random.nextFloat() < 0.25f) {
-                    ((ServerLevel) currentLevel).sendParticles(ParticleTypes.ELECTRIC_SPARK,
-                            this.getX(), this.getY() + 0.05, this.getZ(),
-                            2, 0.15, 0.05, 0.15, 0.02);
-                }
+            if (this.getDeltaMovement().horizontalDistanceSqr() > 0.005 && this.random.nextFloat() < 0.25f) {
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                        this.getX(), this.getY() + 0.05, this.getZ(),
+                        2, 0.15, 0.05, 0.15, 0.02);
             }
+        }
+
+        if (getEnergy() <= 0) {
+            setVisorState(0);
+            this.getNavigation().stop();
+            return;
+        }
+
+        if (this.tickCount % 60 == 0) {
+            consumeEnergy(1);
+        }
+
+        int globalOrder = CyborgSwarmManager.getInstance().getGlobalTacticalOrder();
+        if (globalOrder == 1) {
+            tickReturnToDock(serverLevel);
+            setVisorState(2);
+            return;
+        } else if (globalOrder == 3) {
+            tickStandby(serverLevel);
+            return;
+        }
+
+        if (getEnergy() < 4000 && getRoutine() == CyborgRoutine.AUTONOMOUS_WORK) {
+            tickReturnToDock(serverLevel);
+            return;
+        }
+
+        switch (getRoutine()) {
+            case AUTONOMOUS_WORK -> tickAutonomousWork(serverLevel);
+            case FOLLOW_OPERATOR -> tickFollowOperator(serverLevel);
+            case PATROL_PERIMETER -> tickPatrolPerimeter(serverLevel);
+            case RETURN_TO_DOCK -> tickReturnToDock(serverLevel);
+            case STANDBY -> tickStandby(serverLevel);
         }
     }
 
     protected void tickReturnToDock(ServerLevel level) {
-        BlockPos dock = CyborgSwarmManager.getInstance().findNearestAvailableDock(level, this.blockPosition(), 64.0);
+        BlockPos dock = CyborgSwarmManager.getInstance().findNearestAvailableDock(level, this.blockPosition(), getOperationalRadius());
         if (dock != null) {
             double distSq = this.distanceToSqr(dock.getX() + 0.5, dock.getY() + 0.5, dock.getZ() + 0.5);
-            if (distSq > 2.0) {
+            if (distSq > 2.25) {
                 this.getNavigation().moveTo(dock.getX() + 0.5, dock.getY() + 0.5, dock.getZ() + 0.5, 1.15);
                 setVisorState(3);
+            } else {
+                this.getNavigation().stop();
+                setVisorState(0);
+                chargeEnergy(500);
+                repairIntegrity(1);
+                if (getCoolant() < MAX_COOLANT) {
+                    setCoolant(Math.min(MAX_COOLANT, getCoolant() + 50));
+                }
+                unloadToConnectedStorage(level, dock);
+                if (this.random.nextFloat() < 0.2f) {
+                    level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                            dock.getX() + 0.5, dock.getY() + 0.2, dock.getZ() + 0.5,
+                            3, 0.2, 0.1, 0.2, 0.05);
+                }
+            }
+        } else {
+            this.getNavigation().stop();
+            setVisorState(0);
+        }
+    }
+
+    private void unloadToConnectedStorage(ServerLevel level, BlockPos dockPos) {
+        Direction[] directions = Direction.values();
+        for (Direction dir : directions) {
+            BlockPos targetPos = dockPos.relative(dir);
+            BlockEntity targetBe = level.getBlockEntity(targetPos);
+            if (targetBe instanceof Container targetContainer) {
+                for (int i = 0; i < this.inventory.getContainerSize(); i++) {
+                    ItemStack stack = this.inventory.getItem(i);
+                    if (!stack.isEmpty()) {
+                        ItemStack remainder = depositIntoContainer(targetContainer, stack);
+                        this.inventory.setItem(i, remainder);
+                    }
+                }
+                this.inventory.setChanged();
+                targetContainer.setChanged();
+                break;
             }
         }
+    }
+
+    private ItemStack depositIntoContainer(Container container, ItemStack stack) {
+        for (int slot = 0; slot < container.getContainerSize(); slot++) {
+            ItemStack existing = container.getItem(slot);
+            if (existing.isEmpty()) {
+                container.setItem(slot, stack.copy());
+                return ItemStack.EMPTY;
+            } else if (ItemStack.isSameItemSameComponents(existing, stack) && existing.getCount() < existing.getMaxStackSize()) {
+                int transferable = Math.min(stack.getCount(), existing.getMaxStackSize() - existing.getCount());
+                existing.grow(transferable);
+                stack.shrink(transferable);
+                if (stack.isEmpty()) {
+                    return ItemStack.EMPTY;
+                }
+            }
+        }
+        return stack;
+    }
+
+    protected void tickFollowOperator(ServerLevel level) {
+        Player owner = null;
+        if (getOwnerUUID() != null) {
+            owner = level.getPlayerByUUID(getOwnerUUID());
+        }
+
+        if (owner == null) {
+            this.getNavigation().stop();
+            setVisorState(0);
+            return;
+        }
+
+        double distSq = this.distanceToSqr(owner);
+        if (distSq > 48.0 * 48.0 && !owner.isSpectator()) {
+            this.teleportTo(owner.getX(), owner.getY(), owner.getZ());
+            this.getNavigation().stop();
+            return;
+        }
+
+        if (distSq > 16.0) {
+            this.getNavigation().moveTo(owner, 1.25);
+            setVisorState(1);
+        } else if (distSq < 6.0) {
+            this.getNavigation().stop();
+            this.getLookControl().setLookAt(owner, 30.0f, 30.0f);
+            setVisorState(0);
+        }
+
+        LivingEntity ownerLastHurt = owner.getLastHurtByMob();
+        if (ownerLastHurt != null && ownerLastHurt.isAlive() && this.distanceToSqr(ownerLastHurt) < 144.0) {
+            this.setTarget(ownerLastHurt);
+            setVisorState(2);
+        }
+    }
+
+    protected void tickPatrolPerimeter(ServerLevel level) {
+        patrolScanTicks++;
+        if (patrolScanTicks % 20 == 0) {
+            AABB threatScan = this.getBoundingBox().inflate(16.0);
+            List<LivingEntity> threats = level.getEntitiesOfClass(LivingEntity.class, threatScan, e -> e instanceof Enemy && e.isAlive());
+            if (!threats.isEmpty()) {
+                LivingEntity priorityThreat = threats.getFirst();
+                this.setTarget(priorityThreat);
+                setVisorState(2);
+                CyborgSwarmManager.getInstance().broadcastEmergency(level, this, null);
+                return;
+            }
+        }
+
+        if (hasZone()) {
+            BlockPos min = getZoneMin();
+            BlockPos max = getZoneMax();
+            BlockPos[] waypoints = new BlockPos[]{
+                    new BlockPos(min.getX(), min.getY(), min.getZ()),
+                    new BlockPos(max.getX(), min.getY(), min.getZ()),
+                    new BlockPos(max.getX(), min.getY(), max.getZ()),
+                    new BlockPos(min.getX(), min.getY(), max.getZ())
+            };
+            BlockPos targetWaypoint = waypoints[patrolWaypointIndex % waypoints.length];
+            double distSq = this.distanceToSqr(targetWaypoint.getX() + 0.5, targetWaypoint.getY(), targetWaypoint.getZ() + 0.5);
+            if (distSq < 4.0) {
+                patrolWaypointIndex = (patrolWaypointIndex + 1) % waypoints.length;
+            } else {
+                this.getNavigation().moveTo(targetWaypoint.getX() + 0.5, targetWaypoint.getY(), targetWaypoint.getZ() + 0.5, 1.0);
+                setVisorState(1);
+            }
+        } else {
+            setVisorState(0);
+        }
+    }
+
+    protected void tickStandby(ServerLevel level) {
+        this.getNavigation().stop();
+        setVisorState(0);
     }
 
     @Override

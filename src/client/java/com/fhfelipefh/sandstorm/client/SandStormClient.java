@@ -20,6 +20,8 @@ import com.fhfelipefh.sandstorm.client.gui.LithoPlasmaExtractorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MegastructureConstructorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MolecularModifierScreen;
 import com.fhfelipefh.sandstorm.client.gui.NaniteFabricatorScreen;
+import com.fhfelipefh.sandstorm.client.gui.OrbitalGroundStationScreen;
+import com.fhfelipefh.sandstorm.client.gui.OrbitalMassDriverScreen;
 import com.fhfelipefh.sandstorm.client.gui.PlasmaShieldScreen;
 import com.fhfelipefh.sandstorm.client.gui.Printer3DScreen;
 import com.fhfelipefh.sandstorm.client.gui.QuantumSleeperScreen;
@@ -96,6 +98,8 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.DEEP_CORE_BOREHOLE_MENU, DeepCoreBoreholeScreen::new);
         MenuScreens.register(SandStormMenus.LITHO_PLASMA_EXTRACTOR_MENU, LithoPlasmaExtractorScreen::new);
         MenuScreens.register(SandStormMenus.SUPERCRITICAL_HEAT_EXCHANGER_MENU, SupercriticalHeatExchangerScreen::new);
+        MenuScreens.register(SandStormMenus.ORBITAL_MASS_DRIVER_MENU, OrbitalMassDriverScreen::new);
+        MenuScreens.register(SandStormMenus.ORBITAL_GROUND_STATION_MENU, OrbitalGroundStationScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

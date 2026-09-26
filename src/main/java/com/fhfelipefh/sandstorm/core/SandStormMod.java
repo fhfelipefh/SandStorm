@@ -32,10 +32,12 @@ import com.fhfelipefh.sandstorm.content.world.NutrientTerraformingManager;
 import com.fhfelipefh.sandstorm.content.world.ProceduralRuinsManager;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import com.fhfelipefh.sandstorm.content.world.SandStormWorldGen;
+import com.fhfelipefh.sandstorm.content.world.ShowcaseAutomation;
 import com.fhfelipefh.sandstorm.content.world.SpaceshipLandingManager;
 import com.fhfelipefh.sandstorm.content.world.VanillaMonsterSuppressionHandler;
 import com.fhfelipefh.sandstorm.content.recipe.RecipeUnlockHandler;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
@@ -121,6 +123,9 @@ public class SandStormMod implements ModInitializer {
                     }
                 }
         );
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            ShowcaseAutomation.initialize();
+        }
     }
 
     public static Identifier id(String path) {

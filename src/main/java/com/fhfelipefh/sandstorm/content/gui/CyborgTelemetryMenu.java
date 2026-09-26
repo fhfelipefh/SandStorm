@@ -1,8 +1,10 @@
 package com.fhfelipefh.sandstorm.content.gui;
 
+import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgRoutine;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgSpecialty;
 import com.fhfelipefh.sandstorm.content.item.CyborgUpgradeItem;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,21 +23,31 @@ public class CyborgTelemetryMenu extends AbstractContainerMenu {
 
     private final Container container;
     private final ContainerData data;
+    private final CyborgEntity cyborg;
 
     public CyborgTelemetryMenu(int syncId, Inventory playerInventory) {
-        this(SandStormMenus.CYBORG_TELEMETRY_MENU, syncId, playerInventory, new SimpleContainer(CYBORG_SLOTS), new SimpleContainerData(9));
+        this(SandStormMenus.CYBORG_TELEMETRY_MENU, syncId, playerInventory, null, new SimpleContainer(CYBORG_SLOTS), new SimpleContainerData(9));
     }
 
     public CyborgTelemetryMenu(int syncId, Inventory playerInventory, Container container, ContainerData data) {
-        this(SandStormMenus.CYBORG_TELEMETRY_MENU, syncId, playerInventory, container, data);
+        this(SandStormMenus.CYBORG_TELEMETRY_MENU, syncId, playerInventory, null, container, data);
     }
 
     public CyborgTelemetryMenu(MenuType<?> menuType, int syncId, Inventory playerInventory, Container container, ContainerData data) {
+        this(menuType, syncId, playerInventory, null, container, data);
+    }
+
+    public CyborgTelemetryMenu(int syncId, Inventory playerInventory, CyborgEntity cyborg, Container container, ContainerData data) {
+        this(SandStormMenus.CYBORG_TELEMETRY_MENU, syncId, playerInventory, cyborg, container, data);
+    }
+
+    public CyborgTelemetryMenu(MenuType<?> menuType, int syncId, Inventory playerInventory, CyborgEntity cyborg, Container container, ContainerData data) {
         super(menuType, syncId);
         checkContainerSize(container, CYBORG_SLOTS);
         checkContainerDataCount(data, 9);
         this.container = container;
         this.data = data;
+        this.cyborg = cyborg;
 
         for (int row = 0; row < 2; ++row) {
             for (int col = 0; col < 9; ++col) {
@@ -63,8 +75,27 @@ public class CyborgTelemetryMenu extends AbstractContainerMenu {
 
     @Override
     public boolean clickMenuButton(Player player, int id) {
-        if (id >= 0 && id <= 3) {
+        if (id >= 0 && id <= 4) {
             this.data.set(5, id);
+            return true;
+        } else if (id == 5) {
+            for (int i = 0; i < CYBORG_SLOTS; i++) {
+                ItemStack stack = this.container.getItem(i);
+                if (!stack.isEmpty()) {
+                    if (!player.getInventory().add(stack)) {
+                        if (player.level() instanceof ServerLevel sl) {
+                            player.spawnAtLocation(sl, stack);
+                        }
+                    }
+                    this.container.setItem(i, ItemStack.EMPTY);
+                }
+            }
+            this.container.setChanged();
+            return true;
+        } else if (id == 6) {
+            if (this.cyborg != null) {
+                this.cyborg.clearZone();
+            }
             return true;
         }
         return false;

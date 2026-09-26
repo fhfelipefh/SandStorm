@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TCT",
+    "SGS",
+    "MAM"
+  ],
+  "key": {
+    "T": "sandstorm:superconductor_toroid",
+    "C": "sandstorm:plasma_focus_crystal",
+    "S": "sandstorm:mantle_alloy_ingot",
+    "G": "minecraft:netherite_ingot",
+    "M": "sandstorm:nano_actuator",
+    "A": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:orbital_mass_driver"
+  }
+}

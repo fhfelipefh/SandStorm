@@ -70,11 +70,11 @@ class SandstormDebugTest {
     void shouldValidateSupportedPhasesList() {
         List<String> phases = SandstormDebugCommand.getSupportedPhases();
         assertNotNull(phases);
-        for (int i = 1; i <= 32; i++) {
+        for (int i = 1; i <= 33; i++) {
             assertTrue(phases.contains(String.valueOf(i)));
         }
         assertTrue(phases.contains("all"));
-        assertEquals(33, phases.size());
+        assertEquals(34, phases.size());
     }
 
     @Test
@@ -118,7 +118,8 @@ class SandstormDebugTest {
         assertTrue(facilities.contains("clone_facility"));
         assertTrue(facilities.contains("plasma_defense_complex"));
         assertTrue(facilities.contains("geothermal_well"));
-        assertEquals(18, facilities.size());
+        assertTrue(facilities.contains("orbital_array"));
+        assertEquals(19, facilities.size());
     }
 
     @Test
@@ -129,6 +130,9 @@ class SandstormDebugTest {
 
         manager.setGlobalTacticalOrder(3);
         assertEquals(3, manager.getGlobalTacticalOrder());
+
+        manager.setGlobalTacticalOrder(4);
+        assertEquals(4, manager.getGlobalTacticalOrder());
 
         UUID dummyId = UUID.randomUUID();
         BlockPos target = new BlockPos(100, 64, 100);

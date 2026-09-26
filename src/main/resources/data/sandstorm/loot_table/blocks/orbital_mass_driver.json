@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "sandstorm:orbital_mass_driver"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "sandstorm:blocks/orbital_mass_driver"
+}
