@@ -76,7 +76,9 @@ Sempre que o usuário pedir para abrir, reabrir ou testar o jogo no mundo de sho
    - O agente NÃO deve rodar `./gradlew runClient` diretamente no subshell do agente (pois a janela abre invisível para o usuário).
 
 2. **Garantia de Existência do Mundo Showcase**:
-   - Antes de iniciar, garantir que a pasta `run/saves/SandStorm_Showcase` exista e contenha um `level.dat` íntegro. Se necessário, clonar `run/world` e remover qualquer `session.lock`.
+   - Antes de iniciar, garantir que a pasta `run/saves/SandStorm_Showcase` exista e seja um mundo Void puro (`minecraft:the_void`, flat air generator, Creative mode `GameType = 1`, `allowCommands = 1`, `peaceful`, `LevelName = "SandStorm_Showcase"`).
+   - O mundo Void puro é gerado e validado deterministicamente via `./gradlew test --tests ShowcaseWorldSetupTest`. NUNCA clonar o mapa survival `run/world`.
+   - Garantir que `session.lock` não esteja presente antes do disparo.
 
 3. **Comando Único de Inicialização Interativa**:
    - Disparar a execução na área de trabalho interativa do usuário via `schtasks /it`:
