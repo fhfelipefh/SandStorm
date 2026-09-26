@@ -27,8 +27,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -145,13 +143,6 @@ public class ShowcaseAutomation {
         level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "weather clear");
         SandstormWeatherHandler.getWeather().stopSandstorm();
 
-        level.playSound(null, center, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS, 1.0f, 1.0f);
-        player.sendSystemMessage(Component.literal("§6=================================================="));
-        player.sendSystemMessage(Component.literal("§e§l SandStorm - Vitrine Void do Mod (Fases 1 a 33)"));
-        player.sendSystemMessage(Component.literal("§b Todos os blocos, maquinarios, itens e entidades"));
-        player.sendSystemMessage(Component.literal("§b posicionados em tabuleiro de xadrez no vacuo absoluto!"));
-        player.sendSystemMessage(Component.literal("§a Androides operacionais e mineracao em loop ativo!"));
-        player.sendSystemMessage(Component.literal("§6=================================================="));
     }
 
     private static void clearUnderneath(ServerLevel level, BlockPos center) {
