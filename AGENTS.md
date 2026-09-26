@@ -62,3 +62,20 @@ Antes de concluir qualquer tarefa de desenvolvimento ou efetuar `git push` ao re
 2. Executar `./gradlew build` para validar empacotamento, compilação client/server e geração de recursos.
 3. Se novas receitas foram adicionadas ou editadas, certificar-se de que todos os itens utilizados existem em `SandStormItems`.
 4. Verificar com `git status` que a árvore de trabalho está limpa antes do envio.
+
+## 🎮 Protocolo Estrito de Inicialização do Jogo no Showcase (Minecraft 1.21.4+)
+Sempre que o usuário pedir para abrir, reabrir ou testar o jogo no mundo de showcase ("abre o jogo", "inicia o showcase", "reabre no mapa"):
+
+1. **PROIBIDO Gerar Múltiplos Comandos de Tentativa e Erro**:
+   - É expressamente proibido testar diferentes comandos de PowerShell, daemons em background ou ferramentas ad-hoc.
+   - O agente NÃO deve rodar `./gradlew runClient` diretamente no subshell do agente (pois a janela abre invisível para o usuário).
+
+2. **Garantia de Existência do Mundo Showcase**:
+   - Antes de iniciar, garantir que a pasta `run/saves/SandStorm_Showcase` exista e contenha um `level.dat` íntegro. Se necessário, clonar `run/world` e remover qualquer `session.lock`.
+
+3. **Comando Único de Inicialização Interativa**:
+   - Disparar a execução na área de trabalho interativa do usuário via `schtasks /it`:
+     ```powershell
+     schtasks /create /tn "SandStormShowcase" /tr "cmd.exe /c C:\Users\fhgam\Documents\GitHub\SandStorm\run\start_showcase.bat" /sc once /st 23:59 /it /f; schtasks /run /tn "SandStormShowcase"; schtasks /delete /tn "SandStormShowcase" /f
+     ```
+   - O processo abre em 2 segundos uma janela visível no monitor do usuário, entrando direto no mundo `SandStorm_Showcase`.
