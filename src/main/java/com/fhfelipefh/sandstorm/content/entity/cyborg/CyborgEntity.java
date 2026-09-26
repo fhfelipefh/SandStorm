@@ -268,6 +268,16 @@ public abstract class CyborgEntity extends PathfinderMob implements MenuProvider
         return this.inventory;
     }
 
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
+    public boolean requiresCustomPersistence() {
+        return true;
+    }
+
     public boolean isWorking() {
         return getRoutine() == CyborgRoutine.AUTONOMOUS_WORK && getEnergy() > 0;
     }

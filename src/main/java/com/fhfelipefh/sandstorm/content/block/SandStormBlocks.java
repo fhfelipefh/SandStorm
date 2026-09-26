@@ -321,7 +321,8 @@ public class SandStormBlocks {
             new SandMaglevRailBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("sand_maglev_rail")))
                     .mapColor(MapColor.COLOR_CYAN)
-                    .strength(3.0f)
+                    .noCollision()
+                    .strength(0.7f)
                     .sound(SoundType.METAL)
                     .noOcclusion()));
     public static final HabitatDomeBlock HABITAT_DOME = register("habitat_dome",

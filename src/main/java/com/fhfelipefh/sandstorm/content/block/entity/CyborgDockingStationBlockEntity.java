@@ -52,7 +52,7 @@ public class CyborgDockingStationBlockEntity extends BlockEntity implements Menu
         @Override
         public void set(int index, int value) {
             if (index == 1) {
-                dockEnergy = value;
+                dockEnergy = value < 0 ? (value & 0xFFFF) : value;
             }
         }
 

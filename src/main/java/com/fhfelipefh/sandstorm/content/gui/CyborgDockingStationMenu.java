@@ -67,19 +67,23 @@ public class CyborgDockingStationMenu extends AbstractContainerMenu {
     }
 
     public int getDockEnergy() {
-        return this.data.get(1);
+        int v = this.data.get(1);
+        return v < 0 ? (v & 0xFFFF) : v;
     }
 
     public int getMaxDockEnergy() {
-        return this.data.get(2);
+        int v = this.data.get(2);
+        return v < 0 ? (v & 0xFFFF) : v;
     }
 
     public int getCyborgEnergy() {
-        return this.data.get(3);
+        int v = this.data.get(3);
+        return v < 0 ? (v & 0xFFFF) : v;
     }
 
     public int getCyborgMaxEnergy() {
-        return this.data.get(4);
+        int v = this.data.get(4);
+        return v < 0 ? (v & 0xFFFF) : v;
     }
 
     public int getCyborgIntegrity() {

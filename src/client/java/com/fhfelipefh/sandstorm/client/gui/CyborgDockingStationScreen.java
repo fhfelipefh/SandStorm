@@ -185,11 +185,10 @@ public class CyborgDockingStationScreen extends AbstractContainerScreen<CyborgDo
         } else {
             extractor.fill(tx, ty, tx + tw, ty + 12, 0x44FFD600);
             extractor.fill(tx, ty + 12, tx + tw, ty + 13, 0xFFFFD600);
-            extractor.text(this.font, Component.literal("§e○ STANDBY - AGUARDANDO ENXAME"), tx + 4, ty + 2, 0xFFFFD600, false);
+            drawAdaptiveText(extractor, Component.literal("§e○ STANDBY: AGUARDANDO"), tx + 4, ty + 2, tw - 8, 0xFFFFD600);
 
-            extractor.text(this.font, Component.literal("§7Nenhum ciborgue acoplado."), tx + 6, ty + 18, 0xFF90A4AE, false);
-            extractor.text(this.font, Component.literal("§8Ciborgues com baixa energia"), tx + 6, ty + 28, 0xFF607D8B, false);
-            extractor.text(this.font, Component.literal("§8se acoplam automaticamente."), tx + 6, ty + 37, 0xFF607D8B, false);
+            drawAdaptiveText(extractor, Component.literal("§7Nenhum ciborgue acoplado."), tx + 6, ty + 20, tw - 12, 0xFF90A4AE);
+            drawAdaptiveText(extractor, Component.literal("§8Recarga e reparos automáticos."), tx + 6, ty + 32, tw - 12, 0xFF607D8B);
         }
     }
 

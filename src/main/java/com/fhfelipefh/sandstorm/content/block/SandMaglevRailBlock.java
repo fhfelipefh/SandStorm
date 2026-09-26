@@ -1,45 +1,35 @@
 package com.fhfelipefh.sandstorm.content.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class SandMaglevRailBlock extends Block {
-    public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
-
-    private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
+public class SandMaglevRailBlock extends RailBlock {
+    public static final EnumProperty<RailShape> SHAPE = BlockStateProperties.RAIL_SHAPE;
     private static final double SPEED_BOOST = 1.8;
 
     public SandMaglevRailBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X));
+        registerDefaultState(stateDefinition.any().setValue(SHAPE, RailShape.NORTH_SOUTH).setValue(WATERLOGGED, false));
+    }
+
+    @Override
+    public Property<RailShape> getShapeProperty() {
+        return SHAPE;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(AXIS);
-    }
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        Direction.Axis axis = context.getHorizontalDirection().getAxis();
-        return defaultBlockState().setValue(AXIS, axis);
-    }
-
-    @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        builder.add(SHAPE, WATERLOGGED);
     }
 
     @Override
@@ -49,19 +39,10 @@ public class SandMaglevRailBlock extends Block {
             return;
         }
 
-        Direction.Axis axis = state.getValue(AXIS);
         Vec3 motion = entity.getDeltaMovement();
-
-        double boostX = axis == Direction.Axis.X ? applyBoost(motion.x) : motion.x;
-        double boostZ = axis == Direction.Axis.Z ? applyBoost(motion.z) : motion.z;
-
-        entity.setDeltaMovement(boostX, motion.y, boostZ);
-    }
-
-    private static double applyBoost(double velocity) {
-        if (Math.abs(velocity) < 0.01) {
-            return velocity;
+        double horizontalDistSqr = motion.horizontalDistanceSqr();
+        if (horizontalDistSqr > 0.0001 && horizontalDistSqr < 4.0) {
+            entity.setDeltaMovement(motion.x * SPEED_BOOST, motion.y, motion.z * SPEED_BOOST);
         }
-        return velocity * SPEED_BOOST;
     }
 }

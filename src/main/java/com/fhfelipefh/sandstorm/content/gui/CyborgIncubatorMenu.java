@@ -33,12 +33,12 @@ public class CyborgIncubatorMenu extends AbstractContainerMenu implements Machin
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, 0, 24, 20));
-        this.addSlot(new Slot(container, 1, 24, 42));
-        this.addSlot(new Slot(container, 2, 46, 20));
-        this.addSlot(new Slot(container, 3, 46, 42));
-        this.addSlot(new Slot(container, 4, 8, 62));
-        this.addSlot(new Slot(container, 5, 142, 31) {
+        this.addSlot(new Slot(container, 0, 52, 24));
+        this.addSlot(new Slot(container, 1, 52, 46));
+        this.addSlot(new Slot(container, 2, 72, 24));
+        this.addSlot(new Slot(container, 3, 72, 46));
+        this.addSlot(new Slot(container, 4, 26, 35));
+        this.addSlot(new Slot(container, 5, 150, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
