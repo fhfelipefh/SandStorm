@@ -67,7 +67,11 @@ public class AutonomousSonicTurretBlock extends Block implements EntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         if (level.isClientSide()) {
-            return null;
+            return (lvl, pos, st, be) -> {
+                if (be instanceof AutonomousSonicTurretBlockEntity turret) {
+                    turret.clientTick(lvl, pos, st);
+                }
+            };
         }
         return (lvl, pos, st, be) -> {
             if (be instanceof AutonomousSonicTurretBlockEntity turret) {

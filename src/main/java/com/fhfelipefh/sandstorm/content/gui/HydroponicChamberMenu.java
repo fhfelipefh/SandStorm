@@ -30,9 +30,9 @@ public class HydroponicChamberMenu extends AbstractContainerMenu implements Mach
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, 0, 35, 26));
-        this.addSlot(new Slot(container, 1, 55, 26));
-        this.addSlot(new Slot(container, 2, 45, 48));
+        this.addSlot(new Slot(container, 0, 30, 26));
+        this.addSlot(new Slot(container, 1, 48, 26));
+        this.addSlot(new Slot(container, 2, 39, 48));
         this.addSlot(new Slot(container, 3, 116, 28) {
             @Override
             public boolean mayPlace(ItemStack stack) {

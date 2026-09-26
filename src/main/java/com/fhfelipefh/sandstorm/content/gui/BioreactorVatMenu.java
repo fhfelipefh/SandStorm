@@ -30,8 +30,8 @@ public class BioreactorVatMenu extends AbstractContainerMenu implements MachineM
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, 0, 40, 26));
-        this.addSlot(new Slot(container, 1, 60, 26));
+        this.addSlot(new Slot(container, 0, 44, 26));
+        this.addSlot(new Slot(container, 1, 44, 48));
         this.addSlot(new Slot(container, 2, 8, 48));
         this.addSlot(new Slot(container, 3, 116, 37) {
             @Override

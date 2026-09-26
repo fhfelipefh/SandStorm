@@ -25,13 +25,13 @@ public class PharmacologicalStimItem extends Item {
     public static final FoodProperties STIM_FOOD = new FoodProperties(0, 0.0f, true);
 
     public enum StimType {
-        ADRENAL("adrenal"),
-        BIOFOAM("biofoam"),
-        MYOMER("myomer"),
-        ENDOTHERMIC("endothermic"),
-        GRAV_DAMPENER("grav_dampener"),
-        DETOX("detox"),
-        STEALTH("stealth");
+        ADRENAL("adrenal_stim"),
+        BIOFOAM("biofoam_cartridge"),
+        MYOMER("myomer_stim"),
+        ENDOTHERMIC("endothermic_serum"),
+        GRAV_DAMPENER("grav_dampener_stim"),
+        DETOX("detox_ampoule"),
+        STEALTH("stealth_nano_drape");
 
         private final String id;
 

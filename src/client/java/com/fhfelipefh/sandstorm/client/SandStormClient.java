@@ -31,6 +31,7 @@ import com.fhfelipefh.sandstorm.client.gui.ThermalGeneratorScreen;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
+import com.fhfelipefh.sandstorm.client.renderer.AutonomousSonicTurretRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CargoDroneRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyborgRenderer;
@@ -107,6 +108,7 @@ public class SandStormClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(SandStormBlocks.DESALINATION_FILTER_BE, DesalinationFilterBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.HYDROPONIC_CHAMBER_BE, HydroponicChamberBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR_BE, MegastructureConstructorBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.AUTONOMOUS_SONIC_TURRET_BE, AutonomousSonicTurretRenderer::new);
 
         ArmorRenderer.register(new SpaceSuitArmorRenderer(),
                 SandStormItems.SPACE_SUIT_HELMET,

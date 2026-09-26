@@ -37,9 +37,9 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
         int y = this.topPos;
 
         for (int i = 0; i < 4; i++) {
-            int bx = x + 88;
+            int bx = x + 68;
             int by = y + 26 + i * 14;
-            int bw = 80;
+            int bw = 78;
             int bh = 12;
             if (mx >= bx && mx <= bx + bw && my >= by && my <= by + bh) {
                 if (this.minecraft != null && this.minecraft.gameMode != null) {
@@ -126,7 +126,7 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
 
         int rx = x + 8;
         int ry = y + 25;
-        int rw = 74;
+        int rw = 56;
         int rh = 58;
 
         extractor.fill(rx - 1, ry - 1, rx + rw + 1, ry + rh + 1, 0xFF1E293B);
@@ -150,8 +150,8 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
 
         long time = System.currentTimeMillis();
         double angle = (time % 2400) / 2400.0 * 2.0 * Math.PI;
-        int sweepX = cx + (int) (Math.cos(angle) * 26);
-        int sweepY = cy + (int) (Math.sin(angle) * 24);
+        int sweepX = cx + (int) (Math.cos(angle) * 22);
+        int sweepY = cy + (int) (Math.sin(angle) * 22);
         extractor.fill(cx, cy, sweepX, sweepY, 0x5500E5FF);
 
         extractor.fill(cx - 1, cy - 1, cx + 2, cy + 2, 0xFF00E5FF);
@@ -191,9 +191,9 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
         int activeOrder = this.menu.getActiveTacticalOrder();
 
         for (int i = 0; i < 4; i++) {
-            int bx = x + 88;
+            int bx = x + 68;
             int by = y + 26 + i * 14;
-            int bw = 80;
+            int bw = 78;
             int bh = 12;
 
             boolean hovered = mouseX >= bx && mouseX <= bx + bw && mouseY >= by && mouseY <= by + bh;
@@ -210,10 +210,10 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
 
             String text = (selected ? "▶ " : "") + orderNames[i];
             int textColor = selected ? borderColors[i] : (hovered ? 0xFFFFFFFF : 0xFF90A4AE);
-            extractor.text(this.font, Component.literal(text), bx + 4, by + 2, textColor, false);
+            drawAdaptiveText(extractor, Component.literal(text), bx + 4, by + 2, bw - 8, textColor);
         }
 
-        int sx = x + 88;
+        int sx = x + 68;
         int sy = y + 84;
         boolean threat = this.menu.isSeismicThreat();
         String sMsg = threat ? "§c⚠ ALERTA SÍSMICO" : "§a● SÍSMICO: SEGURO";
@@ -227,7 +227,7 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
         if (mouseX >= x + 8 && mouseX <= x + 168 && mouseY >= y + 17 && mouseY <= y + 23) {
             Component tip = Component.literal("Capacitor WPT Torre: " + NumberFormat.compact(this.menu.getStoredEnergy()) + " / " + NumberFormat.compact(this.menu.getMaxEnergy()) + " J");
             extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
-        } else if (mouseX >= x + 8 && mouseX <= x + 82 && mouseY >= y + 25 && mouseY <= y + 83) {
+        } else if (mouseX >= x + 8 && mouseX <= x + 64 && mouseY >= y + 25 && mouseY <= y + 83) {
             extractor.setComponentTooltipForNextFrame(this.font, List.of(
                     Component.literal("§bRadar Holo-Tático (Raio: 64m)"),
                     Component.literal("§7Detecta telemetria de ciborgues"),
@@ -235,9 +235,9 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
             ), mouseX, mouseY);
         } else {
             for (int i = 0; i < 4; i++) {
-                int bx = x + 88;
+                int bx = x + 68;
                 int by = y + 26 + i * 14;
-                if (mouseX >= bx && mouseX <= bx + 80 && mouseY >= by && mouseY <= by + 12) {
+                if (mouseX >= bx && mouseX <= bx + 78 && mouseY >= by && mouseY <= by + 12) {
                     List<List<Component>> descs = List.of(
                             List.of(
                                     Component.literal("§bConvergência"),

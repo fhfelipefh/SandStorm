@@ -21,6 +21,10 @@ public class Printer3DScreen extends BaseMachineScreen<Printer3DMenu> {
     }
 
     @Override
+    protected void renderProgressBar(GuiGraphicsExtractor extractor, int x, int y, int width, int height) {
+    }
+
+    @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         super.extractRenderState(extractor, mouseX, mouseY, delta);
         renderPrinterChamberPreview(extractor);

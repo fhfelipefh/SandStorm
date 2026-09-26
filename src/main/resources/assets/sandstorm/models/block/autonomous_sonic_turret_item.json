@@ -63,6 +63,57 @@
         "east": {"uv": [4, 10, 12, 13], "texture": "#casing"},
         "up": {"uv": [4, 4, 12, 12], "texture": "#casing"}
       }
+    },
+    {
+      "name": "turret_housing",
+      "from": [3, 6, 2],
+      "to": [13, 13, 14],
+      "faces": {
+        "up": {"uv": [3, 2, 13, 14], "texture": "#top"},
+        "down": {"uv": [3, 2, 13, 14], "texture": "#casing"},
+        "north": {"uv": [3, 3, 13, 10], "texture": "#front"},
+        "south": {"uv": [3, 3, 13, 10], "texture": "#casing"},
+        "west": {"uv": [2, 3, 14, 10], "texture": "#casing"},
+        "east": {"uv": [2, 3, 14, 10], "texture": "#casing"}
+      }
+    },
+    {
+      "name": "barrel_left",
+      "from": [4, 7.5, -2],
+      "to": [7, 11.5, 2],
+      "faces": {
+        "north": {"uv": [1, 1, 4, 5], "texture": "#front"},
+        "south": {"uv": [1, 1, 4, 5], "texture": "#casing"},
+        "west": {"uv": [0, 4, 4, 8], "texture": "#casing"},
+        "east": {"uv": [0, 4, 4, 8], "texture": "#casing"},
+        "up": {"uv": [4, 0, 7, 4], "texture": "#top"},
+        "down": {"uv": [4, 0, 7, 4], "texture": "#casing"}
+      }
+    },
+    {
+      "name": "barrel_right",
+      "from": [9, 7.5, -2],
+      "to": [12, 11.5, 2],
+      "faces": {
+        "north": {"uv": [12, 1, 15, 5], "texture": "#front"},
+        "south": {"uv": [12, 1, 15, 5], "texture": "#casing"},
+        "west": {"uv": [12, 4, 16, 8], "texture": "#casing"},
+        "east": {"uv": [12, 4, 16, 8], "texture": "#casing"},
+        "up": {"uv": [9, 0, 12, 4], "texture": "#top"},
+        "down": {"uv": [9, 0, 12, 4], "texture": "#casing"}
+      }
+    },
+    {
+      "name": "sensor_dome",
+      "from": [6, 13, 5],
+      "to": [10, 15, 11],
+      "faces": {
+        "up": {"uv": [6, 5, 10, 11], "texture": "#top"},
+        "north": {"uv": [6, 1, 10, 3], "texture": "#front"},
+        "south": {"uv": [6, 1, 10, 3], "texture": "#casing"},
+        "west": {"uv": [5, 1, 11, 3], "texture": "#casing"},
+        "east": {"uv": [5, 1, 11, 3], "texture": "#casing"}
+      }
     }
   ]
 }

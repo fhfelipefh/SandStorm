@@ -67,7 +67,7 @@ public class KineticRailgunScreen extends AbstractContainerScreen<KineticRailgun
 
         int gx = x + 8;
         int gy = y + 16;
-        int gw = 160;
+        int gw = 48;
         int gh = 6;
         extractor.fill(gx - 1, gy - 1, gx + gw + 1, gy + gh + 1, 0xFF1E293B);
         extractor.fill(gx, gy, gx + gw, gy + gh, 0xFF05080E);
@@ -113,7 +113,7 @@ public class KineticRailgunScreen extends AbstractContainerScreen<KineticRailgun
         int x = this.leftPos;
         int y = this.topPos;
 
-        if (mouseX >= x + 8 && mouseX <= x + 168 && mouseY >= y + 16 && mouseY <= y + 22) {
+        if (mouseX >= x + 8 && mouseX <= x + 56 && mouseY >= y + 16 && mouseY <= y + 22) {
             String energyTip = String.format("Energia: %s / %s J", NumberFormat.compact(this.menu.getStoredEnergy()), NumberFormat.compact(this.menu.getMaxEnergy()));
             extractor.setTooltipForNextFrame(this.font, Component.literal(energyTip), mouseX, mouseY);
         }

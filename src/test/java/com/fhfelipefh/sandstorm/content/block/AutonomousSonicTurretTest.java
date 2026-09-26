@@ -132,4 +132,23 @@ class AutonomousSonicTurretTest {
         assertEquals(0, menu.getProgressScaled(100));
         assertTrue(menu.isProcessing());
     }
+
+    @Test
+    void shouldVerifyAimTrackingAndRotationSpecifications() {
+        assertEquals(10.0f, AutonomousSonicTurretBlockEntity.ROTATION_SPEED, 0.001f);
+        assertEquals(12.0f, AutonomousSonicTurretBlockEntity.AIM_TOLERANCE, 0.001f);
+
+        BlockPos pos = new BlockPos(0, 64, 0);
+        AutonomousSonicTurretBlockEntity turret = new AutonomousSonicTurretBlockEntity(BlockEntityTypes.BARREL, pos, Blocks.BARREL.defaultBlockState());
+
+        assertEquals(0.0f, turret.getCurrentYaw(), 0.001f);
+        assertEquals(0.0f, turret.getCurrentPitch(), 0.001f);
+        assertEquals(0.0f, turret.getPrevYaw(), 0.001f);
+        assertEquals(0.0f, turret.getPrevPitch(), 0.001f);
+        assertEquals(0.0f, turret.getTargetYaw(), 0.001f);
+        assertEquals(0.0f, turret.getTargetPitch(), 0.001f);
+        assertFalse(turret.hasTarget());
+        assertEquals(0, turret.getShootFlashTicks());
+        assertEquals(-1, turret.getTargetEntityId());
+    }
 }

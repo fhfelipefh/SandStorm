@@ -30,9 +30,9 @@ public class ChemicalRefineryMenu extends AbstractContainerMenu implements Machi
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, 0, 35, 26));
-        this.addSlot(new Slot(container, 1, 55, 26));
-        this.addSlot(new Slot(container, 2, 45, 48));
+        this.addSlot(new Slot(container, 0, 30, 26));
+        this.addSlot(new Slot(container, 1, 48, 26));
+        this.addSlot(new Slot(container, 2, 39, 48));
         this.addSlot(new Slot(container, 3, 8, 48));
         this.addSlot(new Slot(container, 4, 116, 37) {
             @Override

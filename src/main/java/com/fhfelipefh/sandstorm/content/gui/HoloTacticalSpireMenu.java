@@ -37,7 +37,7 @@ public class HoloTacticalSpireMenu extends AbstractContainerMenu {
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, 0, 152, 58));
+        this.addSlot(new Slot(container, 0, 152, 46));
 
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {

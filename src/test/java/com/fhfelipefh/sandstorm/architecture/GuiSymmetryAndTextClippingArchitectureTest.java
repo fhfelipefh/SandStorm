@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class GuiSymmetryAndTextClippingArchitectureTest {
 
     private static final Path GUI_DIR = Path.of("src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "gui");
+    private static final Path MENU_DIR = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "gui");
 
     private static final Pattern EXTRACT_LABELS_OVERRIDE = Pattern.compile(
             "protected\\s+void\\s+extractLabels\\s*\\(");
@@ -352,5 +353,198 @@ class GuiSymmetryAndTextClippingArchitectureTest {
 
         assertTrue(violations.isEmpty(),
                 "Found screens missing slot frame rendering:\n" + String.join("\n", violations));
+    }
+
+    private record SlotRect(int x1, int y1, int x2, int y2) {
+        boolean intersects(SlotRect o) {
+            return this.x1 < o.x2 && this.x2 > o.x1 && this.y1 < o.y2 && this.y2 > o.y1;
+        }
+    }
+
+    private List<SlotRect> extractDirectSlots(String content) {
+        List<SlotRect> slots = new ArrayList<>();
+        Matcher m = Pattern.compile("addSlot\\s*\\([^;]+?,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*\\)").matcher(content);
+        while (m.find()) {
+            int x = Integer.parseInt(m.group(1));
+            int y = Integer.parseInt(m.group(2));
+            if (x >= 0 && y >= 0) {
+                slots.add(new SlotRect(x - 1, y - 1, x + 17, y + 17));
+            }
+        }
+        return slots;
+    }
+
+    @Test
+    void noSlotsMayOverlapWithinSameMenu() throws IOException {
+        List<String> violations = new ArrayList<>();
+        if (!Files.exists(MENU_DIR)) {
+            return;
+        }
+
+        try (Stream<Path> paths = Files.list(MENU_DIR)) {
+            paths.filter(p -> p.toString().endsWith("Menu.java")).forEach(path -> {
+                String fileName = path.getFileName().toString();
+                if (fileName.equals("MachineMenu.java") || fileName.equals("SandStormMenus.java") || fileName.equals("SandstoneWorkbenchMenu.java")) {
+                    return;
+                }
+                try {
+                    String content = Files.readString(path);
+                    List<SlotRect> directSlots = extractDirectSlots(content);
+
+                    for (int i = 0; i < directSlots.size(); i++) {
+                        SlotRect s1 = directSlots.get(i);
+                        for (int j = i + 1; j < directSlots.size(); j++) {
+                            SlotRect s2 = directSlots.get(j);
+                            if (s1.intersects(s2)) {
+                                violations.add(fileName + ": Slot at (" + (s1.x1 + 1) + ", " + (s1.y1 + 1) +
+                                        ") overlaps Slot at (" + (s2.x1 + 1) + ", " + (s2.y1 + 1) + ")");
+                            }
+                        }
+                    }
+
+                    Matcher invMatcher = Pattern.compile("playerInventory,\\s*col\\s*\\+\\s*row\\s*\\*\\s*9\\s*\\+\\s*9,\\s*\\d+\\s*\\+\\s*col\\s*\\*\\s*18,\\s*(\\d+)").matcher(content);
+                    if (invMatcher.find()) {
+                        int playerInvY = Integer.parseInt(invMatcher.group(1));
+                        for (SlotRect slot : directSlots) {
+                            if (slot.y2 > playerInvY) {
+                                violations.add(fileName + ": Slot at y=" + (slot.y1 + 1) +
+                                        " overlaps player inventory starting at y=" + playerInvY);
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
+        assertTrue(violations.isEmpty(),
+                "Found menus with overlapping slots:\n" + String.join("\n", violations));
+    }
+
+    @Test
+    void baseMachineScreensMustNotHaveSlotsCollidingWithProgressBarOrWidgets() throws IOException {
+        List<String> violations = new ArrayList<>();
+        if (!Files.exists(GUI_DIR)) {
+            return;
+        }
+
+        SlotRect defaultProgressBar = new SlotRect(69, 38, 107, 52);
+        SlotRect defaultEnergyMeter = new SlotRect(7, 18, 25, 46);
+        SlotRect defaultWptIndicator = new SlotRect(9, 5, 21, 15);
+
+        Pattern menuTypePattern = Pattern.compile("extends\\s+BaseMachineScreen<([A-Za-z0-9_]+)>");
+
+        try (Stream<Path> paths = Files.list(GUI_DIR)) {
+            paths.filter(p -> p.toString().endsWith("Screen.java")).forEach(path -> {
+                try {
+                    String screenContent = Files.readString(path);
+                    Matcher matcher = menuTypePattern.matcher(screenContent);
+                    if (!matcher.find()) {
+                        return;
+                    }
+                    String screenName = path.getFileName().toString();
+                    String menuClassName = matcher.group(1);
+
+                    Path menuPath = MENU_DIR.resolve(menuClassName + ".java");
+                    if (!Files.exists(menuPath)) {
+                        return;
+                    }
+                    String menuContent = Files.readString(menuPath);
+                    List<SlotRect> directSlots = extractDirectSlots(menuContent);
+
+                    boolean overridesProgressBar = screenContent.contains("void renderProgressBar(");
+                    boolean overridesChassis = screenContent.contains("void renderChassis(");
+                    boolean callsSuperChassis = screenContent.contains("super.renderChassis(");
+
+                    boolean defaultChassisActive = !overridesChassis || callsSuperChassis;
+                    boolean rendersDefaultProgressBar = defaultChassisActive && !overridesProgressBar;
+                    boolean rendersDefaultChassis = defaultChassisActive;
+
+                    for (SlotRect slot : directSlots) {
+                        if (rendersDefaultProgressBar && slot.intersects(defaultProgressBar)) {
+                            violations.add(screenName + " (" + menuClassName + "): Slot at (" +
+                                    (slot.x1 + 1) + ", " + (slot.y1 + 1) + ") collides with default progress bar [69, 38, 107, 52]!");
+                        }
+
+                        if (rendersDefaultChassis && slot.intersects(defaultEnergyMeter)) {
+                            violations.add(screenName + " (" + menuClassName + "): Slot at (" +
+                                    (slot.x1 + 1) + ", " + (slot.y1 + 1) + ") collides with default energy meter [7, 18, 25, 46]!");
+                        }
+
+                        if (rendersDefaultChassis && slot.intersects(defaultWptIndicator)) {
+                            violations.add(screenName + " (" + menuClassName + "): Slot at (" +
+                                    (slot.x1 + 1) + ", " + (slot.y1 + 1) + ") collides with default WPT indicator [9, 5, 21, 15]!");
+                        }
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
+        assertTrue(violations.isEmpty(),
+                "Found BaseMachineScreen implementations with slots colliding with widgets:\n" + String.join("\n", violations));
+    }
+
+    @Test
+    void screensWithCustomChambersMustSuppressDefaultProgressBar() throws IOException {
+        List<String> customChamberScreens = List.of(
+                "Printer3DScreen.java",
+                "HydroponicChamberScreen.java",
+                "MolecularModifierScreen.java",
+                "BioRegenerationPodScreen.java"
+        );
+
+        List<String> violations = new ArrayList<>();
+        for (String screenFileName : customChamberScreens) {
+            Path screenPath = GUI_DIR.resolve(screenFileName);
+            if (!Files.exists(screenPath)) {
+                continue;
+            }
+            String content = Files.readString(screenPath);
+            if (!content.contains("void renderProgressBar(")) {
+                violations.add(screenFileName + " has a custom visual chamber or monitor but does not override renderProgressBar to suppress the default progress bar at (70, 39)!");
+            }
+        }
+
+        assertTrue(violations.isEmpty(),
+                "Found custom chamber screens not suppressing default progress bar:\n" + String.join("\n", violations));
+    }
+
+    @Test
+    void specializedScreenWidgetsMustNotOverlapMenuSlots() throws IOException {
+        List<String> violations = new ArrayList<>();
+
+        Path railgunScreenPath = GUI_DIR.resolve("KineticRailgunScreen.java");
+        if (Files.exists(railgunScreenPath)) {
+            String content = Files.readString(railgunScreenPath);
+            if (content.contains("gw = 160")) {
+                violations.add("KineticRailgunScreen: Energy gauge width gw=160 overlaps 3x3 ammo slots starting at x=62. Must be gw <= 48.");
+            }
+        }
+
+        Path orbitalMenuPath = MENU_DIR.resolve("OrbitalGroundStationMenu.java");
+        if (Files.exists(orbitalMenuPath)) {
+            String content = Files.readString(orbitalMenuPath);
+            for (SlotRect slot : extractDirectSlots(content)) {
+                if (slot.y2 > 70) {
+                    violations.add("OrbitalGroundStationMenu: Slot at y=" + (slot.y1 + 1) + " overlaps launch button starting at y=70!");
+                }
+            }
+        }
+
+        Path spireMenuPath = MENU_DIR.resolve("HoloTacticalSpireMenu.java");
+        if (Files.exists(spireMenuPath)) {
+            String content = Files.readString(spireMenuPath);
+            for (SlotRect slot : extractDirectSlots(content)) {
+                if (slot.x1 < 146) {
+                    violations.add("HoloTacticalSpireMenu: Slot at x=" + (slot.x1 + 1) + " overlaps tactical order buttons ending at x=146!");
+                }
+            }
+        }
+
+        assertTrue(violations.isEmpty(),
+                "Found specialized widgets overlapping menu slots:\n" + String.join("\n", violations));
     }
 }

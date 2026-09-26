@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block.entity;
 
+import com.fhfelipefh.sandstorm.content.block.AutonomousSonicTurretBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.effect.SonicBlastVisualEffect;
 import com.fhfelipefh.sandstorm.content.gui.AutonomousSonicTurretMenu;
@@ -13,7 +14,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -22,6 +25,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -29,8 +33,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -42,12 +44,21 @@ public class AutonomousSonicTurretBlockEntity extends BaseMachineBlockEntity {
     public static final int ENERGY_PER_SHOT = 400;
     public static final float DAMAGE_AMOUNT = 16.0f;
     public static final int COOLDOWN_TICKS = 20;
+    public static final float ROTATION_SPEED = 10.0f;
+    public static final float AIM_TOLERANCE = 12.0f;
 
     private int filterMode = 0;
     private int targetingStrategy = 0;
     private int cooldown = 0;
+    private float currentYaw = 0.0f;
+    private float currentPitch = 0.0f;
+    private float prevYaw = 0.0f;
+    private float prevPitch = 0.0f;
     private float targetYaw = 0.0f;
     private float targetPitch = 0.0f;
+    private int targetEntityId = -1;
+    private boolean hasTarget = false;
+    private int shootFlashTicks = 0;
     private final Set<String> targetEntityIds = new HashSet<>();
 
     private final ContainerData turretDataAccess = new ContainerData() {
@@ -94,6 +105,12 @@ public class AutonomousSonicTurretBlockEntity extends BaseMachineBlockEntity {
     public AutonomousSonicTurretBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, 1, 100);
         this.maxEnergy = 10000;
+        if (state.hasProperty(AutonomousSonicTurretBlock.FACING)) {
+            float initialYaw = state.getValue(AutonomousSonicTurretBlock.FACING).toYRot();
+            this.currentYaw = initialYaw;
+            this.prevYaw = initialYaw;
+            this.targetYaw = initialYaw;
+        }
         initDefaultHostiles();
     }
 
@@ -168,6 +185,34 @@ public class AutonomousSonicTurretBlockEntity extends BaseMachineBlockEntity {
         return targetPitch;
     }
 
+    public float getCurrentYaw() {
+        return currentYaw;
+    }
+
+    public float getPrevYaw() {
+        return prevYaw;
+    }
+
+    public float getCurrentPitch() {
+        return currentPitch;
+    }
+
+    public float getPrevPitch() {
+        return prevPitch;
+    }
+
+    public boolean hasTarget() {
+        return hasTarget;
+    }
+
+    public int getShootFlashTicks() {
+        return shootFlashTicks;
+    }
+
+    public int getTargetEntityId() {
+        return targetEntityId;
+    }
+
     @Override
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         super.serverTick(level, pos, state);
@@ -175,25 +220,131 @@ public class AutonomousSonicTurretBlockEntity extends BaseMachineBlockEntity {
         if (cooldown > 0) {
             cooldown--;
         }
+        if (shootFlashTicks > 0) {
+            shootFlashTicks--;
+        }
 
-        if (energy >= ENERGY_PER_SHOT && cooldown <= 0 && level instanceof ServerLevel serverLevel) {
-            LivingEntity target = findBestTarget(serverLevel, pos);
+        this.prevYaw = this.currentYaw;
+        this.prevPitch = this.currentPitch;
+
+        if (level instanceof ServerLevel serverLevel) {
+            LivingEntity target = null;
+            if (targetEntityId != -1) {
+                Entity existing = serverLevel.getEntity(targetEntityId);
+                if (existing instanceof LivingEntity living && isValidTarget(living, serverLevel, Vec3.atCenterOf(pos))) {
+                    target = living;
+                }
+            }
+
+            if (target == null) {
+                target = findBestTarget(serverLevel, pos);
+                int newId = target != null ? target.getId() : -1;
+                if (newId != targetEntityId) {
+                    targetEntityId = newId;
+                    notifyBlockUpdate();
+                }
+            }
+
             if (target != null) {
+                this.hasTarget = true;
                 aimAt(pos, target);
-                fireSonicBlast(serverLevel, pos, target);
-                energy -= ENERGY_PER_SHOT;
-                cooldown = COOLDOWN_TICKS;
-                setChanged();
+
+                float yawDiff = Mth.wrapDegrees(this.targetYaw - this.currentYaw);
+                float pitchDiff = this.targetPitch - this.currentPitch;
+
+                float yawStep = Mth.clamp(yawDiff, -ROTATION_SPEED, ROTATION_SPEED);
+                this.currentYaw = Mth.wrapDegrees(this.currentYaw + yawStep);
+
+                float pitchStep = Mth.clamp(pitchDiff, -ROTATION_SPEED, ROTATION_SPEED);
+                this.currentPitch = Mth.clamp(this.currentPitch + pitchStep, -45.0f, 45.0f);
+
+                boolean isAimed = Math.abs(yawDiff) <= AIM_TOLERANCE && Math.abs(pitchDiff) <= AIM_TOLERANCE;
+
+                if (isAimed && energy >= ENERGY_PER_SHOT && cooldown <= 0) {
+                    fireSonicBlast(serverLevel, pos, target);
+                    energy -= ENERGY_PER_SHOT;
+                    cooldown = COOLDOWN_TICKS;
+                    shootFlashTicks = 5;
+                    setChanged();
+                    notifyBlockUpdate();
+                }
+            } else {
+                this.hasTarget = false;
+                this.targetEntityId = -1;
+                float defaultYaw = state.hasProperty(AutonomousSonicTurretBlock.FACING)
+                        ? state.getValue(AutonomousSonicTurretBlock.FACING).toYRot()
+                        : 0.0f;
+                float yawDiff = Mth.wrapDegrees(defaultYaw - this.currentYaw);
+                if (Math.abs(yawDiff) > 1.0f) {
+                    float yawStep = Mth.clamp(yawDiff, -3.0f, 3.0f);
+                    this.currentYaw = Mth.wrapDegrees(this.currentYaw + yawStep);
+                }
+                if (Math.abs(this.currentPitch) > 1.0f) {
+                    this.currentPitch += (this.currentPitch > 0 ? -2.0f : 2.0f);
+                } else {
+                    this.currentPitch = 0.0f;
+                }
+            }
+
+            if (level.getGameTime() % 4 == 0 && (this.hasTarget || Math.abs(this.currentYaw - this.prevYaw) > 0.05f)) {
+                notifyBlockUpdate();
+            }
+        }
+    }
+
+    public void clientTick(Level level, BlockPos pos, BlockState state) {
+        this.prevYaw = this.currentYaw;
+        this.prevPitch = this.currentPitch;
+
+        if (this.shootFlashTicks > 0) {
+            this.shootFlashTicks--;
+        }
+
+        if (this.targetEntityId != -1) {
+            Entity existing = level.getEntity(this.targetEntityId);
+            if (existing instanceof LivingEntity living && living.isAlive()) {
+                Vec3 origin = Vec3.atCenterOf(pos).add(0.0, 0.25, 0.0);
+                Vec3 diff = living.getEyePosition().subtract(origin);
+                double horizontalDist = Math.sqrt(diff.x * diff.x + diff.z * diff.z);
+                this.targetYaw = (float) (Math.atan2(diff.z, diff.x) * (180.0 / Math.PI)) - 90.0f;
+                this.targetPitch = (float) (-(Math.atan2(diff.y, horizontalDist) * (180.0 / Math.PI)));
+                this.targetPitch = Mth.clamp(this.targetPitch, -45.0f, 45.0f);
+            }
+        }
+
+        if (this.hasTarget || this.targetEntityId != -1) {
+            float yawDiff = Mth.wrapDegrees(this.targetYaw - this.currentYaw);
+            float pitchDiff = this.targetPitch - this.currentPitch;
+
+            float yawStep = Mth.clamp(yawDiff, -ROTATION_SPEED, ROTATION_SPEED);
+            this.currentYaw = Mth.wrapDegrees(this.currentYaw + yawStep);
+
+            float pitchStep = Mth.clamp(pitchDiff, -ROTATION_SPEED, ROTATION_SPEED);
+            this.currentPitch = Mth.clamp(this.currentPitch + pitchStep, -45.0f, 45.0f);
+        } else {
+            float defaultYaw = state.hasProperty(AutonomousSonicTurretBlock.FACING)
+                    ? state.getValue(AutonomousSonicTurretBlock.FACING).toYRot()
+                    : 0.0f;
+            float yawDiff = Mth.wrapDegrees(defaultYaw - this.currentYaw);
+            if (Math.abs(yawDiff) > 1.0f) {
+                float yawStep = Mth.clamp(yawDiff, -3.0f, 3.0f);
+                this.currentYaw = Mth.wrapDegrees(this.currentYaw + yawStep);
+            }
+            if (Math.abs(this.currentPitch) > 1.0f) {
+                this.currentPitch += (this.currentPitch > 0 ? -2.0f : 2.0f);
+            } else {
+                this.currentPitch = 0.0f;
             }
         }
     }
 
     private void aimAt(BlockPos pos, LivingEntity target) {
-        Vec3 origin = Vec3.atCenterOf(pos).add(0.0, 0.5, 0.0);
+        Vec3 origin = Vec3.atCenterOf(pos).add(0.0, 0.25, 0.0);
         Vec3 diff = target.getEyePosition().subtract(origin);
         double horizontalDist = Math.sqrt(diff.x * diff.x + diff.z * diff.z);
         this.targetYaw = (float) (Math.atan2(diff.z, diff.x) * (180.0 / Math.PI)) - 90.0f;
         this.targetPitch = (float) (-(Math.atan2(diff.y, horizontalDist) * (180.0 / Math.PI)));
+        this.targetPitch = Mth.clamp(this.targetPitch, -45.0f, 45.0f);
     }
 
     private LivingEntity findBestTarget(ServerLevel level, BlockPos pos) {
@@ -252,9 +403,11 @@ public class AutonomousSonicTurretBlockEntity extends BaseMachineBlockEntity {
     }
 
     private void fireSonicBlast(ServerLevel serverLevel, BlockPos pos, LivingEntity target) {
-        Vec3 origin = Vec3.atCenterOf(pos).add(0.0, 0.5, 0.0);
+        Vec3 origin = Vec3.atCenterOf(pos).add(0.0, 0.25, 0.0);
         Vec3 targetPos = target.getEyePosition();
-        SonicBlastVisualEffect.spawnSonicBlastFromPoint(serverLevel, origin, targetPos);
+        Vec3 aimDir = Vec3.directionFromRotation(this.currentPitch, this.currentYaw);
+        Vec3 muzzlePos = origin.add(aimDir.scale(0.6));
+        SonicBlastVisualEffect.spawnSonicBlastFromPoint(serverLevel, muzzlePos, targetPos);
         serverLevel.playSound(null, pos, SandStormSoundEvents.SONIC_CANNON_BLAST, SoundSource.BLOCKS, 1.2f, 1.0f);
         target.hurtServer(serverLevel, serverLevel.damageSources().magic(), DAMAGE_AMOUNT);
         Vec3 pushDir = targetPos.subtract(origin).normalize();
@@ -267,6 +420,13 @@ public class AutonomousSonicTurretBlockEntity extends BaseMachineBlockEntity {
         output.putInt("filter_mode", this.filterMode);
         output.putInt("strategy", this.targetingStrategy);
         output.putString("target_list", String.join(";", this.targetEntityIds));
+        output.putFloat("target_yaw", this.targetYaw);
+        output.putFloat("target_pitch", this.targetPitch);
+        output.putFloat("current_yaw", this.currentYaw);
+        output.putFloat("current_pitch", this.currentPitch);
+        output.putInt("target_id", this.targetEntityId);
+        output.putBoolean("has_target", this.hasTarget);
+        output.putInt("shoot_flash", this.shootFlashTicks);
     }
 
     @Override
@@ -283,6 +443,13 @@ public class AutonomousSonicTurretBlockEntity extends BaseMachineBlockEntity {
                 }
             }
         }
+        this.targetYaw = input.getFloatOr("target_yaw", this.targetYaw);
+        this.targetPitch = input.getFloatOr("target_pitch", this.targetPitch);
+        this.currentYaw = input.getFloatOr("current_yaw", this.currentYaw);
+        this.currentPitch = input.getFloatOr("current_pitch", this.currentPitch);
+        this.targetEntityId = input.getIntOr("target_id", -1);
+        this.hasTarget = input.getBooleanOr("has_target", false);
+        this.shootFlashTicks = input.getIntOr("shoot_flash", 0);
     }
 
     @Override
@@ -293,33 +460,12 @@ public class AutonomousSonicTurretBlockEntity extends BaseMachineBlockEntity {
         tag.putString("target_list", String.join(";", this.targetEntityIds));
         tag.putFloat("target_yaw", this.targetYaw);
         tag.putFloat("target_pitch", this.targetPitch);
+        tag.putFloat("current_yaw", this.currentYaw);
+        tag.putFloat("current_pitch", this.currentPitch);
+        tag.putInt("target_id", this.targetEntityId);
+        tag.putBoolean("has_target", this.hasTarget);
+        tag.putInt("shoot_flash", this.shootFlashTicks);
         return tag;
-    }
-
-    public void readClientData(CompoundTag tag) {
-        if (tag.contains("filter_mode")) {
-            this.filterMode = tag.getInt("filter_mode").orElse(0);
-        }
-        if (tag.contains("strategy")) {
-            this.targetingStrategy = tag.getInt("strategy").orElse(0);
-        }
-        if (tag.contains("target_yaw")) {
-            this.targetYaw = tag.getFloat("target_yaw").orElse(0.0f);
-        }
-        if (tag.contains("target_pitch")) {
-            this.targetPitch = tag.getFloat("target_pitch").orElse(0.0f);
-        }
-        if (tag.contains("target_list")) {
-            String listStr = tag.getString("target_list").orElse("");
-            if (!listStr.isEmpty()) {
-                this.targetEntityIds.clear();
-                for (String s : listStr.split(";")) {
-                    if (!s.isBlank()) {
-                        this.targetEntityIds.add(s);
-                    }
-                }
-            }
-        }
     }
 
     @Override
