@@ -817,11 +817,16 @@ public class ShowcaseAutomation {
         worm.setPos(0.0, entityY, -82.0);
         worm.setShowcaseMode(true);
         worm.setWormSize(2, true);
+        worm.setNoGravity(true);
+        worm.setPersistenceRequired();
         level.addFreshEntity(worm);
-        for (int dx = -3; dx <= 3; dx++) {
-            for (int dz = -3; dz <= 3; dz++) {
+        for (int dx = -5; dx <= 5; dx++) {
+            for (int dz = -5; dz <= 5; dz++) {
+                BlockPos under = new BlockPos(dx, baseY - 1, -82 + dz);
+                level.setBlock(under, Blocks.CUT_SANDSTONE.defaultBlockState(), 2);
+
                 BlockPos p = new BlockPos(dx, baseY, -82 + dz);
-                boolean edge = Math.abs(dx) == 3 || Math.abs(dz) == 3;
+                boolean edge = Math.abs(dx) == 5 || Math.abs(dz) == 5;
                 Block b = edge ? Blocks.CUT_SANDSTONE : Blocks.SAND;
                 level.setBlock(p, b.defaultBlockState(), 2);
             }

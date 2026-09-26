@@ -1,3 +1,6 @@
 {
-  "parent": "sandstorm:block/sand_maglev_rail"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "sandstorm:block/sand_maglev_rail"
+  }
 }

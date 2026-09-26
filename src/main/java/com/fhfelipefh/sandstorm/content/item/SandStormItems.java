@@ -197,6 +197,11 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.ATMOSPHERIC_TERRAFORMER);
                         entries.accept(SandStormBlocks.WIRELESS_SOLAR_RECEIVER);
                         entries.accept(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2);
+                        entries.accept(SandStormBlocks.THERMAL_GENERATOR);
+                        entries.accept(SandStormBlocks.WPT_RELAY_TOWER);
+                        entries.accept(SandStormBlocks.SOLID_STATE_ACCUMULATOR);
+                        entries.accept(SandStormBlocks.SMART_FLUID_PIPE);
+                        entries.accept(SandStormBlocks.GRID_MONITOR_CONSOLE);
                         entries.accept(NUTRIENT_BOMB);
                         entries.accept(XENO_GRASS_SEEDS);
                         entries.accept(SAMPLING_SYRINGE);
@@ -231,6 +236,13 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.SAND_MAGLEV_RAIL);
                         entries.accept(SandStormBlocks.HABITAT_DOME);
                         entries.accept(SandStormBlocks.AUTO_ASSEMBLY_LINE);
+                        entries.accept(SandStormBlocks.TITANIUM_SPIKE_WALL);
+                        entries.accept(SandStormBlocks.RETRACTABLE_SPIKE_WALL);
+                        entries.accept(SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER);
+                        entries.accept(SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL);
+                        entries.accept(SandStormBlocks.KINETIC_FLOOR_SPIKES);
+                        entries.accept(SandStormBlocks.CRUSHING_SPIKE_GATE);
+                        entries.accept(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR);
                         entries.accept(GEOLOGICAL_SCANNER);
                         entries.accept(FIELD_PROBE);
                         entries.accept(REPAIR_TOOL);
@@ -293,6 +305,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.PLASMA_SHIELD_GENERATOR);
                         entries.accept(SandStormBlocks.KINETIC_RAILGUN);
                         entries.accept(SandStormBlocks.ACOUSTIC_DEFENSE_PYLON);
+                        entries.accept(SandStormBlocks.AUTONOMOUS_SONIC_TURRET);
                         entries.accept(KINETIC_SLUG);
                         entries.accept(SUPERCONDUCTOR_TOROID);
                         entries.accept(PLASMA_FOCUS_CRYSTAL);

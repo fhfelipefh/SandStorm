@@ -32,6 +32,7 @@ class SandMaglevRailBlockTest {
     private static final Path BLOCKSTATE = Path.of("src", "main", "resources", "assets", "sandstorm", "blockstates", "sand_maglev_rail.json");
     private static final Path MODEL_FLAT = Path.of("src", "main", "resources", "assets", "sandstorm", "models", "block", "sand_maglev_rail.json");
     private static final Path MODEL_CORNER = Path.of("src", "main", "resources", "assets", "sandstorm", "models", "block", "sand_maglev_rail_corner.json");
+    private static final Path ITEM_MODEL = Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item", "sand_maglev_rail.json");
     private static final Path TEXTURE_FLAT = Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "block", "sand_maglev_rail.png");
     private static final Path TEXTURE_CORNER = Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "block", "sand_maglev_rail_corner.png");
     private static final Path RECIPE = Path.of("src", "main", "resources", "data", "sandstorm", "recipe", "sand_maglev_rail.json");
@@ -115,6 +116,16 @@ class SandMaglevRailBlockTest {
         assertTrue(Files.exists(MODEL_CORNER));
         JsonObject cornerModel = JsonParser.parseString(Files.readString(MODEL_CORNER)).getAsJsonObject();
         assertEquals("minecraft:block/rail_curved", cornerModel.get("parent").getAsString());
+    }
+
+    @Test
+    void shouldHaveValidItemModelForCreativeSearch() throws IOException {
+        assertTrue(Files.exists(ITEM_MODEL));
+        JsonObject itemModel = JsonParser.parseString(Files.readString(ITEM_MODEL)).getAsJsonObject();
+        assertEquals("minecraft:item/generated", itemModel.get("parent").getAsString());
+        JsonObject textures = itemModel.getAsJsonObject("textures");
+        assertNotNull(textures);
+        assertEquals("sandstorm:block/sand_maglev_rail", textures.get("layer0").getAsString());
     }
 
     @Test

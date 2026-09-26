@@ -614,7 +614,7 @@ public class SandwormEntity extends PathfinderMob implements Enemy {
     }
 
     private void updateGroundTerrain() {
-        if (this.getSandwormState() == SandwormState.BURROWED) {
+        if (this.isShowcaseMode() || this.getSandwormState() == SandwormState.BURROWED) {
             this.groundSink = 0.0f;
             this.groundSlopePitch = 0.0f;
             this.groundSlopeRoll = 0.0f;
