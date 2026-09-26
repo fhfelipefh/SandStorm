@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.content.gui.QuantumSleeperMenu;
 import com.fhfelipefh.sandstorm.util.NumberFormat;
+import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -132,14 +133,24 @@ public class QuantumSleeperScreen extends AbstractContainerScreen<QuantumSleeper
         extractor.fill(x + 138, y + 36, x + 138 + nutPixels, y + 38, 0xFF00E676);
 
         if (mouseX >= btnX && mouseX <= btnX + btnW && mouseY >= btnY && mouseY <= btnY + btnH) {
-            Component tip = hasClone
-                    ? Component.literal("Transferir consciência para outro casulo da rede (Pods: " + pods + ")")
-                    : Component.literal("Biogestar clone adormecido (Requer 20% Bio-Nutrientes e 5.000 J)");
-            extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+            List<Component> tip = hasClone
+                    ? List.of(
+                            Component.literal("Transferir consciência para"),
+                            Component.literal("outro casulo (Pods: " + pods + ")")
+                    )
+                    : List.of(
+                            Component.literal("Biogestar clone adormecido"),
+                            Component.literal("§7Requer 20% Nutrientes e 5.000 J")
+                    );
+            extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
         } else if (mouseX >= x + 104 && mouseX <= x + 134 && mouseY >= y + 36 && mouseY <= y + 38) {
             extractor.setTooltipForNextFrame(this.font, Component.literal("Energia WPT: " + NumberFormat.compact(energy) + " / " + NumberFormat.compact(maxEnergy) + " J"), mouseX, mouseY);
         } else if (mouseX >= x + 138 && mouseX <= x + 168 && mouseY >= y + 36 && mouseY <= y + 38) {
-            extractor.setTooltipForNextFrame(this.font, Component.literal("Bio-Nutrientes: " + nutrients + "% (Insira quitosana, trealose, glicerol ou água)"), mouseX, mouseY);
+            extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                    Component.literal("Bio-Nutrientes: " + nutrients + "%"),
+                    Component.literal("§7Insira quitosana, trealose,"),
+                    Component.literal("§7glicerol ou água pura.")
+            ), mouseX, mouseY);
         }
     }
 }

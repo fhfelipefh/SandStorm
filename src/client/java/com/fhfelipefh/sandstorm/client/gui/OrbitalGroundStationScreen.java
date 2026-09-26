@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.content.gui.OrbitalGroundStationMenu;
 import com.fhfelipefh.sandstorm.util.NumberFormat;
+import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -170,8 +171,18 @@ public class OrbitalGroundStationScreen extends AbstractContainerScreen<OrbitalG
         int bx = x + 98;
         int by = y + 70;
         if (mouseX >= bx && mouseX <= bx + 70 && mouseY >= by && mouseY <= by + 14) {
-            String tip = this.menu.isLanceActive() ? (this.menu.getStoredEnergy() >= 100000 ? "Disparar Lança Cinética Orbital (Custo: 100.000 J)" : "Energia Insuficiente (Requer 100.000 J)") : "Lança Cinética Inativa no Espaço";
-            extractor.setTooltipForNextFrame(this.font, Component.literal(tip), mouseX, mouseY);
+            List<Component> tip = !this.menu.isLanceActive()
+                    ? List.of(Component.literal("Lança Cinética Inativa"))
+                    : (this.menu.getStoredEnergy() >= 100000
+                    ? List.of(
+                            Component.literal("Disparar Lança Cinética"),
+                            Component.literal("§7Custo: 100.000 J")
+                    )
+                    : List.of(
+                            Component.literal("Energia Insuficiente"),
+                            Component.literal("§cRequer 100.000 J")
+                    ));
+            extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
         }
     }
 }

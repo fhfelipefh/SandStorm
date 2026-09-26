@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.content.gui.HoloTacticalSpireMenu;
 import com.fhfelipefh.sandstorm.util.NumberFormat;
+import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -212,20 +213,39 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
             Component tip = Component.literal("Capacitor WPT Torre: " + NumberFormat.compact(this.menu.getStoredEnergy()) + " / " + NumberFormat.compact(this.menu.getMaxEnergy()) + " J");
             extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
         } else if (mouseX >= x + 8 && mouseX <= x + 82 && mouseY >= y + 25 && mouseY <= y + 83) {
-            Component tip = Component.literal("§bRadar Holo-Tático (Raio: 64 blocos)\n§7Detecta telemetria de ciborgues e anomalias sísmicas.");
-            extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+            extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                    Component.literal("§bRadar Holo-Tático (Raio: 64m)"),
+                    Component.literal("§7Detecta telemetria de ciborgues"),
+                    Component.literal("§7e anomalias sísmicas.")
+            ), mouseX, mouseY);
         } else {
             for (int i = 0; i < 4; i++) {
                 int bx = x + 88;
                 int by = y + 26 + i * 14;
                 if (mouseX >= bx && mouseX <= bx + 80 && mouseY >= by && mouseY <= by + 12) {
-                    String[] descs = {
-                            "§bConvergência: §7Todos os ciborgues livres convergem ao local.",
-                            "§cEvacuação: §7Força retorno imediato de todo o enxame às docas.",
-                            "§aCoordenação: §7Otimização equilibrada de tarefas sem bloqueios.",
-                            "§eStandby: §7Pausa imediata de rotinas e economia de WPT."
-                    };
-                    extractor.setTooltipForNextFrame(this.font, Component.literal(descs[i]), mouseX, mouseY);
+                    List<List<Component>> descs = List.of(
+                            List.of(
+                                    Component.literal("§bConvergência"),
+                                    Component.literal("§7Todos os ciborgues livres"),
+                                    Component.literal("§7convergem ao local.")
+                            ),
+                            List.of(
+                                    Component.literal("§cEvacuação"),
+                                    Component.literal("§7Força retorno imediato de"),
+                                    Component.literal("§7todo o enxame às docas.")
+                            ),
+                            List.of(
+                                    Component.literal("§aCoordenação"),
+                                    Component.literal("§7Otimização equilibrada"),
+                                    Component.literal("§7de tarefas sem bloqueios.")
+                            ),
+                            List.of(
+                                    Component.literal("§eModo Standby"),
+                                    Component.literal("§7Pausa imediata de rotinas"),
+                                    Component.literal("§7e economia de energia WPT.")
+                            )
+                    );
+                    extractor.setComponentTooltipForNextFrame(this.font, descs.get(i), mouseX, mouseY);
                     break;
                 }
             }

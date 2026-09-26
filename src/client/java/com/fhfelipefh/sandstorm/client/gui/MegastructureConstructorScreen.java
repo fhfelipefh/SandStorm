@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.content.gui.MegastructureConstructorMenu;
+import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -90,8 +91,11 @@ public class MegastructureConstructorScreen extends BaseMachineScreen<Megastruct
             int total = this.menu.getTotalBlocks();
             String bp = this.menu.getBlueprintName();
             String status = this.menu.isDone() ? "§a[CONCLUÍDO - CAMPO ATIVO]" : (this.menu.isBuilding() ? "§e[EM CONSTRUÇÃO]" : (this.menu.isPausedStorm() ? "§c[PAUSADO - TEMPESTADE]" : "§7[STANDBY]"));
-            Component tooltip = Component.literal("§6" + bp + "\n§bProgresso: §f" + built + "/" + total + " (" + pct + "%)\n" + status);
-            extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
+            extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                    Component.literal("§6" + bp),
+                    Component.literal("§bProgresso: §f" + built + "/" + total + " (" + pct + "%)"),
+                    Component.literal(status)
+            ), mouseX, mouseY);
         } else if (mouseX >= x + 8 && mouseX <= x + 22 && mouseY >= y + 4 && mouseY <= y + 16) {
             String wptStatus = this.menu.isWptConnected() ? "§aWPT Online" : "§7WPT Offline";
             Component tooltip = Component.literal(wptStatus);

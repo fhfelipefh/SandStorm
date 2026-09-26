@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgSpecialty;
 import com.fhfelipefh.sandstorm.content.gui.CyborgTelemetryMenu;
 import com.fhfelipefh.sandstorm.content.item.CyborgUpgradeItem;
 import com.fhfelipefh.sandstorm.util.NumberFormat;
+import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -319,14 +320,38 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
                 int by = y + 38;
                 int bh = 17;
                 if (mouseX >= bx && mouseX <= bx + bw && mouseY >= by && mouseY <= by + bh) {
-                    String[] descs = new String[]{
-                            "§bRotina de Trabalho Autônomo\n§7Executa tarefas de acordo com a especialidade (Mineração, Agricultura ou Construção).",
-                            "§bSeguir Operador\n§7Acompanha o operador de perto, adapta velocidade ao sprint e defende contra ameaças.",
-                            "§bPatrulhar Perímetro\n§7Circula na área demarcada e alerta sobre anomalias sísmicas e ameaças.",
-                            "§bRetornar à Doca\n§7Retorna imediatamente à doca mais próxima para recarga e descarregamento.",
-                            "§bModo de Espera (Standby)\n§7Permanece imóvel no local aguardando ordens remotas de movimentação."
-                    };
-                    extractor.setTooltipForNextFrame(this.font, Component.literal(descs[i]), mouseX, mouseY);
+                    List<List<Component>> routineTooltips = List.of(
+                            List.of(
+                                    Component.literal("§bRotina de Trabalho Autônomo"),
+                                    Component.literal("§7Executa tarefas de acordo com"),
+                                    Component.literal("§7a especialidade (Mineração,"),
+                                    Component.literal("§7Agricultura ou Construção).")
+                            ),
+                            List.of(
+                                    Component.literal("§bSeguir Operador"),
+                                    Component.literal("§7Acompanha o operador de perto,"),
+                                    Component.literal("§7adapta velocidade ao sprint e"),
+                                    Component.literal("§7defende contra ameaças.")
+                            ),
+                            List.of(
+                                    Component.literal("§bPatrulhar Perímetro"),
+                                    Component.literal("§7Circula na área demarcada e"),
+                                    Component.literal("§7alerta sobre anomalias"),
+                                    Component.literal("§7sísmicas e ameaças.")
+                            ),
+                            List.of(
+                                    Component.literal("§bRetornar à Doca"),
+                                    Component.literal("§7Retorna imediatamente à doca"),
+                                    Component.literal("§7mais próxima para recarga e"),
+                                    Component.literal("§7descarregamento de carga.")
+                            ),
+                            List.of(
+                                    Component.literal("§bModo de Espera (Standby)"),
+                                    Component.literal("§7Permanece imóvel no local"),
+                                    Component.literal("§7aguardando ordens remotas.")
+                            )
+                    );
+                    extractor.setComponentTooltipForNextFrame(this.font, routineTooltips.get(i), mouseX, mouseY);
                     return;
                 }
             }
@@ -336,7 +361,11 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
             int dw = 54;
             int dh = 14;
             if (mouseX >= dx && mouseX <= dx + dw && mouseY >= dy && mouseY <= dy + dh) {
-                extractor.setTooltipForNextFrame(this.font, Component.literal("§bDespejar Itens\n§7Transfere todos os itens do androide para o seu inventário."), mouseX, mouseY);
+                extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                        Component.literal("§bDespejar Itens"),
+                        Component.literal("§7Transfere todos os itens"),
+                        Component.literal("§7do androide para seu inventário.")
+                ), mouseX, mouseY);
                 return;
             }
 
@@ -345,7 +374,11 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
             int cw = 54;
             int ch = 14;
             if (mouseX >= cx && mouseX <= cx + cw && mouseY >= cy && mouseY <= cy + ch) {
-                extractor.setTooltipForNextFrame(this.font, Component.literal("§cLimpar Zona de Trabalho\n§7Remove a área demarcada de mineração ou construção."), mouseX, mouseY);
+                extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                        Component.literal("§cLimpar Zona de Trabalho"),
+                        Component.literal("§7Remove a área demarcada de"),
+                        Component.literal("§7mineração ou construção.")
+                ), mouseX, mouseY);
                 return;
             }
 
@@ -373,11 +406,16 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
                 if (mouseX >= bx && mouseX <= bx + bw && mouseY >= by && mouseY <= by + bh) {
                     boolean installed = this.menu.hasUpgrade(types[i]);
                     if (installed) {
-                        Component tip = Component.literal("§a[INSTALADO] §b" + upgradeNames[i] + "\n§7" + upgradeEffects[i]);
-                        extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+                        extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                                Component.literal("§a[INSTALADO] §b" + upgradeNames[i]),
+                                Component.literal("§7" + upgradeEffects[i])
+                        ), mouseX, mouseY);
                     } else {
-                        Component tip = Component.literal("§8[VAZIO] §7Slot de Módulo: " + upgradeNames[i] + "\n§8Clique com o item no ciborgue para instalar.");
-                        extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+                        extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                                Component.literal("§8[VAZIO] §7Slot de Módulo:"),
+                                Component.literal("§f" + upgradeNames[i]),
+                                Component.literal("§8Clique com o item no ciborgue.")
+                        ), mouseX, mouseY);
                     }
                     return;
                 }

@@ -386,24 +386,23 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
                 if (in1.getItem() instanceof MolecularUpgradeItem upgrade) {
                     String descKey = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".desc";
                     String effectKey = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".effect";
-                    Component tip = Component.empty()
-                            .append(in1.getHoverName())
-                            .append("\n§a")
-                            .append(Component.translatable(effectKey))
-                            .append("\n§7")
-                            .append(Component.translatable(descKey));
-                    extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+                    List<Component> tip = List.of(
+                            in1.getHoverName(),
+                            Component.literal("§a").append(Component.translatable(effectKey)),
+                            Component.literal("§7").append(Component.translatable(descKey))
+                    );
+                    extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
                 } else {
                     extractor.setTooltipForNextFrame(this.font, in1.getHoverName(), mouseX, mouseY);
                 }
             } else if (mouseX >= cx + 62 && mouseX <= cx + 82 && mouseY >= cy + 14 && mouseY <= cy + 34) {
                 if (in1.getItem() instanceof MolecularUpgradeItem upgrade) {
                     String effectKey = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".effect";
-                    Component tip = Component.empty()
-                            .append(out.getHoverName())
-                            .append("\n§a")
-                            .append(Component.translatable(effectKey));
-                    extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+                    List<Component> tip = List.of(
+                            out.getHoverName(),
+                            Component.literal("§a").append(Component.translatable(effectKey))
+                    );
+                    extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
                 } else {
                     extractor.setTooltipForNextFrame(this.font, out.getHoverName(), mouseX, mouseY);
                 }

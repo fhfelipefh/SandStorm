@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.content.gui.CyborgDockingStationMenu;
 import com.fhfelipefh.sandstorm.util.NumberFormat;
+import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -192,8 +193,10 @@ public class CyborgDockingStationScreen extends AbstractContainerScreen<CyborgDo
                 Component tip = Component.literal("Integridade Miomérica: " + this.menu.getCyborgIntegrity() + "%");
                 extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
             } else if (mouseX >= x + 108 && mouseX <= x + 164 && mouseY >= y + 50 && mouseY <= y + 74) {
-                Component tip = Component.literal("§cForçar desacoplamento imediato do ciborgue.");
-                extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+                extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                        Component.literal("§cForçar Desacoplamento"),
+                        Component.literal("§7Desconecta o ciborgue imediatamente.")
+                ), mouseX, mouseY);
             }
         }
     }

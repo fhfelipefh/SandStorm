@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.content.gui.SolidStateAccumulatorMenu;
 import com.fhfelipefh.sandstorm.util.NumberFormat;
+import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -125,13 +126,26 @@ public class SolidStateAccumulatorScreen extends AbstractContainerScreen<SolidSt
         }
 
         if (mouseX >= x + 78 && mouseX <= x + 112 && mouseY >= y + 35 && mouseY <= y + 51) {
-            String modeDesc = switch (this.menu.getMode()) {
-                case 0 -> "§aModo Automatico: §7Carrega com sol/calor e descarrega no escuro/tempestade.";
-                case 1 -> "§bApenas Carga: §7Apenas absorve energia da malha.";
-                case 2 -> "§6Apenas Descarga: §7Fornece energia ininterrupta para a rede WPT.";
-                default -> "";
+            List<Component> modeDesc = switch (this.menu.getMode()) {
+                case 0 -> List.of(
+                        Component.literal("§aModo Automático"),
+                        Component.literal("§7Carrega com sol ou calor e"),
+                        Component.literal("§7descarrega na tempestade.")
+                );
+                case 1 -> List.of(
+                        Component.literal("§bApenas Carga"),
+                        Component.literal("§7Apenas absorve energia da malha.")
+                );
+                case 2 -> List.of(
+                        Component.literal("§6Apenas Descarga"),
+                        Component.literal("§7Fornece energia ininterrupta"),
+                        Component.literal("§7para a rede WPT.")
+                );
+                default -> List.of();
             };
-            extractor.setTooltipForNextFrame(this.font, Component.literal(modeDesc), mouseX, mouseY);
+            if (!modeDesc.isEmpty()) {
+                extractor.setComponentTooltipForNextFrame(this.font, modeDesc, mouseX, mouseY);
+            }
         }
     }
 }

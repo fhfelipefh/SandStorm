@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.content.gui.GridMonitorConsoleMenu;
 import com.fhfelipefh.sandstorm.util.NumberFormat;
+import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -121,8 +122,10 @@ public class GridMonitorConsoleScreen extends AbstractContainerScreen<GridMonito
             int stored = this.menu.getTotalStoredEnergy();
             int cap = this.menu.getTotalCapacity();
             float pct = cap > 0 ? (float) stored / (float) cap * 100f : 0.0f;
-            Component tooltip = Component.literal("§aArmazenamento Global: §f" + NumberFormat.compact(stored) + " / " + NumberFormat.compact(cap) + " J (" + Math.round(pct) + "%)");
-            extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
+            extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                    Component.literal("§aArmazenamento Global"),
+                    Component.literal("§f" + NumberFormat.compact(stored) + " / " + NumberFormat.compact(cap) + " J (" + Math.round(pct) + "%)")
+            ), mouseX, mouseY);
         }
     }
 }

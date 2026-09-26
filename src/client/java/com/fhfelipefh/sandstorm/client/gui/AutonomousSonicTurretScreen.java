@@ -384,12 +384,12 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
         int barY = height - 32;
         extractor.fill(20, barY, width - 20, barY + 1, 0x5500E5FF);
 
-        String stats = "Alvos Registrados: " + selectedTargets.size() + " / " + allEntities.size() + " entidades mapeadas";
-        extractor.text(font, Component.literal(stats), 24, barY + 8, 0xFF90A4AE);
+        String stats = "Alvos: " + selectedTargets.size() + " / " + allEntities.size();
+        drawScaledText(extractor, Component.literal(stats), 24, barY + 8, (width - 60) / 2f, 0xFF90A4AE);
 
-        Component rangeComp = Component.literal("Alcance Operacional: 20m // Consumo: 400 J/disparo");
+        Component rangeComp = Component.literal("Alcance: 20m | 400 J/disp");
         int rw = font.width(rangeComp);
-        extractor.text(font, rangeComp, width - rw - 24, barY + 8, 0xFF00E5FF);
+        extractor.text(font, rangeComp, width - rw - 24, barY + 8, 0xFF00E5FF, false);
     }
 
     private void drawScaledText(GuiGraphicsExtractor extractor, Component text, float x, float y, float maxPixelWidth, int color) {

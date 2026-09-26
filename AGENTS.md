@@ -14,6 +14,11 @@ Ao criar ou editar qualquer arquivo `.java` em `src/main/java`, `src/client/java
    - **Geração de Mundo (Chunks)**: Nunca execute `level.setBlock()` (ou gere estruturas) diretamente dentro de manipuladores do evento `ServerChunkEvents.CHUNK_LOAD` via `level.getServer().execute()`. Isso causa *deadlock* mútuo entre o *Server Thread* e o *Chunk Worker Thread*. A forma correta é adicionar os alvos a uma fila assíncrona (`Queue`) e processá-los via `ServerTickEvents.END_SERVER_TICK`, condicionando a execução ao `level.isLoaded(pos)`.
    - **Salvamento (I/O)**: É proibido chamar `saveAndJoin()` na thread do servidor. As classes devem invocar `setDirty()` e delegar a persistência ao sistema assíncrono vanilla.
    - Violações quebram `ServerDeadlockPreventionArchitectureTest`.
+5. **Zero Quebras de Linha Cruas (`\n`) e Textos Extensos em UI/Tooltips**:
+   - É terminantemente proibido inserir sequências de escape de quebra de linha (`\n`, `\r`) em literais de `Component`, `.append(...)` ou arquivos de tradução (`assets/sandstorm/lang`). O Minecraft 1.21.4+ não divide linhas automaticamente em componentes literais e renderiza o caractere de controle como o glifo `[LF]`.
+   - Tooltips multilinha devem ser estruturados estritamente como listas (`List<Component>`) e consumidos via `setComponentTooltipForNextFrame(this.font, List<Component>, mouseX, mouseY)`.
+   - Linhas individuais de textos de interface e tooltips não devem ultrapassar 50 caracteres visíveis, devendo ser distribuídas em linhas curtas para evitar vazamento ou corte para fora da tela em qualquer escala de GUI.
+   - Violações quebram `NoRawNewlinesInTextArchitectureTest`.
 
 ## 🧹 Higiene de Arquivos & Scripts Geradores
 1. Scripts temporários (ex: scripts Python de geração procedural de texturas, conversores descartáveis) devem ser colocados no diretório scratch do agente ou excluídos imediatamente após a geração dos arquivos finais.
