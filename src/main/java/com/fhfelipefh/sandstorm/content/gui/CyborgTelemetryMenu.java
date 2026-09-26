@@ -51,18 +51,18 @@ public class CyborgTelemetryMenu extends AbstractContainerMenu {
 
         for (int row = 0; row < 2; ++row) {
             for (int col = 0; col < 9; ++col) {
-                this.addSlot(new Slot(container, col + row * 9, 8 + col * 18, 54 + row * 18));
+                this.addSlot(new Slot(container, col + row * 9, 31 + col * 18, 71 + row * 18));
             }
         }
 
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 104 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 31 + col * 18, 125 + row * 18));
             }
         }
 
         for (int col = 0; col < 9; ++col) {
-            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 162));
+            this.addSlot(new Slot(playerInventory, col, 31 + col * 18, 185));
         }
 
         this.addDataSlots(data);
@@ -102,11 +102,15 @@ public class CyborgTelemetryMenu extends AbstractContainerMenu {
     }
 
     public int getEnergy() {
-        return this.data.get(0);
+        return this.data.get(0) & 0xFFFF;
     }
 
     public int getMaxEnergy() {
-        return this.data.get(1);
+        int max = this.data.get(1) & 0xFFFF;
+        if (hasUpgrade(CyborgUpgradeItem.CyborgUpgradeType.CRYO_TREHALOSE_CELL)) {
+            return Math.max(max, 150000);
+        }
+        return Math.max(max, 50000);
     }
 
     public int getCoolant() {

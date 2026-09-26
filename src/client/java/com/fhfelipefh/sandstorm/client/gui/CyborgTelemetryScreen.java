@@ -15,20 +15,20 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
 public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemetryMenu> {
-    private static final int CHASSIS_WIDTH = 176;
-    private static final int CHASSIS_HEIGHT = 186;
+    private static final int CHASSIS_WIDTH = 224;
+    private static final int CHASSIS_HEIGHT = 214;
 
     public CyborgTelemetryScreen(CyborgTelemetryMenu menu, Inventory playerInventory, Component title) {
-        super(menu, playerInventory, title);
+        super(menu, playerInventory, title, CHASSIS_WIDTH, CHASSIS_HEIGHT);
     }
 
     @Override
     protected void init() {
         super.init();
-        this.titleLabelX = 8;
-        this.titleLabelY = 5;
-        this.inventoryLabelX = 8;
-        this.inventoryLabelY = 93;
+        this.titleLabelX = 12;
+        this.titleLabelY = 7;
+        this.inventoryLabelX = 31;
+        this.inventoryLabelY = 112;
     }
 
     @Override
@@ -39,10 +39,10 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         int y = this.topPos;
 
         for (int i = 0; i < 5; i++) {
-            int bx = x + 7 + i * 33;
-            int bw = 31;
-            int by = y + 36;
-            int bh = 14;
+            int bx = x + 9 + i * 42;
+            int bw = 39;
+            int by = y + 38;
+            int bh = 17;
             if (mx >= bx && mx <= bx + bw && my >= by && my <= by + bh) {
                 if (this.minecraft != null && this.minecraft.gameMode != null) {
                     this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, i);
@@ -52,9 +52,11 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
             }
         }
 
-        int dx = x + 74;
-        int dy = y + 91;
-        if (mx >= dx && mx <= dx + 45 && my >= dy && my <= dy + 11) {
+        int dx = x + 104;
+        int dy = y + 108;
+        int dw = 54;
+        int dh = 14;
+        if (mx >= dx && mx <= dx + dw && my >= dy && my <= dy + dh) {
             if (this.minecraft != null && this.minecraft.gameMode != null) {
                 this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 5);
                 this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.1f));
@@ -62,9 +64,11 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
             return true;
         }
 
-        int cx = x + 122;
-        int cy = y + 91;
-        if (mx >= cx && mx <= cx + 46 && my >= cy && my <= cy + 11) {
+        int cx = x + 162;
+        int cy = y + 108;
+        int cw = 54;
+        int ch = 14;
+        if (mx >= cx && mx <= cx + cw && my >= cy && my <= cy + ch) {
             if (this.minecraft != null && this.minecraft.gameMode != null) {
                 this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 6);
                 this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.9f));
@@ -88,12 +92,8 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
-        CyborgSpecialty specialty = this.menu.getSpecialty();
-        String specialtyLabel = specialty.name();
-        Component specText = Component.literal(specialtyLabel);
         extractor.text(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xFF00E5FF, false);
-        int specW = this.font.width(specText);
-        extractor.text(this.font, specText, CHASSIS_WIDTH - specW - 8, this.titleLabelY, 0xFF76FF03, false);
+        extractor.text(this.font, Component.literal("Armazenamento"), 31, 59, 0xFF78909C, false);
         extractor.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xFF78909C, false);
     }
 
@@ -112,8 +112,8 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         extractor.fill(x + 1, y + CHASSIS_HEIGHT - 4, x + 4, y + CHASSIS_HEIGHT - 1, 0xFF00E5FF);
         extractor.fill(x + CHASSIS_WIDTH - 4, y + CHASSIS_HEIGHT - 4, x + CHASSIS_WIDTH - 1, y + CHASSIS_HEIGHT - 1, 0xFF00E5FF);
 
-        extractor.fill(x + 4, y + 4, x + CHASSIS_WIDTH - 4, y + 16, 0xDD101824);
-        extractor.fill(x + 4, y + 16, x + CHASSIS_WIDTH - 4, y + 17, 0x8800E5FF);
+        extractor.fill(x + 4, y + 4, x + CHASSIS_WIDTH - 4, y + 18, 0xDD101824);
+        extractor.fill(x + 4, y + 18, x + CHASSIS_WIDTH - 4, y + 19, 0x8800E5FF);
 
         for (Slot slot : this.menu.slots) {
             int sx = x + slot.x;
@@ -130,22 +130,22 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
     private void renderTelemetryGauges(GuiGraphicsExtractor extractor) {
         int x = this.leftPos;
         int y = this.topPos;
-
-        int gx = x + 8;
-        int gy = y + 19;
-        int gw = 48;
+        int gy = y + 21;
         int gh = 14;
 
+        int gx = x + 9;
+        int gw = 50;
         extractor.fill(gx - 1, gy - 1, gx + gw + 1, gy + gh + 1, 0xFF1E293B);
         extractor.fill(gx, gy, gx + gw, gy + gh, 0xFF05080E);
         int energy = this.menu.getEnergy();
         int maxEnergy = this.menu.getMaxEnergy();
         int energyW = maxEnergy > 0 ? (int) ((long) energy * gw / maxEnergy) : 0;
         if (energyW > 0) {
-            extractor.fill(gx, gy, gx + energyW, gy + gh, 0xFF00E5FF);
+            extractor.fill(gx, gy, gx + Math.min(energyW, gw), gy + gh, 0xFF00838F);
         }
         String energyStr = NumberFormat.compact(energy) + " J";
-        extractor.text(this.font, Component.literal(energyStr), gx + 3, gy + 3, 0xFFFFFFFF, false);
+        int eTextW = this.font.width(energyStr);
+        extractor.text(this.font, Component.literal(energyStr), gx + (gw - eTextW) / 2, gy + 3, 0xFF00E5FF, false);
 
         int cx = x + 62;
         int cw = 48;
@@ -155,44 +155,39 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         int maxCoolant = this.menu.getMaxCoolant();
         int coolantW = maxCoolant > 0 ? (coolant * cw / maxCoolant) : 0;
         if (coolantW > 0) {
-            extractor.fill(cx, gy, cx + coolantW, gy + gh, 0xFF0288D1);
+            extractor.fill(cx, gy, cx + Math.min(coolantW, cw), gy + gh, 0xFF0277BD);
         }
         String coolantStr = coolant + " mB";
-        extractor.text(this.font, Component.literal(coolantStr), cx + 3, gy + 3, 0xFFB3E5FC, false);
+        int cTextW = this.font.width(coolantStr);
+        extractor.text(this.font, Component.literal(coolantStr), cx + (cw - cTextW) / 2, gy + 3, 0xFFB3E5FC, false);
 
-        int hx = x + 116;
-        int hw = 36;
+        int hx = x + 113;
+        int hw = 44;
         extractor.fill(hx - 1, gy - 1, hx + hw + 1, gy + gh + 1, 0xFF1E293B);
         extractor.fill(hx, gy, hx + hw, gy + gh, 0xFF05080E);
         int integrity = this.menu.getIntegrity();
         int integrityW = integrity * hw / 100;
-        int integrityColor = integrity > 50 ? 0xFF00E676 : (integrity > 25 ? 0xFFFFB300 : 0xFFFF1744);
+        int integrityBarColor = integrity > 50 ? 0xFF2E7D32 : (integrity > 25 ? 0xFFF57F17 : 0xFFC62828);
+        int integrityTextColor = integrity > 50 ? 0xFF69F0AE : (integrity > 25 ? 0xFFFFD54F : 0xFFFF5252);
         if (integrityW > 0) {
-            extractor.fill(hx, gy, hx + integrityW, gy + gh, integrityColor);
+            extractor.fill(hx, gy, hx + Math.min(integrityW, hw), gy + gh, integrityBarColor);
         }
         String intStr = integrity + "%";
-        extractor.text(this.font, Component.literal(intStr), hx + 3, gy + 3, 0xFFFFFFFF, false);
+        int iTextW = this.font.width(intStr);
+        extractor.text(this.font, Component.literal(intStr), hx + (hw - iTextW) / 2, gy + 3, integrityTextColor, false);
 
-        int vx = x + 156;
-        int vw = 12;
-        int vh = 14;
-        extractor.fill(vx - 1, gy - 1, vx + vw + 1, gy + vh + 1, 0xFF37474F);
-        extractor.fill(vx, gy, vx + vw, gy + vh, 0xFF000000);
-        int visorColor = getVisorHex(this.menu.getVisorColor());
-        extractor.fill(vx + 2, gy + 3, vx + vw - 2, gy + vh - 3, visorColor);
-    }
-
-    private int getVisorHex(int visorCode) {
-        if (visorCode == 1) {
-            return 0xFFFFB300;
-        }
-        if (visorCode == 2) {
-            return 0xFFFF1744;
-        }
-        if (visorCode == 3) {
-            return 0xFFD500F9;
-        }
-        return 0xFF00E5FF;
+        int sx = x + 160;
+        int sw = 55;
+        CyborgSpecialty specialty = this.menu.getSpecialty();
+        String specShort = switch (specialty) {
+            case EXCAVATOR -> "ESCAV";
+            case HARVESTER -> "AGRÍC";
+            case BUILDER -> "CONSTR";
+        };
+        extractor.fill(sx - 1, gy - 1, sx + sw + 1, gy + gh + 1, 0xFF2E7D32);
+        extractor.fill(sx, gy, sx + sw, gy + gh, 0xFF0D2818);
+        int sTextW = this.font.width(specShort);
+        extractor.text(this.font, Component.literal(specShort), sx + (sw - sTextW) / 2, gy + 3, 0xFF76FF03, false);
     }
 
     private void renderRoutineButtons(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -202,17 +197,17 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
 
         String[] labels = new String[]{"AUTO", "SEGUIR", "PATRUL", "DOCA", "ESPERA"};
         for (int i = 0; i < 5; i++) {
-            int bx = x + 7 + i * 33;
-            int bw = 31;
-            int by = y + 36;
-            int bh = 14;
+            int bx = x + 9 + i * 42;
+            int bw = 39;
+            int by = y + 38;
+            int bh = 17;
 
             boolean isCurrent = currentRoutine.ordinal() == i;
             boolean hovered = mouseX >= bx && mouseX <= bx + bw && mouseY >= by && mouseY <= by + bh;
 
             int border = isCurrent ? 0xFF00E5FF : (hovered ? 0xFF80D8FF : 0xFF334155);
-            int bg = isCurrent ? 0xFF0D2838 : (hovered ? 0xFF14202C : 0xFF0A0F18);
-            int textCol = isCurrent ? 0xFF00E5FF : (hovered ? 0xFFFFFFFF : 0xFF90A4AE);
+            int bg = isCurrent ? 0xFF0E3348 : (hovered ? 0xFF18293B : 0xFF0A0F18);
+            int textCol = isCurrent ? 0xFF00E5FF : (hovered ? 0xFFFFFFFF : 0xFF94A3B8);
 
             extractor.fill(bx, by, bx + bw, by + bh, bg);
             extractor.fill(bx, by, bx + bw, by + 1, border);
@@ -222,7 +217,7 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
 
             int textW = this.font.width(labels[i]);
             int tx = bx + (bw - textW) / 2;
-            int ty = by + 3;
+            int ty = by + 4;
             extractor.text(this.font, Component.literal(labels[i]), tx, ty, textCol, false);
         }
     }
@@ -231,36 +226,38 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         int x = this.leftPos;
         int y = this.topPos;
 
-        int dx = x + 74;
-        int dy = y + 91;
-        int dw = 45;
-        int dh = 11;
+        int dx = x + 104;
+        int dy = y + 108;
+        int dw = 54;
+        int dh = 14;
         boolean dHovered = mouseX >= dx && mouseX <= dx + dw && mouseY >= dy && mouseY <= dy + dh;
-        extractor.fill(dx, dy, dx + dw, dy + dh, dHovered ? 0xFF152A38 : 0xFF0C1720);
-        extractor.fill(dx, dy, dx + dw, dy + 1, dHovered ? 0xFF00E5FF : 0xFF2B4C60);
-        extractor.fill(dx, dy + dh - 1, dx + dw, dy + dh, dHovered ? 0xFF00E5FF : 0xFF2B4C60);
-        extractor.fill(dx, dy, dx + 1, dy + dh, dHovered ? 0xFF00E5FF : 0xFF2B4C60);
-        extractor.fill(dx + dw - 1, dy, dx + dw, dy + dh, dHovered ? 0xFF00E5FF : 0xFF2B4C60);
-        extractor.text(this.font, Component.literal("DESPEJAR"), dx + 4, dy + 2, dHovered ? 0xFF00E5FF : 0xFF80CBC4, false);
+        extractor.fill(dx, dy, dx + dw, dy + dh, dHovered ? 0xFF153347 : 0xFF0C1D2A);
+        extractor.fill(dx, dy, dx + dw, dy + 1, dHovered ? 0xFF00E5FF : 0xFF2B5B75);
+        extractor.fill(dx, dy + dh - 1, dx + dw, dy + dh, dHovered ? 0xFF00E5FF : 0xFF2B5B75);
+        extractor.fill(dx, dy, dx + 1, dy + dh, dHovered ? 0xFF00E5FF : 0xFF2B5B75);
+        extractor.fill(dx + dw - 1, dy, dx + dw, dy + dh, dHovered ? 0xFF00E5FF : 0xFF2B5B75);
+        int dTextW = this.font.width("DESPEJAR");
+        extractor.text(this.font, Component.literal("DESPEJAR"), dx + (dw - dTextW) / 2, dy + 3, dHovered ? 0xFF00E5FF : 0xFF80CBC4, false);
 
-        int cx = x + 122;
-        int cy = y + 91;
-        int cw = 46;
-        int ch = 11;
+        int cx = x + 162;
+        int cy = y + 108;
+        int cw = 54;
+        int ch = 14;
         boolean cHovered = mouseX >= cx && mouseX <= cx + cw && mouseY >= cy && mouseY <= cy + ch;
-        extractor.fill(cx, cy, cx + cw, cy + ch, cHovered ? 0xFF351C20 : 0xFF1F1114);
-        extractor.fill(cx, cy, cx + cw, cy + 1, cHovered ? 0xFFFF5252 : 0xFF5D282D);
-        extractor.fill(cx, cy + ch - 1, cx + cw, cy + ch, cHovered ? 0xFFFF5252 : 0xFF5D282D);
-        extractor.fill(cx, cy, cx + 1, cy + ch, cHovered ? 0xFFFF5252 : 0xFF5D282D);
-        extractor.fill(cx + cw - 1, cy, cx + cw, cy + ch, cHovered ? 0xFFFF5252 : 0xFF5D282D);
-        extractor.text(this.font, Component.literal("LIMPAR ZONA"), cx + 2, cy + 2, cHovered ? 0xFFFF8A80 : 0xFFE57373, false);
+        extractor.fill(cx, cy, cx + cw, cy + ch, cHovered ? 0xFF421C22 : 0xFF261014);
+        extractor.fill(cx, cy, cx + cw, cy + 1, cHovered ? 0xFFFF5252 : 0xFF7F2B33);
+        extractor.fill(cx, cy + ch - 1, cx + cw, cy + ch, cHovered ? 0xFFFF5252 : 0xFF7F2B33);
+        extractor.fill(cx, cy, cx + 1, cy + ch, cHovered ? 0xFFFF5252 : 0xFF7F2B33);
+        extractor.fill(cx + cw - 1, cy, cx + cw, cy + ch, cHovered ? 0xFFFF5252 : 0xFF7F2B33);
+        int cTextW = this.font.width("LIMPAR");
+        extractor.text(this.font, Component.literal("LIMPAR"), cx + (cw - cTextW) / 2, dy + 3, cHovered ? 0xFFFF8A80 : 0xFFEF5350, false);
     }
 
     private void renderUpgradeBadges(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
-        int x = this.leftPos + CHASSIS_WIDTH + 2;
-        int y = this.topPos + 19;
+        int x = this.leftPos + CHASSIS_WIDTH + 3;
+        int y = this.topPos + 21;
         int width = 24;
-        int height = 90;
+        int height = 88;
 
         extractor.fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xFF1E293B);
         extractor.fill(x, y, x + width, y + height, 0xFA0A0E17);
@@ -275,7 +272,7 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         for (int i = 0; i < types.length; i++) {
             boolean installed = this.menu.hasUpgrade(types[i]);
             int bx = x + 3;
-            int by = y + 4 + i * 21;
+            int by = y + 3 + i * 21;
             int bw = 18;
             int bh = 18;
 
@@ -296,22 +293,64 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
     private void renderTelemetryTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         int x = this.leftPos;
         int y = this.topPos;
+        int gy = y + 21;
 
-        if (mouseX >= x + 8 && mouseX <= x + 56 && mouseY >= y + 19 && mouseY <= y + 33) {
+        if (mouseX >= x + 9 && mouseX <= x + 59 && mouseY >= gy && mouseY <= gy + 14) {
             Component tip = Component.literal("Energia WPT: " + this.menu.getEnergy() + " / " + this.menu.getMaxEnergy() + " J");
             extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
-        } else if (mouseX >= x + 62 && mouseX <= x + 110 && mouseY >= y + 19 && mouseY <= y + 33) {
+        } else if (mouseX >= x + 62 && mouseX <= x + 110 && mouseY >= gy && mouseY <= gy + 14) {
             Component tip = Component.literal("Bio-Refrigerante: " + this.menu.getCoolant() + " / " + this.menu.getMaxCoolant() + " mB");
             extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
-        } else if (mouseX >= x + 116 && mouseX <= x + 152 && mouseY >= y + 19 && mouseY <= y + 33) {
+        } else if (mouseX >= x + 113 && mouseX <= x + 157 && mouseY >= gy && mouseY <= gy + 14) {
             Component tip = Component.literal("Integridade Miomérica: " + this.menu.getIntegrity() + "%");
             extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
-        } else if (mouseX >= x + 156 && mouseX <= x + 168 && mouseY >= y + 19 && mouseY <= y + 33) {
-            Component tip = Component.literal("Visor Óptico: " + this.menu.getRoutine().name());
+        } else if (mouseX >= x + 160 && mouseX <= x + 215 && mouseY >= gy && mouseY <= gy + 14) {
+            String specName = switch (this.menu.getSpecialty()) {
+                case BUILDER -> "Ciborgue Construtor";
+                case EXCAVATOR -> "Ciborgue Escavador";
+                case HARVESTER -> "Ciborgue Agrícola";
+            };
+            Component tip = Component.literal("Especialidade: " + specName);
             extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
         } else {
-            int ux = this.leftPos + CHASSIS_WIDTH + 2;
-            int uy = this.topPos + 19;
+            for (int i = 0; i < 5; i++) {
+                int bx = x + 9 + i * 42;
+                int bw = 39;
+                int by = y + 38;
+                int bh = 17;
+                if (mouseX >= bx && mouseX <= bx + bw && mouseY >= by && mouseY <= by + bh) {
+                    String[] descs = new String[]{
+                            "§bRotina de Trabalho Autônomo\n§7Executa tarefas de acordo com a especialidade (Mineração, Agricultura ou Construção).",
+                            "§bSeguir Operador\n§7Acompanha o operador de perto, adapta velocidade ao sprint e defende contra ameaças.",
+                            "§bPatrulhar Perímetro\n§7Circula na área demarcada e alerta sobre anomalias sísmicas e ameaças.",
+                            "§bRetornar à Doca\n§7Retorna imediatamente à doca mais próxima para recarga e descarregamento.",
+                            "§bModo de Espera (Standby)\n§7Permanece imóvel no local aguardando ordens remotas de movimentação."
+                    };
+                    extractor.setTooltipForNextFrame(this.font, Component.literal(descs[i]), mouseX, mouseY);
+                    return;
+                }
+            }
+
+            int dx = x + 104;
+            int dy = y + 108;
+            int dw = 54;
+            int dh = 14;
+            if (mouseX >= dx && mouseX <= dx + dw && mouseY >= dy && mouseY <= dy + dh) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal("§bDespejar Itens\n§7Transfere todos os itens do androide para o seu inventário."), mouseX, mouseY);
+                return;
+            }
+
+            int cx = x + 162;
+            int cy = y + 108;
+            int cw = 54;
+            int ch = 14;
+            if (mouseX >= cx && mouseX <= cx + cw && mouseY >= cy && mouseY <= cy + ch) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal("§cLimpar Zona de Trabalho\n§7Remove a área demarcada de mineração ou construção."), mouseX, mouseY);
+                return;
+            }
+
+            int ux = this.leftPos + CHASSIS_WIDTH + 3;
+            int uy = this.topPos + 21;
             CyborgUpgradeItem.CyborgUpgradeType[] types = CyborgUpgradeItem.CyborgUpgradeType.values();
             String[] upgradeNames = new String[]{
                     "Blindagem de Quitina Ácida",
@@ -328,7 +367,7 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
 
             for (int i = 0; i < types.length; i++) {
                 int bx = ux + 3;
-                int by = uy + 4 + i * 21;
+                int by = uy + 3 + i * 21;
                 int bw = 18;
                 int bh = 18;
                 if (mouseX >= bx && mouseX <= bx + bw && mouseY >= by && mouseY <= by + bh) {
