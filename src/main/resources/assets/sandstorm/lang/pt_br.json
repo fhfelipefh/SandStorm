@@ -27,6 +27,7 @@
   "gui.sandstorm.machine.recipe_ready": "§aRecursos disponíveis",
   "gui.sandstorm.machine.recipe_missing": "§8Recursos insuficientes",
   "gui.sandstorm.machine.recipe_click_hint": "§eClique p/ carregar slots",
+  "gui.sandstorm.turret.search_hint": "Pesquisar entidade...",
   "block.sandstorm.desalination_filter": "Filtro Dessalinizador",
   "item.sandstorm.desalination_filter": "Filtro Dessalinizador",
   "block.sandstorm.dew_condenser": "Condensador Noturno de Orvalho",

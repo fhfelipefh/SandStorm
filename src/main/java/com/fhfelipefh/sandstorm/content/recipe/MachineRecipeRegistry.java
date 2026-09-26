@@ -1,11 +1,13 @@
 package com.fhfelipefh.sandstorm.content.recipe;
 
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,6 +22,7 @@ public class MachineRecipeRegistry {
         registerPrinter3DRecipes();
         registerNaniteFabricatorRecipes();
         registerMolecularModifierRecipes();
+        registerMegastructureConstructorRecipes();
     }
 
     private static void registerPrinter3DRecipes() {
@@ -258,6 +261,44 @@ public class MachineRecipeRegistry {
                 )
         );
         RECIPES.put("sandstorm:molecular_modifier", Collections.unmodifiableList(list));
+    }
+
+    private static void registerMegastructureConstructorRecipes() {
+        List<MachineRecipe> list = List.of(
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR),
+                        () -> Component.literal("Domo da Biosfera"),
+                        List.of(() -> new ItemStack(Blocks.IRON_BLOCK), () -> new ItemStack(Blocks.SEA_LANTERN)),
+                        List.of(() -> new ItemStack(Blocks.TINTED_GLASS)),
+                        50000,
+                        2400
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR),
+                        () -> Component.literal("Cidadela Planetaria"),
+                        List.of(() -> new ItemStack(Blocks.SMOOTH_SANDSTONE), () -> new ItemStack(Blocks.CUT_SANDSTONE)),
+                        List.of(() -> new ItemStack(Blocks.IRON_BLOCK), () -> new ItemStack(Blocks.CHISELED_SANDSTONE), () -> new ItemStack(Blocks.IRON_BARS)),
+                        100000,
+                        3600
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR),
+                        () -> Component.literal("Silo de Lancamento"),
+                        List.of(() -> new ItemStack(Blocks.OBSIDIAN), () -> new ItemStack(Blocks.RAW_COPPER_BLOCK)),
+                        List.of(() -> new ItemStack(Blocks.IRON_BLOCK), () -> new ItemStack(Blocks.IRON_BARS)),
+                        150000,
+                        4800
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR),
+                        () -> Component.literal("Piramide Tecnologica"),
+                        List.of(() -> new ItemStack(Blocks.CUT_SANDSTONE), () -> new ItemStack(Blocks.CHISELED_SANDSTONE)),
+                        List.of(() -> new ItemStack(Blocks.GOLD_BLOCK), () -> new ItemStack(Blocks.SEA_LANTERN)),
+                        200000,
+                        6000
+                )
+        );
+        RECIPES.put("sandstorm:megastructure_constructor", Collections.unmodifiableList(list));
     }
 
     private static ItemStack createUpgradedPreview(ItemLike item) {

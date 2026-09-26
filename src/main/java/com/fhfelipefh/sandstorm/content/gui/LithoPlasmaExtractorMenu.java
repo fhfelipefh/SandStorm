@@ -50,7 +50,7 @@ public class LithoPlasmaExtractorMenu extends AbstractContainerMenu {
                 return stack.is(SandStormItems.BIO_COOLANT_CANISTER) || stack.is(SandStormItems.EMPTY_CARTRIDGE);
             }
         });
-        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_BATTERY, 24, 52) {
+        this.addSlot(new Slot(container, LithoPlasmaExtractorBlockEntity.SLOT_BATTERY, 34, 52) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return BaseMachineBlockEntity.getFuelEnergy(stack) > 0;

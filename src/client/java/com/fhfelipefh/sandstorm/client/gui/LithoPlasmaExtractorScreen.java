@@ -35,8 +35,23 @@ public class LithoPlasmaExtractorScreen extends AbstractContainerScreen<LithoPla
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
-        extractor.text(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xFFA855F7, false);
-        extractor.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xFF78909C, false);
+        drawAdaptiveText(extractor, this.title, this.titleLabelX, this.titleLabelY, CHASSIS_WIDTH - 16, 0xFFA855F7);
+        drawAdaptiveText(extractor, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, CHASSIS_WIDTH - 16, 0xFF78909C);
+    }
+
+    private void drawAdaptiveText(GuiGraphicsExtractor extractor, Component text, float x, float y, float maxPixelWidth, int color) {
+        int textWidth = this.font.width(text);
+        if (textWidth <= maxPixelWidth || maxPixelWidth <= 0) {
+            extractor.text(this.font, text, (int) x, (int) y, color, false);
+        } else {
+            float scale = maxPixelWidth / (float) textWidth;
+            float offsetY = (9f - 9f * scale) / 2f;
+            extractor.pose().pushMatrix();
+            extractor.pose().translate(x, y + offsetY);
+            extractor.pose().scale(scale, scale);
+            extractor.text(this.font, text, 0, 0, color, false);
+            extractor.pose().popMatrix();
+        }
     }
 
     private void renderChassis(GuiGraphicsExtractor extractor) {

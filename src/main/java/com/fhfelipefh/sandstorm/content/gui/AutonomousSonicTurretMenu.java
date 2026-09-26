@@ -31,16 +31,16 @@ public class AutonomousSonicTurretMenu extends AbstractContainerMenu implements 
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, 0, 24, 218));
+        this.addSlot(new Slot(container, 0, -2000, -2000));
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 56 + col * 18, 172 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, -2000, -2000));
             }
         }
 
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(playerInventory, col, 56 + col * 18, 230));
+            this.addSlot(new Slot(playerInventory, col, -2000, -2000));
         }
 
         this.addDataSlots(data);

@@ -23,6 +23,27 @@ public class GridMonitorConsoleScreen extends AbstractContainerScreen<GridMonito
     }
 
     @Override
+    protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
+        drawAdaptiveText(extractor, this.title, this.titleLabelX, this.titleLabelY, 96, 0xFF00E5FF);
+        drawAdaptiveText(extractor, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 160, 0xFF78909C);
+    }
+
+    private void drawAdaptiveText(GuiGraphicsExtractor extractor, Component text, float x, float y, float maxPixelWidth, int color) {
+        int textWidth = this.font.width(text);
+        if (textWidth <= maxPixelWidth || maxPixelWidth <= 0) {
+            extractor.text(this.font, text, (int) x, (int) y, color, false);
+        } else {
+            float scale = maxPixelWidth / (float) textWidth;
+            float offsetY = (9f - 9f * scale) / 2f;
+            extractor.pose().pushMatrix();
+            extractor.pose().translate(x, y + offsetY);
+            extractor.pose().scale(scale, scale);
+            extractor.text(this.font, text, 0, 0, color, false);
+            extractor.pose().popMatrix();
+        }
+    }
+
+    @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         renderChassis(extractor);
         super.extractRenderState(extractor, mouseX, mouseY, delta);

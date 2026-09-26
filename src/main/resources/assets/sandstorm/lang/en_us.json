@@ -27,6 +27,7 @@
   "gui.sandstorm.machine.recipe_ready": "§aResources ready",
   "gui.sandstorm.machine.recipe_missing": "§8Missing resources",
   "gui.sandstorm.machine.recipe_click_hint": "§eClick to load slots",
+  "gui.sandstorm.turret.search_hint": "Search entity...",
   "block.sandstorm.desalination_filter": "Desalination Filter",
   "item.sandstorm.desalination_filter": "Desalination Filter",
   "block.sandstorm.dew_condenser": "Night Dew Condenser",

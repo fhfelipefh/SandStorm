@@ -27,6 +27,7 @@
   "gui.sandstorm.machine.recipe_ready": "§aRecursos disponibles",
   "gui.sandstorm.machine.recipe_missing": "§8Recursos insuficientes",
   "gui.sandstorm.machine.recipe_click_hint": "§eClic para cargar ranuras",
+  "gui.sandstorm.turret.search_hint": "Buscar entidad...",
   "block.sandstorm.desalination_filter": "Filtro Desalinizador",
   "item.sandstorm.desalination_filter": "Filtro Desalinizador",
   "block.sandstorm.dew_condenser": "Condensador Nocturno de Rocío",

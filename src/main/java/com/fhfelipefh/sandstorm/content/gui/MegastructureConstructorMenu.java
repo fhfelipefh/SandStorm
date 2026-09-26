@@ -33,18 +33,18 @@ public class MegastructureConstructorMenu extends AbstractContainerMenu implemen
 
         for (int row = 0; row < 2; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(container, col + row * 9, 8 + col * 18, 20 + row * 18));
+                this.addSlot(new Slot(container, col + row * 9, 8 + col * 18, 34 + row * 18));
             }
         }
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 68 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
             }
         }
 
         for (int col = 0; col < 9; col++) {
-            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 126));
+            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
         }
 
         this.addDataSlots(data);
@@ -185,5 +185,14 @@ public class MegastructureConstructorMenu extends AbstractContainerMenu implemen
             }
         }
         return itemStack;
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        if (id >= 0 && id < MegastructureBlueprint.values().length) {
+            this.data.set(6, id);
+            return true;
+        }
+        return false;
     }
 }

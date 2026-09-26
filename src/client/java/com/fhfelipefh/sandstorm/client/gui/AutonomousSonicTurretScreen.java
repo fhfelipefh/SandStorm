@@ -313,6 +313,10 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
         super.extractRenderState(extractor, mouseX, mouseY, delta);
     }
 
+    @Override
+    protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
+    }
+
     private void renderCardsGrid(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         int listTop = 62;
         int listBottom = height - 48;

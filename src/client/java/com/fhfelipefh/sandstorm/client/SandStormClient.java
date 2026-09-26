@@ -32,6 +32,7 @@ import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
 import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.CargoDroneRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyborgRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DesalinationFilterBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.HydroponicChamberBlockEntityRenderer;
@@ -115,7 +116,7 @@ public class SandStormClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(SandStormEntities.NUTRIENT_BOMB, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDWORM, SandwormRenderer::new);
-        EntityRendererRegistry.register(SandStormEntities.CARGO_DRONE, NoopRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.CARGO_DRONE, CargoDroneRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.EXCAVATOR_VEHICLE, NoopRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.MEGAZORD, NoopRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDBOARD, NoopRenderer::new);

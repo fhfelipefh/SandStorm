@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.block.SandMaglevRailBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
@@ -23,6 +24,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -35,10 +37,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
-import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.AABB;
 
 import java.util.Comparator;
@@ -118,7 +120,7 @@ public class ShowcaseAutomation {
         showcaseActive = true;
         BlockPos center = new BlockPos(0, 160, 0);
 
-        AABB showcaseArea = new AABB(center.getX() - 120, center.getY() - 100, center.getZ() - 120, center.getX() + 120, center.getY() + 120, center.getZ() + 120);
+        AABB showcaseArea = new AABB(center.getX() - 140, center.getY() - 100, center.getZ() - 140, center.getX() + 140, center.getY() + 120, center.getZ() + 140);
         List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, showcaseArea, e -> !(e instanceof ServerPlayer));
         for (Entity old : oldEntities) {
             old.discard();
@@ -128,8 +130,10 @@ public class ShowcaseAutomation {
         buildCentralPlaza(level, center);
         buildBlockCheckerboard(level, center);
         buildItemWing(level, center);
-        buildEntityWing(level, center, player);
+        buildEntityWing(level, center);
         buildMegastructureDomeShowcase(level, center);
+        buildMaglevTestTrack(level, center);
+        buildAutonomousCyborgFacility(level, center, player);
 
         player.setGameMode(GameType.CREATIVE);
         player.getAbilities().mayfly = true;
@@ -142,12 +146,11 @@ public class ShowcaseAutomation {
         level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "time set noon");
         level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "weather clear");
         SandstormWeatherHandler.getWeather().stopSandstorm();
-
     }
 
     private static void clearUnderneath(ServerLevel level, BlockPos center) {
-        for (int x = -26; x <= 26; x++) {
-            for (int z = -48; z <= 60; z++) {
+        for (int x = -70; x <= 70; x++) {
+            for (int z = -90; z <= 70; z++) {
                 for (int y = -64; y < center.getY(); y++) {
                     BlockPos p = new BlockPos(x, y, z);
                     if (!level.getBlockState(p).isAir()) {
@@ -158,7 +161,6 @@ public class ShowcaseAutomation {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static void buildCentralPlaza(ServerLevel level, BlockPos center) {
         for (int x = -4; x <= 4; x++) {
             for (int z = -4; z <= 4; z++) {
@@ -261,8 +263,256 @@ public class ShowcaseAutomation {
             }
 
             Block targetBlock = blocks.get(i);
-            level.setBlock(pedestalCenter.above(), targetBlock.defaultBlockState(), 3);
+            BlockPos targetPos = pedestalCenter.above();
+            level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
+            spawnBlockHologram(level, targetPos, targetBlock);
         }
+    }
+
+    private static void spawnBlockHologram(ServerLevel level, BlockPos blockPos, Block block) {
+        String name = block.getName().getString();
+        String role = getBlockExplanation(block);
+        spawnHologram(level, blockPos.getX() + 0.5, blockPos.getY() + 0.35, blockPos.getZ() + 0.5, "§e" + name);
+        spawnHologram(level, blockPos.getX() + 0.5, blockPos.getY() + 0.05, blockPos.getZ() + 0.5, "§7" + role);
+    }
+
+    private static String getBlockExplanation(Block block) {
+        if (block == SandStormBlocks.SAND_MAGLEV_RAIL) return "Trilho Maglev com Boost 1.8x";
+        if (block == SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR) return "Montagem Robotica de Megaestruturas";
+        if (block == SandStormBlocks.LITHO_PLASMA_EXTRACTOR) return "Extracao Magmatica de Litio e Plasma";
+        if (block == SandStormBlocks.SUPERCRITICAL_HEAT_EXCHANGER) return "Refrigeracao Termica Supercritica";
+        if (block == SandStormBlocks.AUTONOMOUS_SONIC_TURRET) return "Defesa Automatica por Pulsos Sonicos";
+        if (block == SandStormBlocks.PLASMA_SHIELD_GENERATOR) return "Cupula Protetora contra Tempestades";
+        if (block == SandStormBlocks.ORBITAL_MASS_DRIVER) return "Lancador Eletromagnetico de Satelites";
+        if (block == SandStormBlocks.ORBITAL_GROUND_STATION) return "Enlace de Telemetria e Satelites";
+        if (block == SandStormBlocks.HOLO_TACTICAL_SPIRE) return "Radar Tatico e Controle de Drones";
+        if (block == SandStormBlocks.QUANTUM_SLEEPER_POD) return "Criogenia, Ponto de Respawn e Clonagem";
+        if (block == SandStormBlocks.SOLID_STATE_ACCUMULATOR) return "Armazenamento Eletrico Massivo (500 kJ)";
+        if (block == SandStormBlocks.GRID_MONITOR_CONSOLE) return "Monitoramento Geral da Rede WPT";
+        if (block == SandStormBlocks.DEEP_CORE_BOREHOLE) return "Perfuracao Geotermica Profunda";
+        if (block == SandStormBlocks.DEEP_CORE_DRILL) return "Mineracao Robotica Automatizada";
+        if (block == SandStormBlocks.PRINTER_3D) return "Manufatura de Componentes e Itens";
+        if (block == SandStormBlocks.NANITE_FABRICATOR) return "Sintese de Nanotecnologia e Ligas";
+        if (block == SandStormBlocks.MOLECULAR_MODIFIER) return "Upgrade Molecular de Trajes e Armas";
+        if (block == SandStormBlocks.CYBORG_DOCKING_STATION) return "Recarga, Reparo e Manutencao";
+        if (block == SandStormBlocks.CYBORG_INCUBATOR_VAT) return "Montagem e Ativacao de Ciborgues";
+        if (block == SandStormBlocks.ATMOSPHERIC_TERRAFORMER) return "Restauracao Ecologica e Geracao de Oasis";
+        if (block == SandStormBlocks.HYDROPONIC_CHAMBER) return "Cultivo Hidroponico Acelerado";
+        if (block == SandStormBlocks.DESALINATION_FILTER) return "Dessalinizacao e Purificacao de Agua";
+        if (block == SandStormBlocks.DEW_CONDENSER) return "Condensacao de Umidade Atmosferica";
+        if (block == SandStormBlocks.BIOREACTOR_VAT) return "Processamento de Materia Organica";
+        if (block == SandStormBlocks.CHEMICAL_REFINERY) return "Refino Quimico e Sintese de Fluidos";
+        if (block == SandStormBlocks.BIO_REGENERATION_POD) return "Tratamento Medico e Cura Biologica";
+        if (block == SandStormBlocks.AUTO_ASSEMBLY_LINE) return "Automacao Industrial em Linha";
+        if (block == SandStormBlocks.THERMAL_GENERATOR) return "Conversao Termoeletrica em WPT";
+        if (block == SandStormBlocks.ACOUSTIC_DEFENSE_PYLON) return "Repulsor Sonico contra Vermes";
+        if (block == SandStormBlocks.SPECTRAL_SURVEY_TELESCOPE) return "Observatorio Espectral Espacial";
+        if (block == SandStormBlocks.KINETIC_RAILGUN) return "Canhao Eletromagnetico Balistico";
+        if (block == SandStormBlocks.WIRELESS_SOLAR_RECEIVER || block == SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2) return "Receptor Solar de Alta Eficiencia";
+        if (block == SandStormBlocks.WPT_RELAY_TOWER) return "Torre de Transmissao e Rele WPT";
+        if (block == SandStormBlocks.BURIED_TECH_RUINS) return "Ruina Tecnologica com Sucatas";
+        if (block == SandStormBlocks.KINETIC_SHIELD_GENERATOR) return "Gerador de Escudo Cinetico";
+        if (block == SandStormBlocks.HABITAT_DOME) return "Cupula Selada de Habitacao";
+        if (block == SandStormBlocks.ANCIENT_DATA_CORE) return "Nucleo de Dados Antigo";
+        if (block == SandStormBlocks.SANDSTONE_WORKBENCH) return "Bancada de Trabalho de Arenito";
+        if (block == SandStormBlocks.SANDSTONE_FURNACE) return "Fornalha Solar de Arenito";
+        if (block == SandStormBlocks.BRACKISH_AQUIFER) return "Aquifero Salobro Subterraneo";
+        if (block == SandStormBlocks.THUMPER) return "Dispositivo Sonico de Atencao";
+        if (block == SandStormBlocks.TITANIUM_SPIKE_WALL || block == SandStormBlocks.RETRACTABLE_SPIKE_WALL) return "Muralha de Espinhos Blindada";
+        if (block == SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER) return "Barreira de Espinhos Eletrizada";
+        if (block == SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL) return "Muralha de Quitina Corrosiva";
+        if (block == SandStormBlocks.KINETIC_FLOOR_SPIKES || block == SandStormBlocks.CRUSHING_SPIKE_GATE) return "Defesa Tatica de Espinhos";
+        return "Tecnologia Estrutural SandStorm";
+    }
+
+    private static void buildMaglevTestTrack(ServerLevel level, BlockPos center) {
+        int baseY = center.getY();
+
+        for (int x = -5; x >= -38; x--) {
+            for (int z = 9; z <= 11; z++) {
+                BlockPos bp = new BlockPos(x, baseY, z);
+                Block b = (z != 10) ? Blocks.CUT_SANDSTONE : (Math.abs(x) % 6 == 0 ? Blocks.SEA_LANTERN : Blocks.SMOOTH_SANDSTONE);
+                level.setBlock(bp, b.defaultBlockState(), 2);
+            }
+        }
+
+        int xMin = -58;
+        int xMax = -38;
+        int zMin = -2;
+        int zMax = 22;
+
+        for (int x = xMin - 1; x <= xMax + 1; x++) {
+            for (int z = zMin - 1; z <= zMax + 1; z++) {
+                BlockPos bp = new BlockPos(x, baseY, z);
+                boolean isEdge = (x == xMin - 1 || x == xMax + 1 || z == zMin - 1 || z == zMax + 1);
+                boolean isCorner = (x == xMin - 1 || x == xMax + 1) && (z == zMin - 1 || z == zMax + 1);
+                Block floor = isCorner ? Blocks.OCHRE_FROGLIGHT : (isEdge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_SANDSTONE);
+                level.setBlock(bp, floor.defaultBlockState(), 2);
+            }
+        }
+
+        for (int z = zMin; z <= zMax; z++) {
+            BlockPos pWest = new BlockPos(xMin, baseY + 1, z);
+            BlockPos pEast = new BlockPos(xMax, baseY + 1, z);
+            level.setBlock(pWest, SandStormBlocks.SAND_MAGLEV_RAIL.defaultBlockState().setValue(SandMaglevRailBlock.AXIS, Direction.Axis.Z), 3);
+            level.setBlock(pEast, SandStormBlocks.SAND_MAGLEV_RAIL.defaultBlockState().setValue(SandMaglevRailBlock.AXIS, Direction.Axis.Z), 3);
+        }
+
+        for (int x = xMin; x <= xMax; x++) {
+            BlockPos pNorth = new BlockPos(x, baseY + 1, zMin);
+            BlockPos pSouth = new BlockPos(x, baseY + 1, zMax);
+            level.setBlock(pNorth, SandStormBlocks.SAND_MAGLEV_RAIL.defaultBlockState().setValue(SandMaglevRailBlock.AXIS, Direction.Axis.X), 3);
+            level.setBlock(pSouth, SandStormBlocks.SAND_MAGLEV_RAIL.defaultBlockState().setValue(SandMaglevRailBlock.AXIS, Direction.Axis.X), 3);
+        }
+
+        BlockPos startSignPos = new BlockPos(xMax + 1, baseY + 1, 10);
+        spawnHologram(level, startSignPos.getX() + 0.5, startSignPos.getY() + 0.6, startSignPos.getZ() + 0.5, "§6[Pista de Testes Maglev]");
+        spawnHologram(level, startSignPos.getX() + 0.5, startSignPos.getY() + 0.3, startSignPos.getZ() + 0.5, "§bTrilhos Maglev 1.8x Aceleradores");
+
+        BlockPos trackChestPos = new BlockPos(xMax + 1, baseY + 1, 12);
+        level.setBlock(trackChestPos, Blocks.CHEST.defaultBlockState(), 3);
+        if (level.getBlockEntity(trackChestPos) instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(SandStormItems.SANDBOARD));
+            chest.setItem(1, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS));
+            chest.setItem(2, new ItemStack(Items.MINECART));
+            chest.setItem(3, new ItemStack(SandStormBlocks.SAND_MAGLEV_RAIL, 64));
+        }
+
+        SandboardEntity demoBoard = new SandboardEntity(SandStormEntities.SANDBOARD, level);
+        demoBoard.setPos(xMax + 0.5, baseY + 1.2, 10.5);
+        demoBoard.setPersistenceRequired();
+        level.addFreshEntity(demoBoard);
+    }
+
+    private static void buildAutonomousCyborgFacility(ServerLevel level, BlockPos center, ServerPlayer player) {
+        int baseY = center.getY();
+
+        for (int z = -25; z >= -36; z--) {
+            for (int x = -1; x <= 1; x++) {
+                BlockPos bp = new BlockPos(x, baseY, z);
+                Block b = (x != 0) ? Blocks.CUT_SANDSTONE : (Math.abs(z) % 4 == 0 ? Blocks.SEA_LANTERN : Blocks.SMOOTH_SANDSTONE);
+                level.setBlock(bp, b.defaultBlockState(), 2);
+            }
+        }
+
+        int xMin = -20;
+        int xMax = 20;
+        int zMin = -72;
+        int zMax = -36;
+
+        for (int x = xMin; x <= xMax; x++) {
+            for (int z = zMin; z <= zMax; z++) {
+                BlockPos bp = new BlockPos(x, baseY, z);
+                boolean edge = (x == xMin || x == xMax || z == zMin || z == zMax);
+                boolean light = (x % 5 == 0 && (z == zMin || z == zMax)) || (z % 5 == 0 && (x == xMin || x == xMax));
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_SANDSTONE);
+                level.setBlock(bp, b.defaultBlockState(), 2);
+            }
+        }
+
+        BlockPos entranceHolo = new BlockPos(0, baseY + 1, -38);
+        spawnHologram(level, entranceHolo.getX() + 0.5, entranceHolo.getY() + 0.8, entranceHolo.getZ() + 0.5, "§6[Complexo Industrial de Androides]");
+        spawnHologram(level, entranceHolo.getX() + 0.5, entranceHolo.getY() + 0.5, entranceHolo.getZ() + 0.5, "§bDemonstracao de Operacoes Autonomas");
+
+        BlockPos quarryCenter = new BlockPos(-10, baseY, -52);
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                BlockPos p = quarryCenter.offset(dx, 0, dz);
+                boolean border = (Math.abs(dx) == 4 || Math.abs(dz) == 4);
+                Block b = border ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_SANDSTONE;
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+        level.setBlock(quarryCenter.below(), Blocks.OCHRE_FROGLIGHT.defaultBlockState(), 3);
+        level.setBlock(quarryCenter.offset(-1, 0, -1), Blocks.RAW_COPPER_BLOCK.defaultBlockState(), 3);
+        level.setBlock(quarryCenter.offset(1, 0, 1), Blocks.RAW_IRON_BLOCK.defaultBlockState(), 3);
+
+        regeneratingRockPos = quarryCenter.above();
+        level.setBlock(regeneratingRockPos, SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
+
+        CyborgExcavatorEntity cyborgExc = new CyborgExcavatorEntity(SandStormEntities.CYBORG_EXCAVATOR, level);
+        cyborgExc.setPos(quarryCenter.getX() - 1.5, baseY + 1.0, quarryCenter.getZ() + 0.5);
+        cyborgExc.setOwnerUUID(player.getUUID());
+        cyborgExc.setEnergy(50000);
+        cyborgExc.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
+        cyborgExc.setZoneMin(regeneratingRockPos.offset(-2, -1, -2));
+        cyborgExc.setZoneMax(regeneratingRockPos.offset(2, 2, 2));
+        cyborgExc.setCustomName(Component.literal("§6Androide Minerador Autonomo"));
+        cyborgExc.setCustomNameVisible(true);
+        level.addFreshEntity(cyborgExc);
+        loopMiner = cyborgExc;
+
+        spawnHologram(level, quarryCenter.getX() + 0.5, baseY + 3.2, quarryCenter.getZ() + 0.5, "§6[Zona 1: Mineracao em Loop]");
+        spawnHologram(level, quarryCenter.getX() + 0.5, baseY + 2.9, quarryCenter.getZ() + 0.5, "§7Extracao e regeneracao continua de minerais");
+
+        BlockPos farmCenter = new BlockPos(10, baseY, -52);
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                BlockPos p = farmCenter.offset(dx, 0, dz);
+                boolean border = (Math.abs(dx) == 4 || Math.abs(dz) == 4);
+                if (border) {
+                    level.setBlock(p, Blocks.CUT_SANDSTONE.defaultBlockState(), 2);
+                } else if (dx == 0 && dz == 0) {
+                    level.setBlock(p.below(), Blocks.SEA_LANTERN.defaultBlockState(), 2);
+                    level.setBlock(p, Blocks.WATER.defaultBlockState(), 2);
+                } else {
+                    level.setBlock(p, Blocks.FARMLAND.defaultBlockState(), 2);
+                    Block crop = (Math.abs(dx + dz) % 3 == 0) ? Blocks.CARROTS : Blocks.WHEAT;
+                    level.setBlock(p.above(), crop.defaultBlockState(), 2);
+                }
+            }
+        }
+
+        BlockPos farmChest = farmCenter.offset(5, 1, 0);
+        level.setBlock(farmChest, Blocks.CHEST.defaultBlockState(), 3);
+        if (level.getBlockEntity(farmChest) instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(Items.WHEAT, 64));
+            chest.setItem(1, new ItemStack(Items.CARROT, 64));
+            chest.setItem(2, new ItemStack(Items.WHEAT_SEEDS, 64));
+        }
+
+        CyborgHarvesterEntity cyborgHarv = new CyborgHarvesterEntity(SandStormEntities.CYBORG_HARVESTER, level);
+        cyborgHarv.setPos(farmCenter.getX() + 1.5, baseY + 1.0, farmCenter.getZ() + 0.5);
+        cyborgHarv.setOwnerUUID(player.getUUID());
+        cyborgHarv.setEnergy(50000);
+        cyborgHarv.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
+        cyborgHarv.setZoneMin(farmCenter.offset(-4, 0, -4));
+        cyborgHarv.setZoneMax(farmCenter.offset(4, 2, 4));
+        cyborgHarv.setCustomName(Component.literal("§aAndroide Agricola Autonomo"));
+        cyborgHarv.setCustomNameVisible(true);
+        level.addFreshEntity(cyborgHarv);
+
+        spawnHologram(level, farmCenter.getX() + 0.5, baseY + 3.2, farmCenter.getZ() + 0.5, "§a[Zona 2: Agricultura Autonoma]");
+        spawnHologram(level, farmCenter.getX() + 0.5, baseY + 2.9, farmCenter.getZ() + 0.5, "§7Colheita e replantio de culturas");
+
+        BlockPos builderCenter = new BlockPos(0, baseY, -64);
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                BlockPos p = builderCenter.offset(dx, 0, dz);
+                boolean edge = (Math.abs(dx) == 4 || Math.abs(dz) == 3);
+                level.setBlock(p, edge ? Blocks.CUT_SANDSTONE.defaultBlockState() : Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+            }
+        }
+
+        BlockPos dockPos = builderCenter.offset(-2, 1, 0);
+        level.setBlock(dockPos, SandStormBlocks.CYBORG_DOCKING_STATION.defaultBlockState(), 3);
+
+        BlockPos incubatorPos = builderCenter.offset(2, 1, 0);
+        level.setBlock(incubatorPos, SandStormBlocks.CYBORG_INCUBATOR_VAT.defaultBlockState(), 3);
+
+        CyborgBuilderEntity cyborgBld = new CyborgBuilderEntity(SandStormEntities.CYBORG_BUILDER, level);
+        cyborgBld.setPos(builderCenter.getX() + 0.5, baseY + 1.0, builderCenter.getZ() + 1.5);
+        cyborgBld.setOwnerUUID(player.getUUID());
+        cyborgBld.setEnergy(50000);
+        cyborgBld.setRoutine(CyborgRoutine.PATROL_PERIMETER);
+        cyborgBld.setZoneMin(builderCenter.offset(-5, 0, -5));
+        cyborgBld.setZoneMax(builderCenter.offset(5, 3, 5));
+        cyborgBld.setCustomName(Component.literal("§bAndroide Construtor Supervisor"));
+        cyborgBld.setCustomNameVisible(true);
+        level.addFreshEntity(cyborgBld);
+
+        spawnHologram(level, builderCenter.getX() + 0.5, baseY + 3.2, builderCenter.getZ() + 0.5, "§b[Zona 3: Manutencao & Docking]");
+        spawnHologram(level, builderCenter.getX() + 0.5, baseY + 2.9, builderCenter.getZ() + 0.5, "§7Recarga, reparos e patrulha da base");
     }
 
     private static void buildMegastructureDomeShowcase(ServerLevel level, BlockPos center) {
@@ -426,7 +676,7 @@ public class ShowcaseAutomation {
         }
     }
 
-    private static void buildEntityWing(ServerLevel level, BlockPos center, ServerPlayer player) {
+    private static void buildEntityWing(ServerLevel level, BlockPos center) {
         int baseY = center.getY();
         double entityY = baseY + 1.0;
 
@@ -520,60 +770,18 @@ public class ShowcaseAutomation {
         builderDrone.setCustomNameVisible(true);
         level.addFreshEntity(builderDrone);
 
-        BlockPos miningPlatform = new BlockPos(0, baseY, -30);
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dz = -2; dz <= 2; dz++) {
-                BlockPos p = miningPlatform.offset(dx, 0, dz);
-                Block b = (Math.abs(dx) == 2 || Math.abs(dz) == 2) ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_SANDSTONE;
-                level.setBlock(p, b.defaultBlockState(), 3);
-            }
-        }
-        level.setBlock(miningPlatform.below(), Blocks.OCHRE_FROGLIGHT.defaultBlockState(), 3);
-
-        regeneratingRockPos = miningPlatform.above();
-        level.setBlock(regeneratingRockPos, SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
-
-        CyborgExcavatorEntity cyborgExc = new CyborgExcavatorEntity(SandStormEntities.CYBORG_EXCAVATOR, level);
-        cyborgExc.setPos(-1.5, entityY, -30.0);
-        cyborgExc.setOwnerUUID(player.getUUID());
-        cyborgExc.setEnergy(50000);
-        cyborgExc.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
-        cyborgExc.setZoneMin(regeneratingRockPos.offset(-1, -1, -1));
-        cyborgExc.setZoneMax(regeneratingRockPos.offset(1, 1, 1));
-        cyborgExc.setCustomName(Component.literal("§6Androide Minerador - Operacao em Loop"));
-        cyborgExc.setCustomNameVisible(true);
-        level.addFreshEntity(cyborgExc);
-        loopMiner = cyborgExc;
-
-        CyborgBuilderEntity cyborgBld = new CyborgBuilderEntity(SandStormEntities.CYBORG_BUILDER, level);
-        cyborgBld.setPos(1.5, entityY, -30.0);
-        cyborgBld.setOwnerUUID(player.getUUID());
-        cyborgBld.setEnergy(50000);
-        cyborgBld.setRoutine(CyborgRoutine.PATROL_PERIMETER);
-        cyborgBld.setCustomName(Component.literal("§eInspetor Androide - Supervisor"));
-        cyborgBld.setCustomNameVisible(true);
-        level.addFreshEntity(cyborgBld);
-
-        CyborgHarvesterEntity cyborgHarv = new CyborgHarvesterEntity(SandStormEntities.CYBORG_HARVESTER, level);
-        cyborgHarv.setPos(0.0, entityY, -32.0);
-        cyborgHarv.setOwnerUUID(player.getUUID());
-        cyborgHarv.setEnergy(50000);
-        cyborgHarv.setRoutine(CyborgRoutine.PATROL_PERIMETER);
-        cyborgHarv.setCustomName(Component.literal("§aAndroide Agricola"));
-        cyborgHarv.setCustomNameVisible(true);
-        level.addFreshEntity(cyborgHarv);
-
         SandwormEntity worm = new SandwormEntity(SandStormEntities.SANDWORM, level);
-        worm.setPos(0.0, entityY, -42.0);
+        worm.setPos(0.0, entityY, -82.0);
         worm.setShowcaseMode(true);
         worm.setWormSize(2, true);
         level.addFreshEntity(worm);
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dz = -2; dz <= 2; dz++) {
-                BlockPos p = new BlockPos(dx, baseY, -42 + dz);
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                BlockPos p = new BlockPos(dx, baseY, -82 + dz);
                 level.setBlock(p, Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 3);
             }
         }
+        spawnHologram(level, 0.5, baseY + 4.0, -82.0, "§c[Verme da Areia Gigante - Leviata]");
     }
 
     private static void placeEntityPedestal(ServerLevel level, BlockPos baseCenter) {
@@ -584,6 +792,18 @@ public class ShowcaseAutomation {
                 level.setBlock(p, b.defaultBlockState(), 3);
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void spawnHologram(ServerLevel level, double x, double y, double z, String text) {
+        EntityType<ArmorStand> armorStandType = (EntityType<ArmorStand>) (EntityType<?>) BuiltInRegistries.ENTITY_TYPE.getValue(SandStormMod.mcId("armor_stand"));
+        ArmorStand stand = new ArmorStand(armorStandType, level);
+        stand.setPos(x, y, z);
+        stand.setInvisible(true);
+        stand.setNoGravity(true);
+        stand.setCustomName(Component.literal(text));
+        stand.setCustomNameVisible(true);
+        level.addFreshEntity(stand);
     }
 
     @SuppressWarnings("unchecked")
