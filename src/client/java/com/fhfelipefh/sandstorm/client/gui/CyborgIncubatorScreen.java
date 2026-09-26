@@ -14,7 +14,7 @@ public class CyborgIncubatorScreen extends BaseMachineScreen<CyborgIncubatorMenu
     @Override
     protected void init() {
         super.init();
-        this.titleLabelX = 8;
+        this.titleLabelX = 26;
         this.titleLabelY = 6;
         this.inventoryLabelX = 8;
         this.inventoryLabelY = 72;

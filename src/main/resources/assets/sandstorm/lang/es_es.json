@@ -688,5 +688,22 @@
   "item.sandstorm.sar_geological_satellite": "Satélite SAR de Barrido Geológico",
   "tooltip.sandstorm.sar_geological_satellite_desc": "Radar de Apertura Sintética (SAR) orbital. Penetra las dunas para identificar yacimientos minerales y guiar ciborgs excavadores.",
   "item.sandstorm.orbital_kinetic_lance_satellite": "Satélite de Ataque Cinético Orbital",
-  "tooltip.sandstorm.orbital_kinetic_lance_satellite_desc": "Plataforma de defensa orbital con flechas hipersónicas de tungsteno. Provoca un impacto cinético devastador en la coordenada objetivo."
+  "tooltip.sandstorm.orbital_kinetic_lance_satellite_desc": "Plataforma de defensa orbital con flechas hipersónicas de tungsteno. Provoca un impacto cinético devastador en la coordenada objetivo.",
+  "megastructure.sandstorm.biosphere_dome": "Domo de la Biosfera",
+  "megastructure.sandstorm.planetary_citadel": "Ciudadela Planetaria",
+  "megastructure.sandstorm.orbital_launch_silo": "Silo de Lanzamiento",
+  "megastructure.sandstorm.desert_tech_pyramid": "Pirámide Tecnológica",
+  "gui.sandstorm.cyborg_telemetry.storage": "Almacenamiento",
+  "gui.sandstorm.cyborg_telemetry.dump": "DESCARGAR",
+  "gui.sandstorm.cyborg_telemetry.clear": "LIMPIAR",
+  "gui.sandstorm.biopod.standby": "STANDBY",
+  "gui.sandstorm.biopod.vacant": "VACANTE",
+  "megastructure.sandstorm.biosphere_dome.blocks": "Bloques: Hierro, Cristal Tintado, Linterna Marina",
+  "megastructure.sandstorm.planetary_citadel.blocks": "Bloques: Areniscas, Hierro, Barras de Hierro",
+  "megastructure.sandstorm.orbital_launch_silo.blocks": "Bloques: Obsidiana, Cobre en Bruto, Hierro",
+  "megastructure.sandstorm.desert_tech_pyramid.blocks": "Bloques: Areniscas, Oro, Linterna Marina",
+  "megastructure.sandstorm.status.done": "[COMPLETADO - CAMPO ACTIVO]",
+  "megastructure.sandstorm.status.building": "[EN CONSTRUCCIÓN]",
+  "megastructure.sandstorm.status.paused": "[PAUSADO - TORMENTA]",
+  "megastructure.sandstorm.status.standby": "[EN ESPERA]"
 }

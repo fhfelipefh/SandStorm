@@ -688,5 +688,22 @@
   "item.sandstorm.sar_geological_satellite": "SAR Geological Survey Satellite",
   "tooltip.sandstorm.sar_geological_satellite_desc": "Synthetic Aperture Radar satellite. Scans subsurface ore deposits and guides autonomous excavator cyborgs.",
   "item.sandstorm.orbital_kinetic_lance_satellite": "Orbital Kinetic Lance Satellite",
-  "tooltip.sandstorm.orbital_kinetic_lance_satellite_desc": "Orbital defense platform armed with hypersonic tungsten flechettes. Calls down devastating kinetic strikes on target coordinates."
+  "tooltip.sandstorm.orbital_kinetic_lance_satellite_desc": "Orbital defense platform armed with hypersonic tungsten flechettes. Calls down devastating kinetic strikes on target coordinates.",
+  "megastructure.sandstorm.biosphere_dome": "Biosphere Dome",
+  "megastructure.sandstorm.planetary_citadel": "Planetary Citadel",
+  "megastructure.sandstorm.orbital_launch_silo": "Orbital Launch Silo",
+  "megastructure.sandstorm.desert_tech_pyramid": "Desert Tech Pyramid",
+  "gui.sandstorm.cyborg_telemetry.storage": "Storage",
+  "gui.sandstorm.cyborg_telemetry.dump": "DUMP",
+  "gui.sandstorm.cyborg_telemetry.clear": "CLEAR",
+  "gui.sandstorm.biopod.standby": "STANDBY",
+  "gui.sandstorm.biopod.vacant": "VACANT",
+  "megastructure.sandstorm.biosphere_dome.blocks": "Blocks: Iron, Tinted Glass, Sea Lantern",
+  "megastructure.sandstorm.planetary_citadel.blocks": "Blocks: Sandstones, Iron, Iron Bars",
+  "megastructure.sandstorm.orbital_launch_silo.blocks": "Blocks: Obsidian, Raw Copper, Iron",
+  "megastructure.sandstorm.desert_tech_pyramid.blocks": "Blocks: Sandstones, Gold, Sea Lantern",
+  "megastructure.sandstorm.status.done": "[COMPLETED - FIELD ACTIVE]",
+  "megastructure.sandstorm.status.building": "[UNDER CONSTRUCTION]",
+  "megastructure.sandstorm.status.paused": "[PAUSED - SANDSTORM]",
+  "megastructure.sandstorm.status.standby": "[STANDBY]"
 }

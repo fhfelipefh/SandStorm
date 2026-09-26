@@ -267,7 +267,7 @@ public class MachineRecipeRegistry {
         List<MachineRecipe> list = List.of(
                 new MachineRecipe(
                         () -> new ItemStack(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR),
-                        () -> Component.literal("Domo da Biosfera"),
+                        () -> Component.translatable("megastructure.sandstorm.biosphere_dome"),
                         List.of(() -> new ItemStack(Blocks.IRON_BLOCK), () -> new ItemStack(Blocks.SEA_LANTERN)),
                         List.of(() -> new ItemStack(Blocks.TINTED_GLASS)),
                         50000,
@@ -275,7 +275,7 @@ public class MachineRecipeRegistry {
                 ),
                 new MachineRecipe(
                         () -> new ItemStack(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR),
-                        () -> Component.literal("Cidadela Planetaria"),
+                        () -> Component.translatable("megastructure.sandstorm.planetary_citadel"),
                         List.of(() -> new ItemStack(Blocks.SMOOTH_SANDSTONE), () -> new ItemStack(Blocks.CUT_SANDSTONE)),
                         List.of(() -> new ItemStack(Blocks.IRON_BLOCK), () -> new ItemStack(Blocks.CHISELED_SANDSTONE), () -> new ItemStack(Blocks.IRON_BARS)),
                         100000,
@@ -283,7 +283,7 @@ public class MachineRecipeRegistry {
                 ),
                 new MachineRecipe(
                         () -> new ItemStack(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR),
-                        () -> Component.literal("Silo de Lancamento"),
+                        () -> Component.translatable("megastructure.sandstorm.orbital_launch_silo"),
                         List.of(() -> new ItemStack(Blocks.OBSIDIAN), () -> new ItemStack(Blocks.RAW_COPPER_BLOCK)),
                         List.of(() -> new ItemStack(Blocks.IRON_BLOCK), () -> new ItemStack(Blocks.IRON_BARS)),
                         150000,
@@ -291,7 +291,7 @@ public class MachineRecipeRegistry {
                 ),
                 new MachineRecipe(
                         () -> new ItemStack(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR),
-                        () -> Component.literal("Piramide Tecnologica"),
+                        () -> Component.translatable("megastructure.sandstorm.desert_tech_pyramid"),
                         List.of(() -> new ItemStack(Blocks.CUT_SANDSTONE), () -> new ItemStack(Blocks.CHISELED_SANDSTONE)),
                         List.of(() -> new ItemStack(Blocks.GOLD_BLOCK), () -> new ItemStack(Blocks.SEA_LANTERN)),
                         200000,

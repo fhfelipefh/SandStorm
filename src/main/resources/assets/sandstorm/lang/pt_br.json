@@ -688,5 +688,22 @@
   "item.sandstorm.sar_geological_satellite": "Satélite SAR de Varredura Geológica",
   "tooltip.sandstorm.sar_geological_satellite_desc": "Radar de Abertura Sintética (SAR) orbital. Penetra as dunas para identificar jazidas de minérios e guiar ciborgues escavadores.",
   "item.sandstorm.orbital_kinetic_lance_satellite": "Satélite de Ataque Cinético Orbital",
-  "tooltip.sandstorm.orbital_kinetic_lance_satellite_desc": "Plataforma de defesa orbital com flechas hipersônicas de tungstênio. Causa impacto cinético devastador na coordenada alvo."
+  "tooltip.sandstorm.orbital_kinetic_lance_satellite_desc": "Plataforma de defesa orbital com flechas hipersônicas de tungstênio. Causa impacto cinético devastador na coordenada alvo.",
+  "megastructure.sandstorm.biosphere_dome": "Domo da Biosfera",
+  "megastructure.sandstorm.planetary_citadel": "Cidadela Planetária",
+  "megastructure.sandstorm.orbital_launch_silo": "Silo de Lançamento",
+  "megastructure.sandstorm.desert_tech_pyramid": "Pirâmide Tecnológica",
+  "gui.sandstorm.cyborg_telemetry.storage": "Armazenamento",
+  "gui.sandstorm.cyborg_telemetry.dump": "DESPEJAR",
+  "gui.sandstorm.cyborg_telemetry.clear": "LIMPAR",
+  "gui.sandstorm.biopod.standby": "STANDBY",
+  "gui.sandstorm.biopod.vacant": "LIVRE",
+  "megastructure.sandstorm.biosphere_dome.blocks": "Blocos: Ferro, Vidro Fumê, Lanterna do Mar",
+  "megastructure.sandstorm.planetary_citadel.blocks": "Blocos: Arenitos, Ferro, Barras de Ferro",
+  "megastructure.sandstorm.orbital_launch_silo.blocks": "Blocos: Obsidiana, Cobre Bruto, Ferro",
+  "megastructure.sandstorm.desert_tech_pyramid.blocks": "Blocos: Arenitos, Ouro, Lanterna do Mar",
+  "megastructure.sandstorm.status.done": "[CONCLUÍDO - CAMPO ATIVO]",
+  "megastructure.sandstorm.status.building": "[EM CONSTRUÇÃO]",
+  "megastructure.sandstorm.status.paused": "[PAUSADO - TEMPESTADE]",
+  "megastructure.sandstorm.status.standby": "[EM ESPERA]"
 }

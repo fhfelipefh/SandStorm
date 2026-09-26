@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.content.gui.MegastructureConstructorMenu;
 import com.fhfelipefh.sandstorm.content.megastructure.MegastructureBlueprint;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -69,6 +70,7 @@ public class MegastructureConstructorScreen extends BaseMachineScreen<Megastruct
             int energyColor = this.menu.getEnergy() < this.menu.getMaxEnergy() / 4 ? 0xFFFF1744 : 0xFF00E5FF;
             extractor.fill(energyX + 1, barY + 1, energyX + scaledEnergy, barY + barH - 1, energyColor);
         }
+        drawAdaptiveText(extractor, Component.literal(formatCompact(this.menu.getEnergy()) + " J"), energyX + 3, barY + 1, energyW - 6, 0xFFFFFFFF);
 
         int ledX = x + 86;
         int ledColor = this.menu.getLaserActive() ? 0xFFFF1744 : (this.menu.isPausedStorm() ? 0xFFFF9100 : (this.menu.isBuilding() ? 0xFF00E5FF : 0xFF455A64));
@@ -85,6 +87,7 @@ public class MegastructureConstructorScreen extends BaseMachineScreen<Megastruct
             int progColor = this.menu.isDone() ? 0xFF00E676 : 0xFF00E5FF;
             extractor.fill(progX + 1, barY + 1, progX + 1 + scaledProg, barY + barH - 1, progColor);
         }
+        drawAdaptiveText(extractor, Component.literal(pct + "%"), progX + 3, barY + 1, progW - 6, 0xFFFFFFFF);
 
         for (Slot slot : this.menu.slots) {
             int sx = x + slot.x;
@@ -144,18 +147,18 @@ public class MegastructureConstructorScreen extends BaseMachineScreen<Megastruct
             int built = this.menu.getConstructedBlocks();
             int total = this.menu.getTotalBlocks();
             MegastructureBlueprint bp = MegastructureBlueprint.byIndex(this.menu.getBlueprintIndex());
-            String status = this.menu.isDone() ? "§a[CONCLUÍDO - CAMPO ATIVO]" : (this.menu.isBuilding() ? "§e[EM CONSTRUÇÃO]" : (this.menu.isPausedStorm() ? "§c[PAUSADO - TEMPESTADE]" : "§7[STANDBY]"));
-            String blocksHint = switch (bp) {
-                case BIOSPHERE_DOME -> "§7Blocos: Ferro, Vidro Fume, Lanterna do Mar";
-                case PLANETARY_CITADEL -> "§7Blocos: Arenitos, Ferro, Barras de Ferro";
-                case ORBITAL_LAUNCH_SILO -> "§7Blocos: Obsidiana, Cobre Bruto, Ferro";
-                case DESERT_TECH_PYRAMID -> "§7Blocos: Arenitos, Ouro, Lanterna do Mar";
+            Component status = switch (this.menu.isDone() ? 0 : (this.menu.isBuilding() ? 1 : (this.menu.isPausedStorm() ? 2 : 3))) {
+                case 0 -> Component.translatable("megastructure.sandstorm.status.done").withStyle(ChatFormatting.GREEN);
+                case 1 -> Component.translatable("megastructure.sandstorm.status.building").withStyle(ChatFormatting.YELLOW);
+                case 2 -> Component.translatable("megastructure.sandstorm.status.paused").withStyle(ChatFormatting.RED);
+                default -> Component.translatable("megastructure.sandstorm.status.standby").withStyle(ChatFormatting.GRAY);
             };
+            Component blocksHint = Component.translatable("megastructure.sandstorm." + bp.getId() + ".blocks").withStyle(ChatFormatting.GRAY);
             extractor.setComponentTooltipForNextFrame(this.font, List.of(
-                    Component.literal("§6" + bp.getDisplayName()),
+                    Component.translatable("megastructure.sandstorm." + bp.getId()).withStyle(ChatFormatting.GOLD),
                     Component.literal("§bProgresso: §f" + built + "/" + total + " (" + pct + "%)"),
-                    Component.literal(status),
-                    Component.literal(blocksHint)
+                    status,
+                    blocksHint
             ), mouseX, mouseY);
         }
     }

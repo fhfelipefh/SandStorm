@@ -37,10 +37,10 @@ public class CyborgDockingStationScreen extends AbstractContainerScreen<CyborgDo
         int y = this.topPos;
 
         if (this.menu.isDocked()) {
-            int bx = x + 104;
-            int by = y + 62;
-            int bw = 64;
-            int bh = 14;
+            int bx = x + 108;
+            int by = y + 50;
+            int bw = 56;
+            int bh = 24;
             if (mx >= bx && mx <= bx + bw && my >= by && my <= by + bh) {
                 if (this.minecraft != null && this.minecraft.gameMode != null) {
                     this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 0);

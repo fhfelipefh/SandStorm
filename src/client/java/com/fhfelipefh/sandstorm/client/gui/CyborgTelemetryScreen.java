@@ -94,7 +94,7 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
     @Override
     protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         drawAdaptiveText(extractor, this.title, this.titleLabelX, this.titleLabelY, CHASSIS_WIDTH - 24, 0xFF00E5FF);
-        extractor.text(this.font, Component.literal("Armazenamento"), 31, 59, 0xFF78909C, false);
+        drawAdaptiveText(extractor, Component.translatable("gui.sandstorm.cyborg_telemetry.storage"), 31, 59, 65, 0xFF78909C);
         drawAdaptiveText(extractor, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, CHASSIS_WIDTH - 24, 0xFF78909C);
     }
 
