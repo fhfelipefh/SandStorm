@@ -1,0 +1,80 @@
+name: Test & Publish to CurseForge
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'gradle.properties'
+      - 'src/**'
+  workflow_dispatch: # Permite disparar manualmente pelo painel do GitHub se desejar
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extrair Versão do gradle.properties
+        id: get_version
+        run: |
+          VERSION=$(grep "^version=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
+          echo "MOD_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Versão detectada no projeto: $VERSION"
+
+      - name: Checar se a versão foi incrementada (Tag existe?)
+        id: check_tag
+        run: |
+          if git rev-parse "v${{ env.MOD_VERSION }}" >/dev/null 2>&1; then
+            echo "A versão v${{ env.MOD_VERSION }} já existe no histórico/tags. Nenhuma publicação necessária."
+            echo "publish=false" >> $GITHUB_OUTPUT
+          else
+            echo "Nova versão detectada: v${{ env.MOD_VERSION }}! Prosseguindo com testes e publicação."
+            echo "publish=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configurar Java 25
+        if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+          cache: 'gradle'
+
+      - name: Permissão de execução para gradlew
+        if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
+        run: chmod +x ./gradlew
+
+      - name: Executar Testes (Falha cancela tudo)
+        if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
+        run: ./gradlew test --no-daemon
+
+      - name: Compilar Mod (Jar)
+        if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
+        run: ./gradlew build --no-daemon
+
+      - name: Publicar no CurseForge
+        if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          curseforge-id: ${{ secrets.CURSEFORGE_PROJECT_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          files: 'build/libs/!(*-dev|-sources).jar'
+          name: "SandStorm v${{ env.MOD_VERSION }}"
+          version: ${{ env.MOD_VERSION }}
+          version-type: 'release'
+          game-versions: '1.21.4'
+          loaders: 'fabric'
+          fail-mode: 'fail'
+
+      - name: Criar Tag Git para a Nova Versão
+        if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ env.MOD_VERSION }}" -m "Release v${{ env.MOD_VERSION }}"
+          git push origin "v${{ env.MOD_VERSION }}"
