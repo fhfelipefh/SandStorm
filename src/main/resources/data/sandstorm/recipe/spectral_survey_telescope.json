@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    " C ",
+    " B "
+  ],
+  "key": {
+    "G": "minecraft:spyglass",
+    "C": "sandstorm:plasma_focus_crystal",
+    "B": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:spectral_survey_telescope"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "model": {
+    "model": "sandstorm:item/atmospheric_analyzer",
+    "type": "minecraft:model"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "lit=false": { "model": "sandstorm:block/acoustic_defense_pylon" },
+    "lit=true": { "model": "sandstorm:block/acoustic_defense_pylon_active" }
+  }
+}

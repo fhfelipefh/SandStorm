@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,lit=false": { "model": "sandstorm:block/litho_plasma_extractor" },
+    "facing=south,lit=false": { "model": "sandstorm:block/litho_plasma_extractor", "y": 180 },
+    "facing=west,lit=false": { "model": "sandstorm:block/litho_plasma_extractor", "y": 270 },
+    "facing=east,lit=false": { "model": "sandstorm:block/litho_plasma_extractor", "y": 90 },
+    "facing=north,lit=true": { "model": "sandstorm:block/litho_plasma_extractor_lit" },
+    "facing=south,lit=true": { "model": "sandstorm:block/litho_plasma_extractor_lit", "y": 180 },
+    "facing=west,lit=true": { "model": "sandstorm:block/litho_plasma_extractor_lit", "y": 270 },
+    "facing=east,lit=true": { "model": "sandstorm:block/litho_plasma_extractor_lit", "y": 90 }
+  }
+}

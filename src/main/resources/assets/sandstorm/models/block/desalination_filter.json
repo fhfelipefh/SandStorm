@@ -1,0 +1,176 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:translucent",
+  "display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.625, 0.625, 0.625]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "fixed": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "thirdperson_righthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.375, 0.375, 0.375]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 45, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 225, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.4, 0.4, 0.4]
+    }
+  },
+  "textures": {
+    "particle": "sandstorm:block/desalination_filter_casing",
+    "casing": "sandstorm:block/desalination_filter_casing",
+    "front": "sandstorm:block/desalination_filter_front",
+    "top": "sandstorm:block/desalination_filter_top",
+    "glass": "sandstorm:block/desalination_filter_glass",
+    "inside": "sandstorm:block/desalination_filter_inside",
+    "base": "sandstorm:block/desalination_filter_base"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [0, 0, 0],
+      "to": [16, 2, 16],
+      "faces": {
+        "down": {"uv": [0, 0, 16, 16], "texture": "#casing", "cullface": "down"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#base"},
+        "north": {"uv": [0, 14, 16, 16], "texture": "#casing"},
+        "south": {"uv": [0, 14, 16, 16], "texture": "#casing", "cullface": "south"},
+        "west": {"uv": [0, 14, 16, 16], "texture": "#casing", "cullface": "west"},
+        "east": {"uv": [0, 14, 16, 16], "texture": "#casing", "cullface": "east"}
+      }
+    },
+    {
+      "name": "top_roof",
+      "from": [0, 14, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "up": {"uv": [0, 0, 16, 16], "texture": "#top", "cullface": "up"},
+        "down": {"uv": [0, 0, 16, 16], "texture": "#inside"},
+        "north": {"uv": [0, 0, 16, 2], "texture": "#casing"},
+        "south": {"uv": [0, 0, 16, 2], "texture": "#casing", "cullface": "south"},
+        "west": {"uv": [0, 0, 16, 2], "texture": "#casing", "cullface": "west"},
+        "east": {"uv": [0, 0, 16, 2], "texture": "#casing", "cullface": "east"}
+      }
+    },
+    {
+      "name": "pillar_fl",
+      "from": [0, 2, 0],
+      "to": [2, 14, 2],
+      "faces": {
+        "north": {"uv": [0, 2, 2, 14], "texture": "#casing"},
+        "south": {"uv": [0, 2, 2, 14], "texture": "#inside"},
+        "west": {"uv": [0, 2, 2, 14], "texture": "#casing", "cullface": "west"},
+        "east": {"uv": [0, 2, 2, 14], "texture": "#inside"}
+      }
+    },
+    {
+      "name": "pillar_fr",
+      "from": [14, 2, 0],
+      "to": [16, 14, 2],
+      "faces": {
+        "north": {"uv": [14, 2, 16, 14], "texture": "#casing"},
+        "south": {"uv": [14, 2, 16, 14], "texture": "#inside"},
+        "west": {"uv": [14, 2, 16, 14], "texture": "#inside"},
+        "east": {"uv": [14, 2, 16, 14], "texture": "#casing", "cullface": "east"}
+      }
+    },
+    {
+      "name": "pillar_rl",
+      "from": [0, 2, 14],
+      "to": [2, 14, 16],
+      "faces": {
+        "north": {"uv": [0, 2, 2, 14], "texture": "#inside"},
+        "south": {"uv": [0, 2, 2, 14], "texture": "#casing", "cullface": "south"},
+        "west": {"uv": [14, 2, 16, 14], "texture": "#casing", "cullface": "west"},
+        "east": {"uv": [0, 2, 2, 14], "texture": "#inside"}
+      }
+    },
+    {
+      "name": "pillar_rr",
+      "from": [14, 2, 14],
+      "to": [16, 14, 16],
+      "faces": {
+        "north": {"uv": [14, 2, 16, 14], "texture": "#inside"},
+        "south": {"uv": [14, 2, 16, 14], "texture": "#casing", "cullface": "south"},
+        "west": {"uv": [14, 2, 16, 14], "texture": "#inside"},
+        "east": {"uv": [14, 2, 16, 14], "texture": "#casing", "cullface": "east"}
+      }
+    },
+    {
+      "name": "front_console",
+      "from": [1, 0.5, -0.6],
+      "to": [15, 3.5, 1.4],
+      "faces": {
+        "up": {"uv": [1, 7, 15, 9], "texture": "#front"},
+        "north": {"uv": [1, 9, 15, 14], "texture": "#front"},
+        "west": {"uv": [0, 9, 1, 14], "texture": "#casing"},
+        "east": {"uv": [15, 9, 16, 14], "texture": "#casing"}
+      }
+    },
+    {
+      "name": "front_glass",
+      "from": [2, 3.5, 0.8],
+      "to": [14, 14, 1.4],
+      "faces": {
+        "north": {"uv": [2, 2, 14, 14], "texture": "#glass"},
+        "south": {"uv": [2, 2, 14, 14], "texture": "#glass"}
+      }
+    },
+    {
+      "name": "back_glass",
+      "from": [2, 2, 14.6],
+      "to": [14, 14, 15.2],
+      "faces": {
+        "north": {"uv": [2, 2, 14, 14], "texture": "#glass"},
+        "south": {"uv": [2, 2, 14, 14], "texture": "#glass", "cullface": "south"}
+      }
+    },
+    {
+      "name": "left_glass",
+      "from": [0.8, 2, 2],
+      "to": [1.4, 14, 14],
+      "faces": {
+        "west": {"uv": [2, 2, 14, 14], "texture": "#glass", "cullface": "west"},
+        "east": {"uv": [2, 2, 14, 14], "texture": "#glass"}
+      }
+    },
+    {
+      "name": "right_glass",
+      "from": [14.6, 2, 2],
+      "to": [15.2, 14, 14],
+      "faces": {
+        "west": {"uv": [2, 2, 14, 14], "texture": "#glass"},
+        "east": {"uv": [2, 2, 14, 14], "texture": "#glass", "cullface": "east"}
+      }
+    },
+    {
+      "name": "tap_spigot",
+      "from": [15.2, 5, 7],
+      "to": [18, 7.5, 9],
+      "faces": {
+        "up": {"uv": [7, 5, 9, 7.5], "texture": "#casing"},
+        "down": {"uv": [7, 5, 9, 7.5], "texture": "#casing"},
+        "north": {"uv": [15.2, 5, 18, 7.5], "texture": "#casing"},
+        "south": {"uv": [15.2, 5, 18, 7.5], "texture": "#casing"},
+        "east": {"uv": [7, 5, 9, 7.5], "texture": "#casing"}
+      }
+    }
+  ]
+}

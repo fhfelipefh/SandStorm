@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,lit=false": { "model": "sandstorm:block/kinetic_railgun" },
+    "facing=south,lit=false": { "model": "sandstorm:block/kinetic_railgun", "y": 180 },
+    "facing=west,lit=false": { "model": "sandstorm:block/kinetic_railgun", "y": 270 },
+    "facing=east,lit=false": { "model": "sandstorm:block/kinetic_railgun", "y": 90 },
+    "facing=north,lit=true": { "model": "sandstorm:block/kinetic_railgun_lit" },
+    "facing=south,lit=true": { "model": "sandstorm:block/kinetic_railgun_lit", "y": 180 },
+    "facing=west,lit=true": { "model": "sandstorm:block/kinetic_railgun_lit", "y": 270 },
+    "facing=east,lit=true": { "model": "sandstorm:block/kinetic_railgun_lit", "y": 90 }
+  }
+}

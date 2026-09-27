@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "sandstorm",
+	"version": "${version}",
+	"name": "SandStorm",
+	"description": "Survive in a desolate desert planet and terraform it back to life.",
+	"authors": [
+		"fhfelipefh"
+	],
+	"contact": {
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/sandstorm",
+		"sources": "https://github.com/fhfelipefh/SandStorm",
+		"issues": "https://github.com/fhfelipefh/SandStorm/issues"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/sandstorm/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.fhfelipefh.sandstorm.core.SandStormMod"
+		],
+		"client": [
+			"com.fhfelipefh.sandstorm.client.SandStormClient"
+		]
+	},
+	"mixins": [
+		"sandstorm.mixins.json",
+		{
+			"config": "sandstorm.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": ">=26.2 <=26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"sodium": "*",
+		"iris": "*",
+		"lithium": "*"
+	}
+}

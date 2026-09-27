@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sandstorm:block/chemical_refinery"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/chemical_refinery",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/chemical_refinery",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/chemical_refinery",
+      "y": 270
+    }
+  }
+}

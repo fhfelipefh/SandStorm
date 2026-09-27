@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:empty_cartridge",
+    "sandstorm:neuroactive_alkaloids",
+    "sandstorm:mineral_salt"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:adrenal_stim"
+  }
+}

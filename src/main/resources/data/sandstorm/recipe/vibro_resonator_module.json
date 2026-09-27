@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " P ",
+    "RCR",
+    " S "
+  ],
+  "key": {
+    "P": "sandstorm:piezo_quartz_shard",
+    "R": "sandstorm:piezo_resonator",
+    "C": "sandstorm:circuit_board",
+    "S": "sandstorm:scrap_metal"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:vibro_resonator_module"
+  }
+}

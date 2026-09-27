@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GCG",
+    "PBP",
+    "SFS"
+  ],
+  "key": {
+    "G": "minecraft:glass",
+    "C": "sandstorm:circuit_board",
+    "P": "sandstorm:fluid_pipe",
+    "B": "sandstorm:chemical_refinery",
+    "S": "sandstorm:scrap_metal",
+    "F": "minecraft:iron_block"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:bioreactor_vat"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " L ",
+    "LCL",
+    " L "
+  ],
+  "key": {
+    "L": "sandstorm:raw_lithium_salts",
+    "C": "sandstorm:bio_coolant_canister"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:superheated_lithium_capsule"
+  }
+}

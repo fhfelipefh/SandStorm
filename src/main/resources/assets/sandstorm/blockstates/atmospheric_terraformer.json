@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/atmospheric_terraformer"
+    }
+  }
+}

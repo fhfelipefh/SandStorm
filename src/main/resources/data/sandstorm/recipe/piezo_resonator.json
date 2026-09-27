@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "minecraft:copper_ingot",
+    "P": "sandstorm:piezo_quartz_shard",
+    "R": "minecraft:redstone",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    " C ",
+    "RPR",
+    " W "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:piezo_resonator"
+  }
+}

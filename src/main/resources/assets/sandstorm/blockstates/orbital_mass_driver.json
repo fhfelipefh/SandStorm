@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,lit=false": { "model": "sandstorm:block/orbital_mass_driver" },
+    "facing=south,lit=false": { "model": "sandstorm:block/orbital_mass_driver", "y": 180 },
+    "facing=west,lit=false": { "model": "sandstorm:block/orbital_mass_driver", "y": 270 },
+    "facing=east,lit=false": { "model": "sandstorm:block/orbital_mass_driver", "y": 90 },
+    "facing=north,lit=true": { "model": "sandstorm:block/orbital_mass_driver_lit" },
+    "facing=south,lit=true": { "model": "sandstorm:block/orbital_mass_driver_lit", "y": 180 },
+    "facing=west,lit=true": { "model": "sandstorm:block/orbital_mass_driver_lit", "y": 270 },
+    "facing=east,lit=true": { "model": "sandstorm:block/orbital_mass_driver_lit", "y": 90 }
+  }
+}

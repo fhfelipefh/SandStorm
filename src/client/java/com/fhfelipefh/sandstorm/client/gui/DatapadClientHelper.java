@@ -1,0 +1,82 @@
+package com.fhfelipefh.sandstorm.client.gui;
+
+import com.fhfelipefh.sandstorm.content.item.SurvivalDatapadItem;
+import net.minecraft.client.Minecraft;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class DatapadClientHelper {
+    private static final Set<String> CLAIMED_QUESTS = new HashSet<>();
+    private static final Set<String> COMPLETED_CONDITIONS = new HashSet<>();
+
+    public static void initialize() {
+        SurvivalDatapadItem.setClientScreenOpener(() -> {
+            Minecraft client = Minecraft.getInstance();
+            if (client != null) {
+                client.setScreenAndShow(new SurvivalDatapadScreen());
+            }
+        });
+    }
+
+    public static void setQuests(List<String> questIds, List<String> conditionTags) {
+        CLAIMED_QUESTS.clear();
+        CLAIMED_QUESTS.addAll(questIds);
+        COMPLETED_CONDITIONS.clear();
+        COMPLETED_CONDITIONS.addAll(conditionTags);
+    }
+
+    public static void setClaimedQuests(List<String> questIds) {
+        setQuests(questIds, List.of());
+    }
+
+    public static void setCompletedConditions(List<String> conditionTags) {
+        COMPLETED_CONDITIONS.clear();
+        COMPLETED_CONDITIONS.addAll(conditionTags);
+    }
+
+    public static boolean isQuestClaimed(String questId) {
+        return CLAIMED_QUESTS.contains(questId);
+    }
+
+    public static void addClaimedQuest(String questId) {
+        CLAIMED_QUESTS.add(questId);
+    }
+
+    public static void addCondition(String conditionTag) {
+        COMPLETED_CONDITIONS.add(conditionTag);
+    }
+
+    public static boolean isConditionMet(String conditionTag) {
+        return COMPLETED_CONDITIONS.contains(conditionTag);
+    }
+
+    public static Set<String> getClaimedQuests() {
+        return Collections.unmodifiableSet(CLAIMED_QUESTS);
+    }
+
+    public static Set<String> getCompletedConditions() {
+        return Collections.unmodifiableSet(COMPLETED_CONDITIONS);
+    }
+
+    private static boolean satelliteActive = false;
+    private static int nextStormSeconds = -1;
+
+    public static boolean isSatelliteActive() {
+        return satelliteActive || isConditionMet("sandstorm.satellite_active");
+    }
+
+    public static void setSatelliteActive(boolean active) {
+        satelliteActive = active;
+    }
+
+    public static int getNextStormSeconds() {
+        return nextStormSeconds;
+    }
+
+    public static void setNextStormSeconds(int seconds) {
+        nextStormSeconds = seconds;
+    }
+}

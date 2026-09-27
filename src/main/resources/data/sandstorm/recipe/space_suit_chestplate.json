@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "C": "sandstorm:sandworm_chitin"
+  },
+  "pattern": [
+    "C C",
+    "CBC",
+    "CCC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:space_suit_chestplate"
+  }
+}

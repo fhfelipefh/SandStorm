@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PNP",
+    "CBC",
+    "PTP"
+  ],
+  "key": {
+    "P": "sandstorm:piezo_resonator",
+    "N": "sandstorm:neural_synapse_link",
+    "C": "sandstorm:circuit_board",
+    "B": "sandstorm:bio_neural_core",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:quantum_mind_matrix"
+  }
+}

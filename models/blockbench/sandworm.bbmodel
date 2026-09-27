@@ -1,0 +1,314 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "java_block",
+    "box_uv": true
+  },
+  "name": "Sandworm",
+  "model_identifier": "sandstorm:sandworm",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "head_segment",
+      "box_uv": true,
+      "from": [
+        2,
+        2,
+        0
+      ],
+      "to": [
+        14,
+        14,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            2,
+            12,
+            14
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            2,
+            12,
+            14
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            2,
+            0,
+            14,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            2,
+            0,
+            14,
+            12
+          ],
+          "texture": 0
+        }
+      }
+    },
+    {
+      "name": "jaw_upper",
+      "box_uv": true,
+      "from": [
+        4,
+        12,
+        -4
+      ],
+      "to": [
+        12,
+        15,
+        2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            1,
+            12,
+            4
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            6,
+            4
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            1,
+            12,
+            4
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            6,
+            4
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            0,
+            12,
+            6
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            0,
+            12,
+            6
+          ],
+          "texture": 0
+        }
+      }
+    },
+    {
+      "name": "jaw_lower",
+      "box_uv": true,
+      "from": [
+        4,
+        1,
+        -4
+      ],
+      "to": [
+        12,
+        4,
+        2
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            12,
+            12,
+            15
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            12,
+            6,
+            15
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            4,
+            12,
+            12,
+            15
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            12,
+            6,
+            15
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            4,
+            10,
+            12,
+            16
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            4,
+            10,
+            12,
+            16
+          ],
+          "texture": 0
+        }
+      }
+    },
+    {
+      "name": "body_segment_1",
+      "box_uv": true,
+      "from": [
+        1,
+        1,
+        12
+      ],
+      "to": [
+        15,
+        15,
+        24
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            12,
+            15
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            1,
+            12,
+            15
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            1,
+            0,
+            15,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            1,
+            0,
+            15,
+            12
+          ],
+          "texture": 0
+        }
+      }
+    }
+  ],
+  "outliner": [
+    "head_segment",
+    "jaw_upper",
+    "jaw_lower",
+    "body_segment_1"
+  ],
+  "textures": [
+    {
+      "name": "sandworm",
+      "folder": "entity",
+      "namespace": "sandstorm",
+      "id": "0",
+      "particle": false,
+      "render_mode": "default",
+      "visible": true,
+      "mode": "bitmap",
+      "saved": true
+    }
+  ]
+}

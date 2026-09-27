@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "S": "sandstorm:silicon_wafer",
+    "R": "sandstorm:piezo_resonator"
+  },
+  "pattern": [
+    "ISI",
+    "SRS",
+    "ISI"
+  ],
+  "result": {
+    "count": 6,
+    "id": "sandstorm:sand_maglev_rail"
+  }
+}

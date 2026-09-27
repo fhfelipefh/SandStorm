@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "sandstorm:block/titanium_spike_wall",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "sandstorm:block/titanium_spike_wall"
+    },
+    "facing=north": {
+      "model": "sandstorm:block/titanium_spike_wall",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/titanium_spike_wall",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/titanium_spike_wall",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "sandstorm:block/titanium_spike_wall",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

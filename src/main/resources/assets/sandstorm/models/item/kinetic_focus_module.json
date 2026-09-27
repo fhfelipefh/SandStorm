@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "sandstorm:item/kinetic_focus_module"
+  }
+}

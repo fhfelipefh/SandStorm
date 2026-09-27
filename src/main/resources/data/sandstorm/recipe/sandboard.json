@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "B": "sandstorm:circuit_board",
+    "C": "sandstorm:sandworm_chitin",
+    "L": "minecraft:leather",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "LCL",
+    "SAS",
+    "CBC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:sandboard"
+  }
+}

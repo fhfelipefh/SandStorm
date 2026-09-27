@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": "sandstorm:mantle_alloy_ingot",
+    "S": "sandstorm:superconductor_toroid",
+    "A": "sandstorm:nano_actuator",
+    "P": "sandstorm:propellant_cartridge"
+  },
+  "pattern": [
+    "SMS",
+    "APA",
+    " M "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:vectored_thruster"
+  }
+}

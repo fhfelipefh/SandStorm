@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "triggered=false": {
+      "model": "sandstorm:block/kinetic_floor_spikes"
+    },
+    "triggered=true": {
+      "model": "sandstorm:block/kinetic_floor_spikes_extended"
+    }
+  }
+}

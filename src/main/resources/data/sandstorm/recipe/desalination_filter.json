@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:silicon_wafer",
+    "C": "minecraft:cauldron",
+    "G": "minecraft:glass",
+    "I": "minecraft:copper_ingot",
+    "S": "minecraft:smooth_sandstone"
+  },
+  "pattern": [
+    "IGI",
+    "ICI",
+    "SBS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:desalination_filter"
+  }
+}

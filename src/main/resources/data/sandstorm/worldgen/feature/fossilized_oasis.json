@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:ore",
+  "discard_chance_on_air_exposure": 0.0,
+  "size": 20,
+  "targets": [
+    {
+      "state": {
+        "id": "sandstorm:fossilized_amber"
+      },
+      "target": {
+        "block": "minecraft:stone",
+        "predicate_type": "minecraft:block_match"
+      }
+    },
+    {
+      "state": {
+        "id": "sandstorm:thermal_spring_stone"
+      },
+      "target": {
+        "block": "minecraft:deepslate",
+        "predicate_type": "minecraft:block_match"
+      }
+    },
+    {
+      "state": {
+        "id": "sandstorm:fossilized_amber"
+      },
+      "target": {
+        "block": "minecraft:diorite",
+        "predicate_type": "minecraft:block_match"
+      }
+    }
+  ]
+}

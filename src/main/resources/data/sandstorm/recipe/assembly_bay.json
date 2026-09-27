@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SMS",
+    "NAN",
+    "SMS"
+  ],
+  "key": {
+    "S": "sandstorm:structural_plate",
+    "M": "sandstorm:scrap_metal",
+    "A": "sandstorm:nano_actuator",
+    "N": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:assembly_bay"
+  }
+}

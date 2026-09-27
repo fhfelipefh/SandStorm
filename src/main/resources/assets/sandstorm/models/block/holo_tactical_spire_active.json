@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/holo_tactical_spire_side",
+    "north": "sandstorm:block/holo_tactical_spire_side",
+    "south": "sandstorm:block/holo_tactical_spire_side",
+    "east": "sandstorm:block/holo_tactical_spire_side",
+    "west": "sandstorm:block/holo_tactical_spire_side",
+    "up": "sandstorm:block/holo_tactical_spire_top_active",
+    "down": "sandstorm:block/holo_tactical_spire_bottom"
+  }
+}

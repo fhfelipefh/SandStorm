@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "LTL",
+    "TDT",
+    "LTL"
+  ],
+  "key": {
+    "L": "sandstorm:raw_lithium_salts",
+    "T": "sandstorm:titanium_chitin_composite",
+    "D": "minecraft:diamond"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:mantle_alloy_ingot"
+  }
+}

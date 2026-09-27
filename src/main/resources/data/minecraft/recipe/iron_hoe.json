@@ -1,0 +1,11 @@
+{
+  "ingredients": [
+    "minecraft:barrier"
+  ],
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "id": "minecraft:barrier"
+  },
+  "type": "minecraft:crafting_shapeless"
+}

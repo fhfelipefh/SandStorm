@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "active=false,facing=north": { "model": "sandstorm:block/spectral_survey_telescope" },
+    "active=false,facing=south": { "model": "sandstorm:block/spectral_survey_telescope", "y": 180 },
+    "active=false,facing=west": { "model": "sandstorm:block/spectral_survey_telescope", "y": 270 },
+    "active=false,facing=east": { "model": "sandstorm:block/spectral_survey_telescope", "y": 90 },
+    "active=true,facing=north": { "model": "sandstorm:block/spectral_survey_telescope_active" },
+    "active=true,facing=south": { "model": "sandstorm:block/spectral_survey_telescope_active", "y": 180 },
+    "active=true,facing=west": { "model": "sandstorm:block/spectral_survey_telescope_active", "y": 270 },
+    "active=true,facing=east": { "model": "sandstorm:block/spectral_survey_telescope_active", "y": 90 }
+  }
+}

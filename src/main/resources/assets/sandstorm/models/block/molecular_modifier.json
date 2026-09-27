@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "sandstorm:block/molecular_modifier_top",
+    "bottom": "sandstorm:block/molecular_modifier_bottom",
+    "side": "sandstorm:block/molecular_modifier_side",
+    "front": "sandstorm:block/molecular_modifier_front"
+  }
+}

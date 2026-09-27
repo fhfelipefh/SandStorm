@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,lit=false": { "model": "sandstorm:block/plasma_shield_generator" },
+    "facing=south,lit=false": { "model": "sandstorm:block/plasma_shield_generator", "y": 180 },
+    "facing=west,lit=false": { "model": "sandstorm:block/plasma_shield_generator", "y": 270 },
+    "facing=east,lit=false": { "model": "sandstorm:block/plasma_shield_generator", "y": 90 },
+    "facing=north,lit=true": { "model": "sandstorm:block/plasma_shield_generator_active" },
+    "facing=south,lit=true": { "model": "sandstorm:block/plasma_shield_generator_active", "y": 180 },
+    "facing=west,lit=true": { "model": "sandstorm:block/plasma_shield_generator_active", "y": 270 },
+    "facing=east,lit=true": { "model": "sandstorm:block/plasma_shield_generator_active", "y": 90 }
+  }
+}

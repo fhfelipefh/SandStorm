@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "sandstorm:halophyte_plant",
+    "sandstorm:chitinolytic_fungus",
+    "sandstorm:cryo_xerophilic_lichen",
+    "sandstorm:halophyte_succulent",
+    "sandstorm:dune_ephedra"
+  ]
+}

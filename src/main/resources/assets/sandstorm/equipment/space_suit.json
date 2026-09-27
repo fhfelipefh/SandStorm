@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "sandstorm:space_suit"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "sandstorm:space_suit"
+      }
+    ]
+  }
+}

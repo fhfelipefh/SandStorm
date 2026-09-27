@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/orbital_ground_station_front",
+    "north": "sandstorm:block/orbital_ground_station_front",
+    "south": "sandstorm:block/orbital_ground_station_side",
+    "east": "sandstorm:block/orbital_ground_station_side",
+    "west": "sandstorm:block/orbital_ground_station_side",
+    "up": "sandstorm:block/orbital_ground_station_top",
+    "down": "sandstorm:block/orbital_ground_station_bottom"
+  }
+}

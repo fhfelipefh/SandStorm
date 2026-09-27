@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sandstorm:block/desalination_filter"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/desalination_filter",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/desalination_filter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/desalination_filter",
+      "y": 270
+    }
+  }
+}

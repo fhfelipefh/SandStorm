@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "P": "sandstorm:smart_fluid_pipe",
+    "A": "sandstorm:nano_actuator",
+    "R": "minecraft:piston"
+  },
+  "pattern": [
+    "TPT",
+    "ARA",
+    " T "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:hydro_ballast_pump"
+  }
+}

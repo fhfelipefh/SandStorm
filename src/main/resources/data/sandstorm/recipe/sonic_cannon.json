@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "I": "minecraft:iron_ingot",
+    "L": "minecraft:lever",
+    "T": "sandstorm:sandworm_tooth",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "WTW",
+    "IBI",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:sonic_cannon"
+  }
+}

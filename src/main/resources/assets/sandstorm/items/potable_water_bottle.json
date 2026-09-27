@@ -1,0 +1,6 @@
+{
+  "model": {
+    "model": "sandstorm:item/potable_water_bottle",
+    "type": "minecraft:model"
+  }
+}

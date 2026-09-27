@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/acoustic_defense_pylon_side_active",
+    "north": "sandstorm:block/acoustic_defense_pylon_side_active",
+    "south": "sandstorm:block/acoustic_defense_pylon_side_active",
+    "east": "sandstorm:block/acoustic_defense_pylon_side_active",
+    "west": "sandstorm:block/acoustic_defense_pylon_side_active",
+    "up": "sandstorm:block/acoustic_defense_pylon_top",
+    "down": "sandstorm:block/acoustic_defense_pylon_bottom"
+  }
+}

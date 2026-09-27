@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=down,powered=false": {
+      "model": "sandstorm:block/retractable_spike_wall",
+      "x": 180
+    },
+    "facing=up,powered=false": {
+      "model": "sandstorm:block/retractable_spike_wall"
+    },
+    "facing=north,powered=false": {
+      "model": "sandstorm:block/retractable_spike_wall",
+      "x": 90
+    },
+    "facing=south,powered=false": {
+      "model": "sandstorm:block/retractable_spike_wall",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "sandstorm:block/retractable_spike_wall",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,powered=false": {
+      "model": "sandstorm:block/retractable_spike_wall",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down,powered=true": {
+      "model": "sandstorm:block/retractable_spike_wall_extended",
+      "x": 180
+    },
+    "facing=up,powered=true": {
+      "model": "sandstorm:block/retractable_spike_wall_extended"
+    },
+    "facing=north,powered=true": {
+      "model": "sandstorm:block/retractable_spike_wall_extended",
+      "x": 90
+    },
+    "facing=south,powered=true": {
+      "model": "sandstorm:block/retractable_spike_wall_extended",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,powered=true": {
+      "model": "sandstorm:block/retractable_spike_wall_extended",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,powered=true": {
+      "model": "sandstorm:block/retractable_spike_wall_extended",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

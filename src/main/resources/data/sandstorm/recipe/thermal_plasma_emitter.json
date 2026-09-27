@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " M ",
+    "SCS",
+    " F "
+  ],
+  "key": {
+    "M": "sandstorm:radioprotective_melanin",
+    "S": "sandstorm:scrap_metal",
+    "C": "sandstorm:circuit_board",
+    "F": "sandstorm:fulgurite_glass"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:thermal_plasma_emitter"
+  }
+}

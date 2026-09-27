@@ -1,0 +1,385 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "java_block",
+    "box_uv": true
+  },
+  "name": "Megazord",
+  "model_identifier": "sandstorm:megazord",
+  "resolution": {
+    "width": 16,
+    "height": 16
+  },
+  "elements": [
+    {
+      "name": "torso_cockpit",
+      "box_uv": true,
+      "from": [
+        3,
+        10,
+        4
+      ],
+      "to": [
+        13,
+        18,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            3,
+            2,
+            13,
+            10
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            4,
+            2,
+            12,
+            10
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            3,
+            2,
+            13,
+            10
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            4,
+            2,
+            12,
+            10
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            3,
+            4,
+            13,
+            12
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            3,
+            4,
+            13,
+            12
+          ],
+          "texture": 0
+        }
+      }
+    },
+    {
+      "name": "leg_left",
+      "box_uv": true,
+      "from": [
+        3,
+        0,
+        5
+      ],
+      "to": [
+        7,
+        10,
+        11
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            3,
+            6,
+            7,
+            16
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            5,
+            6,
+            11,
+            16
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            3,
+            6,
+            7,
+            16
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            5,
+            6,
+            11,
+            16
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            3,
+            5,
+            7,
+            11
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            3,
+            5,
+            7,
+            11
+          ],
+          "texture": 0
+        }
+      }
+    },
+    {
+      "name": "leg_right",
+      "box_uv": true,
+      "from": [
+        9,
+        0,
+        5
+      ],
+      "to": [
+        13,
+        10,
+        11
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            9,
+            6,
+            13,
+            16
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            5,
+            6,
+            11,
+            16
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            9,
+            6,
+            13,
+            16
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            5,
+            6,
+            11,
+            16
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            9,
+            5,
+            13,
+            11
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            9,
+            5,
+            13,
+            11
+          ],
+          "texture": 0
+        }
+      }
+    },
+    {
+      "name": "sonic_arm_left",
+      "box_uv": true,
+      "from": [
+        0,
+        8,
+        3
+      ],
+      "to": [
+        3,
+        16,
+        7
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            8,
+            3,
+            16
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            3,
+            8,
+            7,
+            16
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            8,
+            3,
+            16
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            3,
+            8,
+            7,
+            16
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            3,
+            3,
+            7
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0,
+            3,
+            3,
+            7
+          ],
+          "texture": 0
+        }
+      }
+    },
+    {
+      "name": "sonic_arm_right",
+      "box_uv": true,
+      "from": [
+        13,
+        8,
+        3
+      ],
+      "to": [
+        16,
+        16,
+        7
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            13,
+            8,
+            16,
+            16
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            3,
+            8,
+            7,
+            16
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            13,
+            8,
+            16,
+            16
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            3,
+            8,
+            7,
+            16
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            13,
+            3,
+            16,
+            7
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            13,
+            3,
+            16,
+            7
+          ],
+          "texture": 0
+        }
+      }
+    }
+  ],
+  "outliner": [
+    "torso_cockpit",
+    "leg_left",
+    "leg_right",
+    "sonic_arm_left",
+    "sonic_arm_right"
+  ],
+  "textures": [
+    {
+      "name": "megazord",
+      "folder": "entity",
+      "namespace": "sandstorm",
+      "id": "0",
+      "particle": false,
+      "render_mode": "default",
+      "visible": true,
+      "mode": "bitmap",
+      "saved": true
+    }
+  ]
+}

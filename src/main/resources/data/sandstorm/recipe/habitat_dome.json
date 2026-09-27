@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "minecraft:glass",
+    "C": "sandstorm:circuit_board",
+    "N": "sandstorm:nano_actuator"
+  },
+  "pattern": [
+    "GGG",
+    "GCG",
+    "GNG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:habitat_dome"
+  }
+}

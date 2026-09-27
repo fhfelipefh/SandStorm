@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/deep_core_borehole_front_lit",
+    "north": "sandstorm:block/deep_core_borehole_front_lit",
+    "south": "sandstorm:block/deep_core_borehole_side",
+    "east": "sandstorm:block/deep_core_borehole_side",
+    "west": "sandstorm:block/deep_core_borehole_side",
+    "up": "sandstorm:block/deep_core_borehole_top",
+    "down": "sandstorm:block/deep_core_borehole_top"
+  }
+}

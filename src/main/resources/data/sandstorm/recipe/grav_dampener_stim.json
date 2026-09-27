@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:empty_cartridge",
+    "sandstorm:trehalose_sugar",
+    "sandstorm:piezo_quartz_shard"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:grav_dampener_stim"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:empty_cartridge",
+    "sandstorm:flexible_biopolymer",
+    "sandstorm:fulgurite_glass"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:stealth_nano_drape"
+  }
+}

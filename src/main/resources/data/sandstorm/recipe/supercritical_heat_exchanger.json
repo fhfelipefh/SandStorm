@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "FRF",
+    "STS",
+    "FMF"
+  ],
+  "key": {
+    "F": "sandstorm:thermal_radiator_fin",
+    "R": "sandstorm:smart_fluid_pipe",
+    "S": "sandstorm:structural_plate",
+    "T": "sandstorm:thermal_generator",
+    "M": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:supercritical_heat_exchanger"
+  }
+}

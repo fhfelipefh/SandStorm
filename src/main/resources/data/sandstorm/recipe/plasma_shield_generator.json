@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "STS",
+    "CKC",
+    "SMS"
+  ],
+  "key": {
+    "S": "sandstorm:structural_plate",
+    "T": "sandstorm:superconductor_toroid",
+    "C": "sandstorm:plasma_focus_crystal",
+    "K": "sandstorm:kinetic_shield_generator",
+    "M": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:plasma_shield_generator"
+  }
+}

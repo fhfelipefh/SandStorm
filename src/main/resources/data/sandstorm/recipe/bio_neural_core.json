@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " N ",
+    "MWM",
+    " A "
+  ],
+  "key": {
+    "N": "sandstorm:neuroactive_alkaloids",
+    "M": "sandstorm:radioprotective_melanin",
+    "W": "sandstorm:silicon_wafer",
+    "A": "sandstorm:nano_actuator"
+  },
+  "result": {
+    "id": "sandstorm:bio_neural_core",
+    "count": 1
+  }
+}

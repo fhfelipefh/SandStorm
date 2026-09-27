@@ -1,0 +1,6 @@
+{
+  "model": {
+    "model": "sandstorm:item/repair_tool",
+    "type": "minecraft:model"
+  }
+}

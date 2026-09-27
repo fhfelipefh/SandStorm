@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SGS",
+    "PBP",
+    "TCT"
+  ],
+  "key": {
+    "S": "sandstorm:structural_plate",
+    "G": "minecraft:glass",
+    "P": "sandstorm:pressure_seal",
+    "B": "sandstorm:bioreactor_vat",
+    "T": "sandstorm:fluid_pipe",
+    "C": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:bio_regeneration_pod"
+  }
+}

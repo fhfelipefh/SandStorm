@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "QFQ",
+    " S "
+  ],
+  "key": {
+    "S": "sandstorm:structural_plate",
+    "Q": "sandstorm:piezo_quartz_shard",
+    "F": "minecraft:amethyst_shard"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:plasma_focus_crystal"
+  }
+}

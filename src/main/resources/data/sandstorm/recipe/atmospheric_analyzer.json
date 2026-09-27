@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "C": "minecraft:clock",
+    "G": "minecraft:glass_pane",
+    "I": "minecraft:iron_ingot",
+    "O": "minecraft:copper_ingot"
+  },
+  "pattern": [
+    "ICI",
+    "GBG",
+    "IOI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:atmospheric_analyzer"
+  }
+}

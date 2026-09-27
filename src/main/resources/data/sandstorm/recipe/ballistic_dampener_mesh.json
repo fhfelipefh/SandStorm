@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " B ",
+    "SCS",
+    " B "
+  ],
+  "key": {
+    "B": "sandstorm:flexible_biopolymer",
+    "S": "sandstorm:structural_plate",
+    "C": "sandstorm:scrap_metal"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:ballistic_dampener_mesh"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "model": {
+    "model": "sandstorm:item/nano_actuator",
+    "type": "minecraft:model"
+  }
+}

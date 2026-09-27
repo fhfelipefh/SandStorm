@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/spectral_survey_telescope_top",
+    "north": "sandstorm:block/spectral_survey_telescope_side",
+    "south": "sandstorm:block/spectral_survey_telescope_side",
+    "east": "sandstorm:block/spectral_survey_telescope_side",
+    "west": "sandstorm:block/spectral_survey_telescope_side",
+    "up": "sandstorm:block/spectral_survey_telescope_top",
+    "down": "sandstorm:block/spectral_survey_telescope_bottom"
+  }
+}

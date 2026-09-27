@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/supercritical_heat_exchanger_front",
+    "north": "sandstorm:block/supercritical_heat_exchanger_front",
+    "south": "sandstorm:block/supercritical_heat_exchanger_side",
+    "east": "sandstorm:block/supercritical_heat_exchanger_side",
+    "west": "sandstorm:block/supercritical_heat_exchanger_side",
+    "up": "sandstorm:block/supercritical_heat_exchanger_top",
+    "down": "sandstorm:block/supercritical_heat_exchanger_top"
+  }
+}

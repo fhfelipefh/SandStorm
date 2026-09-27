@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "charging=false,facing=north,occupied=false": { "model": "sandstorm:block/cyborg_docking_station" },
+    "charging=false,facing=south,occupied=false": { "model": "sandstorm:block/cyborg_docking_station", "y": 180 },
+    "charging=false,facing=west,occupied=false": { "model": "sandstorm:block/cyborg_docking_station", "y": 270 },
+    "charging=false,facing=east,occupied=false": { "model": "sandstorm:block/cyborg_docking_station", "y": 90 },
+
+    "charging=false,facing=north,occupied=true": { "model": "sandstorm:block/cyborg_docking_station_active" },
+    "charging=false,facing=south,occupied=true": { "model": "sandstorm:block/cyborg_docking_station_active", "y": 180 },
+    "charging=false,facing=west,occupied=true": { "model": "sandstorm:block/cyborg_docking_station_active", "y": 270 },
+    "charging=false,facing=east,occupied=true": { "model": "sandstorm:block/cyborg_docking_station_active", "y": 90 },
+
+    "charging=true,facing=north,occupied=false": { "model": "sandstorm:block/cyborg_docking_station_active" },
+    "charging=true,facing=south,occupied=false": { "model": "sandstorm:block/cyborg_docking_station_active", "y": 180 },
+    "charging=true,facing=west,occupied=false": { "model": "sandstorm:block/cyborg_docking_station_active", "y": 270 },
+    "charging=true,facing=east,occupied=false": { "model": "sandstorm:block/cyborg_docking_station_active", "y": 90 },
+
+    "charging=true,facing=north,occupied=true": { "model": "sandstorm:block/cyborg_docking_station_active" },
+    "charging=true,facing=south,occupied=true": { "model": "sandstorm:block/cyborg_docking_station_active", "y": 180 },
+    "charging=true,facing=west,occupied=true": { "model": "sandstorm:block/cyborg_docking_station_active", "y": 270 },
+    "charging=true,facing=east,occupied=true": { "model": "sandstorm:block/cyborg_docking_station_active", "y": 90 }
+  }
+}

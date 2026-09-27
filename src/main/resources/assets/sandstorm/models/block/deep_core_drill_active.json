@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "sandstorm:block/deep_core_drill_top",
+    "bottom": "sandstorm:block/deep_core_drill_bottom",
+    "side": "sandstorm:block/deep_core_drill_side",
+    "front": "sandstorm:block/deep_core_drill_front_active"
+  }
+}

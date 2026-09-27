@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " F ",
+    "TCT",
+    " N "
+  ],
+  "key": {
+    "F": "sandstorm:fulgurite_glass",
+    "T": "sandstorm:titanium_chitin_composite",
+    "C": "sandstorm:circuit_board",
+    "N": "sandstorm:nano_actuator"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:atomic_phase_disrupter"
+  }
+}

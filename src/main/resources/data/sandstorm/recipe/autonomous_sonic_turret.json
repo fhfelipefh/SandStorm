@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "sandstorm:sonic_cannon",
+    "C": "sandstorm:circuit_board",
+    "P": "minecraft:piston",
+    "I": "minecraft:iron_block",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    " S ",
+    "RCR",
+    "IPI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:autonomous_sonic_turret"
+  }
+}

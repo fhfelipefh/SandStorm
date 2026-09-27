@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TCT",
+    "W B",
+    "TIT"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "C": "sandstorm:circuit_board",
+    "W": "sandstorm:wpt_relay_tower",
+    "B": "sandstorm:bio_coolant_canister",
+    "I": "sandstorm:solid_state_accumulator"
+  },
+  "result": {
+    "id": "sandstorm:cyborg_docking_station",
+    "count": 1
+  }
+}

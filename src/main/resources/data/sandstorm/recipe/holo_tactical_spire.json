@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TUT",
+    "CWC",
+    "TIT"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "U": "sandstorm:cybernetic_command_uplink",
+    "C": "sandstorm:circuit_board",
+    "W": "sandstorm:wpt_relay_tower",
+    "I": "sandstorm:solid_state_accumulator"
+  },
+  "result": {
+    "id": "sandstorm:holo_tactical_spire",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " G ",
+    "WCW",
+    " S "
+  ],
+  "key": {
+    "G": "sandstorm:geological_scanner",
+    "W": "sandstorm:silicon_wafer",
+    "C": "sandstorm:circuit_board",
+    "S": "sandstorm:scrap_metal"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:spectrometric_sifter"
+  }
+}

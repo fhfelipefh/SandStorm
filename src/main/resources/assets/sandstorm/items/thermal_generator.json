@@ -1,0 +1,6 @@
+{
+  "model": {
+    "model": "sandstorm:item/thermal_generator",
+    "type": "minecraft:model"
+  }
+}

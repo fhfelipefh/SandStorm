@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:anomaly_radar",
+    "C": "sandstorm:circuit_board",
+    "P": "sandstorm:propellant_cartridge",
+    "T": "sandstorm:titanium_chitin_composite",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "WAW",
+    "TCT",
+    " P "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:orbital_survey_satellite"
+  }
+}

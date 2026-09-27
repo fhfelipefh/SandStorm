@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "I": "minecraft:iron_block",
+    "P": "minecraft:piston",
+    "S": "minecraft:smooth_sandstone"
+  },
+  "pattern": [
+    " P ",
+    "IBI",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:thumper"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "sandstorm:block/quantum_sleeper_pod_top",
+    "bottom": "sandstorm:block/quantum_sleeper_pod_bottom",
+    "side": "sandstorm:block/quantum_sleeper_pod_side",
+    "front": "sandstorm:block/quantum_sleeper_pod_front_active"
+  }
+}

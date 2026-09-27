@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:auto_assembly_line",
+    "C": "sandstorm:circuit_board",
+    "P": "sandstorm:printer_3d",
+    "S": "sandstorm:solid_state_accumulator",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "TPT",
+    "CAC",
+    "TST"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:megastructure_constructor"
+  }
+}

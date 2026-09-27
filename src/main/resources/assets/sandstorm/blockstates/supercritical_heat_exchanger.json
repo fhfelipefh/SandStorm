@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,lit=false": { "model": "sandstorm:block/supercritical_heat_exchanger" },
+    "facing=south,lit=false": { "model": "sandstorm:block/supercritical_heat_exchanger", "y": 180 },
+    "facing=west,lit=false": { "model": "sandstorm:block/supercritical_heat_exchanger", "y": 270 },
+    "facing=east,lit=false": { "model": "sandstorm:block/supercritical_heat_exchanger", "y": 90 },
+    "facing=north,lit=true": { "model": "sandstorm:block/supercritical_heat_exchanger_lit" },
+    "facing=south,lit=true": { "model": "sandstorm:block/supercritical_heat_exchanger_lit", "y": 180 },
+    "facing=west,lit=true": { "model": "sandstorm:block/supercritical_heat_exchanger_lit", "y": 270 },
+    "facing=east,lit=true": { "model": "sandstorm:block/supercritical_heat_exchanger_lit", "y": 90 }
+  }
+}

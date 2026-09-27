@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "java_block",
+    "box_uv": true
+  },
+  "name": "raw_silicon",
+  "model_identifier": "sandstorm:raw_silicon",
+  "resolution": {
+    "width": 16,
+    "height": 16
+  },
+  "elements": [
+    {
+      "name": "crystal_core",
+      "box_uv": true,
+      "from": [5, 2, 5],
+      "to": [11, 10, 11],
+      "faces": {
+        "north": {"uv": [0, 0, 6, 8], "texture": 0},
+        "east": {"uv": [0, 0, 6, 8], "texture": 0},
+        "south": {"uv": [0, 0, 6, 8], "texture": 0},
+        "west": {"uv": [0, 0, 6, 8], "texture": 0},
+        "up": {"uv": [0, 0, 6, 6], "texture": 0},
+        "down": {"uv": [0, 0, 6, 6], "texture": 0}
+      }
+    },
+    {
+      "name": "crystal_apex",
+      "box_uv": true,
+      "from": [6, 10, 6],
+      "to": [10, 15, 10],
+      "rotation": {"origin": [8, 10, 8], "axis": "y", "angle": 22.5},
+      "faces": {
+        "north": {"uv": [0, 0, 4, 5], "texture": 0},
+        "east": {"uv": [0, 0, 4, 5], "texture": 0},
+        "south": {"uv": [0, 0, 4, 5], "texture": 0},
+        "west": {"uv": [0, 0, 4, 5], "texture": 0},
+        "up": {"uv": [0, 0, 4, 4], "texture": 0},
+        "down": {"uv": [0, 0, 4, 4], "texture": 0}
+      }
+    },
+    {
+      "name": "crystal_shard_side",
+      "box_uv": true,
+      "from": [3, 1, 6],
+      "to": [6, 7, 9],
+      "rotation": {"origin": [5, 4, 7], "axis": "z", "angle": -22.5},
+      "faces": {
+        "north": {"uv": [0, 0, 3, 6], "texture": 0},
+        "east": {"uv": [0, 0, 3, 6], "texture": 0},
+        "south": {"uv": [0, 0, 3, 6], "texture": 0},
+        "west": {"uv": [0, 0, 3, 6], "texture": 0},
+        "up": {"uv": [0, 0, 3, 3], "texture": 0},
+        "down": {"uv": [0, 0, 3, 3], "texture": 0}
+      }
+    }
+  ],
+  "outliner": ["crystal_core", "crystal_apex", "crystal_shard_side"],
+  "textures": [
+    {
+      "name": "raw_silicon",
+      "folder": "item",
+      "namespace": "sandstorm",
+      "id": "0",
+      "particle": false,
+      "render_mode": "default",
+      "visible": true,
+      "mode": "bitmap",
+      "saved": true
+    }
+  ]
+}

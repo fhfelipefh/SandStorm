@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:bucket",
+    "C": "sandstorm:circuit_board",
+    "F": "sandstorm:filter_cartridge",
+    "G": "minecraft:glass_pane",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "SGS",
+    "FCF",
+    "SBS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:dew_condenser"
+  }
+}

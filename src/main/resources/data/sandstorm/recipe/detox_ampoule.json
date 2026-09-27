@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:empty_cartridge",
+    "sandstorm:radioprotective_melanin",
+    "sandstorm:potable_water_bottle"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:detox_ampoule"
+  }
+}

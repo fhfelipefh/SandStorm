@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " P ",
+    "GOG",
+    " B "
+  ],
+  "key": {
+    "P": "sandstorm:pressure_seal",
+    "G": "sandstorm:osmolyte_glycerol",
+    "O": "sandstorm:potable_water_bottle",
+    "B": "sandstorm:flexible_biopolymer"
+  },
+  "result": {
+    "id": "sandstorm:bio_coolant_canister",
+    "count": 1
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "sandstorm:block/piezo_quartz_cluster"
+  }
+}

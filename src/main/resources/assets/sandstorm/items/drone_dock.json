@@ -1,0 +1,6 @@
+{
+  "model": {
+    "model": "sandstorm:item/drone_dock",
+    "type": "minecraft:model"
+  }
+}

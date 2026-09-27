@@ -1,0 +1,91 @@
+package com.fhfelipefh.sandstorm.content.item;
+
+import com.fhfelipefh.sandstorm.core.SandStormMod;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Item;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class SandStormItemsTest {
+
+    @Test
+    void shouldCreateValidItemKeyWithSandStormNamespace() {
+        ResourceKey<Item> key = SandStormMod.itemKey("raw_silicon");
+        assertNotNull(key);
+        assertEquals(Registries.ITEM, key.registryKey());
+        assertEquals("sandstorm", key.identifier().getNamespace());
+        assertEquals("raw_silicon", key.identifier().getPath());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "space_ration",
+            "space_suit_helmet",
+            "space_suit_chestplate",
+            "space_suit_leggings",
+            "space_suit_boots",
+            "brackish_water_bottle",
+            "sandworm_chitin",
+            "sandworm_tooth",
+            "raw_silicon",
+            "tool_base",
+            "electric_component",
+            "silicon_pickaxe",
+            "silicon_wafer",
+            "mineral_salt",
+            "potable_water_bottle",
+            "circuit_board",
+            "nano_actuator",
+            "anomaly_radar",
+            "tech_disc",
+            "scrap_metal",
+            "sonic_cannon",
+            "plasma_rifle",
+            "vibro_crysknife",
+            "atmospheric_analyzer",
+            "sandworm_spawn_egg",
+            "geological_scanner",
+            "field_probe",
+            "repair_tool",
+            "structural_plate",
+            "circuit_mount",
+            "pressure_seal",
+            "hypo_injector",
+            "adrenal_stim",
+            "biofoam_cartridge",
+            "myomer_stim",
+            "endothermic_serum",
+            "grav_dampener_stim",
+            "detox_ampoule",
+            "stealth_nano_drape",
+            "vibro_resonator_module",
+            "thermal_plasma_emitter",
+            "kinetic_focus_module",
+            "cavitation_frequency_core",
+            "atomic_phase_disrupter",
+            "spectrometric_sifter",
+            "self_healing_nanite_matrix",
+            "titanium_lattice_coating",
+            "ballistic_dampener_mesh",
+            "ablative_thermal_plating",
+            "pneumatic_fall_dampers",
+            "reactive_shock_plating",
+            "bio_regeneration_pod",
+            "cyborg_incubator_vat",
+            "biomechanical_chassis_frame",
+            "synthetic_myomer_bundle",
+            "bio_neural_core",
+            "bio_coolant_canister",
+            "assembled_cyborg_frame"
+    })
+    void shouldGenerateCorrectResourceKeysForCoreItems(String itemPath) {
+        ResourceKey<Item> key = SandStormMod.itemKey(itemPath);
+        assertEquals("sandstorm", key.identifier().getNamespace());
+        assertEquals(itemPath, key.identifier().getPath());
+    }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TST",
+    "SPS",
+    "TST"
+  ],
+  "key": {
+    "T": "sandstorm:structural_plate",
+    "S": "sandstorm:silicon_wafer",
+    "P": "sandstorm:piezo_quartz_shard"
+  },
+  "result": {
+    "count": 2,
+    "id": "sandstorm:thermal_radiator_fin"
+  }
+}

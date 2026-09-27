@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:empty_cartridge",
+    "sandstorm:osmolyte_glycerol",
+    "sandstorm:heavy_sap_bottle"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:endothermic_serum"
+  }
+}

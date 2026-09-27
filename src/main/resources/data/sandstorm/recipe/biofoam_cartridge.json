@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:empty_cartridge",
+    "sandstorm:chitosan_extract",
+    "sandstorm:flexible_biopolymer",
+    "sandstorm:electric_component"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:biofoam_cartridge"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " K ",
+    "TCT",
+    " M "
+  ],
+  "key": {
+    "K": "sandstorm:kinetic_slug",
+    "T": "sandstorm:superconductor_toroid",
+    "C": "sandstorm:circuit_board",
+    "M": "sandstorm:mantle_alloy_ingot"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:orbital_kinetic_lance_satellite"
+  }
+}

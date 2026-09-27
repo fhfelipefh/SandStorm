@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/cyborg_docking_station_side",
+    "north": "sandstorm:block/cyborg_docking_station_side",
+    "south": "sandstorm:block/cyborg_docking_station_side",
+    "east": "sandstorm:block/cyborg_docking_station_side",
+    "west": "sandstorm:block/cyborg_docking_station_side",
+    "up": "sandstorm:block/cyborg_docking_station_top_active",
+    "down": "sandstorm:block/cyborg_docking_station_bottom"
+  }
+}

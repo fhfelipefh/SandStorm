@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 150,
+  "experience": 0.25,
+  "ingredient": "sandstorm:heavy_sap_bottle",
+  "result": {
+    "count": 1,
+    "id": "sandstorm:flexible_biopolymer"
+  }
+}

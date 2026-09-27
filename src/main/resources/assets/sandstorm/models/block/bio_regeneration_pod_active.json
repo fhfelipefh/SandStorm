@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "sandstorm:block/bio_regeneration_pod_top_active",
+    "bottom": "sandstorm:block/bio_regeneration_pod_bottom",
+    "side": "sandstorm:block/bio_regeneration_pod_side",
+    "front": "sandstorm:block/bio_regeneration_pod_front_active"
+  }
+}

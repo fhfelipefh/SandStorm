@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sandstorm:block/nanite_fabricator"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/nanite_fabricator",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/nanite_fabricator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/nanite_fabricator",
+      "y": 270
+    }
+  }
+}

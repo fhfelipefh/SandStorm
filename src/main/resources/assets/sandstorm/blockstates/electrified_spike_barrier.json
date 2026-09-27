@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sandstorm:block/electrified_spike_barrier"
+    },
+    "facing=south": {
+      "model": "sandstorm:block/electrified_spike_barrier",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/electrified_spike_barrier",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "sandstorm:block/electrified_spike_barrier",
+      "y": 90
+    }
+  }
+}

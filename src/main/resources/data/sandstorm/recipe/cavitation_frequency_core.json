@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " Q ",
+    "RCR",
+    " W "
+  ],
+  "key": {
+    "Q": "sandstorm:piezo_quartz_shard",
+    "R": "sandstorm:raw_silicon",
+    "C": "sandstorm:circuit_board",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:cavitation_frequency_core"
+  }
+}

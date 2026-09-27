@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "B": "sandstorm:circuit_board",
+    "G": "minecraft:gold_ingot",
+    "R": "sandstorm:wireless_solar_receiver",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "GAG",
+    "BRB",
+    "GSG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:wireless_solar_receiver_tier2"
+  }
+}

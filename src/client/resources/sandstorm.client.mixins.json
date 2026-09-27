@@ -1,0 +1,21 @@
+{
+	"required": true,
+	"package": "com.fhfelipefh.sandstorm.client.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+		"SandStormClientMixin",
+		"HudAdaptiveTextMixin",
+		"ChatComponentAdaptiveMixin",
+		"SandstormFogMixin",
+		"FlashlightLightMixin",
+		"CompassIonInterferenceMixin",
+		"SandStormWorldPresetSelectionMixin",
+		"FirstPersonSuitArmMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

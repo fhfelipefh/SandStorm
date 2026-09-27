@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " P ",
+    "SCS",
+    "MAM"
+  ],
+  "key": {
+    "P": "sandstorm:orbital_recon_probe",
+    "S": "sandstorm:electric_component",
+    "C": "sandstorm:circuit_board",
+    "M": "sandstorm:silicon_wafer",
+    "A": "sandstorm:scrap_metal"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:orbital_ground_station"
+  }
+}

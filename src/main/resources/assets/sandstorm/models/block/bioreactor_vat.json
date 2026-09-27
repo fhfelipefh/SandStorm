@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "sandstorm:block/bioreactor_vat_top",
+    "bottom": "sandstorm:block/bioreactor_vat_bottom",
+    "side": "sandstorm:block/bioreactor_vat_side",
+    "front": "sandstorm:block/bioreactor_vat_front"
+  }
+}

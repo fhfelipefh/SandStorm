@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": "sandstorm:hydro_ballast_pump",
+    "T": "sandstorm:titanium_chitin_composite",
+    "M": "sandstorm:mantle_alloy_ingot",
+    "P": "sandstorm:smart_fluid_pipe"
+  },
+  "pattern": [
+    "THT",
+    "MPM",
+    "THT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:megazord_submersible_hull"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " P ",
+    "TET",
+    " N "
+  ],
+  "key": {
+    "P": "sandstorm:piezo_quartz_shard",
+    "T": "sandstorm:titanium_chitin_composite",
+    "E": "sandstorm:electric_component",
+    "N": "sandstorm:nano_actuator"
+  },
+  "result": {
+    "id": "sandstorm:piezo_hover_thruster",
+    "count": 1
+  }
+}

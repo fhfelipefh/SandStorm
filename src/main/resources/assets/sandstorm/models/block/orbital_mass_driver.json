@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "sandstorm:block/orbital_mass_driver_top",
+    "north": "sandstorm:block/orbital_mass_driver_side",
+    "south": "sandstorm:block/orbital_mass_driver_side",
+    "east": "sandstorm:block/orbital_mass_driver_side",
+    "west": "sandstorm:block/orbital_mass_driver_side",
+    "up": "sandstorm:block/orbital_mass_driver_top",
+    "down": "sandstorm:block/orbital_mass_driver_bottom"
+  }
+}

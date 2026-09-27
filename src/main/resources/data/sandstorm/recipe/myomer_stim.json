@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:empty_cartridge",
+    "sandstorm:neuroactive_alkaloids",
+    "sandstorm:sandworm_chitin"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:myomer_stim"
+  }
+}

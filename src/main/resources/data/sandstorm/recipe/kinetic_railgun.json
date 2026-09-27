@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TPT",
+    "TNT",
+    "SMS"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "P": "sandstorm:heavy_plasma_cannon",
+    "N": "sandstorm:nano_actuator",
+    "S": "sandstorm:structural_plate",
+    "M": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:kinetic_railgun"
+  }
+}

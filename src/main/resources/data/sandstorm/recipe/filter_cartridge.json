@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:empty_cartridge",
+    "minecraft:sand",
+    "minecraft:coal"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:filter_cartridge"
+  }
+}

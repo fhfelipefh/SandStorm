@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "sandstorm:block/wpt_relay_tower"
+    },
+    "active=true": {
+      "model": "sandstorm:block/wpt_relay_tower_active"
+    }
+  }
+}
