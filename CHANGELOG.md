@@ -5,6 +5,25 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.4.6] - 2026-09-27
+
+### ⚔️ Paredes de Espinhos & Barreiras Defensivas
+* **Colisão Perfurante & Caixa de Dano Físico**:
+  * Recuo de colisão de 1 pixel em todas as faces laterais (`COLLISION_SHAPE`), permitindo que entidades e jogadores encostando na parede cruzem a borda física e recebam dano de contato imediato (`entityInside`).
+* **Varredura Ativa Contínua por Proximidade**:
+  * Implementado ciclo de checagem proativa a cada 10 ticks (0.5s) com detecção expandida (`AABB.inflate(0.15)`). Mobs estáticos ou pressionando a parede recebem dano contínuo, repulsão cinética e efeitos sonoros/partículas sem ficarem imunes.
+  * **Paredes de Espinhos de Titânio**: 8.0 de dano de contato, repulsão de impacto e partículas críticas.
+  * **Barreiras de Quitina Corrosiva**: 6.0 de dano biológico, envenenamento e corrosão contínua da armadura do atacante.
+  * **Barreiras de Espinhos Eletrificadas**: 10.0 de dano de choque e lentidão paralisante quando energizadas (reduzido para 2.0 com traje espacial isolante); 4.0 de dano físico quando desenergizadas.
+  * **Espinhos Retráteis de Parede**: Dano esmagador de 14.0 ao armar e 10.0 de contato contínuo no modo estendido.
+  * **Espinhos Cinéticos de Chão**: Adicionada detecção lateral de penetração além da pisada vertical.
+* **Modelagem 3D & Texturas com Pontas Salientes**:
+  * Substituição dos antigos cubos lisos por modelos 3D com geometria pontiaguda tridimensional projetada para fora em todas as faces.
+  * Texturas atualizadas com detalhes metálicos, quitinosos e centelhas energizadas.
+  * Configuração isométrica calibrada para exibição adequada no GUI e inventário.
+
+---
+
 ## [1.4.5] - 2026-09-27
 
 ### 🚀 Correções Críticas, Lore Isolada & Deploy Oficial no CurseForge
