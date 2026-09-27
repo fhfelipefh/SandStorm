@@ -178,7 +178,7 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
                 "CONVERGÊNCIA",
                 "EVACUAÇÃO",
                 "COORDENAÇÃO",
-                "STANDBY"
+                "PRONTIDÃO"
         };
 
         int[] borderColors = {

@@ -28,7 +28,7 @@ public class BioRegenerationPodScreen extends BaseMachineScreen<BioRegenerationP
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         super.extractRenderState(extractor, mouseX, mouseY, delta);
         renderEcgMonitor(extractor);
-        renderFluidTank(extractor);
+        renderFluidTank(extractor, mouseX, mouseY);
     }
 
     private void renderEcgMonitor(GuiGraphicsExtractor extractor) {
@@ -73,16 +73,20 @@ public class BioRegenerationPodScreen extends BaseMachineScreen<BioRegenerationP
             extractor.fill(mx1 + px, waveY, mx1 + px + 1, waveY + 1, color);
         }
 
-        String bpmText = occupied ? "BPM: " + heartRate : "STANDBY";
-        int textColor = occupied ? 0xFF00E676 : 0xFF81C784;
-        extractor.text(this.font, Component.literal(bpmText), mx1 + 3, my1 + 2, textColor, false);
+        int mw = mx2 - mx1;
+        String topText = occupied ? this.menu.getHealthPercent() + "%" : "LIVRE";
+        int topWidth = this.font.width(topText);
+        int topColor = occupied ? 0xFF00E5FF : 0xFF81C784;
+        extractor.text(this.font, Component.literal(topText), mx1 + (mw - topWidth) / 2, my1 + 2, topColor, false);
 
-        String healthText = occupied ? this.menu.getHealthPercent() + "%" : "VACANT";
-        int healthColor = occupied ? 0xFF00E5FF : 0xFF90A4AE;
-        extractor.text(this.font, Component.literal(healthText), mx2 - this.font.width(healthText) - 3, my1 + 2, healthColor, false);
+        if (occupied) {
+            String bpmText = heartRate + " BPM";
+            int bpmWidth = this.font.width(bpmText);
+            extractor.text(this.font, Component.literal(bpmText), mx1 + (mw - bpmWidth) / 2, my2 - 10, 0xFF00E676, false);
+        }
     }
 
-    private void renderFluidTank(GuiGraphicsExtractor extractor) {
+    private void renderFluidTank(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         int x = this.leftPos;
         int y = this.topPos;
 
@@ -99,6 +103,11 @@ public class BioRegenerationPodScreen extends BaseMachineScreen<BioRegenerationP
             int fillTop = fy2 - fluidScaled;
             extractor.fill(fx1, fillTop, fx2, fy2, 0xFF00B0FF);
             extractor.fill(fx1, fillTop, fx2, fillTop + 1, 0xFF80D8FF);
+        }
+
+        if (mouseX >= fx1 && mouseX <= fx2 && mouseY >= fy1 && mouseY <= fy2) {
+            Component tooltip = Component.translatable("tooltip.sandstorm.fluid_tank_storage", this.menu.getFluidAmount(), this.menu.getMaxFluid());
+            extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
         }
     }
 }

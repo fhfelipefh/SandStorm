@@ -717,7 +717,7 @@ class GuiSymmetryAndTextClippingArchitectureTest {
         }
 
         Pattern centeringPattern = Pattern.compile("\\(\\s*(\\d+)\\s*-\\s*([A-Za-z0-9_]+)\\s*\\)\\s*/\\s*2");
-        Pattern verboseStagePattern = Pattern.compile("\"\\s*(STAGE|PORCENTAGEM|PERCENTAGE)\\b");
+        Pattern verboseStagePattern = Pattern.compile("\"\\s*(STAGE|PORCENTAGEM|PERCENTAGE|STANDBY|VACANT)\\b");
 
         try (Stream<Path> paths = Files.list(GUI_DIR)) {
             paths.filter(p -> p.toString().endsWith("Screen.java")).forEach(path -> {
@@ -777,6 +777,14 @@ class GuiSymmetryAndTextClippingArchitectureTest {
             }
             if (content.contains("\"STORM: \"")) {
                 violations.add("OrbitalGroundStationScreen: STORM label is in English. Must be localized or Portuguese (TEMPESTADE).");
+            }
+        }
+
+        Path podPath = GUI_DIR.resolve("BioRegenerationPodScreen.java");
+        if (Files.exists(podPath)) {
+            String content = Files.readString(podPath);
+            if (content.contains("STANDBY") || content.contains("VACANT")) {
+                violations.add("BioRegenerationPodScreen: STANDBY/VACANT are in English and overlap on my1 + 2!");
             }
         }
 
