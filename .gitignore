@@ -1,43 +1,90 @@
-# gradle
-
+# Gradle & Build Outputs
 .gradle/
 build/
 out/
 classes/
-
-# eclipse
-
-*.launch
-
-# idea
-
-.idea/
-*.iml
-*.ipr
-*.iws
-
-# vscode
-
-.settings/
-.vscode/
 bin/
-.classpath
-.project
 
-# macos
-
-*.DS_Store
-
-# fabric
-
-run/
-
-# java
-
+# Java & Runtime Crash Dumps
 hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
 logs/
-scratch/
+*.log
+crash-reports/
 
+# IDE & Editor Configurations
+# Eclipse
+*.launch
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code
+.vscode/
+
+# Operating System Files
+*.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# Fabric & Minecraft Runtime
+run/
+run-*/
+saves/
+
+# Secrets, Credentials, Tokens & Keys
+*.env
+*.env.*
+.env
+.env.*
+*.key
+*.pem
+*.keystore
+*.jks
+*.p12
+*.cer
+*.crt
+*.der
+secring.*
+pubring.*
+*secret*
+*credential*
+credentials.json
+auth.json
+token.json
+tokens.json
+*.token
+*.secret
+*.cred
+curseforge_key*
+curseforge_token*
+modrinth_token*
+github_token*
+
+# Local Developer Settings
+local.properties
+gradle.properties.local
+gradle-local.properties
+*.local
+
+# Temporary, Scratch & Internal Files
+scratch/
+.tmp/
+tmp/
+temp/
+.gemini/
+TASKS.md

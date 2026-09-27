@@ -28,7 +28,7 @@ No entanto, há um revés: os sistemas da nave acusam falha crítica nos motores
 | **Gerador de Escudo de Plasma**<br>*(Plasma Shield Generator)* | <img src="src/main/resources/assets/sandstorm/textures/block/plasma_shield_generator_front_active.png" width="64" height="64" alt="Plasma Shield Generator" /> | Gerador planetário de 1.000.000 J conectado à malha WPT. Projeta domo de contenção com repulsão dinâmica de vermes de areia colossais, desintegração de projéteis e choque cinético em ameaças. | `/sandstorm debug setup plasma_defense_complex` |
 | **Canhão Cinético Anti-Titã**<br>*(Kinetic Railgun)* | <img src="src/main/resources/assets/sandstorm/textures/block/kinetic_railgun_front_lit.png" width="64" height="64" alt="Kinetic Railgun" /><br><img src="src/main/resources/assets/sandstorm/textures/item/kinetic_slug.png" width="48" height="48" alt="Kinetic Slug" /> | Artilharia pesada ferroviária de 250.000 J. Varredura automática em 64m priorizando Sandworms, disparando projéteis hipercinéticos com 50.0 de dano e repulsão vetorial. | `/sandstorm debug setup plasma_defense_complex` |
 | **Pilão de Defesa Acústica**<br>*(Acoustic Defense Pylon)* | <img src="src/main/resources/assets/sandstorm/textures/block/acoustic_defense_pylon_side_active.png" width="64" height="64" alt="Acoustic Defense Pylon" /> | Torre perimétrica de cancelamento de ressonância sísmica em 32m de raio, suprimindo o acúmulo de passos e mineração que atrai predadores do subsolo. | `/sandstorm debug setup plasma_defense_complex` |
-| **Cápsula de Estase Quântica**<br>*(Quantum Sleeper Pod)* | <img src="src/main/resources/assets/sandstorm/textures/block/quantum_sleeper_pod_front_active.png" width="64" height="64" alt="Quantum Sleeper Pod Ativo" /><br><img src="src/main/resources/assets/sandstorm/textures/block/quantum_sleeper_pod_front_occupied.png" width="64" height="64" alt="Quantum Sleeper Pod Ocupado" /> | Câmara criogênica de 100.000 J conectada à malha WPT sem fio. Realiza a bio-síntese do corpo do clone consumindo nutrientes da Fase 21 e permite o **Ego-Casting** (transferência instantânea da mente com isolamento total de inventário e respawn por proximidade). | `/sandstorm debug setup clone_facility` |
+| **Cápsula de Estase Quântica**<br>*(Quantum Sleeper Pod)* | <img src="src/main/resources/assets/sandstorm/textures/block/quantum_sleeper_pod_front_active.png" width="64" height="64" alt="Quantum Sleeper Pod Ativo" /><br><img src="src/main/resources/assets/sandstorm/textures/block/quantum_sleeper_pod_front_occupied.png" width="64" height="64" alt="Quantum Sleeper Pod Ocupado" /> | Câmara criogênica de 100.000 J conectada à malha WPT sem fio. Realiza a bio-síntese do corpo do clone consumindo nutrientes e biocompostos (quitosana, trealose, glicerol) e permite o **Ego-Casting** (transferência instantânea da mente com isolamento total de inventário e respawn por proximidade). | `/sandstorm debug setup clone_facility` |
 | **Torre Holo-Tática & Radar 3D**<br>*(Holo-Tactical Spire)* | <img src="src/main/resources/assets/sandstorm/textures/block/holo_tactical_spire_side.png" width="64" height="64" alt="Holo-Tactical Spire" /><br><img src="src/main/resources/assets/sandstorm/textures/item/neural_synapse_link.png" width="48" height="48" alt="Neural Synapse Link" /> | Pilar de comando militar com cúpula holográfica. Conecta-se à mente de ciborgues autônomos via `neural_synapse_link`, transmitindo ordens macro-estratégicas e rastreando vibrações sísmicas em um raio de 48 blocos. | `/sandstorm debug setup cyborg_outpost` |
 | **Incubadora Criogênica de Ciborgues**<br>*(Cyborg Incubator Vat)* | <img src="src/main/resources/assets/sandstorm/textures/block/cyborg_incubator_vat_front_active.png" width="64" height="64" alt="Cyborg Incubator" /> | Tanque biônico com fluido eletrolítico de titânio para montagem e impressão celular de ciborgues especialistas (mineradores, construtores e coletores de biomassa). | `/sandstorm debug setup cyborg_outpost` |
 | **Doca de Recarga Rápida**<br>*(Cyborg Docking Station)* | <img src="src/main/resources/assets/sandstorm/textures/block/cyborg_docking_station_top_active.png" width="64" height="64" alt="Cyborg Docking Station" /> | Plataforma de indução eletromagnética para carregamento rápido e sincronização de telemetria dos robôs em operação autônoma contínua. | `/sandstorm debug setup cyborg_outpost` |
@@ -39,19 +39,20 @@ No entanto, há um revés: os sistemas da nave acusam falha crítica nos motores
 | **Impressora 3D Industrial**<br>*(Printer 3D)* | <img src="src/main/resources/assets/sandstorm/textures/block/printer_3d.png" width="64" height="64" alt="3D Printer" /> | Manufatura aditiva de precisão para wafers de silício, placas de circuito integrado e ferramentas científicas. | `/sandstorm debug setup starter_base` |
 | **Fabricador de Nanorobôs**<br>*(Nanite Fabricator)* | <img src="src/main/resources/assets/sandstorm/textures/block/nanite_fabricator.png" width="64" height="64" alt="Nanite Fabricator" /> | Síntese de nano-atuadores e circuitos avançados para maquinário pesado e montagem de mechas. | `/sandstorm debug setup starter_base` |
 
-## ⚙️ Mecânicas Principais
+## ⚙️ Pilares de Jogabilidade & Mecânicas Centrais
 
-* **Traje Espacial de Suporte à Vida (Fase 1):** Esqueça monstros vanilla (zumbis e esqueletos são suprimidos). A verdadeira ameaça é o ambiente térmico. O traje é energizado por luz solar direta e regula sua temperatura corporal. No subsolo, a energia solar não chega e a bateria é consumida continuamente.
-* **Sem Camas e Ciclo Temporal Ininterrupto (Lore & Sobrevivência):** Camas do Minecraft vanilla são completamente desativadas e não podem ser colocadas nem utilizadas para dormir ou pular a noite. O traje espacial de suporte à vida mantém os parâmetros vitais do explorador operantes 24 horas por dia, eliminando qualquer necessidade biológica de repouso. O ciclo circadiano do planeta é implacável: não há atalho temporal para escapar do frio noturno ou de tempestades de areia, garantindo uma jogabilidade visceral onde a adaptação tecnológica é a única salvaguarda.
-* **A Ameaça Sísmica dos Vermes de Areia (Fase 3):** Movimentações rápidas e corridas acumulam vibrações na areia. Ao atingir o limiar sísmico, um Verme de Areia colossal emerge das profundezas.
-  * **Regra de Ouro da Indústria:** Os vermes caçam apenas alvos biológicos/jogadores. **Eles nunca destroem ou danificam suas máquinas e blocos industriais.**
-* **Emissores Sísmicos / Thumpers (Fase 3):** Pilares rítmicos posicionáveis no solo que emitem batimentos no solo para desviar vermes para posições controladas.
-* **Aquíferos e Dessalinização (Fase 2 e 4):** O subsolo arenoso abriga aquíferos de água salobra. A água bruta é tóxica se consumida sem tratamento, devendo ser purificada em **Filtros de Dessalinização** para produzir **Água Potável** e sal mineral.
-* **Tempestades de Areia (Fase 2):** Eventos climáticos periódicos que reduzem drasticamente a radiação solar (85%), mas abafam os ruídos do solo pela metade, criando janelas estratégicas de escavação.
-* **Arqueologia e Radar de Anomalias (Fase 5):** Dispositivos de varredura direcional detectam **Ruínas Tecnológicas Soterradas** e **Núcleos de Dados Ancestrais** sob as dunas para resgatar esquemas ópticos (`TECH_DISC`) e ligas pesadas (`SCRAP_METAL`).
-* **Logística Aérea Sem Vibração Sísmica (Fase 5):** **Drones de Carga Aérea** realizam transporte automatizado entre **Docas de Drones**, operando com ruído sísmico estritamente nulo (`0.0f`) para navegação 100% segura.
-* **Maquinário Pesado e Megazord (Fase 6):** Pátios de montagem industrial sintetizam **Veículos de Escavação Terrestre** e o titânico **Megazord de Combate**, equipado com **Canhões de Onda de Choque Sônica** capazes de conter vermes sem danificar fábricas.
-* **Endgame: Processadores Atmosféricos e Cúpulas de Oásis (Fase 7):** Em consonância com a lógica do Minecraft de **mundo infinito**, não existe um contador planetário global irrealista. A terraformação opera de forma setorial e cumulativa por máquina: cada **Processador Atmosférico** gera uma cúpula de microclima local em expansão (raio de até 18 blocos), convertendo areia em grama e solo fértil, reduzindo o calor e repelindo vermes da área da base. Fora das cúpulas, o mundo infinito permanece selvagem e inóspito.
+* **Traje Espacial & Suporte à Vida:** Esqueça monstros vanilla convencionais (zumbis e esqueletos são suprimidos para preservar a imersão planetária). A verdadeira ameaça é o ambiente térmico. O traje espacial é energizado por luz solar direta e regula continuamente a temperatura corporal do astronauta. No subsolo, a energia solar não penetra e a bateria interna é consumida progressivamente.
+* **Ciclo Circadiano Ininterrupto (Sem Pulo de Noite):** Camas vanilla são desativadas por lore e equilíbrio de jogo. O traje de suporte à vida mantém os parâmetros fisiológicos ativos 24 horas por dia, eliminando a necessidade biológica de repouso. Não há como pular o frio da noite ou tempestades de areia: o planejamento técnico e o isolamento de base são as únicas defesas.
+* **A Ameaça Sísmica dos Vermes de Areia:** Corridas bruscas, mineração e saltos acumulam vibrações na areia solta. Ao ultrapassar o limiar sísmico do setor, um Verme de Areia colossal emerge das profundezas.
+  * **Regra da Indústria:** Os vermes caçam alvos biológicos e vibrações cinéticas. **Eles nunca destroem ou danificam suas máquinas e estruturas industriais.**
+* **Iscas Acústicas (Thumpers):** Pilares sísmicos posicionáveis no solo que emitem pulsações rítmicas para desviar os vermes de areia e criar corredores de passagem seguros.
+* **Aquíferos Subterrâneos & Dessalinização Osmótica:** O subsolo arenoso abriga aquíferos de água salobra. A água bruta é tóxica se consumida sem tratamento, exigindo purificação em **Filtros de Dessalinização** para gerar **Água Potável** pura e subprodutos de sal mineral.
+* **Tempestades de Areia & Clima Extremo:** Eventos atmosféricos severos que reduzem a radiação solar (85%), mas amortecem os ruídos do solo pela metade, gerando janelas estratégicas de escavação e movimentação.
+* **Malha de Energia Sem Fio (WPT) & Armazenamento:** Receptores solares e torres retransmissoras transmitem energia por ressonância eletromagnética (WPT) diretamente para máquinas e baterias sem a necessidade de cabeamento manual complexo.
+* **Arqueologia Planetária & Radar de Anomalias:** Scanners direcionais com feedback de áudio detectam **Ruínas Tecnológicas Soterradas** e **Núcleos de Dados Ancestrais** sob as dunas, recuperando esquemas ópticos (`TECH_DISC`) e ligas metálicas (`SCRAP_METAL`).
+* **Logística Aérea Silenciosa:** **Drones de Carga Aérea** realizam transporte automatizado de insumos entre **Docas de Drones**, operando com ruído sísmico nulo (`0.0f`) para navegação 100% segura contra vermes.
+* **Manufatura Robótica & Mechas de Combate:** Pátios de montagem e impressoras 3D sintetizam **Veículos de Escavação Terrestre** e o titânico **Megazord de Combate**, equipado com **Canhões de Onda de Choque Sônica** que repelem e atordoam vermes sem quebrar o ecossistema da base.
+* **Terraformação Setorial & Cúpulas de Oásis (Endgame):** Em consonância com a geração de **mundo infinito** do Minecraft, não existe um contador arbitrário global. A terraformação é setorial: cada **Processador Atmosférico** gera uma cúpula de microclima ecológico dinâmico (raio de até 18 blocos), convertendo areia estéril em grama verdejante e lagos de água doce, reduzindo o calor e repelindo vermes. Fora do perímetro, o planeta selvagem permanece intacto e hostil.
 
 ---
 
@@ -121,7 +122,7 @@ graph TD;
 </details>
 
 <details>
-<summary><b>5. Fluxo de Clonagem Quântica, Ego-Casting & Respawn por Proximidade (Fase 29)</b></summary>
+<summary><b>5. Fluxo de Clonagem Quântica, Ego-Casting & Respawn por Proximidade</b></summary>
 
 ```mermaid
 graph TD;
@@ -153,7 +154,7 @@ graph TD;
 </details>
 
 <details>
-<summary><b>6. Fluxo de Enxame de Ciborgues, Docas de Recarga & Torre Holo-Tática (Fases 26 a 28)</b></summary>
+<summary><b>6. Fluxo de Enxame de Ciborgues, Docas de Recarga & Torre Holo-Tática</b></summary>
 
 ```mermaid
 graph TD;
@@ -186,7 +187,7 @@ graph TD;
 </details>
 
 <details>
-<summary><b>7. Fluxo de Construtor de Megaestruturas & Manufatura Holográfica 3D (Fase 19)</b></summary>
+<summary><b>7. Fluxo de Construtor de Megaestruturas & Manufatura Holográfica 3D</b></summary>
 
 ```mermaid
 graph TD;
@@ -217,7 +218,7 @@ graph TD;
 </details>
 
 <details>
-<summary><b>8. Fluxo de Fitoquímica de Extremófilos, Biorreatores & Farmacologia Médica (Fases 21 a 25)</b></summary>
+<summary><b>8. Fluxo de Fitoquímica de Extremófilos, Biorreatores & Farmacologia Médica</b></summary>
 
 ```mermaid
 graph TD;
@@ -240,7 +241,7 @@ graph TD;
     end
 
     subgraph "Aplicações de Alta Tecnologia"
-        M2 & M3 & M4 --> CLONE["Gestação de Clones Quânticos (Fase 29)"]
+        M2 & M3 & M4 --> CLONE["Gestação de Clones Quânticos"]
         M2 --> COMP["Compósito Titânio-Quitina (Ligas e Blindagens)"]
         M1 & M3 & M5 --> PHARM["Formulação Farmacológica de Ampolas Médicas"]
         PHARM --> HYPO["Hipo-Injetor Pneumático de Ação Rápida (Substitui Poções Vanilla)"]
@@ -250,7 +251,7 @@ graph TD;
 </details>
 
 <details>
-<summary><b>9. Fluxo de Grade de Defesa Planetária de Plasma, Canhão Cinético Anti-Titã & Grade Acústica (Fase 30)</b></summary>
+<summary><b>9. Fluxo de Grade de Defesa Planetária de Plasma, Canhão Cinético Anti-Titã & Grade Acústica</b></summary>
 
 ```mermaid
 graph TD;
@@ -286,7 +287,7 @@ graph TD;
 </details>
 
 <details>
-<summary><b>10. Fluxo de Mineração Geotérmica Profunda, Poço do Manto & Sifão Lito-Plasmático (Fase 31)</b></summary>
+<summary><b>10. Fluxo de Mineração Geotérmica Profunda, Poço do Manto & Sifão Lito-Plasmático</b></summary>
 
 ```mermaid
 graph TD;
@@ -404,7 +405,7 @@ Para criadores de conteúdo, desenvolvedores e administradores, o mod inclui com
 | **Fortaleza de Espinhos** | `/sandstorm debug setup spike_fortress` | Perímetro com paredes de titânio, espinhos eletrizados e portões motorizados |
 | **Base Inicial de Sobrevivência** | `/sandstorm debug setup starter_base` | Posto balanceado com filtro de dessalinização, água e energia solar |
 
-> **Kits de Inventário por Fase:** Obtenha os equipamentos e blocos de qualquer fase com `/sandstorm debug phase <1..31>` (ou `/sandstorm debug phase all` para o kit mestre completo).
+> **Kits de Demonstração e Equipamentos:** Obtenha conjuntos completos de equipamentos de desenvolvimento com o comando `/sandstorm debug phase all` ou gere instalações prontas para testes com `/sandstorm debug setup <instalação>`.
 
 ---
 
