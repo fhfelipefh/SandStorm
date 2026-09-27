@@ -19,12 +19,47 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extrair Versão do gradle.properties
-        id: get_version
+      - name: Extrair Metadados do Mod
+        id: get_metadata
         run: |
+          MOD_NAME=$(grep "^mod_name=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
+          if [ -z "$MOD_NAME" ]; then
+            MOD_NAME="SandStorm"
+          fi
+
           VERSION=$(grep "^version=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
+
+          MC_VERSION=$(grep "^minecraft_target_version=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
+          if [ -z "$MC_VERSION" ]; then
+            MC_VERSION=$(grep "^target_minecraft_version=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
+          fi
+          if [ -z "$MC_VERSION" ]; then
+            MC_VERSION="1.21.4"
+          fi
+
+          LOADER=$(grep "^mod_loader=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
+          if [ -z "$LOADER" ]; then
+            LOADER="Fabric"
+          fi
+          LOADER_LOWER=$(echo "$LOADER" | tr '[:upper:]' '[:lower:]')
+
+          RELEASE_TITLE="$MOD_NAME $VERSION ($LOADER $MC_VERSION)"
+
+          echo "MOD_NAME=$MOD_NAME" >> $GITHUB_ENV
           echo "MOD_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Versão detectada no projeto: $VERSION"
+          echo "MC_VERSION=$MC_VERSION" >> $GITHUB_ENV
+          echo "MOD_LOADER=$LOADER" >> $GITHUB_ENV
+          echo "MOD_LOADER_LOWER=$LOADER_LOWER" >> $GITHUB_ENV
+          echo "RELEASE_TITLE=$RELEASE_TITLE" >> $GITHUB_ENV
+
+          echo "=========================================="
+          echo "Metadados detectados dinamicamente:"
+          echo " - Mod: $MOD_NAME"
+          echo " - Versão do Mod: $VERSION"
+          echo " - Loader: $LOADER ($LOADER_LOWER)"
+          echo " - Minecraft: $MC_VERSION"
+          echo " - Título da Release: $RELEASE_TITLE"
+          echo "=========================================="
 
       - name: Checar se a versão foi incrementada (Tag existe?)
         id: check_tag
@@ -64,11 +99,11 @@ jobs:
           curseforge-id: ${{ secrets.CURSEFORGE_PROJECT_ID }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           files: 'build/libs/!(*-dev|-sources).jar'
-          name: "SandStorm v${{ env.MOD_VERSION }}"
+          name: ${{ env.RELEASE_TITLE }}
           version: ${{ env.MOD_VERSION }}
           version-type: 'release'
-          game-versions: '1.21.4'
-          loaders: 'fabric'
+          game-versions: ${{ env.MC_VERSION }}
+          loaders: ${{ env.MOD_LOADER_LOWER }}
           fail-mode: 'fail'
 
       - name: Criar Tag Git para a Nova Versão
