@@ -761,4 +761,26 @@ class GuiSymmetryAndTextClippingArchitectureTest {
         assertTrue(violations.isEmpty(),
                 "Found centered text overflowing container or using verbose labels:\n" + String.join("\n", violations));
     }
+
+    @Test
+    void buttonsMustNotOverlapScreenText() throws IOException {
+        List<String> violations = new ArrayList<>();
+        if (!Files.exists(GUI_DIR)) {
+            return;
+        }
+
+        Path orbitalPath = GUI_DIR.resolve("OrbitalGroundStationScreen.java");
+        if (Files.exists(orbitalPath)) {
+            String content = Files.readString(orbitalPath);
+            if (content.contains("y + 42") && content.contains("by = this.topPos + 70")) {
+                violations.add("OrbitalGroundStationScreen: Telemetry text at y + 42 (y=67..76) overlaps kinetic strike button at y=70!");
+            }
+            if (content.contains("\"STORM: \"")) {
+                violations.add("OrbitalGroundStationScreen: STORM label is in English. Must be localized or Portuguese (TEMPESTADE).");
+            }
+        }
+
+        assertTrue(violations.isEmpty(),
+                "Found buttons overlapping screen text or non-localized status labels:\n" + String.join("\n", violations));
+    }
 }

@@ -34,7 +34,7 @@ public class OrbitalGroundStationScreen extends AbstractContainerScreen<OrbitalG
         double mx = event.x();
         double my = event.y();
         int bx = this.leftPos + 98;
-        int by = this.topPos + 70;
+        int by = this.topPos + 71;
         int bw = 70;
         int bh = 14;
 
@@ -138,22 +138,22 @@ public class OrbitalGroundStationScreen extends AbstractContainerScreen<OrbitalG
 
     private void renderConstellationBadges(GuiGraphicsExtractor extractor) {
         int x = this.leftPos + 64;
-        int y = this.topPos + 25;
-
-        extractor.text(this.font, Component.literal("RECON: " + (this.menu.isWeatherActive() ? "ON" : "OFF")), x, y, this.menu.isWeatherActive() ? 0xFF00E676 : 0xFF546E7A, false);
-        extractor.text(this.font, Component.literal("SOLAR: " + (this.menu.isSolarActive() ? "ON" : "OFF")), x, y + 10, this.menu.isSolarActive() ? 0xFFFFD700 : 0xFF546E7A, false);
-        extractor.text(this.font, Component.literal("SAR GEO: " + (this.menu.isSarActive() ? "ON" : "OFF")), x, y + 20, this.menu.isSarActive() ? 0xFF00B0FF : 0xFF546E7A, false);
-        extractor.text(this.font, Component.literal("CINÉTICO: " + (this.menu.isLanceActive() ? "ARM" : "OFF")), x, y + 30, this.menu.isLanceActive() ? 0xFFFF1744 : 0xFF546E7A, false);
+        int y = this.topPos + 23;
 
         int secs = this.menu.getSecondsToStorm();
-        String stormLabel = secs > 0 ? "STORM: " + secs + "s" : "RADAR LIMPO";
-        int stormColor = secs > 0 && secs < 60 ? 0xFFFF1744 : (secs > 0 ? 0xFFFF9100 : 0xFF78909C);
-        extractor.text(this.font, Component.literal(stormLabel), x, y + 42, stormColor, false);
+        String stormLabel = secs > 0 ? "TEMPESTADE: " + secs + "s" : "RADAR: LIMPO";
+        int stormColor = secs > 0 && secs < 60 ? 0xFFFF1744 : (secs > 0 ? 0xFFFF9100 : 0xFF00E5FF);
+        extractor.text(this.font, Component.literal(stormLabel), x, y, stormColor, false);
+
+        extractor.text(this.font, Component.literal("RECON: " + (this.menu.isWeatherActive() ? "ON" : "OFF")), x, y + 9, this.menu.isWeatherActive() ? 0xFF00E676 : 0xFF546E7A, false);
+        extractor.text(this.font, Component.literal("SOLAR: " + (this.menu.isSolarActive() ? "ON" : "OFF")), x, y + 18, this.menu.isSolarActive() ? 0xFFFFD700 : 0xFF546E7A, false);
+        extractor.text(this.font, Component.literal("SAR GEO: " + (this.menu.isSarActive() ? "ON" : "OFF")), x, y + 27, this.menu.isSarActive() ? 0xFF00B0FF : 0xFF546E7A, false);
+        extractor.text(this.font, Component.literal("CINÉTICO: " + (this.menu.isLanceActive() ? "ARM" : "OFF")), x, y + 36, this.menu.isLanceActive() ? 0xFFFF1744 : 0xFF546E7A, false);
     }
 
     private void renderKineticButton(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         int bx = this.leftPos + 98;
-        int by = this.topPos + 70;
+        int by = this.topPos + 71;
         int bw = 70;
         int bh = 14;
 
@@ -184,8 +184,14 @@ public class OrbitalGroundStationScreen extends AbstractContainerScreen<OrbitalG
             extractor.setTooltipForNextFrame(this.font, Component.literal(energyText), mouseX, mouseY);
         }
 
+        if (mouseX >= x + 151 && mouseX <= x + 169 && mouseY >= y + 43 && mouseY <= y + 61) {
+            if (this.menu.getSlot(0).getItem().isEmpty()) {
+                extractor.setTooltipForNextFrame(this.font, Component.literal("Designador de Alvo Orbital"), mouseX, mouseY);
+            }
+        }
+
         int bx = x + 98;
-        int by = y + 70;
+        int by = y + 71;
         if (mouseX >= bx && mouseX <= bx + 70 && mouseY >= by && mouseY <= by + 14) {
             List<Component> tip = !this.menu.isLanceActive()
                     ? List.of(Component.literal("Lança Cinética Inativa"))
