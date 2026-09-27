@@ -1,33 +1,19 @@
-# SandStorm 🏜️
+# SandStorm <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/brands/curseforge.svg" width="30" align="top">
 
-## 📋 CurseForge Project Metadata
+**SandStorm** é um mod de sobrevivência, automação industrial e terraformação (Fabric 1.21.4).
 
-* **Project Name**: `SandStorm`
-* **Short Summary**: `Um mod de sobrevivência planetária, automação industrial e terraformação climática em um mundo deserto com vermes colossais.`
-* **Primary Category**: `Technology`
-* **Secondary Categories**: `Adventure and RPG`, `World Gen`, `Mobs`
-* **Supported Environment**: `Client & Server`
-* **Mod Loader**: `Fabric`
-* **Target Game Version**: `Minecraft 1.21.4`
-* **Project Avatar**: `curseforge_avatar_option1_dome.png`
+Você cai em um planeta infestado por **Vermes de Areia**. Sobreviva, construa máquinas, extraia água e transforme o deserto em um oásis.
 
----
+### ⚙️ Destaques
+* **Sobrevivência 24/7:** O Sol recarrega seu traje. Camas não funcionam.
+* **Vermes de Areia:** Eles caçam vibrações. Use *Thumpers* para distraí-los. (Máquinas são seguras).
+* **Indústria:** Transmissão de energia sem fio, dessalinização, drones e impressão 3D.
+* **Terraformação:** Cúpulas atmosféricas para criar áreas verdes habitáveis.
 
-## 📝 CurseForge Description
+### 📖 Como Jogar & Instalação
+Tudo o que você precisa saber (diagramas, itens, máquinas e tutoriais) está na **[Wiki Oficial do SandStorm no GitHub](https://github.com/fhfelipefh/SandStorm/wiki)**.
 
-# SandStorm 🏜️
-
-**SandStorm** é um mod de sobrevivência planetária, engenharia e terraformação para Minecraft 1.21.4 (Fabric). 
-
-Você caiu em um planeta deserto dominado por **Vermes de Areia** colossais. Sua nave quebrou. Agora, você precisa sobreviver, dominar o clima hostil, construir fábricas e terraformar o planeta para criar oásis.
-
-### ⚙️ Mecânicas Principais
-
-* **Traje Espacial**: Regula temperatura e recarrega no sol. Camas não funcionam, você precisa sobreviver 24/7.
-* **Vermes de Areia**: Eles caçam por vibrações (correr, minerar). Use *Thumpers* para distraí-los. Eles não destroem suas máquinas.
-* **Água e Energia**: Encontre aquíferos, purifique a água. Transmita energia solar sem fios para suas máquinas.
-* **Automação Industrial**: Impressoras 3D, drones de carga e defesas automatizadas (canhões, escudos de plasma).
-* **Terraformação**: Construa cúpulas atmosféricas para transformar a areia morta em oásis habitáveis.
+**Para instalar:** Recomendamos usar o **App do CurseForge** para baixar automaticamente as dependências (Fabric API). Clique em "Install" no topo da página.
 
 ### 🔗 Links
-* **Código Fonte & Issues**: [GitHub](https://github.com/fhfelipefh/SandStorm)
+* **Código Fonte & Reportar Bugs:** [GitHub](https://github.com/fhfelipefh/SandStorm)
