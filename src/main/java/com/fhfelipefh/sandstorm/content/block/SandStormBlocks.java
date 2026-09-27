@@ -11,6 +11,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.CyborgIncubatorVatBlockEnti
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreBoreholeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.DewCondenserBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
@@ -560,6 +561,11 @@ public class SandStormBlocks {
             SandStormMod.id("desalination_filter"),
             new BlockEntityType<>(DesalinationFilterBlockEntity::new, Set.of(DESALINATION_FILTER))
     );
+    public static final BlockEntityType<DewCondenserBlockEntity> DEW_CONDENSER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("dew_condenser"),
+            new BlockEntityType<>(DewCondenserBlockEntity::new, Set.of(DEW_CONDENSER))
+    );
     public static final BlockEntityType<ThermalGeneratorBlockEntity> THERMAL_GENERATOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("thermal_generator"),
@@ -734,6 +740,8 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, HYDROPONIC_CHAMBER_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, AUTONOMOUS_SONIC_TURRET_BE);
         FluidStorage.SIDED.registerForBlockEntity(DesalinationFilterBlockEntity::getFluidStorage, DESALINATION_FILTER_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, DEW_CONDENSER_BE);
+        FluidStorage.SIDED.registerForBlockEntity(DewCondenserBlockEntity::getFluidStorage, DEW_CONDENSER_BE);
         FluidStorage.SIDED.registerForBlockEntity(ThermalGeneratorBlockEntity::getFluidStorage, THERMAL_GENERATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SOLID_STATE_ACCUMULATOR_BE);
         FluidStorage.SIDED.registerForBlockEntity(SmartFluidPipeBlockEntity::getFluidStorage, SMART_FLUID_PIPE_BE);

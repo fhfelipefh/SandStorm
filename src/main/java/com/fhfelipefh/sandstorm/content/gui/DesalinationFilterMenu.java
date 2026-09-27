@@ -1,5 +1,8 @@
 package com.fhfelipefh.sandstorm.content.gui;
 
+import com.fhfelipefh.sandstorm.content.recipe.MachineRecipe;
+import com.fhfelipefh.sandstorm.content.recipe.MachineRecipeRegistry;
+import java.util.List;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -165,5 +168,65 @@ public class DesalinationFilterMenu extends AbstractContainerMenu implements Mac
             slot.onTake(player, originalStack);
         }
         return newStack;
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:desalination_filter");
+        if (id >= 0 && id < recipes.size()) {
+            MachineRecipe recipe = recipes.get(id);
+            fillSlot(0, recipe.getSlot0Inputs());
+            fillSlot(4, recipe.getSlot1Inputs());
+            return true;
+        }
+        return super.clickMenuButton(player, id);
+    }
+
+    private void fillSlot(int targetSlotIndex, List<ItemStack> accepted) {
+        Slot targetSlot = this.slots.get(targetSlotIndex);
+        if (targetSlot.hasItem()) {
+            boolean matches = false;
+            for (ItemStack candidate : accepted) {
+                if (targetSlot.getItem().is(candidate.getItem())) {
+                    matches = true;
+                    break;
+                }
+            }
+            if (matches) {
+                return;
+            }
+            ItemStack current = targetSlot.getItem();
+            if (this.moveItemStackTo(current, 5, 41, false)) {
+                if (current.isEmpty()) {
+                    targetSlot.set(ItemStack.EMPTY);
+                } else {
+                    targetSlot.setChanged();
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+        for (int i = 5; i < 41; i++) {
+            Slot invSlot = this.slots.get(i);
+            if (invSlot.hasItem()) {
+                ItemStack invStack = invSlot.getItem();
+                for (ItemStack candidate : accepted) {
+                    if (invStack.is(candidate.getItem())) {
+                        if (!targetSlot.hasItem()) {
+                            ItemStack moved = invSlot.remove(1);
+                            targetSlot.set(moved);
+                            return;
+                        } else if (ItemStack.isSameItemSameComponents(targetSlot.getItem(), invStack)
+                                && targetSlot.getItem().getCount() < targetSlot.getItem().getMaxStackSize()) {
+                            invSlot.remove(1);
+                            targetSlot.getItem().grow(1);
+                            targetSlot.setChanged();
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

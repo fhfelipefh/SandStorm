@@ -113,6 +113,20 @@ class MachineRecipeRegistryTest {
     }
 
     @Test
+    void testDesalinationFilterRecipes() {
+        List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:desalination_filter");
+        assertFalse(recipes.isEmpty());
+        assertEquals(1, recipes.size());
+
+        MachineRecipe r = recipes.get(0);
+        assertEquals(80, r.getEnergyCost());
+        assertEquals(80, r.getProcessTicks());
+        assertEquals(2, r.getSlot0InputCount());
+        assertEquals(1, r.getSlot1InputCount());
+        assertNotNull(r.getTitle());
+    }
+
+    @Test
     void testUnknownMachineRecipes() {
         List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:unknown");
         assertTrue(recipes.isEmpty());

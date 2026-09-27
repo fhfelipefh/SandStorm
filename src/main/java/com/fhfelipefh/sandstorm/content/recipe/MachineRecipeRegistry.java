@@ -23,6 +23,21 @@ public class MachineRecipeRegistry {
         registerNaniteFabricatorRecipes();
         registerMolecularModifierRecipes();
         registerMegastructureConstructorRecipes();
+        registerDesalinationFilterRecipes();
+    }
+
+    private static void registerDesalinationFilterRecipes() {
+        List<MachineRecipe> list = List.of(
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE),
+                        () -> Component.translatable("gui.sandstorm.desal_filter.recipe"),
+                        List.of(() -> new ItemStack(SandStormItems.BRACKISH_WATER_BOTTLE), () -> new ItemStack(Items.WATER_BUCKET)),
+                        List.of(() -> new ItemStack(SandStormItems.FILTER_CARTRIDGE)),
+                        80,
+                        80
+                )
+        );
+        RECIPES.put("sandstorm:desalination_filter", Collections.unmodifiableList(list));
     }
 
     private static void registerPrinter3DRecipes() {

@@ -22,6 +22,11 @@ public class SandStormMenus {
             new MenuType<>(DesalinationFilterMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<DewCondenserMenu> DEW_CONDENSER_MENU = register(
+            "dew_condenser",
+            new MenuType<>(DewCondenserMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     public static final MenuType<ThermalGeneratorMenu> THERMAL_GENERATOR_MENU = register(
             "thermal_generator",
             new MenuType<>(ThermalGeneratorMenu::new, FeatureFlags.VANILLA_SET)

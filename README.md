@@ -549,4 +549,4 @@ Você pode iniciar um cliente Minecraft isolado com o mod carregado sem precisar
 
 ---
 
-*Desenvolvido por Felipe Fernandes (@fhfelipefh) — Código limpo, testável e escalável.*
+*Desenvolvido por (@fhfelipefh) —*

@@ -12,6 +12,7 @@ import com.fhfelipefh.sandstorm.client.gui.CyborgTelemetryScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreBoreholeScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreDrillScreen;
 import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
+import com.fhfelipefh.sandstorm.client.gui.DewCondenserScreen;
 import com.fhfelipefh.sandstorm.client.gui.GridMonitorConsoleScreen;
 import com.fhfelipefh.sandstorm.client.gui.HoloTacticalSpireScreen;
 import com.fhfelipefh.sandstorm.client.gui.HydroponicChamberScreen;
@@ -79,6 +80,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.PRINTER_3D_MENU, Printer3DScreen::new);
         MenuScreens.register(SandStormMenus.NANITE_FABRICATOR_MENU, NaniteFabricatorScreen::new);
         MenuScreens.register(SandStormMenus.DESALINATION_FILTER_MENU, DesalinationFilterScreen::new);
+        MenuScreens.register(SandStormMenus.DEW_CONDENSER_MENU, DewCondenserScreen::new);
         MenuScreens.register(SandStormMenus.THERMAL_GENERATOR_MENU, ThermalGeneratorScreen::new);
         MenuScreens.register(SandStormMenus.CHEMICAL_REFINERY_MENU, ChemicalRefineryScreen::new);
         MenuScreens.register(SandStormMenus.HYDROPONIC_CHAMBER_MENU, HydroponicChamberScreen::new);
