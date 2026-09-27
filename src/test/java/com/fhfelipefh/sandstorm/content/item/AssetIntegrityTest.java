@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
 
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -265,6 +267,62 @@ class AssetIntegrityTest {
                     assertTrue(hasResolvedTexture || usesBlockParent || usesVanillaParent || hasInlineElements,
                             "Item '" + itemName + "' sem textura resolvida, sem parent valido e sem elementos 3D (icone de barreira no JEI)");
 
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+
+    @Test
+    void generatedItemTexturesMustHaveTransparency() throws IOException {
+        assertTrue(Files.exists(MODELS_ITEM_DIR));
+
+        try (Stream<Path> modelFiles = Files.list(MODELS_ITEM_DIR)) {
+            modelFiles.filter(p -> p.toString().endsWith(".json")).forEach(modelPath -> {
+                try (FileReader reader = new FileReader(modelPath.toFile())) {
+                    JsonElement parsed = JsonParser.parseReader(reader);
+                    if (!parsed.isJsonObject()) {
+                        return;
+                    }
+                    JsonObject json = parsed.getAsJsonObject();
+                    String parent = json.has("parent") ? json.get("parent").getAsString() : "";
+                    if (!parent.equals("minecraft:item/generated") && !parent.equals("minecraft:item/handheld")) {
+                        return;
+                    }
+
+                    if (!json.has("textures")) {
+                        return;
+                    }
+                    JsonObject textures = json.getAsJsonObject("textures");
+                    if (!textures.has("layer0")) {
+                        return;
+                    }
+
+                    String texRef = textures.get("layer0").getAsString();
+                    Path texFile = null;
+                    if (texRef.startsWith("sandstorm:item/")) {
+                        texFile = TEXTURES_DIR.resolve("item").resolve(texRef.substring("sandstorm:item/".length()) + ".png");
+                    } else if (texRef.startsWith("sandstorm:block/")) {
+                        texFile = TEXTURES_DIR.resolve("block").resolve(texRef.substring("sandstorm:block/".length()) + ".png");
+                    }
+
+                    if (texFile != null && Files.exists(texFile)) {
+                        BufferedImage img = ImageIO.read(texFile.toFile());
+                        assertNotNull(img, "Failed to read image: " + texFile);
+                        int total = img.getWidth() * img.getHeight();
+                        int transparent = 0;
+                        for (int y = 0; y < img.getHeight(); y++) {
+                            for (int x = 0; x < img.getWidth(); x++) {
+                                int alpha = (img.getRGB(x, y) >> 24) & 0xFF;
+                                if (alpha < 128) {
+                                    transparent++;
+                                }
+                            }
+                        }
+                        assertTrue(transparent >= total * 0.10,
+                                "Generated 2D item model '" + modelPath.getFileName() + "' points to texture with no transparent sections: " + texRef);
+                    }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

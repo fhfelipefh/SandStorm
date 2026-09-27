@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "sandstorm:item/heavy_sap_cactus"
-  }
+  "parent": "sandstorm:block/heavy_sap_cactus"
 }
