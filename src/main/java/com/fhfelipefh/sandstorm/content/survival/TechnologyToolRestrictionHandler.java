@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.survival;
 import com.fhfelipefh.sandstorm.content.block.SandstoneFurnaceBlock;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
+import com.fhfelipefh.sandstorm.content.world.SandStormWorldHelper;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -33,6 +34,9 @@ public class TechnologyToolRestrictionHandler {
         });
 
         AttackBlockCallback.EVENT.register((player, level, hand, pos, direction) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(level)) {
+                return InteractionResult.PASS;
+            }
             BlockState state = level.getBlockState(pos);
             if (!canPlayerBreakBlock(player, state)) {
                 if (!level.isClientSide()) {
@@ -46,6 +50,9 @@ public class TechnologyToolRestrictionHandler {
         });
 
         UseItemCallback.EVENT.register((player, level, hand) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(level)) {
+                return InteractionResult.PASS;
+            }
             ItemStack stack = player.getItemInHand(hand);
             if (isRestrictedVanillaTool(stack.getItem())) {
                 if (!level.isClientSide()) {
@@ -60,7 +67,7 @@ public class TechnologyToolRestrictionHandler {
     }
 
     public static boolean canPlayerBreakBlock(Player player, BlockState state) {
-        if (player == null || player.isCreative()) {
+        if (player == null || player.isCreative() || !SandStormWorldHelper.isSandStormWorld(player.level())) {
             return true;
         }
 

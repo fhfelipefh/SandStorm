@@ -7,6 +7,7 @@ import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.world.SandStormWorldHelper;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import com.fhfelipefh.sandstorm.content.survival.FlashlightStateServer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -93,7 +94,10 @@ public class SuitSurvivalHandler {
     }
 
     public static void handlePlayerTick(ServerPlayer player) {
-        FusedSpaceSuitHandler.enforceFusedSuit(player);
+        boolean sandStormWorld = SandStormWorldHelper.isSandStormWorld(player.level());
+        if (sandStormWorld) {
+            FusedSpaceSuitHandler.enforceFusedSuit(player);
+        }
         SuitPowerComponent suit = getOrCreateSuit(player);
         int armorCount = countEquippedSuitPieces(player);
         suit.updateEquippedArmorCount(armorCount);
@@ -201,7 +205,7 @@ public class SuitSurvivalHandler {
             }
         }
 
-        if (!player.isCreative() && !player.isSpectator()) {
+        if (!player.isCreative() && !player.isSpectator() && sandStormWorld) {
             if (suit.getThermal().isOverheating() && player.tickCount % 30 == 0) {
                 float excess = (float) (suit.getThermal().getCurrentTemperature() - 50.0);
                 float damage = Math.max(1.0f, 1.0f + excess * 0.25f);
@@ -214,7 +218,7 @@ public class SuitSurvivalHandler {
             }
         }
 
-        if (weather.canCauseSandDamage() && canSeeSky && !suit.isFullSuitEquipped()) {
+        if (sandStormWorld && weather.canCauseSandDamage() && canSeeSky && !suit.isFullSuitEquipped()) {
             if (player.tickCount % 40 == 0) {
                 player.hurtServer(player.level(), player.damageSources().dryOut(), 1.0f);
             }

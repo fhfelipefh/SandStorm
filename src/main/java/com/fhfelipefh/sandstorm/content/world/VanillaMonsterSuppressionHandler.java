@@ -24,7 +24,7 @@ public class VanillaMonsterSuppressionHandler {
     }
 
     public static void applyGameRules(MinecraftServer server) {
-        if (server == null) {
+        if (server == null || !SandStormWorldHelper.isSandStormWorld(server)) {
             return;
         }
         server.getGameRules().set(GameRules.SPAWN_MOBS, false, server);
@@ -38,7 +38,7 @@ public class VanillaMonsterSuppressionHandler {
     }
 
     public static boolean shouldSuppressEntity(Entity entity) {
-        if (entity == null) {
+        if (entity == null || !SandStormWorldHelper.isSandStormWorld(entity.level())) {
             return false;
         }
 

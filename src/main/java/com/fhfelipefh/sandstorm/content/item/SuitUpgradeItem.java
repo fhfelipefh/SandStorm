@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.content.survival.PlayerSuitSavedData;
+import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -58,7 +59,8 @@ public class SuitUpgradeItem extends Item {
         }
 
         if (player instanceof ServerPlayer serverPlayer) {
-            if (!serverPlayer.entityTags().contains("sandstorm.fused_suit")) {
+            boolean hasSuit = serverPlayer.entityTags().contains("sandstorm.fused_suit") || SuitSurvivalHandler.countEquippedSuitPieces(serverPlayer) > 0;
+            if (!hasSuit) {
                 serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.suit_upgrade_no_suit"), true);
                 return InteractionResult.FAIL;
             }

@@ -41,6 +41,9 @@ public class SandstormWeatherHandler {
     }
 
     public static void handleServerTick(ServerLevel level, long gameTime) {
+        if (level == null || !SandStormWorldHelper.isSandStormWorld(level)) {
+            return;
+        }
         WEATHER.tick();
 
         if (level != null) {

@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.survival;
 
+import com.fhfelipefh.sandstorm.content.world.SandStormWorldHelper;
 import com.fhfelipefh.sandstorm.content.world.SpaceshipLandingManager;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.minecraft.core.BlockPos;
@@ -16,7 +17,7 @@ public class MultiplayerSpawnHandler {
     }
 
     public static void onLevelLoad(MinecraftServer server, ServerLevel level) {
-        if (level.dimension() == Level.OVERWORLD) {
+        if (level.dimension() == Level.OVERWORLD && SandStormWorldHelper.isSandStormWorld(server)) {
             server.getGameRules().set(GameRules.RESPAWN_RADIUS, 0, server);
             server.getGameRules().set(GameRules.SPAWN_PHANTOMS, false, server);
             server.getGameRules().set(GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS, false, server);
@@ -30,6 +31,9 @@ public class MultiplayerSpawnHandler {
     }
 
     public static void relocatePlayerToCrashCabin(ServerPlayer player) {
+        if (!SandStormWorldHelper.isSandStormWorld(player.level())) {
+            return;
+        }
         BlockPos cabinPos = SpaceshipLandingManager.getCabinSpawnPos();
         SpawnSafety.teleportSafely(player, cabinPos);
     }

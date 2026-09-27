@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.survival;
 
+import com.fhfelipefh.sandstorm.content.world.SandStormWorldHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -19,6 +20,9 @@ public class MagicSuppressionHandler {
 
     public static void initialize() {
         UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(level)) {
+                return InteractionResult.PASS;
+            }
             BlockState state = level.getBlockState(hitResult.getBlockPos());
             if (shouldSuppressBlock(state.getBlock())) {
                 if (!level.isClientSide()) {
@@ -45,6 +49,9 @@ public class MagicSuppressionHandler {
         });
 
         UseItemCallback.EVENT.register((player, level, hand) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(level)) {
+                return InteractionResult.PASS;
+            }
             ItemStack held = player.getItemInHand(hand);
             if (shouldSuppressItem(held.getItem())) {
                 if (!level.isClientSide()) {
@@ -56,6 +63,9 @@ public class MagicSuppressionHandler {
         });
 
         ServerEntityEvents.ENTITY_LOAD.register((entity, serverLevel) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(serverLevel)) {
+                return;
+            }
             if (shouldSuppressEntityType(entity.getType())) {
                 entity.discard();
             }

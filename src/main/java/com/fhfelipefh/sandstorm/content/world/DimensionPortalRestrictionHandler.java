@@ -19,6 +19,9 @@ public class DimensionPortalRestrictionHandler {
 
     public static void initialize() {
         UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(level)) {
+                return InteractionResult.PASS;
+            }
             BlockState state = level.getBlockState(hitResult.getBlockPos());
             ItemStack held = player.getItemInHand(hand);
 
@@ -44,6 +47,9 @@ public class DimensionPortalRestrictionHandler {
         });
 
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(destination)) {
+                return;
+            }
             if (destination != null && isForbiddenDimension(destination.dimension())) {
                 BlockPos cabinPos = SpaceshipLandingManager.getCabinSpawnPos();
                 SpawnSafety.teleportSafely(player, cabinPos);

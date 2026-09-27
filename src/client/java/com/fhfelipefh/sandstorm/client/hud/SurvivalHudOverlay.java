@@ -72,6 +72,13 @@ public class SurvivalHudOverlay implements HudElement {
 
         FlashlightFocalRenderer.render(extractor, client, screenWidth, screenHeight);
 
+        boolean showSuitTelemetry = CLIENT_SUIT.getEquippedArmorCount() > 0;
+        int flashMode = FlashlightState.getMode();
+        boolean holdsHypo = client.player.getMainHandItem().is(SandStormItems.HYPO_INJECTOR) || client.player.getOffhandItem().is(SandStormItems.HYPO_INJECTOR);
+        if (!showSuitTelemetry && flashMode == FlashlightState.MODE_OFF && !holdsHypo) {
+            return;
+        }
+
         boolean energyChanged = storedEnergy != lastStoredEnergy || capacity != lastCapacity;
         if (energyChanged) {
             lastStoredEnergy = storedEnergy;
@@ -96,12 +103,7 @@ public class SurvivalHudOverlay implements HudElement {
             cachedMaxTextWidth = Math.max(cachedBatWidth, cachedTempWidth);
         }
 
-        int maxTextWidth = cachedMaxTextWidth;
-        int margin = 8;
-        int x = screenWidth - maxTextWidth - margin;
-        int y = screenHeight - 34;
-
-        boolean holdsHypo = client.player.getMainHandItem().is(SandStormItems.HYPO_INJECTOR) || client.player.getOffhandItem().is(SandStormItems.HYPO_INJECTOR);
+        int maxTextWidth = showSuitTelemetry ? cachedMaxTextWidth : 0;
         Component hypoComponent = Component.empty();
         int hypoColor = 0xFF00E5FF;
         if (holdsHypo) {
@@ -114,7 +116,16 @@ public class SurvivalHudOverlay implements HudElement {
                 hypoComponent = Component.literal("HYPO: VAZIO [0]");
                 hypoColor = 0xFFFF5252;
             }
+            maxTextWidth = Math.max(maxTextWidth, client.font.width(hypoComponent.getString()));
         }
+
+        if (flashMode != FlashlightState.MODE_OFF) {
+            maxTextWidth = Math.max(maxTextWidth, client.font.width(getFlashlightComponent(flashMode).getString()));
+        }
+
+        int margin = 8;
+        int x = screenWidth - maxTextWidth - margin;
+        int y = screenHeight - 34;
 
         int hotbarRight = (screenWidth / 2) + 95;
         if (x < hotbarRight) {
@@ -127,29 +138,40 @@ public class SurvivalHudOverlay implements HudElement {
         }
 
         float maxAllowed = screenWidth - (margin * 2f);
-        int flashMode = FlashlightState.getMode();
         if (maxTextWidth > maxAllowed && maxAllowed > 0) {
             float scale = maxAllowed / (float) maxTextWidth;
             extractor.pose().pushMatrix();
             extractor.pose().translate(margin, y);
             extractor.pose().scale(scale, scale);
-            extractor.text(client.font, cachedEnergyComp, 0, 0, cachedBatteryColor);
-            extractor.text(client.font, cachedTempComp, 0, 11, cachedTempColor);
+            int currentY = 0;
+            if (showSuitTelemetry) {
+                extractor.text(client.font, cachedEnergyComp, 0, currentY, cachedBatteryColor);
+                currentY += 11;
+                extractor.text(client.font, cachedTempComp, 0, currentY, cachedTempColor);
+                currentY += 11;
+            }
             if (flashMode != FlashlightState.MODE_OFF) {
-                extractor.text(client.font, getFlashlightComponent(flashMode), 0, 22, getFlashlightColor(flashMode));
+                extractor.text(client.font, getFlashlightComponent(flashMode), 0, currentY, getFlashlightColor(flashMode));
+                currentY += 11;
             }
             if (holdsHypo) {
-                extractor.text(client.font, hypoComponent, 0, flashMode != FlashlightState.MODE_OFF ? 33 : 22, hypoColor);
+                extractor.text(client.font, hypoComponent, 0, currentY, hypoColor);
             }
             extractor.pose().popMatrix();
         } else {
-            extractor.text(client.font, cachedEnergyComp, x, y, cachedBatteryColor);
-            extractor.text(client.font, cachedTempComp, x, y + 11, cachedTempColor);
+            int currentY = y;
+            if (showSuitTelemetry) {
+                extractor.text(client.font, cachedEnergyComp, x, currentY, cachedBatteryColor);
+                currentY += 11;
+                extractor.text(client.font, cachedTempComp, x, currentY, cachedTempColor);
+                currentY += 11;
+            }
             if (flashMode != FlashlightState.MODE_OFF) {
-                extractor.text(client.font, getFlashlightComponent(flashMode), x, y + 22, getFlashlightColor(flashMode));
+                extractor.text(client.font, getFlashlightComponent(flashMode), x, currentY, getFlashlightColor(flashMode));
+                currentY += 11;
             }
             if (holdsHypo) {
-                extractor.text(client.font, hypoComponent, x, y + (flashMode != FlashlightState.MODE_OFF ? 33 : 22), hypoColor);
+                extractor.text(client.font, hypoComponent, x, currentY, hypoColor);
             }
         }
     }

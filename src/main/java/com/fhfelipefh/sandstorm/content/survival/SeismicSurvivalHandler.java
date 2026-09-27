@@ -7,6 +7,7 @@ import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.world.SandStormWorldHelper;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -77,7 +78,7 @@ public class SeismicSurvivalHandler {
     }
 
     public static void handlePlayerMovement(ServerPlayer player) {
-        if (!player.onGround() || player.isSpectator() || player.isCreative()) {
+        if (!player.onGround() || player.isSpectator() || player.isCreative() || !SandStormWorldHelper.isSandStormWorld(player.level())) {
             return;
         }
 

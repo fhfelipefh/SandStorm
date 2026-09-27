@@ -34,7 +34,7 @@ public class SpaceshipLandingManager {
     }
 
     public static void onLevelLoad(MinecraftServer server, ServerLevel level) {
-        if (level.dimension() != Level.OVERWORLD) {
+        if (level.dimension() != Level.OVERWORLD || !SandStormWorldHelper.isSandStormWorld(server)) {
             return;
         }
 
@@ -55,11 +55,17 @@ public class SpaceshipLandingManager {
     }
 
     public static void onServerStarted(MinecraftServer server) {
+        if (!SandStormWorldHelper.isSandStormWorld(server)) {
+            return;
+        }
         ServerLevel overworld = server.overworld();
         ensureSpaceshipPlaced(server, overworld);
     }
 
     public static void ensureSpaceshipPlaced(MinecraftServer server, ServerLevel level) {
+        if (!SandStormWorldHelper.isSandStormWorld(server)) {
+            return;
+        }
         server.getGameRules().set(GameRules.RESPAWN_RADIUS, 0, server);
         server.getGameRules().set(GameRules.SPAWN_PHANTOMS, false, server);
         server.getGameRules().set(GameRules.ALLOW_ENTERING_NETHER_USING_PORTALS, false, server);

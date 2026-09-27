@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.item.SpaceSuitItem;
 import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
+import com.fhfelipefh.sandstorm.content.world.SandStormWorldHelper;
 import com.fhfelipefh.sandstorm.content.world.SpaceshipLandingManager;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -50,6 +51,9 @@ public class FusedSpaceSuitHandler {
     }
 
     public static void onPlayerJoin(ServerPlayer player, MinecraftServer server) {
+        if (player == null || !SandStormWorldHelper.isSandStormWorld(player.level())) {
+            return;
+        }
         SpaceshipLandingManager.ensureSpaceshipPlaced(server, player.level());
         if (!player.entityTags().contains("sandstorm.fused_suit")) {
             player.addTag("sandstorm.fused_suit");
@@ -83,6 +87,9 @@ public class FusedSpaceSuitHandler {
     }
 
     public static void onPlayerRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer) {
+        if (newPlayer == null || !SandStormWorldHelper.isSandStormWorld(newPlayer.level())) {
+            return;
+        }
         MinecraftServer server = newPlayer.level().getServer();
         if (server != null) {
             String dim = oldPlayer.level().dimension().identifier().toString();
@@ -143,7 +150,7 @@ public class FusedSpaceSuitHandler {
     }
 
     public static void enforceFusedSuit(ServerPlayer player) {
-        if (player.isCreative() || player.isSpectator()) {
+        if (player == null || player.isCreative() || player.isSpectator() || !SandStormWorldHelper.isSandStormWorld(player.level())) {
             return;
         }
         boolean headOk = isMatchingSuitPiece(player.getItemBySlot(EquipmentSlot.HEAD), EquipmentSlot.HEAD);

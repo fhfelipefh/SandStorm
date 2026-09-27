@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.survival;
 
+import com.fhfelipefh.sandstorm.content.world.SandStormWorldHelper;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -19,6 +20,9 @@ public class BedRestrictionHandler {
 
     public static void initialize() {
         UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(level)) {
+                return InteractionResult.PASS;
+            }
             BlockState state = level.getBlockState(hitResult.getBlockPos());
             if (isBedBlock(state)) {
                 if (!level.isClientSide()) {
@@ -43,6 +47,9 @@ public class BedRestrictionHandler {
         });
 
         UseItemCallback.EVENT.register((player, level, hand) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(level)) {
+                return InteractionResult.PASS;
+            }
             ItemStack held = player.getItemInHand(hand);
             if (isBedItem(held.getItem())) {
                 if (!level.isClientSide()) {
@@ -55,13 +62,33 @@ public class BedRestrictionHandler {
             return InteractionResult.PASS;
         });
 
-        EntitySleepEvents.ALLOW_BED.register((entity, pos, state, vanillaResult) -> EventResult.DENY);
+        EntitySleepEvents.ALLOW_BED.register((entity, pos, state, vanillaResult) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(entity.level())) {
+                return EventResult.PASS;
+            }
+            return EventResult.DENY;
+        });
 
-        EntitySleepEvents.ALLOW_SLEEPING.register((player, pos) -> Player.BedSleepingProblem.OTHER_PROBLEM);
+        EntitySleepEvents.ALLOW_SLEEPING.register((player, pos) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(player.level())) {
+                return null;
+            }
+            return Player.BedSleepingProblem.OTHER_PROBLEM;
+        });
 
-        EntitySleepEvents.ALLOW_RESETTING_TIME.register(player -> false);
+        EntitySleepEvents.ALLOW_RESETTING_TIME.register(player -> {
+            if (!SandStormWorldHelper.isSandStormWorld(player.level())) {
+                return true;
+            }
+            return false;
+        });
 
-        EntitySleepEvents.ALLOW_SETTING_SPAWN.register((player, pos) -> false);
+        EntitySleepEvents.ALLOW_SETTING_SPAWN.register((player, pos) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(player.level())) {
+                return true;
+            }
+            return false;
+        });
     }
 
     public static boolean isBedBlock(BlockState state) {
