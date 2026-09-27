@@ -121,6 +121,7 @@ jobs:
               match = re.search(pattern, text, re.DOTALL)
               if match:
                   changelog = match.group(1).strip()
+                  changelog = re.sub(r'\n---\s*$', '', changelog).strip()
           if not changelog:
               changelog = f'Release v{version} de SandStorm para Minecraft {os.environ.get(\"MC_VERSION\", \"26.3\")} ({os.environ.get(\"MOD_LOADER\", \"Fabric\")}).'
           with open('RELEASE_CHANGELOG.md', 'w', encoding='utf-8') as out:

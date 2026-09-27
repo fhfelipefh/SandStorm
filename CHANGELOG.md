@@ -5,6 +5,13 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.4.4] - 2026-09-27
+
+### 🔄 Distribuição & Metadados
+* **CurseForge & Pipeline de Lançamento**:
+  * Incremento de versão e consolidação dos metadados de execução com tags de compatibilidade explícitas para **Java 25** e **Java 21**.
+  * Geração e empacotamento automatizado das notas de release diretamente do changelog do repositório.
+
 ---
 
 ## [1.4.3] - 2026-09-27
