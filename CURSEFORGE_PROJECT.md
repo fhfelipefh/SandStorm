@@ -14,7 +14,7 @@
 * **Target Game Version**: `Minecraft 1.21.4`
 * **Project Avatar / Logo (512x512 PNG, No Text, In-Game)**:
   * **Opção 1 (Cúpula Atmosférica & Oásis)**: `docs/avatars/curseforge_avatar_option1_dome.png` (ou na raiz: `curseforge_avatar_option1_dome.png`)
-  * **Opção 2 (Complexo Tecnológico & Maquinários)**: `docs/avatars/curseforge_avatar_option2_tech.png` (ou na raiz: `curseforge_avatar_option2_tech.png`)
+  * **Opção 2 (Grade Sci-Fi de Highlights 2x2 - Cúpula, Indústria, Defesa Sônica e Trilhos Maglev)**: `docs/avatars/curseforge_avatar_option2_tech.png` (ou na raiz: `curseforge_avatar_option2_tech.png`)
 
 ---
 
