@@ -119,7 +119,8 @@ public class PharmacologicalStimItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.stim.pharma_header").withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD));
-        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.stim." + type.getId() + ".desc").withStyle(ChatFormatting.GRAY));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.stim." + type.getId() + ".desc1").withStyle(ChatFormatting.GRAY));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.stim." + type.getId() + ".desc2").withStyle(ChatFormatting.GRAY));
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.stim." + type.getId() + ".effect").withStyle(ChatFormatting.GREEN));
     }
 }

@@ -388,12 +388,14 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
                 extractor.setTooltipForNextFrame(this.font, in0.getHoverName(), mouseX, mouseY);
             } else if (mouseX >= cx + 32 && mouseX <= cx + 50 && mouseY >= cy + 15 && mouseY <= cy + 33) {
                 if (in1.getItem() instanceof MolecularUpgradeItem upgrade) {
-                    String descKey = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".desc";
+                    String desc1Key = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".desc1";
+                    String desc2Key = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".desc2";
                     String effectKey = "tooltip.sandstorm.molecular_upgrade." + upgrade.getUpgradeType().getId() + ".effect";
                     List<Component> tip = List.of(
                             in1.getHoverName(),
                             Component.literal("§a").append(Component.translatable(effectKey)),
-                            Component.literal("§7").append(Component.translatable(descKey))
+                            Component.literal("§7").append(Component.translatable(desc1Key)),
+                            Component.literal("§7").append(Component.translatable(desc2Key))
                     );
                     extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
                 } else {

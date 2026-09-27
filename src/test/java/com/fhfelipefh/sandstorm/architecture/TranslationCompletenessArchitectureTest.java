@@ -99,14 +99,17 @@ class TranslationCompletenessArchitectureTest {
         List<String> violations = new ArrayList<>();
 
         for (PharmacologicalStimItem.StimType stimType : PharmacologicalStimItem.StimType.values()) {
-            checkKeyAcrossLanguages("tooltip.sandstorm.stim." + stimType.getId() + ".desc", langFiles, violations);
+            checkKeyAcrossLanguages("tooltip.sandstorm.stim." + stimType.getId() + ".desc1", langFiles, violations);
+            checkKeyAcrossLanguages("tooltip.sandstorm.stim." + stimType.getId() + ".desc2", langFiles, violations);
             checkKeyAcrossLanguages("tooltip.sandstorm.stim." + stimType.getId() + ".effect", langFiles, violations);
-            checkKeyAcrossLanguages("tooltip.sandstorm.stim." + stimType.name().toLowerCase() + ".desc", langFiles, violations);
+            checkKeyAcrossLanguages("tooltip.sandstorm.stim." + stimType.name().toLowerCase() + ".desc1", langFiles, violations);
+            checkKeyAcrossLanguages("tooltip.sandstorm.stim." + stimType.name().toLowerCase() + ".desc2", langFiles, violations);
             checkKeyAcrossLanguages("tooltip.sandstorm.stim." + stimType.name().toLowerCase() + ".effect", langFiles, violations);
         }
 
         for (MolecularUpgradeItem.UpgradeType upgrade : MolecularUpgradeItem.UpgradeType.values()) {
-            checkKeyAcrossLanguages("tooltip.sandstorm.molecular_upgrade." + upgrade.getId() + ".desc", langFiles, violations);
+            checkKeyAcrossLanguages("tooltip.sandstorm.molecular_upgrade." + upgrade.getId() + ".desc1", langFiles, violations);
+            checkKeyAcrossLanguages("tooltip.sandstorm.molecular_upgrade." + upgrade.getId() + ".desc2", langFiles, violations);
             checkKeyAcrossLanguages("tooltip.sandstorm.molecular_upgrade." + upgrade.getId() + ".effect", langFiles, violations);
         }
 

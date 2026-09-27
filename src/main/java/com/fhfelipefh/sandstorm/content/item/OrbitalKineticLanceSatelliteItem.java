@@ -67,7 +67,8 @@ public class OrbitalKineticLanceSatelliteItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
-        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.orbital_kinetic_lance_satellite.desc").withStyle(ChatFormatting.RED));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.orbital_kinetic_lance_satellite.desc1").withStyle(ChatFormatting.RED));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.orbital_kinetic_lance_satellite.desc2").withStyle(ChatFormatting.RED));
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.satellite.launch_hint").withStyle(ChatFormatting.GRAY));
     }
 }

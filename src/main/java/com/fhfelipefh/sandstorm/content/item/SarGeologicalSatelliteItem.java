@@ -67,7 +67,8 @@ public class SarGeologicalSatelliteItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
-        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.sar_geological_satellite.desc").withStyle(ChatFormatting.GREEN));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.sar_geological_satellite.desc1").withStyle(ChatFormatting.GREEN));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.sar_geological_satellite.desc2").withStyle(ChatFormatting.GREEN));
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.satellite.launch_hint").withStyle(ChatFormatting.GRAY));
     }
 }

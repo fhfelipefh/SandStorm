@@ -164,7 +164,8 @@ public class MolecularUpgradeItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.molecular_upgrade.header").withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD));
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.molecular_upgrade.category." + upgradeType.getCategory().name().toLowerCase()).withStyle(ChatFormatting.DARK_AQUA));
-        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.molecular_upgrade." + upgradeType.getId() + ".desc").withStyle(ChatFormatting.GRAY));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.molecular_upgrade." + upgradeType.getId() + ".desc1").withStyle(ChatFormatting.GRAY));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.molecular_upgrade." + upgradeType.getId() + ".desc2").withStyle(ChatFormatting.GRAY));
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.molecular_upgrade." + upgradeType.getId() + ".effect").withStyle(ChatFormatting.GREEN));
     }
 }

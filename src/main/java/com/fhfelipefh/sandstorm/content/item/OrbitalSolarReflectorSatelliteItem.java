@@ -67,7 +67,8 @@ public class OrbitalSolarReflectorSatelliteItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
-        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.orbital_solar_reflector_satellite.desc").withStyle(ChatFormatting.GOLD));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.orbital_solar_reflector_satellite.desc1").withStyle(ChatFormatting.GOLD));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.orbital_solar_reflector_satellite.desc2").withStyle(ChatFormatting.GOLD));
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.satellite.launch_hint").withStyle(ChatFormatting.GRAY));
     }
 }

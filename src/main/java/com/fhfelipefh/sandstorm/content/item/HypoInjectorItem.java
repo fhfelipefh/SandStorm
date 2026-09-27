@@ -131,7 +131,8 @@ public class HypoInjectorItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.hypo_injector.header").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
-        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.hypo_injector.desc").withStyle(ChatFormatting.GRAY));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.hypo_injector.desc1").withStyle(ChatFormatting.GRAY));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.hypo_injector.desc2").withStyle(ChatFormatting.GRAY));
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.hypo_injector.usage").withStyle(ChatFormatting.YELLOW));
     }
 }

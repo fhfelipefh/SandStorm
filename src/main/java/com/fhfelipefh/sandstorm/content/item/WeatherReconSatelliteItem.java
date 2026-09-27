@@ -67,7 +67,8 @@ public class WeatherReconSatelliteItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
-        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.weather_recon_satellite.desc").withStyle(ChatFormatting.AQUA));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.weather_recon_satellite.desc1").withStyle(ChatFormatting.AQUA));
+        tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.weather_recon_satellite.desc2").withStyle(ChatFormatting.AQUA));
         tooltipConsumer.accept(Component.translatable("tooltip.sandstorm.satellite.launch_hint").withStyle(ChatFormatting.GRAY));
     }
 }
