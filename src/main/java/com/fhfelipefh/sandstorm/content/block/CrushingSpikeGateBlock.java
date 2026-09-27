@@ -5,9 +5,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -21,6 +24,7 @@ import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
@@ -29,8 +33,25 @@ public class CrushingSpikeGateBlock extends Block {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
-    private static final VoxelShape SHAPE_CLOSED = Block.box(0, 0, 0, 16, 16, 16);
-    private static final VoxelShape SHAPE_OPEN = Block.box(0, 12, 0, 16, 16, 16);
+    private static final VoxelShape POST_LEFT_Z = Block.box(0, 0, 6, 3, 16, 10);
+    private static final VoxelShape POST_RIGHT_Z = Block.box(13, 0, 6, 16, 16, 10);
+    private static final VoxelShape TOP_HOUSING_Z = Block.box(0, 12, 5, 16, 16, 11);
+    private static final VoxelShape FLOOR_TRACK_Z = Block.box(0, 0, 6, 16, 2, 10);
+    private static final VoxelShape BODY_CLOSED_Z = Block.box(3, 2, 6, 13, 12, 10);
+
+    private static final VoxelShape SHAPE_CLOSED_Z = Shapes.or(POST_LEFT_Z, POST_RIGHT_Z, TOP_HOUSING_Z, FLOOR_TRACK_Z, BODY_CLOSED_Z);
+    private static final VoxelShape SHAPE_OPEN_OUTLINE_Z = Shapes.or(POST_LEFT_Z, POST_RIGHT_Z, TOP_HOUSING_Z, FLOOR_TRACK_Z);
+    private static final VoxelShape SHAPE_COLLISION_OPEN_Z = Shapes.or(POST_LEFT_Z, POST_RIGHT_Z, TOP_HOUSING_Z);
+
+    private static final VoxelShape POST_LEFT_X = Block.box(6, 0, 0, 10, 16, 3);
+    private static final VoxelShape POST_RIGHT_X = Block.box(6, 0, 13, 10, 16, 16);
+    private static final VoxelShape TOP_HOUSING_X = Block.box(5, 12, 0, 11, 16, 16);
+    private static final VoxelShape FLOOR_TRACK_X = Block.box(6, 0, 0, 10, 2, 16);
+    private static final VoxelShape BODY_CLOSED_X = Block.box(6, 2, 3, 10, 12, 13);
+
+    private static final VoxelShape SHAPE_CLOSED_X = Shapes.or(POST_LEFT_X, POST_RIGHT_X, TOP_HOUSING_X, FLOOR_TRACK_X, BODY_CLOSED_X);
+    private static final VoxelShape SHAPE_OPEN_OUTLINE_X = Shapes.or(POST_LEFT_X, POST_RIGHT_X, TOP_HOUSING_X, FLOOR_TRACK_X);
+    private static final VoxelShape SHAPE_COLLISION_OPEN_X = Shapes.or(POST_LEFT_X, POST_RIGHT_X, TOP_HOUSING_X);
 
     public CrushingSpikeGateBlock(Properties properties) {
         super(properties);
@@ -44,12 +65,44 @@ public class CrushingSpikeGateBlock extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(OPEN, false);
+        Direction clickedFace = context.getClickedFace();
+        Direction facing;
+        if (clickedFace.getAxis().isHorizontal()) {
+            facing = clickedFace.getOpposite();
+        } else {
+            facing = context.getHorizontalDirection().getOpposite();
+        }
+        boolean hasSignal = context.getLevel().hasNeighborSignal(context.getClickedPos());
+        return defaultBlockState().setValue(FACING, facing).setValue(OPEN, hasSignal);
     }
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return state.getValue(OPEN) ? SHAPE_OPEN : SHAPE_CLOSED;
+        boolean open = state.getValue(OPEN);
+        Direction facing = state.getValue(FACING);
+        if (facing.getAxis() == Direction.Axis.X) {
+            return open ? SHAPE_OPEN_OUTLINE_X : SHAPE_CLOSED_X;
+        }
+        return open ? SHAPE_OPEN_OUTLINE_Z : SHAPE_CLOSED_Z;
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        boolean open = state.getValue(OPEN);
+        Direction facing = state.getValue(FACING);
+        if (facing.getAxis() == Direction.Axis.X) {
+            return open ? SHAPE_COLLISION_OPEN_X : SHAPE_CLOSED_X;
+        }
+        return open ? SHAPE_COLLISION_OPEN_Z : SHAPE_CLOSED_Z;
+    }
+
+    @Override
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (stack.getItem() instanceof BlockItem) {
+            return InteractionResult.PASS;
+        }
+        toggleGate(state, level, pos);
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -76,9 +129,9 @@ public class CrushingSpikeGateBlock extends Block {
         level.setBlock(pos, state.setValue(OPEN, willOpen), 3);
 
         if (willOpen) {
-            level.playSound(null, pos, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 0.8f, 1.0f);
+            level.playSound(null, pos, SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS, 1.0f, 0.9f);
         } else {
-            level.playSound(null, pos, SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 0.8f, 0.8f);
+            level.playSound(null, pos, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.7f, 1.2f);
             if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
                 AABB aabb = new AABB(pos);
                 List<LivingEntity> victims = serverLevel.getEntitiesOfClass(LivingEntity.class, aabb);

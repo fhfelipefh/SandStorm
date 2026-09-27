@@ -12,6 +12,9 @@ import com.google.gson.JsonParser;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.SharedConstants;
+import net.minecraft.server.Bootstrap;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileReader;
@@ -25,6 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Fase18SpikeFortificationsTest {
+
+    @BeforeAll
+    static void init() {
+        SharedConstants.tryDetectVersion();
+        Bootstrap.bootStrap();
+    }
 
     private static final Path ASSETS_DIR = Path.of("src", "main", "resources", "assets", "sandstorm");
     private static final Path DATA_DIR = Path.of("src", "main", "resources", "data", "sandstorm");
