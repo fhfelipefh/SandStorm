@@ -1,4 +1,4 @@
-# SandStorm <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/brands/curseforge.svg" width="30" align="top">
+# SandStorm 🏜️
 
 **SandStorm** é um mod de sobrevivência, automação industrial e terraformação (Fabric 1.21.4).
 

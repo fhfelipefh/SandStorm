@@ -1,7 +1,6 @@
-# SandStorm <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/brands/curseforge.svg" width="30" align="top">
+# SandStorm 🏜️
 
-[![CurseForge Downloads](https://img.shields.io/curseforge/dt/sandstorm?logo=curseforge&label=Downloads&color=orange)](https://www.curseforge.com/minecraft/mc-mods/sandstorm)
-[![CurseForge Version](https://img.shields.io/curseforge/v/sandstorm?logo=curseforge&label=Vers%C3%A3o&color=orange)](https://www.curseforge.com/minecraft/mc-mods/sandstorm)
+[![CurseForge](https://img.shields.io/badge/CurseForge-SandStorm-orange?logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/sandstorm)
 
 **SandStorm** é um mod de sobrevivência planetária, automação industrial e terraformação para Minecraft 1.21.4 (Fabric). 
 
