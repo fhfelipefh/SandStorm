@@ -161,7 +161,7 @@ public class CyborgIncubatorScreen extends BaseMachineScreen<CyborgIncubatorMenu
         int scanY = cy1 + (int) scanTime;
         extractor.fill(cx1, scanY, cx2, scanY + 1, 0x5500E5FF);
 
-        String stageText = "STAGE " + stage + "/4";
+        String stageText = stage + "/4";
         int stageWidth = this.font.width(stageText);
         extractor.text(this.font, Component.literal(stageText), cx1 + (46 - stageWidth) / 2, cy1 + 2, 0xFF00E5FF, false);
 

@@ -708,4 +708,57 @@ class GuiSymmetryAndTextClippingArchitectureTest {
         assertTrue(violations.isEmpty(),
                 "Found screens where title rendering lacks right chassis padding:\n" + String.join("\n", violations));
     }
+
+    @Test
+    void noTextCenteredInConstrainedContainersMayOverflowContainerWidth() throws IOException {
+        List<String> violations = new ArrayList<>();
+        if (!Files.exists(GUI_DIR)) {
+            return;
+        }
+
+        Pattern centeringPattern = Pattern.compile("\\(\\s*(\\d+)\\s*-\\s*([A-Za-z0-9_]+)\\s*\\)\\s*/\\s*2");
+        Pattern verboseStagePattern = Pattern.compile("\"\\s*(STAGE|PORCENTAGEM|PERCENTAGE)\\b");
+
+        try (Stream<Path> paths = Files.list(GUI_DIR)) {
+            paths.filter(p -> p.toString().endsWith("Screen.java")).forEach(path -> {
+                String fileName = path.getFileName().toString();
+                if (fileName.equals("SurvivalDatapadScreen.java") || fileName.equals("AutonomousSonicTurretScreen.java") || fileName.equals("DatapadClientHelper.java")) {
+                    return;
+                }
+
+                try {
+                    List<String> lines = Files.readAllLines(path);
+                    for (int i = 0; i < lines.size(); i++) {
+                        String line = lines.get(i);
+                        if (verboseStagePattern.matcher(line).find()) {
+                            violations.add(fileName + ":" + (i + 1) + " -> Prohibited verbose text label (STAGE/PORCENTAGEM/PERCENTAGE). Use compact numeric visual representation (e.g. 0/X, X%).");
+                        }
+
+                        Matcher m = centeringPattern.matcher(line);
+                        while (m.find()) {
+                            int containerW = Integer.parseInt(m.group(1));
+                            for (int j = Math.max(0, i - 5); j <= i; j++) {
+                                String prevLine = lines.get(j);
+                                Matcher strMatcher = Pattern.compile("\"([^\"]+)\"").matcher(prevLine);
+                                while (strMatcher.find()) {
+                                    String lit = strMatcher.group(1);
+                                    if (!lit.startsWith("gui.") && !lit.startsWith("tooltip.") && !lit.startsWith("textures/")) {
+                                        int estW = estimateMinecraftFontWidth(lit);
+                                        if (estW > containerW) {
+                                            violations.add(fileName + ":" + (i + 1) + " -> Text literal \"" + lit + "\" (est. " + estW + "px) exceeds container width " + containerW + "px in centering expression!");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
+        assertTrue(violations.isEmpty(),
+                "Found centered text overflowing container or using verbose labels:\n" + String.join("\n", violations));
+    }
 }
