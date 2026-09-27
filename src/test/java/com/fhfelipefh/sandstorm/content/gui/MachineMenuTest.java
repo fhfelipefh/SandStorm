@@ -67,5 +67,7 @@ class MachineMenuTest {
         assertEquals(41, menu.slots.size());
         assertFalse(menu.slots.get(1).mayPlace(ItemStack.EMPTY));
         assertFalse(menu.slots.get(2).mayPlace(ItemStack.EMPTY));
+        assertFalse(menu.clickMenuButton(null, -1));
+        assertFalse(menu.clickMenuButton(null, 99));
     }
 }
