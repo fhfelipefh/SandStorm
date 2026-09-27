@@ -1,9 +1,49 @@
 # Demonstração Visual das Máquinas & Construções
 
 > [!NOTE]
-> Todos os recursos visuais do SandStorm são obtidos **100% diretamente dos assets nativos e da engine do jogo** (Minecraft 1.21.4 / Fabric). Nenhuma imagem sintética ou externa é utilizada. Para visualizar qualquer uma das construções e máquinas completas no seu próprio mundo, utilize os comandos in-game `/sandstorm debug setup <instalação>`.
+> Todos os recursos visuais do SandStorm são capturados **100% diretamente da engine do jogo** (Minecraft 1.21.4 / Fabric). Para visualizar qualquer uma das construções e máquinas completas no seu próprio mundo, utilize os comandos in-game `/sandstorm debug setup <instalação>`.
 
-### 🔬 Galeria de Maquinários Tecnológicos Nativos
+---
+
+## 📸 Galeria Fotográfica de Maquinários em Operação
+
+### 🖨️ Manufatura Aditiva: Impressora 3D Industrial
+A Impressora 3D realiza a micro-fabricação de wafers de silício, chips de telemetria e ferramentas espaciais de precisão.
+
+| Instalação em Funcionamento | Interface de Controle e Blueprint |
+|:---:|:---:|
+| ![Impressora 3D em Operação](../screenshots/3d-printer-block-working.png) | ![Interface da Impressora 3D](../screenshots/3d-printer-gui.png) |
+| *Bloco da Impressora 3D conectado à malha energética WPT* | *Painel de seleção de projetos, progresso e buffer térmico* |
+
+---
+
+### 🔬 Síntese de Precisão: Fabricador de Nanorobôs
+Capaz de sintetizar ligas moleculares e nanites para montagem de peças robóticas de mechas e ciborgues.
+
+| Instalação do Fabricador | Painel de Montagem de Nanites |
+|:---:|:---:|
+| ![Fabricador de Nanites em Operação](../screenshots/nanites-machine-working.png) | ![Interface do Fabricador de Nanites](../screenshots/nanites-machine-gui.png) |
+| *Montagem de ligas de titânio sob atmosfera inerte* | *Slots de insumos químicos, matriz de montagem e energia* |
+
+---
+
+### 🛡️ Defesa Tática & Repulsão Sônica
+A Torreta Sônica Autônoma rastreia inimigos em 360° e emite pulsos concussivos que paralisam e repelem invasores sem alertar os predadores subterrâneos.
+
+![Torreta Sônica Disparando contra Invasor](../screenshots/sonic-turret-combat.png)
+*Torreta Sônica Autônoma operando em modo de defesa perimétrica contra ameaças.*
+
+---
+
+### 🌐 Cúpula Planetária de Escudo de Plasma
+O Gerador de Escudo de Plasma projeta uma rede de linhas de força eletromagnéticas em raio expansível, criando zonas seguras contra bombardeios e ataques biológicos.
+
+![Domo de Escudo de Plasma e Oásis](../screenshots/plasma-shield-dome.png)
+*Escudo de Plasma sustentando e protegendo a biosfera e a flora do oásis terraformado.*
+
+---
+
+## 🔬 Catálogo de Maquinários Tecnológicos Nativos
 
 | Máquina / Instalação | Textura Nativa do Jogo | Função e Arquitetura no Jogo | Comando de Spawn In-Game |
 |:---:|:---:|---|---|
