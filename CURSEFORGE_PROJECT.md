@@ -1,6 +1,6 @@
 # SandStorm
 
-**SandStorm** é um mod de sobrevivência, automação industrial e terraformação (Fabric 1.21.4).
+**SandStorm** é um mod de sobrevivência, automação industrial e terraformação (Fabric 26.3).
 
 Você cai em um planeta infestado por **Vermes de Areia**. Sobreviva, construa máquinas, extraia água e transforme o deserto em um oásis.
 
