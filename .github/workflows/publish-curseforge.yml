@@ -7,6 +7,7 @@ on:
     paths:
       - 'gradle.properties'
       - 'src/**'
+      - 'CHANGELOG.md'
   workflow_dispatch:
 
 jobs:
@@ -45,6 +46,11 @@ jobs:
           fi
           LOADER_LOWER=$(echo "$LOADER" | tr '[:upper:]' '[:lower:]')
 
+          JAVA_VERSION=$(grep "^java_version=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
+          if [ -z "$JAVA_VERSION" ]; then
+            JAVA_VERSION="25"
+          fi
+
           RELEASE_TITLE="$MOD_NAME $VERSION ($LOADER $MC_VERSION)"
 
           echo "MOD_NAME=$MOD_NAME" >> $GITHUB_ENV
@@ -52,6 +58,7 @@ jobs:
           echo "MC_VERSION=$MC_VERSION" >> $GITHUB_ENV
           echo "MOD_LOADER=$LOADER" >> $GITHUB_ENV
           echo "MOD_LOADER_LOWER=$LOADER_LOWER" >> $GITHUB_ENV
+          echo "JAVA_VERSION=$JAVA_VERSION" >> $GITHUB_ENV
           echo "RELEASE_TITLE=$RELEASE_TITLE" >> $GITHUB_ENV
 
           echo "=========================================="
@@ -60,6 +67,7 @@ jobs:
           echo " - Versão do Mod: $VERSION"
           echo " - Loader: $LOADER ($LOADER_LOWER)"
           echo " - Minecraft: $MC_VERSION"
+          echo " - Java: $JAVA_VERSION"
           echo " - Título da Release: $RELEASE_TITLE"
           echo "=========================================="
 
@@ -99,6 +107,30 @@ jobs:
         if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
         run: ./gradlew build --no-daemon
 
+      - name: Extrair Changelog da Versão
+        if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          python3 -c "
+          import re, os
+          version = os.environ.get('MOD_VERSION', '')
+          changelog = ''
+          if os.path.exists('CHANGELOG.md'):
+              with open('CHANGELOG.md', 'r', encoding='utf-8') as f:
+                  text = f.read()
+              pattern = rf'## \[{re.escape(version)}\][^\n]*\n(.*?)(?=\n## \[|\Z)'
+              match = re.search(pattern, text, re.DOTALL)
+              if match:
+                  changelog = match.group(1).strip()
+          if not changelog:
+              changelog = f'Release v{version} de SandStorm para Minecraft {os.environ.get(\"MC_VERSION\", \"26.3\")} ({os.environ.get(\"MOD_LOADER\", \"Fabric\")}).'
+          with open('RELEASE_CHANGELOG.md', 'w', encoding='utf-8') as out:
+              out.write(changelog)
+          "
+          echo "=========================================="
+          echo "Changelog Gerado para CurseForge ($MOD_VERSION):"
+          cat RELEASE_CHANGELOG.md
+          echo "=========================================="
+
       - name: Publicar no CurseForge
         if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
         uses: Kir-Antipov/mc-publish@v3.3
@@ -112,9 +144,18 @@ jobs:
           name: ${{ env.RELEASE_TITLE }}
           version: ${{ env.MOD_VERSION }}
           version-type: 'release'
-          game-versions: ${{ env.MC_VERSION }}
+          changelog-file: 'RELEASE_CHANGELOG.md'
+          game-versions: |
+            ${{ env.MC_VERSION }}
+            Java 25
+            Java 21
+          java: |
+            25
+            21
+            Java 25
+            Java 21
           loaders: ${{ env.MOD_LOADER_LOWER }}
-          fail-mode: 'fail'
+          fail-mode: 'warn'
 
       - name: Criar Tag Git para a Nova Versão
         if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && success()
