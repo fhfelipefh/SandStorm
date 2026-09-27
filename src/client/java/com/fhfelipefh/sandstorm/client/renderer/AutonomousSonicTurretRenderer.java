@@ -61,8 +61,6 @@ public class AutonomousSonicTurretRenderer implements BlockEntityRenderer<Autono
         poseStack.rotateDegrees(Axis.YP, -state.yaw + 180.0f);
         poseStack.rotateDegrees(Axis.XP, -state.pitch);
 
-        poseStack.scale(1.0f / 16.0f, 1.0f / 16.0f, 1.0f / 16.0f);
-
         collector.submitModelPart(this.model.getHead(), poseStack, RenderTypes.entityCutout(MECHANISM_TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, null);
 
         if (state.shootFlashTicks > 0) {
@@ -74,6 +72,8 @@ public class AutonomousSonicTurretRenderer implements BlockEntityRenderer<Autono
     }
 
     private void renderMuzzleFlash(PoseStack poseStack, SubmitNodeCollector collector, float flashScale) {
+        poseStack.pushPose();
+        poseStack.scale(1.0f / 16.0f, 1.0f / 16.0f, 1.0f / 16.0f);
         int alpha = (int) (255 * flashScale);
         collector.submitCustomGeometry(poseStack, RenderTypes.LINES, (pose, consumer) -> {
             float dist = flashScale * 3.5f;
@@ -96,5 +96,6 @@ public class AutonomousSonicTurretRenderer implements BlockEntityRenderer<Autono
             consumer.addVertex(pose, 2.5f, 3.5f, -10.0f).setColor(0x00, 0xE5, 0xFF, alpha).setNormal(pose, 0.0f, 0.0f, -1.0f).setLineWidth(2.0f);
             consumer.addVertex(pose, 2.5f, 3.5f, -10.0f - dist).setColor(0x00, 0xE5, 0xFF, alpha).setNormal(pose, 0.0f, 0.0f, -1.0f).setLineWidth(2.0f);
         });
+        poseStack.popPose();
     }
 }
