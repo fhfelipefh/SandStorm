@@ -10,6 +10,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -45,8 +46,17 @@ public class KineticFloorSpikesBlock extends Block {
     }
 
     @Override
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean inside) {
+        triggerSpikes(level, pos, state, entity);
+    }
+
+    @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
+        triggerSpikes(level, pos, state, entity);
+    }
+
+    private void triggerSpikes(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (!state.getValue(TRIGGERED)) {
             level.setBlock(pos, state.setValue(TRIGGERED, true), 3);
             level.scheduleTick(pos, this, 40);
