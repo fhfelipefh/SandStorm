@@ -1,4 +1,4 @@
-# SandStorm 🏜️
+# SandStorm
 
 [![CurseForge](https://img.shields.io/badge/CurseForge-SandStorm-orange?logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/sandstorm)
 

@@ -1,4 +1,4 @@
-# Bem-vindo à Wiki do SandStorm 🏜️
+# Bem-vindo à Wiki do SandStorm
 
 Aqui você encontra toda a documentação técnica avançada, lore detalhada, fluxogramas de engenharia e listas completas de máquinas e itens do mod **SandStorm**.
 

@@ -1,4 +1,4 @@
-# SandStorm 🏜️
+# SandStorm
 
 **SandStorm** é um mod de sobrevivência, automação industrial e terraformação (Fabric 1.21.4).
 
