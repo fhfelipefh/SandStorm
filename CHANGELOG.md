@@ -5,6 +5,25 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.4.5] - 2026-09-27
+
+### 🚀 Correções Críticas, Lore Isolada & Deploy Oficial no CurseForge
+* **Isolamento de Lore & Compatibilidade com Modpacks**:
+  * O jogador só nasce com o traje de sobrevivência e sofre penalidades ambientais (ausência de sono, oxigênio, radiação solar e atração de vermes da areia) quando o mundo for do tipo SandStorm (`sandstorm:desert_planet`).
+  * Em outros mundos (Vanilla, Default, Flat, modpacks com outros biomas), o SandStorm atua como mod de conteúdo tecnológico sem aplicar restrições forçadas de Lore ao jogador.
+* **Portão de Espinhos Esmagadores (`crushing_spike_gate`)**:
+  * Correção de empilhamento: os blocos podem ser colocados um sobre o outro ou lateralmente sem sobreposição interna.
+  * Modelos 3D dinâmicos industriais para estados Aberto e Fechado com dentes retráteis e pistões reforçados.
+  * Colisão dinâmica permitindo passagem desimpedida quando aberto e bloqueio impenetrável com dano hidráulico quando fechado.
+* **Interface & Tooltips**:
+  * Linhas curtas em todos os tooltips do mod (máximo 50 caracteres) estruturadas via `List<Component>`, sem corte na interface.
+* **CurseForge & Pipeline de Lançamento**:
+  * Versão do Minecraft sincronizada estritamente com `1.21.4` para o catálogo da CurseForge.
+  * Compatibilidade explícita com **Java 25** e **Java 21**.
+  * Modo de falha estrito (`fail-mode: 'fail'`) no pipeline, impedindo que falhas de deploy sejam mascaradas como sucesso e prevenindo tags falsas no repositório.
+
+---
+
 ## [1.4.4] - 2026-09-27
 
 ### 🔄 Distribuição & Metadados

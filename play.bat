@@ -11,7 +11,7 @@ echo.
 set "SCRIPT_DIR=%~dp0"
 set "MINECRAFT_DIR=%APPDATA%\.minecraft"
 set "MODS_DIR=%MINECRAFT_DIR%\mods"
-set "MOD_VERSION=1.4.4"
+set "MOD_VERSION=1.4.5"
 for /f "usebackq tokens=1,2 delims==" %%A in ("%SCRIPT_DIR%gradle.properties") do (
     if "%%A"=="version" set "MOD_VERSION=%%B"
 )

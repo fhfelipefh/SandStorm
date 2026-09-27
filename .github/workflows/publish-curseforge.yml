@@ -33,11 +33,8 @@ jobs:
           VERSION=$(grep "^version=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
 
           MC_VERSION=$(grep "^minecraft_target_version=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
-          if [ -z "$MC_VERSION" ]; then
-            MC_VERSION=$(grep "^minecraft_version=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
-          fi
-          if [ -z "$MC_VERSION" ]; then
-            MC_VERSION="26.3"
+          if [ -z "$MC_VERSION" ] || [ "$MC_VERSION" = "26.3" ]; then
+            MC_VERSION="1.21.4"
           fi
 
           LOADER=$(grep "^mod_loader=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
@@ -84,7 +81,7 @@ jobs:
 
       - name: Configurar Java 25
         if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '25'
@@ -123,7 +120,7 @@ jobs:
                   changelog = match.group(1).strip()
                   changelog = re.sub(r'\n---\s*$', '', changelog).strip()
           if not changelog:
-              changelog = f'Release v{version} de SandStorm para Minecraft {os.environ.get(\"MC_VERSION\", \"26.3\")} ({os.environ.get(\"MOD_LOADER\", \"Fabric\")}).'
+              changelog = f'Release v{version} de SandStorm para Minecraft {os.environ.get(\"MC_VERSION\", \"1.21.4\")} ({os.environ.get(\"MOD_LOADER\", \"Fabric\")}).'
           with open('RELEASE_CHANGELOG.md', 'w', encoding='utf-8') as out:
               out.write(changelog)
           "
@@ -136,10 +133,10 @@ jobs:
         if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          curseforge-id: ${{ secrets.CURSEFORGE_PROJECT_ID }}
+          curseforge-id: ${{ secrets.CURSEFORGE_PROJECT_ID || '1713742' }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           files: |
-            build/libs/*.jar
+            build/libs/*-${{ env.MOD_VERSION }}.jar
             !build/libs/*-dev.jar
             !build/libs/*-sources.jar
           name: ${{ env.RELEASE_TITLE }}
@@ -148,15 +145,12 @@ jobs:
           changelog-file: 'RELEASE_CHANGELOG.md'
           game-versions: |
             ${{ env.MC_VERSION }}
-            Java 25
-            Java 21
+          loaders: |
+            ${{ env.MOD_LOADER_LOWER }}
           java: |
-            25
-            21
             Java 25
             Java 21
-          loaders: ${{ env.MOD_LOADER_LOWER }}
-          fail-mode: 'warn'
+          fail-mode: 'fail'
 
       - name: Criar Tag Git para a Nova Versão
         if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && success()
