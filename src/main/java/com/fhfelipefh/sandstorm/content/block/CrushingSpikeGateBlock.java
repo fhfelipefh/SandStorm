@@ -2,12 +2,10 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -21,15 +19,20 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.redstone.Orientation;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.List;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
-public class CrushingSpikeGateBlock extends Block {
+
+import com.fhfelipefh.sandstorm.content.block.entity.CrushingSpikeGateBlockEntity;
+
+public class CrushingSpikeGateBlock extends Block implements EntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
@@ -55,7 +58,7 @@ public class CrushingSpikeGateBlock extends Block {
 
     public CrushingSpikeGateBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, true));
     }
 
     @Override
@@ -73,7 +76,7 @@ public class CrushingSpikeGateBlock extends Block {
             facing = context.getHorizontalDirection().getOpposite();
         }
         boolean hasSignal = context.getLevel().hasNeighborSignal(context.getClickedPos());
-        return defaultBlockState().setValue(FACING, facing).setValue(OPEN, hasSignal);
+        return defaultBlockState().setValue(FACING, facing).setValue(OPEN, !hasSignal);
     }
 
     @Override
@@ -119,7 +122,7 @@ public class CrushingSpikeGateBlock extends Block {
         }
 
         boolean hasSignal = level.hasNeighborSignal(pos);
-        if (hasSignal != state.getValue(OPEN)) {
+        if (hasSignal == state.getValue(OPEN)) {
             toggleGate(state, level, pos);
         }
     }
@@ -130,15 +133,20 @@ public class CrushingSpikeGateBlock extends Block {
 
         if (willOpen) {
             level.playSound(null, pos, SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS, 1.0f, 0.9f);
-        } else {
-            level.playSound(null, pos, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.7f, 1.2f);
-            if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
-                AABB aabb = new AABB(pos);
-                List<LivingEntity> victims = serverLevel.getEntitiesOfClass(LivingEntity.class, aabb);
-                for (LivingEntity victim : victims) {
-                    victim.hurtServer(serverLevel, serverLevel.damageSources().generic(), 12.0f);
-                }
-            }
         }
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new CrushingSpikeGateBlockEntity(pos, state);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return (lvl, p, st, be) -> {
+            if (be instanceof CrushingSpikeGateBlockEntity entity) {
+                CrushingSpikeGateBlockEntity.tick(lvl, p, st, entity);
+            }
+        };
     }
 }

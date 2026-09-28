@@ -6,6 +6,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockE
 import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.CrushingSpikeGateBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CyborgDockingStationBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CyborgIncubatorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreBoreholeBlockEntity;
@@ -715,6 +716,11 @@ public class SandStormBlocks {
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("spectral_survey_telescope"),
             new BlockEntityType<>(SpectralSurveyTelescopeBlockEntity::new, Set.of(SPECTRAL_SURVEY_TELESCOPE))
+    );
+    public static final BlockEntityType<CrushingSpikeGateBlockEntity> CRUSHING_SPIKE_GATE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("crushing_spike_gate"),
+            new BlockEntityType<>(CrushingSpikeGateBlockEntity::new, Set.of(CRUSHING_SPIKE_GATE))
     );
 
     public static <T extends Block> T register(String path, T block) {
