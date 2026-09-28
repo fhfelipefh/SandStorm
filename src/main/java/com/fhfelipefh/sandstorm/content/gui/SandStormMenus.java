@@ -152,6 +152,11 @@ public class SandStormMenus {
             new MenuType<>(OrbitalGroundStationMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<AtmosphericTerraformerMenu> ATMOSPHERIC_TERRAFORMER_MENU = register(
+            "atmospheric_terraformer",
+            new MenuType<>(AtmosphericTerraformerMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

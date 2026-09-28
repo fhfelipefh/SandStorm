@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.content.command.SandstormBuildCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormClaimCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormDebugCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormPlantCommand;
+import com.fhfelipefh.sandstorm.content.command.SandstormTerraformerCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormWeatherCommand;
 import com.fhfelipefh.sandstorm.content.command.SandwormShowcaseCommand;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
@@ -105,6 +106,7 @@ public class SandStormMod implements ModInitializer {
         SandstormBuildCommand.initialize();
         SandstormPlantCommand.initialize();
         SandstormDebugCommand.initialize();
+        SandstormTerraformerCommand.initialize();
         RecipeUnlockHandler.initialize();
         ServerPlayNetworking.registerGlobalReceiver(
                 FlashlightTogglePayload.TYPE,

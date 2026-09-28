@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.AcousticDefensePylonBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericTerraformerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutoAssemblyLineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEntity;
@@ -722,6 +723,11 @@ public class SandStormBlocks {
             SandStormMod.id("crushing_spike_gate"),
             new BlockEntityType<>(CrushingSpikeGateBlockEntity::new, Set.of(CRUSHING_SPIKE_GATE))
     );
+    public static final BlockEntityType<AtmosphericTerraformerBlockEntity> ATMOSPHERIC_TERRAFORMER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("atmospheric_terraformer"),
+            new BlockEntityType<>(AtmosphericTerraformerBlockEntity::new, Set.of(ATMOSPHERIC_TERRAFORMER))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -772,5 +778,7 @@ public class SandStormBlocks {
         FluidStorage.SIDED.registerForBlockEntity(SupercriticalHeatExchangerBlockEntity::getFluidStorage, SUPERCRITICAL_HEAT_EXCHANGER_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ORBITAL_MASS_DRIVER_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ORBITAL_GROUND_STATION_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ATMOSPHERIC_TERRAFORMER_BE);
+        FluidStorage.SIDED.registerForBlockEntity(AtmosphericTerraformerBlockEntity::getFluidStorage, ATMOSPHERIC_TERRAFORMER_BE);
     }
 }

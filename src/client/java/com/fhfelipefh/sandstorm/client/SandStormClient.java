@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client;
 
 import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
+import com.fhfelipefh.sandstorm.client.gui.AtmosphericTerraformerScreen;
 import com.fhfelipefh.sandstorm.client.gui.AutoAssemblyLineScreen;
 import com.fhfelipefh.sandstorm.client.gui.AutonomousSonicTurretScreen;
 import com.fhfelipefh.sandstorm.client.gui.BioRegenerationPodScreen;
@@ -107,6 +108,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.SUPERCRITICAL_HEAT_EXCHANGER_MENU, SupercriticalHeatExchangerScreen::new);
         MenuScreens.register(SandStormMenus.ORBITAL_MASS_DRIVER_MENU, OrbitalMassDriverScreen::new);
         MenuScreens.register(SandStormMenus.ORBITAL_GROUND_STATION_MENU, OrbitalGroundStationScreen::new);
+        MenuScreens.register(SandStormMenus.ATMOSPHERIC_TERRAFORMER_MENU, AtmosphericTerraformerScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
