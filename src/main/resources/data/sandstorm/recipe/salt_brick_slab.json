@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "SSS"
+  ],
+  "key": {
+    "S": "sandstorm:salt_bricks"
+  },
+  "result": {
+    "count": 6,
+    "id": "sandstorm:salt_brick_slab"
+  }
+}

@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.entity.ai;
 
 import com.fhfelipefh.sandstorm.component.SeismicTrackerComponent;
 import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
+import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
 import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -178,6 +179,9 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
         if (entity.getType() == this.mob.getType()) {
             return false;
         }
+        if (entity instanceof ScrapSentinelEntity) {
+            return false;
+        }
         if (entity instanceof Player player && (player.isCreative() || player.isSpectator())) {
             return false;
         }
@@ -185,6 +189,9 @@ public class SandwormSeismicTargetGoal extends TargetGoal {
             return false;
         }
         if (KineticShieldTracker.isInsideShield(entity.level().dimension(), entity.blockPosition())) {
+            return false;
+        }
+        if (SeismicSurvivalHandler.isSeismicSafeBlock(entity.getBlockStateOn()) || SeismicSurvivalHandler.isSeismicSafeBlock(entity.level().getBlockState(entity.blockPosition()))) {
             return false;
         }
 

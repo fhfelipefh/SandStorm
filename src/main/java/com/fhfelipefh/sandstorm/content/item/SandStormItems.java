@@ -2,6 +2,8 @@ package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
+import com.fhfelipefh.sandstorm.content.storage.QuantumStorageCartridgeItem;
+import com.fhfelipefh.sandstorm.content.storage.StorageCartridgeTier;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
@@ -115,6 +117,13 @@ public class SandStormItems {
     public static final SpawnEggItem CYBORG_EXCAVATOR_SPAWN_EGG = register("cyborg_excavator_spawn_egg", new SpawnEggItem(properties("cyborg_excavator_spawn_egg").spawnEgg(SandStormEntities.CYBORG_EXCAVATOR)));
     public static final SpawnEggItem CYBORG_BUILDER_SPAWN_EGG = register("cyborg_builder_spawn_egg", new SpawnEggItem(properties("cyborg_builder_spawn_egg").spawnEgg(SandStormEntities.CYBORG_BUILDER)));
     public static final SpawnEggItem CYBORG_HARVESTER_SPAWN_EGG = register("cyborg_harvester_spawn_egg", new SpawnEggItem(properties("cyborg_harvester_spawn_egg").spawnEgg(SandStormEntities.CYBORG_HARVESTER)));
+    public static final SpawnEggItem SCRAP_SENTINEL_SPAWN_EGG = register("scrap_sentinel_spawn_egg", new SpawnEggItem(properties("scrap_sentinel_spawn_egg").spawnEgg(SandStormEntities.SCRAP_SENTINEL)));
+    public static final SpawnEggItem AQUIFER_BEETLE_SPAWN_EGG = register("aquifer_beetle_spawn_egg", new SpawnEggItem(properties("aquifer_beetle_spawn_egg").spawnEgg(SandStormEntities.AQUIFER_BEETLE)));
+    public static final SpawnEggItem NOMAD_SCAVENGER_SPAWN_EGG = register("nomad_scavenger_spawn_egg", new SpawnEggItem(properties("nomad_scavenger_spawn_egg").spawnEgg(SandStormEntities.NOMAD_SCAVENGER)));
+    public static final Item LOOSE_WIRES = register("loose_wires", new Item(properties("loose_wires").rarity(Rarity.COMMON)));
+    public static final Item WORTHLESS_SCRAP = register("worthless_scrap", new Item(properties("worthless_scrap").rarity(Rarity.COMMON)));
+    public static final Item SALT_GLAND = register("salt_gland", new Item(properties("salt_gland").rarity(Rarity.UNCOMMON)));
+    public static final Item THERMAL_CARAPACE = register("thermal_carapace", new Item(properties("thermal_carapace").rarity(Rarity.RARE)));
     public static final CyborgUpgradeItem ACID_CHITIN_PLATING = register("acid_chitin_plating", new CyborgUpgradeItem(CyborgUpgradeItem.CyborgUpgradeType.ACID_CHITIN_PLATING, properties("acid_chitin_plating")));
     public static final CyborgUpgradeItem CRYO_TREHALOSE_CELL = register("cryo_trehalose_cell", new CyborgUpgradeItem(CyborgUpgradeItem.CyborgUpgradeType.CRYO_TREHALOSE_CELL, properties("cryo_trehalose_cell")));
     public static final CyborgUpgradeItem LONG_RANGE_LIDAR_LENS = register("long_range_lidar_lens", new CyborgUpgradeItem(CyborgUpgradeItem.CyborgUpgradeType.LONG_RANGE_LIDAR_LENS, properties("long_range_lidar_lens")));
@@ -139,6 +148,14 @@ public class SandStormItems {
     public static final OrbitalSolarReflectorSatelliteItem ORBITAL_SOLAR_REFLECTOR_SATELLITE = register("orbital_solar_reflector_satellite", new OrbitalSolarReflectorSatelliteItem(properties("orbital_solar_reflector_satellite").rarity(Rarity.RARE).stacksTo(16)));
     public static final SarGeologicalSatelliteItem SAR_GEOLOGICAL_SATELLITE = register("sar_geological_satellite", new SarGeologicalSatelliteItem(properties("sar_geological_satellite").rarity(Rarity.RARE).stacksTo(16)));
     public static final OrbitalKineticLanceSatelliteItem ORBITAL_KINETIC_LANCE_SATELLITE = register("orbital_kinetic_lance_satellite", new OrbitalKineticLanceSatelliteItem(properties("orbital_kinetic_lance_satellite").rarity(Rarity.EPIC).stacksTo(16)));
+    public static final AdvancedRefractionLensItem ADVANCED_REFRACTION_LENS = register("advanced_refraction_lens", new AdvancedRefractionLensItem(properties("advanced_refraction_lens").rarity(Rarity.RARE).stacksTo(16)));
+    public static final Item QUANTUM_PROCESSOR = register("quantum_processor", new Item(properties("quantum_processor").rarity(Rarity.RARE)));
+    public static final Item STORAGE_HOUSING = register("storage_housing", new Item(properties("storage_housing").rarity(Rarity.UNCOMMON)));
+    public static final QuantumStorageCartridgeItem QUANTUM_STORAGE_CARTRIDGE_1K = register("quantum_storage_cartridge_1k", new QuantumStorageCartridgeItem(StorageCartridgeTier.TIER_1K, properties("quantum_storage_cartridge_1k").stacksTo(1).rarity(Rarity.COMMON)));
+    public static final QuantumStorageCartridgeItem QUANTUM_STORAGE_CARTRIDGE_4K = register("quantum_storage_cartridge_4k", new QuantumStorageCartridgeItem(StorageCartridgeTier.TIER_4K, properties("quantum_storage_cartridge_4k").stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final QuantumStorageCartridgeItem QUANTUM_STORAGE_CARTRIDGE_16K = register("quantum_storage_cartridge_16k", new QuantumStorageCartridgeItem(StorageCartridgeTier.TIER_16K, properties("quantum_storage_cartridge_16k").stacksTo(1).rarity(Rarity.RARE)));
+    public static final QuantumStorageCartridgeItem QUANTUM_STORAGE_CARTRIDGE_64K = register("quantum_storage_cartridge_64k", new QuantumStorageCartridgeItem(StorageCartridgeTier.TIER_64K, properties("quantum_storage_cartridge_64k").stacksTo(1).rarity(Rarity.EPIC)));
+    public static final QuantumStorageCartridgeItem QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL = register("quantum_storage_cartridge_dimensional", new QuantumStorageCartridgeItem(StorageCartridgeTier.DIMENSIONAL, properties("quantum_storage_cartridge_dimensional").stacksTo(1).rarity(Rarity.EPIC)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -292,6 +309,13 @@ public class SandStormItems {
                         entries.accept(CYBORG_EXCAVATOR_SPAWN_EGG);
                         entries.accept(CYBORG_BUILDER_SPAWN_EGG);
                         entries.accept(CYBORG_HARVESTER_SPAWN_EGG);
+                        entries.accept(SCRAP_SENTINEL_SPAWN_EGG);
+                        entries.accept(AQUIFER_BEETLE_SPAWN_EGG);
+                        entries.accept(NOMAD_SCAVENGER_SPAWN_EGG);
+                        entries.accept(LOOSE_WIRES);
+                        entries.accept(WORTHLESS_SCRAP);
+                        entries.accept(SALT_GLAND);
+                        entries.accept(THERMAL_CARAPACE);
                         entries.accept(SandStormBlocks.CYBORG_DOCKING_STATION);
                         entries.accept(ACID_CHITIN_PLATING);
                         entries.accept(CRYO_TREHALOSE_CELL);
@@ -305,6 +329,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.PLASMA_SHIELD_GENERATOR);
                         entries.accept(SandStormBlocks.KINETIC_RAILGUN);
                         entries.accept(SandStormBlocks.ACOUSTIC_DEFENSE_PYLON);
+                        entries.accept(SandStormBlocks.ELECTRIC_FENCE_PYLON);
                         entries.accept(SandStormBlocks.AUTONOMOUS_SONIC_TURRET);
                         entries.accept(KINETIC_SLUG);
                         entries.accept(SUPERCONDUCTOR_TOROID);
@@ -329,6 +354,24 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.ORBITAL_MASS_DRIVER);
                         entries.accept(SandStormBlocks.ORBITAL_GROUND_STATION);
                         entries.accept(SandStormBlocks.SPECTRAL_SURVEY_TELESCOPE);
+                        entries.accept(SandStormBlocks.SUBSPACE_GATEWAY);
+                        entries.accept(ADVANCED_REFRACTION_LENS);
+                        entries.accept(SandStormBlocks.SEISMIC_DAMPENER_PAVING);
+                        entries.accept(SandStormBlocks.SALT_BRICKS);
+                        entries.accept(SandStormBlocks.SALT_BRICK_STAIRS);
+                        entries.accept(SandStormBlocks.SALT_BRICK_SLAB);
+                        entries.accept(SandStormBlocks.SALT_BRICK_WALL);
+                        entries.accept(QUANTUM_PROCESSOR);
+                        entries.accept(STORAGE_HOUSING);
+                        entries.accept(QUANTUM_STORAGE_CARTRIDGE_1K);
+                        entries.accept(QUANTUM_STORAGE_CARTRIDGE_4K);
+                        entries.accept(QUANTUM_STORAGE_CARTRIDGE_16K);
+                        entries.accept(QUANTUM_STORAGE_CARTRIDGE_64K);
+                        entries.accept(QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL);
+                        entries.accept(SandStormBlocks.QUANTUM_NETWORK_CONTROLLER);
+                        entries.accept(SandStormBlocks.QUANTUM_DISK_DRIVE);
+                        entries.accept(SandStormBlocks.QUANTUM_ACCESS_TERMINAL);
+                        entries.accept(SandStormBlocks.QUANTUM_NETWORK_CABLE);
                     })
                     .build()
     );

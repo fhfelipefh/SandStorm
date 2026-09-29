@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/salt_brick_wall_inventory"
+    }
+  }
+}

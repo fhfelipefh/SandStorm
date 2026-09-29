@@ -35,7 +35,7 @@ public class ThermalGeneratorScreen extends BaseMachineScreen<ThermalGeneratorMe
         if (mouseX >= x + 25 && mouseX <= x + 39 && mouseY >= y + 18 && mouseY <= y + 46) {
             int lava = this.menu.getLavaAmount();
             int maxLava = this.menu.getMaxLava();
-            Component tooltip = Component.literal("§6Lava: §f" + lava + " / " + maxLava + " mB");
+            Component tooltip = Component.translatable("gui.sandstorm.thermal_generator.lava", lava, maxLava);
             extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
         }
     }

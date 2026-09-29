@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "sandstorm:block/quantum_disk_drive" },
+    "facing=south": { "model": "sandstorm:block/quantum_disk_drive", "y": 180 },
+    "facing=west": { "model": "sandstorm:block/quantum_disk_drive", "y": 270 },
+    "facing=east": { "model": "sandstorm:block/quantum_disk_drive", "y": 90 }
+  }
+}

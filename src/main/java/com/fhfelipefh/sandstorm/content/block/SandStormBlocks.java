@@ -14,6 +14,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreBoreholeBlockEntity
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DewCondenserBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.ElectricFencePylonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
@@ -33,9 +34,17 @@ import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity
 import com.fhfelipefh.sandstorm.content.block.entity.SmartFluidPipeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SupercriticalHeatExchangerBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SubspaceGatewayBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ThermalGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.WirelessSolarReceiverBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.WptRelayTowerBlockEntity;
+import com.fhfelipefh.sandstorm.content.storage.QuantumAccessTerminalBlock;
+import com.fhfelipefh.sandstorm.content.storage.QuantumAccessTerminalBlockEntity;
+import com.fhfelipefh.sandstorm.content.storage.QuantumDiskDriveBlock;
+import com.fhfelipefh.sandstorm.content.storage.QuantumDiskDriveBlockEntity;
+import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkCableBlock;
+import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkControllerBlock;
+import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkControllerBlockEntity;
 
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
@@ -48,7 +57,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -502,6 +514,14 @@ public class SandStormBlocks {
                     .sound(SoundType.COPPER)
                     .lightLevel(state -> state.getValue(AcousticDefensePylonBlock.ACTIVE) ? 8 : 0)
                     .noOcclusion()));
+    public static final ElectricFencePylonBlock ELECTRIC_FENCE_PYLON = register("electric_fence_pylon",
+            new ElectricFencePylonBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("electric_fence_pylon")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(4.0f, 8.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .lightLevel(state -> state.getValue(ElectricFencePylonBlock.CONNECTED) ? 12 : (state.getValue(ElectricFencePylonBlock.LIT) ? 6 : 0))
+                    .noOcclusion()));
     public static final DeepCoreBoreholeBlock DEEP_CORE_BOREHOLE = register("deep_core_borehole",
             new DeepCoreBoreholeBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("deep_core_borehole")))
@@ -546,6 +566,74 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(4.0f, 8.0f)
                     .sound(SoundType.HEAVY_CORE)
+                    .noOcclusion()));
+    public static final SubspaceGatewayBlock SUBSPACE_GATEWAY = register("subspace_gateway",
+            new SubspaceGatewayBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("subspace_gateway")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(5.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .lightLevel(state -> state.getValue(SubspaceGatewayBlock.LIT) ? 14 : 0)
+                    .noOcclusion()));
+    public static final SeismicDampenerPavingBlock SEISMIC_DAMPENER_PAVING = register("seismic_dampener_paving",
+            new SeismicDampenerPavingBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("seismic_dampener_paving")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(0.2f)
+                    .sound(SoundType.WOOL)
+                    .noOcclusion()));
+    public static final Block SALT_BRICKS = register("salt_bricks",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("salt_bricks")))
+                    .mapColor(MapColor.SNOW)
+                    .strength(1.5f, 6.0f)
+                    .sound(SoundType.STONE)
+                    .lightLevel(state -> 2)));
+    public static final StairBlock SALT_BRICK_STAIRS = register("salt_brick_stairs",
+            new StairBlock(SALT_BRICKS.defaultBlockState(), BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("salt_brick_stairs")))
+                    .mapColor(MapColor.SNOW)
+                    .strength(1.5f, 6.0f)
+                    .sound(SoundType.STONE)));
+    public static final SlabBlock SALT_BRICK_SLAB = register("salt_brick_slab",
+            new SlabBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("salt_brick_slab")))
+                    .mapColor(MapColor.SNOW)
+                    .strength(1.5f, 6.0f)
+                    .sound(SoundType.STONE)));
+    public static final WallBlock SALT_BRICK_WALL = register("salt_brick_wall",
+            new WallBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("salt_brick_wall")))
+                    .mapColor(MapColor.SNOW)
+                    .strength(1.5f, 6.0f)
+                    .sound(SoundType.STONE)));
+    public static final QuantumNetworkControllerBlock QUANTUM_NETWORK_CONTROLLER = register("quantum_network_controller",
+            new QuantumNetworkControllerBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("quantum_network_controller")))
+                    .mapColor(MapColor.COLOR_BLUE)
+                    .strength(4.0f, 8.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final QuantumDiskDriveBlock QUANTUM_DISK_DRIVE = register("quantum_disk_drive",
+            new QuantumDiskDriveBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("quantum_disk_drive")))
+                    .mapColor(MapColor.COLOR_BLUE)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final QuantumAccessTerminalBlock QUANTUM_ACCESS_TERMINAL = register("quantum_access_terminal",
+            new QuantumAccessTerminalBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("quantum_access_terminal")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(3.0f, 6.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final QuantumNetworkCableBlock QUANTUM_NETWORK_CABLE = register("quantum_network_cable",
+            new QuantumNetworkCableBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("quantum_network_cable")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(1.0f, 3.0f)
+                    .sound(SoundType.COPPER)
                     .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
@@ -728,6 +816,31 @@ public class SandStormBlocks {
             SandStormMod.id("atmospheric_terraformer"),
             new BlockEntityType<>(AtmosphericTerraformerBlockEntity::new, Set.of(ATMOSPHERIC_TERRAFORMER))
     );
+    public static final BlockEntityType<SubspaceGatewayBlockEntity> SUBSPACE_GATEWAY_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("subspace_gateway"),
+            new BlockEntityType<>(SubspaceGatewayBlockEntity::new, Set.of(SUBSPACE_GATEWAY))
+    );
+    public static final BlockEntityType<ElectricFencePylonBlockEntity> ELECTRIC_FENCE_PYLON_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("electric_fence_pylon"),
+            new BlockEntityType<>(ElectricFencePylonBlockEntity::new, Set.of(ELECTRIC_FENCE_PYLON))
+    );
+    public static final BlockEntityType<QuantumNetworkControllerBlockEntity> QUANTUM_NETWORK_CONTROLLER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("quantum_network_controller"),
+            new BlockEntityType<>(QuantumNetworkControllerBlockEntity::new, Set.of(QUANTUM_NETWORK_CONTROLLER))
+    );
+    public static final BlockEntityType<QuantumDiskDriveBlockEntity> QUANTUM_DISK_DRIVE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("quantum_disk_drive"),
+            new BlockEntityType<>(QuantumDiskDriveBlockEntity::new, Set.of(QUANTUM_DISK_DRIVE))
+    );
+    public static final BlockEntityType<QuantumAccessTerminalBlockEntity> QUANTUM_ACCESS_TERMINAL_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("quantum_access_terminal"),
+            new BlockEntityType<>(QuantumAccessTerminalBlockEntity::new, Set.of(QUANTUM_ACCESS_TERMINAL))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -780,5 +893,7 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ORBITAL_GROUND_STATION_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ATMOSPHERIC_TERRAFORMER_BE);
         FluidStorage.SIDED.registerForBlockEntity(AtmosphericTerraformerBlockEntity::getFluidStorage, ATMOSPHERIC_TERRAFORMER_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ELECTRIC_FENCE_PYLON_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, QUANTUM_DISK_DRIVE_BE);
     }
 }

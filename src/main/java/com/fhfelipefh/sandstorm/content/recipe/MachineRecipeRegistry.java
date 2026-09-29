@@ -131,6 +131,13 @@ public class MachineRecipeRegistry {
                         List.of(() -> new ItemStack(SandStormItems.NANO_ACTUATOR)),
                         240,
                         1200
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.PIEZO_QUARTZ_SHARD, 4),
+                        List.of(() -> new ItemStack(SandStormItems.RAW_SILICON)),
+                        List.of(() -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        200,
+                        100
                 )
         );
         RECIPES.put("sandstorm:nanite_fabricator", Collections.unmodifiableList(list));

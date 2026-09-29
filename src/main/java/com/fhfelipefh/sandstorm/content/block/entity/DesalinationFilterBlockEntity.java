@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.block.entity;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.entity.AquiferBeetleEntity;
 import com.fhfelipefh.sandstorm.content.gui.DesalinationFilterMenu;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
@@ -330,6 +331,9 @@ public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
 
             if (canProcess() && hasFilterCartridge() && progress < maxProgress) {
                 progress++;
+                if (progress % 20 == 0) {
+                    AquiferBeetleEntity.alertNearbyBeetles(level, pos, 24.0);
+                }
             }
         }
 
@@ -387,6 +391,27 @@ public class DesalinationFilterBlockEntity extends BaseMachineBlockEntity {
                 items.set(4, ItemStack.EMPTY);
             }
         }
+    }
+
+    @Override
+    public ItemStack removeItem(int slot, int amount) {
+        ItemStack result = super.removeItem(slot, amount);
+        if (slot == 1 && !result.isEmpty()) {
+            waterOutput = Math.max(0, waterOutput - 250 * result.getCount());
+            setChanged();
+        }
+        return result;
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int slot) {
+        if (slot == 1) {
+            ItemStack current = items.get(slot);
+            if (!current.isEmpty()) {
+                waterOutput = Math.max(0, waterOutput - 250 * current.getCount());
+            }
+        }
+        return super.removeItemNoUpdate(slot);
     }
 
     @Override

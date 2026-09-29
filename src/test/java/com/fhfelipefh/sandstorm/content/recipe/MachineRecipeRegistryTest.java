@@ -76,7 +76,7 @@ class MachineRecipeRegistryTest {
     void testNaniteFabricatorRecipes() {
         List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:nanite_fabricator");
         assertFalse(recipes.isEmpty());
-        assertEquals(3, recipes.size());
+        assertEquals(4, recipes.size());
 
         MachineRecipe r1 = recipes.get(0);
         assertEquals(240, r1.getEnergyCost());
@@ -95,6 +95,12 @@ class MachineRecipeRegistryTest {
         assertEquals(1200, r3.getProcessTicks());
         assertEquals(1, r3.getSlot0InputCount());
         assertEquals(1, r3.getSlot1InputCount());
+
+        MachineRecipe r4 = recipes.get(3);
+        assertEquals(200, r4.getEnergyCost());
+        assertEquals(100, r4.getProcessTicks());
+        assertEquals(1, r4.getSlot0InputCount());
+        assertEquals(1, r4.getSlot1InputCount());
     }
 
     @Test

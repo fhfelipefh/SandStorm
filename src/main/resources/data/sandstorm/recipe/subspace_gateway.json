@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:solid_state_accumulator",
+    "C": "sandstorm:circuit_board",
+    "N": "sandstorm:nano_actuator",
+    "Q": "sandstorm:piezo_quartz_cluster",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "TQT",
+    "NAN",
+    "TCT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:subspace_gateway"
+  }
+}

@@ -115,19 +115,19 @@ public class SolidStateAccumulatorScreen extends AbstractContainerScreen<SolidSt
         int textW = this.font.width(modeText);
         extractor.text(this.font, Component.literal(modeText), btnX + (34 - textW) / 2, btnY + 4, 0xFF00E5FF, false);
 
-        String statusText;
+        Component statusComp;
         int statusColor;
         if (this.menu.isCharging()) {
-            statusText = "STATUS: RECARREGANDO";
+            statusComp = Component.translatable("gui.sandstorm.accumulator.status_charging");
             statusColor = 0xFF00E676;
         } else if (this.menu.isDischarging()) {
-            statusText = "STATUS: DESCARGANDO";
+            statusComp = Component.translatable("gui.sandstorm.accumulator.status_discharging");
             statusColor = 0xFFFF9100;
         } else {
-            statusText = "STATUS: BUFFER ESTAVEL";
+            statusComp = Component.translatable("gui.sandstorm.accumulator.status_stable");
             statusColor = 0xFF78909C;
         }
-        drawAdaptiveText(extractor, Component.literal(statusText), x + 14, y + 56, this.imageWidth - 28, statusColor);
+        drawAdaptiveText(extractor, statusComp, x + 14, y + 56, this.imageWidth - 28, statusColor);
     }
 
     private void renderSlotFrame(GuiGraphicsExtractor extractor, int sx, int sy) {
@@ -142,25 +142,25 @@ public class SolidStateAccumulatorScreen extends AbstractContainerScreen<SolidSt
         if (mouseX >= x + 14 && mouseX <= x + 162 && mouseY >= y + 20 && mouseY <= y + 30) {
             int stored = this.menu.getStoredEnergy();
             int max = this.menu.getMaxEnergy();
-            Component tooltip = Component.literal("§bEnergia: §f" + NumberFormat.compact(stored) + " / " + NumberFormat.compact(max) + " J (" + Math.round(this.menu.getChargePercentage() * 100f) + "%)");
+            Component tooltip = Component.translatable("gui.sandstorm.accumulator.energy", NumberFormat.compact(stored), NumberFormat.compact(max), Math.round(this.menu.getChargePercentage() * 100f));
             extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
         }
 
         if (mouseX >= x + 78 && mouseX <= x + 112 && mouseY >= y + 35 && mouseY <= y + 51) {
             List<Component> modeDesc = switch (this.menu.getMode()) {
                 case 0 -> List.of(
-                        Component.literal("§aModo Automático"),
-                        Component.literal("§7Carrega com sol ou calor e"),
-                        Component.literal("§7descarrega na tempestade.")
+                        Component.translatable("gui.sandstorm.accumulator.mode_auto_title"),
+                        Component.translatable("gui.sandstorm.accumulator.mode_auto_desc1"),
+                        Component.translatable("gui.sandstorm.accumulator.mode_auto_desc2")
                 );
                 case 1 -> List.of(
-                        Component.literal("§bApenas Carga"),
-                        Component.literal("§7Apenas absorve energia da malha.")
+                        Component.translatable("gui.sandstorm.accumulator.mode_charge_title"),
+                        Component.translatable("gui.sandstorm.accumulator.mode_charge_desc")
                 );
                 case 2 -> List.of(
-                        Component.literal("§6Apenas Descarga"),
-                        Component.literal("§7Fornece energia ininterrupta"),
-                        Component.literal("§7para a rede WPT.")
+                        Component.translatable("gui.sandstorm.accumulator.mode_discharge_title"),
+                        Component.translatable("gui.sandstorm.accumulator.mode_discharge_desc1"),
+                        Component.translatable("gui.sandstorm.accumulator.mode_discharge_desc2")
                 );
                 default -> List.of();
             };

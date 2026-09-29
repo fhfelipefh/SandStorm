@@ -6,7 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "sandstorm:tech_disc"
+          "name": "sandstorm:tech_disc",
+          "weight": 80
+        },
+        {
+          "type": "minecraft:item",
+          "name": "sandstorm:advanced_refraction_lens",
+          "weight": 20
         }
       ],
       "rolls": 1.0

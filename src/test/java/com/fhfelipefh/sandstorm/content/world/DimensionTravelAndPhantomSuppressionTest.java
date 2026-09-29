@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import java.util.UUID;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.item.Items;
@@ -77,5 +78,39 @@ class DimensionTravelAndPhantomSuppressionTest {
         assertTrue(DimensionPortalRestrictionHandler.isForbiddenDimension(Level.END));
         assertFalse(DimensionPortalRestrictionHandler.isForbiddenDimension(Level.OVERWORLD));
         assertFalse(DimensionPortalRestrictionHandler.isForbiddenDimension(null));
+    }
+
+    @Test
+    void shouldAuthorizeAndConsumeSubspaceTransit() {
+        UUID playerId = UUID.randomUUID();
+        assertFalse(DimensionPortalRestrictionHandler.isSubspaceTransitAuthorized(playerId));
+        assertFalse(DimensionPortalRestrictionHandler.consumeSubspaceTransitAuthorization(playerId));
+
+        DimensionPortalRestrictionHandler.authorizeSubspaceTransit(playerId);
+        assertTrue(DimensionPortalRestrictionHandler.isSubspaceTransitAuthorized(playerId));
+        assertTrue(DimensionPortalRestrictionHandler.consumeSubspaceTransitAuthorization(playerId));
+        assertFalse(DimensionPortalRestrictionHandler.isSubspaceTransitAuthorized(playerId));
+        assertFalse(DimensionPortalRestrictionHandler.consumeSubspaceTransitAuthorization(playerId));
+    }
+
+    @Test
+    void shouldHandleNullSubspaceAuthorizationsGracefully() {
+        DimensionPortalRestrictionHandler.authorizeSubspaceTransit(null);
+        assertFalse(DimensionPortalRestrictionHandler.isSubspaceTransitAuthorized(null));
+        assertFalse(DimensionPortalRestrictionHandler.consumeSubspaceTransitAuthorization(null));
+    }
+
+    @Test
+    void shouldClearSubspaceAuthorizations() {
+        UUID player1 = UUID.randomUUID();
+        UUID player2 = UUID.randomUUID();
+        DimensionPortalRestrictionHandler.authorizeSubspaceTransit(player1);
+        DimensionPortalRestrictionHandler.authorizeSubspaceTransit(player2);
+        assertTrue(DimensionPortalRestrictionHandler.isSubspaceTransitAuthorized(player1));
+        assertTrue(DimensionPortalRestrictionHandler.isSubspaceTransitAuthorized(player2));
+
+        DimensionPortalRestrictionHandler.clearAuthorizations();
+        assertFalse(DimensionPortalRestrictionHandler.isSubspaceTransitAuthorized(player1));
+        assertFalse(DimensionPortalRestrictionHandler.isSubspaceTransitAuthorized(player2));
     }
 }

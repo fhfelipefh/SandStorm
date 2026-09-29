@@ -98,25 +98,25 @@ public class SupercriticalHeatExchangerScreen extends AbstractContainerScreen<Su
         int x = this.leftPos;
         int y = this.topPos;
 
-        String statusText;
+        Component statusComp;
         int statusColor;
         if (this.menu.isOperating()) {
-            statusText = "CICLO SUPERCRÍTICO";
+            statusComp = Component.translatable("gui.sandstorm.heat_exchanger.status_operating");
             statusColor = 0xFF10B981;
         } else if (this.menu.getWaterAmount() <= 0) {
-            statusText = "SEM ÁGUA";
+            statusComp = Component.translatable("gui.sandstorm.heat_exchanger.status_no_water");
             statusColor = 0xFFEF4444;
         } else {
-            statusText = "CAPACITOR CHEIO";
+            statusComp = Component.translatable("gui.sandstorm.heat_exchanger.status_full");
             statusColor = 0xFF00E5FF;
         }
-        drawAdaptiveText(extractor, Component.literal(statusText), x + 8, y + 21, 100, statusColor);
+        drawAdaptiveText(extractor, statusComp, x + 8, y + 21, 100, statusColor);
 
-        String genText = String.format("+%s J/t", NumberFormat.compact(this.menu.getCurrentGenRate()));
-        drawAdaptiveText(extractor, Component.literal(genText), x + 116, y + 36, 50, 0xFFF59E0B);
+        Component genComp = Component.translatable("gui.sandstorm.heat_exchanger.gen_rate", NumberFormat.compact(this.menu.getCurrentGenRate()));
+        drawAdaptiveText(extractor, genComp, x + 116, y + 36, 50, 0xFFF59E0B);
 
-        String presText = String.format("VAPOR: %d%%", this.menu.getSteamPressure());
-        drawAdaptiveText(extractor, Component.literal(presText), x + 116, y + 48, 50, 0xFFEF4444);
+        Component presComp = Component.translatable("gui.sandstorm.heat_exchanger.steam_pressure", this.menu.getSteamPressure());
+        drawAdaptiveText(extractor, presComp, x + 116, y + 48, 50, 0xFFEF4444);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -124,13 +124,13 @@ public class SupercriticalHeatExchangerScreen extends AbstractContainerScreen<Su
         int y = this.topPos;
 
         if (mouseX >= x + 8 && mouseX <= x + 168 && mouseY >= y + 14 && mouseY <= y + 20) {
-            String energyTip = String.format("Energia: %s / %s J", NumberFormat.compact(this.menu.getStoredEnergy()), NumberFormat.compact(this.menu.getMaxEnergy()));
-            extractor.setTooltipForNextFrame(this.font, Component.literal(energyTip), mouseX, mouseY);
+            Component energyTip = Component.translatable("gui.sandstorm.heat_exchanger.energy", NumberFormat.compact(this.menu.getStoredEnergy()), NumberFormat.compact(this.menu.getMaxEnergy()));
+            extractor.setTooltipForNextFrame(this.font, energyTip, mouseX, mouseY);
         }
 
         if (mouseX >= x + 40 && mouseX <= x + 54 && mouseY >= y + 32 && mouseY <= y + 68) {
-            String fluidTip = String.format("Água Potável: %d / 8000 mB", this.menu.getWaterAmount());
-            extractor.setTooltipForNextFrame(this.font, Component.literal(fluidTip), mouseX, mouseY);
+            Component fluidTip = Component.translatable("gui.sandstorm.heat_exchanger.water", this.menu.getWaterAmount());
+            extractor.setTooltipForNextFrame(this.font, fluidTip, mouseX, mouseY);
         }
     }
 }

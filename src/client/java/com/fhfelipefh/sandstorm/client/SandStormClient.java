@@ -14,6 +14,7 @@ import com.fhfelipefh.sandstorm.client.gui.DeepCoreBoreholeScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreDrillScreen;
 import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
 import com.fhfelipefh.sandstorm.client.gui.DewCondenserScreen;
+import com.fhfelipefh.sandstorm.client.gui.ElectricFencePylonScreen;
 import com.fhfelipefh.sandstorm.client.gui.GridMonitorConsoleScreen;
 import com.fhfelipefh.sandstorm.client.gui.HoloTacticalSpireScreen;
 import com.fhfelipefh.sandstorm.client.gui.HydroponicChamberScreen;
@@ -23,17 +24,24 @@ import com.fhfelipefh.sandstorm.client.gui.LithoPlasmaExtractorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MegastructureConstructorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MolecularModifierScreen;
 import com.fhfelipefh.sandstorm.client.gui.NaniteFabricatorScreen;
+import com.fhfelipefh.sandstorm.client.gui.NomadScavengerScreen;
 import com.fhfelipefh.sandstorm.client.gui.OrbitalGroundStationScreen;
 import com.fhfelipefh.sandstorm.client.gui.OrbitalMassDriverScreen;
 import com.fhfelipefh.sandstorm.client.gui.PlasmaShieldScreen;
 import com.fhfelipefh.sandstorm.client.gui.Printer3DScreen;
+import com.fhfelipefh.sandstorm.client.gui.QuantumControllerScreen;
+import com.fhfelipefh.sandstorm.client.gui.QuantumDiskDriveScreen;
 import com.fhfelipefh.sandstorm.client.gui.QuantumSleeperScreen;
+import com.fhfelipefh.sandstorm.client.gui.QuantumTerminalScreen;
 import com.fhfelipefh.sandstorm.client.gui.SolidStateAccumulatorScreen;
+import com.fhfelipefh.sandstorm.content.gui.QuantumTerminalMenu;
+import com.fhfelipefh.sandstorm.content.network.SyncTerminalGridPayload;
 import com.fhfelipefh.sandstorm.client.gui.SupercriticalHeatExchangerScreen;
 import com.fhfelipefh.sandstorm.client.gui.ThermalGeneratorScreen;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
+import com.fhfelipefh.sandstorm.client.renderer.AquiferBeetleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.AutonomousSonicTurretRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CargoDroneRenderer;
@@ -45,12 +53,15 @@ import com.fhfelipefh.sandstorm.client.renderer.MegastructureConstructorBlockEnt
 import com.fhfelipefh.sandstorm.client.renderer.NaniteFabricatorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.Printer3DBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandwormRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.ScrapSentinelRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.NomadScavengerRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SpaceSuitArmorRenderer;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
+import com.fhfelipefh.sandstorm.content.network.MagneticInterferencePayload;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
@@ -109,6 +120,11 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.ORBITAL_MASS_DRIVER_MENU, OrbitalMassDriverScreen::new);
         MenuScreens.register(SandStormMenus.ORBITAL_GROUND_STATION_MENU, OrbitalGroundStationScreen::new);
         MenuScreens.register(SandStormMenus.ATMOSPHERIC_TERRAFORMER_MENU, AtmosphericTerraformerScreen::new);
+        MenuScreens.register(SandStormMenus.ELECTRIC_FENCE_PYLON_MENU, ElectricFencePylonScreen::new);
+        MenuScreens.register(SandStormMenus.NOMAD_SCAVENGER_MENU, NomadScavengerScreen::new);
+        MenuScreens.register(SandStormMenus.QUANTUM_NETWORK_CONTROLLER_MENU, QuantumControllerScreen::new);
+        MenuScreens.register(SandStormMenus.QUANTUM_DISK_DRIVE_MENU, QuantumDiskDriveScreen::new);
+        MenuScreens.register(SandStormMenus.QUANTUM_ACCESS_TERMINAL_MENU, QuantumTerminalScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
@@ -135,6 +151,9 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.CYBORG_EXCAVATOR, CyborgRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CYBORG_BUILDER, CyborgRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CYBORG_HARVESTER, CyborgRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.SCRAP_SENTINEL, ScrapSentinelRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.AQUIFER_BEETLE, AquiferBeetleRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.NOMAD_SCAVENGER, NomadScavengerRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {
@@ -185,6 +204,24 @@ public class SandStormClient implements ClientModInitializer {
                     SandstormWeatherHandler.getWeather().startSandstorm(200, payload.intensity());
                 } else {
                     SandstormWeatherHandler.getWeather().stopSandstorm();
+                }
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(MagneticInterferencePayload.TYPE, (payload, context) -> {
+            context.client().execute(() -> {
+                SurvivalHudOverlay.triggerMagneticInterference(payload.durationTicks());
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(SyncTerminalGridPayload.TYPE, (payload, context) -> {
+            context.client().execute(() -> {
+                if (context.client().player != null && context.client().player.containerMenu instanceof QuantumTerminalMenu menu) {
+                    menu.updateClientState(
+                            payload.items(),
+                            payload.energyStored(),
+                            payload.maxEnergy(),
+                            payload.totalStored(),
+                            payload.totalCapacity()
+                    );
                 }
             });
         });

@@ -9,16 +9,20 @@ import com.fhfelipefh.sandstorm.content.command.SandstormTerraformerCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormWeatherCommand;
 import com.fhfelipefh.sandstorm.content.command.SandwormShowcaseCommand;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
+import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
+import com.fhfelipefh.sandstorm.content.gui.QuantumTerminalMenu;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
-import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
 import com.fhfelipefh.sandstorm.content.network.ConfigureTurretPayload;
 import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
 import com.fhfelipefh.sandstorm.content.survival.FlashlightStateServer;
+import com.fhfelipefh.sandstorm.content.network.MagneticInterferencePayload;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
+import com.fhfelipefh.sandstorm.content.network.SyncTerminalGridPayload;
+import com.fhfelipefh.sandstorm.content.network.TerminalActionPayload;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import com.fhfelipefh.sandstorm.content.survival.BedRestrictionHandler;
@@ -29,6 +33,7 @@ import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.survival.TechnologyToolRestrictionHandler;
 import com.fhfelipefh.sandstorm.content.world.DimensionPortalRestrictionHandler;
+import com.fhfelipefh.sandstorm.content.world.ExhibitionGalleryManager;
 import com.fhfelipefh.sandstorm.content.world.NutrientTerraformingManager;
 import com.fhfelipefh.sandstorm.content.world.ProceduralRuinsManager;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
@@ -68,6 +73,10 @@ public class SandStormMod implements ModInitializer {
                 SyncPlayerQuestsPayload.TYPE,
                 SyncPlayerQuestsPayload.STREAM_CODEC
         );
+        PayloadTypeRegistry.clientboundPlay().register(
+                MagneticInterferencePayload.TYPE,
+                MagneticInterferencePayload.STREAM_CODEC
+        );
         PayloadTypeRegistry.serverboundPlay().register(
                 ClaimQuestRewardPayload.TYPE,
                 ClaimQuestRewardPayload.STREAM_CODEC
@@ -79,6 +88,14 @@ public class SandStormMod implements ModInitializer {
         PayloadTypeRegistry.serverboundPlay().register(
                 ConfigureTurretPayload.TYPE,
                 ConfigureTurretPayload.STREAM_CODEC
+        );
+        PayloadTypeRegistry.clientboundPlay().register(
+                SyncTerminalGridPayload.TYPE,
+                SyncTerminalGridPayload.STREAM_CODEC
+        );
+        PayloadTypeRegistry.serverboundPlay().register(
+                TerminalActionPayload.TYPE,
+                TerminalActionPayload.STREAM_CODEC
         );
         SandStormSoundEvents.initialize();
         SandStormItems.initialize();
@@ -107,6 +124,7 @@ public class SandStormMod implements ModInitializer {
         SandstormPlantCommand.initialize();
         SandstormDebugCommand.initialize();
         SandstormTerraformerCommand.initialize();
+        ExhibitionGalleryManager.initialize();
         RecipeUnlockHandler.initialize();
         ServerPlayNetworking.registerGlobalReceiver(
                 FlashlightTogglePayload.TYPE,
@@ -122,6 +140,14 @@ public class SandStormMod implements ModInitializer {
                         turret.setFilterMode(payload.filterMode());
                         turret.setTargetingStrategy(payload.targetingStrategy());
                         turret.setTargetEntityIds(payload.selectedEntityTypes());
+                    }
+                }
+        );
+        ServerPlayNetworking.registerGlobalReceiver(
+                TerminalActionPayload.TYPE,
+                (payload, context) -> {
+                    if (context.player().containerMenu instanceof QuantumTerminalMenu menu) {
+                        menu.handleAction(context.player(), payload.filterStack(), payload.actionType());
                     }
                 }
         );

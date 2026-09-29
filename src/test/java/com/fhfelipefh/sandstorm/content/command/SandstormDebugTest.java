@@ -93,7 +93,11 @@ class SandstormDebugTest {
         assertTrue(spawnables.contains("builder_drone"));
         assertTrue(spawnables.contains("sandworm"));
         assertTrue(spawnables.contains("sandboard"));
-        assertEquals(12, spawnables.size());
+        assertTrue(spawnables.contains("scrap_sentinel"));
+        assertTrue(spawnables.contains("scrap_sentinel_dormant"));
+        assertTrue(spawnables.contains("aquifer_beetle"));
+        assertTrue(spawnables.contains("aquifer_beetle_hibernating"));
+        assertEquals(16, spawnables.size());
     }
 
     @Test
@@ -119,7 +123,8 @@ class SandstormDebugTest {
         assertTrue(facilities.contains("plasma_defense_complex"));
         assertTrue(facilities.contains("geothermal_well"));
         assertTrue(facilities.contains("orbital_array"));
-        assertEquals(19, facilities.size());
+        assertTrue(facilities.contains("colossal_castle"));
+        assertEquals(20, facilities.size());
     }
 
     @Test

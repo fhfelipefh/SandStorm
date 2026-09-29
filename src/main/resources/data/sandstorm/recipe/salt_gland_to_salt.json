@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:salt_gland"
+  ],
+  "result": {
+    "count": 4,
+    "id": "sandstorm:mineral_salt"
+  }
+}

@@ -21,6 +21,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.OrbitalMassDriverBlockEntit
 import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SupercriticalHeatExchangerBlockEntity;
+import com.fhfelipefh.sandstorm.content.entity.AquiferBeetleEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
@@ -28,6 +29,7 @@ import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandboardEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
+import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgBuilderEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgExcavatorEntity;
@@ -38,6 +40,7 @@ import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.survival.PlayerSuitSavedData;
 import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import com.fhfelipefh.sandstorm.content.world.structure.ColossalCastleGenerator;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -85,7 +88,11 @@ public class SandstormDebugCommand {
             "cargo_drone",
             "builder_drone",
             "sandworm",
-            "sandboard"
+            "sandboard",
+            "scrap_sentinel",
+            "scrap_sentinel_dormant",
+            "aquifer_beetle",
+            "aquifer_beetle_hibernating"
     );
 
     private static final List<String> FACILITIES = List.of(
@@ -107,7 +114,8 @@ public class SandstormDebugCommand {
             "clone_facility",
             "plasma_defense_complex",
             "geothermal_well",
-            "orbital_array"
+            "orbital_array",
+            "colossal_castle"
     );
 
     public static void initialize() {
@@ -802,6 +810,46 @@ public class SandstormDebugCommand {
                     return 1;
                 }
             }
+            case "scrap_sentinel" -> {
+                ScrapSentinelEntity sentinel = SandStormEntities.SCRAP_SENTINEL.create(level, EntitySpawnReason.COMMAND);
+                if (sentinel != null) {
+                    sentinel.setPos(pos.x, pos.y, pos.z);
+                    sentinel.setDormant(false);
+                    level.addFreshEntity(sentinel);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Sentinela de Sucata (Ativo) instanciada com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "scrap_sentinel_dormant" -> {
+                ScrapSentinelEntity sentinel = SandStormEntities.SCRAP_SENTINEL.create(level, EntitySpawnReason.COMMAND);
+                if (sentinel != null) {
+                    sentinel.setPos(pos.x, pos.y, pos.z);
+                    sentinel.setDormant(true);
+                    level.addFreshEntity(sentinel);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Sentinela de Sucata (Dormente) instanciada com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "aquifer_beetle" -> {
+                AquiferBeetleEntity beetle = SandStormEntities.AQUIFER_BEETLE.create(level, EntitySpawnReason.COMMAND);
+                if (beetle != null) {
+                    beetle.setPos(pos.x, pos.y, pos.z);
+                    beetle.setHibernating(false);
+                    level.addFreshEntity(beetle);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Besouro Aquífero (Ativo) instanciado!"), true);
+                    return 1;
+                }
+            }
+            case "aquifer_beetle_hibernating" -> {
+                AquiferBeetleEntity beetle = SandStormEntities.AQUIFER_BEETLE.create(level, EntitySpawnReason.COMMAND);
+                if (beetle != null) {
+                    beetle.setPos(pos.x, pos.y, pos.z);
+                    beetle.setHibernating(true);
+                    level.addFreshEntity(beetle);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Besouro Aquífero (Hibernando) instanciado!"), true);
+                    return 1;
+                }
+            }
             default -> {
                 source.sendFailure(Component.literal("§c[SandStorm] Entidade desconhecida. Opções: " + String.join(", ", SPAWNABLES)));
                 return 0;
@@ -1264,6 +1312,11 @@ public class SandstormDebugCommand {
 
                 source.sendSuccess(() -> Component.literal("§a[SandStorm] Complexo de Matriz Orbital montado com sucesso! (Acelerador de Cargas, Estação Terrena e Telescópio Espectral)"), true);
                 return 1;
+            }
+            case "colossal_castle", "castle", "castelo" -> {
+                int blocks = ColossalCastleGenerator.generate(level, center);
+                source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§a[SandStorm] Castelo Colossal de Pedra gerado em [%d, %d, %d]! (%d blocos)", center.getX(), center.getY(), center.getZ(), blocks)), true);
+                return blocks;
             }
             default -> {
                 source.sendFailure(Component.literal("§c[SandStorm] Instalação desconhecida. Opções: " + String.join(", ", FACILITIES)));

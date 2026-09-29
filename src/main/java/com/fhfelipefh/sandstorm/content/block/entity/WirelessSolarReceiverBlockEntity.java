@@ -30,6 +30,7 @@ public class WirelessSolarReceiverBlockEntity extends BlockEntity {
     private int tier;
     private WirelessChargerComponent charger;
     private EnergyStorageComponent energyStorage;
+    private boolean hasRefractionLens = false;
 
     public WirelessSolarReceiverBlockEntity(BlockPos pos, BlockState state, int tier) {
         this(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_BE, pos, state, tier);
@@ -61,11 +62,23 @@ public class WirelessSolarReceiverBlockEntity extends BlockEntity {
         return energyStorage;
     }
 
+    public boolean hasRefractionLens() {
+        return hasRefractionLens;
+    }
+
+    public void setHasRefractionLens(boolean hasRefractionLens) {
+        this.hasRefractionLens = hasRefractionLens;
+        setChanged();
+    }
+
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         boolean canSeeSky = level.canSeeSky(pos.above());
         boolean isDay = level.getSkyDarken() < 4;
         int skyDarken = level.getSkyDarken();
         double weather = SandstormWeatherHandler.getWeather().getSolarEfficiencyMultiplier();
+        if (this.hasRefractionLens) {
+            weather = Math.max(weather, 0.40);
+        }
 
         long transferRate = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, weather);
         if (transferRate > 0) {
@@ -89,6 +102,7 @@ public class WirelessSolarReceiverBlockEntity extends BlockEntity {
         super.saveAdditional(output);
         output.putInt("tier", this.tier);
         output.putLong("storedEnergy", this.energyStorage.getStoredEnergy());
+        output.putBoolean("hasRefractionLens", this.hasRefractionLens);
     }
 
     @Override
@@ -101,6 +115,7 @@ public class WirelessSolarReceiverBlockEntity extends BlockEntity {
         long maxExtract = this.tier >= 2 ? TIER2_MAX_EXTRACT : TIER1_MAX_EXTRACT;
         this.energyStorage = new EnergyStorageComponent(capacity, maxReceive, maxExtract);
         this.energyStorage.setStoredEnergy(input.getLongOr("storedEnergy", 0L));
+        this.hasRefractionLens = input.getBooleanOr("hasRefractionLens", false);
     }
 
     @Override

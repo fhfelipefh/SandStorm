@@ -1,6 +1,10 @@
 package com.fhfelipefh.sandstorm.content.world;
 
 import com.fhfelipefh.sandstorm.content.survival.SpawnSafety;
+import java.util.Collections;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.BlockPos;
@@ -16,6 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DimensionPortalRestrictionHandler {
+    private static final Set<UUID> AUTHORIZED_SUBSPACE_TRAVELERS = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public static void initialize() {
         UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
@@ -50,6 +55,9 @@ public class DimensionPortalRestrictionHandler {
             if (!SandStormWorldHelper.isSandStormWorld(destination)) {
                 return;
             }
+            if (consumeSubspaceTransitAuthorization(player.getUUID())) {
+                return;
+            }
             if (destination != null && isForbiddenDimension(destination.dimension())) {
                 BlockPos cabinPos = SpaceshipLandingManager.getCabinSpawnPos();
                 SpawnSafety.teleportSafely(player, cabinPos);
@@ -58,6 +66,27 @@ public class DimensionPortalRestrictionHandler {
                 );
             }
         });
+    }
+
+    public static void authorizeSubspaceTransit(UUID playerUuid) {
+        if (playerUuid != null) {
+            AUTHORIZED_SUBSPACE_TRAVELERS.add(playerUuid);
+        }
+    }
+
+    public static boolean consumeSubspaceTransitAuthorization(UUID playerUuid) {
+        if (playerUuid == null) {
+            return false;
+        }
+        return AUTHORIZED_SUBSPACE_TRAVELERS.remove(playerUuid);
+    }
+
+    public static boolean isSubspaceTransitAuthorized(UUID playerUuid) {
+        return playerUuid != null && AUTHORIZED_SUBSPACE_TRAVELERS.contains(playerUuid);
+    }
+
+    public static void clearAuthorizations() {
+        AUTHORIZED_SUBSPACE_TRAVELERS.clear();
     }
 
     public static boolean isNetherIgnition(Block block, Item item) {

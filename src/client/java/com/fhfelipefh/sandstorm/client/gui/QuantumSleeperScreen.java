@@ -123,7 +123,7 @@ public class QuantumSleeperScreen extends AbstractContainerScreen<QuantumSleeper
         boolean hasClone = this.menu.hasClone();
         int btnBg = hasClone ? 0xDD004D40 : 0xDD1B5E20;
         int btnBorder = hasClone ? 0xFF00E5FF : 0xFF00E676;
-        String btnText = hasClone ? "EGO-CAST" : "SINTETIZAR";
+        Component btnText = hasClone ? Component.translatable("gui.sandstorm.quantum_sleeper.ego_cast") : Component.translatable("gui.sandstorm.quantum_sleeper.synthesize");
 
         extractor.fill(btnX, btnY, btnX + btnW, btnY + btnH, btnBg);
         extractor.fill(btnX, btnY, btnX + btnW, btnY + 1, btnBorder);
@@ -150,21 +150,21 @@ public class QuantumSleeperScreen extends AbstractContainerScreen<QuantumSleeper
         if (mouseX >= btnX && mouseX <= btnX + btnW && mouseY >= btnY && mouseY <= btnY + btnH) {
             List<Component> tip = hasClone
                     ? List.of(
-                            Component.literal("Transferir consciência para"),
-                            Component.literal("outro casulo (Pods: " + pods + ")")
+                            Component.translatable("gui.sandstorm.quantum_sleeper.transfer_title"),
+                            Component.translatable("gui.sandstorm.quantum_sleeper.transfer_desc", pods)
                     )
                     : List.of(
-                            Component.literal("Biogestar clone adormecido"),
-                            Component.literal("§7Requer 20% Nutrientes e 5.000 J")
+                            Component.translatable("gui.sandstorm.quantum_sleeper.synthesize_title"),
+                            Component.translatable("gui.sandstorm.quantum_sleeper.synthesize_desc")
                     );
             extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
         } else if (mouseX >= x + 104 && mouseX <= x + 134 && mouseY >= y + 36 && mouseY <= y + 38) {
-            extractor.setTooltipForNextFrame(this.font, Component.literal("Energia WPT: " + NumberFormat.compact(energy) + " / " + NumberFormat.compact(maxEnergy) + " J"), mouseX, mouseY);
+            extractor.setTooltipForNextFrame(this.font, Component.translatable("gui.sandstorm.quantum_sleeper.energy", NumberFormat.compact(energy), NumberFormat.compact(maxEnergy)), mouseX, mouseY);
         } else if (mouseX >= x + 138 && mouseX <= x + 168 && mouseY >= y + 36 && mouseY <= y + 38) {
             extractor.setComponentTooltipForNextFrame(this.font, List.of(
-                    Component.literal("Bio-Nutrientes: " + nutrients + "%"),
-                    Component.literal("§7Insira quitosana, trealose,"),
-                    Component.literal("§7glicerol ou água pura.")
+                    Component.translatable("gui.sandstorm.quantum_sleeper.nutrients_title", nutrients),
+                    Component.translatable("gui.sandstorm.quantum_sleeper.nutrients_desc1"),
+                    Component.translatable("gui.sandstorm.quantum_sleeper.nutrients_desc2")
             ), mouseX, mouseY);
         }
     }

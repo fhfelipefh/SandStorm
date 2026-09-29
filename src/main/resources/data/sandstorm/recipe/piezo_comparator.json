@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "/": "minecraft:redstone_torch",
+    "Q": "sandstorm:piezo_quartz_shard",
+    "S": "minecraft:stone"
+  },
+  "pattern": [
+    " / ",
+    "/Q/",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:comparator"
+  }
+}

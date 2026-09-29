@@ -36,6 +36,16 @@ public class SurvivalHudOverlay implements HudElement {
         return CLIENT_SUIT;
     }
 
+    private static int magneticInterferenceTicks = 0;
+
+    public static void triggerMagneticInterference(int ticks) {
+        magneticInterferenceTicks = Math.max(magneticInterferenceTicks, ticks);
+    }
+
+    public static int getMagneticInterferenceTicks() {
+        return magneticInterferenceTicks;
+    }
+
     private static long lastStoredEnergy = -1;
     private static long lastCapacity = -1;
     private static double lastTemperature = -999.0;
@@ -137,6 +147,31 @@ public class SurvivalHudOverlay implements HudElement {
             x = Math.max(margin, screenWidth - maxTextWidth - margin);
         }
 
+        if (magneticInterferenceTicks > 0) {
+            magneticInterferenceTicks--;
+            int glitchColor = (magneticInterferenceTicks % 4 < 2) ? 0x55FF1744 : 0x5500E5FF;
+            extractor.fill(0, 0, screenWidth, 3, glitchColor);
+            extractor.fill(0, screenHeight - 3, screenWidth, screenHeight, glitchColor);
+            if (magneticInterferenceTicks % 6 < 3) {
+                int lineY = (int) ((client.player.tickCount * 17) % Math.max(screenHeight, 1));
+                extractor.fill(0, lineY, screenWidth, lineY + 1, 0x4400E5FF);
+            }
+            Component warningComp = Component.literal("§c[! INTERFERÊNCIA MAGNÉTICA !]");
+            int warnX = (screenWidth - client.font.width(warningComp.getString())) / 2;
+            extractor.text(client.font, warningComp, warnX, 8, 0xFFFF1744, true);
+        }
+
+        Component renderEnergyComp = cachedEnergyComp;
+        Component renderTempComp = cachedTempComp;
+        int renderBatColor = cachedBatteryColor;
+        int renderTempColor = cachedTempColor;
+        if (magneticInterferenceTicks > 0) {
+            renderEnergyComp = Component.literal("BAT: ERR_#" + (client.player.tickCount % 99) + "%");
+            renderTempComp = Component.literal("TEMP: " + (client.player.tickCount % 2 == 0 ? "???.?? °C" : "---.-- °C"));
+            renderBatColor = 0xFFFF1744;
+            renderTempColor = 0xFFFF9100;
+        }
+
         float maxAllowed = screenWidth - (margin * 2f);
         if (maxTextWidth > maxAllowed && maxAllowed > 0) {
             float scale = maxAllowed / (float) maxTextWidth;
@@ -145,9 +180,9 @@ public class SurvivalHudOverlay implements HudElement {
             extractor.pose().scale(scale, scale);
             int currentY = 0;
             if (showSuitTelemetry) {
-                extractor.text(client.font, cachedEnergyComp, 0, currentY, cachedBatteryColor);
+                extractor.text(client.font, renderEnergyComp, 0, currentY, renderBatColor);
                 currentY += 11;
-                extractor.text(client.font, cachedTempComp, 0, currentY, cachedTempColor);
+                extractor.text(client.font, renderTempComp, 0, currentY, renderTempColor);
                 currentY += 11;
             }
             if (flashMode != FlashlightState.MODE_OFF) {
@@ -160,18 +195,23 @@ public class SurvivalHudOverlay implements HudElement {
             extractor.pose().popMatrix();
         } else {
             int currentY = y;
+            int renderX = x;
+            if (magneticInterferenceTicks > 0) {
+                renderX += (client.player.tickCount % 5) - 2;
+                currentY += (client.player.tickCount % 3) - 1;
+            }
             if (showSuitTelemetry) {
-                extractor.text(client.font, cachedEnergyComp, x, currentY, cachedBatteryColor);
+                extractor.text(client.font, renderEnergyComp, renderX, currentY, renderBatColor);
                 currentY += 11;
-                extractor.text(client.font, cachedTempComp, x, currentY, cachedTempColor);
+                extractor.text(client.font, renderTempComp, renderX, currentY, renderTempColor);
                 currentY += 11;
             }
             if (flashMode != FlashlightState.MODE_OFF) {
-                extractor.text(client.font, getFlashlightComponent(flashMode), x, currentY, getFlashlightColor(flashMode));
+                extractor.text(client.font, getFlashlightComponent(flashMode), renderX, currentY, getFlashlightColor(flashMode));
                 currentY += 11;
             }
             if (holdsHypo) {
-                extractor.text(client.font, hypoComponent, x, currentY, hypoColor);
+                extractor.text(client.font, hypoComponent, renderX, currentY, hypoColor);
             }
         }
     }

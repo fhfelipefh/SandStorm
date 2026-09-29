@@ -157,6 +157,31 @@ public class SandStormMenus {
             new MenuType<>(AtmosphericTerraformerMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<ElectricFencePylonMenu> ELECTRIC_FENCE_PYLON_MENU = register(
+            "electric_fence_pylon",
+            new MenuType<>(ElectricFencePylonMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<NomadScavengerMenu> NOMAD_SCAVENGER_MENU = register(
+            "nomad_scavenger",
+            new MenuType<>(NomadScavengerMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<QuantumControllerMenu> QUANTUM_NETWORK_CONTROLLER_MENU = register(
+            "quantum_network_controller",
+            new MenuType<>(QuantumControllerMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<QuantumDiskDriveMenu> QUANTUM_DISK_DRIVE_MENU = register(
+            "quantum_disk_drive",
+            new MenuType<>(QuantumDiskDriveMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<QuantumTerminalMenu> QUANTUM_ACCESS_TERMINAL_MENU = register(
+            "quantum_access_terminal",
+            new MenuType<>(QuantumTerminalMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

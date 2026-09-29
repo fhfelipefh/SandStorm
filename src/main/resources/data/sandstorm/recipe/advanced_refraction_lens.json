@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " Q ",
+    "SGS",
+    " C "
+  ],
+  "key": {
+    "G": "sandstorm:fulgurite_glass",
+    "Q": "sandstorm:piezo_quartz_shard",
+    "C": "sandstorm:electric_component",
+    "S": "sandstorm:raw_silicon"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:advanced_refraction_lens"
+  }
+}

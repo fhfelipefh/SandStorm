@@ -1,6 +1,8 @@
 package com.fhfelipefh.sandstorm.content.world.structure;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
+import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -78,6 +80,12 @@ public class FuelSiloGenerator {
             reagentChest.setItem(4, new ItemStack(Items.COAL, 6 + random.nextInt(6)));
             reagentChest.setChanged();
         }
+
+        ScrapSentinelEntity sentinel = new ScrapSentinelEntity(SandStormEntities.SCRAP_SENTINEL, level);
+        sentinel.setPos(center.getX() + 0.5, center.getY() + 1.0, center.getZ() + 0.5);
+        sentinel.setDormant(true);
+        sentinel.setPersistenceRequired();
+        level.addFreshEntity(sentinel);
 
         return true;
     }

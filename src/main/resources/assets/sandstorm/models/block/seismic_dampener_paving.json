@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/carpet",
+  "textures": {
+    "particle": "sandstorm:block/seismic_dampener_paving",
+    "wool": "sandstorm:block/seismic_dampener_paving"
+  }
+}

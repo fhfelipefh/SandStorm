@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "G": "minecraft:glass",
+    "Q": "sandstorm:piezo_quartz_shard",
+    "S": "minecraft:oak_slab"
+  },
+  "pattern": [
+    "GGG",
+    "QQQ",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:daylight_detector"
+  }
+}

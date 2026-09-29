@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "connected=false,lit=false": {
+      "model": "sandstorm:block/electric_fence_pylon"
+    },
+    "connected=false,lit=true": {
+      "model": "sandstorm:block/electric_fence_pylon_armed"
+    },
+    "connected=true,lit=false": {
+      "model": "sandstorm:block/electric_fence_pylon"
+    },
+    "connected=true,lit=true": {
+      "model": "sandstorm:block/electric_fence_pylon_connected"
+    }
+  }
+}

@@ -59,5 +59,8 @@ class SandstormBuildCommandTest {
         assertNotNull(dispatcher.getRoot().getChild("build_citadel"));
         assertNotNull(dispatcher.getRoot().getChild("build_silo"));
         assertNotNull(dispatcher.getRoot().getChild("build_pyramid"));
+        assertNotNull(dispatcher.getRoot().getChild("build_castle"));
+        assertNotNull(dispatcher.getRoot().getChild("build_colossal_castle"));
+        assertNotNull(dispatcher.getRoot().getChild("build_castelo"));
     }
 }

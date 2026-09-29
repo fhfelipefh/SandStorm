@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -16,9 +17,12 @@ public class AncientDataCoreBlock extends Block {
 
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide() && !player.isCreative()) {
-            popResource(level, pos, new ItemStack(SandStormItems.TECH_DISC, 1));
-            popResource(level, pos, new ItemStack(SandStormItems.CIRCUIT_BOARD, 1));
+        if (!level.isClientSide()) {
+            ScrapSentinelEntity.alertNearbySentinels(level, pos, 32.0, player);
+            if (!player.isCreative()) {
+                popResource(level, pos, new ItemStack(SandStormItems.TECH_DISC, 1));
+                popResource(level, pos, new ItemStack(SandStormItems.CIRCUIT_BOARD, 1));
+            }
         }
         return super.playerWillDestroy(level, pos, state, player);
     }

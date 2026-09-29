@@ -2,7 +2,9 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.component.WirelessChargerComponent;
+import com.fhfelipefh.sandstorm.content.block.entity.WirelessSolarReceiverBlockEntity;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.survival.PlayerSuitSavedData;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -12,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 
 import java.util.Map;
@@ -76,9 +79,14 @@ public class WirelessSolarReceiverManager {
                 continue;
             }
             boolean canSeeSky = level.canSeeSky(rPos.above());
+            double receiverWeather = weather;
+            BlockEntity be = level.getBlockEntity(rPos);
+            if (be instanceof WirelessSolarReceiverBlockEntity wbe && wbe.hasRefractionLens()) {
+                receiverWeather = Math.max(receiverWeather, 0.40);
+            }
             WirelessChargerComponent charger = getCharger(tier);
-            double effectiveRadius = charger.calculateEffectiveRadius(canSeeSky, isDay, skyDarken, weather);
-            long rate = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, weather);
+            double effectiveRadius = charger.calculateEffectiveRadius(canSeeSky, isDay, skyDarken, receiverWeather);
+            long rate = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, receiverWeather);
             if (effectiveRadius > 0 && rate > 0) {
                 if (pos.distSqr(rPos) <= effectiveRadius * effectiveRadius) {
                     if (rate > maxCharge) {
@@ -124,9 +132,14 @@ public class WirelessSolarReceiverManager {
             }
 
             boolean canSeeSky = level.canSeeSky(pos.above());
+            double receiverWeather = weather;
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof WirelessSolarReceiverBlockEntity wbe && wbe.hasRefractionLens()) {
+                receiverWeather = Math.max(receiverWeather, 0.40);
+            }
             WirelessChargerComponent charger = getCharger(tier);
-            double effectiveRadius = charger.calculateEffectiveRadius(canSeeSky, isDay, skyDarken, weather);
-            long transferRatePerTick = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, weather);
+            double effectiveRadius = charger.calculateEffectiveRadius(canSeeSky, isDay, skyDarken, receiverWeather);
+            long transferRatePerTick = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, receiverWeather);
 
             if (effectiveRadius <= 0.0 || transferRatePerTick <= 0) {
                 continue;
@@ -142,7 +155,12 @@ public class WirelessSolarReceiverManager {
                 if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= radiusSq) {
                     if (SuitSurvivalHandler.countEquippedSuitPieces(player) > 0) {
                         SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player);
-                        long totalTransfer = transferRatePerTick * 20;
+                        long playerRate = transferRatePerTick;
+                        if (playerRate < charger.calculateTransferRate(canSeeSky, isDay, skyDarken, 0.40)
+                                && PlayerSuitSavedData.get(level.getServer()).hasUpgrade(player.getUUID(), "advanced_lens")) {
+                            playerRate = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, 0.40);
+                        }
+                        long totalTransfer = playerRate * 20;
                         long received = suit.getEnergyStorage().receiveEnergy(totalTransfer);
                         boolean batteryNearlyFull = suit.getEnergyStorage().getStoredEnergy() >= suit.getEnergyStorage().getCapacity() * 0.98;
                         if (received > 0 && !batteryNearlyFull && player.tickCount % 200 == 0) {

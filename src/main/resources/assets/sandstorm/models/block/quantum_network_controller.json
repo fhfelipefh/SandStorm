@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "sandstorm:block/quantum_network_controller_top",
+    "side": "sandstorm:block/quantum_network_controller_side",
+    "front": "sandstorm:block/quantum_network_controller_front"
+  }
+}

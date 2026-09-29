@@ -25,6 +25,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -76,7 +77,11 @@ public class SolidStateAccumulatorBlockEntity extends BlockEntity implements Wor
     };
 
     public SolidStateAccumulatorBlockEntity(BlockPos pos, BlockState state) {
-        super(SandStormBlocks.SOLID_STATE_ACCUMULATOR_BE, pos, state);
+        this(SandStormBlocks.SOLID_STATE_ACCUMULATOR_BE, pos, state);
+    }
+
+    public SolidStateAccumulatorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     public int getStoredEnergy() {
@@ -111,6 +116,10 @@ public class SolidStateAccumulatorBlockEntity extends BlockEntity implements Wor
 
     public boolean isCharging() {
         return isCharging;
+    }
+
+    public ContainerData getDataAccess() {
+        return this.dataAccess;
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SolidStateAccumulatorBlockEntity entity) {
@@ -271,8 +280,8 @@ public class SolidStateAccumulatorBlockEntity extends BlockEntity implements Wor
     @Override
     public void setItem(int slot, ItemStack stack) {
         items.set(slot, stack);
-        if (stack.getCount() > getMaxStackSize(stack)) {
-            stack.setCount(getMaxStackSize(stack));
+        if (stack.getCount() > getMaxStackSize()) {
+            stack.setCount(getMaxStackSize());
         }
         setChanged();
     }

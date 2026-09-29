@@ -122,31 +122,30 @@ public class PlasmaShieldScreen extends AbstractContainerScreen<PlasmaShieldMenu
         int y = this.topPos;
 
         boolean active = this.menu.isShieldActive();
-        String statusText = active ? "SHIELD: ONLINE" : "SHIELD: OFFLINE";
+        Component statusComp = active ? Component.translatable("gui.sandstorm.plasma_shield.status_online") : Component.translatable("gui.sandstorm.plasma_shield.status_offline");
         int statusColor = active ? 0xFF00E5FF : 0xFF64748B;
-        drawAdaptiveText(extractor, Component.literal(statusText), x + 16, y + 26, 60, statusColor);
+        drawAdaptiveText(extractor, statusComp, x + 16, y + 26, 60, statusColor);
 
         int radius = this.menu.getShieldRadius();
-        String radText = String.format("RADIUS: %dm", radius);
-        drawAdaptiveText(extractor, Component.literal(radText), x + 16, y + 35, 60, 0xFF94A3B8);
+        Component radComp = Component.translatable("gui.sandstorm.plasma_shield.radius", radius);
+        drawAdaptiveText(extractor, radComp, x + 16, y + 35, 60, 0xFF94A3B8);
 
-        String threatText = String.format("THREATS: %d", this.menu.getThreatCount());
-        drawAdaptiveText(extractor, Component.literal(threatText), x + 82, y + 35, 60, 0xFFFFB300);
+        Component threatComp = Component.translatable("gui.sandstorm.plasma_shield.threats", this.menu.getThreatCount());
+        drawAdaptiveText(extractor, threatComp, x + 82, y + 35, 60, 0xFFFFB300);
 
         int b0x = x + 16;
         int b0y = y + 44;
-        boolean b0Hover = mouseX >= b0x && mouseX <= b0x + 60 && mouseY >= b0y && mouseY <= b0y + 14;
-        String b0Text = active ? "DESATIVAR" : "ATIVAR";
-        int tw0 = this.font.width(b0Text);
-        extractor.text(this.font, Component.literal(b0Text), b0x + (60 - tw0) / 2, b0y + 3, 0xFFFFFFFF, false);
+        Component b0Comp = active ? Component.translatable("gui.sandstorm.plasma_shield.deactivate") : Component.translatable("gui.sandstorm.plasma_shield.activate");
+        int tw0 = this.font.width(b0Comp);
+        extractor.text(this.font, b0Comp, b0x + (60 - tw0) / 2, b0y + 3, 0xFFFFFFFF, false);
 
         int b1x = x + 82;
         int b1y = y + 44;
         boolean b1Hover = mouseX >= b1x && mouseX <= b1x + 60 && mouseY >= b1y && mouseY <= b1y + 14;
         extractor.fill(b1x, b1y, b1x + 60, b1y + 14, b1Hover ? 0xFF0284C7 : 0xFF0F172A);
-        String b1Text = "RAIO +/-";
-        int tw1 = this.font.width(b1Text);
-        extractor.text(this.font, Component.literal(b1Text), b1x + (60 - tw1) / 2, b1y + 3, 0xFFFFFFFF, false);
+        Component b1Comp = Component.translatable("gui.sandstorm.plasma_shield.radius_toggle");
+        int tw1 = this.font.width(b1Comp);
+        extractor.text(this.font, b1Comp, b1x + (60 - tw1) / 2, b1y + 3, 0xFFFFFFFF, false);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -154,8 +153,8 @@ public class PlasmaShieldScreen extends AbstractContainerScreen<PlasmaShieldMenu
         int y = this.topPos;
 
         if (mouseX >= x + 8 && mouseX <= x + 168 && mouseY >= y + 16 && mouseY <= y + 22) {
-            String energyTip = String.format("Energia: %s / %s J", NumberFormat.compact(this.menu.getStoredEnergy()), NumberFormat.compact(this.menu.getMaxEnergy()));
-            extractor.setTooltipForNextFrame(this.font, Component.literal(energyTip), mouseX, mouseY);
+            Component energyTip = Component.translatable("gui.sandstorm.plasma_shield.energy", NumberFormat.compact(this.menu.getStoredEnergy()), NumberFormat.compact(this.menu.getMaxEnergy()));
+            extractor.setTooltipForNextFrame(this.font, energyTip, mouseX, mouseY);
         }
     }
 }

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "sandstorm:block/salt_brick_slab"
+    },
+    "type=double": {
+      "model": "sandstorm:block/salt_bricks"
+    },
+    "type=top": {
+      "model": "sandstorm:block/salt_brick_slab_top"
+    }
+  }
+}

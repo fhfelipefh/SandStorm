@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "BPB"
+  ],
+  "key": {
+    "B": "sandstorm:flexible_biopolymer",
+    "P": "sandstorm:raw_silicon"
+  },
+  "result": {
+    "count": 6,
+    "id": "sandstorm:seismic_dampener_paving"
+  }
+}

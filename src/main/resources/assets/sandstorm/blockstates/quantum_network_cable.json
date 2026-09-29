@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "sandstorm:block/quantum_network_cable" }
+  }
+}

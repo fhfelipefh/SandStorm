@@ -6,7 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "sandstorm:scrap_metal"
+          "name": "sandstorm:scrap_metal",
+          "weight": 85
+        },
+        {
+          "type": "minecraft:item",
+          "name": "sandstorm:advanced_refraction_lens",
+          "weight": 15
         }
       ],
       "rolls": 1.0

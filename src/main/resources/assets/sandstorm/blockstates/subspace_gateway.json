@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "sandstorm:block/subspace_gateway"
+    },
+    "lit=true": {
+      "model": "sandstorm:block/subspace_gateway_active"
+    }
+  }
+}

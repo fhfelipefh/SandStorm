@@ -31,25 +31,25 @@ public class SandStormWorldGen {
 
     public static void initialize() {
         BiomeModifications.addFeature(
-                BiomeSelectors.includeByKey(Biomes.DESERT),
+                BiomeSelectors.includeByKey(Biomes.DESERT, Biomes.SULFUR_CAVES),
                 GenerationStep.Decoration.UNDERGROUND_ORES,
                 BRACKISH_AQUIFER_KEY
         );
 
         BiomeModifications.addFeature(
-                BiomeSelectors.includeByKey(Biomes.DESERT),
+                BiomeSelectors.includeByKey(Biomes.DESERT, Biomes.SULFUR_CAVES),
                 GenerationStep.Decoration.UNDERGROUND_DECORATION,
                 BURIED_TECH_RUINS_KEY
         );
 
         BiomeModifications.addFeature(
-                BiomeSelectors.includeByKey(Biomes.DESERT),
+                BiomeSelectors.includeByKey(Biomes.DESERT, Biomes.SULFUR_CAVES),
                 GenerationStep.Decoration.UNDERGROUND_DECORATION,
                 ANCIENT_DATA_CORE_KEY
         );
 
         BiomeModifications.addFeature(
-                BiomeSelectors.includeByKey(Biomes.DESERT),
+                BiomeSelectors.includeByKey(Biomes.DESERT, Biomes.SULFUR_CAVES),
                 GenerationStep.Decoration.UNDERGROUND_DECORATION,
                 PIEZO_CAVERN_KEY
         );

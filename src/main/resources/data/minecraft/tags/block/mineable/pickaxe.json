@@ -57,6 +57,17 @@
     "sandstorm:supercritical_heat_exchanger",
     "sandstorm:orbital_mass_driver",
     "sandstorm:orbital_ground_station",
-    "sandstorm:spectral_survey_telescope"
+    "sandstorm:spectral_survey_telescope",
+    "sandstorm:subspace_gateway",
+    "sandstorm:electric_fence_pylon",
+    "sandstorm:salt_bricks",
+    "sandstorm:salt_brick_stairs",
+    "sandstorm:salt_brick_slab",
+    "sandstorm:salt_brick_wall",
+    "sandstorm:seismic_dampener_paving",
+    "sandstorm:quantum_network_controller",
+    "sandstorm:quantum_disk_drive",
+    "sandstorm:quantum_access_terminal",
+    "sandstorm:quantum_network_cable"
   ]
 }

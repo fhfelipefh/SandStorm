@@ -158,6 +158,45 @@ public class SandStormEntities {
                     .build(CYBORG_HARVESTER_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> SCRAP_SENTINEL_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("scrap_sentinel")
+    );
+
+    public static final EntityType<ScrapSentinelEntity> SCRAP_SENTINEL = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("scrap_sentinel"),
+            EntityType.Builder.of(ScrapSentinelEntity::new, MobCategory.MONSTER)
+                    .sized(0.9f, 1.6f)
+                    .build(SCRAP_SENTINEL_KEY)
+    );
+
+    public static final ResourceKey<EntityType<?>> AQUIFER_BEETLE_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("aquifer_beetle")
+    );
+
+    public static final EntityType<AquiferBeetleEntity> AQUIFER_BEETLE = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("aquifer_beetle"),
+            EntityType.Builder.of(AquiferBeetleEntity::new, MobCategory.CREATURE)
+                    .sized(1.4f, 0.85f)
+                    .build(AQUIFER_BEETLE_KEY)
+    );
+
+    public static final ResourceKey<EntityType<?>> NOMAD_SCAVENGER_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("nomad_scavenger")
+    );
+
+    public static final EntityType<NomadScavengerEntity> NOMAD_SCAVENGER = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("nomad_scavenger"),
+            EntityType.Builder.of(NomadScavengerEntity::new, MobCategory.CREATURE)
+                    .sized(0.6f, 1.8f)
+                    .build(NOMAD_SCAVENGER_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
@@ -168,5 +207,8 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(CYBORG_EXCAVATOR, CyborgExcavatorEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CYBORG_BUILDER, CyborgBuilderEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CYBORG_HARVESTER, CyborgHarvesterEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(SCRAP_SENTINEL, ScrapSentinelEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(AQUIFER_BEETLE, AquiferBeetleEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(NOMAD_SCAVENGER, NomadScavengerEntity.createAttributes());
     }
 }

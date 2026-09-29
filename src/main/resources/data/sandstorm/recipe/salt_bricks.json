@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "SA",
+    "AS"
+  ],
+  "key": {
+    "S": "sandstorm:mineral_salt",
+    "A": "minecraft:sand"
+  },
+  "result": {
+    "count": 4,
+    "id": "sandstorm:salt_bricks"
+  }
+}

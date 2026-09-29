@@ -12,6 +12,7 @@ import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.megastructure.MegastructureBlueprint;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.world.structure.ColossalCastleGenerator;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -54,7 +55,8 @@ public class SandstormBuildCommand {
             "hydroponics_greenhouse",
             "mining_complex",
             "energy_grid",
-            "ruins_laboratory"
+            "ruins_laboratory",
+            "colossal_castle"
     );
 
     static {
@@ -78,6 +80,12 @@ public class SandstormBuildCommand {
         STRUCTURE_MAP.put("energy", "energy_grid");
         STRUCTURE_MAP.put("ruins_laboratory", "ruins_laboratory");
         STRUCTURE_MAP.put("ruins", "ruins_laboratory");
+        STRUCTURE_MAP.put("colossal_castle", "colossal_castle");
+        STRUCTURE_MAP.put("castle", "colossal_castle");
+        STRUCTURE_MAP.put("stone_castle", "colossal_castle");
+        STRUCTURE_MAP.put("castelo", "colossal_castle");
+        STRUCTURE_MAP.put("gigantic_castle", "colossal_castle");
+        STRUCTURE_MAP.put("blackstone_castle", "colossal_castle");
     }
 
     public static void initialize() {
@@ -242,6 +250,30 @@ public class SandstormBuildCommand {
                         .executes(ctx -> executeBuild(ctx, "desert_tech_pyramid", BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
                 )
         );
+
+        dispatcher.register(Commands.literal("build_castle")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeBuild(ctx, "colossal_castle", null))
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .executes(ctx -> executeBuild(ctx, "colossal_castle", BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
+                )
+        );
+
+        dispatcher.register(Commands.literal("build_colossal_castle")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeBuild(ctx, "colossal_castle", null))
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .executes(ctx -> executeBuild(ctx, "colossal_castle", BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
+                )
+        );
+
+        dispatcher.register(Commands.literal("build_castelo")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeBuild(ctx, "colossal_castle", null))
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .executes(ctx -> executeBuild(ctx, "colossal_castle", BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
+                )
+        );
     }
 
     private static CompletableFuture<Suggestions> suggestStructures(SuggestionsBuilder builder) {
@@ -362,6 +394,7 @@ public class SandstormBuildCommand {
             case "mining_complex" -> buildMiningComplex(level, center);
             case "energy_grid" -> buildEnergyGrid(level, center);
             case "ruins_laboratory" -> buildRuinsLaboratory(level, center);
+            case "colossal_castle" -> ColossalCastleGenerator.generate(level, center);
             default -> 0;
         };
     }

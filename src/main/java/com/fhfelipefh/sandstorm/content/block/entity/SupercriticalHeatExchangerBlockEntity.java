@@ -270,6 +270,14 @@ public class SupercriticalHeatExchangerBlockEntity extends BlockEntity implement
         setChanged();
     }
 
+    public int getMaxEnergy() {
+        return MAX_ENERGY;
+    }
+
+    public int getMaxWater() {
+        return MAX_WATER;
+    }
+
     public int getWaterAmount() {
         return this.waterAmount;
     }
@@ -285,6 +293,11 @@ public class SupercriticalHeatExchangerBlockEntity extends BlockEntity implement
 
     public int getSteamPressure() {
         return this.steamPressure;
+    }
+
+    public void setSteamPressure(int pressure) {
+        this.steamPressure = Math.max(0, Math.min(100, pressure));
+        setChanged();
     }
 
     public Storage<FluidVariant> getFluidStorage(Direction direction) {
@@ -357,7 +370,7 @@ public class SupercriticalHeatExchangerBlockEntity extends BlockEntity implement
     }
 
     @Override
-    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction dir) {
+    public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == SLOT_WATER_IN) {
             return stack.is(Items.WATER_BUCKET);
         }
@@ -368,6 +381,11 @@ public class SupercriticalHeatExchangerBlockEntity extends BlockEntity implement
             return BaseMachineBlockEntity.getFuelEnergy(stack) > 0;
         }
         return false;
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction dir) {
+        return canPlaceItem(slot, stack);
     }
 
     @Override

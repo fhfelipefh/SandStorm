@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "sandstorm:block/subspace_gateway_top_active",
+    "bottom": "sandstorm:block/subspace_gateway_bottom",
+    "side": "sandstorm:block/subspace_gateway_side_active"
+  }
+}

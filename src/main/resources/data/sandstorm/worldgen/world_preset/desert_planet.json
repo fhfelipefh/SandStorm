@@ -6,8 +6,45 @@
         "type": "minecraft:noise",
         "settings": "sandstorm:desert_planet",
         "biome_source": {
-          "type": "minecraft:fixed",
-          "biome": "minecraft:desert"
+          "type": "minecraft:multi_noise",
+          "biomes": [
+            {
+              "biome": "minecraft:desert",
+              "parameters": {
+                "temperature": [-1.0, 1.0],
+                "humidity": [-1.0, 1.0],
+                "continentalness": [-1.0, 1.0],
+                "erosion": [-1.0, 1.0],
+                "depth": [-1.0, 0.2],
+                "weirdness": [-1.1, 1.1],
+                "offset": 0.0
+              }
+            },
+            {
+              "biome": "minecraft:sulfur_caves",
+              "parameters": {
+                "temperature": [-1.0, 1.0],
+                "humidity": [-1.0, 1.0],
+                "continentalness": [-1.0, 1.0],
+                "erosion": [-1.0, 1.0],
+                "depth": [0.2, 1.5],
+                "weirdness": [-1.1, -0.85],
+                "offset": 0.0
+              }
+            },
+            {
+              "biome": "minecraft:desert",
+              "parameters": {
+                "temperature": [-1.0, 1.0],
+                "humidity": [-1.0, 1.0],
+                "continentalness": [-1.0, 1.0],
+                "erosion": [-1.0, 1.0],
+                "depth": [0.2, 1.5],
+                "weirdness": [-0.85, 1.1],
+                "offset": 0.0
+              }
+            }
+          ]
         }
       }
     },

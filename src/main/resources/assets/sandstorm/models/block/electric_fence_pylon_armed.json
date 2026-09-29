@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "sandstorm:block/electric_fence_pylon_base",
+    "side": "sandstorm:block/electric_fence_pylon_side_armed",
+    "top": "sandstorm:block/electric_fence_pylon_top"
+  }
+}

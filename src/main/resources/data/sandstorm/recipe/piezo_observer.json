@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": "minecraft:cobblestone",
+    "Q": "sandstorm:piezo_quartz_shard",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    "CCC",
+    "RRQ",
+    "CCC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:observer"
+  }
+}

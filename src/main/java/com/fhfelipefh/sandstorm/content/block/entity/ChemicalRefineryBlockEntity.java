@@ -30,7 +30,7 @@ public class ChemicalRefineryBlockEntity extends BaseMachineBlockEntity {
     }
 
     @Override
-    protected boolean canProcess() {
+    public boolean canProcess() {
         ItemStack inSalt = items.get(0);
         ItemStack inFluid = items.get(1);
         ItemStack inCartridge = items.get(2);
@@ -49,11 +49,11 @@ public class ChemicalRefineryBlockEntity extends BaseMachineBlockEntity {
         if (out.isEmpty()) {
             return true;
         }
-        return out.is(SandStormItems.PROPELLANT_CARTRIDGE) && out.getCount() < out.getMaxStackSize();
+        return out.is(SandStormItems.PROPELLANT_CARTRIDGE) && out.getCount() < Math.max(out.getMaxStackSize(), 16);
     }
 
     @Override
-    protected void processRecipe() {
+    public void processRecipe() {
         if (!canProcess()) {
             return;
         }

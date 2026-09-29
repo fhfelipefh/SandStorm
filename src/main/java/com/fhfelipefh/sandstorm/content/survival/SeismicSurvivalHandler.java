@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.survival;
 
 import com.fhfelipefh.sandstorm.component.SeismicTrackerComponent;
 import com.fhfelipefh.sandstorm.content.block.SandstoneWorkbenchBlock;
+import com.fhfelipefh.sandstorm.content.block.SeismicDampenerPavingBlock;
 import com.fhfelipefh.sandstorm.content.defense.AcousticDefenseTracker;
 import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
@@ -54,14 +55,20 @@ public class SeismicSurvivalHandler {
         if (state == null || state.isAir()) {
             return false;
         }
-        if (state.is(SEISMIC_SAFE_BLOCKS)) {
-            return true;
-        }
         Block block = state.getBlock();
-        return block instanceof SlabBlock
+        if (block instanceof SlabBlock
                 || block instanceof StairBlock
                 || block instanceof SandstoneWorkbenchBlock
-                || state.is(Blocks.SANDSTONE)
+                || block instanceof SeismicDampenerPavingBlock) {
+            return true;
+        }
+        try {
+            if (state.is(SEISMIC_SAFE_BLOCKS)) {
+                return true;
+            }
+        } catch (IllegalStateException ignored) {
+        }
+        return state.is(Blocks.SANDSTONE)
                 || state.is(Blocks.CUT_SANDSTONE)
                 || state.is(Blocks.SMOOTH_SANDSTONE)
                 || state.is(Blocks.CHISELED_SANDSTONE)
@@ -93,7 +100,7 @@ public class SeismicSurvivalHandler {
             return;
         }
 
-        if (isSeismicSafeBlock(player.getBlockStateOn())) {
+        if (isSeismicSafeBlock(player.getBlockStateOn()) || isSeismicSafeBlock(player.level().getBlockState(player.blockPosition()))) {
             return;
         }
 

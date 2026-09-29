@@ -70,7 +70,7 @@ public class SurvivalDatapadScreen extends Screen {
 
         Component titleComp = Component.literal("I.A.T.I. // ARRAKIS-IX");
         boolean satLinked = DatapadClientHelper.isSatelliteActive();
-        Component statusComp = satLinked ? Component.literal("ONLINE // LINK ORBITAL OK [SAT-1]") : Component.literal("LOCAL // SEM LINK ORBITAL");
+        Component statusComp = satLinked ? Component.translatable("gui.sandstorm.datapad.status_online") : Component.translatable("gui.sandstorm.datapad.status_offline");
         int statusColor = satLinked ? 0xFF76FF03 : 0xFFFFA000;
         int statusWidth = font.width(statusComp);
         int statusX = right - statusWidth - 10;

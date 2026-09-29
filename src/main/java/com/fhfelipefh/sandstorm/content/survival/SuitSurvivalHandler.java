@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.survival;
 
 import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
@@ -27,6 +28,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -129,10 +131,20 @@ public class SuitSurvivalHandler {
         if (suitData.hasUpgrade(player.getUUID(), "thermal")) {
             ambientTemperature = 37.0 + (ambientTemperature - 37.0) * 0.5;
         }
+        boolean insideSaltRoom = isInsideSaltBrickRoom(player);
+        if (insideSaltRoom) {
+            ambientTemperature = 22.0 + (ambientTemperature - 22.0) * 0.4;
+        }
         SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
         double solarMultiplier = weather.getSolarEfficiencyMultiplier();
+        if (suitData.hasUpgrade(player.getUUID(), "advanced_lens")) {
+            solarMultiplier = Math.max(solarMultiplier, 0.40);
+        }
 
         suit.tick(exposedToSunlight, ambientTemperature, underground, solarMultiplier);
+        if (insideSaltRoom && player.tickCount % 10 == 0 && suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity()) {
+            suit.getEnergyStorage().receiveEnergy(1L);
+        }
 
         if (suit.getEnergyStorage().getStoredEnergy() >= suit.getEnergyStorage().getCapacity() * 0.6) {
             if (!player.entityTags().contains("sandstorm.battery_60")) {
@@ -268,6 +280,22 @@ public class SuitSurvivalHandler {
         } else {
             return 16.0;
         }
+    }
+
+    public static boolean isInsideSaltBrickRoom(ServerPlayer player) {
+        BlockPos pos = player.blockPosition();
+        int count = 0;
+        for (BlockPos p : BlockPos.betweenClosed(pos.offset(-3, -1, -3), pos.offset(3, 3, 3))) {
+            BlockState state = player.level().getBlockState(p);
+            if (state.is(SandStormBlocks.SALT_BRICKS) || state.is(SandStormBlocks.SALT_BRICK_STAIRS)
+                    || state.is(SandStormBlocks.SALT_BRICK_SLAB) || state.is(SandStormBlocks.SALT_BRICK_WALL)) {
+                count++;
+                if (count >= 10) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static SuitPowerComponent getOrCreateSuit(UUID playerUuid) {

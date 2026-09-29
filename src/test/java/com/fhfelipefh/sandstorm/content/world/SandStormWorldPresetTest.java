@@ -1,5 +1,7 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.core.registries.Registries;
@@ -11,6 +13,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -69,8 +73,14 @@ class SandStormWorldPresetTest {
             assertEquals("sandstorm:desert_planet", generator.get("settings").getAsString());
 
             JsonObject biomeSource = generator.getAsJsonObject("biome_source");
-            assertEquals("minecraft:fixed", biomeSource.get("type").getAsString());
-            assertEquals("minecraft:desert", biomeSource.get("biome").getAsString());
+            assertEquals("minecraft:multi_noise", biomeSource.get("type").getAsString());
+            assertTrue(biomeSource.has("biomes"));
+            JsonArray biomes = biomeSource.getAsJsonArray("biomes");
+            Set<String> biomeNames = new HashSet<>();
+            for (JsonElement el : biomes) {
+                biomeNames.add(el.getAsJsonObject().get("biome").getAsString());
+            }
+            assertEquals(Set.of("minecraft:desert", "minecraft:sulfur_caves"), biomeNames);
 
             assertTrue(dimensions.has("minecraft:the_nether"));
             assertTrue(dimensions.has("minecraft:the_end"));

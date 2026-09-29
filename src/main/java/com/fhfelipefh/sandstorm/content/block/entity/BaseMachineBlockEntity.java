@@ -98,6 +98,10 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
         return maxProgress;
     }
 
+    public ContainerData getDataAccess() {
+        return this.dataAccess;
+    }
+
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         boolean changed = false;
 
@@ -245,8 +249,8 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
     @Override
     public void setItem(int slot, ItemStack stack) {
         items.set(slot, stack);
-        if (stack.getCount() > getMaxStackSize(stack)) {
-            stack.setCount(getMaxStackSize(stack));
+        if (stack.getCount() > getMaxStackSize()) {
+            stack.setCount(getMaxStackSize());
         }
         setChanged();
         notifyBlockUpdate();

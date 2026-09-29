@@ -1,6 +1,8 @@
 package com.fhfelipefh.sandstorm.content.world.structure;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
+import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -86,6 +88,12 @@ public class AbandonedOutpostGenerator {
         level.setBlock(dataTerminalPedestal, Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
         BlockPos dataTerminalPos = center.offset(0, 2, 1);
         level.setBlock(dataTerminalPos, SandStormBlocks.ANCIENT_DATA_CORE.defaultBlockState(), 3);
+
+        ScrapSentinelEntity sentinel = new ScrapSentinelEntity(SandStormEntities.SCRAP_SENTINEL, level);
+        sentinel.setPos(center.getX() + 1.5, center.getY() + 1.0, center.getZ() + 1.5);
+        sentinel.setDormant(true);
+        sentinel.setPersistenceRequired();
+        level.addFreshEntity(sentinel);
 
         level.setBlock(center.offset(-2, 0, -2), SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
         level.setBlock(center.offset(2, 0, -2), SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);

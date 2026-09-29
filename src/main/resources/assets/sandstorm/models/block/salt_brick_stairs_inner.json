@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "sandstorm:block/salt_bricks",
+    "top": "sandstorm:block/salt_bricks",
+    "side": "sandstorm:block/salt_bricks"
+  }
+}

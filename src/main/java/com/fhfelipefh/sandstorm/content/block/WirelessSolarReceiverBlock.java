@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.component.WirelessChargerComponent;
 import com.fhfelipefh.sandstorm.content.block.entity.WirelessSolarReceiverBlockEntity;
+import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -65,6 +66,15 @@ public class WirelessSolarReceiverBlock extends Block implements EntityBlock {
         if (!level.isClientSide()) {
             WirelessSolarReceiverManager.registerReceiver(level.dimension(), pos, tier);
         }
+    }
+
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof WirelessSolarReceiverBlockEntity receiver && receiver.hasRefractionLens()) {
+            popResource(level, pos, new ItemStack(SandStormItems.ADVANCED_REFRACTION_LENS));
+        }
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override

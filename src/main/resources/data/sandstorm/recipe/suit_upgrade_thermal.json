@@ -3,14 +3,13 @@
   "category": "misc",
   "key": {
     "B": "sandstorm:circuit_board",
-    "I": "minecraft:blue_ice",
-    "L": "minecraft:magma_block",
+    "C": "sandstorm:thermal_carapace",
     "S": "sandstorm:scrap_metal"
   },
   "pattern": [
-    "SIS",
-    "IBL",
-    "SLS"
+    "SCS",
+    "CBC",
+    "SCS"
   ],
   "result": {
     "count": 1,

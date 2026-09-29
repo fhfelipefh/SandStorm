@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": "minecraft:iron_bars",
+    "E": "sandstorm:electric_component",
+    "P": "sandstorm:piezo_quartz_shard",
+    "R": "minecraft:redstone",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    " P ",
+    "BEB",
+    "SRS"
+  ],
+  "result": {
+    "count": 2,
+    "id": "sandstorm:electric_fence_pylon"
+  }
+}
