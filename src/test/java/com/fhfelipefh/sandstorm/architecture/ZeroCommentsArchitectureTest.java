@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ZeroCommentsArchitectureTest {
 
-    private static final Pattern COMMENT_PATTERN = Pattern.compile("^\\s*(//|/\\*|\\*)");
+    private static final Pattern STRING_OR_CHAR_LITERAL = Pattern.compile("\"([^\"\\\\]|\\\\.)*\"|'([^'\\\\]|\\\\.)*'");
 
     @Test
     void allSourceFilesMustHaveZeroComments() throws IOException {
@@ -36,7 +36,10 @@ class ZeroCommentsArchitectureTest {
                     List<String> lines = Files.readAllLines(path);
                     for (int i = 0; i < lines.size(); i++) {
                         String line = lines.get(i);
-                        if (COMMENT_PATTERN.matcher(line).find()) {
+                        String stripped = STRING_OR_CHAR_LITERAL.matcher(line).replaceAll("");
+                        String trimmed = stripped.trim();
+                        if (trimmed.startsWith("//") || trimmed.startsWith("/*") || trimmed.startsWith("*")
+                                || stripped.contains("//") || stripped.contains("/*") || stripped.contains("*/")) {
                             violations.add(path + ":" + (i + 1) + " -> " + line.trim());
                         }
                     }

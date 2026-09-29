@@ -42,7 +42,7 @@ public class CrushingSpikeGateBlockEntity extends BlockEntity {
             entity.progress = Math.max(0.0f, entity.progress - 0.1f);
             entity.hasCrushedThisCycle = false;
         } else if (!open && entity.progress < 1.0f) {
-            entity.progress = Math.min(1.0f, entity.progress + 0.3f); // Falls down faster than it goes up
+            entity.progress = Math.min(1.0f, entity.progress + 0.3f);
         }
 
         if (level != null && !level.isClientSide() && !open && entity.progress >= 0.8f && !entity.hasCrushedThisCycle) {

@@ -806,5 +806,21 @@
   "tooltip.sandstorm.orbital_kinetic_lance_satellite.desc1": "Orbital defense platform with tungsten rods.",
   "tooltip.sandstorm.orbital_kinetic_lance_satellite.desc2": "Delivers devastating kinetic strike on target.",
   "tooltip.sandstorm.weather_recon_satellite.desc1": "Orbital satellite equipped with storm radars.",
-  "tooltip.sandstorm.weather_recon_satellite.desc2": "Transmits early storm warnings and forecasts."
+  "tooltip.sandstorm.weather_recon_satellite.desc2": "Transmits early storm warnings and forecasts.",
+  "gui.sandstorm.terraformer.status_active": "ACTIVE",
+  "gui.sandstorm.terraformer.status_dissipating": "DISSIPATING",
+  "gui.sandstorm.terraformer.status_waiting": "STANDBY",
+  "gui.sandstorm.terraformer.lightning_on": "LIGHTNING: ON",
+  "gui.sandstorm.terraformer.lightning_off": "LIGHTNING: OFF",
+  "gui.sandstorm.terraformer.tier": "TIER %s",
+  "gui.sandstorm.terraformer.energy": "Energy: %s / %s J",
+  "gui.sandstorm.terraformer.water_title": "Nutrient Water",
+  "gui.sandstorm.terraformer.water_amount": "%s / %s mB",
+  "gui.sandstorm.terraformer.lightning_title": "Lightning Control",
+  "gui.sandstorm.terraformer.lightning_desc_enabled": "Lightning enabled in storm",
+  "gui.sandstorm.terraformer.lightning_desc_disabled": "Nutrient rain only",
+  "gui.sandstorm.terraformer.click_toggle": "Click to toggle",
+  "gui.sandstorm.terraformer.range_title": "Terraformer Range",
+  "gui.sandstorm.terraformer.range_desc": "Operating radius: %s blocks",
+  "gui.sandstorm.terraformer.tier_click": "Click to cycle Tier"
 }

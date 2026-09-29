@@ -132,19 +132,19 @@ public class AtmosphericTerraformerScreen extends AbstractContainerScreen<Atmosp
         int x = this.leftPos;
         int y = this.topPos;
 
-        String statusText;
+        Component statusText;
         int statusColor;
         if (this.menu.isActive()) {
-            statusText = "ATIVO";
+            statusText = Component.translatable("gui.sandstorm.terraformer.status_active");
             statusColor = 0xFF22C55E;
         } else if (this.menu.isDissipating()) {
-            statusText = "DISSIPANDO";
+            statusText = Component.translatable("gui.sandstorm.terraformer.status_dissipating");
             statusColor = 0xFFEAB308;
         } else {
-            statusText = "AGUARDANDO";
+            statusText = Component.translatable("gui.sandstorm.terraformer.status_waiting");
             statusColor = 0xFF94A3B8;
         }
-        drawAdaptiveText(extractor, Component.literal(statusText), x + 108, y + 5, 58, statusColor);
+        drawAdaptiveText(extractor, statusText, x + 108, y + 5, 58, statusColor);
 
         int b0x = x + 106;
         int b0y = y + 25;
@@ -160,10 +160,10 @@ public class AtmosphericTerraformerScreen extends AbstractContainerScreen<Atmosp
         extractor.fill(b0x, b0y, b0x + 1, b0y + b0h, b0Border);
         extractor.fill(b0x + b0w - 1, b0y, b0x + b0w, b0y + b0h, b0Border);
 
-        String b0Text = lightningOn ? "RAIOS: ON" : "RAIOS: OFF";
+        Component b0Text = Component.translatable(lightningOn ? "gui.sandstorm.terraformer.lightning_on" : "gui.sandstorm.terraformer.lightning_off");
         int b0TextColor = lightningOn ? 0xFFE0F2FE : 0xFF94A3B8;
         int tw0 = this.font.width(b0Text);
-        extractor.text(this.font, Component.literal(b0Text), b0x + (b0w - tw0) / 2, b0y + 6, b0TextColor, false);
+        extractor.text(this.font, b0Text, b0x + (b0w - tw0) / 2, b0y + 6, b0TextColor, false);
 
         int b1x = x + 106;
         int b1y = y + 49;
@@ -178,9 +178,9 @@ public class AtmosphericTerraformerScreen extends AbstractContainerScreen<Atmosp
         extractor.fill(b1x, b1y, b1x + 1, b1y + b1h, b1Border);
         extractor.fill(b1x + b1w - 1, b1y, b1x + b1w, b1y + b1h, b1Border);
 
-        String b1Text = "TIER " + this.menu.getTier();
+        Component b1Text = Component.translatable("gui.sandstorm.terraformer.tier", this.menu.getTier());
         int tw1 = this.font.width(b1Text);
-        extractor.text(this.font, Component.literal(b1Text), b1x + (b1w - tw1) / 2, b1y + 6, 0xFFFDE68A, false);
+        extractor.text(this.font, b1Text, b1x + (b1w - tw1) / 2, b1y + 6, 0xFFFDE68A, false);
     }
 
     private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -188,17 +188,18 @@ public class AtmosphericTerraformerScreen extends AbstractContainerScreen<Atmosp
         int y = this.topPos;
 
         if (mouseX >= x + 10 && mouseX <= x + 166 && mouseY >= y + 16 && mouseY <= y + 21) {
-            String energyTip = "Energia: " + NumberFormat.compact(this.menu.getEnergy()) + " / " + NumberFormat.compact(this.menu.getMaxEnergy()) + " J";
-            List<Component> tip = List.of(Component.literal(energyTip));
+            Component energyTip = Component.translatable("gui.sandstorm.terraformer.energy",
+                    NumberFormat.compact(this.menu.getEnergy()),
+                    NumberFormat.compact(this.menu.getMaxEnergy()));
+            List<Component> tip = List.of(energyTip);
             extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
             return;
         }
 
         if (mouseX >= x + 10 && mouseX <= x + 20 && mouseY >= y + 25 && mouseY <= y + 69) {
-            String waterTip = this.menu.getWaterAmount() + " / " + this.menu.getMaxWater() + " mB";
             List<Component> tip = List.of(
-                    Component.literal("§bÁgua Nutritiva"),
-                    Component.literal(waterTip)
+                    Component.translatable("gui.sandstorm.terraformer.water_title"),
+                    Component.translatable("gui.sandstorm.terraformer.water_amount", this.menu.getWaterAmount(), this.menu.getMaxWater())
             );
             extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
             return;
@@ -208,11 +209,11 @@ public class AtmosphericTerraformerScreen extends AbstractContainerScreen<Atmosp
         int b0y = y + 25;
         if (mouseX >= b0x && mouseX <= b0x + 62 && mouseY >= b0y && mouseY <= b0y + 20) {
             List<Component> tip = List.of(
-                    Component.literal("§bControle de Raios"),
-                    this.menu.isLightningEnabled()
-                            ? Component.literal("§aRaios habilitados na tempestade")
-                            : Component.literal("§7Apenas chuva mineral nutritiva"),
-                    Component.literal("§eClique para alternar")
+                    Component.translatable("gui.sandstorm.terraformer.lightning_title"),
+                    Component.translatable(this.menu.isLightningEnabled()
+                            ? "gui.sandstorm.terraformer.lightning_desc_enabled"
+                            : "gui.sandstorm.terraformer.lightning_desc_disabled"),
+                    Component.translatable("gui.sandstorm.terraformer.click_toggle")
             );
             extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
             return;
@@ -221,11 +222,10 @@ public class AtmosphericTerraformerScreen extends AbstractContainerScreen<Atmosp
         int b1x = x + 106;
         int b1y = y + 49;
         if (mouseX >= b1x && mouseX <= b1x + 62 && mouseY >= b1y && mouseY <= b1y + 20) {
-            String radiusTip = "Raio de ação: " + this.menu.getRadius() + " blocos";
             List<Component> tip = List.of(
-                    Component.literal("§6Alcance do Terraformador"),
-                    Component.literal(radiusTip),
-                    Component.literal("§eClique para alternar o Tier")
+                    Component.translatable("gui.sandstorm.terraformer.range_title"),
+                    Component.translatable("gui.sandstorm.terraformer.range_desc", this.menu.getRadius()),
+                    Component.translatable("gui.sandstorm.terraformer.tier_click")
             );
             extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
         }

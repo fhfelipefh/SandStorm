@@ -42,7 +42,7 @@ public class CrushingSpikeGateRenderer implements BlockEntityRenderer<CrushingSp
     public void submit(CrushingSpikeGateRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
         poseStack.pushPose();
 
-        float translateY = (1.0f - state.progress) * (12.0f / 16.0f); // Move up by 12 pixels when open (progress=0), 0 when closed (progress=1)
+        float translateY = (1.0f - state.progress) * (12.0f / 16.0f);
         
         poseStack.translate(0.5, translateY, 0.5);
         poseStack.rotateDegrees(Axis.YP, -state.facing.toYRot());

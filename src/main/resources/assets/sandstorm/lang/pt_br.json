@@ -806,5 +806,21 @@
   "tooltip.sandstorm.orbital_kinetic_lance_satellite.desc1": "Plataforma de defesa com dardos de tungstênio.",
   "tooltip.sandstorm.orbital_kinetic_lance_satellite.desc2": "Causa impacto cinético devastador na coordenada.",
   "tooltip.sandstorm.weather_recon_satellite.desc1": "Satélite orbital com radares de tempestade.",
-  "tooltip.sandstorm.weather_recon_satellite.desc2": "Alerta antecipado de tempestades em tempo real."
+  "tooltip.sandstorm.weather_recon_satellite.desc2": "Alerta antecipado de tempestades em tempo real.",
+  "gui.sandstorm.terraformer.status_active": "ATIVO",
+  "gui.sandstorm.terraformer.status_dissipating": "DISSIPANDO",
+  "gui.sandstorm.terraformer.status_waiting": "AGUARDANDO",
+  "gui.sandstorm.terraformer.lightning_on": "RAIOS: ON",
+  "gui.sandstorm.terraformer.lightning_off": "RAIOS: OFF",
+  "gui.sandstorm.terraformer.tier": "TIER %s",
+  "gui.sandstorm.terraformer.energy": "Energia: %s / %s J",
+  "gui.sandstorm.terraformer.water_title": "Água Nutritiva",
+  "gui.sandstorm.terraformer.water_amount": "%s / %s mB",
+  "gui.sandstorm.terraformer.lightning_title": "Controle de Raios",
+  "gui.sandstorm.terraformer.lightning_desc_enabled": "Raios habilitados na tempestade",
+  "gui.sandstorm.terraformer.lightning_desc_disabled": "Apenas chuva mineral nutritiva",
+  "gui.sandstorm.terraformer.click_toggle": "Clique para alternar",
+  "gui.sandstorm.terraformer.range_title": "Alcance do Terraformador",
+  "gui.sandstorm.terraformer.range_desc": "Raio de ação: %s blocos",
+  "gui.sandstorm.terraformer.tier_click": "Clique para alternar o Tier"
 }

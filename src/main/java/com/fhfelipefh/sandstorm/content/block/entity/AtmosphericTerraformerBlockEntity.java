@@ -9,9 +9,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.impl.transfer.fluid.FluidVariantImpl;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -210,12 +212,12 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
 
                 @Override
                 public boolean isResourceBlank() {
-                    return getResource().isBlank();
+                    return waterAmount <= 0;
                 }
 
                 @Override
                 public FluidVariant getResource() {
-                    return FluidVariant.of(Fluids.WATER);
+                    return waterAmount > 0 ? new FluidVariantImpl(Fluids.WATER, DataComponentPatch.EMPTY) : new FluidVariantImpl(Fluids.EMPTY, DataComponentPatch.EMPTY);
                 }
 
                 @Override
