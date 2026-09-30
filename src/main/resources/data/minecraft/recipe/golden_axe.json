@@ -1,11 +1,19 @@
 {
-  "ingredients": [
-    "minecraft:barrier"
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "sandstorm_suppressed_recipes"
+      ]
+    }
   ],
+  "type": "minecraft:crafting_shapeless",
   "category": "misc",
+  "ingredients": [
+    "sandstorm:ancient_data_core"
+  ],
   "result": {
     "count": 1,
-    "id": "minecraft:barrier"
-  },
-  "type": "minecraft:crafting_shapeless"
+    "id": "minecraft:golden_axe"
+  }
 }
