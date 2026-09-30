@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "java_block",
+    "box_uv": true
+  },
+  "name": "sandboard",
+  "model_identifier": "sandboard",
+  "resolution": {
+    "width": 64,
+    "height": 64
+  },
+  "elements": [
+    {
+      "name": "deck",
+      "box_uv": true,
+      "from": [
+        -4,
+        0,
+        -10
+      ],
+      "to": [
+        4,
+        1,
+        10
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            20,
+            20,
+            28,
+            21
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            20,
+            20,
+            21
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            48,
+            20,
+            56,
+            21
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            28,
+            20,
+            48,
+            21
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            20,
+            0,
+            28,
+            20
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            28,
+            0,
+            36,
+            20
+          ],
+          "texture": 0
+        }
+      }
+    },
+    {
+      "name": "nose",
+      "box_uv": true,
+      "from": [
+        -3.5,
+        0.5,
+        10
+      ],
+      "to": [
+        3.5,
+        1.5,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            22,
+            7,
+            23
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0,
+            22,
+            4,
+            23
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0,
+            22,
+            7,
+            23
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0,
+            22,
+            4,
+            23
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0,
+            22,
+            7,
+            26
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            7,
+            22,
+            14,
+            26
+          ],
+          "texture": 0
+        }
+      }
+    }
+  ],
+  "outliner": [
+    "deck",
+    "nose"
+  ],
+  "textures": [
+    {
+      "name": "sandboard",
+      "folder": "entity",
+      "namespace": "sandstorm",
+      "id": "0",
+      "particle": false,
+      "render_mode": "default",
+      "visible": true,
+      "mode": "bitmap",
+      "saved": true
+    }
+  ]
+}

@@ -52,6 +52,9 @@ import com.fhfelipefh.sandstorm.client.renderer.HydroponicChamberBlockEntityRend
 import com.fhfelipefh.sandstorm.client.renderer.MegastructureConstructorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.NaniteFabricatorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.Printer3DBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.ExcavatorVehicleRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.MegazordRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.SandboardRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandwormRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ScrapSentinelRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.NomadScavengerRenderer;
@@ -143,9 +146,9 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.NUTRIENT_BOMB, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDWORM, SandwormRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CARGO_DRONE, CargoDroneRenderer::new);
-        EntityRendererRegistry.register(SandStormEntities.EXCAVATOR_VEHICLE, NoopRenderer::new);
-        EntityRendererRegistry.register(SandStormEntities.MEGAZORD, NoopRenderer::new);
-        EntityRendererRegistry.register(SandStormEntities.SANDBOARD, NoopRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.EXCAVATOR_VEHICLE, ExcavatorVehicleRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.MEGAZORD, MegazordRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.SANDBOARD, SandboardRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.BUILDER_DRONE, BuilderDroneEntityRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.MEDBAY_SEAT, NoopRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CYBORG_EXCAVATOR, CyborgRenderer::new);
