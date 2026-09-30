@@ -1,6 +1,7 @@
 # SandStorm
 
 [![CurseForge](https://img.shields.io/badge/CurseForge-SandStorm-orange?logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/sandstorm)
+[![Modrinth](https://img.shields.io/badge/Modrinth-SandStorm-00AF5C?logo=modrinth)](https://modrinth.com/mod/sandstorm-felipehonorio55)
 [![Fabric](https://img.shields.io/badge/Minecraft-26.3%20Fabric-blue)](https://fabricmc.net/)
 
 ![SandStorm Showcase](docs/screenshots/showcase-overview.png)
@@ -35,13 +36,17 @@ Acesse a **[Wiki do SandStorm](https://github.com/fhfelipefh/SandStorm/wiki)** p
 
 ---
 
-## 🛠️ Instalação (CurseForge)
+## 🛠️ Onde Baixar & Instalação
 
-Recomendamos usar o aplicativo do CurseForge. Acesse a [página oficial do SandStorm](https://www.curseforge.com/minecraft/mc-mods/sandstorm) e clique em "Install" para baixar o mod e suas dependências (Fabric API) automaticamente.
+O **SandStorm** está disponível oficialmente em duas plataformas:
 
-Se preferir instalação manual:
-1. Instale o **Fabric Loader 0.19.5+** para Minecraft 26.3.
-2. Adicione a **Fabric API** e o arquivo do **SandStorm** na pasta `mods`.
+* **[CurseForge](https://www.curseforge.com/minecraft/mc-mods/sandstorm)**: Instale pelo app do CurseForge ou baixe os arquivos diretamente na página.
+* **[Modrinth](https://modrinth.com/mod/sandstorm-felipehonorio55)**: Baixe pelo Modrinth App ou pela página oficial do projeto.
+
+### Instalação Manual:
+1. Instale o **Fabric Loader 0.19.5+** para Minecraft 26.3 / 1.21.4.
+2. Baixe a versão correspondente da **Fabric API** e o arquivo `.jar` do **SandStorm**.
+3. Coloque ambos os arquivos na sua pasta `.minecraft/mods`.
 
 ---
 
