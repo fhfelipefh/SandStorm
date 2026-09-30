@@ -14,10 +14,13 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -241,6 +244,17 @@ public class DeepCoreDrillBlockEntity extends BaseMachineBlockEntity {
     @Override
     protected SoundEvent getProcessSound() {
         return SoundEvents.HEAVY_CORE_HIT;
+    }
+
+    @Override
+    protected void onProcessCompleted(Level level, BlockPos pos) {
+        level.playSound(null, pos, SoundEvents.HEAVY_CORE_HIT, SoundSource.BLOCKS, 1.0f, 0.8f);
+        level.playSound(null, pos, SoundEvents.NETHERITE_BLOCK_BREAK, SoundSource.BLOCKS, 0.8f, 1.2f);
+        if (level instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.5, pos.getY() + 0.2, pos.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.05);
+            serverLevel.sendParticles(ParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 0.2, pos.getZ() + 0.5, 4, 0.2, 0.1, 0.2, 0.02);
+            serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 6, 0.25, 0.2, 0.25, 0.04);
+        }
     }
 
     @Override

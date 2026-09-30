@@ -3,16 +3,21 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.gui.AutoAssemblyLineMenu;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -59,6 +64,17 @@ public class AutoAssemblyLineBlockEntity extends BaseMachineBlockEntity {
     @Override
     protected SoundEvent getProcessSound() {
         return SoundEvents.ANVIL_USE;
+    }
+
+    @Override
+    protected void onProcessCompleted(Level level, BlockPos pos) {
+        level.playSound(null, pos, SandStormSoundEvents.ASSEMBLY_CONSTRUCT, SoundSource.BLOCKS, 0.8f, 1.0f);
+        level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 0.6f, 1.4f);
+        level.playSound(null, pos, SoundEvents.CRAFTER_CRAFT, SoundSource.BLOCKS, 0.75f, 0.95f);
+        if (level instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.POOF, pos.getX() + 0.5, pos.getY() + 0.7, pos.getZ() + 0.5, 6, 0.2, 0.1, 0.2, 0.03);
+            serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, pos.getX() + 0.5, pos.getY() + 0.65, pos.getZ() + 0.5, 5, 0.2, 0.1, 0.2, 0.04);
+        }
     }
 
     @Override

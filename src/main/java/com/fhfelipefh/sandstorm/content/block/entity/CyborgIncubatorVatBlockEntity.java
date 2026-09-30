@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -22,6 +23,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
@@ -228,10 +230,6 @@ public class CyborgIncubatorVatBlockEntity extends BaseMachineBlockEntity {
         } else {
             out.grow(1);
         }
-
-        if (level instanceof ServerLevel serverLevel) {
-            serverLevel.playSound(null, worldPosition, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0f, 1.2f);
-        }
     }
 
     public void tickServer(ServerLevel level, BlockPos pos, BlockState state) {
@@ -274,6 +272,17 @@ public class CyborgIncubatorVatBlockEntity extends BaseMachineBlockEntity {
     @Override
     protected SoundEvent getProcessSound() {
         return SoundEvents.BREWING_STAND_BREW;
+    }
+
+    @Override
+    protected void onProcessCompleted(Level level, BlockPos pos) {
+        level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0f, 1.2f);
+        level.playSound(null, pos, SoundEvents.IRON_GOLEM_REPAIR, SoundSource.BLOCKS, 0.8f, 1.1f);
+        if (level instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 15, 0.3, 0.25, 0.3, 0.05);
+            serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 6, 0.2, 0.15, 0.2, 0.03);
+            serverLevel.sendParticles(ParticleTypes.GLOW, pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5, 8, 0.25, 0.2, 0.25, 0.02);
+        }
     }
 
     @Override

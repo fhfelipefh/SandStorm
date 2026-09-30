@@ -6,9 +6,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -137,10 +139,7 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
                     processRecipe();
                     progress = 0;
                     notifyBlockUpdate();
-                    SoundEvent sound = getProcessSound();
-                    if (sound != null) {
-                        level.playSound(null, pos, sound, SoundSource.BLOCKS, 0.25f, 1.0f);
-                    }
+                    onProcessCompleted(level, pos);
                 }
             }
         } else {
@@ -169,6 +168,28 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
             return 3600;
         }
         return 0;
+    }
+
+    protected void onProcessCompleted(Level level, BlockPos pos) {
+        SoundEvent sound = getProcessSound();
+        if (sound != null) {
+            level.playSound(null, pos, sound, SoundSource.BLOCKS, getProcessSoundVolume(), getProcessSoundPitch());
+        }
+        if (level instanceof ServerLevel serverLevel) {
+            spawnProcessCompletedParticles(serverLevel, pos);
+        }
+    }
+
+    protected float getProcessSoundVolume() {
+        return 0.75f;
+    }
+
+    protected float getProcessSoundPitch() {
+        return 1.0f;
+    }
+
+    protected void spawnProcessCompletedParticles(ServerLevel level, BlockPos pos) {
+        level.sendParticles(ParticleTypes.POOF, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, 4, 0.2, 0.1, 0.2, 0.02);
     }
 
     protected abstract boolean canProcess();
