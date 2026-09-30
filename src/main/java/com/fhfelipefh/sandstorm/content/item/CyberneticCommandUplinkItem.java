@@ -2,13 +2,18 @@ package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgRoutine;
+import com.fhfelipefh.sandstorm.content.network.SyncUplinkZonePayload;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -76,6 +81,7 @@ public class CyberneticCommandUplinkItem extends Item {
     private static final Map<UUID, BlockPos> PLAYER_CORNER_A = new HashMap<>();
     private static final Map<UUID, BlockPos> PLAYER_CORNER_B = new HashMap<>();
     private static final Map<UUID, UplinkMode> PLAYER_MODE = new HashMap<>();
+    private static final Map<UUID, Long> LAST_SYNC_TICKS = new HashMap<>();
 
     public CyberneticCommandUplinkItem(Properties properties) {
         super(properties);
@@ -87,6 +93,9 @@ public class CyberneticCommandUplinkItem extends Item {
 
     public static void setPlayerMode(Player player, UplinkMode mode) {
         PLAYER_MODE.put(player.getUUID(), mode != null ? mode : UplinkMode.MINING);
+        if (player instanceof ServerPlayer serverPlayer) {
+            syncToClient(serverPlayer);
+        }
     }
 
     public static BlockPos getCornerA(Player player) {
@@ -95,6 +104,38 @@ public class CyberneticCommandUplinkItem extends Item {
 
     public static BlockPos getCornerB(Player player) {
         return PLAYER_CORNER_B.get(player.getUUID());
+    }
+
+    public static void clearZone(Player player) {
+        UUID uuid = player.getUUID();
+        PLAYER_CORNER_A.remove(uuid);
+        PLAYER_CORNER_B.remove(uuid);
+        if (player instanceof ServerPlayer serverPlayer) {
+            syncToClient(serverPlayer);
+        }
+    }
+
+    public static void syncToClient(ServerPlayer player) {
+        syncToClient(player, null);
+    }
+
+    public static void syncToClient(ServerPlayer player, BlockPos moveTarget) {
+        UUID uuid = player.getUUID();
+        BlockPos cornerA = PLAYER_CORNER_A.get(uuid);
+        BlockPos cornerB = PLAYER_CORNER_B.get(uuid);
+        UplinkMode mode = getPlayerMode(player);
+        ServerPlayNetworking.send(player, new SyncUplinkZonePayload(cornerA, cornerB, mode.ordinal(), moveTarget));
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, EquipmentSlot slot) {
+        if (entity instanceof ServerPlayer serverPlayer && (slot == EquipmentSlot.MAINHAND || slot == EquipmentSlot.OFFHAND)) {
+            UUID uuid = serverPlayer.getUUID();
+            if (LAST_SYNC_TICKS.getOrDefault(uuid, -100L) + 20L <= level.getGameTime()) {
+                LAST_SYNC_TICKS.put(uuid, level.getGameTime());
+                syncToClient(serverPlayer);
+            }
+        }
     }
 
     @Override
@@ -106,8 +147,25 @@ public class CyberneticCommandUplinkItem extends Item {
                 level.playSound(null, player.blockPosition(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.8f, 1.2f);
                 player.sendSystemMessage(Component.translatable("telemetry.sandstorm.uplink_mode_switched",
                         Component.translatable("telemetry.sandstorm.uplink_mode." + newMode.getId())));
+                if (player instanceof ServerPlayer serverPlayer) {
+                    syncToClient(serverPlayer);
+                }
             }
             return InteractionResult.SUCCESS;
+        } else {
+            UUID uuid = player.getUUID();
+            if (PLAYER_CORNER_A.containsKey(uuid) || PLAYER_CORNER_B.containsKey(uuid)) {
+                if (!level.isClientSide()) {
+                    PLAYER_CORNER_A.remove(uuid);
+                    PLAYER_CORNER_B.remove(uuid);
+                    level.playSound(null, player.blockPosition(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.8f, 0.8f);
+                    player.sendSystemMessage(Component.translatable("telemetry.sandstorm.uplink_zone_cleared"));
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        syncToClient(serverPlayer);
+                    }
+                }
+                return InteractionResult.SUCCESS;
+            }
         }
         return super.use(level, player, hand);
     }
@@ -129,11 +187,15 @@ public class CyberneticCommandUplinkItem extends Item {
                 level.playSound(null, clickedPos, SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.PLAYERS, 0.8f, 1.2f);
                 player.sendSystemMessage(Component.translatable("telemetry.sandstorm.uplink_mode_switched",
                         Component.translatable("telemetry.sandstorm.uplink_mode." + newMode.getId())));
+                if (player instanceof ServerPlayer serverPlayer) {
+                    syncToClient(serverPlayer);
+                }
             }
             return InteractionResult.SUCCESS;
         }
 
         if (!level.isClientSide()) {
+            ServerPlayer serverPlayer = (ServerPlayer) player;
             UplinkMode mode = getPlayerMode(player);
             if (mode == UplinkMode.MOVE_ORDER) {
                 ServerLevel serverLevel = (ServerLevel) level;
@@ -145,17 +207,21 @@ public class CyberneticCommandUplinkItem extends Item {
                 }
                 level.playSound(null, clickedPos, SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.PLAYERS, 1.0f, 1.6f);
                 player.sendSystemMessage(Component.translatable("telemetry.sandstorm.uplink_move_command", ownedCyborgs.size(), clickedPos.getX(), clickedPos.getY(), clickedPos.getZ()));
+                syncToClient(serverPlayer, clickedPos);
                 return InteractionResult.SUCCESS;
             }
 
             UUID uuid = player.getUUID();
             BlockPos cornerA = PLAYER_CORNER_A.get(uuid);
+            BlockPos cornerB = PLAYER_CORNER_B.get(uuid);
 
-            if (cornerA == null) {
+            if (cornerA == null || cornerB != null) {
                 PLAYER_CORNER_A.put(uuid, clickedPos);
+                PLAYER_CORNER_B.remove(uuid);
                 level.playSound(null, clickedPos, SoundEvents.NOTE_BLOCK_CHIME.value(), SoundSource.PLAYERS, 0.9f, 1.4f);
                 player.sendSystemMessage(Component.translatable("telemetry.sandstorm.uplink_corner_a_set",
                         clickedPos.getX(), clickedPos.getY(), clickedPos.getZ()));
+                syncToClient(serverPlayer);
             } else {
                 PLAYER_CORNER_B.put(uuid, clickedPos);
                 int sizeX = Math.abs(clickedPos.getX() - cornerA.getX()) + 1;
@@ -165,6 +231,7 @@ public class CyberneticCommandUplinkItem extends Item {
                 level.playSound(null, clickedPos, SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.PLAYERS, 1.0f, 1.8f);
                 player.sendSystemMessage(Component.translatable("telemetry.sandstorm.uplink_zone_configured",
                         sizeX, sizeY, sizeZ));
+                syncToClient(serverPlayer);
             }
         }
 
@@ -187,6 +254,9 @@ public class CyberneticCommandUplinkItem extends Item {
                     }
                     player.sendSystemMessage(Component.translatable("telemetry.sandstorm.uplink_zone_assigned"));
                     level.playSound(null, cyborg.blockPosition(), SoundEvents.NOTE_BLOCK_PLING.value(), SoundSource.PLAYERS, 1.0f, 1.5f);
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        syncToClient(serverPlayer);
+                    }
                 }
 
                 if (cyborg.getOwnerUUID() == null) {

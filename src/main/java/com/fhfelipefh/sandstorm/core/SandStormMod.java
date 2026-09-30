@@ -22,6 +22,7 @@ import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncTerminalGridPayload;
+import com.fhfelipefh.sandstorm.content.network.SyncUplinkZonePayload;
 import com.fhfelipefh.sandstorm.content.network.TerminalActionPayload;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
@@ -92,6 +93,10 @@ public class SandStormMod implements ModInitializer {
         PayloadTypeRegistry.clientboundPlay().register(
                 SyncTerminalGridPayload.TYPE,
                 SyncTerminalGridPayload.STREAM_CODEC
+        );
+        PayloadTypeRegistry.clientboundPlay().register(
+                SyncUplinkZonePayload.TYPE,
+                SyncUplinkZonePayload.STREAM_CODEC
         );
         PayloadTypeRegistry.serverboundPlay().register(
                 TerminalActionPayload.TYPE,

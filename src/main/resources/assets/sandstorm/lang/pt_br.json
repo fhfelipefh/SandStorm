@@ -734,6 +734,7 @@
   "telemetry.sandstorm.uplink_corner_a_set": "§b[Uplink] Vértice A demarcado em [%s, %s, %s]",
   "telemetry.sandstorm.uplink_zone_configured": "§a[Uplink] Zona demarcada configurada: %sx%sx%s blocos",
   "telemetry.sandstorm.uplink_zone_assigned": "§a[Uplink] Zona de trabalho designada ao ciborgue com sucesso!",
+  "telemetry.sandstorm.uplink_zone_cleared": "§e[Uplink] Seleção de vértices reiniciada.",
   "routine.sandstorm.autonomous_work": "Trabalho Autônomo",
   "routine.sandstorm.follow_operator": "Seguir Operador",
   "routine.sandstorm.patrol_perimeter": "Patrulhar Perímetro",

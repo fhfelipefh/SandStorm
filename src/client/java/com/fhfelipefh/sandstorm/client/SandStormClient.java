@@ -45,6 +45,7 @@ import com.fhfelipefh.sandstorm.client.renderer.AquiferBeetleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.AutonomousSonicTurretRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CargoDroneRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.ClientUplinkRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CrushingSpikeGateRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyborgRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DesalinationFilterBlockEntityRenderer;
@@ -68,12 +69,14 @@ import com.fhfelipefh.sandstorm.content.network.MagneticInterferencePayload;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
+import com.fhfelipefh.sandstorm.content.network.SyncUplinkZonePayload;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -229,6 +232,17 @@ public class SandStormClient implements ClientModInitializer {
                 }
             });
         });
+        ClientPlayNetworking.registerGlobalReceiver(SyncUplinkZonePayload.TYPE, (payload, context) -> {
+            context.client().execute(() -> {
+                ClientUplinkRenderer.setClientZone(
+                        payload.cornerA(),
+                        payload.cornerB(),
+                        payload.modeOrdinal(),
+                        payload.moveTarget()
+                );
+            });
+        });
+        LevelRenderEvents.COLLECT_SUBMITS.register(ClientUplinkRenderer::render);
     }
 
     private static void playFlashlightSound(Minecraft client, int mode) {

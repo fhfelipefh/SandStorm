@@ -734,6 +734,7 @@
   "telemetry.sandstorm.uplink_corner_a_set": "§b[Uplink] Vértice A fijado en [%s, %s, %s]",
   "telemetry.sandstorm.uplink_zone_configured": "§a[Uplink] Zona delimitada configurada: %sx%sx%s bloques",
   "telemetry.sandstorm.uplink_zone_assigned": "§a[Uplink] ¡Zona de trabajo asignada al ciborg con éxito!",
+  "telemetry.sandstorm.uplink_zone_cleared": "§e[Uplink] Selección de vértices reiniciada.",
   "routine.sandstorm.autonomous_work": "Trabajo Autónomo",
   "routine.sandstorm.follow_operator": "Seguir Operador",
   "routine.sandstorm.patrol_perimeter": "Patrullar Perímetro",
