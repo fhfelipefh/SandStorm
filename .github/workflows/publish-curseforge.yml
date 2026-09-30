@@ -129,8 +129,25 @@ jobs:
           cat RELEASE_CHANGELOG.md
           echo "=========================================="
 
+      - name: Verificar Tokens de Publicacao
+        id: check_tokens
+        env:
+          CF_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          MR_TOKEN: ${{ secrets.MODRINTH_TOKEN || vars.MODRINTH_TOKEN }}
+        run: |
+          if [ -n "$CF_TOKEN" ]; then
+            echo "has_cf=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_cf=false" >> $GITHUB_OUTPUT
+          fi
+          if [ -n "$MR_TOKEN" ]; then
+            echo "has_mr=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_mr=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Publicar no CurseForge
-        if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && (secrets.CURSEFORGE_TOKEN != '')
+        if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && steps.check_tokens.outputs.has_cf == 'true'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           curseforge-id: ${{ secrets.CURSEFORGE_PROJECT_ID || '1713742' }}
@@ -153,7 +170,7 @@ jobs:
           fail-mode: 'fail'
 
       - name: Publicar no Modrinth
-        if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && (secrets.MODRINTH_TOKEN != '' || vars.MODRINTH_TOKEN != '')
+        if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && steps.check_tokens.outputs.has_mr == 'true'
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           modrinth-id: ${{ secrets.MODRINTH_PROJECT_ID || vars.MODRINTH_PROJECT_ID || 'sandstorm-felipehonorio55' }}
@@ -168,8 +185,6 @@ jobs:
           changelog-file: 'RELEASE_CHANGELOG.md'
           game-versions: |
             ${{ env.MC_VERSION }}
-            26.3
-            26.2
           loaders: |
             ${{ env.MOD_LOADER_LOWER }}
           java: |
