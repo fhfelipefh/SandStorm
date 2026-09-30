@@ -5,6 +5,37 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.5.4] - 2026-09-30
+
+### 🔊 Feedback Sonoro e Partículas de Conclusão nas Máquinas
+* **Feedback Multissensorial de Produção**:
+  * Implementação do ciclo `onProcessCompleted` em `BaseMachineBlockEntity` propagado deterministicamente para todas as máquinas funcionais do SandStorm.
+  * **Impressora 3D (3D Printer)**: Efeitos sonoros mecânicos com duplo clique (`PRINTER_3D_CRAFT` e `CRAFTER_CRAFT`), acompanhados de faíscas laser de solda (`ELECTRIC_SPARK`), fumaça térmica de assentamento (`WHITE_SMOKE`) e poof de finalização.
+  * **Fabricador de Nanites (Nanite Fabricator)**: Ressonância quântica de ativação (`NANITE_ACTIVATE` e `BEACON_POWER_SELECT`) com matriz geométrica de nanorrobôs (`WAX_OFF`, `GLOW`, `ELECTRIC_SPARK`).
+  * **Refinaria Química (Chemical Refinery)**: Alívio despressurizador de vapor industrial (`FIRE_EXTINGUISH`), borbulho ativo (`BREWING_STAND_BREW`) e batida de válvula metálica pesada (`IRON_TRAPDOOR_CLOSE`), liberando plumas densas de vapor na chaminé (`CAMPFIRE_COSY_SMOKE`, `WHITE_SMOKE`, `SMOKE`).
+  * **Modificador Molecular (Molecular Modifier)**: Ativação quântica e ressonância atômica (`BEACON_ACTIVATE` e `AMETHYST_BLOCK_RESONATE`) com runas energéticas de encantamento (`ENCHANT`, `ELECTRIC_SPARK`, `GLOW`).
+  * **Linha de Montagem Automatizada (Auto Assembly Line)**: Prensagem e estalo pneumático (`ASSEMBLY_CONSTRUCT`, `ANVIL_USE`, `CRAFTER_CRAFT`) com descarga de pressão (`POOF`, `ELECTRIC_SPARK`).
+  * **Tanque Biorreator (Bioreactor Vat)**: Borbulho orgânico e gelatinoso (`BREWING_STAND_BREW`, `SLIME_BLOCK_PLACE`) com efervescência de nutrientes (`HAPPY_VILLAGER`, `SPLASH`, `COMPOSTER`).
+  * **Filtro Dessalinizador (Desalination Filter)**: Descarga pressurizada de água potável (`DESALINATION_PROCESS`, `BOTTLE_FILL`) com jatos de gotículas filtradas (`SPLASH`, `DRIPPING_WATER`, `CLOUD`).
+  * **Tanque Incubador Ciborgue (Cyborg Incubator Vat)**: Despertar cibernético (`BEACON_ACTIVATE`, `IRON_GOLEM_REPAIR`) com centelhas elétricas e fumaça biológica (`ELECTRIC_SPARK`, `CAMPFIRE_COSY_SMOKE`, `GLOW`).
+  * **Broca de Núcleo Profundo (Deep Core Drill)**: Impacto de perfuração do manto planetário (`HEAVY_CORE_HIT`, `NETHERITE_BLOCK_BREAK`) com fumaça vulcânica e partículas incandescentes (`LARGE_SMOKE`, `LAVA`, `ELECTRIC_SPARK`).
+  * **Câmara Hidropônica (Hydroponic Chamber)**: Efeito de colheita vegetal abundante (`CROP_BREAK`, `EXPERIENCE_ORB_PICKUP`) e fertilização verde (`HAPPY_VILLAGER`, `COMPOSTER`).
+  * **Extrator de Plasma Lítico (Litho-Plasma Extractor)**: Descarga centrífuga com despressurização térmica e chamas de plasma (`BEACON_ACTIVATE`, `FIRE_EXTINGUISH`, `ELECTRIC_SPARK`, `SOUL_FIRE_FLAME`).
+
+### ℹ️ Sistema Padronizado de Tooltips "SHIFT para Detalhes"
+* **Padronização Universal de Tooltips**:
+  * Integrada sinalização clara e elegante de tecla SHIFT em todos os módulos, tecnologias, componentes e equipamentos do mod, evitando poluição visual nas barras rápidas e inventários.
+
+### 🏗️ Pré-visualização e Custo de Blueprints no Construtor de Megastruturas
+* **Hologramas e Estimativas de Custo**:
+  * Pré-visualização com análise em tempo real dos blocos necessários para as megastruturas em andamento.
+
+### ⚡ Feedback Visual e LEDs no Drive de Disco Quântico
+* **Indicadores Luminosos de Capacidade e Atividade**:
+  * LEDs dinâmicos de alta visibilidade refletindo o estado de energia, integridade de dados e transferências no Quantum Disk Drive.
+
+---
+
 ## [1.5.3] - 2026-09-30
 
 ### 🛠️ Bug Fixes & Stability
