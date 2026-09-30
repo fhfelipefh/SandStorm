@@ -10,6 +10,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MegastructureConstructorScreen extends BaseMachineScreen<MegastructureConstructorMenu> {
@@ -60,6 +62,7 @@ public class MegastructureConstructorScreen extends BaseMachineScreen<Megastruct
 
         renderRecipeButton(extractor, this.lastMouseX, this.lastMouseY);
         renderBlueprintTabs(extractor, this.lastMouseX, this.lastMouseY);
+        renderBlueprintDossierPanel(extractor, this.lastMouseX, this.lastMouseY);
 
         int barY = y + 20;
         int barH = 9;
@@ -145,7 +148,7 @@ public class MegastructureConstructorScreen extends BaseMachineScreen<Megastruct
             if (mx >= tabX && mx <= tabX + tabW && my >= tabY && my <= tabY + tabH) {
                 if (this.minecraft != null && this.minecraft.gameMode != null) {
                     this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, i);
-                    this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+                    this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BEACON_POWER_SELECT, 1.5f));
                 }
                 return true;
             }
@@ -218,12 +221,109 @@ public class MegastructureConstructorScreen extends BaseMachineScreen<Megastruct
         }
     }
 
+    private void renderBlueprintDossierPanel(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
+        int panelW = 120;
+        int panelH = this.imageHeight;
+        int panelX = this.leftPos + this.imageWidth + 4;
+        int panelY = this.topPos;
+
+        if (panelX + panelW > this.width) {
+            return;
+        }
+
+        extractor.fill(panelX, panelY, panelX + panelW, panelY + panelH, 0xFA0A0E17);
+        extractor.fill(panelX, panelY, panelX + panelW, panelY + 1, 0xFF00E5FF);
+        extractor.fill(panelX, panelY + panelH - 1, panelX + panelW, panelY + panelH, 0xFF00E5FF);
+        extractor.fill(panelX, panelY + 1, panelX + 1, panelY + panelH, 0xFF00E5FF);
+        extractor.fill(panelX + panelW - 1, panelY, panelX + panelW, panelY + panelH, 0xFF00E5FF);
+
+        extractor.fill(panelX + 1, panelY + 1, panelX + 4, panelY + 4, 0xFF00E5FF);
+        extractor.fill(panelX + panelW - 4, panelY + 1, panelX + panelW - 1, panelY + 4, 0xFF00E5FF);
+        extractor.fill(panelX + 1, panelY + panelH - 4, panelX + 4, panelY + panelH - 1, 0xFF00E5FF);
+        extractor.fill(panelX + panelW - 4, panelY + panelH - 4, panelX + panelW - 1, panelY + panelH - 1, 0xFF00E5FF);
+
+        extractor.fill(panelX + 4, panelY + 4, panelX + panelW - 4, panelY + 16, 0xDD101824);
+        extractor.fill(panelX + 4, panelY + 16, panelX + panelW - 4, panelY + 17, 0x8800E5FF);
+
+        drawAdaptiveText(extractor, Component.literal("PROJETO ATIVO"), panelX + 8, panelY + 6, panelW - 16, 0xFF00E5FF);
+
+        MegastructureBlueprint bp = MegastructureBlueprint.byIndex(this.menu.getBlueprintIndex());
+        drawAdaptiveText(extractor, Component.translatable("megastructure.sandstorm." + bp.getId()), panelX + 8, panelY + 20, panelW - 16, 0xFFFFD54F);
+        drawAdaptiveText(extractor, Component.literal(bp.getSizeX() + "x" + bp.getSizeY() + "x" + bp.getSizeZ() + " (" + bp.getPlacements().size() + " blk)"), panelX + 8, panelY + 30, panelW - 16, 0xFF90A4AE);
+
+        int readyPct = this.menu.getMaterialReadinessPercent();
+        int rBarX = panelX + 8;
+        int rBarY = panelY + 42;
+        int rBarW = panelW - 16;
+        int rBarH = 7;
+
+        extractor.fill(rBarX - 1, rBarY - 1, rBarX + rBarW + 1, rBarY + rBarH + 1, 0xFF1E293B);
+        extractor.fill(rBarX, rBarY, rBarX + rBarW, rBarY + rBarH, 0xFF05080E);
+
+        int scaledReady = (readyPct * rBarW) / 100;
+        if (scaledReady > 0) {
+            int readyColor = readyPct == 100 ? 0xFF00E676 : (readyPct >= 50 ? 0xFF00E5FF : 0xFFFFB300);
+            extractor.fill(rBarX, rBarY, rBarX + scaledReady, rBarY + rBarH, readyColor);
+        }
+        drawAdaptiveText(extractor, Component.literal("Prontidão: " + readyPct + "%"), rBarX + 2, rBarY - 1, rBarW - 4, 0xFFFFFFFF);
+
+        List<MegastructureBlueprint.MaterialCost> costs = bp.getMaterialCosts();
+        int startY = panelY + 53;
+        for (int i = 0; i < costs.size() && i < 4; i++) {
+            MegastructureBlueprint.MaterialCost cost = costs.get(i);
+            int itemY = startY + i * 27;
+
+            extractor.fill(panelX + 6, itemY, panelX + 24, itemY + 18, 0xFF05080E);
+            extractor.fill(panelX + 6, itemY, panelX + 24, itemY + 1, 0xFF1E293B);
+            extractor.fill(panelX + 6, itemY + 17, panelX + 24, itemY + 18, 0xFF1E293B);
+            extractor.fill(panelX + 6, itemY, panelX + 7, itemY + 18, 0xFF1E293B);
+            extractor.fill(panelX + 23, itemY, panelX + 24, itemY + 18, 0xFF1E293B);
+
+            ItemStack stack = new ItemStack(cost.item());
+            extractor.item(stack, panelX + 7, itemY + 1);
+
+            int inBuffer = this.menu.countInBuffer(cost.item());
+            boolean enough = inBuffer >= cost.count();
+            int countColor = enough ? 0xFF00E676 : 0xFFFFB300;
+
+            drawAdaptiveText(extractor, stack.getHoverName(), panelX + 28, itemY + 1, panelW - 32, 0xFFCFD8DC);
+            drawAdaptiveText(extractor, Component.literal(inBuffer + " / " + cost.count()), panelX + 28, itemY + 10, panelW - 32, countColor);
+        }
+    }
+
     @Override
     protected void renderCustomTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         super.renderCustomTooltips(extractor, mouseX, mouseY);
 
         int x = this.leftPos;
         int y = this.topPos;
+
+        int panelW = 120;
+        int panelX = x + this.imageWidth + 4;
+        int panelY = y;
+        if (panelX + panelW <= this.width) {
+            MegastructureBlueprint bp = MegastructureBlueprint.byIndex(this.menu.getBlueprintIndex());
+            List<MegastructureBlueprint.MaterialCost> costs = bp.getMaterialCosts();
+            int startY = panelY + 53;
+            for (int i = 0; i < costs.size() && i < 4; i++) {
+                MegastructureBlueprint.MaterialCost cost = costs.get(i);
+                int itemY = startY + i * 27;
+                if (mouseX >= panelX + 6 && mouseX <= panelX + panelW - 6 && mouseY >= itemY && mouseY <= itemY + 24) {
+                    ItemStack stack = new ItemStack(cost.item());
+                    int inBuffer = this.menu.countInBuffer(cost.item());
+                    Component status = inBuffer >= cost.count()
+                            ? Component.literal("§a✓ Material Suficiente")
+                            : Component.literal("§eFaltam: " + (cost.count() - inBuffer) + " blocos");
+                    extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                            stack.getHoverName().copy().withStyle(ChatFormatting.GOLD),
+                            Component.literal("§bNecessário: §f" + cost.count() + " blocos"),
+                            Component.literal("§bNo Buffer: §f" + inBuffer + " blocos"),
+                            status
+                    ), mouseX, mouseY);
+                    return;
+                }
+            }
+        }
 
         for (int i = 0; i < MegastructureBlueprint.values().length; i++) {
             int tabX = x - 26;
@@ -236,13 +336,22 @@ public class MegastructureConstructorScreen extends BaseMachineScreen<Megastruct
                 Component selectHint = isCurrent
                         ? Component.translatable("megastructure.sandstorm.tab_active").withStyle(ChatFormatting.AQUA)
                         : Component.translatable("megastructure.sandstorm.tab_click").withStyle(ChatFormatting.YELLOW);
-                extractor.setComponentTooltipForNextFrame(this.font, List.of(
-                        Component.translatable("megastructure.sandstorm." + bp.getId()).withStyle(ChatFormatting.GOLD),
-                        Component.literal("§bDimensões: §f" + bp.getSizeX() + "x" + bp.getSizeY() + "x" + bp.getSizeZ()),
-                        Component.literal("§bTotal: §f" + bp.getPlacements().size() + " blocos"),
-                        Component.translatable("megastructure.sandstorm." + bp.getId() + ".blocks").withStyle(ChatFormatting.GRAY),
-                        selectHint
-                ), mouseX, mouseY);
+
+                List<Component> tip = new ArrayList<>();
+                tip.add(Component.translatable("megastructure.sandstorm." + bp.getId()).withStyle(ChatFormatting.GOLD));
+                tip.add(Component.literal("§bDimensões: §f" + bp.getSizeX() + "x" + bp.getSizeY() + "x" + bp.getSizeZ()));
+                tip.add(Component.literal("§bTotal: §f" + bp.getPlacements().size() + " blocos"));
+                tip.add(Component.literal("§eCusto de Materiais:"));
+                for (MegastructureBlueprint.MaterialCost cost : bp.getMaterialCosts()) {
+                    ItemStack st = new ItemStack(cost.item());
+                    tip.add(Component.literal(" • §f" + cost.count() + "x ").append(st.getHoverName()).withStyle(ChatFormatting.GRAY));
+                }
+                if (isCurrent) {
+                    tip.add(Component.literal("§a⚡ Prontidão: " + this.menu.getMaterialReadinessPercent() + "%"));
+                }
+                tip.add(selectHint);
+
+                extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
                 return;
             }
         }

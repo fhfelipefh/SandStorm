@@ -1,12 +1,15 @@
 package com.fhfelipefh.sandstorm.content.megastructure;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public enum MegastructureBlueprint {
     BIOSPHERE_DOME("biosphere_dome", "Biosphere Dome", 25, 13, 25),
@@ -20,6 +23,7 @@ public enum MegastructureBlueprint {
     private final int sizeY;
     private final int sizeZ;
     private List<BlockPlacement> cachedPlacements;
+    private List<MaterialCost> cachedMaterialCosts;
     private BlockPos cachedMinPos;
     private BlockPos cachedMaxPos;
 
@@ -71,6 +75,22 @@ public enum MegastructureBlueprint {
             getPlacements();
         }
         return cachedMaxPos;
+    }
+
+    public synchronized List<MaterialCost> getMaterialCosts() {
+        if (cachedMaterialCosts == null) {
+            Map<Item, Integer> map = new LinkedHashMap<>();
+            for (BlockPlacement bp : getPlacements()) {
+                Item item = bp.state().getBlock().asItem();
+                map.put(item, map.getOrDefault(item, 0) + 1);
+            }
+            List<MaterialCost> list = new ArrayList<>();
+            for (Map.Entry<Item, Integer> entry : map.entrySet()) {
+                list.add(new MaterialCost(entry.getKey(), entry.getValue()));
+            }
+            cachedMaterialCosts = Collections.unmodifiableList(list);
+        }
+        return cachedMaterialCosts;
     }
 
     private void calculateBounds() {
@@ -265,5 +285,8 @@ public enum MegastructureBlueprint {
     }
 
     public record BlockPlacement(BlockPos relativePos, BlockState state) {
+    }
+
+    public record MaterialCost(Item item, int count) {
     }
 }

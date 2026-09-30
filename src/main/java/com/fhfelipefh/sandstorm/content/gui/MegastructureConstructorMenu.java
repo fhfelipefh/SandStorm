@@ -10,6 +10,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class MegastructureConstructorMenu extends AbstractContainerMenu implements MachineMenu {
@@ -17,7 +18,7 @@ public class MegastructureConstructorMenu extends AbstractContainerMenu implemen
     private final ContainerData data;
 
     public MegastructureConstructorMenu(int syncId, Inventory playerInventory) {
-        this(SandStormMenus.MEGASTRUCTURE_CONSTRUCTOR_MENU, syncId, playerInventory, new SimpleContainer(18), new SimpleContainerData(11));
+        this(SandStormMenus.MEGASTRUCTURE_CONSTRUCTOR_MENU, syncId, playerInventory, new SimpleContainer(18), new SimpleContainerData(12));
     }
 
     public MegastructureConstructorMenu(int syncId, Inventory playerInventory, Container container, ContainerData data) {
@@ -114,8 +115,12 @@ public class MegastructureConstructorMenu extends AbstractContainerMenu implemen
         return Math.min(100, (int) ((getPlacementIndex() * 100.0) / total));
     }
 
+    public MegastructureBlueprint getBlueprint() {
+        return MegastructureBlueprint.byIndex(getBlueprintIndex());
+    }
+
     public String getBlueprintName() {
-        return MegastructureBlueprint.byIndex(getBlueprintIndex()).getDisplayName();
+        return getBlueprint().getDisplayName();
     }
 
     public boolean isBuilding() {
@@ -156,6 +161,21 @@ public class MegastructureConstructorMenu extends AbstractContainerMenu implemen
 
     public int getBuildSpeedMode() {
         return data.get(10);
+    }
+
+    public int getMaterialReadinessPercent() {
+        return data.getCount() > 11 ? data.get(11) : 0;
+    }
+
+    public int countInBuffer(Item item) {
+        int count = 0;
+        for (int i = 0; i < 18; i++) {
+            ItemStack stack = container.getItem(i);
+            if (!stack.isEmpty() && stack.is(item)) {
+                count += stack.getCount();
+            }
+        }
+        return count;
     }
 
     @Override

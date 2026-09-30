@@ -48,6 +48,7 @@ public class MegastructureConstructorBlockEntityRenderer implements BlockEntityR
         Level level = entity.getLevel();
         state.animationTicks = level != null ? (level.getGameTime() + partialTick) : partialTick;
         state.targetRelPos = entity.getCurrentTargetRelPos();
+        state.materialReadiness = entity.getMaterialReadinessPercent();
         if (state.blueprint != null) {
             state.minPos = state.blueprint.getMinPos();
             state.maxPos = state.blueprint.getMaxPos();
@@ -278,10 +279,10 @@ public class MegastructureConstructorBlockEntityRenderer implements BlockEntityR
         int pct = state.totalBlocks > 0 ? (state.constructedBlocks * 100 / state.totalBlocks) : 0;
         String line1 = "✦ " + state.blueprint.getDisplayName().toUpperCase() + " ✦";
         String line2 = state.blueprint.getSizeX() + "x" + state.blueprint.getSizeY() + "x" + state.blueprint.getSizeZ() + " • " + state.totalBlocks + " BLOCKS";
-        String line3 = state.isDone ? "[COMPLETE • SHIELD ACTIVE]" : (state.isBuilding ? "[PRINTING " + pct + "%]" : "[STANDBY • HOLOGRAM ACTIVE]");
+        String line3 = state.isDone ? "[COMPLETE • SHIELD ACTIVE]" : (state.isBuilding ? "[PRINTING " + pct + "%]" : "[STANDBY • MATS " + state.materialReadiness + "%]");
         int color1 = 0xFF00E5FF;
         int color2 = 0xFF80D8FF;
-        int color3 = state.isDone ? 0xFF00E676 : (state.isBuilding ? 0xFFFFD600 : 0xFF00E676);
+        int color3 = state.isDone ? 0xFF00E676 : (state.isBuilding ? 0xFFFFD600 : (state.materialReadiness == 100 ? 0xFF00E676 : 0xFF00E5FF));
 
         int w1 = this.font.width(line1);
         int w2 = this.font.width(line2);

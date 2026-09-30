@@ -6,11 +6,16 @@ import com.fhfelipefh.sandstorm.content.gui.MegastructureConstructorMenu;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,6 +33,15 @@ class HolographicProjectionTest {
     static void setup() {
         SharedConstants.tryDetectVersion();
         Bootstrap.bootStrap();
+
+        DataComponentMap defaultComponents = DataComponentMap.builder()
+                .set(DataComponents.MAX_STACK_SIZE, 64)
+                .build();
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (!item.builtInRegistryHolder().areComponentsBound()) {
+                item.builtInRegistryHolder().bindComponents(defaultComponents);
+            }
+        }
     }
 
     @Test
@@ -123,5 +137,75 @@ class HolographicProjectionTest {
         assertNotNull(state.maxPos);
         assertEquals(state.blueprint.getMinPos(), state.minPos);
         assertEquals(state.blueprint.getMaxPos(), state.maxPos);
+    }
+
+    @Test
+    void testBlueprintMaterialCostsCalculation() {
+        for (MegastructureBlueprint bp : MegastructureBlueprint.values()) {
+            List<MegastructureBlueprint.MaterialCost> costs = bp.getMaterialCosts();
+            assertNotNull(costs);
+            assertFalse(costs.isEmpty());
+
+            int total = 0;
+            for (MegastructureBlueprint.MaterialCost cost : costs) {
+                assertNotNull(cost.item());
+                assertTrue(cost.count() > 0);
+                total += cost.count();
+            }
+            assertEquals(bp.getPlacements().size(), total);
+            assertEquals(costs, bp.getMaterialCosts());
+        }
+    }
+
+    @Test
+    void testConstructorMaterialReadinessCalculation() {
+        MegastructureConstructorBlockEntity be = new MegastructureConstructorBlockEntity(
+                BlockEntityTypes.BARREL,
+                BlockPos.ZERO,
+                Blocks.BARREL.defaultBlockState()
+        );
+        assertEquals(0, be.getMaterialReadinessPercent());
+
+        MegastructureBlueprint bp = be.getBlueprint();
+        List<MegastructureBlueprint.MaterialCost> costs = bp.getMaterialCosts();
+        MegastructureBlueprint.MaterialCost firstCost = costs.getFirst();
+
+        be.setItem(0, new ItemStack(firstCost.item(), 10));
+        assertTrue(be.countAvailableItems(firstCost.item()) >= 10);
+        assertTrue(be.getMaterialReadinessPercent() >= 0);
+
+        int slot = 0;
+        for (MegastructureBlueprint.MaterialCost cost : costs) {
+            int remaining = cost.count();
+            while (remaining > 0 && slot < 18) {
+                int toPut = Math.min(remaining, 64);
+                be.setItem(slot++, new ItemStack(cost.item(), toPut));
+                remaining -= toPut;
+            }
+        }
+        assertTrue(be.getMaterialReadinessPercent() > 0);
+    }
+
+    @Test
+    void testConstructorMenuBufferItemCountAndReadiness() {
+        Inventory playerInv = new Inventory(null, null);
+        SimpleContainer container = new SimpleContainer(18);
+        SimpleContainerData data11 = new SimpleContainerData(11);
+        MegastructureConstructorMenu menu11 = new MegastructureConstructorMenu(null, 1, playerInv, container, data11);
+        assertEquals(0, menu11.getMaterialReadinessPercent());
+
+        SimpleContainerData data12 = new SimpleContainerData(12);
+        data12.set(11, 75);
+        MegastructureConstructorMenu menu12 = new MegastructureConstructorMenu(null, 2, playerInv, container, data12);
+        assertEquals(75, menu12.getMaterialReadinessPercent());
+
+        MegastructureBlueprint bp = menu12.getBlueprint();
+        MegastructureBlueprint.MaterialCost firstCost = bp.getMaterialCosts().getFirst();
+        assertEquals(0, menu12.countInBuffer(firstCost.item()));
+
+        ItemStack stack = new ItemStack(firstCost.item(), 15);
+        stack.set(DataComponents.MAX_STACK_SIZE, 64);
+        container.setItem(0, stack);
+        assertEquals(15, menu12.countInBuffer(firstCost.item()));
     }
 }

@@ -16,4 +16,5 @@ public class MegastructureConstructorRenderState extends BlockEntityRenderState 
     public BlockPos targetRelPos = null;
     public BlockPos minPos = null;
     public BlockPos maxPos = null;
+    public int materialReadiness = 0;
 }

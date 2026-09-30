@@ -12,24 +12,28 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import java.util.List;
 
 public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity {
@@ -60,6 +64,7 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
                 case 8 -> getTotalPlacements();
                 case 9 -> getCurrentLayerY();
                 case 10 -> buildSpeedMode;
+                case 11 -> getMaterialReadinessPercent();
                 default -> 0;
             };
         }
@@ -79,7 +84,7 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
 
         @Override
         public int getCount() {
-            return 11;
+            return 12;
         }
     };
 
@@ -102,12 +107,17 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
     }
 
     public void setBlueprintIndex(int index) {
-        this.blueprintIndex = index;
-        this.placementIndex = 0;
-        this.buildState = STATE_IDLE;
-        setChanged();
-        if (this.level != null && !this.level.isClientSide()) {
-            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+        if (this.blueprintIndex != index) {
+            this.blueprintIndex = index;
+            this.placementIndex = 0;
+            this.buildState = STATE_IDLE;
+            if (this.level != null) {
+                this.level.playSound(null, this.worldPosition, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 0.8f, 1.6f);
+            }
+            setChanged();
+            if (this.level != null && !this.level.isClientSide()) {
+                this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+            }
         }
     }
 
@@ -253,6 +263,10 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
             level.setBlock(worldTarget, targetPlacement.state(), 3);
             spawnBuilderDroneIfNeeded((ServerLevel) level, pos, worldTarget);
             advancePlacement(placements);
+        } else if (extractFromAdjacentContainer(targetPlacement.state())) {
+            level.setBlock(worldTarget, targetPlacement.state(), 3);
+            spawnBuilderDroneIfNeeded((ServerLevel) level, pos, worldTarget);
+            advancePlacement(placements);
         } else {
             buildState = STATE_PAUSED;
             setChanged();
@@ -282,6 +296,70 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
             }
         }
         return -1;
+    }
+
+    private boolean extractFromAdjacentContainer(BlockState state) {
+        if (level == null) {
+            return false;
+        }
+        Item item = state.getBlock().asItem();
+        for (Direction dir : Direction.values()) {
+            BlockEntity be = level.getBlockEntity(worldPosition.relative(dir));
+            if (be instanceof Container adj && !(be instanceof MegastructureConstructorBlockEntity)) {
+                for (int i = 0; i < adj.getContainerSize(); i++) {
+                    ItemStack st = adj.getItem(i);
+                    if (!st.isEmpty() && st.is(item)) {
+                        st.shrink(1);
+                        adj.setChanged();
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public int countAvailableItems(Item item) {
+        int count = 0;
+        for (int i = 0; i < 18; i++) {
+            ItemStack st = getItem(i);
+            if (!st.isEmpty() && st.is(item)) {
+                count += st.getCount();
+            }
+        }
+        if (level != null) {
+            for (Direction dir : Direction.values()) {
+                BlockEntity be = level.getBlockEntity(worldPosition.relative(dir));
+                if (be instanceof Container adj && !(be instanceof MegastructureConstructorBlockEntity)) {
+                    for (int i = 0; i < adj.getContainerSize(); i++) {
+                        ItemStack st = adj.getItem(i);
+                        if (!st.isEmpty() && st.is(item)) {
+                            count += st.getCount();
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public int getMaterialReadinessPercent() {
+        MegastructureBlueprint bp = getBlueprint();
+        List<MegastructureBlueprint.MaterialCost> costs = bp.getMaterialCosts();
+        if (costs.isEmpty()) {
+            return 100;
+        }
+        int totalNeeded = 0;
+        int totalFound = 0;
+        for (MegastructureBlueprint.MaterialCost cost : costs) {
+            totalNeeded += cost.count();
+            int avail = countAvailableItems(cost.item());
+            totalFound += Math.min(cost.count(), avail);
+        }
+        if (totalNeeded <= 0) {
+            return 100;
+        }
+        return Math.min(100, (int) ((totalFound * 100.0) / totalNeeded));
     }
 
     private void spawnBuilderDroneIfNeeded(ServerLevel serverLevel, BlockPos center, BlockPos target) {
@@ -384,6 +462,7 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
         tag.putInt("buildState", this.buildState);
         tag.putInt("placementIndex", this.placementIndex);
         tag.putInt("buildSpeedMode", this.buildSpeedMode);
+        tag.putInt("materialReadiness", getMaterialReadinessPercent());
         return tag;
     }
 
