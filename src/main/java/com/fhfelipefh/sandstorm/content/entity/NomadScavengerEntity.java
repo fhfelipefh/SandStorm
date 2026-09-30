@@ -96,25 +96,46 @@ public class NomadScavengerEntity extends PathfinderMob {
         return isDawnOrDusk(level.getLevel()) && level.getBlockState(pos.below()).is(BlockTags.SAND);
     }
 
+    private Player tradingPlayer;
+
+    public boolean isTrading() {
+        return this.tradingPlayer != null;
+    }
+
+    public void setTradingPlayer(Player player) {
+        this.tradingPlayer = player;
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level().isClientSide() && this.tradingPlayer != null) {
+            if (this.tradingPlayer.isDeadOrDying()
+                    || this.distanceToSqr(this.tradingPlayer) > 64.0
+                    || !(this.tradingPlayer.containerMenu instanceof NomadScavengerMenu)) {
+                this.tradingPlayer = null;
+            } else {
+                this.getLookControl().setLookAt(this.tradingPlayer, 30.0f, 30.0f);
+            }
+        }
+    }
+
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (hand != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
 
-        if (player.isCrouching()) {
-            if (!this.level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
-                serverPlayer.openMenu(new SimpleMenuProvider(
-                        (containerId, playerInv, p) -> new NomadScavengerMenu(containerId, playerInv),
-                        Component.translatable("gui.sandstorm.nomad_scavenger")
-                ));
-                this.playSound(SoundEvents.VILLAGER_TRADE, 1.0f, 0.8f);
-            }
-            return InteractionResult.SUCCESS;
+        if (!this.level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
+            this.setTradingPlayer(serverPlayer);
+            this.setFleeing(false);
+            this.getNavigation().stop();
+            serverPlayer.openMenu(new SimpleMenuProvider(
+                    (containerId, playerInv, p) -> new NomadScavengerMenu(containerId, playerInv),
+                    Component.translatable("gui.sandstorm.nomad_scavenger")
+            ));
+            this.playSound(SoundEvents.VILLAGER_TRADE, 1.0f, 0.8f);
         }
-
-        this.playSound(SoundEvents.VILLAGER_NO, 1.0f, 0.7f);
-        this.setFleeing(true);
         return InteractionResult.SUCCESS;
     }
 
@@ -183,6 +204,10 @@ public class NomadScavengerEntity extends PathfinderMob {
 
         @Override
         public boolean canUse() {
+            if (this.mob.isTrading()) {
+                return false;
+            }
+
             Player nearest = this.mob.level().getNearestPlayer(this.mob, 12.0);
             if (nearest == null || nearest.isSpectator() || nearest.isCreative()) {
                 return false;
@@ -214,6 +239,9 @@ public class NomadScavengerEntity extends PathfinderMob {
 
         @Override
         public boolean canContinueToUse() {
+            if (this.mob.isTrading()) {
+                return false;
+            }
             return !this.mob.getNavigation().isDone() && this.targetPlayer != null && this.targetPlayer.isAlive() && !this.targetPlayer.isCrouching();
         }
 

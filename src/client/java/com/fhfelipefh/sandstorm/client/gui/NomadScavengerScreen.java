@@ -9,6 +9,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 public class NomadScavengerScreen extends AbstractContainerScreen<NomadScavengerMenu> {
     private static final int COLOR_BG_PANEL = 0xF0181412;
@@ -63,6 +64,7 @@ public class NomadScavengerScreen extends AbstractContainerScreen<NomadScavenger
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         renderPanel(extractor, mouseX, mouseY);
         super.extractRenderState(extractor, mouseX, mouseY, delta);
+        renderTooltips(extractor, mouseX, mouseY);
     }
 
     private void renderPanel(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -108,8 +110,8 @@ public class NomadScavengerScreen extends AbstractContainerScreen<NomadScavenger
         drawAdaptiveText(extractor, Component.literal("->"), x + 97, y + 39, 12, COLOR_AMBER);
 
         int cost = NomadScavengerMenu.getWaterCost(selectedTrade);
-        String costText = "Custo: " + cost + "x Água";
-        drawAdaptiveText(extractor, Component.literal(costText), x + 65, y + 21, 60, COLOR_CYAN);
+        String costText = "Custo: " + cost + "x Água Potável";
+        drawAdaptiveText(extractor, Component.literal(costText), x + 65, y + 21, 100, COLOR_CYAN);
 
         int btnX = x + 80;
         int btnY = y + 54;
@@ -129,6 +131,49 @@ public class NomadScavengerScreen extends AbstractContainerScreen<NomadScavenger
 
         renderInventoryGrid(extractor, x + 7, y + 83);
         renderHotbarGrid(extractor, x + 7, y + 141);
+    }
+
+    private void renderTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
+        int x = this.leftPos;
+        int y = this.topPos;
+
+        if (!this.menu.slots.get(0).hasItem() && this.isHovering(70, 36, 16, 16, mouseX, mouseY)) {
+            extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                    Component.literal("§bGarrafa de Água Potável"),
+                    Component.literal("§7Insira aqui para negociar")
+            ), mouseX, mouseY);
+            return;
+        }
+
+        int btnX = x + 80;
+        int btnY = y + 54;
+        int btnW = 58;
+        int btnH = 15;
+        if (mouseX >= btnX && mouseX <= btnX + btnW && mouseY >= btnY && mouseY <= btnY + btnH) {
+            int selected = this.menu.getSelectedTrade();
+            int cost = NomadScavengerMenu.getWaterCost(selected);
+            ItemStack reward = NomadScavengerMenu.getRewardItem(selected);
+            extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                    Component.literal("§6Barganhar"),
+                    Component.literal("§7Custo: §b" + cost + "x Água Potável"),
+                    Component.literal("§7Recebe: §a" + reward.getCount() + "x " + reward.getHoverName().getString())
+            ), mouseX, mouseY);
+            return;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            int tabY = y + 29 + i * 10;
+            if (mouseX >= x + 8 && mouseX <= x + 56 && mouseY >= tabY && mouseY <= tabY + 9) {
+                int cost = NomadScavengerMenu.getWaterCost(i);
+                ItemStack reward = NomadScavengerMenu.getRewardItem(i);
+                extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                        Component.literal("§6" + getTradeLabel(i)),
+                        Component.literal("§7Recebe: §e" + reward.getCount() + "x " + reward.getHoverName().getString()),
+                        Component.literal("§7Custo: §b" + cost + "x Água Potável")
+                ), mouseX, mouseY);
+                return;
+            }
+        }
     }
 
     private String getTradeLabel(int index) {
@@ -174,6 +219,7 @@ public class NomadScavengerScreen extends AbstractContainerScreen<NomadScavenger
         for (int i = 0; i < 4; i++) {
             int tabY = y + 29 + i * 10;
             if (mx >= x + 8 && mx <= x + 56 && my >= tabY && my <= tabY + 9) {
+                this.menu.setSelectedTrade(i);
                 if (this.minecraft != null && this.minecraft.gameMode != null) {
                     this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, i);
                     this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.2f));

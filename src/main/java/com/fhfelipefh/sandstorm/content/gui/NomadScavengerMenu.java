@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -24,11 +25,15 @@ public class NomadScavengerMenu extends AbstractContainerMenu {
     private final ContainerData tradeData;
 
     public NomadScavengerMenu(int containerId, Inventory playerInventory) {
-        this(containerId, playerInventory, new SimpleContainer(2), new SimpleContainerData(1));
+        this(SandStormMenus.NOMAD_SCAVENGER_MENU, containerId, playerInventory, new SimpleContainer(2), new SimpleContainerData(1));
     }
 
     public NomadScavengerMenu(int containerId, Inventory playerInventory, Container container, ContainerData data) {
-        super(SandStormMenus.NOMAD_SCAVENGER_MENU, containerId);
+        this(SandStormMenus.NOMAD_SCAVENGER_MENU, containerId, playerInventory, container, data);
+    }
+
+    public NomadScavengerMenu(MenuType<?> menuType, int containerId, Inventory playerInventory, Container container, ContainerData data) {
+        super(menuType, containerId);
         checkContainerSize(container, 2);
         checkContainerDataCount(data, 1);
         this.tradeContainer = container;
@@ -72,9 +77,12 @@ public class NomadScavengerMenu extends AbstractContainerMenu {
     public boolean clickMenuButton(Player player, int id) {
         if (id >= 0 && id <= 3) {
             setSelectedTrade(id);
+            this.broadcastChanges();
             return true;
         } else if (id == BUTTON_BARTER) {
-            return executeBarter(player);
+            boolean success = executeBarter(player);
+            this.broadcastChanges();
+            return success;
         }
         return false;
     }
@@ -107,9 +115,11 @@ public class NomadScavengerMenu extends AbstractContainerMenu {
             this.tradeContainer.setItem(0, ItemStack.EMPTY);
         }
 
-        ItemStack emptyBottles = new ItemStack(Items.GLASS_BOTTLE, waterCost);
-        if (!player.getInventory().add(emptyBottles) && player.level() instanceof ServerLevel serverLevel) {
-            player.spawnAtLocation(serverLevel, emptyBottles);
+        if (player != null) {
+            ItemStack emptyBottles = new ItemStack(Items.GLASS_BOTTLE, waterCost);
+            if (!player.getInventory().add(emptyBottles) && !emptyBottles.isEmpty() && player.level() instanceof ServerLevel serverLevel) {
+                player.spawnAtLocation(serverLevel, emptyBottles);
+            }
         }
 
         if (currentOutput.isEmpty()) {
@@ -118,6 +128,7 @@ public class NomadScavengerMenu extends AbstractContainerMenu {
             currentOutput.grow(reward.getCount());
         }
 
+        this.tradeContainer.setChanged();
         this.broadcastChanges();
         return true;
     }
