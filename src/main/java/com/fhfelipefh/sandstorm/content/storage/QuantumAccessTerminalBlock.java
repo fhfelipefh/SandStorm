@@ -1,7 +1,9 @@
 package com.fhfelipefh.sandstorm.content.storage;
 
+import com.fhfelipefh.sandstorm.content.gui.QuantumTerminalMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -46,6 +48,9 @@ public class QuantumAccessTerminalBlock extends Block implements EntityBlock {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof QuantumAccessTerminalBlockEntity terminal) {
                 player.openMenu(terminal);
+                if (player instanceof ServerPlayer serverPlayer && serverPlayer.containerMenu instanceof QuantumTerminalMenu menu) {
+                    menu.syncToClient(serverPlayer);
+                }
             }
         }
         return InteractionResult.SUCCESS;

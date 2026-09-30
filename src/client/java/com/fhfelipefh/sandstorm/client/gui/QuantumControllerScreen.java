@@ -45,10 +45,10 @@ public class QuantumControllerScreen extends AbstractContainerScreen<QuantumCont
         int nodes = this.menu.getConnectedNodes();
         int drain = this.menu.getConsumptionPerTick();
 
-        extractor.text(this.font, Component.literal("Quantum Matrix: ONLINE"), infoX, infoY, 0x00E5FF, false);
-        extractor.text(this.font, Component.literal("Nodes: " + nodes), infoX, infoY + 12, 0x90A4AE, false);
-        extractor.text(this.font, Component.literal("Power: " + (energy > 0 ? "STABLE" : "OFFLINE")), infoX, infoY + 24, energy > 0 ? 0x00E676 : 0xFF1744, false);
-        extractor.text(this.font, Component.literal("Drain: " + drain + " FE/t"), infoX, infoY + 36, 0x78909C, false);
+        extractor.text(this.font, Component.literal(energy > 0 ? "Quantum Matrix: ONLINE" : "Quantum Matrix: OFFLINE"), infoX, infoY, energy > 0 ? 0xFF00E5FF : 0xFFFF1744, false);
+        extractor.text(this.font, Component.literal("Nodes: " + nodes), infoX, infoY + 12, 0xFF90A4AE, false);
+        extractor.text(this.font, Component.literal("Power: " + (energy > 0 ? "STABLE" : "OFFLINE")), infoX, infoY + 24, energy > 0 ? 0xFF00E676 : 0xFFFF1744, false);
+        extractor.text(this.font, Component.literal("Drain: " + drain + " FE/t"), infoX, infoY + 36, 0xFF78909C, false);
 
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 9; c++) {
@@ -79,8 +79,8 @@ public class QuantumControllerScreen extends AbstractContainerScreen<QuantumCont
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
-        drawAdaptiveText(extractor, this.title, 8, 4, 0x00E5FF);
-        drawAdaptiveText(extractor, this.playerInventoryTitle, 8, this.inventoryLabelY, 0x90A4AE);
+        drawAdaptiveText(extractor, this.title, 8, 4, 0xFF00E5FF);
+        drawAdaptiveText(extractor, this.playerInventoryTitle, 8, this.inventoryLabelY, 0xFF90A4AE);
     }
 
     private void drawAdaptiveText(GuiGraphicsExtractor extractor, Component text, int x, int y, int color) {

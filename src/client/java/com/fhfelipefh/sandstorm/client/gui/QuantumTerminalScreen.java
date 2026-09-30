@@ -42,7 +42,9 @@ public class QuantumTerminalScreen extends AbstractContainerScreen<QuantumTermin
         super.init();
         int searchX = this.leftPos + 8;
         int searchY = this.topPos + 18;
-        this.searchBox = new EditBox(this.font, searchX, searchY, 86, 14, Component.literal("Search"));
+        this.searchBox = new EditBox(this.font, searchX, searchY, 86, 14, Component.translatable("gui.sandstorm.terminal.search_hint"));
+        this.searchBox.setHint(Component.translatable("gui.sandstorm.terminal.search_hint"));
+        this.searchBox.setTextColor(0xFF00E5FF);
         this.searchBox.setResponder(s -> updateFilteredItems());
         this.addRenderableWidget(this.searchBox);
         updateFilteredItems();
@@ -94,8 +96,10 @@ public class QuantumTerminalScreen extends AbstractContainerScreen<QuantumTermin
         int sortBtnH = 14;
         extractor.fill(sortBtnX, sortBtnY, sortBtnX + sortBtnW, sortBtnY + sortBtnH, 0xFF18232C);
         extractor.fill(sortBtnX + 1, sortBtnY + 1, sortBtnX + sortBtnW - 1, sortBtnY + sortBtnH - 1, 0xFF0B1015);
-        Component sortText = Component.literal(sortMode == SortMode.COUNT ? "▼ Qtd" : "▼ Nome");
-        extractor.text(this.font, sortText, sortBtnX + 6, sortBtnY + 3, 0x00E5FF, false);
+        Component sortText = sortMode == SortMode.COUNT
+                ? Component.translatable("gui.sandstorm.terminal.sort_count")
+                : Component.translatable("gui.sandstorm.terminal.sort_name");
+        extractor.text(this.font, sortText, sortBtnX + 6, sortBtnY + 3, 0xFF00E5FF, false);
 
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 9; col++) {
@@ -113,9 +117,13 @@ public class QuantumTerminalScreen extends AbstractContainerScreen<QuantumTermin
 
         int totalRows = Math.max(1, (int) Math.ceil(filteredItems.size() / 9.0));
         int maxScroll = getMaxScroll();
-        int thumbH = Math.max(12, (int) ((4.0 / Math.max(4, totalRows)) * trackH));
-        int thumbY = maxScroll > 0 ? trackY + (int) (((float) scrollRow / maxScroll) * (trackH - thumbH)) : trackY;
-        extractor.fill(trackX + 1, thumbY, trackX + 11, thumbY + thumbH, 0xFF00E5FF);
+        if (maxScroll > 0) {
+            int thumbH = Math.max(12, (int) ((4.0 / Math.max(4, totalRows)) * trackH));
+            int thumbY = trackY + (int) (((float) scrollRow / maxScroll) * (trackH - thumbH));
+            extractor.fill(trackX + 1, thumbY, trackX + 11, thumbY + thumbH, 0xFF00E5FF);
+        } else {
+            extractor.fill(trackX + 2, trackY + 2, trackX + 10, trackY + 14, 0xFF2A3B4D);
+        }
 
         StoredItemEntry hoveredEntry = null;
 
@@ -162,21 +170,21 @@ public class QuantumTerminalScreen extends AbstractContainerScreen<QuantumTermin
 
         if (hoveredEntry != null) {
             List<Component> tooltip = new ArrayList<>(this.getTooltipFromContainerItem(hoveredEntry.template()));
-            tooltip.add(Component.literal("§7Armazenado: §b" + NumberFormat.formatExact(hoveredEntry.count())));
+            tooltip.add(Component.translatable("gui.sandstorm.terminal.stored_tooltip", NumberFormat.formatExact(hoveredEntry.count())));
             extractor.setComponentTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
         }
     }
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
-        drawAdaptiveText(extractor, this.title, 8, 5, 0x00E5FF);
-        drawAdaptiveText(extractor, this.playerInventoryTitle, 8, this.inventoryLabelY, 0x90A4AE);
+        drawAdaptiveText(extractor, this.title, 8, 5, 0xFF00E5FF);
+        drawAdaptiveText(extractor, this.playerInventoryTitle, 8, this.inventoryLabelY, 0xFF90A4AE);
 
         long stored = this.menu.getClientTotalStored();
         long cap = this.menu.getClientTotalCapacity();
         String stats = NumberFormat.compact(stored) + "/" + (cap > 0 ? NumberFormat.compact(cap) : "∞");
         Component statsComp = Component.literal(stats);
-        extractor.text(this.font, statsComp, this.imageWidth - this.font.width(statsComp) - 8, 5, 0x00E5FF, false);
+        extractor.text(this.font, statsComp, this.imageWidth - this.font.width(statsComp) - 8, 5, 0xFF00E5FF, false);
     }
 
     private void drawAdaptiveText(GuiGraphicsExtractor extractor, Component text, int x, int y, int color) {
@@ -214,13 +222,13 @@ public class QuantumTerminalScreen extends AbstractContainerScreen<QuantumTermin
             int row = (int) (my - gridY) / 18;
             int index = (scrollRow + row) * 9 + col;
 
-            if (index >= 0 && index < filteredItems.size()) {
+            if (!this.menu.getCarried().isEmpty()) {
+                ClientPlayNetworking.send(new TerminalActionPayload(this.menu.getTerminalPos(), ItemStack.EMPTY, TerminalActionPayload.ACTION_INSERT_HELD));
+                return true;
+            } else if (index >= 0 && index < filteredItems.size()) {
                 StoredItemEntry entry = filteredItems.get(index);
                 int action = event.hasShiftDown() ? TerminalActionPayload.ACTION_SHIFT_EXTRACT : (event.isRight() ? TerminalActionPayload.ACTION_EXTRACT_HALF : TerminalActionPayload.ACTION_EXTRACT_STACK);
                 ClientPlayNetworking.send(new TerminalActionPayload(this.menu.getTerminalPos(), entry.template(), action));
-                return true;
-            } else if (!this.menu.getCarried().isEmpty()) {
-                ClientPlayNetworking.send(new TerminalActionPayload(this.menu.getTerminalPos(), ItemStack.EMPTY, TerminalActionPayload.ACTION_INSERT_HELD));
                 return true;
             }
         }

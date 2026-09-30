@@ -146,9 +146,11 @@ public class SandStormMod implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(
                 TerminalActionPayload.TYPE,
                 (payload, context) -> {
-                    if (context.player().containerMenu instanceof QuantumTerminalMenu menu) {
-                        menu.handleAction(context.player(), payload.filterStack(), payload.actionType());
-                    }
+                    context.server().execute(() -> {
+                        if (context.player().containerMenu instanceof QuantumTerminalMenu menu) {
+                            menu.handleAction(context.player(), payload.filterStack(), payload.actionType());
+                        }
+                    });
                 }
         );
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {

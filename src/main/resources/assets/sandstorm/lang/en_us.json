@@ -937,5 +937,9 @@
   "container.sandstorm.quantum_disk_drive": "Quantum Disk Drive",
   "container.sandstorm.quantum_access_terminal": "Quantum Access Terminal",
   "tooltip.sandstorm.storage_cartridge.capacity": "Stored: %s / %s items (%s%%)",
-  "tooltip.sandstorm.storage_cartridge.types": "Types: %s / %s"
+  "tooltip.sandstorm.storage_cartridge.types": "Types: %s / %s",
+  "gui.sandstorm.terminal.sort_count": "▼ Qty",
+  "gui.sandstorm.terminal.sort_name": "▼ Name",
+  "gui.sandstorm.terminal.search_hint": "Search items...",
+  "gui.sandstorm.terminal.stored_tooltip": "Stored: %s"
 }

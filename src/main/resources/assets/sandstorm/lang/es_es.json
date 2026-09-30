@@ -938,5 +938,9 @@
   "container.sandstorm.quantum_disk_drive": "Unidad de Disco Cuántico",
   "container.sandstorm.quantum_access_terminal": "Terminal de Acceso Cuántico",
   "tooltip.sandstorm.storage_cartridge.capacity": "Almacenado: %s / %s objetos (%s%%)",
-  "tooltip.sandstorm.storage_cartridge.types": "Tipos: %s / %s"
+  "tooltip.sandstorm.storage_cartridge.types": "Tipos: %s / %s",
+  "gui.sandstorm.terminal.sort_count": "▼ Cant",
+  "gui.sandstorm.terminal.sort_name": "▼ Nombre",
+  "gui.sandstorm.terminal.search_hint": "Buscar objetos...",
+  "gui.sandstorm.terminal.stored_tooltip": "Almacenado: %s"
 }

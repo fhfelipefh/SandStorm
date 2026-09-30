@@ -11,6 +11,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class QuantumTerminalMenu extends AbstractContainerMenu {
 
-    private final BlockPos terminalPos;
+    private BlockPos terminalPos;
     private final Player player;
     private List<StoredItemEntry> clientItems = new ArrayList<>();
     private int clientEnergy = 0;
@@ -31,11 +32,15 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
     private int syncTimer = 0;
 
     public QuantumTerminalMenu(int syncId, Inventory playerInventory) {
-        this(syncId, playerInventory, BlockPos.ZERO);
+        this(SandStormMenus.QUANTUM_ACCESS_TERMINAL_MENU, syncId, playerInventory, BlockPos.ZERO);
     }
 
     public QuantumTerminalMenu(int syncId, Inventory playerInventory, BlockPos terminalPos) {
-        super(SandStormMenus.QUANTUM_ACCESS_TERMINAL_MENU, syncId);
+        this(SandStormMenus.QUANTUM_ACCESS_TERMINAL_MENU, syncId, playerInventory, terminalPos);
+    }
+
+    public QuantumTerminalMenu(MenuType<?> menuType, int syncId, Inventory playerInventory, BlockPos terminalPos) {
+        super(menuType, syncId);
         this.terminalPos = terminalPos;
         this.player = playerInventory.player;
 
@@ -74,7 +79,10 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
         return clientTotalCapacity;
     }
 
-    public void updateClientState(List<StoredItemEntry> items, int energy, int maxEnergy, long totalStored, long totalCapacity) {
+    public void updateClientState(BlockPos pos, List<StoredItemEntry> items, int energy, int maxEnergy, long totalStored, long totalCapacity) {
+        if (pos != null && !pos.equals(BlockPos.ZERO)) {
+            this.terminalPos = pos;
+        }
         this.clientItems = items;
         this.clientEnergy = energy;
         this.clientMaxEnergy = maxEnergy;
@@ -86,10 +94,10 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
     public void broadcastChanges() {
         super.broadcastChanges();
         if (player instanceof ServerPlayer serverPlayer) {
-            syncTimer++;
             if (syncTimer % 10 == 0) {
                 syncToClient(serverPlayer);
             }
+            syncTimer++;
         }
     }
 
@@ -138,29 +146,52 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
                 if (inserted > 0) {
                     carried.shrink((int) inserted);
                     this.setCarried(carried);
+                    this.broadcastChanges();
                 }
             }
         } else if (actionType == TerminalActionPayload.ACTION_EXTRACT_STACK) {
-            ItemStack extracted = terminal.extractItem(filterStack, filterStack.getMaxStackSize());
-            if (!extracted.isEmpty()) {
-                ItemStack carried = this.getCarried();
-                if (carried.isEmpty()) {
-                    this.setCarried(extracted);
-                } else if (ItemStack.isSameItemSameComponents(carried, extracted)) {
-                    int add = Math.min(extracted.getCount(), carried.getMaxStackSize() - carried.getCount());
-                    carried.grow(add);
+            ItemStack carried = this.getCarried();
+            int maxExtract;
+            if (carried.isEmpty()) {
+                maxExtract = filterStack.getMaxStackSize();
+            } else if (ItemStack.isSameItemSameComponents(carried, filterStack)) {
+                maxExtract = Math.max(0, carried.getMaxStackSize() - carried.getCount());
+            } else {
+                maxExtract = 0;
+            }
+
+            if (maxExtract > 0) {
+                ItemStack extracted = terminal.extractItem(filterStack, maxExtract);
+                if (!extracted.isEmpty()) {
+                    if (carried.isEmpty()) {
+                        this.setCarried(extracted);
+                    } else {
+                        carried.grow(extracted.getCount());
+                    }
+                    this.broadcastChanges();
                 }
             }
         } else if (actionType == TerminalActionPayload.ACTION_EXTRACT_HALF) {
-            int amount = Math.max(1, filterStack.getMaxStackSize() / 2);
-            ItemStack extracted = terminal.extractItem(filterStack, amount);
-            if (!extracted.isEmpty()) {
-                ItemStack carried = this.getCarried();
-                if (carried.isEmpty()) {
-                    this.setCarried(extracted);
-                } else if (ItemStack.isSameItemSameComponents(carried, extracted)) {
-                    int add = Math.min(extracted.getCount(), carried.getMaxStackSize() - carried.getCount());
-                    carried.grow(add);
+            ItemStack carried = this.getCarried();
+            int half = Math.max(1, filterStack.getMaxStackSize() / 2);
+            int maxExtract;
+            if (carried.isEmpty()) {
+                maxExtract = half;
+            } else if (ItemStack.isSameItemSameComponents(carried, filterStack)) {
+                maxExtract = Math.min(half, carried.getMaxStackSize() - carried.getCount());
+            } else {
+                maxExtract = 0;
+            }
+
+            if (maxExtract > 0) {
+                ItemStack extracted = terminal.extractItem(filterStack, maxExtract);
+                if (!extracted.isEmpty()) {
+                    if (carried.isEmpty()) {
+                        this.setCarried(extracted);
+                    } else {
+                        carried.grow(extracted.getCount());
+                    }
+                    this.broadcastChanges();
                 }
             }
         } else if (actionType == TerminalActionPayload.ACTION_SHIFT_EXTRACT) {
@@ -169,6 +200,7 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
                 if (!serverPlayer.getInventory().add(extracted)) {
                     Containers.dropItemStack(serverPlayer.level(), serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), extracted);
                 }
+                this.broadcastChanges();
             }
         }
 
@@ -189,11 +221,18 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
                     long inserted = terminal.insertItem(itemstack1);
                     if (inserted > 0) {
                         itemstack1.shrink((int) inserted);
-                        slot.setChanged();
+                        if (itemstack1.isEmpty()) {
+                            slot.set(ItemStack.EMPTY);
+                        } else {
+                            slot.setChanged();
+                        }
+                        this.broadcastChanges();
                         syncToClient(serverPlayer);
                         return itemstack;
                     }
                 }
+            } else if (player.level().isClientSide()) {
+                return itemstack;
             }
 
             if (invSlot < 27) {

@@ -216,6 +216,7 @@ public class SandStormClient implements ClientModInitializer {
             context.client().execute(() -> {
                 if (context.client().player != null && context.client().player.containerMenu instanceof QuantumTerminalMenu menu) {
                     menu.updateClientState(
+                            payload.terminalPos(),
                             payload.items(),
                             payload.energyStored(),
                             payload.maxEnergy(),

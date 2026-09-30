@@ -75,15 +75,15 @@ public class QuantumDiskDriveScreen extends AbstractContainerScreen<QuantumDiskD
         String summary = String.format(Locale.ROOT, "Total: %,d / %,d", totalStored, totalCap);
         Component summaryComp = Component.literal(summary);
         int summaryW = this.font.width(summaryComp);
-        extractor.text(this.font, summaryComp, x + (this.imageWidth - summaryW) / 2, y + 60, 0x00E5FF, false);
+        extractor.text(this.font, summaryComp, x + (this.imageWidth - summaryW) / 2, y + 60, 0xFF00E5FF, false);
 
         super.extractRenderState(extractor, mouseX, mouseY, delta);
     }
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
-        drawAdaptiveText(extractor, this.title, 8, 4, 0x00E5FF);
-        drawAdaptiveText(extractor, this.playerInventoryTitle, 8, this.inventoryLabelY, 0x90A4AE);
+        drawAdaptiveText(extractor, this.title, 8, 4, 0xFF00E5FF);
+        drawAdaptiveText(extractor, this.playerInventoryTitle, 8, this.inventoryLabelY, 0xFF90A4AE);
     }
 
     private void drawAdaptiveText(GuiGraphicsExtractor extractor, Component text, int x, int y, int color) {

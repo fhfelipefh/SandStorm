@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.storage;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.gui.QuantumControllerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -23,7 +24,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 public class QuantumNetworkControllerBlockEntity extends BlockEntity implements MenuProvider, QuantumNetworkNode {
 
     public static final int DEFAULT_CAPACITY = 100000;
-    public static final int BASE_CONSUMPTION_PER_TICK = 4;
+    public static final int BASE_CONSUMPTION_PER_TICK = 1;
 
     private int storedEnergy = DEFAULT_CAPACITY;
     private int maxEnergy = DEFAULT_CAPACITY;
@@ -69,6 +70,13 @@ public class QuantumNetworkControllerBlockEntity extends BlockEntity implements 
     public static void serverTick(Level level, BlockPos pos, BlockState state, QuantumNetworkControllerBlockEntity controller) {
         if (level == null || level.isClientSide()) {
             return;
+        }
+
+        long wpt = WirelessSolarReceiverManager.getWptChargeAt(level, pos);
+        if (wpt > 0) {
+            controller.receiveEnergy((int) Math.min(wpt, 500L));
+        } else if (level.getSkyDarken() < 4 && level.canSeeSky(pos.above())) {
+            controller.receiveEnergy(2);
         }
 
         if (level.getGameTime() % 20 == 0) {
