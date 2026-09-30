@@ -5,6 +5,21 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.5.3] - 2026-09-30
+
+### 🛠️ Bug Fixes & Stability
+* **Terminal Shift-Click Freeze**: Resolved an infinite loop on the client render thread when shift-clicking items into the Quantum Access Terminal.
+* **Header & Text Layout**: Fixed item count numbers overlapping the container title in the Quantum Access Terminal.
+* **Adaptive Title Scaling**: Container titles now dynamically scale down if custom names or large storage counts exceed screen margins.
+
+### ⚡ Performance
+* **Optimized Terminal GUI**: Item grid filtering and sorting are now lazy-evaluated (`clientStateDirty`), running only when contents update, queries change, or sort modes toggle.
+
+### 🧪 Architecture & Quality
+* Added comprehensive anti-crash battery architecture tests auditing all container menus to permanently prevent shift-click infinite loops.
+
+---
+
 ## [1.4.6] - 2026-09-27
 
 ### ⚔️ Paredes de Espinhos & Barreiras Defensivas

@@ -1,4 +1,4 @@
-name: Test & Publish to CurseForge
+name: Test & Publish to CurseForge & Modrinth
 
 on:
   push:
@@ -130,7 +130,7 @@ jobs:
           echo "=========================================="
 
       - name: Publicar no CurseForge
-        if: steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch'
+        if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && (secrets.CURSEFORGE_TOKEN != '')
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           curseforge-id: ${{ secrets.CURSEFORGE_PROJECT_ID || '1713742' }}
@@ -151,6 +151,31 @@ jobs:
             Java 25
             Java 21
           fail-mode: 'fail'
+
+      - name: Publicar no Modrinth
+        if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && (secrets.MODRINTH_TOKEN != '' || vars.MODRINTH_TOKEN != '')
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: ${{ secrets.MODRINTH_PROJECT_ID || vars.MODRINTH_PROJECT_ID || 'sandstorm-felipehonorio55' }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN || vars.MODRINTH_TOKEN }}
+          files: |
+            build/libs/*-${{ env.MOD_VERSION }}.jar
+            !build/libs/*-dev.jar
+            !build/libs/*-sources.jar
+          name: ${{ env.RELEASE_TITLE }}
+          version: ${{ env.MOD_VERSION }}
+          version-type: 'release'
+          changelog-file: 'RELEASE_CHANGELOG.md'
+          game-versions: |
+            ${{ env.MC_VERSION }}
+            26.3
+            26.2
+          loaders: |
+            ${{ env.MOD_LOADER_LOWER }}
+          java: |
+            Java 25
+            Java 21
+          fail-mode: 'warn'
 
       - name: Criar Tag Git para a Nova Versão
         if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && success()
