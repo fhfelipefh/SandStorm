@@ -4,10 +4,12 @@ import com.fhfelipefh.sandstorm.content.gui.MegastructureConstructorMenu;
 import com.fhfelipefh.sandstorm.content.megastructure.MegastructureBlueprint;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-
 import java.util.List;
 
 public class MegastructureConstructorScreen extends BaseMachineScreen<MegastructureConstructorMenu> {
@@ -57,6 +59,7 @@ public class MegastructureConstructorScreen extends BaseMachineScreen<Megastruct
         extractor.fill(x + 15, y + 8, x + 17, y + 10, wptColor);
 
         renderRecipeButton(extractor, this.lastMouseX, this.lastMouseY);
+        renderBlueprintTabs(extractor, this.lastMouseX, this.lastMouseY);
 
         int barY = y + 20;
         int barH = 9;
@@ -128,11 +131,121 @@ public class MegastructureConstructorScreen extends BaseMachineScreen<Megastruct
     }
 
     @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean isDouble) {
+        double mx = event.x();
+        double my = event.y();
+        int x = this.leftPos;
+        int y = this.topPos;
+
+        for (int i = 0; i < MegastructureBlueprint.values().length; i++) {
+            int tabX = x - 26;
+            int tabY = y + 10 + i * 26;
+            int tabW = 26;
+            int tabH = 22;
+            if (mx >= tabX && mx <= tabX + tabW && my >= tabY && my <= tabY + tabH) {
+                if (this.minecraft != null && this.minecraft.gameMode != null) {
+                    this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, i);
+                    this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+                }
+                return true;
+            }
+        }
+
+        return super.mouseClicked(event, isDouble);
+    }
+
+    private void renderBlueprintTabs(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
+        int x = this.leftPos;
+        int y = this.topPos;
+        int activeIdx = this.menu.getBlueprintIndex();
+
+        for (int i = 0; i < MegastructureBlueprint.values().length; i++) {
+            int tabX = x - 26;
+            int tabY = y + 10 + i * 26;
+            int tabW = 26;
+            int tabH = 22;
+
+            boolean isActive = (i == activeIdx);
+            boolean hovered = mouseX >= tabX && mouseX <= tabX + tabW && mouseY >= tabY && mouseY <= tabY + tabH;
+
+            int bgColor = isActive ? 0xEE101E30 : (hovered ? 0xDD121C2A : 0xDD0A0E17);
+            int borderColor = isActive ? 0xFF00E5FF : (hovered ? 0xFF80D8FF : 0xFF1E293B);
+
+            extractor.fill(tabX, tabY, tabX + tabW, tabY + tabH, bgColor);
+            extractor.fill(tabX, tabY, tabX + tabW, tabY + 1, borderColor);
+            extractor.fill(tabX, tabY + tabH - 1, tabX + tabW, tabY + tabH, borderColor);
+            extractor.fill(tabX, tabY + 1, tabX + 1, tabY + tabH, borderColor);
+            if (!isActive) {
+                extractor.fill(tabX + tabW - 1, tabY, tabX + tabW, tabY + tabH, borderColor);
+            }
+
+            int iconColor = isActive ? 0xFF00E5FF : (hovered ? 0xFF80D8FF : 0xFF607D8B);
+            renderTabGlyph(extractor, i, tabX + 5, tabY + 4, iconColor);
+        }
+    }
+
+    private void renderTabGlyph(GuiGraphicsExtractor extractor, int index, int gx, int gy, int color) {
+        switch (index) {
+            case 0 -> {
+                extractor.fill(gx + 3, gy + 1, gx + 11, gy + 3, color);
+                extractor.fill(gx + 1, gy + 3, gx + 13, gy + 7, color);
+                extractor.fill(gx, gy + 7, gx + 14, gy + 12, color);
+                extractor.fill(gx + 3, gy + 4, gx + 11, gy + 11, 0xFF0A0E17);
+                extractor.fill(gx + 6, gy + 1, gx + 8, gy + 12, color);
+            }
+            case 1 -> {
+                extractor.fill(gx + 1, gy + 2, gx + 3, gy + 5, color);
+                extractor.fill(gx + 6, gy + 2, gx + 8, gy + 5, color);
+                extractor.fill(gx + 11, gy + 2, gx + 13, gy + 5, color);
+                extractor.fill(gx, gy + 5, gx + 14, gy + 12, color);
+                extractor.fill(gx + 5, gy + 8, gx + 9, gy + 12, 0xFF0A0E17);
+            }
+            case 2 -> {
+                extractor.fill(gx + 6, gy, gx + 8, gy + 3, color);
+                extractor.fill(gx + 5, gy + 3, gx + 9, gy + 9, color);
+                extractor.fill(gx + 3, gy + 9, gx + 11, gy + 11, color);
+                extractor.fill(gx + 2, gy + 11, gx + 4, gy + 13, color);
+                extractor.fill(gx + 10, gy + 11, gx + 12, gy + 13, color);
+                extractor.fill(gx + 6, gy + 11, gx + 8, gy + 14, 0xFFFFB300);
+            }
+            case 3 -> {
+                extractor.fill(gx + 6, gy + 1, gx + 8, gy + 3, color);
+                extractor.fill(gx + 4, gy + 3, gx + 10, gy + 6, color);
+                extractor.fill(gx + 2, gy + 6, gx + 12, gy + 9, color);
+                extractor.fill(gx, gy + 9, gx + 14, gy + 12, color);
+                extractor.fill(gx + 6, gy + 1, gx + 8, gy + 3, 0xFFFFD600);
+            }
+        }
+    }
+
+    @Override
     protected void renderCustomTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         super.renderCustomTooltips(extractor, mouseX, mouseY);
 
         int x = this.leftPos;
         int y = this.topPos;
+
+        for (int i = 0; i < MegastructureBlueprint.values().length; i++) {
+            int tabX = x - 26;
+            int tabY = y + 10 + i * 26;
+            int tabW = 26;
+            int tabH = 22;
+            if (mouseX >= tabX && mouseX <= tabX + tabW && mouseY >= tabY && mouseY <= tabY + tabH) {
+                MegastructureBlueprint bp = MegastructureBlueprint.byIndex(i);
+                boolean isCurrent = (i == this.menu.getBlueprintIndex());
+                Component selectHint = isCurrent
+                        ? Component.translatable("megastructure.sandstorm.tab_active").withStyle(ChatFormatting.AQUA)
+                        : Component.translatable("megastructure.sandstorm.tab_click").withStyle(ChatFormatting.YELLOW);
+                extractor.setComponentTooltipForNextFrame(this.font, List.of(
+                        Component.translatable("megastructure.sandstorm." + bp.getId()).withStyle(ChatFormatting.GOLD),
+                        Component.literal("§bDimensões: §f" + bp.getSizeX() + "x" + bp.getSizeY() + "x" + bp.getSizeZ()),
+                        Component.literal("§bTotal: §f" + bp.getPlacements().size() + " blocos"),
+                        Component.translatable("megastructure.sandstorm." + bp.getId() + ".blocks").withStyle(ChatFormatting.GRAY),
+                        selectHint
+                ), mouseX, mouseY);
+                return;
+            }
+        }
 
         if (mouseX >= x + 7 && mouseX <= x + 84 && mouseY >= y + 19 && mouseY <= y + 30) {
             String energy = formatCompact(this.menu.getEnergy());

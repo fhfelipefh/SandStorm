@@ -1,9 +1,15 @@
 package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
+import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
+import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
+import com.fhfelipefh.sandstorm.content.megastructure.MegastructureBlueprint;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,9 +28,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import java.util.List;
 
 public class MegastructureConstructorBlock extends Block implements EntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -76,9 +84,21 @@ public class MegastructureConstructorBlock extends Block implements EntityBlock 
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide()) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof MegastructureConstructorBlockEntity constructor) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof MegastructureConstructorBlockEntity constructor) {
+            if (player.isShiftKeyDown()) {
+                if (!level.isClientSide()) {
+                    int nextIndex = (constructor.getBlueprintIndex() + 1) % MegastructureBlueprint.values().length;
+                    constructor.setBlueprintIndex(nextIndex);
+                    MegastructureBlueprint bp = constructor.getBlueprint();
+                    Component bpName = Component.translatable("megastructure.sandstorm." + bp.getId());
+                    String dims = bp.getSizeX() + "x" + bp.getSizeY() + "x" + bp.getSizeZ();
+                    player.sendSystemMessage(Component.translatable("megastructure.sandstorm.projection_selected", bpName, dims));
+                }
+                level.playSound(player, pos, SandStormSoundEvents.MEGASTRUCTURE_LAYER_COMPLETE, SoundSource.BLOCKS, 1.0f, 1.2f);
+                return InteractionResult.SUCCESS;
+            }
+            if (!level.isClientSide()) {
                 player.openMenu(constructor);
             }
         }
@@ -96,6 +116,15 @@ public class MegastructureConstructorBlock extends Block implements EntityBlock 
         if (be instanceof MegastructureConstructorBlockEntity constructor) {
             Containers.dropContents(level, pos, constructor);
         }
+        List<BuilderDroneEntity> drones = level.getEntitiesOfClass(
+                BuilderDroneEntity.class,
+                new AABB(pos).inflate(48.0),
+                d -> d.getConstructorPos().equals(pos)
+        );
+        for (BuilderDroneEntity drone : drones) {
+            drone.discard();
+        }
+        KineticShieldTracker.unregisterShield(level.dimension(), pos);
         super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
     }
 }

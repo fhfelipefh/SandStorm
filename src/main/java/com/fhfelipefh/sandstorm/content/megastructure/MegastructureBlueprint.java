@@ -20,6 +20,8 @@ public enum MegastructureBlueprint {
     private final int sizeY;
     private final int sizeZ;
     private List<BlockPlacement> cachedPlacements;
+    private BlockPos cachedMinPos;
+    private BlockPos cachedMaxPos;
 
     MegastructureBlueprint(String id, String displayName, int sizeX, int sizeY, int sizeZ) {
         this.id = id;
@@ -52,8 +54,65 @@ public enum MegastructureBlueprint {
     public synchronized List<BlockPlacement> getPlacements() {
         if (cachedPlacements == null) {
             cachedPlacements = Collections.unmodifiableList(generatePlacements());
+            calculateBounds();
         }
         return cachedPlacements;
+    }
+
+    public synchronized BlockPos getMinPos() {
+        if (cachedMinPos == null) {
+            getPlacements();
+        }
+        return cachedMinPos;
+    }
+
+    public synchronized BlockPos getMaxPos() {
+        if (cachedMaxPos == null) {
+            getPlacements();
+        }
+        return cachedMaxPos;
+    }
+
+    private void calculateBounds() {
+        List<BlockPlacement> list = cachedPlacements;
+        int minX = 0;
+        int minY = 0;
+        int minZ = 0;
+        int maxX = 0;
+        int maxY = 0;
+        int maxZ = 0;
+        if (list != null && !list.isEmpty()) {
+            BlockPos first = list.getFirst().relativePos();
+            minX = first.getX();
+            minY = first.getY();
+            minZ = first.getZ();
+            maxX = minX;
+            maxY = minY;
+            maxZ = minZ;
+            for (BlockPlacement bp : list) {
+                BlockPos p = bp.relativePos();
+                if (p.getX() < minX) {
+                    minX = p.getX();
+                }
+                if (p.getX() > maxX) {
+                    maxX = p.getX();
+                }
+                if (p.getY() < minY) {
+                    minY = p.getY();
+                }
+                if (p.getY() > maxY) {
+                    maxY = p.getY();
+                }
+                if (p.getZ() < minZ) {
+                    minZ = p.getZ();
+                }
+                if (p.getZ() > maxZ) {
+                    maxZ = p.getZ();
+                }
+            }
+        }
+        cachedMinPos = new BlockPos(minX, minY, minZ);
+        cachedMaxPos = new BlockPos(maxX, maxY, maxZ);
     }
 
     public static MegastructureBlueprint byIndex(int index) {

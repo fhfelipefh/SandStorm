@@ -48,6 +48,10 @@ public class MegastructureConstructorBlockEntityRenderer implements BlockEntityR
         Level level = entity.getLevel();
         state.animationTicks = level != null ? (level.getGameTime() + partialTick) : partialTick;
         state.targetRelPos = entity.getCurrentTargetRelPos();
+        if (state.blueprint != null) {
+            state.minPos = state.blueprint.getMinPos();
+            state.maxPos = state.blueprint.getMaxPos();
+        }
     }
 
     @Override
@@ -56,11 +60,11 @@ public class MegastructureConstructorBlockEntityRenderer implements BlockEntityR
             return;
         }
 
-        renderHolographicWireframe(state, poseStack, collector);
+        renderHolographicProjection(state, poseStack, collector);
         renderHolographicDisplay(state, poseStack, collector);
     }
 
-    private void renderHolographicWireframe(MegastructureConstructorRenderState state, PoseStack poseStack, SubmitNodeCollector collector) {
+    private void renderHolographicProjection(MegastructureConstructorRenderState state, PoseStack poseStack, SubmitNodeCollector collector) {
         List<MegastructureBlueprint.BlockPlacement> placements = state.blueprint.getPlacements();
         if (placements.isEmpty()) {
             return;
@@ -70,7 +74,22 @@ public class MegastructureConstructorBlockEntityRenderer implements BlockEntityR
         int activeRed = (int) (255 * (0.8f + pulse * 0.2f));
         int activeGreen = (int) (145 * (0.8f + pulse * 0.2f));
 
+        BlockPos min = state.minPos != null ? state.minPos : BlockPos.ZERO;
+        BlockPos max = state.maxPos != null ? state.maxPos : BlockPos.ZERO;
+        float bMinX = min.getX() - 0.2f;
+        float bMinY = min.getY();
+        float bMinZ = min.getZ() - 0.2f;
+        float bMaxX = max.getX() + 1.2f;
+        float bMaxY = max.getY() + 1.2f;
+        float bMaxZ = max.getZ() + 1.2f;
+
+        float scanProgress = (Mth.sin(state.animationTicks * 0.08f) + 1.0f) * 0.5f;
+        float scanY = bMinY + scanProgress * Math.max(1.0f, (bMaxY - bMinY));
+
         collector.submitCustomGeometry(poseStack, RenderTypes.LINES, (pose, consumer) -> {
+            renderEmitterRays(consumer, pose, state.animationTicks, bMinX, bMinY, bMinZ, bMaxX, bMaxZ, bMaxY);
+            renderBoundingCage(consumer, pose, bMinX, bMinY, bMinZ, bMaxX, bMaxY, bMaxZ, scanY);
+
             for (int i = 0; i < placements.size(); i++) {
                 MegastructureBlueprint.BlockPlacement placement = placements.get(i);
                 BlockPos rel = placement.relativePos();
@@ -88,19 +107,28 @@ public class MegastructureConstructorBlockEntityRenderer implements BlockEntityR
 
                 if (i < state.constructedBlocks) {
                     r = 0;
-                    g = 180;
-                    b = 255;
-                    a = 40;
+                    g = 230;
+                    b = 118;
+                    a = 50;
                 } else if (i == state.constructedBlocks && state.isBuilding) {
                     r = activeRed;
                     g = activeGreen;
                     b = 0;
                     a = 255;
                 } else {
-                    r = 0;
-                    g = 229;
-                    b = 255;
-                    a = 90;
+                    float distToScan = Math.abs(rel.getY() - scanY);
+                    if (distToScan < 1.2f) {
+                        float intensity = 1.0f - (distToScan / 1.2f);
+                        r = (int) (120 * intensity);
+                        g = 255;
+                        b = 255;
+                        a = (int) (160 + 95 * intensity);
+                    } else {
+                        r = 0;
+                        g = 229;
+                        b = 255;
+                        a = (int) (80 + pulse * 40);
+                    }
                 }
 
                 drawBoxLines(consumer, pose, minX, minY, minZ, maxX, maxY, maxZ, r, g, b, a);
@@ -125,6 +153,85 @@ public class MegastructureConstructorBlockEntityRenderer implements BlockEntityR
                 consumer.addVertex(pose, targetX, targetY, targetZ).setColor(255, 200, 50, 255).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.5f);
             }
         });
+    }
+
+    private void renderEmitterRays(VertexConsumer consumer, PoseStack.Pose pose, float ticks,
+                                   float bMinX, float bMinY, float bMinZ, float bMaxX, float bMaxZ, float bMaxY) {
+        float ox = 0.5f;
+        float oy = 1.02f;
+        float oz = 0.5f;
+
+        consumer.addVertex(pose, ox, oy, oz).setColor(0, 229, 255, 140).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+        consumer.addVertex(pose, bMinX, bMinY, bMinZ).setColor(0, 229, 255, 60).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+
+        consumer.addVertex(pose, ox, oy, oz).setColor(0, 229, 255, 140).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+        consumer.addVertex(pose, bMaxX, bMinY, bMinZ).setColor(0, 229, 255, 60).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+
+        consumer.addVertex(pose, ox, oy, oz).setColor(0, 229, 255, 140).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+        consumer.addVertex(pose, bMaxX, bMinY, bMaxZ).setColor(0, 229, 255, 60).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+
+        consumer.addVertex(pose, ox, oy, oz).setColor(0, 229, 255, 140).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+        consumer.addVertex(pose, bMinX, bMinY, bMaxZ).setColor(0, 229, 255, 60).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+
+        consumer.addVertex(pose, ox, oy, oz).setColor(0, 229, 255, 200).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+        consumer.addVertex(pose, ox, bMaxY, oz).setColor(0, 229, 255, 80).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+
+        float rot = ticks * 0.05f;
+        float r = 0.35f;
+        int segments = 8;
+        for (int s = 0; s < segments; s++) {
+            float a1 = rot + (float) (s * 2.0 * Math.PI / segments);
+            float a2 = rot + (float) ((s + 1) * 2.0 * Math.PI / segments);
+            float x1 = ox + Mth.cos(a1) * r;
+            float z1 = oz + Mth.sin(a1) * r;
+            float x2 = ox + Mth.cos(a2) * r;
+            float z2 = oz + Mth.sin(a2) * r;
+            consumer.addVertex(pose, x1, oy + 0.02f, z1).setColor(0, 229, 255, 180).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+            consumer.addVertex(pose, x2, oy + 0.02f, z2).setColor(0, 229, 255, 180).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+        }
+    }
+
+    private void renderBoundingCage(VertexConsumer consumer, PoseStack.Pose pose,
+                                    float x1, float y1, float z1, float x2, float y2, float z2, float scanY) {
+        int r = 0;
+        int g = 229;
+        int b = 255;
+        int a = 140;
+
+        float arm = 1.8f;
+        drawCornerBracket(consumer, pose, x1, y1, z1, arm, arm, arm, r, g, b, a);
+        drawCornerBracket(consumer, pose, x2, y1, z1, -arm, arm, arm, r, g, b, a);
+        drawCornerBracket(consumer, pose, x1, y1, z2, arm, arm, -arm, r, g, b, a);
+        drawCornerBracket(consumer, pose, x2, y1, z2, -arm, arm, -arm, r, g, b, a);
+        drawCornerBracket(consumer, pose, x1, y2, z1, arm, -arm, arm, r, g, b, a);
+        drawCornerBracket(consumer, pose, x2, y2, z1, -arm, -arm, arm, r, g, b, a);
+        drawCornerBracket(consumer, pose, x1, y2, z2, arm, -arm, -arm, r, g, b, a);
+        drawCornerBracket(consumer, pose, x2, y2, z2, -arm, -arm, -arm, r, g, b, a);
+
+        consumer.addVertex(pose, x1, scanY, z1).setColor(180, 255, 255, 220).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+        consumer.addVertex(pose, x2, scanY, z1).setColor(180, 255, 255, 220).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+
+        consumer.addVertex(pose, x2, scanY, z1).setColor(180, 255, 255, 220).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+        consumer.addVertex(pose, x2, scanY, z2).setColor(180, 255, 255, 220).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+
+        consumer.addVertex(pose, x2, scanY, z2).setColor(180, 255, 255, 220).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+        consumer.addVertex(pose, x1, scanY, z2).setColor(180, 255, 255, 220).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+
+        consumer.addVertex(pose, x1, scanY, z2).setColor(180, 255, 255, 220).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+        consumer.addVertex(pose, x1, scanY, z1).setColor(180, 255, 255, 220).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+    }
+
+    private void drawCornerBracket(VertexConsumer consumer, PoseStack.Pose pose,
+                                   float x, float y, float z, float dx, float dy, float dz,
+                                   int r, int g, int b, int a) {
+        consumer.addVertex(pose, x, y, z).setColor(r, g, b, a).setNormal(pose, 1.0f, 0.0f, 0.0f).setLineWidth(2.0f);
+        consumer.addVertex(pose, x + dx, y, z).setColor(r, g, b, a).setNormal(pose, 1.0f, 0.0f, 0.0f).setLineWidth(2.0f);
+
+        consumer.addVertex(pose, x, y, z).setColor(r, g, b, a).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+        consumer.addVertex(pose, x, y + dy, z).setColor(r, g, b, a).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+
+        consumer.addVertex(pose, x, y, z).setColor(r, g, b, a).setNormal(pose, 0.0f, 0.0f, 1.0f).setLineWidth(2.0f);
+        consumer.addVertex(pose, x, y, z + dz).setColor(r, g, b, a).setNormal(pose, 0.0f, 0.0f, 1.0f).setLineWidth(2.0f);
     }
 
     private void drawBoxLines(VertexConsumer consumer, PoseStack.Pose pose,
@@ -168,22 +275,33 @@ public class MegastructureConstructorBlockEntityRenderer implements BlockEntityR
     }
 
     private void renderHolographicDisplay(MegastructureConstructorRenderState state, PoseStack poseStack, SubmitNodeCollector collector) {
-        poseStack.pushPose();
-        poseStack.translate(0.5, 1.25, 0.5);
-        poseStack.rotateDegrees(Axis.YP, -state.facing.toYRot());
-        poseStack.scale(0.012f, -0.012f, 0.012f);
-
         int pct = state.totalBlocks > 0 ? (state.constructedBlocks * 100 / state.totalBlocks) : 0;
-        String line1 = state.blueprint.getDisplayName();
-        String line2 = state.isDone ? "COMPLETE [SHIELD ACTIVE]" : (state.isBuilding ? "PRINTING " + pct + "%" : "STANDBY " + pct + "%");
+        String line1 = "✦ " + state.blueprint.getDisplayName().toUpperCase() + " ✦";
+        String line2 = state.blueprint.getSizeX() + "x" + state.blueprint.getSizeY() + "x" + state.blueprint.getSizeZ() + " • " + state.totalBlocks + " BLOCKS";
+        String line3 = state.isDone ? "[COMPLETE • SHIELD ACTIVE]" : (state.isBuilding ? "[PRINTING " + pct + "%]" : "[STANDBY • HOLOGRAM ACTIVE]");
         int color1 = 0xFF00E5FF;
-        int color2 = state.isDone ? 0xFF00E676 : (state.isBuilding ? 0xFFFFB300 : 0xFF90A4AE);
+        int color2 = 0xFF80D8FF;
+        int color3 = state.isDone ? 0xFF00E676 : (state.isBuilding ? 0xFFFFD600 : 0xFF00E676);
 
         int w1 = this.font.width(line1);
         int w2 = this.font.width(line2);
+        int w3 = this.font.width(line3);
 
-        collector.submitText(poseStack, -w1 / 2.0f, -6.0f, Component.literal(line1).getVisualOrderText(), false, Font.DisplayMode.NORMAL, color1, 0, 0xF000F0, 0);
-        collector.submitText(poseStack, -w2 / 2.0f, 6.0f, Component.literal(line2).getVisualOrderText(), false, Font.DisplayMode.NORMAL, color2, 0, 0xF000F0, 0);
+        renderDisplayFace(poseStack, collector, state.facing.toYRot(), line1, line2, line3, color1, color2, color3, w1, w2, w3);
+        renderDisplayFace(poseStack, collector, state.facing.toYRot() + 180.0f, line1, line2, line3, color1, color2, color3, w1, w2, w3);
+    }
+
+    private void renderDisplayFace(PoseStack poseStack, SubmitNodeCollector collector, float yRot,
+                                   String line1, String line2, String line3,
+                                   int c1, int c2, int c3, int w1, int w2, int w3) {
+        poseStack.pushPose();
+        poseStack.translate(0.5, 1.35, 0.5);
+        poseStack.rotateDegrees(Axis.YP, -yRot);
+        poseStack.scale(0.012f, -0.012f, 0.012f);
+
+        collector.submitText(poseStack, -w1 / 2.0f, -14.0f, Component.literal(line1).getVisualOrderText(), false, Font.DisplayMode.NORMAL, c1, 0x90000000, 0xF000F0, 0);
+        collector.submitText(poseStack, -w2 / 2.0f, -2.0f, Component.literal(line2).getVisualOrderText(), false, Font.DisplayMode.NORMAL, c2, 0x90000000, 0xF000F0, 0);
+        collector.submitText(poseStack, -w3 / 2.0f, 10.0f, Component.literal(line3).getVisualOrderText(), false, Font.DisplayMode.NORMAL, c3, 0x90000000, 0xF000F0, 0);
 
         poseStack.popPose();
     }

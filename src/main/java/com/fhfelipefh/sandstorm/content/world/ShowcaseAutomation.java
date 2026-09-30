@@ -2,7 +2,9 @@ package com.fhfelipefh.sandstorm.content.world;
 
 import com.fhfelipefh.sandstorm.content.block.SandMaglevRailBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.SolidStateAccumulatorBlock;
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
@@ -15,6 +17,13 @@ import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgExcavatorEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgHarvesterEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgRoutine;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.storage.QuantumAccessTerminalBlock;
+import com.fhfelipefh.sandstorm.content.storage.QuantumDiskDriveBlock;
+import com.fhfelipefh.sandstorm.content.storage.QuantumDiskDriveBlockEntity;
+import com.fhfelipefh.sandstorm.content.storage.QuantumDiskStorage;
+import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkControllerBlock;
+import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkControllerBlockEntity;
+import com.fhfelipefh.sandstorm.content.storage.StoredItemEntry;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -102,6 +111,10 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeCommand)
                 )
+                .then(Commands.literal("computer")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeComputerCommand)
+                )
         );
 
         dispatcher.register(Commands.literal("sandstorm_debug")
@@ -109,6 +122,15 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeCommand)
                 )
+                .then(Commands.literal("computer")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeComputerCommand)
+                )
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_computer")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeComputerCommand)
         );
     }
 
@@ -117,6 +139,18 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             buildShowcase(source.getLevel(), player);
             source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Vitrine Void completa gerada com sucesso!"), true);
+            return 1;
+        }
+        source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
+        return 0;
+    }
+
+    public static int executeComputerCommand(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
+        if (source.getEntity() instanceof ServerPlayer player) {
+            BlockPos targetPos = BlockPos.containing(player.position());
+            buildQuantumComputerStation(source.getLevel(), targetPos);
+            source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Computador Quântico completo e energizado montado com sucesso!"), true);
             return 1;
         }
         source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
@@ -141,6 +175,8 @@ public class ShowcaseAutomation {
         buildMegastructureDomeShowcase(level, center);
         buildMaglevTestTrack(level, center);
         buildAutonomousCyborgFacility(level, center, player);
+        buildQuantumComputerStation(level, center.offset(16, 0, 0));
+        buildQuantumComputerWalkway(level, center);
 
         player.setGameMode(GameType.CREATIVE);
         player.getAbilities().mayfly = true;
@@ -156,7 +192,7 @@ public class ShowcaseAutomation {
 
     private static void clearUnderneath(ServerLevel level, BlockPos center) {
         for (int x = -70; x <= 70; x++) {
-            for (int z = -90; z <= 70; z++) {
+            for (int z = -90; z <= 80; z++) {
                 for (int y = -64; y < center.getY(); y++) {
                     BlockPos p = new BlockPos(x, y, z);
                     if (!level.getBlockState(p).isAir()) {
@@ -199,6 +235,15 @@ public class ShowcaseAutomation {
             chest.setItem(15, new ItemStack(SandStormBlocks.ORBITAL_MASS_DRIVER));
             chest.setItem(16, new ItemStack(SandStormBlocks.ORBITAL_GROUND_STATION));
             chest.setItem(17, new ItemStack(SandStormBlocks.SPECTRAL_SURVEY_TELESCOPE));
+            chest.setItem(18, new ItemStack(SandStormBlocks.QUANTUM_ACCESS_TERMINAL, 2));
+            chest.setItem(19, new ItemStack(SandStormBlocks.QUANTUM_DISK_DRIVE, 2));
+            chest.setItem(20, new ItemStack(SandStormBlocks.QUANTUM_NETWORK_CONTROLLER, 2));
+            chest.setItem(21, new ItemStack(SandStormBlocks.QUANTUM_NETWORK_CABLE, 32));
+            chest.setItem(22, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_1K, 4));
+            chest.setItem(23, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_4K, 4));
+            chest.setItem(24, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_16K, 2));
+            chest.setItem(25, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_64K, 2));
+            chest.setItem(26, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL, 2));
         }
 
         AABB clearBox = new AABB(center).inflate(8.0);
@@ -236,14 +281,21 @@ public class ShowcaseAutomation {
         int cols = 8;
         int spacing = 4;
         int startZ = 8;
+        int totalRows = (blocks.size() + cols - 1) / cols;
 
         for (int col = 0; col < cols; col++) {
-            for (int row = 0; row < 8; row++) {
+            for (int row = 0; row < totalRows; row++) {
                 int px = (col - (cols / 2)) * spacing;
                 int pz = startZ + (row * spacing);
-                BlockPos p = center.offset(px, 1, pz);
-                if (!level.getBlockState(p).isAir()) {
-                    level.setBlock(p, Blocks.AIR.defaultBlockState(), 3);
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        for (int dy = 1; dy <= 4; dy++) {
+                            BlockPos p = center.offset(px + dx, dy, pz + dz);
+                            if (!level.getBlockState(p).isAir()) {
+                                level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -348,6 +400,31 @@ public class ShowcaseAutomation {
         if (block == SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER) return "Barreira de Espinhos Eletrizada";
         if (block == SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL) return "Muralha de Quitina Corrosiva";
         if (block == SandStormBlocks.KINETIC_FLOOR_SPIKES || block == SandStormBlocks.CRUSHING_SPIKE_GATE) return "Defesa Tática de Espinhos";
+        if (block == SandStormBlocks.QUANTUM_NETWORK_CONTROLLER) return "Processador Central Quântico";
+        if (block == SandStormBlocks.QUANTUM_DISK_DRIVE) return "Unidade de Discos Quânticos (8x)";
+        if (block == SandStormBlocks.QUANTUM_ACCESS_TERMINAL) return "Terminal de Gestão de Itens";
+        if (block == SandStormBlocks.QUANTUM_NETWORK_CABLE) return "Cabo Óptico de Dados Quântico";
+        if (block == SandStormBlocks.ELECTRIC_FENCE_PYLON) return "Poste de Cerca Elétrica Defensiva";
+        if (block == SandStormBlocks.SUBSPACE_GATEWAY) return "Portal de Trânsito Subespacial";
+        if (block == SandStormBlocks.SEISMIC_DAMPENER_PAVING) return "Pavimento Amortecedor Sísmico";
+        if (block == SandStormBlocks.SALT_BRICKS || block == SandStormBlocks.SALT_BRICK_STAIRS || block == SandStormBlocks.SALT_BRICK_SLAB || block == SandStormBlocks.SALT_BRICK_WALL) return "Bloco de Sal Mineral Estrutural";
+        if (block == SandStormBlocks.DRONE_DOCK) return "Doca de Pouso e Carga de Drones";
+        if (block == SandStormBlocks.ASSEMBLY_BAY) return "Baía de Montagem Pesada";
+        if (block == SandStormBlocks.PIEZO_QUARTZ_BLOCK || block == SandStormBlocks.BUDDING_PIEZO_QUARTZ || block == SandStormBlocks.PIEZO_QUARTZ_CLUSTER) return "Cristal de Quartzo Piezoelétrico";
+        if (block == SandStormBlocks.THERMAL_SPRING_STONE) return "Rocha Hidrotermal Mineralizada";
+        if (block == SandStormBlocks.ELECTRIFIED_SAND) return "Areia Eletrizada por Tempestades";
+        if (block == SandStormBlocks.FOSSILIZED_AMBER) return "Âmbar Fóssil Energizado";
+        if (block == SandStormBlocks.FULGURITE_GLASS) return "Vidro Translúcido de Fulgurita";
+        if (block == SandStormBlocks.ANCIENT_REED_BLOCK) return "Juncos Antigos Fossilizados";
+        if (block == SandStormBlocks.XENO_GRASS_BLOCK) return "Grama Xenófila do Deserto";
+        if (block == SandStormBlocks.HEAVY_SAP_CACTUS) return "Cacto de Seiva Espessa Concentrada";
+        if (block == SandStormBlocks.SALINIZED_SAND) return "Areia Salinizada Hiper-Mineral";
+        if (block == SandStormBlocks.HALOPHYTE_PLANT || block == SandStormBlocks.HALOPHYTE_SUCCULENT) return "Vegetação Halófita Adaptativa";
+        if (block == SandStormBlocks.RADIOTROPHIC_MYCELIUM) return "Micélio Radiotrófico do Solo";
+        if (block == SandStormBlocks.CHITINOLYTIC_FUNGUS) return "Fungo Decompositor de Quitina";
+        if (block == SandStormBlocks.CRYO_XEROPHILIC_LICHEN) return "Líquen Crio-Xerófilo Resistente";
+        if (block == SandStormBlocks.DUNE_EPHEDRA) return "Éfedra das Dunas Medicinal";
+        if (block == SandStormBlocks.SMART_FLUID_PIPE) return "Duto Inteligente de Fluidos e Gases";
         return "Tecnologia Estrutural SandStorm";
     }
 
@@ -912,5 +989,156 @@ public class ShowcaseAutomation {
             stand.setItemSlot(EquipmentSlot.OFFHAND, offhand);
         }
         level.addFreshEntity(stand);
+    }
+
+    public static void buildQuantumComputerStation(ServerLevel level, BlockPos stationCenter) {
+        int baseY = stationCenter.getY();
+
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                for (int dy = 1; dy <= 5; dy++) {
+                    BlockPos p = stationCenter.offset(dx, dy, dz);
+                    if (!level.getBlockState(p).isAir()) {
+                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                    }
+                }
+            }
+        }
+
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                BlockPos p = stationCenter.offset(dx, 0, dz);
+                boolean edge = Math.abs(dx) == 3 || Math.abs(dz) == 3;
+                boolean corner = Math.abs(dx) == 3 && Math.abs(dz) == 3;
+                Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 3);
+                if (edge && !corner) {
+                    level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
+                }
+            }
+        }
+
+        BlockPos controllerPos = stationCenter.offset(-1, 1, 0);
+        BlockPos drivePos = stationCenter.offset(0, 1, 0);
+        BlockPos terminalPos = stationCenter.offset(1, 1, 0);
+
+        BlockPos cable1 = stationCenter.offset(-1, 1, -1);
+        BlockPos cable2 = stationCenter.offset(0, 1, -1);
+        BlockPos cable3 = stationCenter.offset(1, 1, -1);
+        level.setBlock(cable1, SandStormBlocks.QUANTUM_NETWORK_CABLE.defaultBlockState(), 3);
+        level.setBlock(cable2, SandStormBlocks.QUANTUM_NETWORK_CABLE.defaultBlockState(), 3);
+        level.setBlock(cable3, SandStormBlocks.QUANTUM_NETWORK_CABLE.defaultBlockState(), 3);
+
+        BlockPos accumulatorPos = stationCenter.offset(-2, 1, 0);
+        BlockPos solarPos = stationCenter.offset(-2, 1, -1);
+        level.setBlock(accumulatorPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        level.setBlock(solarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+        if (level.getBlockEntity(accumulatorPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
+            accBe.setStoredEnergy(500000);
+        }
+
+        level.setBlock(controllerPos, SandStormBlocks.QUANTUM_NETWORK_CONTROLLER.defaultBlockState().setValue(QuantumNetworkControllerBlock.ACTIVE, true), 3);
+        if (level.getBlockEntity(controllerPos) instanceof QuantumNetworkControllerBlockEntity ctrlBe) {
+            ctrlBe.receiveEnergy(100000);
+            ctrlBe.setChanged();
+        }
+
+        level.setBlock(drivePos, SandStormBlocks.QUANTUM_DISK_DRIVE.defaultBlockState().setValue(QuantumDiskDriveBlock.FACING, Direction.SOUTH), 3);
+        if (level.getBlockEntity(drivePos) instanceof QuantumDiskDriveBlockEntity driveBe) {
+            ItemStack c0 = new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_64K);
+            QuantumDiskStorage.saveStoredItems(c0, List.of(
+                    new StoredItemEntry(new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE), 1000L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.PIEZO_QUARTZ_SHARD), 2000L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.SUPERCONDUCTOR_TOROID), 500L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.QUANTUM_PROCESSOR), 250L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.BIO_NEURAL_CORE), 128L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.MANTLE_ALLOY_INGOT), 500L)
+            ));
+            driveBe.setItem(0, c0);
+
+            ItemStack c1 = new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_64K);
+            QuantumDiskStorage.saveStoredItems(c1, List.of(
+                    new StoredItemEntry(new ItemStack(SandStormItems.RAW_LITHIUM_SALTS), 2500L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.RAW_SILICON), 2000L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.SILICON_WAFER), 1000L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.CIRCUIT_BOARD), 500L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.NANO_ACTUATOR), 500L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.SCRAP_METAL), 3000L)
+            ));
+            driveBe.setItem(1, c1);
+
+            ItemStack c2 = new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_16K);
+            QuantumDiskStorage.saveStoredItems(c2, List.of(
+                    new StoredItemEntry(new ItemStack(SandStormItems.BIO_COOLANT_CANISTER), 256L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.SANDWORM_CHITIN), 500L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.SANDWORM_TOOTH), 128L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE), 250L)
+            ));
+            driveBe.setItem(2, c2);
+
+            ItemStack c3 = new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_16K);
+            QuantumDiskStorage.saveStoredItems(c3, List.of(
+                    new StoredItemEntry(new ItemStack(SandStormItems.KINETIC_SLUG), 1000L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE), 200L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.PIEZO_RESONATOR), 100L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.ADRENAL_STIM), 64L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.BIOFOAM_CARTRIDGE), 64L)
+            ));
+            driveBe.setItem(3, c3);
+
+            ItemStack c4 = new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_4K);
+            driveBe.setItem(4, c4);
+
+            ItemStack c5 = new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_1K);
+            driveBe.setItem(5, c5);
+
+            ItemStack c6 = new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL);
+            driveBe.setItem(6, c6);
+
+            ItemStack c7 = new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL);
+            QuantumDiskStorage.saveStoredItems(c7, List.of(
+                    new StoredItemEntry(new ItemStack(SandStormItems.SURVIVAL_DATAPAD), 1L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.ANOMALY_RADAR), 1L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE), 4L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.ORBITAL_SOLAR_REFLECTOR_SATELLITE), 4L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.SAR_GEOLOGICAL_SATELLITE), 4L),
+                    new StoredItemEntry(new ItemStack(SandStormItems.ORBITAL_KINETIC_LANCE_SATELLITE), 4L)
+            ));
+            driveBe.setItem(7, c7);
+
+            driveBe.setChanged();
+        }
+
+        level.setBlock(terminalPos, SandStormBlocks.QUANTUM_ACCESS_TERMINAL.defaultBlockState().setValue(QuantumAccessTerminalBlock.FACING, Direction.SOUTH), 3);
+
+        BlockPos chestPos = stationCenter.offset(2, 1, 0);
+        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+        if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_1K, 4));
+            chest.setItem(1, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_4K, 4));
+            chest.setItem(2, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_16K, 2));
+            chest.setItem(3, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_64K, 2));
+            chest.setItem(4, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL, 1));
+            chest.setItem(5, new ItemStack(SandStormItems.STORAGE_HOUSING, 8));
+            chest.setItem(6, new ItemStack(SandStormBlocks.QUANTUM_NETWORK_CABLE, 32));
+            chest.setItem(7, new ItemStack(SandStormBlocks.QUANTUM_ACCESS_TERMINAL, 2));
+            chest.setItem(8, new ItemStack(SandStormBlocks.QUANTUM_DISK_DRIVE, 2));
+        }
+
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.2, stationCenter.getZ() + 0.5, "§b§l[Computador Quântico SandStorm]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.85, stationCenter.getZ() + 0.5, "§aOnline | 100.000 J | Rede WPT Ativa");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.5, stationCenter.getZ() + 0.5, "§e8/8 Discos Carregados | Clique no Terminal!");
+    }
+
+    private static void buildQuantumComputerWalkway(ServerLevel level, BlockPos center) {
+        for (int x = 5; x <= 12; x++) {
+            for (int z = -1; z <= 1; z++) {
+                BlockPos p = center.offset(x, 0, z);
+                boolean edge = (z != 0);
+                boolean light = (x % 3 == 0 && z == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
     }
 }

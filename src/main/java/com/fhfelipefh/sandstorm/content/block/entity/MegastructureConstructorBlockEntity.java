@@ -9,6 +9,8 @@ import com.fhfelipefh.sandstorm.content.megastructure.MegastructureBlueprint;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -104,6 +106,9 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
         this.placementIndex = 0;
         this.buildState = STATE_IDLE;
         setChanged();
+        if (this.level != null && !this.level.isClientSide()) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+        }
     }
 
     public int getBuildState() {
@@ -113,6 +118,9 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
     public void setBuildState(int state) {
         this.buildState = state;
         setChanged();
+        if (this.level != null && !this.level.isClientSide()) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+        }
     }
 
     public int completeInstantly() {
@@ -135,6 +143,9 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
         KineticShieldTracker.registerShield(level.dimension(), getBlockPos(), radius);
         level.playSound(null, getBlockPos(), SandStormSoundEvents.MEGASTRUCTURE_COMPLETE, SoundSource.BLOCKS, 2.0f, 1.0f);
         setChanged();
+        if (this.level != null && !this.level.isClientSide()) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+        }
         return placedCount;
     }
 
@@ -258,6 +269,9 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
             }
         }
         setChanged();
+        if (this.level != null && !this.level.isClientSide()) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+        }
     }
 
     private int findItemSlotForBlock(BlockState state) {
@@ -361,6 +375,16 @@ public class MegastructureConstructorBlockEntity extends BaseMachineBlockEntity 
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = registries != null ? super.getUpdateTag(registries) : new CompoundTag();
+        tag.putInt("blueprintIndex", this.blueprintIndex);
+        tag.putInt("buildState", this.buildState);
+        tag.putInt("placementIndex", this.placementIndex);
+        tag.putInt("buildSpeedMode", this.buildSpeedMode);
+        return tag;
     }
 
     public BlockPos getCurrentTargetRelPos() {

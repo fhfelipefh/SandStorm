@@ -14,4 +14,6 @@ public class MegastructureConstructorRenderState extends BlockEntityRenderState 
     public boolean isDone = false;
     public float animationTicks = 0.0f;
     public BlockPos targetRelPos = null;
+    public BlockPos minPos = null;
+    public BlockPos maxPos = null;
 }

@@ -40,6 +40,7 @@ import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.survival.PlayerSuitSavedData;
 import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import com.fhfelipefh.sandstorm.content.world.ShowcaseAutomation;
 import com.fhfelipefh.sandstorm.content.world.structure.ColossalCastleGenerator;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -115,7 +116,8 @@ public class SandstormDebugCommand {
             "plasma_defense_complex",
             "geothermal_well",
             "orbital_array",
-            "colossal_castle"
+            "colossal_castle",
+            "computer"
     );
 
     public static void initialize() {
@@ -1317,6 +1319,11 @@ public class SandstormDebugCommand {
                 int blocks = ColossalCastleGenerator.generate(level, center);
                 source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§a[SandStorm] Castelo Colossal de Pedra gerado em [%d, %d, %d]! (%d blocos)", center.getX(), center.getY(), center.getZ(), blocks)), true);
                 return blocks;
+            }
+            case "computer", "quantum_computer" -> {
+                ShowcaseAutomation.buildQuantumComputerStation(level, center);
+                source.sendSuccess(() -> Component.literal("§a[SandStorm] Computador Quântico completo e energizado montado com sucesso!"), true);
+                return 1;
             }
             default -> {
                 source.sendFailure(Component.literal("§c[SandStorm] Instalação desconhecida. Opções: " + String.join(", ", FACILITIES)));

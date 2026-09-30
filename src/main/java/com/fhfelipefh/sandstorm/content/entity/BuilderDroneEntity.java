@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -106,6 +107,13 @@ public class BuilderDroneEntity extends PathfinderMob {
         ServerLevel serverLevel = (ServerLevel) lvl;
         float storm = SandstormWeatherHandler.getWeather().isActive() ? (float) SandstormWeatherHandler.getWeather().getIntensity() : 0.0f;
         BlockPos constructor = getConstructorPos();
+
+        if (!constructor.equals(BlockPos.ZERO) && serverLevel.isLoaded(constructor)) {
+            if (!serverLevel.getBlockState(constructor).is(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR)) {
+                this.discard();
+                return;
+            }
+        }
 
         if (storm >= 0.75f && !constructor.equals(BlockPos.ZERO)) {
             setWelding(false);
