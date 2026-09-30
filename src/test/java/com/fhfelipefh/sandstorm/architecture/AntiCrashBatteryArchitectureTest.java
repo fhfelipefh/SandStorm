@@ -359,6 +359,28 @@ class AntiCrashBatteryArchitectureTest {
         assertTrue(violations.isEmpty(), "Found invalid recipe definitions:\n" + String.join("\n", violations));
     }
 
+    @Test
+    void allOverriddenRecipesMustNotUseFailingLoadConditions() throws IOException {
+        List<String> violations = new ArrayList<>();
+        try (Stream<Path> stream = Files.walk(DATA_DIR)) {
+            List<Path> recipeFiles = stream
+                    .filter(Files::isRegularFile)
+                    .filter(p -> p.toString().endsWith(".json") && p.getParent() != null && "recipe".equals(p.getParent().getFileName().toString()))
+                    .toList();
+
+            for (Path recipeFile : recipeFiles) {
+                try (FileReader reader = new FileReader(recipeFile.toFile())) {
+                    JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+                    if (json.has("fabric:load_conditions")) {
+                        violations.add("Recipe " + recipeFile + " uses fabric:load_conditions which causes unbound registry values in Minecraft 1.21.4");
+                    }
+                }
+            }
+        }
+
+        assertTrue(violations.isEmpty(), "Found recipes with fabric:load_conditions that cause registry unbinding:\n" + String.join("\n", violations));
+    }
+
     private Set<String> getRegisteredSandstormKeys() throws IOException {
         Set<String> keys = new HashSet<>();
         String itemsContent = Files.readString(ITEMS_JAVA);
