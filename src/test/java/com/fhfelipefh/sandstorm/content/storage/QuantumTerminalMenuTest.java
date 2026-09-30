@@ -18,7 +18,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import net.minecraft.network.chat.Component;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -128,5 +132,44 @@ class QuantumTerminalMenuTest {
         ItemStack extractedDiamonds = QuantumDiskStorage.extractItem(cartridge, filterDiamond, 10);
         assertEquals(10, extractedDiamonds.getCount());
         assertEquals(54, QuantumDiskStorage.getTotalItemCount(cartridge));
+    }
+
+    @Test
+    void shouldTrackClientStateDirtyFlag() {
+        SimpleContainer mockInventoryContainer = new SimpleContainer(36);
+        Inventory mockInventory = new Inventory(null, null) {
+            @Override
+            public ItemStack getItem(int slot) {
+                return mockInventoryContainer.getItem(slot);
+            }
+
+            @Override
+            public void setItem(int slot, ItemStack stack) {
+                mockInventoryContainer.setItem(slot, stack);
+            }
+
+            @Override
+            public int getContainerSize() {
+                return mockInventoryContainer.getContainerSize();
+            }
+        };
+
+        QuantumTerminalMenu menu = new QuantumTerminalMenu(null, 1, mockInventory, BlockPos.ZERO);
+        assertFalse(menu.isClientStateDirty());
+
+        menu.updateClientState(new BlockPos(10, 20, 30), List.of(), 500, 1000, 50, 100);
+        assertTrue(menu.isClientStateDirty());
+
+        menu.clearClientStateDirty();
+        assertFalse(menu.isClientStateDirty());
+    }
+
+    @Test
+    void shouldValidateTerminalBlockEntityDisplayName() {
+        QuantumAccessTerminalBlockEntity terminal = new QuantumAccessTerminalBlockEntity(
+                BlockPos.ZERO,
+                SandStormBlocks.QUANTUM_ACCESS_TERMINAL.defaultBlockState()
+        );
+        assertEquals(Component.translatable("container.sandstorm.quantum_access_terminal"), terminal.getDisplayName());
     }
 }

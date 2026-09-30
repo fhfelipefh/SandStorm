@@ -30,6 +30,7 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
     private long clientTotalStored = 0;
     private long clientTotalCapacity = 0;
     private int syncTimer = 0;
+    private boolean clientStateDirty = false;
 
     public QuantumTerminalMenu(int syncId, Inventory playerInventory) {
         this(SandStormMenus.QUANTUM_ACCESS_TERMINAL_MENU, syncId, playerInventory, BlockPos.ZERO);
@@ -79,6 +80,14 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
         return clientTotalCapacity;
     }
 
+    public boolean isClientStateDirty() {
+        return clientStateDirty;
+    }
+
+    public void clearClientStateDirty() {
+        this.clientStateDirty = false;
+    }
+
     public void updateClientState(BlockPos pos, List<StoredItemEntry> items, int energy, int maxEnergy, long totalStored, long totalCapacity) {
         if (pos != null && !pos.equals(BlockPos.ZERO)) {
             this.terminalPos = pos;
@@ -88,6 +97,7 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
         this.clientMaxEnergy = maxEnergy;
         this.clientTotalStored = totalStored;
         this.clientTotalCapacity = totalCapacity;
+        this.clientStateDirty = true;
     }
 
     @Override
@@ -215,7 +225,11 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
-            if (!player.level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
+            if (player.level().isClientSide()) {
+                return ItemStack.EMPTY;
+            }
+
+            if (player instanceof ServerPlayer serverPlayer) {
                 BlockEntity be = player.level().getBlockEntity(terminalPos);
                 if (be instanceof QuantumAccessTerminalBlockEntity terminal) {
                     long inserted = terminal.insertItem(itemstack1);
@@ -228,11 +242,9 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
                         }
                         this.broadcastChanges();
                         syncToClient(serverPlayer);
-                        return itemstack;
+                        return itemstack1.isEmpty() ? itemstack : ItemStack.EMPTY;
                     }
                 }
-            } else if (player.level().isClientSide()) {
-                return itemstack;
             }
 
             if (invSlot < 27) {
@@ -247,6 +259,10 @@ public class QuantumTerminalMenu extends AbstractContainerMenu {
                 slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
+            }
+
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
             }
         }
         return itemstack;

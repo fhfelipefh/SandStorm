@@ -381,6 +381,53 @@ class AntiCrashBatteryArchitectureTest {
         assertTrue(violations.isEmpty(), "Found recipes with fabric:load_conditions that cause registry unbinding:\n" + String.join("\n", violations));
     }
 
+    @Test
+    void allMenusQuickMoveStackMustNotFreezeGame() throws IOException {
+        List<String> violations = new ArrayList<>();
+        try (Stream<Path> stream = Files.list(MENUS_DIR)) {
+            List<Path> menuFiles = stream.filter(p -> p.getFileName().toString().endsWith("Menu.java")).toList();
+            for (Path menuFile : menuFiles) {
+                String content = Files.readString(menuFile);
+                if (content.contains("isClientSide()")) {
+                    if (content.contains("isClientSide()) {\n                return itemstack;")
+                            || content.contains("isClientSide()) {\r\n                return itemstack;")) {
+                        violations.add("Menu " + menuFile.getFileName() + " returns un-shrunk itemstack on client side, which causes an infinite freeze loop in AbstractContainerMenu.clicked()");
+                    }
+                }
+            }
+        }
+        assertTrue(violations.isEmpty(), "Found menus with infinite client loop risks in quickMoveStack:\n" + String.join("\n", violations));
+    }
+
+    @Test
+    void terminalContainerTitleMustNotOverlapStats() throws IOException {
+        Path terminalBeFile = STORAGE_DIR.resolve("QuantumAccessTerminalBlockEntity.java");
+        assertTrue(Files.exists(terminalBeFile), "QuantumAccessTerminalBlockEntity must exist");
+        String beContent = Files.readString(terminalBeFile);
+        assertTrue(beContent.contains("container.sandstorm.quantum_access_terminal"), "Terminal BE must use container title key");
+
+        Path screenFile = CLIENT_DIR.resolve("gui").resolve("QuantumTerminalScreen.java");
+        assertTrue(Files.exists(screenFile), "QuantumTerminalScreen must exist");
+        String screenContent = Files.readString(screenFile);
+        assertTrue(screenContent.contains("maxTitleWidth"), "QuantumTerminalScreen must compute adaptive maxTitleWidth");
+        assertTrue(screenContent.contains("drawAdaptiveText"), "QuantumTerminalScreen must use drawAdaptiveText");
+
+        Path langDir = Path.of("src", "main", "resources", "assets", "sandstorm", "lang");
+        String[] langFiles = new String[]{"pt_br.json", "es_es.json", "en_us.json"};
+        for (String langName : langFiles) {
+            Path p = langDir.resolve(langName);
+            if (Files.exists(p)) {
+                try (FileReader reader = new FileReader(p.toFile())) {
+                    JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+                    if (json.has("container.sandstorm.quantum_access_terminal")) {
+                        String title = json.get("container.sandstorm.quantum_access_terminal").getAsString();
+                        assertTrue(title.length() <= 25, "Terminal container title in " + langName + " exceeds 25 chars: " + title);
+                    }
+                }
+            }
+        }
+    }
+
     private Set<String> getRegisteredSandstormKeys() throws IOException {
         Set<String> keys = new HashSet<>();
         String itemsContent = Files.readString(ITEMS_JAVA);

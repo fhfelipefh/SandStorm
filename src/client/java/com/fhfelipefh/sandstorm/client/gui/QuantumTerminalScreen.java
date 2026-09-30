@@ -81,7 +81,10 @@ public class QuantumTerminalScreen extends AbstractContainerScreen<QuantumTermin
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
-        updateFilteredItems();
+        if (this.menu.isClientStateDirty()) {
+            updateFilteredItems();
+            this.menu.clearClientStateDirty();
+        }
 
         int x = this.leftPos;
         int y = this.topPos;
@@ -177,18 +180,32 @@ public class QuantumTerminalScreen extends AbstractContainerScreen<QuantumTermin
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
-        drawAdaptiveText(extractor, this.title, 8, 5, 0xFF00E5FF);
-        drawAdaptiveText(extractor, this.playerInventoryTitle, 8, this.inventoryLabelY, 0xFF90A4AE);
-
         long stored = this.menu.getClientTotalStored();
         long cap = this.menu.getClientTotalCapacity();
         String stats = NumberFormat.compact(stored) + "/" + (cap > 0 ? NumberFormat.compact(cap) : "∞");
         Component statsComp = Component.literal(stats);
-        extractor.text(this.font, statsComp, this.imageWidth - this.font.width(statsComp) - 8, 5, 0xFF00E5FF, false);
+        int statsWidth = this.font.width(statsComp);
+        int statsX = this.imageWidth - statsWidth - 8;
+        extractor.text(this.font, statsComp, statsX, 5, 0xFF00E5FF, false);
+
+        int maxTitleWidth = Math.max(10, statsX - 12);
+        drawAdaptiveText(extractor, this.title, 8, 5, maxTitleWidth, 0xFF00E5FF);
+        drawAdaptiveText(extractor, this.playerInventoryTitle, 8, this.inventoryLabelY, this.imageWidth - 16, 0xFF90A4AE);
     }
 
-    private void drawAdaptiveText(GuiGraphicsExtractor extractor, Component text, int x, int y, int color) {
-        extractor.text(this.font, text, x, y, color, false);
+    private void drawAdaptiveText(GuiGraphicsExtractor extractor, Component text, float x, float y, float maxPixelWidth, int color) {
+        int textWidth = this.font.width(text);
+        if (textWidth <= maxPixelWidth || maxPixelWidth <= 0) {
+            extractor.text(this.font, text, (int) x, (int) y, color, false);
+        } else {
+            float scale = maxPixelWidth / (float) textWidth;
+            float offsetY = (9f - 9f * scale) / 2f;
+            extractor.pose().pushMatrix();
+            extractor.pose().translate(x, y + offsetY);
+            extractor.pose().scale(scale, scale);
+            extractor.text(this.font, text, 0, 0, color, false);
+            extractor.pose().popMatrix();
+        }
     }
 
     @Override

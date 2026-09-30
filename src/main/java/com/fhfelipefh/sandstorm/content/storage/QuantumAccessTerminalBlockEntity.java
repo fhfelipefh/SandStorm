@@ -134,7 +134,7 @@ public class QuantumAccessTerminalBlockEntity extends BlockEntity implements Men
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.sandstorm.quantum_access_terminal");
+        return Component.translatable("container.sandstorm.quantum_access_terminal");
     }
 
     @Override
