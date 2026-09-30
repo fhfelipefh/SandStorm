@@ -30,9 +30,30 @@ public class QuantumDiskDriveBlockEntity extends BlockEntity implements Containe
 
     public static final int SLOT_COUNT = 8;
     private final NonNullList<ItemStack> items = NonNullList.withSize(SLOT_COUNT, ItemStack.EMPTY);
+    private long lastActivityTick = 0;
 
     public QuantumDiskDriveBlockEntity(BlockPos pos, BlockState state) {
         super(SandStormBlocks.QUANTUM_DISK_DRIVE_BE, pos, state);
+    }
+
+    public void triggerActivity() {
+        if (this.level != null) {
+            this.lastActivityTick = this.level.getGameTime();
+        }
+        this.setChanged();
+    }
+
+    public long getLastActivityTick() {
+        return this.lastActivityTick;
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        if (this.level != null && !this.level.isClientSide()) {
+            BlockState state = this.getBlockState();
+            this.level.sendBlockUpdated(this.worldPosition, state, state, 3);
+        }
     }
 
     public List<StoredItemEntry> getAllStoredItems() {
@@ -95,7 +116,7 @@ public class QuantumDiskDriveBlockEntity extends BlockEntity implements Containe
                 if (inserted > 0) {
                     totalInserted += inserted;
                     remaining.shrink((int) inserted);
-                    this.setChanged();
+                    this.triggerActivity();
                 }
             }
         }
@@ -124,7 +145,7 @@ public class QuantumDiskDriveBlockEntity extends BlockEntity implements Containe
                         accumulated.grow(extracted.getCount());
                     }
                     needed -= extracted.getCount();
-                    this.setChanged();
+                    this.triggerActivity();
                 }
             }
         }
@@ -156,7 +177,7 @@ public class QuantumDiskDriveBlockEntity extends BlockEntity implements Containe
     public ItemStack removeItem(int slot, int amount) {
         ItemStack result = ContainerHelper.removeItem(this.items, slot, amount);
         if (!result.isEmpty()) {
-            this.setChanged();
+            this.triggerActivity();
         }
         return result;
     }
@@ -169,7 +190,7 @@ public class QuantumDiskDriveBlockEntity extends BlockEntity implements Containe
     @Override
     public void setItem(int slot, ItemStack stack) {
         this.items.set(slot, stack);
-        this.setChanged();
+        this.triggerActivity();
     }
 
     @Override
@@ -190,7 +211,7 @@ public class QuantumDiskDriveBlockEntity extends BlockEntity implements Containe
     @Override
     public void clearContent() {
         Collections.fill(this.items, ItemStack.EMPTY);
-        this.setChanged();
+        this.triggerActivity();
     }
 
     @Override
@@ -217,6 +238,7 @@ public class QuantumDiskDriveBlockEntity extends BlockEntity implements Containe
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
         ContainerHelper.saveAllItems(output, this.items);
+        output.putLong("lastActivity", this.lastActivityTick);
     }
 
     @Override
@@ -224,6 +246,7 @@ public class QuantumDiskDriveBlockEntity extends BlockEntity implements Containe
         super.loadAdditional(input);
         Collections.fill(this.items, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(input, this.items);
+        this.lastActivityTick = input.getLongOr("lastActivity", 0L);
     }
 
     @Override
