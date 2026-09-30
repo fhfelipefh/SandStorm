@@ -39,25 +39,25 @@ public class SupercriticalHeatExchangerMenu extends AbstractContainerMenu {
 
         container.startOpen(playerInventory.player);
 
-        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_WATER_IN, 18, 32) {
+        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_WATER_IN, 32, 23) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return stack.is(Items.WATER_BUCKET);
             }
         });
-        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_WATER_OUT, 18, 52) {
+        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_WATER_OUT, 32, 47) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
             }
         });
-        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_THERMAL_CORE, 68, 42) {
+        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_THERMAL_CORE, 68, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return stack.is(SandStormItems.THERMAL_RADIATOR_FIN) || stack.is(SandStormItems.SUPERHEATED_LITHIUM_CAPSULE);
             }
         });
-        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_BATTERY, 92, 42) {
+        this.addSlot(new Slot(container, SupercriticalHeatExchangerBlockEntity.SLOT_BATTERY, 92, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return BaseMachineBlockEntity.getFuelEnergy(stack) > 0;
