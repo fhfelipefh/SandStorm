@@ -41,6 +41,7 @@ import com.fhfelipefh.sandstorm.client.gui.ThermalGeneratorScreen;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
+import com.fhfelipefh.sandstorm.client.tooltip.SandStormTechnicalTooltipHandler;
 import com.fhfelipefh.sandstorm.client.renderer.AquiferBeetleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.AutonomousSonicTurretRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
@@ -96,6 +97,7 @@ public class SandStormClient implements ClientModInitializer {
         SandstormParticleHandler.initialize();
         SandstormFlashlightKeys.initialize();
         DesertMirageHandler.initialize();
+        SandStormTechnicalTooltipHandler.initialize();
 
         MenuScreens.register(SandStormMenus.PRINTER_3D_MENU, Printer3DScreen::new);
         MenuScreens.register(SandStormMenus.NANITE_FABRICATOR_MENU, NaniteFabricatorScreen::new);

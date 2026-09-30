@@ -5,8 +5,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ class ItemTooltipLineLengthArchitectureTest {
 
         for (String langFile : langFiles) {
             Path path = LANG_DIR.resolve(langFile);
-            try (FileReader reader = new FileReader(path.toFile())) {
+            try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
                 JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
                 for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
                     String key = entry.getKey();
