@@ -1050,8 +1050,11 @@
   "item.sandstorm.nanite_gallium_composite": "Composto de Gálio Morfogenético",
   "block.sandstorm.deepslate_gallium_ore": "Minério de Gálio das Profundezas",
   "block.sandstorm.morphing_alloy_block": "Bloco de Liga Morfogenética",
+  "block.sandstorm.morphing_alloy_door": "Porta de Liga Morfogenética",
+  "block.sandstorm.morphing_alloy_window": "Janela de Liga Morfogenética",
   "block.sandstorm.morphing_matrix_core": "Núcleo da Matriz Morfogenética",
   "block.sandstorm.morphing_fluid_transition": "Liga Morfogenética em Transição",
+  "gui.sandstorm.morphing_matrix_core.title": "Núcleo da Matriz Morfogenética",
   "message.sandstorm.morphing_core.hologram_on": "Holograma 64x64x64 Ativado.",
   "message.sandstorm.morphing_core.hologram_off": "Holograma 64x64x64 Desativado.",
   "message.sandstorm.morphing_core.saved": "Matriz Salva: %d blocos | Saldo: %d blocos"

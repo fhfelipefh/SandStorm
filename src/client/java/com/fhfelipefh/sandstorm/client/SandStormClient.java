@@ -23,6 +23,7 @@ import com.fhfelipefh.sandstorm.client.gui.KineticShieldScreen;
 import com.fhfelipefh.sandstorm.client.gui.LithoPlasmaExtractorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MegastructureConstructorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MolecularModifierScreen;
+import com.fhfelipefh.sandstorm.client.gui.MorphingMatrixCoreScreen;
 import com.fhfelipefh.sandstorm.client.gui.NaniteFabricatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.NomadScavengerScreen;
 import com.fhfelipefh.sandstorm.client.gui.OrbitalGroundStationScreen;
@@ -144,6 +145,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.QUANTUM_NETWORK_CONTROLLER_MENU, QuantumControllerScreen::new);
         MenuScreens.register(SandStormMenus.QUANTUM_DISK_DRIVE_MENU, QuantumDiskDriveScreen::new);
         MenuScreens.register(SandStormMenus.QUANTUM_ACCESS_TERMINAL_MENU, QuantumTerminalScreen::new);
+        MenuScreens.register(SandStormMenus.MORPHING_MATRIX_CORE_MENU, MorphingMatrixCoreScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

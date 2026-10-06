@@ -654,6 +654,14 @@ public class SandStormBlocks {
     public static final MorphingAlloyBlock MORPHING_ALLOY_BLOCK = register("morphing_alloy_block",
             new MorphingAlloyBlock(MorphingAlloyBlock.createProperties()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("morphing_alloy_block")))));
+    public static final MorphingAlloyDoorBlock MORPHING_ALLOY_DOOR = register("morphing_alloy_door",
+            new MorphingAlloyDoorBlock(MorphingAlloyDoorBlock.createProperties()
+                    .noOcclusion()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("morphing_alloy_door")))));
+    public static final MorphingAlloyWindowBlock MORPHING_ALLOY_WINDOW = register("morphing_alloy_window",
+            new MorphingAlloyWindowBlock(MorphingAlloyWindowBlock.createProperties()
+                    .noOcclusion()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("morphing_alloy_window")))));
     public static final MorphingMatrixCoreBlock MORPHING_MATRIX_CORE = register("morphing_matrix_core",
             new MorphingMatrixCoreBlock(MorphingMatrixCoreBlock.createProperties()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("morphing_matrix_core")))));

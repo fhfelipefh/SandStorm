@@ -1050,8 +1050,11 @@
   "item.sandstorm.nanite_gallium_composite": "Morphing Gallium Composite",
   "block.sandstorm.deepslate_gallium_ore": "Deepslate Gallium Ore",
   "block.sandstorm.morphing_alloy_block": "Morphing Alloy Block",
+  "block.sandstorm.morphing_alloy_door": "Morphing Alloy Door",
+  "block.sandstorm.morphing_alloy_window": "Morphing Alloy Window",
   "block.sandstorm.morphing_matrix_core": "Morphing Matrix Core",
   "block.sandstorm.morphing_fluid_transition": "Morphing Alloy in Transition",
+  "gui.sandstorm.morphing_matrix_core.title": "Morphing Matrix Core",
   "message.sandstorm.morphing_core.hologram_on": "64x64x64 Hologram Enabled.",
   "message.sandstorm.morphing_core.hologram_off": "64x64x64 Hologram Disabled.",
   "message.sandstorm.morphing_core.saved": "Matrix Saved: %d blocks | Reserve: %d blocks"

@@ -396,6 +396,8 @@ public class SandStormItems {
                         entries.accept(NANITE_GALLIUM_COMPOSITE);
                         entries.accept(SandStormBlocks.DEEPSLATE_GALLIUM_ORE);
                         entries.accept(SandStormBlocks.MORPHING_ALLOY_BLOCK);
+                        entries.accept(SandStormBlocks.MORPHING_ALLOY_DOOR);
+                        entries.accept(SandStormBlocks.MORPHING_ALLOY_WINDOW);
                         entries.accept(SandStormBlocks.MORPHING_MATRIX_CORE);
                         entries.accept(SandStormBlocks.MORPHING_FLUID_TRANSITION);
                     })

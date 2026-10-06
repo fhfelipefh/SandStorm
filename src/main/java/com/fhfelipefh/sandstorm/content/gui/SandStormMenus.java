@@ -182,6 +182,11 @@ public class SandStormMenus {
             new MenuType<>(QuantumTerminalMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<MorphingMatrixCoreMenu> MORPHING_MATRIX_CORE_MENU = register(
+            "morphing_matrix_core",
+            new MenuType<>(MorphingMatrixCoreMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

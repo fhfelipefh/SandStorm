@@ -72,6 +72,8 @@
     "sandstorm:cybernetic_golem_head",
     "sandstorm:deepslate_gallium_ore",
     "sandstorm:morphing_alloy_block",
+    "sandstorm:morphing_alloy_door",
+    "sandstorm:morphing_alloy_window",
     "sandstorm:morphing_matrix_core"
   ]
 }

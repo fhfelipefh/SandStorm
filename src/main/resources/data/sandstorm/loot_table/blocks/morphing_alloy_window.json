@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "sandstorm:morphing_alloy_window"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "sandstorm:blocks/morphing_alloy_window"
+}

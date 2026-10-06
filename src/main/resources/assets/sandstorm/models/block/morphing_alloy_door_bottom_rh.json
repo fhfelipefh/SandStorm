@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_rh",
+  "textures": {
+    "bottom": "sandstorm:block/morphing_alloy_door_bottom",
+    "top": "sandstorm:block/morphing_alloy_door_top"
+  }
+}

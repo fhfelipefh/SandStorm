@@ -8,15 +8,18 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SandstormMorphingCastleCommand {
 
@@ -48,10 +51,10 @@ public class SandstormMorphingCastleCommand {
         BlockPos origin = new BlockPos((int) pos.x, (int) pos.y, (int) pos.z);
         BlockPos corePos = origin.above(WALL_HEIGHT + 1);
 
-        List<BlockPos> castlePositions = buildCastleBlueprint(origin);
+        Map<BlockPos, BlockState> castleStructure = buildCastleStructure(origin);
 
-        for (BlockPos blockPos : castlePositions) {
-            level.setBlock(blockPos, SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState(), 3);
+        for (Map.Entry<BlockPos, BlockState> entry : castleStructure.entrySet()) {
+            level.setBlock(entry.getKey(), entry.getValue(), 3);
         }
 
         level.setBlock(corePos, SandStormBlocks.MORPHING_MATRIX_CORE.defaultBlockState(), 3);
@@ -60,111 +63,139 @@ public class SandstormMorphingCastleCommand {
         level.getServer().execute(() -> {
             BlockEntity be = level.getBlockEntity(corePos);
             if (be instanceof MorphingMatrixCoreBlockEntity core) {
-                List<BlockPos> relativePositions = new ArrayList<>();
-                for (BlockPos p : castlePositions) {
-                    relativePositions.add(p.subtract(corePos));
-                }
-                relativePositions.sort(Comparator.comparingInt(BlockPos::getY));
-                core.getSavedRelativePositions().clear();
-                core.getSavedRelativePositions().addAll(relativePositions);
+                core.saveBlueprint(castleStructure, corePos);
                 core.setReserveBlocks(MorphingMatrixCoreBlockEntity.MAX_RESERVE);
                 core.setState(MorphingMatrixCoreBlockEntity.MatrixState.IDLE_SOLID);
                 level.sendBlockUpdated(corePos, level.getBlockState(corePos), level.getBlockState(corePos), 3);
             }
         });
 
-        source.sendSuccess(() -> Component.literal("§6[SandStorm]§r §bCastelo Morfogenético de Metal Líquido §fconstruído! §7(" + castlePositions.size() + " blocos)"), true);
+        source.sendSuccess(() -> Component.literal("§6[SandStorm]§r §bCastelo Morfogenético de Metal Líquido §fconstruído! §7(" + castleStructure.size() + " blocos com piso, portas e janelas)"), true);
         source.sendSuccess(() -> Component.literal("§aO Núcleo da Matriz foi posicionado em §f" + corePos.toShortString() + "§a."), true);
-        source.sendSuccess(() -> Component.literal("§7Use um §fSinal de Redstone §7no Núcleo para liquefazer a fortaleza."), true);
-        source.sendSuccess(() -> Component.literal("§7Remova o sinal para remontá-la. §dSaldo máximo §f(" + MorphingMatrixCoreBlockEntity.MAX_RESERVE + " blocos) §7carregado."), true);
+        source.sendSuccess(() -> Component.literal("§7Use o §fGUI do Núcleo §7ou um §fSinal de Redstone §7para liquefazer e remontar a fortaleza."), true);
+        source.sendSuccess(() -> Component.literal("§7Saldo máximo §f(" + MorphingMatrixCoreBlockEntity.MAX_RESERVE + " blocos) §7carregado."), true);
 
         return 1;
     }
 
-    private static List<BlockPos> buildCastleBlueprint(BlockPos origin) {
-        List<BlockPos> positions = new ArrayList<>();
+    private static Map<BlockPos, BlockState> buildCastleStructure(BlockPos origin) {
+        Map<BlockPos, BlockState> structure = new HashMap<>();
 
-        buildWalls(positions, origin);
-        buildTower(positions, origin, -CASTLE_HALF, -CASTLE_HALF);
-        buildTower(positions, origin, CASTLE_HALF, -CASTLE_HALF);
-        buildTower(positions, origin, -CASTLE_HALF, CASTLE_HALF);
-        buildTower(positions, origin, CASTLE_HALF, CASTLE_HALF);
-        buildGate(positions, origin);
-        buildThroneRoom(positions, origin);
+        buildFloor(structure, origin);
+        buildWalls(structure, origin);
+        buildTower(structure, origin, -CASTLE_HALF, -CASTLE_HALF);
+        buildTower(structure, origin, CASTLE_HALF, -CASTLE_HALF);
+        buildTower(structure, origin, -CASTLE_HALF, CASTLE_HALF);
+        buildTower(structure, origin, CASTLE_HALF, CASTLE_HALF);
+        buildGate(structure, origin);
+        buildThroneRoom(structure, origin);
 
-        return positions;
+        return structure;
     }
 
-    private static void buildWalls(List<BlockPos> positions, BlockPos origin) {
+    private static void buildFloor(Map<BlockPos, BlockState> structure, BlockPos origin) {
         int half = CASTLE_HALF;
-        for (int y = 0; y < WALL_HEIGHT; y++) {
+        BlockState floorState = SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState();
+        for (int x = -half; x <= half; x++) {
+            for (int z = -half; z <= half; z++) {
+                structure.put(origin.offset(x, 0, z), floorState);
+            }
+        }
+    }
+
+    private static void buildWalls(Map<BlockPos, BlockState> structure, BlockPos origin) {
+        int half = CASTLE_HALF;
+        BlockState blockState = SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState();
+        BlockState windowState = SandStormBlocks.MORPHING_ALLOY_WINDOW.defaultBlockState();
+
+        for (int y = 1; y < WALL_HEIGHT; y++) {
             for (int x = -half; x <= half; x++) {
-                positions.add(origin.offset(x, y, -half));
-                positions.add(origin.offset(x, y, half));
+                boolean isWindow = (y == 4 || y == 5) && (Math.abs(x) % 4 == 0) && Math.abs(x) < half - 2;
+                structure.put(origin.offset(x, y, -half), isWindow ? windowState : blockState);
+                structure.put(origin.offset(x, y, half), isWindow ? windowState : blockState);
             }
             for (int z = -half + 1; z < half; z++) {
-                positions.add(origin.offset(-half, y, z));
-                positions.add(origin.offset(half, y, z));
+                boolean isWindow = (y == 4 || y == 5) && (Math.abs(z) % 4 == 0) && Math.abs(z) < half - 2;
+                structure.put(origin.offset(-half, y, z), isWindow ? windowState : blockState);
+                structure.put(origin.offset(half, y, z), isWindow ? windowState : blockState);
             }
         }
 
         for (int x = -half; x <= half; x += 3) {
-            positions.add(origin.offset(x, WALL_HEIGHT, -half));
-            positions.add(origin.offset(x, WALL_HEIGHT, half));
+            structure.put(origin.offset(x, WALL_HEIGHT, -half), blockState);
+            structure.put(origin.offset(x, WALL_HEIGHT, half), blockState);
         }
         for (int z = -half; z <= half; z += 3) {
-            positions.add(origin.offset(-half, WALL_HEIGHT, z));
-            positions.add(origin.offset(half, WALL_HEIGHT, z));
+            structure.put(origin.offset(-half, WALL_HEIGHT, z), blockState);
+            structure.put(origin.offset(half, WALL_HEIGHT, z), blockState);
         }
     }
 
-    private static void buildTower(List<BlockPos> positions, BlockPos origin, int dx, int dz) {
+    private static void buildTower(Map<BlockPos, BlockState> structure, BlockPos origin, int dx, int dz) {
         int towerRadius = 3;
-        for (int y = 0; y < TOWER_HEIGHT; y++) {
+        BlockState blockState = SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState();
+        BlockState windowState = SandStormBlocks.MORPHING_ALLOY_WINDOW.defaultBlockState();
+
+        for (int y = 1; y < TOWER_HEIGHT; y++) {
             for (int tx = -towerRadius; tx <= towerRadius; tx++) {
                 for (int tz = -towerRadius; tz <= towerRadius; tz++) {
                     boolean isWall = Math.abs(tx) == towerRadius || Math.abs(tz) == towerRadius;
                     boolean isBattlement = y == TOWER_HEIGHT - 1 && (Math.abs(tx) + Math.abs(tz)) % 2 == 0;
                     if (isWall || isBattlement) {
-                        positions.add(origin.offset(dx + tx, y, dz + tz));
+                        boolean isTowerWindow = (y == 6 || y == 10) && ((Math.abs(tx) == towerRadius && tz == 0) || (Math.abs(tz) == towerRadius && tx == 0));
+                        structure.put(origin.offset(dx + tx, y, dz + tz), isTowerWindow ? windowState : blockState);
                     }
                 }
             }
         }
     }
 
-    private static void buildGate(List<BlockPos> positions, BlockPos origin) {
+    private static void buildGate(Map<BlockPos, BlockState> structure, BlockPos origin) {
         int half = CASTLE_HALF;
-        for (int y = 0; y < WALL_HEIGHT; y++) {
-            for (int x = -half; x <= half; x++) {
-                boolean isGateOpening = x >= -2 && x <= 2 && y < 5;
-                if (!isGateOpening) {
-                    positions.remove(origin.offset(x, y, -half));
-                    positions.add(origin.offset(x, y, -half));
-                }
+        BlockState blockState = SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState();
+
+        for (int y = 1; y < 5; y++) {
+            for (int x = -2; x <= 2; x++) {
+                structure.remove(origin.offset(x, y, -half));
             }
         }
 
+        BlockState doorLower = SandStormBlocks.MORPHING_ALLOY_DOOR.defaultBlockState()
+                .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER)
+                .setValue(DoorBlock.FACING, Direction.SOUTH);
+        BlockState doorUpper = SandStormBlocks.MORPHING_ALLOY_DOOR.defaultBlockState()
+                .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER)
+                .setValue(DoorBlock.FACING, Direction.SOUTH);
+
+        structure.put(origin.offset(-1, 1, -half), doorLower);
+        structure.put(origin.offset(-1, 2, -half), doorUpper);
+        structure.put(origin.offset(1, 1, -half), doorLower);
+        structure.put(origin.offset(1, 2, -half), doorUpper);
+
         for (int y = 5; y <= WALL_HEIGHT + 2; y++) {
-            positions.add(origin.offset(-3, y, -half));
-            positions.add(origin.offset(3, y, -half));
-            positions.add(origin.offset(-2, y, -half));
-            positions.add(origin.offset(2, y, -half));
+            structure.put(origin.offset(-3, y, -half), blockState);
+            structure.put(origin.offset(3, y, -half), blockState);
+            structure.put(origin.offset(-2, y, -half), blockState);
+            structure.put(origin.offset(2, y, -half), blockState);
         }
 
         for (int x = -2; x <= 2; x++) {
-            positions.add(origin.offset(x, 5, -half));
+            structure.put(origin.offset(x, 5, -half), blockState);
         }
     }
 
-    private static void buildThroneRoom(List<BlockPos> positions, BlockPos origin) {
+    private static void buildThroneRoom(Map<BlockPos, BlockState> structure, BlockPos origin) {
         int roomSize = 5;
-        for (int y = 0; y < 7; y++) {
+        BlockState blockState = SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState();
+        BlockState windowState = SandStormBlocks.MORPHING_ALLOY_WINDOW.defaultBlockState();
+
+        for (int y = 1; y < 7; y++) {
             for (int x = -roomSize; x <= roomSize; x++) {
                 for (int z = -roomSize; z <= roomSize; z++) {
                     boolean isWall = Math.abs(x) == roomSize || Math.abs(z) == roomSize || y == 6;
                     if (isWall) {
-                        positions.add(origin.offset(x, y, z));
+                        boolean isThroneWindow = z == roomSize && (y == 3 || y == 4) && Math.abs(x) <= 2;
+                        structure.put(origin.offset(x, y, z), isThroneWindow ? windowState : blockState);
                     }
                 }
             }
@@ -172,9 +203,9 @@ public class SandstormMorphingCastleCommand {
 
         for (int step = 0; step < 3; step++) {
             int size = roomSize - step - 1;
-            int yLevel = step;
+            int yLevel = step + 1;
             for (int x = -size; x <= size; x++) {
-                positions.add(origin.offset(x, yLevel, size + 1));
+                structure.put(origin.offset(x, yLevel, size + 1), blockState);
             }
         }
     }

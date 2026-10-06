@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": "sandstorm:morphing_alloy_block",
+    "G": "minecraft:glass"
+  },
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "id": "sandstorm:morphing_alloy_window"
+  }
+}

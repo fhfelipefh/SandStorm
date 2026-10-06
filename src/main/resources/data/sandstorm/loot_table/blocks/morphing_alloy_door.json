@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "sandstorm:morphing_alloy_door",
+          "properties": {
+            "half": "lower"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "sandstorm:morphing_alloy_door"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "sandstorm:blocks/morphing_alloy_door"
+}

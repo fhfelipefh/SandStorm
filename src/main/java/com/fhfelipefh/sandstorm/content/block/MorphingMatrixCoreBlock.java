@@ -2,10 +2,7 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.MorphingMatrixCoreBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -73,24 +70,10 @@ public class MorphingMatrixCoreBlock extends Block implements EntityBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
+        if (!level.isClientSide()) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof MorphingMatrixCoreBlockEntity coreBe) {
-                if (player.isShiftKeyDown()) {
-                    boolean nextHolo = !coreBe.isHologramActive();
-                    coreBe.setHologramActive(nextHolo);
-                    level.setBlock(pos, state.setValue(HOLOGRAM, nextHolo), 3);
-                    level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0f, nextHolo ? 1.5f : 0.8f);
-                    Component msg = nextHolo
-                            ? Component.translatable("message.sandstorm.morphing_core.hologram_on")
-                            : Component.translatable("message.sandstorm.morphing_core.hologram_off");
-                    player.sendSystemMessage(msg);
-                } else {
-                    int count = coreBe.scanAndSaveStructure(serverLevel);
-                    level.playSound(null, pos, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1.0f, 1.2f);
-                    Component msg = Component.translatable("message.sandstorm.morphing_core.saved", count, coreBe.getReserveBlocks());
-                    player.sendSystemMessage(msg);
-                }
+                player.openMenu(coreBe);
             }
         }
         return InteractionResult.SUCCESS;

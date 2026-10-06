@@ -1050,8 +1050,11 @@
   "item.sandstorm.nanite_gallium_composite": "Compuesto de Galio Mórfico",
   "block.sandstorm.deepslate_gallium_ore": "Mineral de Galio de Pizarra Profunda",
   "block.sandstorm.morphing_alloy_block": "Bloque de Aleación Mórfica",
+  "block.sandstorm.morphing_alloy_door": "Puerta de Aleación Mórfica",
+  "block.sandstorm.morphing_alloy_window": "Ventana de Aleación Mórfica",
   "block.sandstorm.morphing_matrix_core": "Núcleo de Matriz Mórfica",
   "block.sandstorm.morphing_fluid_transition": "Aleación Mórfica en Transición",
+  "gui.sandstorm.morphing_matrix_core.title": "Núcleo de Matriz Mórfica",
   "message.sandstorm.morphing_core.hologram_on": "Holograma 64x64x64 Activado.",
   "message.sandstorm.morphing_core.hologram_off": "Holograma 64x64x64 Desactivado.",
   "message.sandstorm.morphing_core.saved": "Matriz Guardada: %d bloques | Reserva: %d bloques"
