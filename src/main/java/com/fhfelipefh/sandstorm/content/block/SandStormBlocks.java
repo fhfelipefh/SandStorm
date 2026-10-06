@@ -635,6 +635,13 @@ public class SandStormBlocks {
                     .strength(1.0f, 3.0f)
                     .sound(SoundType.COPPER)
                     .noOcclusion()));
+    public static final CyberneticGolemHeadBlock CYBERNETIC_GOLEM_HEAD = register("cybernetic_golem_head",
+            new CyberneticGolemHeadBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("cybernetic_golem_head")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(1.5f)
+                    .lightLevel(state -> 8)
+                    .sound(SoundType.METAL)));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,

@@ -385,6 +385,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.QUANTUM_DISK_DRIVE);
                         entries.accept(SandStormBlocks.QUANTUM_ACCESS_TERMINAL);
                         entries.accept(SandStormBlocks.QUANTUM_NETWORK_CABLE);
+                        entries.accept(SandStormBlocks.CYBERNETIC_GOLEM_HEAD);
                     })
                     .build()
     );

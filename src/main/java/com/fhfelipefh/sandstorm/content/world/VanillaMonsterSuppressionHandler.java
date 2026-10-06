@@ -2,12 +2,19 @@ package com.fhfelipefh.sandstorm.content.world;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gamerules.GameRules;
 
 public class VanillaMonsterSuppressionHandler {
@@ -20,6 +27,20 @@ public class VanillaMonsterSuppressionHandler {
             if (shouldSuppressEntity(entity)) {
                 entity.discard();
             }
+        });
+        UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(level)) {
+                return InteractionResult.PASS;
+            }
+            BlockState hitState = level.getBlockState(hitResult.getBlockPos());
+            ItemStack held = player.getItemInHand(hand);
+            if (hitState.is(Blocks.IRON_BLOCK) && (held.is(Items.CARVED_PUMPKIN) || held.is(Items.JACK_O_LANTERN) || held.is(Items.PUMPKIN))) {
+                if (!level.isClientSide()) {
+                    player.sendSystemMessage(Component.translatable("telemetry.sandstorm.iron_golem_disabled"));
+                }
+                return InteractionResult.FAIL;
+            }
+            return InteractionResult.PASS;
         });
     }
 
@@ -56,6 +77,12 @@ public class VanillaMonsterSuppressionHandler {
         }
 
         EntitySpawnReason reason = mob.spawnReason();
+        if (entityId != null && "iron_golem".equals(entityId.getPath())) {
+            if (reason == EntitySpawnReason.TRIGGERED || reason == EntitySpawnReason.DISPENSER || reason == EntitySpawnReason.MOB_SUMMONED) {
+                return true;
+            }
+        }
+
         if (reason == EntitySpawnReason.SPAWN_ITEM_USE
                 || reason == EntitySpawnReason.COMMAND
                 || reason == EntitySpawnReason.BREEDING

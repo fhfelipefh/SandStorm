@@ -16,7 +16,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import com.fhfelipefh.sandstorm.content.entity.ai.DesertExplorationWanderGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
@@ -37,14 +37,14 @@ public class CrawlerDroneEntity extends PathfinderMob implements Enemy {
                 .add(Attributes.MOVEMENT_SPEED, 0.32)
                 .add(Attributes.ATTACK_DAMAGE, 4.5)
                 .add(Attributes.ARMOR, 6.0)
-                .add(Attributes.FOLLOW_RANGE, 24.0);
+                .add(Attributes.FOLLOW_RANGE, 64.0);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.25, true));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(2, new DesertExplorationWanderGoal(this, 1.0));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 

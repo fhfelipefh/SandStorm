@@ -19,7 +19,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import com.fhfelipefh.sandstorm.content.entity.ai.DesertExplorationWanderGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
@@ -39,7 +39,7 @@ public class LaborerUnitEntity extends PathfinderMob implements Enemy {
                 .add(Attributes.MOVEMENT_SPEED, 0.19)
                 .add(Attributes.ARMOR, 10.0)
                 .add(Attributes.ATTACK_DAMAGE, 7.0)
-                .add(Attributes.FOLLOW_RANGE, 22.0)
+                .add(Attributes.FOLLOW_RANGE, 64.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.8);
     }
 
@@ -47,7 +47,7 @@ public class LaborerUnitEntity extends PathfinderMob implements Enemy {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.1, false));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(2, new DesertExplorationWanderGoal(this, 0.85));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 

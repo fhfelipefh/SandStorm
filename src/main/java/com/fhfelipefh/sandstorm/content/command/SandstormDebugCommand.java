@@ -26,10 +26,12 @@ import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberneticGolemEntity;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
 import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
+import com.fhfelipefh.sandstorm.content.entity.GolemMetalTier;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandboardEntity;
@@ -58,11 +60,14 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -103,7 +108,8 @@ public class SandstormDebugCommand {
             "cyber_hound",
             "laborer_unit",
             "scout_drone",
-            "crawler_drone"
+            "crawler_drone",
+            "cybernetic_golem"
     );
 
     private static final List<String> FACILITIES = List.of(
@@ -153,6 +159,13 @@ public class SandstormDebugCommand {
                         .then(Commands.argument("entityType", StringArgumentType.word())
                                 .suggests((ctx, builder) -> suggestSpawnables(builder))
                                 .executes(ctx -> executeSpawn(ctx, StringArgumentType.getString(ctx, "entityType")))
+                        )
+                )
+                .then(Commands.literal("golem")
+                        .executes(ctx -> executeGolem(ctx, "iron"))
+                        .then(Commands.argument("tier", StringArgumentType.word())
+                                .suggests((ctx, builder) -> suggestGolemTiers(builder))
+                                .executes(ctx -> executeGolem(ctx, StringArgumentType.getString(ctx, "tier")))
                         )
                 )
                 .then(Commands.literal("setup")
@@ -228,6 +241,13 @@ public class SandstormDebugCommand {
                                         .executes(ctx -> executeSpawn(ctx, StringArgumentType.getString(ctx, "entityType")))
                                 )
                         )
+                        .then(Commands.literal("golem")
+                                .executes(ctx -> executeGolem(ctx, "iron"))
+                                .then(Commands.argument("tier", StringArgumentType.word())
+                                        .suggests((ctx, builder) -> suggestGolemTiers(builder))
+                                        .executes(ctx -> executeGolem(ctx, StringArgumentType.getString(ctx, "tier")))
+                                )
+                        )
                         .then(Commands.literal("setup")
                                 .then(Commands.argument("facility", StringArgumentType.word())
                                         .suggests((ctx, builder) -> suggestFacilities(builder))
@@ -280,6 +300,15 @@ public class SandstormDebugCommand {
                         )
                 )
         );
+
+        dispatcher.register(Commands.literal("sandstorm_golem")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeGolem(ctx, "all"))
+                .then(Commands.argument("tier", StringArgumentType.word())
+                        .suggests((ctx, builder) -> suggestGolemTiers(builder))
+                        .executes(ctx -> executeGolem(ctx, StringArgumentType.getString(ctx, "tier")))
+                )
+        );
     }
 
     private static CompletableFuture<Suggestions> suggestPhases(SuggestionsBuilder builder) {
@@ -299,6 +328,16 @@ public class SandstormDebugCommand {
     private static CompletableFuture<Suggestions> suggestFacilities(SuggestionsBuilder builder) {
         for (String f : FACILITIES) {
             builder.suggest(f);
+        }
+        return builder.buildFuture();
+    }
+
+    private static CompletableFuture<Suggestions> suggestGolemTiers(SuggestionsBuilder builder) {
+        List<String> tiers = List.of("all", "iron", "copper", "gold", "netherite", "composite", "boost", "kit");
+        for (String tier : tiers) {
+            if (tier.startsWith(builder.getRemaining().toLowerCase(Locale.ROOT))) {
+                builder.suggest(tier);
+            }
         }
         return builder.buildFuture();
     }
@@ -907,6 +946,16 @@ public class SandstormDebugCommand {
                     return 1;
                 }
             }
+            case "cybernetic_golem" -> {
+                CyberneticGolemEntity golem = SandStormEntities.CYBERNETIC_GOLEM.create(level, EntitySpawnReason.COMMAND);
+                if (golem != null) {
+                    golem.setPos(pos.x, pos.y, pos.z);
+                    golem.setMetalTier(GolemMetalTier.IRON);
+                    level.addFreshEntity(golem);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Golem Cibernético instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
             default -> {
                 source.sendFailure(Component.literal("§c[SandStorm] Entidade desconhecida. Opções: " + String.join(", ", SPAWNABLES)));
                 return 0;
@@ -914,6 +963,133 @@ public class SandstormDebugCommand {
         }
 
         source.sendFailure(Component.literal("§c[SandStorm] Falha ao criar a entidade solicitada."));
+        return 0;
+    }
+
+    private static int executeGolem(CommandContext<CommandSourceStack> ctx, String tierParam) {
+        CommandSourceStack source = ctx.getSource();
+        ServerLevel level = source.getLevel();
+        ServerPlayer player = source.getEntity() instanceof ServerPlayer sp ? sp : null;
+        Vec3 pos = source.getPosition();
+        String normalized = tierParam.toLowerCase(Locale.ROOT);
+
+        if ("kit".equals(normalized)) {
+            if (player != null) {
+                giveItem(player, SandStormBlocks.CYBERNETIC_GOLEM_HEAD, 5);
+                giveItem(player, Blocks.IRON_BLOCK, 4);
+                giveItem(player, Blocks.RAW_COPPER_BLOCK, 4);
+                giveItem(player, Blocks.GOLD_BLOCK, 4);
+                giveItem(player, Blocks.NETHERITE_BLOCK, 4);
+                giveItem(player, Blocks.HEAVY_CORE, 4);
+                player.containerMenu.broadcastChanges();
+                player.inventoryMenu.broadcastChanges();
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§r Kit de construção de autômatos entregue ao inventário!"), true);
+                return 1;
+            } else {
+                source.sendFailure(Component.literal("§c[SandStorm] O comando kit deve ser executado por um jogador."));
+                return 0;
+            }
+        }
+
+        if ("boost".equals(normalized) || "overdrive".equals(normalized)) {
+            if (player == null) {
+                source.sendFailure(Component.literal("§c[SandStorm] O comando boost deve ser executado por um jogador."));
+                return 0;
+            }
+            List<CyberneticGolemEntity> nearby = level.getEntitiesOfClass(CyberneticGolemEntity.class, player.getBoundingBox().inflate(24.0));
+            if (nearby.isEmpty()) {
+                source.sendFailure(Component.literal("§c[SandStorm] Nenhum Golem Cibernético encontrado nas proximidades."));
+                return 0;
+            }
+            for (CyberneticGolemEntity golem : nearby) {
+                golem.setOverdrive(true);
+                golem.setHeat(1.0f);
+            }
+            source.sendSuccess(() -> Component.literal("§6[SandStorm]§r Sobrecarga de propulsão (Overdrive Boost) acionada nos golens próximos!"), true);
+            return 1;
+        }
+
+        if ("all".equals(normalized) || "lineup".equals(normalized)) {
+            Vec3 forward;
+            Vec3 right;
+            Vec3 origin;
+            float yaw;
+
+            if (player != null) {
+                Vec3 look = player.getLookAngle();
+                forward = new Vec3(look.x, 0.0, look.z).normalize();
+                if (forward.lengthSqr() < 0.01) {
+                    forward = new Vec3(0, 0, 1);
+                }
+                right = new Vec3(-forward.z, 0.0, forward.x).normalize();
+                origin = player.position().add(forward.scale(5.0));
+                yaw = (float) (Math.atan2(-forward.x, forward.z) * (180.0 / Math.PI));
+            } else {
+                forward = new Vec3(0, 0, 1);
+                right = new Vec3(1, 0, 0);
+                origin = pos.add(0, 0, 4);
+                yaw = 180.0f;
+            }
+
+            GolemMetalTier[] tiers = GolemMetalTier.values();
+            for (int i = 0; i < tiers.length; i++) {
+                double offset = (i - 2) * 2.8;
+                Vec3 spawnPos = origin.add(right.scale(offset));
+                CyberneticGolemEntity golem = SandStormEntities.CYBERNETIC_GOLEM.create(level, EntitySpawnReason.COMMAND);
+                if (golem != null) {
+                    golem.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+                    golem.setYRot(yaw);
+                    golem.setYHeadRot(yaw);
+                    golem.setMetalTier(tiers[i]);
+                    level.addFreshEntity(golem);
+
+                    level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                            spawnPos.x, spawnPos.y + 1.2, spawnPos.z, 25, 0.4, 0.6, 0.4, 0.12);
+                    level.playSound(null, spawnPos.x, spawnPos.y, spawnPos.z,
+                            SoundEvents.BEACON_POWER_SELECT, SoundSource.NEUTRAL, 1.0f, 1.0f + (i * 0.15f));
+                }
+            }
+
+            source.sendSuccess(() -> Component.literal("§6[SandStorm]§r Formação completa instanciada lado a lado: Ferro, Cobre, Ouro, Netherita e Compósito!"), true);
+            return 1;
+        }
+
+        GolemMetalTier tier = GolemMetalTier.byId(normalized);
+        Vec3 forward;
+        Vec3 spawnPos;
+        float yaw;
+
+        if (player != null) {
+            Vec3 look = player.getLookAngle();
+            forward = new Vec3(look.x, 0.0, look.z).normalize();
+            if (forward.lengthSqr() < 0.01) {
+                forward = new Vec3(0, 0, 1);
+            }
+            spawnPos = player.position().add(forward.scale(4.0));
+            yaw = (float) (Math.atan2(-forward.x, forward.z) * (180.0 / Math.PI));
+        } else {
+            spawnPos = pos;
+            yaw = 0.0f;
+        }
+
+        CyberneticGolemEntity golem = SandStormEntities.CYBERNETIC_GOLEM.create(level, EntitySpawnReason.COMMAND);
+        if (golem != null) {
+            golem.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+            golem.setYRot(yaw);
+            golem.setYHeadRot(yaw);
+            golem.setMetalTier(tier);
+            level.addFreshEntity(golem);
+
+            level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                    spawnPos.x, spawnPos.y + 1.2, spawnPos.z, 25, 0.4, 0.6, 0.4, 0.12);
+            level.playSound(null, spawnPos.x, spawnPos.y, spawnPos.z,
+                    SoundEvents.BEACON_POWER_SELECT, SoundSource.NEUTRAL, 1.0f, 1.2f);
+
+            source.sendSuccess(() -> Component.literal("§6[SandStorm]§r Golem Cibernético (" + tier.getId().toUpperCase(Locale.ROOT) + ") instanciado com sucesso!"), true);
+            return 1;
+        }
+
+        source.sendFailure(Component.literal("§c[SandStorm] Falha ao instanciar o Golem Cibernético."));
         return 0;
     }
 
@@ -1510,6 +1686,7 @@ public class SandstormDebugCommand {
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug swarm status|reset|order <0..3>§r: Gestão tática do enxame de robôs"), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug weather start [0.05..1.0]|stop§r: Simulação de tempestades de areia"), false);
         source.sendSuccess(() -> Component.literal("§b/sandstorm debug seismic§r: Simulação de abalo sísmico e convocação de Shai-Hulud"), false);
+        source.sendSuccess(() -> Component.literal("§b/sandstorm_golem [tier|all|kit]§r: Invoca golens cibernéticos ou formação lado a lado"), false);
         return 1;
     }
 

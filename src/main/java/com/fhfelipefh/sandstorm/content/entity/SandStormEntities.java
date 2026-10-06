@@ -262,6 +262,19 @@ public class SandStormEntities {
                     .build(CRAWLER_DRONE_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> CYBERNETIC_GOLEM_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("cybernetic_golem")
+    );
+
+    public static final EntityType<CyberneticGolemEntity> CYBERNETIC_GOLEM = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("cybernetic_golem"),
+            EntityType.Builder.of(CyberneticGolemEntity::new, MobCategory.MISC)
+                    .sized(1.4f, 2.7f)
+                    .build(CYBERNETIC_GOLEM_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
@@ -280,5 +293,6 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(LABORER_UNIT, LaborerUnitEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SCOUT_DRONE, ScoutDroneEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CRAWLER_DRONE, CrawlerDroneEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(CYBERNETIC_GOLEM, CyberneticGolemEntity.createAttributes());
     }
 }

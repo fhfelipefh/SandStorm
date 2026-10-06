@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "E": "sandstorm:electric_component",
+    "P": "minecraft:carved_pumpkin",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    " S ",
+    "BPB",
+    " E "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:cybernetic_golem_head"
+  }
+}

@@ -68,6 +68,7 @@
     "sandstorm:quantum_network_controller",
     "sandstorm:quantum_disk_drive",
     "sandstorm:quantum_access_terminal",
-    "sandstorm:quantum_network_cable"
+    "sandstorm:quantum_network_cable",
+    "sandstorm:cybernetic_golem_head"
   ]
 }

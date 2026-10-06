@@ -48,6 +48,7 @@ import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CargoDroneRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ClientUplinkRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CrushingSpikeGateRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.CyberneticGolemRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyborgRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DesalinationFilterBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.HydroponicChamberBlockEntityRenderer;
@@ -174,6 +175,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.LABORER_UNIT, LaborerUnitRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SCOUT_DRONE, ScoutDroneRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CRAWLER_DRONE, CrawlerDroneRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.CYBERNETIC_GOLEM, CyberneticGolemRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

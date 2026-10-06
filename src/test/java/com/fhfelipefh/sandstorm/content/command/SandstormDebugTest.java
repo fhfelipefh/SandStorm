@@ -36,6 +36,7 @@ class SandstormDebugTest {
         assertNotNull(debugNode.getChild("phase"));
         assertNotNull(debugNode.getChild("spawn"));
         assertNotNull(debugNode.getChild("robot"));
+        assertNotNull(debugNode.getChild("golem"));
         assertNotNull(debugNode.getChild("setup"));
         assertNotNull(debugNode.getChild("structure"));
         assertNotNull(debugNode.getChild("suit"));
@@ -57,6 +58,7 @@ class SandstormDebugTest {
         assertNotNull(sandstormNode.getChild("debug").getChild("phase"));
         assertNotNull(sandstormNode.getChild("debug").getChild("spawn"));
         assertNotNull(sandstormNode.getChild("debug").getChild("robot"));
+        assertNotNull(sandstormNode.getChild("debug").getChild("golem"));
         assertNotNull(sandstormNode.getChild("debug").getChild("setup"));
         assertNotNull(sandstormNode.getChild("debug").getChild("structure"));
         assertNotNull(sandstormNode.getChild("debug").getChild("suit"));
@@ -64,6 +66,9 @@ class SandstormDebugTest {
         assertNotNull(sandstormNode.getChild("debug").getChild("weather"));
         assertNotNull(sandstormNode.getChild("debug").getChild("seismic"));
         assertNotNull(sandstormNode.getChild("debug").getChild("list"));
+
+        CommandNode<CommandSourceStack> golemNode = dispatcher.getRoot().getChild("sandstorm_golem");
+        assertNotNull(golemNode);
     }
 
     @Test
@@ -102,7 +107,8 @@ class SandstormDebugTest {
         assertTrue(spawnables.contains("laborer_unit"));
         assertTrue(spawnables.contains("scout_drone"));
         assertTrue(spawnables.contains("crawler_drone"));
-        assertEquals(21, spawnables.size());
+        assertTrue(spawnables.contains("cybernetic_golem"));
+        assertEquals(22, spawnables.size());
     }
 
     @Test

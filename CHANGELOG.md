@@ -5,6 +5,28 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.7.0] - 2026-10-06
+
+### 🧭 Ecossistema Autônomo e Predação Dinâmica nas Dunas
+* **Geração Inteligente Fora do Campo de Visão (Out-of-Sight Spawning)**:
+  * Sistema de spawn procedural (`DesertMobSpawnManager`) no deserto do SandStorm que elimina o surgimento abrupto de mobs na visão direta do jogador.
+  * Validação trigonométrica de cone de visão (`look.dot`) e traçado de raio (`ClipContext.Block.VISUAL`): autômatos surgem exclusivamente atrás de dunas, cristas de relevo ou fora do alcance periférico da câmera.
+* **I.A. de Exploração e Varredura de Terreno (Desert Exploration Wander)**:
+  * Implementação de `DesertExplorationWanderGoal` substituindo o passeio estático vanilla por navegação de longo alcance (24 a 48 blocos) através das dunas.
+  * Rotina de inspeção e busca sensorial: autômatos pausam periodicamente em cumes de areia para escanear o horizonte com rotação de cabeça, inclinação ótica e faíscas cibernéticas, simulando procura ativa por sinais e recursos.
+  * Geração de vibrações sísmicas dinâmicas a cada passo mecânico sobre a areia (`SeismicSurvivalHandler`), com intensidade proporcional ao porte da unidade (unidades operárias e drones pesados causam maior perturbação).
+* **Predação Cinematográfica de Vermes de Areia (Sandworm Apex Hunting)**:
+  * Evento de predação ambiental (`DesertPredationHandler`): vermes gigantes emergem violentamente das profundezas para caçar e devorar autômatos errantes diante dos olhos do jogador.
+  * Sequência de choque com tremor prévio, abalo de partículas de areia, ruptura de solo e mordida esmagadora que destrói as máquinas em fragmentos de sucata e sons de mastigação mecânica.
+* **Bloqueio de Golens de Ferro Vanilla & Autômatos Guardiões Cibernéticos**:
+  * **Supressão do Golem Vanilla**: Impedida a criação de golens de ferro convencionais no deserto do SandStorm (`VanillaMonsterSuppressionHandler`), interceptando abóboras entalhadas sobre blocos de ferro com feedback sonoro e aviso de telemetria.
+  * **Cabeça Robótica de Autômatos (`Cybernetic Golem Head`)**: Bloco direcional estilizado como abóbora entalhada cibernética de Halloween com matriz de circuitos e LEDs frontais. Usado como núcleo de senciência para montagem de autômatos em padrão clássico em T.
+  * **Forjamento Multimetálico Universal (`GolemMetalTier`)**: O golem cibernético pode ser erguido com qualquer bloco metálico (Ferro, Cobre, Ouro, Netherita e Compósito de Titânio/Quitina), escalando atributos de vida máxima, blindagem, resistência a recuo, dano de impacto e taxa de recarga térmica.
+  * **Sistema de Propulsão em Sobrecarga (5X Overdrive Boost)**: Mecânica automática de proteção ao jogador. Ao detectar ameaças distantes, sobrecarrega os atuadores hidráulicos com faíscas elétricas (`ELECTRIC_SPARK`), juntas incandescentes de alta emissividade e velocidade extrema de arrancada.
+  * **Ciclo Térmico & Resfriamento Gradual**: Após o combate, dissipa calor progressivamente liberando plumas de vapor (`CAMPFIRE_COSY_SMOKE`) e chiado térmico (`FIRE_EXTINGUISH`), permitindo nova arrancada apenas quando os dissipadores esfriarem por completo.
+
+---
+
 ## [1.6.0] - 2026-10-05
 
 ### 🤖 Fauna Mecanoide do Apocalipse Tecnológico

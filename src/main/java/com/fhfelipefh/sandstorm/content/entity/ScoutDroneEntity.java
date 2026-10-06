@@ -17,7 +17,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import com.fhfelipefh.sandstorm.content.entity.ai.DesertExplorationWanderGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
@@ -38,14 +38,14 @@ public class ScoutDroneEntity extends PathfinderMob implements Enemy, RangedAtta
                 .add(Attributes.MAX_HEALTH, 18.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.28)
                 .add(Attributes.ARMOR, 4.0)
-                .add(Attributes.FOLLOW_RANGE, 26.0);
+                .add(Attributes.FOLLOW_RANGE, 64.0);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.0, 30, 45, 14.0f));
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(2, new DesertExplorationWanderGoal(this, 0.95));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 

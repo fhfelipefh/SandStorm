@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "sandstorm:block/cybernetic_golem_head_bottom",
+    "top": "sandstorm:block/cybernetic_golem_head_top",
+    "front": "sandstorm:block/cybernetic_golem_head_front",
+    "side": "sandstorm:block/cybernetic_golem_head_side"
+  }
+}

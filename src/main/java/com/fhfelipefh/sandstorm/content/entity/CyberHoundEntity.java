@@ -20,7 +20,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import com.fhfelipefh.sandstorm.content.entity.ai.DesertExplorationWanderGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
@@ -48,7 +48,7 @@ public class CyberHoundEntity extends TamableAnimal {
                 .add(Attributes.MOVEMENT_SPEED, 0.30)
                 .add(Attributes.ATTACK_DAMAGE, 5.0)
                 .add(Attributes.ARMOR, 8.0)
-                .add(Attributes.FOLLOW_RANGE, 28.0);
+                .add(Attributes.FOLLOW_RANGE, 64.0);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CyberHoundEntity extends TamableAnimal {
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.25, true));
         this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.15, 10.0f, 2.0f));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(4, new DesertExplorationWanderGoal(this, 1.05));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 
