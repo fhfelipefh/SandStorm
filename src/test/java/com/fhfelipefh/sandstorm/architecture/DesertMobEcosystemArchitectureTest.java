@@ -56,10 +56,10 @@ class DesertMobEcosystemArchitectureTest {
     }
 
     @Test
-    void versionMustBeOnePointEightZero() throws IOException {
+    void versionMustBeOnePointNineZero() throws IOException {
         Path gradleProps = Path.of("gradle.properties");
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.8.0"), "gradle.properties must be 1.8.0");
+        assertTrue(content.contains("version=1.9.0"), "gradle.properties must be 1.9.0");
     }
 
     @Test
@@ -114,5 +114,13 @@ class DesertMobEcosystemArchitectureTest {
         assertTrue(tierContent.contains("GOLD"), "Must support Gold tier");
         assertTrue(tierContent.contains("NETHERITE"), "Must support Netherite tier");
         assertTrue(tierContent.contains("COMPOSITE"), "Must support Composite tier");
+
+        Path modelFile = Path.of("src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "renderer", "CyberneticGolemModel.java");
+        assertTrue(Files.exists(modelFile), "CyberneticGolemModel.java must exist");
+        String modelContent = Files.readString(modelFile);
+        assertTrue(modelContent.contains("this.head = root.getChild(\"head\")"), "Head must be root child");
+        assertTrue(modelContent.contains("this.body = root.getChild(\"body\")"), "Body must be root child");
+        assertTrue(modelContent.contains("this.rightArm = root.getChild(\"right_arm\")"), "Right arm must be root child");
+        assertTrue(modelContent.contains("this.leftArm = root.getChild(\"left_arm\")"), "Left arm must be root child");
     }
 }

@@ -5,6 +5,24 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.9.0] - 2026-10-06
+
+### 🎨 Correção Visual Crítica & Texturização de Alta Fidelidade dos Golens Cibernéticos
+* **Correção Estrutural do Modelo (`CyberneticGolemModel`)**:
+  * Correção da hierarquia de partes corporais: a cabeça (`head`), braços (`right_arm`, `left_arm`) e tronco (`body`) foram reestruturados como filhos diretos da raiz (`root`), corrigindo o bug visual crítico em que a cabeça flutuava desacoplada no ar e os braços se projetavam acima dos ombros.
+  * Alinhamento estrito com a anatomia e poses padrão do Iron Golem do Minecraft 1.21.4, preservando inclinações de arrancada em Overdrive e oscilações táteis.
+* **Texturização Profissional Completa de Todos os Metais (128x128)**:
+  * Mapeamento UV preciso sem sobreposições de coordenadas para as 5 variantes metálicas e a camada emissiva:
+    * **Cobre (Copper)**: Blindagem cobreada industrial com pátina de oxidação verdigris/ciano, tubulações de latão e reator de plasma esmeralda.
+    * **Ferro (Iron)**: Aço escovado e titânio balístico com juntas em fibra de carbono escura e reator de arco ciano elétrico.
+    * **Ouro (Gold)**: Proteção térmica aeroespacial com placas douradas espelhadas e núcleo de singularidade violeta/magenta.
+    * **Netherita (Netherite)**: Chassi blindado de carbeto de tungstênio e netherita fosca com ranhuras térmicas em brasa carmesim.
+    * **Compósito (Titanium-Chitin Composite)**: Carapaça biocibernética de quitina de vermes das dunas com iridescência e matriz iônica solar âmbar.
+  * **Face de Abóbora Cibernética Integrada**: Todos os modelos agora ostentam a face estilizada da Cabeça de Autômato na fronte, com olhos angulares e boca dentada iluminada.
+  * **Textura Emissiva de Sobreaquecimento (`cybernetic_golem_heat_glow.png`)**: Olhos, boca cibernética, reator frontal e propulsores traseiros e articulares brilham em alta intensidade no escuro durante o estado de Overdrive.
+
+---
+
 ## [1.8.0] - 2026-10-06
 
 ### ⚡ Armamento Tático de PEM & Paralisia em Massa de Androides
