@@ -12,12 +12,19 @@ public final class SandstormFlashlightKeys {
             KeyMapping.Category.register(SandStormMod.id("sandstorm_category"));
 
     public static KeyMapping FLASHLIGHT_KEY;
+    public static KeyMapping CALL_GOLEM_KEY;
 
     public static void initialize() {
         FLASHLIGHT_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.sandstorm.flashlight",
                 InputConstants.Type.KEYBOARD,
                 InputConstants.KEY_G,
+                SANDSTORM_CATEGORY
+        ));
+        CALL_GOLEM_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+                "key.sandstorm.call_golem",
+                InputConstants.Type.KEYBOARD,
+                InputConstants.KEY_V,
                 SANDSTORM_CATEGORY
         ));
     }

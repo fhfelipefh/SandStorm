@@ -6,10 +6,12 @@ import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -112,6 +114,11 @@ public class CyberneticGolemHeadBlock extends Block {
         if (golem != null) {
             golem.setPos(headPos.getX() + 0.5, headPos.getY() - 1.95, headPos.getZ() + 0.5);
             golem.setMetalTier(tier);
+            Player builder = serverLevel.getNearestPlayer(headPos.getX() + 0.5, headPos.getY(), headPos.getZ() + 0.5, 12.0, false);
+            if (builder != null) {
+                golem.setOwnerUUID(builder.getUUID());
+                builder.sendSystemMessage(Component.translatable("message.sandstorm.golem_linked"));
+            }
             serverLevel.addFreshEntity(golem);
         }
     }

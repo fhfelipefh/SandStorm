@@ -73,6 +73,7 @@ import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.network.CallGolemPayload;
 import com.fhfelipefh.sandstorm.content.network.EmpDeafenPayload;
 import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
 import com.fhfelipefh.sandstorm.content.network.MagneticInterferencePayload;
@@ -193,6 +194,11 @@ public class SandStormClient implements ClientModInitializer {
                     } else {
                         client.player.sendOverlayMessage(Component.literal("§c[Lanterna] Requer Capacete do Traje Espacial!"));
                     }
+                }
+            }
+            if (SandstormFlashlightKeys.CALL_GOLEM_KEY.consumeClick()) {
+                if (client.player != null) {
+                    ClientPlayNetworking.send(new CallGolemPayload());
                 }
             }
             Minecraft mc = Minecraft.getInstance();

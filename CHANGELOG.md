@@ -5,6 +5,27 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.10.0] - 2026-10-06
+
+### 🤖 Chamado Remoto & Companheirismo Tático dos Golens Cibernéticos
+* **Sistema de Chamado Remoto via Tecla (`V` remapeável)**:
+  * Adicionada a tecla dedicada `key.sandstorm.call_golem` (padrão `V`, remapeável no menu de controles).
+  * Envia pacote de rede C2S `CallGolemPayload` acionando o manipulador `CyberneticGolemRecallHandler`, que comanda todos os golens cibernéticos ativos do jogador carregados no mundo para se deslocarem até sua posição.
+* **Navegação Inteligente e Distância de Respeito**:
+  * Alcance de percepção e perseguição estendido para 128 blocos (`FOLLOW_RANGE = 128.0`).
+  * Deslocamento estritamente terrestre e cinemático (sem teleporte mágico vanilla).
+  * Distância de parada de 4.5 blocos e início de perseguição aos 6.5 blocos, garantindo que o golem nunca colida nem fique "em cima" do jogador.
+  * Aumento dinâmico de velocidade de perseguição quando o jogador corre em arrancada (`sprint`).
+  * Ativação automática de Overdrive com propulsores se estiver a mais de 20 blocos ou sob comando de recall remoto.
+* **Defesa Proativa & Priorização de Androides**:
+  * Goal `CyberneticDefendOwnerGoal` que detecta instantaneamente agressores ou alvos hostis mirando no jogador.
+  * Prioridade absoluta de retaliação e ativação imediata de Overdrive ao combater Androides.
+* **Postura Tática e Animação Correta das Armas**:
+  * Rifles e canhões (`PlasmaRifleItem`, `SonicCannonItem`, `HeavyPlasmaCannonItem` e `EmpBlasterItem`) agora utilizam `ItemUseAnimation.CROSSBOW`, corrigindo a pose errônea de ferramenta/picareta.
+  * Transformações de modelo (`display`) em 3ª pessoa (`thirdperson_righthand`) e 1ª pessoa (`firstperson_righthand`) alinhadas horizontalmente para a frente como armas de fogo reais.
+
+---
+
 ## [1.9.0] - 2026-10-06
 
 ### 🎨 Correção Visual Crítica & Texturização de Alta Fidelidade dos Golens Cibernéticos

@@ -951,6 +951,9 @@ public class SandstormDebugCommand {
                 if (golem != null) {
                     golem.setPos(pos.x, pos.y, pos.z);
                     golem.setMetalTier(GolemMetalTier.IRON);
+                    if (source.getEntity() instanceof ServerPlayer sp) {
+                        golem.setOwnerUUID(sp.getUUID());
+                    }
                     level.addFreshEntity(golem);
                     source.sendSuccess(() -> Component.literal("§a[SandStorm] Golem Cibernético instanciado com sucesso!"), true);
                     return 1;
@@ -1041,6 +1044,9 @@ public class SandstormDebugCommand {
                     golem.setYRot(yaw);
                     golem.setYHeadRot(yaw);
                     golem.setMetalTier(tiers[i]);
+                    if (player != null) {
+                        golem.setOwnerUUID(player.getUUID());
+                    }
                     level.addFreshEntity(golem);
 
                     level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
@@ -1078,6 +1084,9 @@ public class SandstormDebugCommand {
             golem.setYRot(yaw);
             golem.setYHeadRot(yaw);
             golem.setMetalTier(tier);
+            if (player != null) {
+                golem.setOwnerUUID(player.getUUID());
+            }
             level.addFreshEntity(golem);
 
             level.sendParticles(ParticleTypes.ELECTRIC_SPARK,

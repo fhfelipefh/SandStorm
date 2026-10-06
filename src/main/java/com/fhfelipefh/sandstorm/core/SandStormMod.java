@@ -13,6 +13,8 @@ import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockE
 import com.fhfelipefh.sandstorm.content.gui.QuantumTerminalMenu;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.entity.CyberneticGolemRecallHandler;
+import com.fhfelipefh.sandstorm.content.network.CallGolemPayload;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
 import com.fhfelipefh.sandstorm.content.network.ConfigureTurretPayload;
 import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
@@ -95,6 +97,10 @@ public class SandStormMod implements ModInitializer {
                 FlashlightTogglePayload.STREAM_CODEC
         );
         PayloadTypeRegistry.serverboundPlay().register(
+                CallGolemPayload.TYPE,
+                CallGolemPayload.STREAM_CODEC
+        );
+        PayloadTypeRegistry.serverboundPlay().register(
                 ConfigureTurretPayload.TYPE,
                 ConfigureTurretPayload.STREAM_CODEC
         );
@@ -146,6 +152,12 @@ public class SandStormMod implements ModInitializer {
                 FlashlightTogglePayload.TYPE,
                 (payload, context) -> {
                     FlashlightStateServer.setFlashlightMode(context.player().getUUID(), payload.mode());
+                }
+        );
+        ServerPlayNetworking.registerGlobalReceiver(
+                CallGolemPayload.TYPE,
+                (payload, context) -> {
+                    CyberneticGolemRecallHandler.handleRecall(context.player());
                 }
         );
         ServerPlayNetworking.registerGlobalReceiver(

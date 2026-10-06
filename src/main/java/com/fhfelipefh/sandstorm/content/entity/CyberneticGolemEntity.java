@@ -1,11 +1,15 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
+import com.fhfelipefh.sandstorm.content.world.EmpParalysisHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,6 +19,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -36,10 +41,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.resources.Identifier;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class CyberneticGolemEntity extends PathfinderMob {
     private static final EntityDataAccessor<Boolean> DATA_OVERDRIVE = SynchedEntityData.defineId(CyberneticGolemEntity.class, EntityDataSerializers.BOOLEAN);
@@ -48,6 +54,9 @@ public class CyberneticGolemEntity extends PathfinderMob {
     private static final EntityDataAccessor<Integer> DATA_ATTACK_ANIM = SynchedEntityData.defineId(CyberneticGolemEntity.class, EntityDataSerializers.INT);
 
     private static final Identifier OVERDRIVE_SPEED_MODIFIER_ID = Identifier.fromNamespaceAndPath("sandstorm", "cybernetic_golem_overdrive");
+
+    private Optional<UUID> ownerUUID = Optional.empty();
+    private boolean sentinelMode = false;
 
     public CyberneticGolemEntity(EntityType<? extends CyberneticGolemEntity> entityType, Level level) {
         super(entityType, level);
@@ -61,7 +70,7 @@ public class CyberneticGolemEntity extends PathfinderMob {
                 .add(Attributes.ARMOR_TOUGHNESS, 2.0)
                 .add(Attributes.ATTACK_DAMAGE, 15.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.6)
-                .add(Attributes.FOLLOW_RANGE, 48.0);
+                .add(Attributes.FOLLOW_RANGE, 128.0);
     }
 
     @Override
@@ -77,13 +86,13 @@ public class CyberneticGolemEntity extends PathfinderMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, true));
-        this.goalSelector.addGoal(3, new GuardPlayerGoal(this, 1.0, 10.0f, 3.0f));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(3, new CyberneticFollowOwnerGoal(this, 1.05, 4.5f, 6.5f));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.7));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
-        this.targetSelector.addGoal(2, new DefendPlayerTargetGoal(this));
+        this.targetSelector.addGoal(2, new CyberneticDefendOwnerGoal(this));
         this.targetSelector.addGoal(3, new HostileTargetGoal(this));
     }
 
@@ -122,6 +131,53 @@ public class CyberneticGolemEntity extends PathfinderMob {
 
     public void setAttackAnimTicks(int ticks) {
         this.entityData.set(DATA_ATTACK_ANIM, ticks);
+    }
+
+    public Optional<UUID> getOwnerUUID() {
+        return this.ownerUUID;
+    }
+
+    public void setOwnerUUID(UUID uuid) {
+        this.ownerUUID = Optional.ofNullable(uuid);
+    }
+
+    public boolean isOwner(LivingEntity entity) {
+        return entity != null && this.ownerUUID.map(u -> u.equals(entity.getUUID())).orElse(false);
+    }
+
+    public Player getOwner() {
+        return this.ownerUUID.map(this.level()::getPlayerByUUID).orElse(null);
+    }
+
+    public boolean isSentinelMode() {
+        return this.sentinelMode;
+    }
+
+    public void setSentinelMode(boolean sentinel) {
+        this.sentinelMode = sentinel;
+    }
+
+    public void onRemoteRecallCalled(ServerPlayer player) {
+        this.sentinelMode = false;
+        LivingEntity currentTarget = this.getTarget();
+        if (currentTarget != null && !EmpParalysisHandler.isAndroidOrAutomaton(currentTarget)) {
+            this.setTarget(null);
+        }
+
+        double distSq = this.distanceToSqr(player);
+        if (distSq > 256.0 && this.getHeat() <= 0.05f) {
+            setOverdrive(true);
+            setHeat(1.0f);
+        }
+
+        this.getNavigation().moveTo(player, 1.4);
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                    this.getX(), this.getY() + 2.4, this.getZ(), 20, 0.4, 0.5, 0.4, 0.1);
+            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                    SoundEvents.BEACON_ACTIVATE, SoundSource.NEUTRAL, 1.0f, 1.8f);
+        }
     }
 
     public void applyTierAttributes(GolemMetalTier tier) {
@@ -293,6 +349,29 @@ public class CyberneticGolemEntity extends PathfinderMob {
             }
         }
 
+        if (this.ownerUUID.isEmpty()) {
+            this.setOwnerUUID(player.getUUID());
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
+                    SoundEvents.BEACON_ACTIVATE, SoundSource.NEUTRAL, 1.0f, 1.8f);
+            player.sendSystemMessage(Component.translatable("message.sandstorm.golem_linked"));
+            return InteractionResult.SUCCESS;
+        }
+
+        if (isOwner(player) && player.isShiftKeyDown()) {
+            this.sentinelMode = !this.sentinelMode;
+            if (this.sentinelMode) {
+                this.getNavigation().stop();
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
+                        SoundEvents.IRON_GOLEM_STEP, SoundSource.NEUTRAL, 1.0f, 0.7f);
+                player.sendSystemMessage(Component.translatable("message.sandstorm.golem_mode_sentinel"));
+            } else {
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
+                        SoundEvents.BEACON_POWER_SELECT, SoundSource.NEUTRAL, 1.0f, 1.5f);
+                player.sendSystemMessage(Component.translatable("message.sandstorm.golem_mode_escort"));
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         return super.mobInteract(player, hand);
     }
 
@@ -325,6 +404,8 @@ public class CyberneticGolemEntity extends PathfinderMob {
         output.putBoolean("Overdrive", this.isOverdrive());
         output.putFloat("Heat", this.getHeat());
         output.putString("MetalTier", this.entityData.get(DATA_TIER));
+        output.putBoolean("SentinelMode", this.sentinelMode);
+        this.ownerUUID.ifPresent(uuid -> output.putString("OwnerUUID", uuid.toString()));
     }
 
     @Override
@@ -334,6 +415,15 @@ public class CyberneticGolemEntity extends PathfinderMob {
         this.setHeat(input.getFloatOr("Heat", 0.0f));
         String tierId = input.getStringOr("MetalTier", "iron");
         this.setMetalTier(GolemMetalTier.byId(tierId));
+        this.sentinelMode = input.getBooleanOr("SentinelMode", false);
+        String ownerStr = input.getStringOr("OwnerUUID", "");
+        if (!ownerStr.isEmpty()) {
+            try {
+                this.ownerUUID = Optional.of(UUID.fromString(ownerStr));
+            } catch (IllegalArgumentException ignored) {
+                this.ownerUUID = Optional.empty();
+            }
+        }
     }
 
     private static class HostileTargetGoal extends NearestAttackableTargetGoal<Monster> {
@@ -342,49 +432,96 @@ public class CyberneticGolemEntity extends PathfinderMob {
         }
     }
 
-    private static class GuardPlayerGoal extends Goal {
+    private static class CyberneticFollowOwnerGoal extends Goal {
         private final CyberneticGolemEntity golem;
         private Player targetPlayer;
         private final double speedModifier;
-        private final float maxDist;
-        private final float minDist;
+        private final float stopDist;
+        private final float startDist;
 
-        public GuardPlayerGoal(CyberneticGolemEntity golem, double speedModifier, float maxDist, float minDist) {
+        public CyberneticFollowOwnerGoal(CyberneticGolemEntity golem, double speedModifier, float stopDist, float startDist) {
             this.golem = golem;
             this.speedModifier = speedModifier;
-            this.maxDist = maxDist;
-            this.minDist = minDist;
+            this.stopDist = stopDist;
+            this.startDist = startDist;
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
         @Override
         public boolean canUse() {
-            if (this.golem.getTarget() != null) {
+            if (this.golem.isSentinelMode() || this.golem.getTarget() != null) {
                 return false;
             }
-            List<Player> players = this.golem.level().getEntitiesOfClass(Player.class, this.golem.getBoundingBox().inflate(this.maxDist));
-            for (Player player : players) {
-                if (!player.isSpectator() && !player.isCreative()) {
-                    this.targetPlayer = player;
-                    return this.golem.distanceToSqr(player) > (this.minDist * this.minDist);
+
+            Player owner = this.golem.getOwner();
+            if (owner != null && owner.isAlive() && !owner.isSpectator() && !owner.isCreative()) {
+                this.targetPlayer = owner;
+                return this.golem.distanceToSqr(owner) > (this.startDist * this.startDist);
+            }
+
+            if (this.golem.getOwnerUUID().isEmpty()) {
+                List<Player> nearby = this.golem.level().getEntitiesOfClass(
+                        Player.class,
+                        this.golem.getBoundingBox().inflate(32.0)
+                );
+                for (Player player : nearby) {
+                    if (!player.isSpectator() && !player.isCreative()) {
+                        this.targetPlayer = player;
+                        return this.golem.distanceToSqr(player) > (this.startDist * this.startDist);
+                    }
                 }
             }
+
             return false;
         }
 
         @Override
         public boolean canContinueToUse() {
-            return this.targetPlayer != null && this.targetPlayer.isAlive()
-                    && this.golem.getTarget() == null
-                    && this.golem.distanceToSqr(this.targetPlayer) > (this.minDist * this.minDist)
-                    && this.golem.distanceToSqr(this.targetPlayer) < (this.maxDist * this.maxDist * 2.0);
+            if (this.targetPlayer == null || !this.targetPlayer.isAlive() || this.targetPlayer.isSpectator()
+                    || this.golem.isSentinelMode() || this.golem.getTarget() != null) {
+                return false;
+            }
+            double distSq = this.golem.distanceToSqr(this.targetPlayer);
+            if (distSq <= (this.stopDist * this.stopDist)) {
+                this.golem.getNavigation().stop();
+                return false;
+            }
+            return true;
         }
 
         @Override
         public void tick() {
-            if (this.targetPlayer != null) {
-                this.golem.getLookControl().setLookAt(this.targetPlayer, 10.0f, (float) this.golem.getMaxHeadXRot());
-                this.golem.getNavigation().moveTo(this.targetPlayer, this.speedModifier);
+            if (this.targetPlayer == null) {
+                return;
+            }
+
+            this.golem.getLookControl().setLookAt(this.targetPlayer, 10.0f, (float) this.golem.getMaxHeadXRot());
+            double distSq = this.golem.distanceToSqr(this.targetPlayer);
+
+            if (distSq <= (this.stopDist * this.stopDist)) {
+                this.golem.getNavigation().stop();
+                return;
+            }
+
+            double currentSpeed = this.speedModifier;
+            if (this.targetPlayer.isSprinting() || distSq > 144.0) {
+                currentSpeed *= 1.45;
+                if (distSq > 400.0 && this.golem.getHeat() <= 0.01f && !this.golem.isOverdrive()) {
+                    this.golem.setOverdrive(true);
+                    this.golem.setHeat(1.0f);
+                }
+            }
+
+            double dx = this.golem.getX() - this.targetPlayer.getX();
+            double dz = this.golem.getZ() - this.targetPlayer.getZ();
+            double len = Math.sqrt(dx * dx + dz * dz);
+            if (len > 0.1) {
+                double targetOffset = 4.0;
+                double destX = this.targetPlayer.getX() + (dx / len) * targetOffset;
+                double destZ = this.targetPlayer.getZ() + (dz / len) * targetOffset;
+                this.golem.getNavigation().moveTo(destX, this.targetPlayer.getY(), destZ, currentSpeed);
+            } else {
+                this.golem.getNavigation().moveTo(this.targetPlayer, currentSpeed);
             }
         }
 
@@ -395,33 +532,64 @@ public class CyberneticGolemEntity extends PathfinderMob {
         }
     }
 
-    private static class DefendPlayerTargetGoal extends Goal {
+    private static class CyberneticDefendOwnerGoal extends Goal {
         private final CyberneticGolemEntity golem;
         private LivingEntity threatTarget;
 
-        public DefendPlayerTargetGoal(CyberneticGolemEntity golem) {
+        public CyberneticDefendOwnerGoal(CyberneticGolemEntity golem) {
             this.golem = golem;
             this.setFlags(EnumSet.of(Flag.TARGET));
         }
 
         @Override
         public boolean canUse() {
-            List<Player> players = this.golem.level().getEntitiesOfClass(Player.class, this.golem.getBoundingBox().inflate(24.0));
-            for (Player player : players) {
-                if (player.isSpectator()) {
-                    continue;
-                }
-                LivingEntity attacker = player.getLastHurtByMob();
+            Player owner = this.golem.getOwner();
+            if (owner != null && owner.isAlive() && !owner.isSpectator()) {
+                LivingEntity attacker = owner.getLastHurtByMob();
                 if (attacker != null && attacker.isAlive() && !(attacker instanceof Player) && !(attacker instanceof CyberneticGolemEntity)) {
                     this.threatTarget = attacker;
+                    if (EmpParalysisHandler.isAndroidOrAutomaton(attacker) && !this.golem.isOverdrive() && this.golem.getHeat() <= 0.01f) {
+                        this.golem.setOverdrive(true);
+                        this.golem.setHeat(1.0f);
+                    }
                     return true;
                 }
-                LivingEntity target = player.getLastHurtMob();
-                if (target != null && target.isAlive() && !(target instanceof Player) && !(target instanceof CyberneticGolemEntity)) {
-                    this.threatTarget = target;
+
+                LivingEntity playerTarget = owner.getLastHurtMob();
+                if (playerTarget != null && playerTarget.isAlive() && !(playerTarget instanceof Player) && !(playerTarget instanceof CyberneticGolemEntity)) {
+                    this.threatTarget = playerTarget;
                     return true;
+                }
+
+                List<Mob> nearbyMobs = this.golem.level().getEntitiesOfClass(
+                        Mob.class,
+                        this.golem.getBoundingBox().inflate(24.0)
+                );
+                for (Mob mob : nearbyMobs) {
+                    if (mob.getTarget() == owner && mob.isAlive() && !(mob instanceof CyberneticGolemEntity)) {
+                        this.threatTarget = mob;
+                        return true;
+                    }
                 }
             }
+
+            if (this.golem.getOwnerUUID().isEmpty()) {
+                List<Player> players = this.golem.level().getEntitiesOfClass(
+                        Player.class,
+                        this.golem.getBoundingBox().inflate(24.0)
+                );
+                for (Player player : players) {
+                    if (player.isSpectator()) {
+                        continue;
+                    }
+                    LivingEntity attacker = player.getLastHurtByMob();
+                    if (attacker != null && attacker.isAlive() && !(attacker instanceof Player) && !(attacker instanceof CyberneticGolemEntity)) {
+                        this.threatTarget = attacker;
+                        return true;
+                    }
+                }
+            }
+
             return false;
         }
 
