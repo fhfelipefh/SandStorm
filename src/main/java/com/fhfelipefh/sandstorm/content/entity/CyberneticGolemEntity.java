@@ -103,7 +103,8 @@ public class CyberneticGolemEntity extends PathfinderMob {
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(2, new CyberneticDefendOwnerGoal(this));
-        this.targetSelector.addGoal(3, new HostileTargetGoal(this));
+        this.targetSelector.addGoal(3, new SpiderTargetGoal(this));
+        this.targetSelector.addGoal(4, new HostileTargetGoal(this));
     }
 
     public boolean isOverdrive() {
@@ -630,6 +631,45 @@ public class CyberneticGolemEntity extends PathfinderMob {
         }
     }
 
+    public static boolean isSpider(Entity entity) {
+        if (entity == null) {
+            return false;
+        }
+        Identifier key = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
+        if (key == null) {
+            return false;
+        }
+        String path = key.getPath();
+        return "spider".equals(path) || "cave_spider".equals(path);
+    }
+
+    private static class SpiderTargetGoal extends NearestAttackableTargetGoal<Mob> {
+        private final CyberneticGolemEntity golem;
+
+        public SpiderTargetGoal(CyberneticGolemEntity golem) {
+            super(golem, Mob.class, 5, false, false, null);
+            this.golem = golem;
+        }
+
+        @Override
+        protected void findTarget() {
+            AABB searchArea = this.getTargetSearchArea(this.getFollowDistance());
+            List<Mob> mobs = this.golem.level().getEntitiesOfClass(Mob.class, searchArea, CyberneticGolemEntity::isSpider);
+            Mob nearest = null;
+            double nearestDistSq = Double.MAX_VALUE;
+            for (Mob mob : mobs) {
+                if (mob.isAlive() && !this.golem.isAlliedTo(mob)) {
+                    double distSq = this.golem.distanceToSqr(mob);
+                    if (distSq < nearestDistSq) {
+                        nearestDistSq = distSq;
+                        nearest = mob;
+                    }
+                }
+            }
+            this.target = nearest;
+        }
+    }
+
     private static class HostileTargetGoal extends NearestAttackableTargetGoal<Monster> {
         public HostileTargetGoal(CyberneticGolemEntity golem) {
             super(golem, Monster.class, false);
@@ -770,7 +810,7 @@ public class CyberneticGolemEntity extends PathfinderMob {
                         this.golem.getBoundingBox().inflate(24.0)
                 );
                 for (Mob mob : nearbyMobs) {
-                    if (mob.getTarget() == owner && mob.isAlive() && !(mob instanceof CyberneticGolemEntity)) {
+                    if (mob.isAlive() && !(mob instanceof CyberneticGolemEntity) && (mob.getTarget() == owner || isSpider(mob))) {
                         this.threatTarget = mob;
                         return true;
                     }
@@ -789,6 +829,18 @@ public class CyberneticGolemEntity extends PathfinderMob {
                     LivingEntity attacker = player.getLastHurtByMob();
                     if (attacker != null && attacker.isAlive() && !(attacker instanceof Player) && !(attacker instanceof CyberneticGolemEntity)) {
                         this.threatTarget = attacker;
+                        return true;
+                    }
+                }
+
+                List<Mob> nearbySpiders = this.golem.level().getEntitiesOfClass(
+                        Mob.class,
+                        this.golem.getBoundingBox().inflate(24.0),
+                        CyberneticGolemEntity::isSpider
+                );
+                for (Mob spider : nearbySpiders) {
+                    if (spider.isAlive() && !this.golem.isAlliedTo(spider)) {
+                        this.threatTarget = spider;
                         return true;
                     }
                 }

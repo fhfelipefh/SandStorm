@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CyberneticGolemCompanionTest {
 
@@ -35,5 +36,17 @@ class CyberneticGolemCompanionTest {
 
         UUID testOwner = UUID.randomUUID();
         assertNotNull(testOwner);
+    }
+
+    @Test
+    void testGolemTargetsSpiders() {
+        boolean hasSpiderGoal = false;
+        for (Class<?> inner : CyberneticGolemEntity.class.getDeclaredClasses()) {
+            if (inner.getSimpleName().equals("SpiderTargetGoal")) {
+                hasSpiderGoal = true;
+                break;
+            }
+        }
+        assertTrue(hasSpiderGoal, "CyberneticGolemEntity must declare SpiderTargetGoal to attack spiders");
     }
 }
