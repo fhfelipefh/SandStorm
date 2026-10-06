@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "E": "sandstorm:electric_component",
+    "N": "sandstorm:nano_actuator",
+    "P": "sandstorm:structural_plate",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "ENE",
+    "PCP",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:emp_blaster"
+  }
+}

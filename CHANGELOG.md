@@ -5,6 +5,25 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.8.0] - 2026-10-06
+
+### ⚡ Armamento Tático de PEM & Paralisia em Massa de Androides
+* **Emissor de Pulso Eletromagnético (EMP Blaster)**:
+  * Novo armamento tático de alto risco e recompensa extrema (`EmpBlasterItem`), disparando uma onda expansiva de sobrecarga eletromagnética com raio de 48 blocos.
+* **Sobrecarga e Paralisia Escalar em Massa**:
+  * Neutraliza dezenas, centenas ou milhares de unidades cibernéticas e autômatos simultaneamente no raio de ação (`EmpParalysisHandler`).
+  * Duração escalar proporcional à distância do epicentro: no limite do alcance (48 blocos), dura no mínimo 1 minuto (1200 ticks); a queima-roupa, atinge até 2 minutos (2400 ticks) de inabilitação completa.
+  * Inibe locomoção, reseta alvos de IA, neutraliza pavios de autodestruição em autômatos abandonados e desativa arrancadas de golens, emitindo arcos elétricos contínuos e estalos de sobrecarga térmica.
+* **Efeito Adverso Severo no Operador (Backlash)**:
+  * Ao detonar o dispositivo, o jogador sofre imediatamente um contra-golpe eletromagnético por 7 segundos:
+    * **Visão Reduzida**: Cegueira e escuridão intensas (`MobEffects.BLINDNESS` e `MobEffects.DARKNESS`).
+    * **Ensurdecimento e Tinnitus**: Bloqueio total de sons ambientes e do mundo através de supressão seletiva de áudio no cliente (`EmpDeafenClientHandler`) acompanhado de zumbido agudo e estática magnética no visor HUD (`SurvivalHudOverlay`).
+    * **Incapacidade de Correr**: Aplicação de Lentidão extrema nível V (`MobEffects.SLOWNESS`) e corte forçado de arrancada/sprint a cada tick.
+* **Cadeia Completa de Assets e Receita Tecnológica**:
+  * Textura detalhada 16x16 com bobinas condutoras e capacitores emissores ciano, modelos e definições JSON 1.21.4, receita de manufatura balanceada com placas estruturais, circuitos e nano-atuadores.
+
+---
+
 ## [1.7.0] - 2026-10-06
 
 ### 🧭 Ecossistema Autônomo e Predação Dinâmica nas Dunas

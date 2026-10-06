@@ -56,10 +56,31 @@ class DesertMobEcosystemArchitectureTest {
     }
 
     @Test
-    void versionMustBeOnePointSevenZero() throws IOException {
+    void versionMustBeOnePointEightZero() throws IOException {
         Path gradleProps = Path.of("gradle.properties");
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.7.0"), "gradle.properties must be 1.7.0");
+        assertTrue(content.contains("version=1.8.0"), "gradle.properties must be 1.8.0");
+    }
+
+    @Test
+    void empBlasterMustImplementTacticalBacklashAndAutomatonParalysis() throws IOException {
+        Path empItemFile = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "item", "EmpBlasterItem.java");
+        Path empHandlerFile = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "EmpParalysisHandler.java");
+        Path empClientHandlerFile = Path.of("src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "handler", "EmpDeafenClientHandler.java");
+        assertTrue(Files.exists(empItemFile), "EmpBlasterItem.java must exist");
+        assertTrue(Files.exists(empHandlerFile), "EmpParalysisHandler.java must exist");
+        assertTrue(Files.exists(empClientHandlerFile), "EmpDeafenClientHandler.java must exist");
+
+        String empItemContent = Files.readString(empItemFile);
+        assertTrue(empItemContent.contains("EMP_RADIUS"), "Must specify EMP radius");
+        assertTrue(empItemContent.contains("PLAYER_BACKLASH_TICKS"), "Must specify player backlash duration");
+        assertTrue(empItemContent.contains("DARKNESS"), "Must apply darkness backlash");
+        assertTrue(empItemContent.contains("BLINDNESS"), "Must apply blindness backlash");
+        assertTrue(empItemContent.contains("SLOWNESS"), "Must apply slowness backlash");
+
+        String empHandlerContent = Files.readString(empHandlerFile);
+        assertTrue(empHandlerContent.contains("isAndroidOrAutomaton"), "Must filter androids and automata");
+        assertTrue(empHandlerContent.contains("paralyze"), "Must support mass paralysis");
     }
 
     @Test

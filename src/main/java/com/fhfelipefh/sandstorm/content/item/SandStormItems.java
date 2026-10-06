@@ -52,6 +52,7 @@ public class SandStormItems {
     public static final SonicCannonItem SONIC_CANNON = register("sonic_cannon", new SonicCannonItem(properties("sonic_cannon")));
     public static final PlasmaRifleItem PLASMA_RIFLE = register("plasma_rifle", new PlasmaRifleItem(properties("plasma_rifle")));
     public static final VibroCrysknifeItem VIBRO_CRYSKNIFE = register("vibro_crysknife", new VibroCrysknifeItem(properties("vibro_crysknife")));
+    public static final EmpBlasterItem EMP_BLASTER = register("emp_blaster", new EmpBlasterItem(properties("emp_blaster")));
     public static final AtmosphericAnalyzerItem ATMOSPHERIC_ANALYZER = register("atmospheric_analyzer", new AtmosphericAnalyzerItem(properties("atmospheric_analyzer")));
     public static final SurvivalDatapadItem SURVIVAL_DATAPAD = register("survival_datapad", new SurvivalDatapadItem(properties("survival_datapad").rarity(Rarity.RARE).stacksTo(1)));
     public static final NutrientBombItem NUTRIENT_BOMB = register("nutrient_bomb", new NutrientBombItem(properties("nutrient_bomb").stacksTo(16)));
@@ -386,6 +387,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.QUANTUM_ACCESS_TERMINAL);
                         entries.accept(SandStormBlocks.QUANTUM_NETWORK_CABLE);
                         entries.accept(SandStormBlocks.CYBERNETIC_GOLEM_HEAD);
+                        entries.accept(EMP_BLASTER);
                     })
                     .build()
     );

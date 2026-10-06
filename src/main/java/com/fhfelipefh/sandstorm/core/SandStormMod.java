@@ -17,6 +17,7 @@ import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
 import com.fhfelipefh.sandstorm.content.network.ConfigureTurretPayload;
 import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
 import com.fhfelipefh.sandstorm.content.survival.FlashlightStateServer;
+import com.fhfelipefh.sandstorm.content.network.EmpDeafenPayload;
 import com.fhfelipefh.sandstorm.content.network.MagneticInterferencePayload;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
@@ -36,6 +37,7 @@ import com.fhfelipefh.sandstorm.content.survival.TechnologyToolRestrictionHandle
 import com.fhfelipefh.sandstorm.content.world.DesertMobSpawnManager;
 import com.fhfelipefh.sandstorm.content.world.DesertPredationHandler;
 import com.fhfelipefh.sandstorm.content.world.DimensionPortalRestrictionHandler;
+import com.fhfelipefh.sandstorm.content.world.EmpParalysisHandler;
 import com.fhfelipefh.sandstorm.content.world.ExhibitionGalleryManager;
 import com.fhfelipefh.sandstorm.content.world.NutrientTerraformingManager;
 import com.fhfelipefh.sandstorm.content.world.ProceduralRuinsManager;
@@ -79,6 +81,10 @@ public class SandStormMod implements ModInitializer {
         PayloadTypeRegistry.clientboundPlay().register(
                 MagneticInterferencePayload.TYPE,
                 MagneticInterferencePayload.STREAM_CODEC
+        );
+        PayloadTypeRegistry.clientboundPlay().register(
+                EmpDeafenPayload.TYPE,
+                EmpDeafenPayload.STREAM_CODEC
         );
         PayloadTypeRegistry.serverboundPlay().register(
                 ClaimQuestRewardPayload.TYPE,
@@ -135,6 +141,7 @@ public class SandStormMod implements ModInitializer {
         SandstormTerraformerCommand.initialize();
         ExhibitionGalleryManager.initialize();
         RecipeUnlockHandler.initialize();
+        EmpParalysisHandler.initialize();
         ServerPlayNetworking.registerGlobalReceiver(
                 FlashlightTogglePayload.TYPE,
                 (payload, context) -> {

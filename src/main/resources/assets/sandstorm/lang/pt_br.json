@@ -1031,5 +1031,12 @@
   "tooltip.sandstorm.tech.function_satellite": "§7🛰️ Órbita: §fLançamento via Silo Orbital",
   "tooltip.sandstorm.tech.function_terminal": "§7🔍 Acesso: §fPainel unificado da rede quântica",
   "tooltip.sandstorm.tech.function_controller": "§7🧠 Controle: §fGerencia barramentos e discos",
-  "tooltip.sandstorm.tech.function_cable": "§7🔌 Condução: §fFibra quântica sem perdas"
+  "tooltip.sandstorm.tech.function_cable": "§7🔌 Condução: §fFibra quântica sem perdas",
+  "item.sandstorm.emp_blaster": "Emissor de PEM",
+  "item.sandstorm.emp_blaster.tooltip1": "Pulso de longo alcance: raio de 48 blocos.",
+  "item.sandstorm.emp_blaster.tooltip2": "Paralisa androides em massa por 1 a 2 min.",
+  "item.sandstorm.emp_blaster.tooltip3": "Contra-golpe: cega, ensurdece e bloqueia",
+  "item.sandstorm.emp_blaster.tooltip4": "a corrida do usuário por 7 segundos.",
+  "telemetry.sandstorm.emp_blaster_fired": "PEM detonado: %d androides paralisados!",
+  "tooltip.sandstorm.tech.function_emp_blaster": "§7⚡ Efeito: §fPulso de PEM e paralisia em massa"
 }

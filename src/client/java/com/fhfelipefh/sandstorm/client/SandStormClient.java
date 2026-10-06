@@ -39,6 +39,7 @@ import com.fhfelipefh.sandstorm.content.network.SyncTerminalGridPayload;
 import com.fhfelipefh.sandstorm.client.gui.SupercriticalHeatExchangerScreen;
 import com.fhfelipefh.sandstorm.client.gui.ThermalGeneratorScreen;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
+import com.fhfelipefh.sandstorm.client.handler.EmpDeafenClientHandler;
 import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
 import com.fhfelipefh.sandstorm.client.tooltip.SandStormTechnicalTooltipHandler;
@@ -72,6 +73,7 @@ import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.network.EmpDeafenPayload;
 import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
 import com.fhfelipefh.sandstorm.content.network.MagneticInterferencePayload;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
@@ -103,6 +105,7 @@ public class SandStormClient implements ClientModInitializer {
         SandstormParticleHandler.initialize();
         SandstormFlashlightKeys.initialize();
         DesertMirageHandler.initialize();
+        EmpDeafenClientHandler.initialize();
         SandStormTechnicalTooltipHandler.initialize();
 
         MenuScreens.register(SandStormMenus.PRINTER_3D_MENU, Printer3DScreen::new);
@@ -232,6 +235,11 @@ public class SandStormClient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(MagneticInterferencePayload.TYPE, (payload, context) -> {
             context.client().execute(() -> {
                 SurvivalHudOverlay.triggerMagneticInterference(payload.durationTicks());
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EmpDeafenPayload.TYPE, (payload, context) -> {
+            context.client().execute(() -> {
+                EmpDeafenClientHandler.trigger(payload.durationTicks());
             });
         });
         ClientPlayNetworking.registerGlobalReceiver(SyncTerminalGridPayload.TYPE, (payload, context) -> {

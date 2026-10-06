@@ -1031,5 +1031,12 @@
   "tooltip.sandstorm.tech.function_satellite": "§7🛰️ Orbit: §fLaunched via Orbital Silo",
   "tooltip.sandstorm.tech.function_terminal": "§7🔍 Access: §fUnified quantum grid panel",
   "tooltip.sandstorm.tech.function_controller": "§7🧠 Control: §fManages buses and drives",
-  "tooltip.sandstorm.tech.function_cable": "§7🔌 Conduction: §fLossless quantum fiber"
+  "tooltip.sandstorm.tech.function_cable": "§7🔌 Conduction: §fLossless quantum fiber",
+  "item.sandstorm.emp_blaster": "EMP Blaster",
+  "item.sandstorm.emp_blaster.tooltip1": "Long-range pulse: 48-block radius.",
+  "item.sandstorm.emp_blaster.tooltip2": "Mass-paralyzes androids for 1 to 2 min.",
+  "item.sandstorm.emp_blaster.tooltip3": "Backlash: causes blindness, deafness",
+  "item.sandstorm.emp_blaster.tooltip4": "and stops sprinting for 7 seconds.",
+  "telemetry.sandstorm.emp_blaster_fired": "EMP detonated: %d androids paralyzed!",
+  "tooltip.sandstorm.tech.function_emp_blaster": "§7⚡ Effect: §fEMP pulse and mass paralysis"
 }
