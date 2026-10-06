@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.command.SandstormBuildCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormClaimCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormDebugCommand;
+import com.fhfelipefh.sandstorm.content.command.SandstormMorphingCastleCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormPlantCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormTerraformerCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormWeatherCommand;
@@ -145,6 +146,7 @@ public class SandStormMod implements ModInitializer {
         SandstormPlantCommand.initialize();
         SandstormDebugCommand.initialize();
         SandstormTerraformerCommand.initialize();
+        SandstormMorphingCastleCommand.initialize();
         ExhibitionGalleryManager.initialize();
         RecipeUnlockHandler.initialize();
         EmpParalysisHandler.initialize();
