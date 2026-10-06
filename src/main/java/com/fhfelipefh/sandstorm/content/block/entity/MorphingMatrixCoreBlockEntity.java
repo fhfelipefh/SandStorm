@@ -42,6 +42,7 @@ public class MorphingMatrixCoreBlockEntity extends BlockEntity {
     private final List<BlockPos> savedRelativePositions = new ArrayList<>();
     private int operationIndex = 0;
     private int tickCounter = 0;
+    private int regenCursor = 0;
 
     public MorphingMatrixCoreBlockEntity(BlockPos pos, BlockState state) {
         super(SandStormBlocks.MORPHING_MATRIX_CORE_BE, pos, state);
@@ -104,21 +105,24 @@ public class MorphingMatrixCoreBlockEntity extends BlockEntity {
 
     private void processLiquefaction(ServerLevel serverLevel) {
         int processedThisTick = 0;
+        int checkedThisTick = 0;
         BlockPos corePos = getBlockPos();
 
-        while (this.operationIndex >= 0 && processedThisTick < 16) {
+        while (this.operationIndex >= 0 && processedThisTick < 16 && checkedThisTick < 128) {
+            checkedThisTick++;
             BlockPos relPos = this.savedRelativePositions.get(this.operationIndex);
             BlockPos worldPos = corePos.offset(relPos);
-            BlockState current = serverLevel.getBlockState(worldPos);
-
-            if (current.getBlock() instanceof MorphingAlloyBlock) {
-                serverLevel.setBlock(worldPos, SandStormBlocks.MORPHING_FLUID_TRANSITION.defaultBlockState(), 3);
-                BlockEntity be = serverLevel.getBlockEntity(worldPos);
-                if (be instanceof MorphingFluidTransitionBlockEntity transitionBe) {
-                    transitionBe.setLiquefying(true);
+            if (serverLevel.isLoaded(worldPos)) {
+                BlockState current = serverLevel.getBlockState(worldPos);
+                if (current.getBlock() instanceof MorphingAlloyBlock) {
+                    serverLevel.setBlock(worldPos, SandStormBlocks.MORPHING_FLUID_TRANSITION.defaultBlockState(), 3);
+                    BlockEntity be = serverLevel.getBlockEntity(worldPos);
+                    if (be instanceof MorphingFluidTransitionBlockEntity transitionBe) {
+                        transitionBe.setLiquefying(true);
+                    }
+                    this.reserveBlocks = Math.min(MAX_RESERVE, this.reserveBlocks + 1);
+                    processedThisTick++;
                 }
-                this.reserveBlocks = Math.min(MAX_RESERVE, this.reserveBlocks + 1);
-                processedThisTick++;
             }
             this.operationIndex--;
         }
@@ -132,22 +136,25 @@ public class MorphingMatrixCoreBlockEntity extends BlockEntity {
 
     private void processSolidification(ServerLevel serverLevel) {
         int processedThisTick = 0;
+        int checkedThisTick = 0;
         BlockPos corePos = getBlockPos();
 
-        while (this.operationIndex < this.savedRelativePositions.size() && processedThisTick < 16) {
+        while (this.operationIndex < this.savedRelativePositions.size() && processedThisTick < 16 && checkedThisTick < 128) {
+            checkedThisTick++;
             BlockPos relPos = this.savedRelativePositions.get(this.operationIndex);
             BlockPos worldPos = corePos.offset(relPos);
-            BlockState current = serverLevel.getBlockState(worldPos);
-
-            if (current.isAir() || current.canBeReplaced()) {
-                if (this.reserveBlocks > 0) {
-                    this.reserveBlocks--;
-                    serverLevel.setBlock(worldPos, SandStormBlocks.MORPHING_FLUID_TRANSITION.defaultBlockState(), 3);
-                    BlockEntity be = serverLevel.getBlockEntity(worldPos);
-                    if (be instanceof MorphingFluidTransitionBlockEntity transitionBe) {
-                        transitionBe.setLiquefying(false);
+            if (serverLevel.isLoaded(worldPos)) {
+                BlockState current = serverLevel.getBlockState(worldPos);
+                if (current.isAir() || current.canBeReplaced()) {
+                    if (this.reserveBlocks > 0) {
+                        this.reserveBlocks--;
+                        serverLevel.setBlock(worldPos, SandStormBlocks.MORPHING_FLUID_TRANSITION.defaultBlockState(), 3);
+                        BlockEntity be = serverLevel.getBlockEntity(worldPos);
+                        if (be instanceof MorphingFluidTransitionBlockEntity transitionBe) {
+                            transitionBe.setLiquefying(false);
+                        }
+                        processedThisTick++;
                     }
-                    processedThisTick++;
                 }
             }
             this.operationIndex++;
@@ -166,8 +173,16 @@ public class MorphingMatrixCoreBlockEntity extends BlockEntity {
         }
 
         BlockPos corePos = getBlockPos();
-        for (BlockPos relPos : this.savedRelativePositions) {
+        int total = this.savedRelativePositions.size();
+        int maxChecks = Math.min(128, total);
+
+        for (int i = 0; i < maxChecks; i++) {
+            int index = (this.regenCursor + i) % total;
+            BlockPos relPos = this.savedRelativePositions.get(index);
             BlockPos worldPos = corePos.offset(relPos);
+            if (!serverLevel.isLoaded(worldPos)) {
+                continue;
+            }
             BlockState current = serverLevel.getBlockState(worldPos);
 
             if (current.isAir() || current.canBeReplaced()) {
@@ -178,10 +193,12 @@ public class MorphingMatrixCoreBlockEntity extends BlockEntity {
                     transitionBe.setLiquefying(false);
                 }
                 serverLevel.playSound(null, worldPos, SoundEvents.IRON_GOLEM_REPAIR, SoundSource.BLOCKS, 0.8f, 1.4f);
+                this.regenCursor = (index + 1) % total;
                 setChanged();
-                break;
+                return;
             }
         }
+        this.regenCursor = (this.regenCursor + maxChecks) % total;
     }
 
     public void dropStoredContents(ServerLevel serverLevel, BlockPos pos) {
@@ -239,8 +256,9 @@ public class MorphingMatrixCoreBlockEntity extends BlockEntity {
         output.putInt("ReserveBlocks", this.reserveBlocks);
         output.putBoolean("HologramActive", this.hologramActive);
         output.putInt("OperationIndex", this.operationIndex);
+        output.putInt("RegenCursor", this.regenCursor);
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(this.savedRelativePositions.size() * 18);
         for (int i = 0; i < this.savedRelativePositions.size(); i++) {
             if (i > 0) {
                 sb.append(';');
@@ -264,17 +282,23 @@ public class MorphingMatrixCoreBlockEntity extends BlockEntity {
         this.reserveBlocks = input.getIntOr("ReserveBlocks", 0);
         this.hologramActive = input.getBooleanOr("HologramActive", false);
         this.operationIndex = input.getIntOr("OperationIndex", 0);
+        this.regenCursor = input.getIntOr("RegenCursor", 0);
 
         this.savedRelativePositions.clear();
         String savedPositionsStr = input.getStringOr("SavedPositions", "");
         if (!savedPositionsStr.isEmpty()) {
-            String[] tokens = savedPositionsStr.split(";");
-            for (String token : tokens) {
-                if (!token.isEmpty()) {
-                    try {
-                        this.savedRelativePositions.add(BlockPos.of(Long.parseLong(token)));
-                    } catch (NumberFormatException ignored) {
+            int len = savedPositionsStr.length();
+            int start = 0;
+            for (int i = 0; i <= len; i++) {
+                if (i == len || savedPositionsStr.charAt(i) == ';') {
+                    if (i > start) {
+                        try {
+                            long val = Long.parseLong(savedPositionsStr, start, i, 10);
+                            this.savedRelativePositions.add(BlockPos.of(val));
+                        } catch (NumberFormatException ignored) {
+                        }
                     }
+                    start = i + 1;
                 }
             }
         }

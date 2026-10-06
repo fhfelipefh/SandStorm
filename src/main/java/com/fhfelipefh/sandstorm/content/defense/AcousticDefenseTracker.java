@@ -11,7 +11,7 @@ public class AcousticDefenseTracker {
     private static final Map<ResourceKey<Level>, Map<BlockPos, Double>> ACTIVE_PYLONS = new ConcurrentHashMap<>();
 
     public static void registerPylon(ResourceKey<Level> dimension, BlockPos pos, double radius) {
-        ACTIVE_PYLONS.computeIfAbsent(dimension, k -> new ConcurrentHashMap<>()).put(pos, radius);
+        ACTIVE_PYLONS.computeIfAbsent(dimension, k -> new ConcurrentHashMap<>()).put(pos, radius * radius);
     }
 
     public static void unregisterPylon(ResourceKey<Level> dimension, BlockPos pos) {
@@ -27,7 +27,7 @@ public class AcousticDefenseTracker {
             return false;
         }
         for (Map.Entry<BlockPos, Double> entry : map.entrySet()) {
-            if (entry.getKey().distSqr(pos) <= (entry.getValue() * entry.getValue())) {
+            if (entry.getKey().distSqr(pos) <= entry.getValue()) {
                 return true;
             }
         }

@@ -11,7 +11,7 @@ public class KineticShieldTracker {
     private static final Map<ResourceKey<Level>, Map<BlockPos, Double>> ACTIVE_SHIELDS = new ConcurrentHashMap<>();
 
     public static void registerShield(ResourceKey<Level> dimension, BlockPos pos, double radius) {
-        ACTIVE_SHIELDS.computeIfAbsent(dimension, k -> new ConcurrentHashMap<>()).put(pos, radius);
+        ACTIVE_SHIELDS.computeIfAbsent(dimension, k -> new ConcurrentHashMap<>()).put(pos, radius * radius);
     }
 
     public static void unregisterShield(ResourceKey<Level> dimension, BlockPos pos) {
@@ -27,7 +27,7 @@ public class KineticShieldTracker {
             return false;
         }
         for (Map.Entry<BlockPos, Double> entry : map.entrySet()) {
-            if (entry.getKey().distSqr(pos) <= (entry.getValue() * entry.getValue())) {
+            if (entry.getKey().distSqr(pos) <= entry.getValue()) {
                 return true;
             }
         }

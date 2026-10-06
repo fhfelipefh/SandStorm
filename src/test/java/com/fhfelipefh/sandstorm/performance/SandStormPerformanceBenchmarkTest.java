@@ -407,4 +407,55 @@ class SandStormPerformanceBenchmarkTest {
         System.out.printf("[BENCHMARK] CyberneticGolem full volume scan (567 blocks x %d scans): %.2f ms (%.0f scans/sec)%n",
                 volumeScans, durationMs, scansPerSec);
     }
+
+    @Test
+    void benchmarkMorphingMatrixCoordinateEncodingAndParsing() {
+        int positionCount = 10_000;
+        List<BlockPos> positions = new ArrayList<>(positionCount);
+        for (int i = 0; i < positionCount; i++) {
+            positions.add(new BlockPos((i % 64) - 32, ((i / 64) % 64) - 32, (i / 4096) - 32));
+        }
+
+        StringBuilder sb = new StringBuilder(positionCount * 18);
+        for (int i = 0; i < positions.size(); i++) {
+            if (i > 0) {
+                sb.append(';');
+            }
+            sb.append(positions.get(i).asLong());
+        }
+        String serialized = sb.toString();
+
+        int parseIterations = 100;
+        long startTime = System.nanoTime();
+        int totalParsed = 0;
+
+        for (int it = 0; it < parseIterations; it++) {
+            int len = serialized.length();
+            int start = 0;
+            int count = 0;
+            for (int i = 0; i <= len; i++) {
+                if (i == len || serialized.charAt(i) == ';') {
+                    if (i > start) {
+                        try {
+                            long val = Long.parseLong(serialized, start, i, 10);
+                            BlockPos.of(val);
+                            count++;
+                        } catch (NumberFormatException ignored) {
+                        }
+                    }
+                    start = i + 1;
+                }
+            }
+            totalParsed += count;
+        }
+
+        long durationNs = System.nanoTime() - startTime;
+        double durationMs = durationNs / 1_000_000.0;
+        double opsPerSec = ((parseIterations * (double) positionCount) / (durationNs / 1_000_000_000.0));
+
+        assertEquals(parseIterations * positionCount, totalParsed);
+        assertTrue(durationMs < 250.0, "Morphing coordinate parse throughput exceeded threshold: " + durationMs + "ms");
+        System.out.printf("[BENCHMARK] MorphingMatrix parsing (%d positions x %d runs): %.2f ms (%.0f positions/sec)%n",
+                positionCount, parseIterations, durationMs, opsPerSec);
+    }
 }
