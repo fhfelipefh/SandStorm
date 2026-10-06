@@ -14,12 +14,18 @@ import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import com.fhfelipefh.sandstorm.content.block.entity.MorphingMatrixCoreBlockEntity;
+import com.fhfelipefh.sandstorm.content.gui.MorphingMatrixCoreMenu;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.SimpleContainerData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
@@ -457,5 +463,105 @@ class SandStormPerformanceBenchmarkTest {
         assertTrue(durationMs < 250.0, "Morphing coordinate parse throughput exceeded threshold: " + durationMs + "ms");
         System.out.printf("[BENCHMARK] MorphingMatrix parsing (%d positions x %d runs): %.2f ms (%.0f positions/sec)%n",
                 positionCount, parseIterations, durationMs, opsPerSec);
+    }
+
+    @Test
+    void benchmarkMorphingBlockTypeClassification() {
+        BlockState stone = Blocks.STONE.defaultBlockState();
+        BlockState ironBlock = Blocks.IRON_BLOCK.defaultBlockState();
+        BlockState glass = Blocks.GLASS.defaultBlockState();
+        BlockState air = Blocks.AIR.defaultBlockState();
+
+        BlockState[] testStates = new BlockState[]{stone, ironBlock, glass, air};
+
+        int iterations = 200_000;
+        long startTime = System.nanoTime();
+        int morphingCount = 0;
+
+        for (int i = 0; i < iterations; i++) {
+            if (MorphingMatrixCoreBlockEntity.isMorphingBlock(testStates[i % testStates.length])) {
+                morphingCount++;
+            }
+        }
+
+        long durationNs = System.nanoTime() - startTime;
+        double durationMs = durationNs / 1_000_000.0;
+        double opsPerSec = (iterations / (durationNs / 1_000_000_000.0));
+
+        assertEquals(0, morphingCount);
+        assertTrue(durationMs < 200.0, "Morphing block classification exceeded threshold: " + durationMs + "ms");
+        System.out.printf("[BENCHMARK] MorphingMatrix isMorphingBlock: %d ops in %.2f ms (%.0f ops/sec)%n",
+                iterations, durationMs, opsPerSec);
+    }
+
+    @Test
+    void benchmarkMorphingBlueprintSortingUnderHeavyLoad() {
+        int count = 2_500;
+        List<BlockPos> templatePositions = new ArrayList<>(count);
+        Random random = new Random(12345);
+        for (int i = 0; i < count; i++) {
+            templatePositions.add(new BlockPos(
+                    random.nextInt(32) - 16,
+                    random.nextInt(32),
+                    random.nextInt(32) - 16
+            ));
+        }
+
+        int iterations = 200;
+        long startTime = System.nanoTime();
+        int totalSortedElements = 0;
+
+        for (int it = 0; it < iterations; it++) {
+            List<BlockPos> copy = new ArrayList<>(templatePositions);
+            copy.sort(Comparator.comparingInt(BlockPos::getY));
+            totalSortedElements += copy.size();
+        }
+
+        long durationNs = System.nanoTime() - startTime;
+        double durationMs = durationNs / 1_000_000.0;
+        double opsPerSec = ((iterations * (double) count) / (durationNs / 1_000_000_000.0));
+
+        assertEquals(iterations * count, totalSortedElements);
+        assertTrue(durationMs < 300.0, "Blueprint Y-level sorting exceeded threshold: " + durationMs + "ms");
+        System.out.printf("[BENCHMARK] MorphingMatrix blueprint sorting (%d blocks x %d runs): %.2f ms (%.0f positions/sec)%n",
+                count, iterations, durationMs, opsPerSec);
+    }
+
+    @Test
+    void benchmarkMorphingMatrixMenuTelemetrySync() {
+        Inventory inventory = new Inventory(null, null);
+        SimpleContainer container = new SimpleContainer(1);
+        SimpleContainerData data = new SimpleContainerData(6);
+        data.set(0, 3);
+        data.set(1, 1500 & 0xFFFF);
+        data.set(2, (1500 >> 16) & 0xFFFF);
+        data.set(3, 400 & 0xFFFF);
+        data.set(4, (400 >> 16) & 0xFFFF);
+        data.set(5, 1);
+
+        MorphingMatrixCoreMenu menu = new MorphingMatrixCoreMenu(null, 1, inventory, null, container, data);
+
+        int iterations = 200_000;
+        long startTime = System.nanoTime();
+        long checksum = 0;
+
+        for (int i = 0; i < iterations; i++) {
+            checksum += menu.getState();
+            checksum += menu.getReserveBlocks();
+            checksum += menu.getSavedCount();
+            checksum += menu.getReserveScaled(100);
+            if (menu.isHologramActive()) {
+                checksum++;
+            }
+        }
+
+        long durationNs = System.nanoTime() - startTime;
+        double durationMs = durationNs / 1_000_000.0;
+        double opsPerSec = (iterations / (durationNs / 1_000_000_000.0));
+
+        assertTrue(checksum > 0);
+        assertTrue(durationMs < 200.0, "Menu telemetry sync exceeded threshold: " + durationMs + "ms");
+        System.out.printf("[BENCHMARK] MorphingMatrixCoreMenu telemetry sync: %d ops in %.2f ms (%.0f ops/sec)%n",
+                iterations, durationMs, opsPerSec);
     }
 }
