@@ -164,6 +164,9 @@ public class SandStormItems {
     public static final QuantumStorageCartridgeItem QUANTUM_STORAGE_CARTRIDGE_16K = register("quantum_storage_cartridge_16k", new QuantumStorageCartridgeItem(StorageCartridgeTier.TIER_16K, properties("quantum_storage_cartridge_16k").stacksTo(1).rarity(Rarity.RARE)));
     public static final QuantumStorageCartridgeItem QUANTUM_STORAGE_CARTRIDGE_64K = register("quantum_storage_cartridge_64k", new QuantumStorageCartridgeItem(StorageCartridgeTier.TIER_64K, properties("quantum_storage_cartridge_64k").stacksTo(1).rarity(Rarity.EPIC)));
     public static final QuantumStorageCartridgeItem QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL = register("quantum_storage_cartridge_dimensional", new QuantumStorageCartridgeItem(StorageCartridgeTier.DIMENSIONAL, properties("quantum_storage_cartridge_dimensional").stacksTo(1).rarity(Rarity.EPIC)));
+    public static final Item RAW_GALLIUM = register("raw_gallium", new Item(properties("raw_gallium")));
+    public static final Item GALLIUM_INGOT = register("gallium_ingot", new Item(properties("gallium_ingot").rarity(Rarity.UNCOMMON)));
+    public static final Item NANITE_GALLIUM_COMPOSITE = register("nanite_gallium_composite", new Item(properties("nanite_gallium_composite").rarity(Rarity.RARE)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -388,6 +391,13 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.QUANTUM_NETWORK_CABLE);
                         entries.accept(SandStormBlocks.CYBERNETIC_GOLEM_HEAD);
                         entries.accept(EMP_BLASTER);
+                        entries.accept(RAW_GALLIUM);
+                        entries.accept(GALLIUM_INGOT);
+                        entries.accept(NANITE_GALLIUM_COMPOSITE);
+                        entries.accept(SandStormBlocks.DEEPSLATE_GALLIUM_ORE);
+                        entries.accept(SandStormBlocks.MORPHING_ALLOY_BLOCK);
+                        entries.accept(SandStormBlocks.MORPHING_MATRIX_CORE);
+                        entries.accept(SandStormBlocks.MORPHING_FLUID_TRANSITION);
                     })
                     .build()
     );

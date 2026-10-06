@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "sandstorm:block/morphing_matrix_core_top",
+    "side": "sandstorm:block/morphing_matrix_core_side"
+  }
+}

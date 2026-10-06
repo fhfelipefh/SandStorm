@@ -1044,5 +1044,15 @@
   "item.sandstorm.emp_blaster.tooltip3": "Backlash: causes blindness, deafness",
   "item.sandstorm.emp_blaster.tooltip4": "and stops sprinting for 7 seconds.",
   "telemetry.sandstorm.emp_blaster_fired": "EMP detonated: %d androids paralyzed!",
-  "tooltip.sandstorm.tech.function_emp_blaster": "§7⚡ Effect: §fEMP pulse and mass paralysis"
+  "tooltip.sandstorm.tech.function_emp_blaster": "§7⚡ Effect: §fEMP pulse and mass paralysis",
+  "item.sandstorm.raw_gallium": "Raw Gallium",
+  "item.sandstorm.gallium_ingot": "Gallium Ingot",
+  "item.sandstorm.nanite_gallium_composite": "Morphing Gallium Composite",
+  "block.sandstorm.deepslate_gallium_ore": "Deepslate Gallium Ore",
+  "block.sandstorm.morphing_alloy_block": "Morphing Alloy Block",
+  "block.sandstorm.morphing_matrix_core": "Morphing Matrix Core",
+  "block.sandstorm.morphing_fluid_transition": "Morphing Alloy in Transition",
+  "message.sandstorm.morphing_core.hologram_on": "64x64x64 Hologram Enabled.",
+  "message.sandstorm.morphing_core.hologram_off": "64x64x64 Hologram Disabled.",
+  "message.sandstorm.morphing_core.saved": "Matrix Saved: %d blocks | Reserve: %d blocks"
 }

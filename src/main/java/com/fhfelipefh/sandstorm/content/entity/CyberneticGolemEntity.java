@@ -1,8 +1,12 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
+import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.world.EmpParalysisHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,6 +19,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -41,7 +47,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
@@ -58,6 +66,7 @@ public class CyberneticGolemEntity extends PathfinderMob {
     private Optional<UUID> ownerUUID = Optional.empty();
     private boolean sentinelMode = false;
     private boolean permanentOverdrive = false;
+    private int sandTrappedTicks = 0;
 
     public CyberneticGolemEntity(EntityType<? extends CyberneticGolemEntity> entityType, Level level) {
         super(entityType, level);
@@ -261,6 +270,7 @@ public class CyberneticGolemEntity extends PathfinderMob {
         }
 
         ServerLevel serverLevel = (ServerLevel) lvl;
+        handleSandTrappedEscape(serverLevel);
         LivingEntity target = this.getTarget();
 
         if (target != null && target.isAlive()) {
@@ -423,6 +433,171 @@ public class CyberneticGolemEntity extends PathfinderMob {
         return 0;
     }
 
+    public int getSandTrappedTicks() {
+        return this.sandTrappedTicks;
+    }
+
+    public void setSandTrappedTicks(int ticks) {
+        this.sandTrappedTicks = ticks;
+    }
+
+    public static boolean isManufacturedBlock(BlockState state) {
+        if (state.isAir()) {
+            return false;
+        }
+        Block block = state.getBlock();
+        String path = BuiltInRegistries.BLOCK.getKey(block).getPath();
+        if (path.contains("planks")
+                || path.contains("door")
+                || path.contains("trapdoor")
+                || path.contains("fence")
+                || path.contains("gate")
+                || path.contains("slab")
+                || path.contains("stairs")
+                || path.contains("wall")
+                || path.contains("bed")
+                || path.contains("wool")
+                || path.contains("carpet")
+                || path.contains("torch")
+                || path.contains("lantern")
+                || path.contains("sign")
+                || path.contains("glass")
+                || path.contains("brick")
+                || path.contains("chest")
+                || path.contains("barrel")
+                || path.contains("furnace")
+                || path.contains("smoker")
+                || path.contains("anvil")
+                || path.contains("crafting")
+                || path.contains("hopper")
+                || path.contains("lever")
+                || path.contains("piston")
+                || path.contains("repeater")
+                || path.contains("comparator")
+                || path.contains("redstone")
+                || path.contains("copper")
+                || path.contains("smooth_sandstone")
+                || path.contains("cut_sandstone")
+                || path.contains("chiseled")) {
+            return true;
+        }
+        if (block == Blocks.COBBLESTONE || block == Blocks.MOSSY_COBBLESTONE
+                || block == Blocks.IRON_BLOCK || block == Blocks.GOLD_BLOCK) {
+            return true;
+        }
+        if (state.is(BlockTags.PLANKS)
+                || state.is(BlockTags.WOODEN_DOORS)
+                || state.is(BlockTags.WOODEN_TRAPDOORS)
+                || state.is(BlockTags.WOODEN_FENCES)
+                || state.is(BlockTags.FENCE_GATES)
+                || state.is(BlockTags.WOODEN_SLABS)
+                || state.is(BlockTags.WOODEN_STAIRS)
+                || state.is(BlockTags.BEDS)
+                || state.is(BlockTags.WOOL)
+                || state.is(BlockTags.WOOL_CARPETS)
+                || state.is(BlockTags.SIGNS)
+                || state.is(BlockTags.WALL_HANGING_SIGNS)) {
+            return true;
+        }
+        return BuiltInRegistries.BLOCK.getKey(block).getNamespace().equals("sandstorm");
+    }
+
+    public static boolean isNaturalSandEnvironment(ServerLevel serverLevel, BlockPos center) {
+        if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(center.getX(), center.getZ())) {
+            return false;
+        }
+        int radius = 4;
+        int verticalRadius = 3;
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -verticalRadius; y <= verticalRadius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    BlockPos checkPos = center.offset(x, y, z);
+                    BlockState checkState = serverLevel.getBlockState(checkPos);
+                    if (isManufacturedBlock(checkState)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public List<BlockPos> getTrappingSandBlocks(ServerLevel serverLevel) {
+        List<BlockPos> list = new ArrayList<>();
+        if (!isNaturalSandEnvironment(serverLevel, this.blockPosition())) {
+            return list;
+        }
+
+        AABB box = this.getBoundingBox();
+        int minX = Mth.floor(box.minX + 0.1);
+        int maxX = Mth.floor(box.maxX - 0.1);
+        int minY = Mth.floor(box.minY + 0.1);
+        int maxY = Mth.floor(box.maxY - 0.1);
+        int minZ = Mth.floor(box.minZ + 0.1);
+        int maxZ = Mth.floor(box.maxZ - 0.1);
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    BlockPos pos = new BlockPos(x, y, z);
+                    BlockState state = serverLevel.getBlockState(pos);
+                    if (state.is(BlockTags.SAND)) {
+                        list.add(pos);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+    public boolean attemptBreakFreeFromSand(ServerLevel serverLevel) {
+        List<BlockPos> trapped = getTrappingSandBlocks(serverLevel);
+        if (trapped.isEmpty()) {
+            return false;
+        }
+
+        BlockPos targetPos = trapped.get(0);
+        double eyeY = this.getEyeY();
+        for (BlockPos pos : trapped) {
+            if (Math.abs(pos.getY() + 0.5 - eyeY) < Math.abs(targetPos.getY() + 0.5 - eyeY)) {
+                targetPos = pos;
+            }
+        }
+
+        setAttackAnimTicks(10);
+        serverLevel.destroyBlock(targetPos, true, this);
+        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                SoundEvents.IRON_GOLEM_ATTACK, SoundSource.NEUTRAL, 1.0f, 1.0f);
+        serverLevel.sendParticles(ParticleTypes.CRIT,
+                targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5,
+                12, 0.25, 0.25, 0.25, 0.1);
+
+        if (this.isOverdrive()) {
+            serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                    targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5,
+                    10, 0.3, 0.3, 0.3, 0.08);
+        }
+
+        return true;
+    }
+
+    private void handleSandTrappedEscape(ServerLevel serverLevel) {
+        List<BlockPos> trapped = getTrappingSandBlocks(serverLevel);
+        if (trapped.isEmpty()) {
+            this.sandTrappedTicks = 0;
+            return;
+        }
+
+        this.sandTrappedTicks++;
+        if (this.sandTrappedTicks >= 60) {
+            if (this.sandTrappedTicks % 20 == 0 && this.random.nextFloat() < 0.25f) {
+                if (attemptBreakFreeFromSand(serverLevel)) {
+                    this.sandTrappedTicks = Math.max(0, this.sandTrappedTicks - 40);
+                }
+            }
+        }
+    }
+
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
@@ -431,6 +606,7 @@ public class CyberneticGolemEntity extends PathfinderMob {
         output.putFloat("Heat", this.getHeat());
         output.putString("MetalTier", this.entityData.get(DATA_TIER));
         output.putBoolean("SentinelMode", this.sentinelMode);
+        output.putInt("SandTrappedTicks", this.sandTrappedTicks);
         this.ownerUUID.ifPresent(uuid -> output.putString("OwnerUUID", uuid.toString()));
     }
 
@@ -443,6 +619,7 @@ public class CyberneticGolemEntity extends PathfinderMob {
         String tierId = input.getStringOr("MetalTier", "iron");
         this.setMetalTier(GolemMetalTier.byId(tierId));
         this.sentinelMode = input.getBooleanOr("SentinelMode", false);
+        this.sandTrappedTicks = input.getIntOr("SandTrappedTicks", 0);
         String ownerStr = input.getStringOr("OwnerUUID", "");
         if (!ownerStr.isEmpty()) {
             try {

@@ -69,6 +69,9 @@
     "sandstorm:quantum_disk_drive",
     "sandstorm:quantum_access_terminal",
     "sandstorm:quantum_network_cable",
-    "sandstorm:cybernetic_golem_head"
+    "sandstorm:cybernetic_golem_head",
+    "sandstorm:deepslate_gallium_ore",
+    "sandstorm:morphing_alloy_block",
+    "sandstorm:morphing_matrix_core"
   ]
 }

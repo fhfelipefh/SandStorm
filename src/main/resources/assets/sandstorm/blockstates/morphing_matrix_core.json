@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/morphing_matrix_core"
+    }
+  }
+}

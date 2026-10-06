@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "sandstorm:gallium_ingot",
+    "N": "sandstorm:nano_actuator"
+  },
+  "pattern": [
+    "GGG",
+    "GNG",
+    "GGG"
+  ],
+  "result": {
+    "count": 4,
+    "id": "sandstorm:nanite_gallium_composite"
+  }
+}

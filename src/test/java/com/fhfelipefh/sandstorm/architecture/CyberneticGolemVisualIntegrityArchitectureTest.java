@@ -120,4 +120,18 @@ class CyberneticGolemVisualIntegrityArchitectureTest {
         String entityContent = Files.readString(entityPath);
         assertTrue(entityContent.contains("jointY"), "Entity must confine spark particles to joint Y coordinates");
     }
+
+    @Test
+    void golemMustSupportIntelligentSandEscapeMechanics() throws IOException, NoSuchMethodException {
+        Path entityPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity", "CyberneticGolemEntity.java");
+        String entityContent = Files.readString(entityPath);
+        assertTrue(entityContent.contains("attemptBreakFreeFromSand"), "CyberneticGolemEntity must implement attemptBreakFreeFromSand");
+        assertTrue(entityContent.contains("isManufacturedBlock"), "CyberneticGolemEntity must verify manufactured blocks");
+        assertTrue(entityContent.contains("isNaturalSandEnvironment"), "CyberneticGolemEntity must verify natural sand environment");
+        assertTrue(entityContent.contains("sandTrappedTicks"), "CyberneticGolemEntity must track sand trapped ticks");
+        assertTrue(entityContent.contains("destroyBlock"), "CyberneticGolemEntity must destroy trapping sand block");
+
+        assertNotNull(CyberneticGolemEntity.class.getMethod("getSandTrappedTicks"));
+        assertNotNull(CyberneticGolemEntity.class.getMethod("setSandTrappedTicks", int.class));
+    }
 }

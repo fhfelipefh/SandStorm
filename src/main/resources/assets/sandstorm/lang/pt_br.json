@@ -1044,5 +1044,15 @@
   "item.sandstorm.emp_blaster.tooltip3": "Contra-golpe: cega, ensurdece e bloqueia",
   "item.sandstorm.emp_blaster.tooltip4": "a corrida do usuário por 7 segundos.",
   "telemetry.sandstorm.emp_blaster_fired": "PEM detonado: %d androides paralisados!",
-  "tooltip.sandstorm.tech.function_emp_blaster": "§7⚡ Efeito: §fPulso de PEM e paralisia em massa"
+  "tooltip.sandstorm.tech.function_emp_blaster": "§7⚡ Efeito: §fPulso de PEM e paralisia em massa",
+  "item.sandstorm.raw_gallium": "Gálio Bruto",
+  "item.sandstorm.gallium_ingot": "Lingote de Gálio",
+  "item.sandstorm.nanite_gallium_composite": "Composto de Gálio Morfogenético",
+  "block.sandstorm.deepslate_gallium_ore": "Minério de Gálio das Profundezas",
+  "block.sandstorm.morphing_alloy_block": "Bloco de Liga Morfogenética",
+  "block.sandstorm.morphing_matrix_core": "Núcleo da Matriz Morfogenética",
+  "block.sandstorm.morphing_fluid_transition": "Liga Morfogenética em Transição",
+  "message.sandstorm.morphing_core.hologram_on": "Holograma 64x64x64 Ativado.",
+  "message.sandstorm.morphing_core.hologram_off": "Holograma 64x64x64 Desativado.",
+  "message.sandstorm.morphing_core.saved": "Matriz Salva: %d blocos | Saldo: %d blocos"
 }

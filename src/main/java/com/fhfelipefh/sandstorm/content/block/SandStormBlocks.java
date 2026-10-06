@@ -23,6 +23,8 @@ import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlock
 import com.fhfelipefh.sandstorm.content.block.entity.LithoPlasmaExtractorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MolecularModifierBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.MorphingFluidTransitionBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.MorphingMatrixCoreBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NaniteFabricatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.OrbitalGroundStationBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.OrbitalMassDriverBlockEntity;
@@ -642,6 +644,22 @@ public class SandStormBlocks {
                     .strength(1.5f)
                     .lightLevel(state -> 8)
                     .sound(SoundType.METAL)));
+    public static final Block DEEPSLATE_GALLIUM_ORE = register("deepslate_gallium_ore",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("deepslate_gallium_ore")))
+                    .mapColor(MapColor.DEEPSLATE)
+                    .strength(4.5f, 3.0f)
+                    .sound(SoundType.DEEPSLATE)
+                    .requiresCorrectToolForDrops()));
+    public static final MorphingAlloyBlock MORPHING_ALLOY_BLOCK = register("morphing_alloy_block",
+            new MorphingAlloyBlock(MorphingAlloyBlock.createProperties()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("morphing_alloy_block")))));
+    public static final MorphingMatrixCoreBlock MORPHING_MATRIX_CORE = register("morphing_matrix_core",
+            new MorphingMatrixCoreBlock(MorphingMatrixCoreBlock.createProperties()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("morphing_matrix_core")))));
+    public static final MorphingFluidTransitionBlock MORPHING_FLUID_TRANSITION = register("morphing_fluid_transition",
+            new MorphingFluidTransitionBlock(MorphingFluidTransitionBlock.createProperties()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("morphing_fluid_transition")))));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -847,6 +865,16 @@ public class SandStormBlocks {
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("quantum_access_terminal"),
             new BlockEntityType<>(QuantumAccessTerminalBlockEntity::new, Set.of(QUANTUM_ACCESS_TERMINAL))
+    );
+    public static final BlockEntityType<MorphingMatrixCoreBlockEntity> MORPHING_MATRIX_CORE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("morphing_matrix_core"),
+            new BlockEntityType<>(MorphingMatrixCoreBlockEntity::new, Set.of(MORPHING_MATRIX_CORE))
+    );
+    public static final BlockEntityType<MorphingFluidTransitionBlockEntity> MORPHING_FLUID_TRANSITION_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("morphing_fluid_transition"),
+            new BlockEntityType<>(MorphingFluidTransitionBlockEntity::new, Set.of(MORPHING_FLUID_TRANSITION))
     );
 
     public static <T extends Block> T register(String path, T block) {
