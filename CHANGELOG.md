@@ -5,6 +5,18 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.10.1] - 2026-10-06
+
+### 🚀 Flag de Boost Permanente nos Comandos & Testes de Arquitetura de Texturas
+* **Flag de Overdrive Permanente nos Comandos de Debug**:
+  * Adicionado suporte ao argumento booleano `permanentBoost` nos comandos `/sandstorm golem <tier> [permanentBoost]` e `/sandstorm_golem <tier> [permanentBoost]`.
+  * Novos atalhos no auto-completar: `/sandstorm golem all_boost` e `/sandstorm golem all_overdrive`, além de suporte ao comando `/sandstorm golem boost true` para ativar overdrive perpétuo nos golens próximos.
+  * Suporte nativo em `CyberneticGolemEntity`: flag e persistência NBT `PermanentOverdrive`, mantendo partículas elétricas, propulsores e brilho emissivo do reator sem resfriamento.
+* **Teste de Arquitetura Dedicado para Preservação Visual de Texturas**:
+  * Criado `CyberneticGolemVisualIntegrityArchitectureTest` garantindo que nenhuma das 5 texturas metálicas (128x128), a camada de brilho térmico (`heat_glow.png`) e os blocos/itens da cabeça de autômato possam ser deletados, corrompidos ou terem resolução alterada em atualizações futuras.
+
+---
+
 ## [1.10.0] - 2026-10-06
 
 ### 🤖 Chamado Remoto & Companheirismo Tático dos Golens Cibernéticos

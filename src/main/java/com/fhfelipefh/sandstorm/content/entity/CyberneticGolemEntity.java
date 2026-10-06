@@ -57,6 +57,7 @@ public class CyberneticGolemEntity extends PathfinderMob {
 
     private Optional<UUID> ownerUUID = Optional.empty();
     private boolean sentinelMode = false;
+    private boolean permanentOverdrive = false;
 
     public CyberneticGolemEntity(EntityType<? extends CyberneticGolemEntity> entityType, Level level) {
         super(entityType, level);
@@ -155,6 +156,18 @@ public class CyberneticGolemEntity extends PathfinderMob {
 
     public void setSentinelMode(boolean sentinel) {
         this.sentinelMode = sentinel;
+    }
+
+    public boolean isPermanentOverdrive() {
+        return this.permanentOverdrive;
+    }
+
+    public void setPermanentOverdrive(boolean permanent) {
+        this.permanentOverdrive = permanent;
+        if (permanent) {
+            setOverdrive(true);
+            setHeat(1.0f);
+        }
     }
 
     public void onRemoteRecallCalled(ServerPlayer player) {
@@ -267,27 +280,34 @@ public class CyberneticGolemEntity extends PathfinderMob {
                 }
             }
         } else {
-            if (isOverdrive()) {
-                setOverdrive(false);
-            }
-
-            float currentHeat = getHeat();
-            if (currentHeat > 0.0f) {
-                int cooldown = getMetalTier().getCooldownTicks();
-                float nextHeat = currentHeat - (1.0f / (float) cooldown);
-                if (nextHeat < 0.0f) {
-                    nextHeat = 0.0f;
+            if (this.permanentOverdrive) {
+                if (!isOverdrive()) {
+                    setOverdrive(true);
                 }
-                setHeat(nextHeat);
-
-                if (this.tickCount % 4 == 0) {
-                    serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
-                            this.getX(), this.getY() + 1.1, this.getZ(), 2, 0.25, 0.35, 0.25, 0.01);
+                setHeat(1.0f);
+            } else {
+                if (isOverdrive()) {
+                    setOverdrive(false);
                 }
 
-                if (this.tickCount % 25 == 0) {
-                    serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
-                            SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.35f, 0.65f);
+                float currentHeat = getHeat();
+                if (currentHeat > 0.0f) {
+                    int cooldown = getMetalTier().getCooldownTicks();
+                    float nextHeat = currentHeat - (1.0f / (float) cooldown);
+                    if (nextHeat < 0.0f) {
+                        nextHeat = 0.0f;
+                    }
+                    setHeat(nextHeat);
+
+                    if (this.tickCount % 4 == 0) {
+                        serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                                this.getX(), this.getY() + 1.1, this.getZ(), 2, 0.25, 0.35, 0.25, 0.01);
+                    }
+
+                    if (this.tickCount % 25 == 0) {
+                        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.35f, 0.65f);
+                    }
                 }
             }
         }
@@ -402,6 +422,7 @@ public class CyberneticGolemEntity extends PathfinderMob {
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.putBoolean("Overdrive", this.isOverdrive());
+        output.putBoolean("PermanentOverdrive", this.permanentOverdrive);
         output.putFloat("Heat", this.getHeat());
         output.putString("MetalTier", this.entityData.get(DATA_TIER));
         output.putBoolean("SentinelMode", this.sentinelMode);
@@ -412,6 +433,7 @@ public class CyberneticGolemEntity extends PathfinderMob {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         this.setOverdrive(input.getBooleanOr("Overdrive", false));
+        this.setPermanentOverdrive(input.getBooleanOr("PermanentOverdrive", false));
         this.setHeat(input.getFloatOr("Heat", 0.0f));
         String tierId = input.getStringOr("MetalTier", "iron");
         this.setMetalTier(GolemMetalTier.byId(tierId));

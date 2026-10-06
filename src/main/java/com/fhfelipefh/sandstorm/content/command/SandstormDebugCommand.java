@@ -50,6 +50,7 @@ import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import com.fhfelipefh.sandstorm.content.world.ShowcaseAutomation;
 import com.fhfelipefh.sandstorm.content.world.structure.ColossalCastleGenerator;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -242,10 +243,13 @@ public class SandstormDebugCommand {
                                 )
                         )
                         .then(Commands.literal("golem")
-                                .executes(ctx -> executeGolem(ctx, "iron"))
+                                .executes(ctx -> executeGolem(ctx, "iron", false))
                                 .then(Commands.argument("tier", StringArgumentType.word())
                                         .suggests((ctx, builder) -> suggestGolemTiers(builder))
-                                        .executes(ctx -> executeGolem(ctx, StringArgumentType.getString(ctx, "tier")))
+                                        .executes(ctx -> executeGolem(ctx, StringArgumentType.getString(ctx, "tier"), false))
+                                        .then(Commands.argument("permanentBoost", BoolArgumentType.bool())
+                                                .executes(ctx -> executeGolem(ctx, StringArgumentType.getString(ctx, "tier"), BoolArgumentType.getBool(ctx, "permanentBoost")))
+                                        )
                                 )
                         )
                         .then(Commands.literal("setup")
@@ -303,10 +307,13 @@ public class SandstormDebugCommand {
 
         dispatcher.register(Commands.literal("sandstorm_golem")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
-                .executes(ctx -> executeGolem(ctx, "all"))
+                .executes(ctx -> executeGolem(ctx, "all", false))
                 .then(Commands.argument("tier", StringArgumentType.word())
                         .suggests((ctx, builder) -> suggestGolemTiers(builder))
-                        .executes(ctx -> executeGolem(ctx, StringArgumentType.getString(ctx, "tier")))
+                        .executes(ctx -> executeGolem(ctx, StringArgumentType.getString(ctx, "tier"), false))
+                        .then(Commands.argument("permanentBoost", BoolArgumentType.bool())
+                                .executes(ctx -> executeGolem(ctx, StringArgumentType.getString(ctx, "tier"), BoolArgumentType.getBool(ctx, "permanentBoost")))
+                        )
                 )
         );
     }
@@ -333,7 +340,7 @@ public class SandstormDebugCommand {
     }
 
     private static CompletableFuture<Suggestions> suggestGolemTiers(SuggestionsBuilder builder) {
-        List<String> tiers = List.of("all", "iron", "copper", "gold", "netherite", "composite", "boost", "kit");
+        List<String> tiers = List.of("all", "iron", "copper", "gold", "netherite", "composite", "boost", "kit", "all_boost", "all_overdrive");
         for (String tier : tiers) {
             if (tier.startsWith(builder.getRemaining().toLowerCase(Locale.ROOT))) {
                 builder.suggest(tier);
@@ -970,11 +977,20 @@ public class SandstormDebugCommand {
     }
 
     private static int executeGolem(CommandContext<CommandSourceStack> ctx, String tierParam) {
+        return executeGolem(ctx, tierParam, false);
+    }
+
+    private static int executeGolem(CommandContext<CommandSourceStack> ctx, String tierParam, boolean permanentBoost) {
         CommandSourceStack source = ctx.getSource();
         ServerLevel level = source.getLevel();
         ServerPlayer player = source.getEntity() instanceof ServerPlayer sp ? sp : null;
         Vec3 pos = source.getPosition();
         String normalized = tierParam.toLowerCase(Locale.ROOT);
+
+        if ("all_boost".equals(normalized) || "all_overdrive".equals(normalized)) {
+            normalized = "all";
+            permanentBoost = true;
+        }
 
         if ("kit".equals(normalized)) {
             if (player != null) {
@@ -1005,10 +1021,17 @@ public class SandstormDebugCommand {
                 return 0;
             }
             for (CyberneticGolemEntity golem : nearby) {
-                golem.setOverdrive(true);
-                golem.setHeat(1.0f);
+                if (permanentBoost) {
+                    golem.setPermanentOverdrive(true);
+                } else {
+                    golem.setOverdrive(true);
+                    golem.setHeat(1.0f);
+                }
             }
-            source.sendSuccess(() -> Component.literal("§6[SandStorm]§r Sobrecarga de propulsão (Overdrive Boost) acionada nos golens próximos!"), true);
+            boolean perm = permanentBoost;
+            source.sendSuccess(() -> Component.literal(perm
+                    ? "§6[SandStorm]§r Sobrecarga de propulsão PERMANENTE (Overdrive Boost) acionada nos golens próximos!"
+                    : "§6[SandStorm]§r Sobrecarga de propulsão (Overdrive Boost) acionada nos golens próximos!"), true);
             return 1;
         }
 
@@ -1044,6 +1067,9 @@ public class SandstormDebugCommand {
                     golem.setYRot(yaw);
                     golem.setYHeadRot(yaw);
                     golem.setMetalTier(tiers[i]);
+                    if (permanentBoost) {
+                        golem.setPermanentOverdrive(true);
+                    }
                     if (player != null) {
                         golem.setOwnerUUID(player.getUUID());
                     }
@@ -1056,7 +1082,10 @@ public class SandstormDebugCommand {
                 }
             }
 
-            source.sendSuccess(() -> Component.literal("§6[SandStorm]§r Formação completa instanciada lado a lado: Ferro, Cobre, Ouro, Netherita e Compósito!"), true);
+            boolean perm = permanentBoost;
+            source.sendSuccess(() -> Component.literal(perm
+                    ? "§6[SandStorm]§r Formação completa instanciada lado a lado (OVERDRIVE PERMANENTE): Ferro, Cobre, Ouro, Netherita e Compósito!"
+                    : "§6[SandStorm]§r Formação completa instanciada lado a lado: Ferro, Cobre, Ouro, Netherita e Compósito!"), true);
             return 1;
         }
 
@@ -1084,6 +1113,9 @@ public class SandstormDebugCommand {
             golem.setYRot(yaw);
             golem.setYHeadRot(yaw);
             golem.setMetalTier(tier);
+            if (permanentBoost) {
+                golem.setPermanentOverdrive(true);
+            }
             if (player != null) {
                 golem.setOwnerUUID(player.getUUID());
             }
@@ -1094,7 +1126,10 @@ public class SandstormDebugCommand {
             level.playSound(null, spawnPos.x, spawnPos.y, spawnPos.z,
                     SoundEvents.BEACON_POWER_SELECT, SoundSource.NEUTRAL, 1.0f, 1.2f);
 
-            source.sendSuccess(() -> Component.literal("§6[SandStorm]§r Golem Cibernético (" + tier.getId().toUpperCase(Locale.ROOT) + ") instanciado com sucesso!"), true);
+            boolean perm = permanentBoost;
+            source.sendSuccess(() -> Component.literal(perm
+                    ? "§6[SandStorm]§r Golem Cibernético (" + tier.getId().toUpperCase(Locale.ROOT) + ") [OVERDRIVE PERMANENTE] instanciado com sucesso!"
+                    : "§6[SandStorm]§r Golem Cibernético (" + tier.getId().toUpperCase(Locale.ROOT) + ") instanciado com sucesso!"), true);
             return 1;
         }
 
