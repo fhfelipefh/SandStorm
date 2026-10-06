@@ -97,7 +97,12 @@ class SandstormDebugTest {
         assertTrue(spawnables.contains("scrap_sentinel_dormant"));
         assertTrue(spawnables.contains("aquifer_beetle"));
         assertTrue(spawnables.contains("aquifer_beetle_hibernating"));
-        assertEquals(16, spawnables.size());
+        assertTrue(spawnables.contains("derelict_automaton"));
+        assertTrue(spawnables.contains("cyber_hound"));
+        assertTrue(spawnables.contains("laborer_unit"));
+        assertTrue(spawnables.contains("scout_drone"));
+        assertTrue(spawnables.contains("crawler_drone"));
+        assertEquals(21, spawnables.size());
     }
 
     @Test

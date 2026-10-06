@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " W ",
+    "ECE",
+    " S "
+  ],
+  "key": {
+    "W": "sandstorm:silicon_wafer",
+    "E": "sandstorm:electric_component",
+    "C": "sandstorm:circuit_board",
+    "S": "sandstorm:scrap_metal"
+  },
+  "result": {
+    "id": "sandstorm:reprogrammer_tool",
+    "count": 1
+  }
+}

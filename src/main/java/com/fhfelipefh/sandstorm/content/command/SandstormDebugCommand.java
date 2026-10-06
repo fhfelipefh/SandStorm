@@ -24,6 +24,11 @@ import com.fhfelipefh.sandstorm.content.block.entity.SupercriticalHeatExchangerB
 import com.fhfelipefh.sandstorm.content.entity.AquiferBeetleEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
+import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
+import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
+import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
@@ -93,7 +98,12 @@ public class SandstormDebugCommand {
             "scrap_sentinel",
             "scrap_sentinel_dormant",
             "aquifer_beetle",
-            "aquifer_beetle_hibernating"
+            "aquifer_beetle_hibernating",
+            "derelict_automaton",
+            "cyber_hound",
+            "laborer_unit",
+            "scout_drone",
+            "crawler_drone"
     );
 
     private static final List<String> FACILITIES = List.of(
@@ -829,6 +839,51 @@ public class SandstormDebugCommand {
                     sentinel.setDormant(true);
                     level.addFreshEntity(sentinel);
                     source.sendSuccess(() -> Component.literal("§a[SandStorm] Sentinela de Sucata (Dormente) instanciada com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "derelict_automaton" -> {
+                DerelictAutomatonEntity automaton = SandStormEntities.DERELICT_AUTOMATON.create(level, EntitySpawnReason.COMMAND);
+                if (automaton != null) {
+                    automaton.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(automaton);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Autômato Abandonado instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "cyber_hound" -> {
+                CyberHoundEntity hound = SandStormEntities.CYBER_HOUND.create(level, EntitySpawnReason.COMMAND);
+                if (hound != null) {
+                    hound.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(hound);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Cão Cibernético instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "laborer_unit" -> {
+                LaborerUnitEntity unit = SandStormEntities.LABORER_UNIT.create(level, EntitySpawnReason.COMMAND);
+                if (unit != null) {
+                    unit.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(unit);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Unidade Operária instanciada com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "scout_drone" -> {
+                ScoutDroneEntity scout = SandStormEntities.SCOUT_DRONE.create(level, EntitySpawnReason.COMMAND);
+                if (scout != null) {
+                    scout.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(scout);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Drone Explorador instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "crawler_drone" -> {
+                CrawlerDroneEntity crawler = SandStormEntities.CRAWLER_DRONE.create(level, EntitySpawnReason.COMMAND);
+                if (crawler != null) {
+                    crawler.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(crawler);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Drone Rastreador instanciado com sucesso!"), true);
                     return 1;
                 }
             }

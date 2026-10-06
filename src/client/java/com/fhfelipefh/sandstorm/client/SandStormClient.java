@@ -59,6 +59,11 @@ import com.fhfelipefh.sandstorm.client.renderer.ExcavatorVehicleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MegazordRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandboardRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandwormRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.DerelictAutomatonRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.CyberHoundRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.LaborerUnitRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.ScoutDroneRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.CrawlerDroneRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ScrapSentinelRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.NomadScavengerRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SpaceSuitArmorRenderer;
@@ -164,6 +169,11 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.SCRAP_SENTINEL, ScrapSentinelRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.AQUIFER_BEETLE, AquiferBeetleRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.NOMAD_SCAVENGER, NomadScavengerRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.DERELICT_AUTOMATON, DerelictAutomatonRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.CYBER_HOUND, CyberHoundRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.LABORER_UNIT, LaborerUnitRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.SCOUT_DRONE, ScoutDroneRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.CRAWLER_DRONE, CrawlerDroneRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

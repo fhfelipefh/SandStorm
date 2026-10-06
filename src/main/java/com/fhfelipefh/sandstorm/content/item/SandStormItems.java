@@ -121,6 +121,12 @@ public class SandStormItems {
     public static final SpawnEggItem SCRAP_SENTINEL_SPAWN_EGG = register("scrap_sentinel_spawn_egg", new SpawnEggItem(properties("scrap_sentinel_spawn_egg").spawnEgg(SandStormEntities.SCRAP_SENTINEL)));
     public static final SpawnEggItem AQUIFER_BEETLE_SPAWN_EGG = register("aquifer_beetle_spawn_egg", new SpawnEggItem(properties("aquifer_beetle_spawn_egg").spawnEgg(SandStormEntities.AQUIFER_BEETLE)));
     public static final SpawnEggItem NOMAD_SCAVENGER_SPAWN_EGG = register("nomad_scavenger_spawn_egg", new SpawnEggItem(properties("nomad_scavenger_spawn_egg").spawnEgg(SandStormEntities.NOMAD_SCAVENGER)));
+    public static final SpawnEggItem DERELICT_AUTOMATON_SPAWN_EGG = register("derelict_automaton_spawn_egg", new SpawnEggItem(properties("derelict_automaton_spawn_egg").spawnEgg(SandStormEntities.DERELICT_AUTOMATON)));
+    public static final SpawnEggItem CYBER_HOUND_SPAWN_EGG = register("cyber_hound_spawn_egg", new SpawnEggItem(properties("cyber_hound_spawn_egg").spawnEgg(SandStormEntities.CYBER_HOUND)));
+    public static final SpawnEggItem LABORER_UNIT_SPAWN_EGG = register("laborer_unit_spawn_egg", new SpawnEggItem(properties("laborer_unit_spawn_egg").spawnEgg(SandStormEntities.LABORER_UNIT)));
+    public static final SpawnEggItem SCOUT_DRONE_SPAWN_EGG = register("scout_drone_spawn_egg", new SpawnEggItem(properties("scout_drone_spawn_egg").spawnEgg(SandStormEntities.SCOUT_DRONE)));
+    public static final SpawnEggItem CRAWLER_DRONE_SPAWN_EGG = register("crawler_drone_spawn_egg", new SpawnEggItem(properties("crawler_drone_spawn_egg").spawnEgg(SandStormEntities.CRAWLER_DRONE)));
+    public static final ReprogrammerToolItem REPROGRAMMER_TOOL = register("reprogrammer_tool", new ReprogrammerToolItem(properties("reprogrammer_tool").rarity(Rarity.RARE).stacksTo(1)));
     public static final Item LOOSE_WIRES = register("loose_wires", new Item(properties("loose_wires").rarity(Rarity.COMMON)));
     public static final Item WORTHLESS_SCRAP = register("worthless_scrap", new Item(properties("worthless_scrap").rarity(Rarity.COMMON)));
     public static final Item SALT_GLAND = register("salt_gland", new Item(properties("salt_gland").rarity(Rarity.UNCOMMON)));
@@ -313,6 +319,12 @@ public class SandStormItems {
                         entries.accept(SCRAP_SENTINEL_SPAWN_EGG);
                         entries.accept(AQUIFER_BEETLE_SPAWN_EGG);
                         entries.accept(NOMAD_SCAVENGER_SPAWN_EGG);
+                        entries.accept(DERELICT_AUTOMATON_SPAWN_EGG);
+                        entries.accept(CYBER_HOUND_SPAWN_EGG);
+                        entries.accept(LABORER_UNIT_SPAWN_EGG);
+                        entries.accept(SCOUT_DRONE_SPAWN_EGG);
+                        entries.accept(CRAWLER_DRONE_SPAWN_EGG);
+                        entries.accept(REPROGRAMMER_TOOL);
                         entries.accept(LOOSE_WIRES);
                         entries.accept(WORTHLESS_SCRAP);
                         entries.accept(SALT_GLAND);

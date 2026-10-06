@@ -38,26 +38,18 @@ class ShowcaseWorldSetupTest {
         Path showcaseDimsDir = showcaseDir.resolve("dimensions");
         copyDirectoryRecursive(templateDimsDir, showcaseDimsDir);
 
-        Path regionDir = showcaseDimsDir.resolve("minecraft").resolve("overworld").resolve("region");
-        if (Files.exists(regionDir)) {
-            try (Stream<Path> files = Files.walk(regionDir)) {
-                files.sorted(Comparator.reverseOrder()).forEach(p -> {
-                    try {
-                        if (!p.equals(regionDir)) {
-                            Files.deleteIfExists(p);
-                        }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-            }
-        }
+        deleteDirectoryContents(showcaseDimsDir.resolve("minecraft").resolve("overworld").resolve("region"));
+        deleteDirectoryContents(showcaseDimsDir.resolve("minecraft").resolve("overworld").resolve("entities"));
+        deleteDirectoryContents(showcaseDimsDir.resolve("minecraft").resolve("overworld").resolve("poi"));
+        deleteDirectoryContents(showcaseDir.resolve("players"));
+        deleteDirectoryContents(showcaseDir.resolve("playerdata"));
 
         Files.deleteIfExists(showcaseDir.resolve("session.lock"));
 
         Path levelDat = showcaseDir.resolve("level.dat");
         CompoundTag levelRoot = NbtIo.readCompressed(templateDir.resolve("level.dat"), NbtAccounter.unlimitedHeap());
         CompoundTag data = levelRoot.getCompoundOrEmpty("Data");
+        data.remove("Player");
         data.putString("LevelName", "SandStorm_Showcase");
         data.putInt("GameType", 1);
         data.putByte("allowCommands", (byte) 1);
@@ -136,6 +128,23 @@ class ShowcaseWorldSetupTest {
                             Files.delete(dest);
                         }
                         Files.copy(src, dest);
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+
+    private void deleteDirectoryContents(Path dir) throws IOException {
+        if (!Files.exists(dir)) {
+            return;
+        }
+        try (Stream<Path> files = Files.walk(dir)) {
+            files.sorted(Comparator.reverseOrder()).forEach(p -> {
+                try {
+                    if (!p.equals(dir)) {
+                        Files.deleteIfExists(p);
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);

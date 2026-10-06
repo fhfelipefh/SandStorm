@@ -4,12 +4,17 @@ import com.fhfelipefh.sandstorm.content.command.SandstormBuildCommand;
 import com.fhfelipefh.sandstorm.content.entity.AquiferBeetleEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
+import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
+import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.content.entity.NomadScavengerEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandboardEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
+import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgBuilderEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgExcavatorEntity;
@@ -276,6 +281,26 @@ public class ExhibitionGalleryManager {
 
         list.add(new RawDisplayEntry("Mob: Sentinela de Sucata", 3, (level, x, groundY, z) -> {
             spawnFrozenEntity(level, new ScrapSentinelEntity(SandStormEntities.SCRAP_SENTINEL, level), x, groundY, z, "Sentinela de Sucata");
+        }));
+
+        list.add(new RawDisplayEntry("Mob: Autômato Abandonado", 3, (level, x, groundY, z) -> {
+            spawnFrozenEntity(level, new DerelictAutomatonEntity(SandStormEntities.DERELICT_AUTOMATON, level), x, groundY, z, "Autômato Abandonado");
+        }));
+
+        list.add(new RawDisplayEntry("Mob: Cão Cibernético", 3, (level, x, groundY, z) -> {
+            spawnFrozenEntity(level, new CyberHoundEntity(SandStormEntities.CYBER_HOUND, level), x, groundY, z, "Cão Cibernético");
+        }));
+
+        list.add(new RawDisplayEntry("Mob: Unidade Operária", 3, (level, x, groundY, z) -> {
+            spawnFrozenEntity(level, new LaborerUnitEntity(SandStormEntities.LABORER_UNIT, level), x, groundY, z, "Unidade Operária");
+        }));
+
+        list.add(new RawDisplayEntry("Mob: Drone Explorador", 3, (level, x, groundY, z) -> {
+            spawnFrozenEntity(level, new ScoutDroneEntity(SandStormEntities.SCOUT_DRONE, level), x, groundY, z, "Drone Explorador");
+        }));
+
+        list.add(new RawDisplayEntry("Mob: Drone Rastreador", 3, (level, x, groundY, z) -> {
+            spawnFrozenEntity(level, new CrawlerDroneEntity(SandStormEntities.CRAWLER_DRONE, level), x, groundY, z, "Drone Rastreador");
         }));
 
         list.add(new RawDisplayEntry("Criatura: Besouro Aquífero", 3, (level, x, groundY, z) -> {

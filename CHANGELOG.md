@@ -5,6 +5,26 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.6.0] - 2026-10-05
+
+### 🤖 Fauna Mecanoide do Apocalipse Tecnológico
+* **Substituição de Mobs Orgânicos por Autômatos Antigos**:
+  * **Autômato Abandonado (Derelict Automaton)**: Andróide bípede de combate com rotina corrompida de autodestruição. Ao se aproximar de alvos, trava no solo e sobrecarrega o núcleo de fusão, gerando explosão física e **onda de choque EMP** que drena a energia do traje espacial (`SuitPowerComponent`). Dropar de sucata e placas de circuito danificadas.
+  * **Cão Cibernético (Cyber Hound)**: Robô quadrúpede batedor da série *K-9 Recon*. Não procria nem consome matéria orgânica; domesticado exclusivamente via reprogramação de firmware e reparado com sucata metálica (`scrap_metal`). Possui visor óptico que alterna entre âmbar (selvagem) e ciano (amigável), modo *Stand-by* e sistema de alerta sensorial para tempestades e ameaças nas dunas.
+  * **Ferramenta de Reprogramação (Reprogrammer Tool)**: Novo dispositivo portátil ergonômico com antena e interface holográfica. Consome energia do traje espacial para hackear e sobrescrever diretrizes de firmware em unidades mecânicas do mundo.
+  * **Unidade Operária (Laborer Unit)**: Autômato industrial de blindagem pesada e pistões hidráulicos reforçados. Imune a calor/fogo, resistente a recuo e com ataques pesados que causam lentidão momentânea.
+  * **Drone Explorador (Scout Drone)**: Andróide esbelto de reconhecimento tático com chassi de titânio e canhão de feixe cinético acoplado ao braço direito, mantendo distância e disparando contra alvos.
+  * **Drone Rastreador (Crawler Drone)**: Robô hexápode/octópode de perfuração e escalada ágil de cânions, munido de serras e lâminas de alta rotação.
+* **Geração Natural em Ruínas Tecnológicas**:
+  * Autômatos, cães cibernéticos e drones sentinelas patrulham e guarnecem estruturas abandonadas geradas proceduralmente (`AbandonedOutpostGenerator`).
+* **Novas Quests & Árvore de Progressão**:
+  * Adicionadas quests "Reprogrammer Tool", "Titanium Companion" e "Mechanical Menace" nos Capítulos 3 e 4 do Datapad de Sobrevivência.
+* **Showcase Monumental & Ferramental de Depuração**:
+  * Incorporação de vitrines dedicadas para todas as 5 entidades mecânicas na Galeria de Exibição (`ExhibitionGalleryManager`).
+  * Expansão dos comandos de depuração `/sandstorm_debug robot <tipo>` e `/sandstorm_debug spawn <tipo>` suportando todas as novas unidades.
+
+---
+
 ## [1.5.4] - 2026-09-30
 
 ### 🔊 Feedback Sonoro e Partículas de Conclusão nas Máquinas

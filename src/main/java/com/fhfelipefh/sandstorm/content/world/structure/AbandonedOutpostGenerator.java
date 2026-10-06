@@ -1,7 +1,12 @@
 package com.fhfelipefh.sandstorm.content.world.structure;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
+import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
+import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
@@ -94,6 +99,31 @@ public class AbandonedOutpostGenerator {
         sentinel.setDormant(true);
         sentinel.setPersistenceRequired();
         level.addFreshEntity(sentinel);
+
+        DerelictAutomatonEntity automaton = new DerelictAutomatonEntity(SandStormEntities.DERELICT_AUTOMATON, level);
+        automaton.setPos(center.getX() - 1.5, center.getY() + 1.0, center.getZ() - 1.5);
+        automaton.setPersistenceRequired();
+        level.addFreshEntity(automaton);
+
+        CyberHoundEntity hound = new CyberHoundEntity(SandStormEntities.CYBER_HOUND, level);
+        hound.setPos(center.getX() + 2.0, center.getY() + 1.0, center.getZ() - 2.0);
+        hound.setPersistenceRequired();
+        level.addFreshEntity(hound);
+
+        LaborerUnitEntity laborer = new LaborerUnitEntity(SandStormEntities.LABORER_UNIT, level);
+        laborer.setPos(center.getX() - 2.5, center.getY() + 1.0, center.getZ() + 2.0);
+        laborer.setPersistenceRequired();
+        level.addFreshEntity(laborer);
+
+        ScoutDroneEntity scout = new ScoutDroneEntity(SandStormEntities.SCOUT_DRONE, level);
+        scout.setPos(center.getX() + 2.5, center.getY() + 1.0, center.getZ() + 2.0);
+        scout.setPersistenceRequired();
+        level.addFreshEntity(scout);
+
+        CrawlerDroneEntity crawler = new CrawlerDroneEntity(SandStormEntities.CRAWLER_DRONE, level);
+        crawler.setPos(center.getX(), center.getY() + 1.0, center.getZ() - 3.0);
+        crawler.setPersistenceRequired();
+        level.addFreshEntity(crawler);
 
         level.setBlock(center.offset(-2, 0, -2), SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
         level.setBlock(center.offset(2, 0, -2), SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
