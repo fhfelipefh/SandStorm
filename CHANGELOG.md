@@ -5,6 +5,21 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.10.2] - 2026-10-06
+
+### 🔧 Correção de Ancoragem das Articulações & Emissão de Luz dos Golens Cibernéticos
+* **Ancoragem Geométrica das Articulações Incandescentes**:
+  * Implementação de `CyberneticGolemHeatLayer` como camada dedicada `RenderLayer` renderizada dentro da matriz de transformações ativa dos membros do modelo.
+  * Remoção do envio manual posterior a `super.submit()` que causava a renderização flutuante e deslocada do corpo do mob no espaço global.
+  * Regeneração com precisão matemática das coordenadas UV de `cybernetic_golem_heat_glow.png` nos limites exatos dos cotovelos, joelhos, peito e olhos da malha 128x128.
+* **Origem Confinada de Faíscas & Emissão de Luz Ambiente**:
+  * As partículas elétricas de overdrive (`ELECTRIC_SPARK`) agora têm emissão estritamente restrita aos pontos de junta articular no chassi físico dos golens (raio curto de 0.35 a 0.5 blocos e velocidade nula), eliminando faíscas espalhadas no chão ou no ar vazio.
+  * Os golens cibernéticos em modo Overdrive ou aquecidos passam a emitir nível de luz em bloco 9 (`getBlockLightLevel`) na renderização e ambiente.
+* **Auditoria Contínua com Testes de Arquitetura**:
+  * Expandido `CyberneticGolemVisualIntegrityArchitectureTest` para auditar a existência de `CyberneticGolemHeatLayer`, seu registro no renderer, a sobreposição de `getBlockLightLevel` e o confinamento das partículas aos pontos de articulação.
+
+---
+
 ## [1.10.1] - 2026-10-06
 
 ### 🚀 Flag de Boost Permanente nos Comandos & Testes de Arquitetura de Texturas

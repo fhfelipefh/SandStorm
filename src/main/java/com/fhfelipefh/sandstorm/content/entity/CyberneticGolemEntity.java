@@ -242,14 +242,19 @@ public class CyberneticGolemEntity extends PathfinderMob {
         Level lvl = this.level();
         if (lvl.isClientSide()) {
             if (isOverdrive()) {
-                lvl.addParticle(ParticleTypes.ELECTRIC_SPARK,
-                        this.getRandomX(0.5), this.getY() + 0.6 + this.random.nextDouble() * 1.2, this.getRandomZ(0.5),
-                        (this.random.nextDouble() - 0.5) * 0.2, 0.1, (this.random.nextDouble() - 0.5) * 0.2);
+                double jointY = this.random.nextBoolean() ? (this.getY() + 0.75) : (this.getY() + 1.45);
+                double angle = this.random.nextDouble() * Math.PI * 2.0;
+                double radius = 0.35 + this.random.nextDouble() * 0.15;
+                double px = this.getX() + Math.cos(angle) * radius;
+                double pz = this.getZ() + Math.sin(angle) * radius;
+                lvl.addParticle(ParticleTypes.ELECTRIC_SPARK, px, jointY, pz, 0.0, 0.01, 0.0);
             } else if (getHeat() > 0.05f) {
-                if (this.tickCount % 4 == 0) {
+                if (this.tickCount % 6 == 0) {
                     lvl.addParticle(ParticleTypes.SMOKE,
-                            this.getRandomX(0.4), this.getY() + 0.8 + this.random.nextDouble() * 0.8, this.getRandomZ(0.4),
-                            0.0, 0.04, 0.0);
+                            this.getX() + (this.random.nextDouble() - 0.5) * 0.4,
+                            this.getY() + 1.5,
+                            this.getZ() + (this.random.nextDouble() - 0.5) * 0.4,
+                            0.0, 0.02, 0.0);
                 }
             }
             return;
@@ -270,13 +275,6 @@ public class CyberneticGolemEntity extends PathfinderMob {
                             SoundEvents.BEACON_POWER_SELECT, SoundSource.NEUTRAL, 0.9f, 1.2f);
                     serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
                             this.getX(), this.getY() + 1.2, this.getZ(), 24, 0.4, 0.6, 0.4, 0.12);
-                }
-            }
-
-            if (isOverdrive()) {
-                if (this.tickCount % 2 == 0) {
-                    serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
-                            this.getX(), this.getY() + 1.0, this.getZ(), 4, 0.3, 0.5, 0.3, 0.08);
                 }
             }
         } else {
@@ -416,6 +414,13 @@ public class CyberneticGolemEntity extends PathfinderMob {
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(SoundEvents.IRON_GOLEM_STEP, 1.0f, 1.0f);
+    }
+
+    public int getDynamicLightLevel() {
+        if (this.isOverdrive() || this.getHeat() > 0.05f) {
+            return 9;
+        }
+        return 0;
     }
 
     @Override

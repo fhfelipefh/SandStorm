@@ -80,8 +80,13 @@ class CyberneticGolemVisualIntegrityArchitectureTest {
         assertTrue(Files.exists(rendererPath), "CyberneticGolemRenderer must exist");
         String rendererContent = Files.readString(rendererPath);
 
+        Path heatLayerPath = Path.of("src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "renderer", "CyberneticGolemHeatLayer.java");
+        assertTrue(Files.exists(heatLayerPath), "CyberneticGolemHeatLayer must exist");
+        String heatLayerContent = Files.readString(heatLayerPath);
+        String combinedRenderer = rendererContent + heatLayerContent;
+
         for (String textureName : GOLEM_TEXTURES) {
-            assertTrue(rendererContent.contains(textureName), "Renderer must reference texture: " + textureName);
+            assertTrue(combinedRenderer.contains(textureName), "Renderer or heat layer must reference texture: " + textureName);
         }
 
         Path modelPath = Path.of("src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "renderer", "CyberneticGolemModel.java");
@@ -94,5 +99,25 @@ class CyberneticGolemVisualIntegrityArchitectureTest {
     void entityMustSupportPermanentOverdriveMethods() throws NoSuchMethodException {
         assertNotNull(CyberneticGolemEntity.class.getMethod("setPermanentOverdrive", boolean.class));
         assertNotNull(CyberneticGolemEntity.class.getMethod("isPermanentOverdrive"));
+    }
+
+    @Test
+    void heatLayerMustExistAndBeRegisteredInRenderer() throws IOException, NoSuchMethodException {
+        Path heatLayerPath = Path.of("src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "renderer", "CyberneticGolemHeatLayer.java");
+        assertTrue(Files.exists(heatLayerPath), "CyberneticGolemHeatLayer.java must exist");
+        String heatLayerContent = Files.readString(heatLayerPath);
+        assertTrue(heatLayerContent.contains("RenderLayer<CyberneticGolemRenderState, CyberneticGolemModel>"), "Must extend RenderLayer");
+        assertTrue(heatLayerContent.contains("cybernetic_golem_heat_glow.png"), "Must reference heat glow texture");
+
+        Path rendererPath = Path.of("src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "renderer", "CyberneticGolemRenderer.java");
+        String rendererContent = Files.readString(rendererPath);
+        assertTrue(rendererContent.contains("addLayer(new CyberneticGolemHeatLayer(this))"), "Renderer must register CyberneticGolemHeatLayer");
+        assertTrue(rendererContent.contains("getBlockLightLevel"), "Renderer must override getBlockLightLevel for emissive aura");
+
+        assertNotNull(CyberneticGolemEntity.class.getMethod("getDynamicLightLevel"));
+
+        Path entityPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity", "CyberneticGolemEntity.java");
+        String entityContent = Files.readString(entityPath);
+        assertTrue(entityContent.contains("jointY"), "Entity must confine spark particles to joint Y coordinates");
     }
 }
