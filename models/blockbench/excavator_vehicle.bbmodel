@@ -4,311 +4,386 @@
     "model_format": "java_block",
     "box_uv": true
   },
-  "name": "Excavator Vehicle",
+  "name": "Heavy Mining Excavator Vehicle",
   "model_identifier": "sandstorm:excavator_vehicle",
   "resolution": {
-    "width": 16,
-    "height": 16
+    "width": 256,
+    "height": 256
   },
   "elements": [
     {
-      "name": "chassis",
+      "name": "chassis_base",
       "box_uv": true,
       "from": [
-        2,
-        2,
-        2
+        -12,
+        -8,
+        -14
       ],
       "to": [
-        14,
-        10,
+        12,
+        -2,
         14
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            2,
-            6,
-            14,
-            14
-          ],
-          "texture": 0
-        },
-        "east": {
-          "uv": [
-            2,
-            6,
-            14,
-            14
-          ],
-          "texture": 0
-        },
-        "south": {
-          "uv": [
-            2,
-            6,
-            14,
-            14
-          ],
-          "texture": 0
-        },
-        "west": {
-          "uv": [
-            2,
-            6,
-            14,
-            14
-          ],
-          "texture": 0
-        },
-        "up": {
-          "uv": [
-            2,
-            2,
-            14,
-            14
-          ],
-          "texture": 0
-        },
-        "down": {
-          "uv": [
-            2,
-            2,
-            14,
-            14
-          ],
-          "texture": 0
-        }
-      }
+      ]
     },
     {
-      "name": "track_left",
+      "name": "front_shield",
       "box_uv": true,
       "from": [
-        0,
-        0,
-        1
-      ],
-      "to": [
-        3,
-        4,
-        15
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            12,
-            3,
-            16
-          ],
-          "texture": 0
-        },
-        "east": {
-          "uv": [
-            1,
-            12,
-            15,
-            16
-          ],
-          "texture": 0
-        },
-        "south": {
-          "uv": [
-            0,
-            12,
-            3,
-            16
-          ],
-          "texture": 0
-        },
-        "west": {
-          "uv": [
-            1,
-            12,
-            15,
-            16
-          ],
-          "texture": 0
-        },
-        "up": {
-          "uv": [
-            0,
-            1,
-            3,
-            15
-          ],
-          "texture": 0
-        },
-        "down": {
-          "uv": [
-            0,
-            1,
-            3,
-            15
-          ],
-          "texture": 0
-        }
-      }
-    },
-    {
-      "name": "track_right",
-      "box_uv": true,
-      "from": [
-        13,
-        0,
-        1
-      ],
-      "to": [
-        16,
-        4,
-        15
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            13,
-            12,
-            16,
-            16
-          ],
-          "texture": 0
-        },
-        "east": {
-          "uv": [
-            1,
-            12,
-            15,
-            16
-          ],
-          "texture": 0
-        },
-        "south": {
-          "uv": [
-            13,
-            12,
-            16,
-            16
-          ],
-          "texture": 0
-        },
-        "west": {
-          "uv": [
-            1,
-            12,
-            15,
-            16
-          ],
-          "texture": 0
-        },
-        "up": {
-          "uv": [
-            13,
-            1,
-            16,
-            15
-          ],
-          "texture": 0
-        },
-        "down": {
-          "uv": [
-            13,
-            1,
-            16,
-            15
-          ],
-          "texture": 0
-        }
-      }
-    },
-    {
-      "name": "drill_head",
-      "box_uv": true,
-      "from": [
-        5,
-        3,
-        -4
+        -11,
+        -6,
+        14
       ],
       "to": [
         11,
-        9,
-        2
+        -1,
+        17
+      ]
+    },
+    {
+      "name": "rear_radiator",
+      "box_uv": true,
+      "from": [
+        -8,
+        -12,
+        -15
       ],
-      "faces": {
-        "north": {
-          "uv": [
-            5,
-            7,
-            11,
-            13
-          ],
-          "texture": 0
-        },
-        "east": {
-          "uv": [
-            0,
-            7,
-            6,
-            13
-          ],
-          "texture": 0
-        },
-        "south": {
-          "uv": [
-            5,
-            7,
-            11,
-            13
-          ],
-          "texture": 0
-        },
-        "west": {
-          "uv": [
-            0,
-            7,
-            6,
-            13
-          ],
-          "texture": 0
-        },
-        "up": {
-          "uv": [
-            5,
-            0,
-            11,
-            6
-          ],
-          "texture": 0
-        },
-        "down": {
-          "uv": [
-            5,
-            0,
-            11,
-            6
-          ],
-          "texture": 0
-        }
-      }
+      "to": [
+        8,
+        -4,
+        -13
+      ]
+    },
+    {
+      "name": "exhaust_pipe_left",
+      "box_uv": true,
+      "from": [
+        -9,
+        -18,
+        -14
+      ],
+      "to": [
+        -7,
+        -8,
+        -12
+      ]
+    },
+    {
+      "name": "exhaust_pipe_right",
+      "box_uv": true,
+      "from": [
+        7,
+        -18,
+        -14
+      ],
+      "to": [
+        9,
+        -8,
+        -12
+      ]
+    },
+    {
+      "name": "tread_left",
+      "box_uv": true,
+      "from": [
+        -17,
+        -4,
+        -16
+      ],
+      "to": [
+        -12,
+        3,
+        16
+      ]
+    },
+    {
+      "name": "tread_right",
+      "box_uv": true,
+      "from": [
+        12,
+        -4,
+        -16
+      ],
+      "to": [
+        17,
+        3,
+        16
+      ]
+    },
+    {
+      "name": "tread_guard_left",
+      "box_uv": true,
+      "from": [
+        -18,
+        -6,
+        -16
+      ],
+      "to": [
+        -12,
+        -4,
+        16
+      ]
+    },
+    {
+      "name": "tread_guard_right",
+      "box_uv": true,
+      "from": [
+        12,
+        -6,
+        -16
+      ],
+      "to": [
+        18,
+        -4,
+        16
+      ]
+    },
+    {
+      "name": "cabin_body",
+      "box_uv": true,
+      "from": [
+        -8,
+        -18,
+        -8
+      ],
+      "to": [
+        8,
+        -8,
+        8
+      ]
+    },
+    {
+      "name": "cabin_roof",
+      "box_uv": true,
+      "from": [
+        -9,
+        -20,
+        -9
+      ],
+      "to": [
+        9,
+        -18,
+        9
+      ]
+    },
+    {
+      "name": "seat",
+      "box_uv": true,
+      "from": [
+        -4,
+        -12,
+        -4
+      ],
+      "to": [
+        4,
+        -9,
+        4
+      ]
+    },
+    {
+      "name": "seat_back",
+      "box_uv": true,
+      "from": [
+        -4,
+        -18,
+        -4
+      ],
+      "to": [
+        4,
+        -12,
+        -2
+      ]
+    },
+    {
+      "name": "headlight_left",
+      "box_uv": true,
+      "from": [
+        -7,
+        -23,
+        7
+      ],
+      "to": [
+        -3,
+        -20,
+        10
+      ]
+    },
+    {
+      "name": "headlight_right",
+      "box_uv": true,
+      "from": [
+        3,
+        -23,
+        7
+      ],
+      "to": [
+        7,
+        -20,
+        10
+      ]
+    },
+    {
+      "name": "boom_base",
+      "box_uv": true,
+      "from": [
+        -4,
+        -9,
+        14
+      ],
+      "to": [
+        4,
+        -3,
+        20
+      ]
+    },
+    {
+      "name": "boom_arm",
+      "box_uv": true,
+      "from": [
+        -3,
+        -8,
+        20
+      ],
+      "to": [
+        3,
+        -3,
+        30
+      ]
+    },
+    {
+      "name": "cylinder_left",
+      "box_uv": true,
+      "from": [
+        -5,
+        -7,
+        16
+      ],
+      "to": [
+        -3,
+        -4,
+        26
+      ]
+    },
+    {
+      "name": "cylinder_right",
+      "box_uv": true,
+      "from": [
+        3,
+        -7,
+        16
+      ],
+      "to": [
+        5,
+        -4,
+        26
+      ]
+    },
+    {
+      "name": "drill_drum",
+      "box_uv": true,
+      "from": [
+        -5,
+        -10.5,
+        30
+      ],
+      "to": [
+        5,
+        -0.5,
+        38
+      ]
+    },
+    {
+      "name": "drill_cone",
+      "box_uv": true,
+      "from": [
+        -3.5,
+        -9.0,
+        38
+      ],
+      "to": [
+        3.5,
+        -2.0,
+        44
+      ]
+    },
+    {
+      "name": "drill_tip",
+      "box_uv": true,
+      "from": [
+        -2,
+        -7.5,
+        44
+      ],
+      "to": [
+        2,
+        -3.5,
+        50
+      ]
+    },
+    {
+      "name": "drill_tooth_top",
+      "box_uv": true,
+      "from": [
+        -1,
+        -12.5,
+        32
+      ],
+      "to": [
+        1,
+        -10.5,
+        36
+      ]
+    },
+    {
+      "name": "drill_tooth_bottom",
+      "box_uv": true,
+      "from": [
+        -1,
+        -0.5,
+        32
+      ],
+      "to": [
+        1,
+        1.5,
+        36
+      ]
+    },
+    {
+      "name": "drill_tooth_left",
+      "box_uv": true,
+      "from": [
+        -7,
+        -6.5,
+        34
+      ],
+      "to": [
+        -5,
+        -4.5,
+        38
+      ]
+    },
+    {
+      "name": "drill_tooth_right",
+      "box_uv": true,
+      "from": [
+        5,
+        -6.5,
+        34
+      ],
+      "to": [
+        7,
+        -4.5,
+        38
+      ]
     }
-  ],
-  "outliner": [
-    "chassis",
-    "track_left",
-    "track_right",
-    "drill_head"
   ],
   "textures": [
     {
+      "path": "textures/entity/excavator_vehicle/excavator_vehicle.png",
       "name": "excavator_vehicle",
       "folder": "entity",
-      "namespace": "sandstorm",
       "id": "0",
-      "particle": false,
-      "render_mode": "default",
-      "visible": true,
-      "mode": "bitmap",
-      "saved": true
+      "width": 256,
+      "height": 256
     }
   ]
 }

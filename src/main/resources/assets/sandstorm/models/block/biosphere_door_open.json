@@ -1,7 +1,8 @@
 {
   "render_type": "minecraft:translucent",
   "textures": {
-    "glass": "sandstorm:block/biosphere_door"
+    "glass": "sandstorm:block/biosphere_door",
+    "particle": "sandstorm:block/biosphere_door"
   },
   "display": {
     "gui": {

@@ -1407,16 +1407,32 @@ public class ShowcaseAutomation {
     }
 
     private static void wipeBiospheresArea(ServerLevel level, BlockPos center) {
-        AABB biosphereZone = new AABB(
-            center.getX() - 130, center.getY() - 5, center.getZ() + 25,
+        AABB entranceZone = new AABB(
+            center.getX() - 6, center.getY() - 5, center.getZ() + 25,
+            center.getX() + 6, center.getY() + 30, center.getZ() + 56
+        );
+        AABB domesZone = new AABB(
+            center.getX() - 130, center.getY() - 5, center.getZ() + 56,
             center.getX() + 130, center.getY() + 30, center.getZ() + 175
         );
-        List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, biosphereZone, e -> !(e instanceof ServerPlayer));
+        List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, entranceZone.minmax(domesZone), e -> !(e instanceof ServerPlayer));
         for (Entity e : oldEntities) {
-            e.discard();
+            if (entranceZone.contains(e.position()) || domesZone.contains(e.position())) {
+                e.discard();
+            }
+        }
+        for (int x = -6; x <= 6; x++) {
+            for (int z = 25; z <= 56; z++) {
+                for (int y = -5; y <= 30; y++) {
+                    BlockPos p = center.offset(x, y, z);
+                    if (!level.getBlockState(p).isAir()) {
+                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                    }
+                }
+            }
         }
         for (int x = -126; x <= 126; x++) {
-            for (int z = 25; z <= 171; z++) {
+            for (int z = 57; z <= 171; z++) {
                 for (int y = -5; y <= 30; y++) {
                     BlockPos p = center.offset(x, y, z);
                     if (!level.getBlockState(p).isAir()) {
