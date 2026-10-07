@@ -866,7 +866,8 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
             BlockPos abovePos = targetPos.above();
             if (serverLevel.getBlockState(abovePos).isAir()) {
                 if (hasSaplings()) {
-                    BlockState spruceSapling = Blocks.SPRUCE_SAPLING.defaultBlockState();
+                    ItemStack saplingStack = items.get(SLOT_SAPLINGS);
+                    BlockState spruceSapling = getSaplingState(saplingStack);
                     if (canPlaceAbove(serverLevel, abovePos, spruceSapling)) {
                         BlockState saplingState = consumeSapling();
                         if (saplingState != null) {
@@ -874,7 +875,7 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
                             serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
                             serverLevel.playSound(null, abovePos, SoundEvents.CHERRY_SAPLING_PLACE, SoundSource.BLOCKS, 0.4f, 1.0f);
                         }
-                    } else {
+                    } else if (canPlaceAbove(serverLevel, abovePos, Blocks.SNOW.defaultBlockState())) {
                         serverLevel.setBlock(abovePos, Blocks.SNOW.defaultBlockState(), 3);
                     }
                 } else {
@@ -882,7 +883,7 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
                     if (canPlaceAbove(serverLevel, abovePos, foliage) && consumeSeedUnit()) {
                         serverLevel.setBlock(abovePos, foliage, 3);
                         serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, abovePos.getX() + 0.5, abovePos.getY() + 0.3, abovePos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.05);
-                    } else {
+                    } else if (canPlaceAbove(serverLevel, abovePos, Blocks.SNOW.defaultBlockState())) {
                         serverLevel.setBlock(abovePos, Blocks.SNOW.defaultBlockState(), 3);
                     }
                 }
@@ -980,7 +981,8 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
             BlockPos abovePos = targetPos.above();
             if (serverLevel.getBlockState(abovePos).isAir()) {
                 if (hasSaplings()) {
-                    BlockState toPlace = Blocks.OAK_SAPLING.defaultBlockState();
+                    ItemStack saplingStack = items.get(SLOT_SAPLINGS);
+                    BlockState toPlace = getSaplingState(saplingStack);
                     if (canPlaceAbove(serverLevel, abovePos, toPlace)) {
                         BlockState saplingState = consumeSapling();
                         if (saplingState != null) {
@@ -1019,7 +1021,8 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
             BlockPos abovePos = targetPos.above();
             if (serverLevel.getBlockState(abovePos).isAir()) {
                 if (hasSaplings()) {
-                    BlockState forestSapling = random.nextBoolean() ? Blocks.BIRCH_SAPLING.defaultBlockState() : Blocks.OAK_SAPLING.defaultBlockState();
+                    ItemStack saplingStack = items.get(SLOT_SAPLINGS);
+                    BlockState forestSapling = getSaplingState(saplingStack);
                     if (canPlaceAbove(serverLevel, abovePos, forestSapling)) {
                         BlockState saplingState = consumeSapling();
                         if (saplingState != null) {
@@ -1058,7 +1061,8 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
             BlockPos abovePos = targetPos.above();
             if (serverLevel.getBlockState(abovePos).isAir()) {
                 if (hasSaplings()) {
-                    BlockState jungleSapling = Blocks.JUNGLE_SAPLING.defaultBlockState();
+                    ItemStack saplingStack = items.get(SLOT_SAPLINGS);
+                    BlockState jungleSapling = getSaplingState(saplingStack);
                     if (canPlaceAbove(serverLevel, abovePos, jungleSapling)) {
                         BlockState saplingState = consumeSapling();
                         if (saplingState != null) {
@@ -1097,12 +1101,16 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
             BlockPos abovePos = targetPos.above();
             if (serverLevel.getBlockState(abovePos).isAir()) {
                 if (hasSaplings()) {
-                    BlockState saplingConsumed = consumeSapling();
-                    if (saplingConsumed != null && canPlaceAbove(serverLevel, abovePos, saplingConsumed)) {
-                        serverLevel.setBlock(abovePos, saplingConsumed, 3);
-                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
-                        serverLevel.sendParticles(ParticleTypes.GLOW, abovePos.getX() + 0.5, abovePos.getY() + 0.6, abovePos.getZ() + 0.5, 3, 0.2, 0.2, 0.2, 0.02);
-                        serverLevel.playSound(null, abovePos, SoundEvents.CHERRY_SAPLING_PLACE, SoundSource.BLOCKS, 0.4f, 1.0f);
+                    ItemStack saplingStack = items.get(SLOT_SAPLINGS);
+                    BlockState toPlace = getSaplingState(saplingStack);
+                    if (canPlaceAbove(serverLevel, abovePos, toPlace)) {
+                        BlockState saplingConsumed = consumeSapling();
+                        if (saplingConsumed != null) {
+                            serverLevel.setBlock(abovePos, toPlace, 3);
+                            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
+                            serverLevel.sendParticles(ParticleTypes.GLOW, abovePos.getX() + 0.5, abovePos.getY() + 0.6, abovePos.getZ() + 0.5, 3, 0.2, 0.2, 0.2, 0.02);
+                            serverLevel.playSound(null, abovePos, SoundEvents.CHERRY_SAPLING_PLACE, SoundSource.BLOCKS, 0.4f, 1.0f);
+                        }
                     }
                 } else {
                     BlockState foliageState = getRandomFoliage(random);
@@ -1180,7 +1188,8 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
     }
 
     private static boolean canPlaceAbove(ServerLevel level, BlockPos pos, BlockState toPlace) {
-        return toPlace.canSurvive(level, pos);
+        BlockState current = level.getBlockState(pos);
+        return (current.isAir() || current.canBeReplaced()) && toPlace.canSurvive(level, pos);
     }
 
     public static boolean isAridBlock(BlockState state) {

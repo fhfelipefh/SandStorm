@@ -5,10 +5,16 @@ import com.fhfelipefh.sandstorm.config.SandStormConfig;
 import com.fhfelipefh.sandstorm.content.block.CryogenicAtmosphericChillerBlock;
 import com.fhfelipefh.sandstorm.content.block.CryogenicChillerManager;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.gui.CryogenicAtmosphericChillerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,7 +26,9 @@ import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 
-public class CryogenicAtmosphericChillerBlockEntity extends BlockEntity {
+public class CryogenicAtmosphericChillerBlockEntity extends BlockEntity implements MenuProvider {
+    public static final int CONTAINER_SIZE = 0;
+    public static final int DATA_COUNT = 8;
     public static final long MAX_ENERGY = 500000L;
     public static final long ENERGY_COST_PER_TICK = 50L;
     public static final int DEFAULT_RADIUS = 64;
@@ -28,6 +36,34 @@ public class CryogenicAtmosphericChillerBlockEntity extends BlockEntity {
     private final EnergyStorageComponent energyStorage;
     private int radius = DEFAULT_RADIUS;
     private boolean active = false;
+
+    private final ContainerData dataAccess = new ContainerData() {
+        @Override
+        public int get(int index) {
+            long energy = energyStorage.getStoredEnergy();
+            long energyCost = SandStormConfig.getCryogenicChillerEnergyCost();
+            return switch (index) {
+                case 0 -> (int) (energy & 0xFFFF);
+                case 1 -> (int) ((energy >> 16) & 0xFFFF);
+                case 2 -> (int) (MAX_ENERGY & 0xFFFF);
+                case 3 -> (int) ((MAX_ENERGY >> 16) & 0xFFFF);
+                case 4 -> (int) (energyCost & 0xFFFF);
+                case 5 -> (int) ((energyCost >> 16) & 0xFFFF);
+                case 6 -> radius;
+                case 7 -> active ? 1 : 0;
+                default -> 0;
+            };
+        }
+
+        @Override
+        public void set(int index, int value) {
+        }
+
+        @Override
+        public int getCount() {
+            return 8;
+        }
+    };
 
     public CryogenicAtmosphericChillerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -37,6 +73,16 @@ public class CryogenicAtmosphericChillerBlockEntity extends BlockEntity {
 
     public CryogenicAtmosphericChillerBlockEntity(BlockPos pos, BlockState state) {
         this(SandStormBlocks.CRYOGENIC_ATMOSPHERIC_CHILLER_BE, pos, state);
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.translatable("block.sandstorm.cryogenic_atmospheric_chiller");
+    }
+
+    @Override
+    public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
+        return new CryogenicAtmosphericChillerMenu(syncId, playerInventory, this, this.dataAccess);
     }
 
     public EnergyStorageComponent getEnergyStorage() {

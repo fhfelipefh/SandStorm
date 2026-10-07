@@ -60,6 +60,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.entity.SignTextSlot;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.AABB;
@@ -697,68 +698,96 @@ public class ShowcaseAutomation {
 
                     level.setBlock(below, Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
 
-                    if (x >= 2 && x <= 8 && z >= 1 && z <= 7) {
-                        boolean pondEdge = (x == 3 || x == 7 || z == 2 || z == 6);
-                        if (pondEdge) {
-                            level.setBlock(p, Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 2);
+                    int pdx = x - 5;
+                    int pdz = z - 4;
+                    int pdistSq = pdx * pdx + pdz * pdz;
+                    int fdx = x + 5;
+                    int fdz = z - 4;
+                    int fdistSq = fdx * fdx + fdz * fdz;
+
+                    if (pdistSq <= 12) {
+                        if (pdistSq >= 8) {
+                            level.setBlock(p, (pdx + pdz) % 2 == 0 ? Blocks.MOSSY_COBBLESTONE.defaultBlockState() : Blocks.PACKED_MUD.defaultBlockState(), 2);
                         } else {
                             level.setBlock(below, Blocks.SEA_LANTERN.defaultBlockState(), 2);
                             level.setBlock(p, Blocks.WATER.defaultBlockState(), 2);
-                            if (x == 5 && z == 4) {
-                                level.setBlock(p.above(), Blocks.LILY_PAD.defaultBlockState(), 2);
+                            if (pdx == 0 && pdz == 0) {
+                                setSafeFlora(level, p.above(), Blocks.LILY_PAD.defaultBlockState());
                             }
                         }
-                    } else if (x >= -7 && x <= -3 && z >= 2 && z <= 6) {
-                        boolean farmEdge = (x == -7 || x == -3 || z == 2 || z == 6);
-                        if (farmEdge) {
+                    } else if (fdistSq <= 9) {
+                        if (fdistSq >= 7) {
                             level.setBlock(p, Blocks.PACKED_MUD.defaultBlockState(), 2);
                         } else {
                             level.setBlock(p, Blocks.FARMLAND.defaultBlockState(), 2);
-                            if (x == -5 && z == 4) {
-                                level.setBlock(p.above(), Blocks.MELON.defaultBlockState(), 2);
-                            } else if (x == -4 && z == 4) {
-                                level.setBlock(p.above(), Blocks.PUMPKIN.defaultBlockState(), 2);
-                            } else if (z == 3) {
-                                level.setBlock(p.above(), Blocks.CARROTS.defaultBlockState(), 2);
+                            if (fdx == 0 && fdz == 0) {
+                                setSafeFlora(level, p.above(), Blocks.MELON.defaultBlockState());
+                            } else if (fdx == 1 && fdz == 0) {
+                                setSafeFlora(level, p.above(), Blocks.PUMPKIN.defaultBlockState());
+                            } else if (fdz == 1) {
+                                setSafeFlora(level, p.above(), Blocks.CARROTS.defaultBlockState());
                             } else {
-                                level.setBlock(p.above(), Blocks.WHEAT.defaultBlockState(), 2);
+                                setSafeFlora(level, p.above(), Blocks.WHEAT.defaultBlockState());
                             }
                         }
-                    } else if (x == 4 && z == -4) {
-                        level.setBlock(p, Blocks.ROOTED_DIRT.defaultBlockState(), 2);
-                        level.setBlock(p.above(), Blocks.OAK_LOG.defaultBlockState(), 2);
-                        level.setBlock(p.above(2), Blocks.OAK_LOG.defaultBlockState(), 2);
-                        for (int lx = -1; lx <= 1; lx++) {
-                            for (int lz = -1; lz <= 1; lz++) {
-                                level.setBlock(p.offset(lx, 3, lz), Blocks.OAK_LEAVES.defaultBlockState(), 2);
+                    } else if (x >= 3 && x <= 5 && z >= -6 && z <= -4) {
+                        if (x == 4 && z == -5) {
+                            level.setBlock(p, Blocks.ROOTED_DIRT.defaultBlockState(), 2);
+                            for (int ty = 1; ty <= 4; ty++) {
+                                level.setBlock(p.above(ty), Blocks.OAK_LOG.defaultBlockState(), 2);
                             }
+                            for (int lx = -2; lx <= 2; lx++) {
+                                for (int lz = -2; lz <= 2; lz++) {
+                                    if (Math.abs(lx) + Math.abs(lz) <= 3) {
+                                        level.setBlock(p.offset(lx, 4, lz), Blocks.OAK_LEAVES.defaultBlockState(), 2);
+                                    }
+                                    if (Math.abs(lx) <= 1 && Math.abs(lz) <= 1) {
+                                        level.setBlock(p.offset(lx, 5, lz), Blocks.OAK_LEAVES.defaultBlockState(), 2);
+                                    }
+                                }
+                            }
+                            level.setBlock(p.offset(0, 6, 0), Blocks.OAK_LEAVES.defaultBlockState(), 2);
+                        } else {
+                            level.setBlock(p, Blocks.COARSE_DIRT.defaultBlockState(), 2);
                         }
-                        level.setBlock(p.offset(0, 4, 0), Blocks.OAK_LEAVES.defaultBlockState(), 2);
-                    } else if (x == -4 && z == -4) {
+                    } else if (x >= -6 && x <= -3 && z >= -6 && z <= -4) {
                         level.setBlock(p, Blocks.GRASS_BLOCK.defaultBlockState(), 2);
-                        level.setBlock(p.above(), Blocks.BAMBOO.defaultBlockState(), 2);
-                        level.setBlock(p.above(2), Blocks.BAMBOO.defaultBlockState(), 2);
+                        int bambooHeight = Math.abs(x * 3 + z * 5) % 4 + 1;
+                        for (int by = 1; by <= bambooHeight; by++) {
+                            setSafeFlora(level, p.above(by), Blocks.BAMBOO.defaultBlockState());
+                        }
                     } else {
-                        boolean moss = (Math.abs(x * 7 + z * 13) % 5 == 0);
-                        boolean podzol = (Math.abs(x * 3 + z * 11) % 7 == 0);
-                        Block floorBlock = moss ? Blocks.MOSS_BLOCK : (podzol ? Blocks.PODZOL : Blocks.GRASS_BLOCK);
+                        Block floorBlock;
+                        if (pdistSq <= 18) {
+                            floorBlock = Blocks.MOSS_BLOCK;
+                        } else if (Math.abs(x - 4) <= 2 && Math.abs(z + 5) <= 2) {
+                            floorBlock = Blocks.PODZOL;
+                        } else {
+                            floorBlock = Blocks.GRASS_BLOCK;
+                        }
                         level.setBlock(p, floorBlock.defaultBlockState(), 2);
 
-                        int decorHash = Math.abs(x * 31 + z * 17) % 12;
-                        if (decorHash == 1) {
-                            level.setBlock(p.above(), Blocks.FLOWERING_AZALEA.defaultBlockState(), 2);
-                        } else if (decorHash == 2) {
-                            level.setBlock(p.above(), Blocks.POPPY.defaultBlockState(), 2);
-                        } else if (decorHash == 3) {
-                            level.setBlock(p.above(), Blocks.CORNFLOWER.defaultBlockState(), 2);
-                        } else if (decorHash == 4) {
-                            level.setBlock(p.above(), Blocks.FERN.defaultBlockState(), 2);
-                        } else if (decorHash == 5) {
-                            level.setBlock(p.above(), Blocks.DANDELION.defaultBlockState(), 2);
-                        } else if (decorHash == 6) {
-                            level.setBlock(p.above(), Blocks.MOSS_CARPET.defaultBlockState(), 2);
-                        } else if (decorHash == 7) {
-                            level.setBlock(p.above(), Blocks.SHORT_GRASS.defaultBlockState(), 2);
+                        if (floorBlock == Blocks.MOSS_BLOCK) {
+                            if ((x + z) % 5 == 0) {
+                                setSafeFlora(level, p.above(), Blocks.FLOWERING_AZALEA.defaultBlockState());
+                            } else if ((x + z) % 7 == 0) {
+                                setSafeFlora(level, p.above(), Blocks.MOSS_CARPET.defaultBlockState());
+                            }
+                        } else if (floorBlock == Blocks.GRASS_BLOCK) {
+                            int decorHash = Math.abs(x * 31 + z * 17) % 15;
+                            if (decorHash == 1) {
+                                setSafeFlora(level, p.above(), Blocks.POPPY.defaultBlockState());
+                            } else if (decorHash == 2) {
+                                setSafeFlora(level, p.above(), Blocks.CORNFLOWER.defaultBlockState());
+                            } else if (decorHash == 3) {
+                                setSafeFlora(level, p.above(), Blocks.FERN.defaultBlockState());
+                            } else if (decorHash == 4) {
+                                setSafeFlora(level, p.above(), Blocks.DANDELION.defaultBlockState());
+                            } else if (decorHash == 5) {
+                                setSafeFlora(level, p.above(), Blocks.AZURE_BLUET.defaultBlockState());
+                            } else if (decorHash == 6 || decorHash == 7) {
+                                setSafeFlora(level, p.above(), Blocks.SHORT_GRASS.defaultBlockState());
+                            }
                         }
                     }
                 }
@@ -1267,23 +1296,52 @@ public class ShowcaseAutomation {
                             level.setBlock(p.above(3), Blocks.PACKED_ICE.defaultBlockState(), 2);
                         }
                     } else {
-                        int h = Math.abs(x * 7 + z * 13) % 4;
-                        Block floor = (h == 0) ? Blocks.BLUE_ICE : (h == 1) ? Blocks.PACKED_ICE : Blocks.SNOW_BLOCK;
+                        int iceDistSq = (x - 5) * (x - 5) + (z + 4) * (z + 4);
+                        int rockDistSq = (x + 6) * (x + 6) + (z - 8) * (z - 8);
+
+                        Block floor;
+                        if (iceDistSq <= 10) {
+                            floor = Blocks.BLUE_ICE;
+                        } else if (iceDistSq <= 22) {
+                            floor = Blocks.PACKED_ICE;
+                        } else if (rockDistSq <= 12) {
+                            floor = (x + z) % 2 == 0 ? Blocks.CALCITE : Blocks.PACKED_ICE;
+                        } else {
+                            floor = Blocks.SNOW_BLOCK;
+                        }
                         level.setBlock(p, floor.defaultBlockState(), 2);
-                        if (h == 2 && (Math.abs(x) > 2 || Math.abs(z) > 2)) {
-                            level.setBlock(p.above(), Blocks.SNOW.defaultBlockState(), 2);
-                        } else if (h == 3 && (Math.abs(x) > 3 || Math.abs(z) > 3)) {
-                            level.setBlock(p.above(), SandStormBlocks.CRYO_XEROPHILIC_LICHEN.defaultBlockState(), 2);
+
+                        if (floor == Blocks.SNOW_BLOCK) {
+                            if (Math.abs(x) > 2 || Math.abs(z) > 2) {
+                                int decorHash = Math.abs(x * 13 + z * 19) % 11;
+                                if (decorHash == 1 || decorHash == 2) {
+                                    setSafeFlora(level, p.above(), Blocks.SNOW.defaultBlockState());
+                                } else if (decorHash == 3) {
+                                    setSafeFlora(level, p.above(), SandStormBlocks.CRYO_XEROPHILIC_LICHEN.defaultBlockState());
+                                } else if (decorHash == 4 && (x + z) % 3 == 0) {
+                                    setSafeFlora(level, p.above(), Blocks.FERN.defaultBlockState());
+                                }
+                            }
+                        } else if (floor == Blocks.CALCITE || floor == Blocks.PACKED_ICE) {
+                            if ((x * 7 + z * 5) % 6 == 0) {
+                                setSafeFlora(level, p.above(), SandStormBlocks.CRYO_XEROPHILIC_LICHEN.defaultBlockState());
+                            }
                         }
                     }
                 }
             }
         }
 
-        buildSpruceTreeFeature(level, domeCenter.offset(-12, 1, -10));
-        buildSpruceTreeFeature(level, domeCenter.offset(12, 1, 10));
-        buildSpruceTreeFeature(level, domeCenter.offset(-10, 1, 12));
-        buildSpruceTreeFeature(level, domeCenter.offset(14, 1, -12));
+        buildSpruceTreeFeature(level, domeCenter.offset(-10, 1, -7), 7);
+        buildSpruceTreeFeature(level, domeCenter.offset(-7, 1, -11), 5);
+        buildSpruceTreeFeature(level, domeCenter.offset(-12, 1, -2), 4);
+        buildSpruceTreeFeature(level, domeCenter.offset(9, 1, 8), 6);
+
+        for (int lx = 2; lx <= 5; lx++) {
+            BlockPos logPos = domeCenter.offset(lx, 1, 9);
+            level.setBlock(logPos, Blocks.SPRUCE_LOG.defaultBlockState(), 2);
+            setSafeFlora(level, logPos.above(), Blocks.SNOW.defaultBlockState());
+        }
 
         BlockPos terraformerPos = domeCenter.above();
         level.setBlock(terraformerPos, SandStormBlocks.ATMOSPHERIC_TERRAFORMER.defaultBlockState(), 3);
@@ -1316,26 +1374,28 @@ public class ShowcaseAutomation {
         spawnBabyAnimal(level, domeCenter.getX() - 6.5, baseY + 1.0, domeCenter.getZ() - 6.5, "rabbit");
     }
 
-    private static void buildSpruceTreeFeature(ServerLevel level, BlockPos treePos) {
-        for (int ty = 0; ty < 5; ty++) {
+    private static void buildSpruceTreeFeature(ServerLevel level, BlockPos treePos, int height) {
+        for (int ty = 0; ty < height; ty++) {
             level.setBlock(treePos.above(ty), Blocks.SPRUCE_LOG.defaultBlockState(), 2);
         }
         for (int lx = -2; lx <= 2; lx++) {
             for (int lz = -2; lz <= 2; lz++) {
                 if (Math.abs(lx) + Math.abs(lz) <= 3) {
-                    level.setBlock(treePos.offset(lx, 3, lz), Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
-                    level.setBlock(treePos.offset(lx, 4, lz), Blocks.SNOW.defaultBlockState(), 2);
+                    BlockPos leafPos = treePos.offset(lx, height - 2, lz);
+                    level.setBlock(leafPos, Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
+                    setSafeFlora(level, leafPos.above(), Blocks.SNOW.defaultBlockState());
                 }
             }
         }
         for (int lx = -1; lx <= 1; lx++) {
             for (int lz = -1; lz <= 1; lz++) {
-                level.setBlock(treePos.offset(lx, 5, lz), Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
-                level.setBlock(treePos.offset(lx, 6, lz), Blocks.SNOW.defaultBlockState(), 2);
+                BlockPos leafPos = treePos.offset(lx, height - 1, lz);
+                level.setBlock(leafPos, Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
+                setSafeFlora(level, leafPos.above(), Blocks.SNOW.defaultBlockState());
             }
         }
-        level.setBlock(treePos.above(6), Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
-        level.setBlock(treePos.above(7), Blocks.SNOW.defaultBlockState(), 2);
+        level.setBlock(treePos.above(height), Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
+        setSafeFlora(level, treePos.above(height + 1), Blocks.SNOW.defaultBlockState());
     }
 
     private static void buildXenoFungalDome(ServerLevel level, BlockPos domeCenter) {
@@ -1372,23 +1432,55 @@ public class ShowcaseAutomation {
                             level.setBlock(p.above(3), Blocks.CRIMSON_NYLIUM.defaultBlockState(), 2);
                         }
                     } else {
-                        int h = Math.abs(x * 11 + z * 5) % 4;
-                        Block floor = (h == 0) ? SandStormBlocks.RADIOTROPHIC_MYCELIUM : (h == 1) ? Blocks.WARPED_NYLIUM : Blocks.MYCELIUM;
+                        int radioDistSq = (x - 7) * (x - 7) + (z - 6) * (z - 6);
+                        int warpDistSq = (x + 8) * (x + 8) + (z - 5) * (z - 5);
+                        int crimDistSq = (x + 6) * (x + 6) + (z + 8) * (z + 8);
+
+                        Block floor;
+                        if (radioDistSq <= 18) {
+                            floor = SandStormBlocks.RADIOTROPHIC_MYCELIUM;
+                        } else if (warpDistSq <= 16) {
+                            floor = Blocks.WARPED_NYLIUM;
+                        } else if (crimDistSq <= 14) {
+                            floor = Blocks.CRIMSON_NYLIUM;
+                        } else {
+                            floor = Blocks.MYCELIUM;
+                        }
                         level.setBlock(p, floor.defaultBlockState(), 2);
-                        if (h == 2 && (Math.abs(x) > 2 || Math.abs(z) > 2)) {
-                            level.setBlock(p.above(), SandStormBlocks.CHITINOLYTIC_FUNGUS.defaultBlockState(), 2);
-                        } else if (h == 3 && (Math.abs(x) > 3 || Math.abs(z) > 3)) {
-                            level.setBlock(p.above(), Blocks.WARPED_FUNGUS.defaultBlockState(), 2);
+
+                        if (floor == SandStormBlocks.RADIOTROPHIC_MYCELIUM) {
+                            if ((x * 7 + z * 11) % 5 == 0) {
+                                setSafeFlora(level, p.above(), SandStormBlocks.CHITINOLYTIC_FUNGUS.defaultBlockState());
+                            }
+                        } else if (floor == Blocks.WARPED_NYLIUM) {
+                            if ((x * 5 + z * 13) % 4 == 0) {
+                                setSafeFlora(level, p.above(), Blocks.WARPED_FUNGUS.defaultBlockState());
+                            }
+                        } else if (floor == Blocks.CRIMSON_NYLIUM) {
+                            if ((x * 11 + z * 3) % 4 == 0) {
+                                setSafeFlora(level, p.above(), Blocks.CRIMSON_FUNGUS.defaultBlockState());
+                            }
+                        } else {
+                            int decorHash = Math.abs(x * 17 + z * 7) % 13;
+                            if (decorHash == 1) {
+                                setSafeFlora(level, p.above(), Blocks.BROWN_MUSHROOM.defaultBlockState());
+                            } else if (decorHash == 2) {
+                                setSafeFlora(level, p.above(), Blocks.RED_MUSHROOM.defaultBlockState());
+                            }
                         }
                     }
                 }
             }
         }
 
-        buildMushroomFeature(level, domeCenter.offset(12, 1, -10), Blocks.RED_MUSHROOM_BLOCK);
-        buildMushroomFeature(level, domeCenter.offset(-12, 1, 12), Blocks.BROWN_MUSHROOM_BLOCK);
-        buildMushroomFeature(level, domeCenter.offset(-10, 1, -12), Blocks.WARPED_WART_BLOCK);
-        buildMushroomFeature(level, domeCenter.offset(14, 1, 10), Blocks.SHROOMLIGHT);
+        buildRedMushroomFeature(level, domeCenter.offset(7, 1, 6));
+        buildBrownMushroomFeature(level, domeCenter.offset(-8, 1, 5));
+        buildWarpedMushroomFeature(level, domeCenter.offset(-6, 1, -7));
+
+        BlockPos glowingNode = domeCenter.offset(11, 1, -7);
+        level.setBlock(glowingNode, Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
+        level.setBlock(glowingNode.above(), Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
+        level.setBlock(glowingNode.above(2), Blocks.SHROOMLIGHT.defaultBlockState(), 2);
 
         BlockPos terraformerPos = domeCenter.above();
         level.setBlock(terraformerPos, SandStormBlocks.ATMOSPHERIC_TERRAFORMER.defaultBlockState(), 3);
@@ -1414,14 +1506,41 @@ public class ShowcaseAutomation {
         spawnBabyAnimal(level, domeCenter.getX() + 6.5, baseY + 1.0, domeCenter.getZ() + 6.5, "frog");
     }
 
-    private static void buildMushroomFeature(ServerLevel level, BlockPos pos, Block capBlock) {
-        level.setBlock(pos, Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
-        level.setBlock(pos.above(), Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
-        level.setBlock(pos.above(2), Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
+    private static void buildRedMushroomFeature(ServerLevel level, BlockPos pos) {
+        for (int ty = 0; ty < 5; ty++) {
+            level.setBlock(pos.above(ty), Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
+        }
+        level.setBlock(pos.above(4), Blocks.SHROOMLIGHT.defaultBlockState(), 2);
+        for (int mx = -2; mx <= 2; mx++) {
+            for (int mz = -2; mz <= 2; mz++) {
+                if (Math.abs(mx) + Math.abs(mz) <= 3) {
+                    level.setBlock(pos.offset(mx, 5, mz), Blocks.RED_MUSHROOM_BLOCK.defaultBlockState(), 2);
+                }
+            }
+        }
+        level.setBlock(pos.above(6), Blocks.RED_MUSHROOM_BLOCK.defaultBlockState(), 2);
+    }
+
+    private static void buildBrownMushroomFeature(ServerLevel level, BlockPos pos) {
+        for (int ty = 0; ty < 4; ty++) {
+            level.setBlock(pos.above(ty), Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
+        }
         level.setBlock(pos.above(3), Blocks.SHROOMLIGHT.defaultBlockState(), 2);
+        for (int mx = -2; mx <= 2; mx++) {
+            for (int mz = -2; mz <= 2; mz++) {
+                level.setBlock(pos.offset(mx, 4, mz), Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState(), 2);
+            }
+        }
+    }
+
+    private static void buildWarpedMushroomFeature(ServerLevel level, BlockPos pos) {
+        for (int ty = 0; ty < 5; ty++) {
+            level.setBlock(pos.above(ty), Blocks.WARPED_STEM.defaultBlockState(), 2);
+        }
+        level.setBlock(pos.above(4), Blocks.SHROOMLIGHT.defaultBlockState(), 2);
         for (int mx = -1; mx <= 1; mx++) {
             for (int mz = -1; mz <= 1; mz++) {
-                level.setBlock(pos.offset(mx, 4, mz), capBlock.defaultBlockState(), 2);
+                level.setBlock(pos.offset(mx, 5, mz), Blocks.WARPED_WART_BLOCK.defaultBlockState(), 2);
             }
         }
     }
@@ -1459,34 +1578,86 @@ public class ShowcaseAutomation {
                         } else {
                             level.setBlock(p.above(3), Blocks.MOSS_BLOCK.defaultBlockState(), 2);
                         }
-                    } else if (x >= -12 && x <= -4 && z >= -12 && z <= -4) {
-                        int lakeDistSq = (x + 8) * (x + 8) + (z + 8) * (z + 8);
-                        if (lakeDistSq <= 16) {
+                    } else {
+                        int p1DistSq = (x + 7) * (x + 7) + (z + 6) * (z + 6);
+                        int p2DistSq = (x + 10) * (x + 10) + (z + 3) * (z + 3);
+
+                        if (p1DistSq <= 10 || p2DistSq <= 6) {
                             level.setBlock(p.below(), Blocks.SEA_LANTERN.defaultBlockState(), 2);
                             level.setBlock(p, Blocks.WATER.defaultBlockState(), 2);
-                            if (lakeDistSq <= 4 && (x + z) % 2 == 0) {
-                                level.setBlock(p.above(), Blocks.LILY_PAD.defaultBlockState(), 2);
+                            if ((x + z) % 3 == 0) {
+                                setSafeFlora(level, p.above(), Blocks.LILY_PAD.defaultBlockState());
+                            }
+                        } else if (p1DistSq <= 16 || p2DistSq <= 11) {
+                            Block shoreBlock = x > -8 ? Blocks.SAND : Blocks.MOSS_BLOCK;
+                            level.setBlock(p, shoreBlock.defaultBlockState(), 2);
+                            if (shoreBlock == Blocks.MOSS_BLOCK) {
+                                if ((x + z) % 4 == 0) {
+                                    setSafeFlora(level, p.above(), Blocks.FLOWERING_AZALEA.defaultBlockState());
+                                } else if ((x + z) % 5 == 0) {
+                                    setSafeFlora(level, p.above(), Blocks.MOSS_CARPET.defaultBlockState());
+                                }
                             }
                         } else {
-                            level.setBlock(p, Blocks.GRASS_BLOCK.defaultBlockState(), 2);
-                        }
-                    } else {
-                        int h = Math.abs(x * 9 + z * 17) % 4;
-                        Block floor = (h == 0) ? SandStormBlocks.XENO_GRASS_BLOCK : (h == 1) ? Blocks.PODZOL : Blocks.GRASS_BLOCK;
-                        level.setBlock(p, floor.defaultBlockState(), 2);
-                        if (h == 2 && (Math.abs(x) > 2 || Math.abs(z) > 2)) {
-                            level.setBlock(p.above(), Blocks.FLOWERING_AZALEA.defaultBlockState(), 2);
-                        } else if (h == 3 && (Math.abs(x) > 3 || Math.abs(z) > 3)) {
-                            level.setBlock(p.above(), Blocks.POPPY.defaultBlockState(), 2);
+                            int xenoDistSq = (x - 7) * (x - 7) + (z - 7) * (z - 7);
+                            int palmRoot1 = (x - 11) * (x - 11) + (z + 7) * (z + 7);
+                            int palmRoot2 = (x + 11) * (x + 11) + (z - 8) * (z - 8);
+
+                            Block floor;
+                            if (xenoDistSq <= 20) {
+                                floor = SandStormBlocks.XENO_GRASS_BLOCK;
+                            } else if (palmRoot1 <= 6 || palmRoot2 <= 6) {
+                                floor = Blocks.PODZOL;
+                            } else {
+                                floor = Blocks.GRASS_BLOCK;
+                            }
+                            level.setBlock(p, floor.defaultBlockState(), 2);
+
+                            if (floor == SandStormBlocks.XENO_GRASS_BLOCK) {
+                                if ((x * 7 + z * 13) % 7 == 1) {
+                                    setSafeFlora(level, p.above(), Blocks.FLOWERING_AZALEA.defaultBlockState());
+                                } else if ((x * 7 + z * 13) % 7 == 2) {
+                                    setSafeFlora(level, p.above(), Blocks.POPPY.defaultBlockState());
+                                }
+                            } else if (floor == Blocks.GRASS_BLOCK && (Math.abs(x) > 2 || Math.abs(z) > 2)) {
+                                int decorHash = Math.abs(x * 23 + z * 11) % 13;
+                                if (decorHash == 1) {
+                                    setSafeFlora(level, p.above(), Blocks.POPPY.defaultBlockState());
+                                } else if (decorHash == 2) {
+                                    setSafeFlora(level, p.above(), Blocks.CORNFLOWER.defaultBlockState());
+                                } else if (decorHash == 3) {
+                                    setSafeFlora(level, p.above(), Blocks.FERN.defaultBlockState());
+                                } else if (decorHash == 4) {
+                                    setSafeFlora(level, p.above(), Blocks.DANDELION.defaultBlockState());
+                                } else if (decorHash == 5) {
+                                    setSafeFlora(level, p.above(), Blocks.AZURE_BLUET.defaultBlockState());
+                                } else if (decorHash == 6 || decorHash == 7) {
+                                    setSafeFlora(level, p.above(), Blocks.SHORT_GRASS.defaultBlockState());
+                                }
+                            }
                         }
                     }
                 }
             }
         }
 
-        buildJunglePalmFeature(level, domeCenter.offset(14, 1, 10));
-        buildJunglePalmFeature(level, domeCenter.offset(12, 1, -12));
-        buildJunglePalmFeature(level, domeCenter.offset(-14, 1, 12));
+        buildJunglePalmFeature(level, domeCenter.offset(11, 1, -7), 7);
+        buildJunglePalmFeature(level, domeCenter.offset(-4, 1, -10), 5);
+        buildJunglePalmFeature(level, domeCenter.offset(-11, 1, 8), 6);
+
+        BlockPos companionPalm = domeCenter.offset(-10, 1, 9);
+        for (int ty = 0; ty < 3; ty++) {
+            level.setBlock(companionPalm.above(ty), Blocks.JUNGLE_LOG.defaultBlockState(), 2);
+        }
+        level.setBlock(companionPalm.above(3), Blocks.JUNGLE_LEAVES.defaultBlockState(), 2);
+
+        for (int bz = -5; bz <= -2; bz++) {
+            BlockPos bambooPos = domeCenter.offset(-4, 1, bz);
+            int bambooH = Math.abs(bz * 3) % 4 + 2;
+            for (int by = 0; by < bambooH; by++) {
+                setSafeFlora(level, bambooPos.above(by), Blocks.BAMBOO.defaultBlockState());
+            }
+        }
 
         BlockPos terraformerPos = domeCenter.above();
         level.setBlock(terraformerPos, SandStormBlocks.ATMOSPHERIC_TERRAFORMER.defaultBlockState(), 3);
@@ -1513,20 +1684,19 @@ public class ShowcaseAutomation {
         spawnBabyAnimal(level, domeCenter.getX() + 4.5, baseY + 1.0, domeCenter.getZ() + 6.5, "chicken");
     }
 
-    private static void buildJunglePalmFeature(ServerLevel level, BlockPos pos) {
-        for (int ty = 0; ty < 6; ty++) {
+    private static void buildJunglePalmFeature(ServerLevel level, BlockPos pos, int height) {
+        for (int ty = 0; ty < height; ty++) {
             level.setBlock(pos.above(ty), Blocks.JUNGLE_LOG.defaultBlockState(), 2);
         }
         for (int lx = -2; lx <= 2; lx++) {
             for (int lz = -2; lz <= 2; lz++) {
                 if (Math.abs(lx) + Math.abs(lz) <= 3) {
-                    level.setBlock(pos.offset(lx, 5, lz), Blocks.JUNGLE_LEAVES.defaultBlockState(), 2);
+                    level.setBlock(pos.offset(lx, height - 1, lz), Blocks.JUNGLE_LEAVES.defaultBlockState(), 2);
                 }
             }
         }
-        level.setBlock(pos.above(6), Blocks.JUNGLE_LEAVES.defaultBlockState(), 2);
-        level.setBlock(pos.offset(0, 4, -1), Blocks.MELON.defaultBlockState(), 2);
-        level.setBlock(pos.offset(1, 4, 0), Blocks.BAMBOO.defaultBlockState(), 2);
+        level.setBlock(pos.above(height), Blocks.JUNGLE_LEAVES.defaultBlockState(), 2);
+        setSafeFlora(level, pos.offset(0, height - 2, -1), Blocks.MELON.defaultBlockState());
     }
 
     private static void buildMagneticForestDome(ServerLevel level, BlockPos domeCenter) {
@@ -1563,23 +1733,60 @@ public class ShowcaseAutomation {
                             level.setBlock(p.above(3), Blocks.POLISHED_BASALT.defaultBlockState(), 2);
                         }
                     } else {
-                        int h = Math.abs(x * 13 + z * 19) % 4;
-                        Block floor = (h == 0) ? SandStormBlocks.ELECTRIFIED_SAND : (h == 1) ? Blocks.AMETHYST_BLOCK : Blocks.SMOOTH_BASALT;
+                        int fissureOffset = Math.abs(z - (int)(x * 0.7 - 1));
+                        int geodeDistSq = (x + 7) * (x + 7) + (z - 7) * (z - 7);
+
+                        Block floor;
+                        if (fissureOffset <= 1) {
+                            floor = SandStormBlocks.ELECTRIFIED_SAND;
+                        } else if (geodeDistSq <= 9) {
+                            floor = Blocks.AMETHYST_BLOCK;
+                        } else if (geodeDistSq <= 14) {
+                            floor = Blocks.CALCITE;
+                        } else {
+                            floor = Blocks.SMOOTH_BASALT;
+                        }
                         level.setBlock(p, floor.defaultBlockState(), 2);
-                        if (h == 2 && (Math.abs(x) > 2 || Math.abs(z) > 2)) {
-                            level.setBlock(p.above(), Blocks.AMETHYST_CLUSTER.defaultBlockState(), 2);
-                        } else if (h == 3 && (Math.abs(x) > 3 || Math.abs(z) > 3)) {
-                            level.setBlock(p.above(), Blocks.IRON_BARS.defaultBlockState(), 2);
+
+                        if (geodeDistSq <= 9) {
+                            if ((x + z) % 3 == 0) {
+                                setSafeFlora(level, p.above(), Blocks.AMETHYST_CLUSTER.defaultBlockState());
+                            } else if ((x + z) % 3 == 1) {
+                                setSafeFlora(level, p.above(), Blocks.SMALL_AMETHYST_BUD.defaultBlockState());
+                            }
+                        } else if (floor == Blocks.SMOOTH_BASALT) {
+                            int decorHash = Math.abs(x * 17 + z * 13) % 11;
+                            if (decorHash == 1) {
+                                setSafeFlora(level, p.above(), Blocks.MEDIUM_AMETHYST_BUD.defaultBlockState());
+                            } else if (decorHash == 2) {
+                                setSafeFlora(level, p.above(), Blocks.IRON_BARS.defaultBlockState());
+                            }
                         }
                     }
                 }
             }
         }
 
-        buildMagneticSpireFeature(level, domeCenter.offset(-12, 1, -12));
-        buildMagneticSpireFeature(level, domeCenter.offset(14, 1, -10));
-        buildMagneticSpireFeature(level, domeCenter.offset(-10, 1, 14));
-        buildMagneticSpireFeature(level, domeCenter.offset(12, 1, 12));
+        buildBasaltColumn(level, domeCenter.offset(10, 1, -7), 6);
+        buildBasaltColumn(level, domeCenter.offset(9, 1, -7), 4);
+        buildBasaltColumn(level, domeCenter.offset(10, 1, -6), 5);
+        buildBasaltColumn(level, domeCenter.offset(11, 1, -7), 3);
+        buildBasaltColumn(level, domeCenter.offset(9, 1, -6), 2);
+        buildBasaltColumn(level, domeCenter.offset(11, 1, -6), 4);
+
+        BlockPos spirePos = domeCenter.offset(-8, 1, -9);
+        for (int sy = 0; sy < 5; sy++) {
+            level.setBlock(spirePos.above(sy), Blocks.POLISHED_BASALT.defaultBlockState(), 2);
+        }
+        level.setBlock(spirePos.above(5), Blocks.AMETHYST_BLOCK.defaultBlockState(), 2);
+        setSafeFlora(level, spirePos.above(6), Blocks.AMETHYST_CLUSTER.defaultBlockState());
+
+        BlockPos subSpire = domeCenter.offset(6, 1, 10);
+        for (int sy = 0; sy < 3; sy++) {
+            level.setBlock(subSpire.above(sy), Blocks.POLISHED_BASALT.defaultBlockState(), 2);
+        }
+        level.setBlock(subSpire.above(3), Blocks.AMETHYST_BLOCK.defaultBlockState(), 2);
+        setSafeFlora(level, subSpire.above(4), Blocks.AMETHYST_CLUSTER.defaultBlockState());
 
         BlockPos terraformerPos = domeCenter.above();
         level.setBlock(terraformerPos, SandStormBlocks.ATMOSPHERIC_TERRAFORMER.defaultBlockState(), 3);
@@ -1604,11 +1811,18 @@ public class ShowcaseAutomation {
         spawnBabyAnimal(level, domeCenter.getX() - 6.5, baseY + 1.0, domeCenter.getZ() + 6.5, "wolf");
     }
 
-    private static void buildMagneticSpireFeature(ServerLevel level, BlockPos spirePos) {
-        level.setBlock(spirePos, Blocks.POLISHED_BASALT.defaultBlockState(), 2);
-        level.setBlock(spirePos.above(), Blocks.POLISHED_BASALT.defaultBlockState(), 2);
-        level.setBlock(spirePos.above(2), Blocks.AMETHYST_BLOCK.defaultBlockState(), 2);
-        level.setBlock(spirePos.above(3), Blocks.AMETHYST_CLUSTER.defaultBlockState(), 2);
+    private static void buildBasaltColumn(ServerLevel level, BlockPos pos, int height) {
+        for (int cy = 0; cy < height; cy++) {
+            level.setBlock(pos.above(cy), Blocks.POLISHED_BASALT.defaultBlockState(), 2);
+        }
+        level.setBlock(pos.above(height), Blocks.SMOOTH_BASALT.defaultBlockState(), 2);
+        setSafeFlora(level, pos.above(height + 1), Blocks.IRON_BARS.defaultBlockState());
+    }
+
+    private static void setSafeFlora(ServerLevel level, BlockPos pos, BlockState flora) {
+        if (level.getBlockState(pos).isAir() && flora.canSurvive(level, pos)) {
+            level.setBlock(pos, flora, 2);
+        }
     }
 
     @SuppressWarnings("unchecked")

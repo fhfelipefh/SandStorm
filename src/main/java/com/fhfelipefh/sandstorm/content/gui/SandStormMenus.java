@@ -188,8 +188,13 @@ public class SandStormMenus {
     );
 
     public static final MenuType<AmnioticIncubatorMenu> AMNIOTIC_INCUBATOR_MENU = register(
-            "amniotic_incubator",
-            new MenuType<>(AmnioticIncubatorMenu::new, FeatureFlags.VANILLA_SET)
+        "amniotic_incubator",
+        new MenuType<>(AmnioticIncubatorMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<CryogenicAtmosphericChillerMenu> CRYOGENIC_ATMOSPHERIC_CHILLER_MENU = register(
+        "cryogenic_atmospheric_chiller",
+        new MenuType<>(CryogenicAtmosphericChillerMenu::new, FeatureFlags.VANILLA_SET)
     );
 
     private static <T extends MenuType<?>> T register(String name, T menuType) {

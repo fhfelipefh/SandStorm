@@ -11,6 +11,7 @@ import com.fhfelipefh.sandstorm.client.gui.ChemicalRefineryScreen;
 import com.fhfelipefh.sandstorm.client.gui.CyborgDockingStationScreen;
 import com.fhfelipefh.sandstorm.client.gui.CyborgIncubatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.CyborgTelemetryScreen;
+import com.fhfelipefh.sandstorm.client.gui.CryogenicAtmosphericChillerScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreBoreholeScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreDrillScreen;
 import com.fhfelipefh.sandstorm.client.gui.DesalinationFilterScreen;
@@ -148,6 +149,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.QUANTUM_ACCESS_TERMINAL_MENU, QuantumTerminalScreen::new);
         MenuScreens.register(SandStormMenus.MORPHING_MATRIX_CORE_MENU, MorphingMatrixCoreScreen::new);
         MenuScreens.register(SandStormMenus.AMNIOTIC_INCUBATOR_MENU, AmnioticIncubatorScreen::new);
+        MenuScreens.register(SandStormMenus.CRYOGENIC_ATMOSPHERIC_CHILLER_MENU, CryogenicAtmosphericChillerScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
