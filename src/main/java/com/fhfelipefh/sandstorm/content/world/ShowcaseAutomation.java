@@ -1175,7 +1175,6 @@ public class ShowcaseAutomation {
 
     public static void buildBiospheresShowcase(ServerLevel level, BlockPos center) {
         wipeBiospheresArea(level, center);
-        int baseY = center.getY();
 
         for (int z = 30; z <= 75; z++) {
             for (int x = -2; x <= 2; x++) {
@@ -1190,14 +1189,14 @@ public class ShowcaseAutomation {
             }
         }
 
-        for (int x = -48; x <= 48; x++) {
+        for (int x = -122; x <= 122; x++) {
             for (int z = 73; z <= 77; z++) {
                 BlockPos bp = center.offset(x, 0, z);
                 boolean edge = (z == 73 || z == 77);
-                boolean light = (x % 6 == 0 && z == 75);
+                boolean light = (x % 8 == 0 && z == 75);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_SANDSTONE);
                 level.setBlock(bp, b.defaultBlockState(), 2);
-                if (edge && (Math.abs(x) < 4 || Math.abs(x) == 24 || Math.abs(x) == 48)) {
+                if (edge && (Math.abs(x) < 4 || Math.abs(x) == 16 || Math.abs(x) == 48 || Math.abs(x) == 80 || Math.abs(x) == 112)) {
                     level.setBlock(bp.above(), Blocks.SANDSTONE_WALL.defaultBlockState(), 2);
                 }
             }
@@ -1207,24 +1206,24 @@ public class ShowcaseAutomation {
         spawnHologram(level, entranceHolo.getX() + 0.5, entranceHolo.getY() + 1.2, entranceHolo.getZ() + 0.5, "§6[Complexo de Biosferas Planetárias]");
         spawnHologram(level, entranceHolo.getX() + 0.5, entranceHolo.getY() + 0.9, entranceHolo.getZ() + 0.5, "§bRestauração de Biomas & Síntese de Fauna");
 
-        buildCryogenicDome(level, center.offset(-36, 0, 75));
-        buildXenoFungalDome(level, center.offset(-12, 0, 75));
-        buildPrimordialOasisDome(level, center.offset(12, 0, 75));
-        buildMagneticForestDome(level, center.offset(36, 0, 75));
+        buildCryogenicDome(level, center.offset(-96, 0, 75));
+        buildXenoFungalDome(level, center.offset(-32, 0, 75));
+        buildPrimordialOasisDome(level, center.offset(32, 0, 75));
+        buildMagneticForestDome(level, center.offset(96, 0, 75));
     }
 
     private static void wipeBiospheresArea(ServerLevel level, BlockPos center) {
         AABB biosphereZone = new AABB(
-            center.getX() - 60, center.getY() - 5, center.getZ() + 25,
-            center.getX() + 60, center.getY() + 25, center.getZ() + 120
+            center.getX() - 130, center.getY() - 5, center.getZ() + 25,
+            center.getX() + 130, center.getY() + 30, center.getZ() + 110
         );
         List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, biosphereZone, e -> !(e instanceof ServerPlayer));
         for (Entity e : oldEntities) {
             e.discard();
         }
-        for (int x = -58; x <= 58; x++) {
-            for (int z = 27; z <= 118; z++) {
-                for (int y = -5; y <= 25; y++) {
+        for (int x = -126; x <= 126; x++) {
+            for (int z = 25; z <= 106; z++) {
+                for (int y = -5; y <= 30; y++) {
                     BlockPos p = center.offset(x, y, z);
                     if (!level.getBlockState(p).isAir()) {
                         level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
@@ -1235,15 +1234,17 @@ public class ShowcaseAutomation {
     }
 
     private static void buildCryogenicDome(ServerLevel level, BlockPos domeCenter) {
-        int radius = 8;
+        int radius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
         int baseY = domeCenter.getY();
 
         for (int x = -radius - 1; x <= radius + 1; x++) {
             for (int z = -radius - 1; z <= radius + 1; z++) {
-                for (int y = -2; y <= 12; y++) {
-                    BlockPos p = domeCenter.offset(x, y, z);
-                    if (!level.getBlockState(p).isAir()) {
-                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                if (x * x + z * z <= (radius + 1) * (radius + 1)) {
+                    for (int y = -2; y <= 14; y++) {
+                        BlockPos p = domeCenter.offset(x, y, z);
+                        if (!level.getBlockState(p).isAir()) {
+                            level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                        }
                     }
                 }
             }
@@ -1257,9 +1258,14 @@ public class ShowcaseAutomation {
                     level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                     boolean edge = distSq > (radius - 1) * (radius - 1);
                     if (edge) {
+                        boolean entrance = Math.abs(z) <= 1;
                         level.setBlock(p, Blocks.PACKED_ICE.defaultBlockState(), 2);
-                        level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
-                        level.setBlock(p.above(2), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                        if (!entrance) {
+                            level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                            level.setBlock(p.above(2), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                        } else {
+                            level.setBlock(p.above(3), Blocks.PACKED_ICE.defaultBlockState(), 2);
+                        }
                     } else {
                         int h = Math.abs(x * 7 + z * 13) % 4;
                         Block floor = (h == 0) ? Blocks.BLUE_ICE : (h == 1) ? Blocks.PACKED_ICE : Blocks.SNOW_BLOCK;
@@ -1274,38 +1280,26 @@ public class ShowcaseAutomation {
             }
         }
 
-        BlockPos treePos = domeCenter.offset(-4, 1, -3);
-        for (int ty = 0; ty < 4; ty++) {
-            level.setBlock(treePos.above(ty), Blocks.SPRUCE_LOG.defaultBlockState(), 2);
-        }
-        for (int lx = -1; lx <= 1; lx++) {
-            for (int lz = -1; lz <= 1; lz++) {
-                level.setBlock(treePos.offset(lx, 3, lz), Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
-                level.setBlock(treePos.offset(lx, 4, lz), Blocks.SNOW.defaultBlockState(), 2);
-            }
-        }
-        level.setBlock(treePos.above(4), Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
-        level.setBlock(treePos.above(5), Blocks.SNOW.defaultBlockState(), 2);
+        buildSpruceTreeFeature(level, domeCenter.offset(-12, 1, -10));
+        buildSpruceTreeFeature(level, domeCenter.offset(12, 1, 10));
+        buildSpruceTreeFeature(level, domeCenter.offset(-10, 1, 12));
+        buildSpruceTreeFeature(level, domeCenter.offset(14, 1, -12));
 
         BlockPos terraformerPos = domeCenter.above();
         level.setBlock(terraformerPos, SandStormBlocks.ATMOSPHERIC_TERRAFORMER.defaultBlockState(), 3);
         if (level.getBlockEntity(terraformerPos) instanceof AtmosphericTerraformerBlockEntity terraformer) {
-            terraformer.getEnergyStorage().receiveEnergy(500000L);
-            terraformer.setupTier(3);
-            terraformer.setWaterAmount(10000);
-            terraformer.setMineralUnits(64);
-            terraformer.setSeedUnits(64);
+            terraformer.setupTier(1);
             terraformer.setItem(AtmosphericTerraformerBlockEntity.SLOT_UPGRADE, new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_CRYO));
         }
 
-        BlockPos chillerPos = domeCenter.offset(2, 1, 0);
+        BlockPos chillerPos = domeCenter.offset(3, 1, 0);
         level.setBlock(chillerPos, SandStormBlocks.CRYOGENIC_ATMOSPHERIC_CHILLER.defaultBlockState(), 3);
         if (level.getBlockEntity(chillerPos) instanceof CryogenicAtmosphericChillerBlockEntity chiller) {
             chiller.getEnergyStorage().receiveEnergy(500000L);
-            chiller.setRadius(48);
+            chiller.setRadius(24);
         }
 
-        BlockPos incubatorPos = domeCenter.offset(-2, 1, 2);
+        BlockPos incubatorPos = domeCenter.offset(-3, 1, 3);
         level.setBlock(incubatorPos, SandStormBlocks.AMNIOTIC_INCUBATOR.defaultBlockState(), 3);
         if (level.getBlockEntity(incubatorPos) instanceof AmnioticIncubatorBlockEntity incubator) {
             incubator.getEnergyStorage().receiveEnergy(250000L);
@@ -1318,20 +1312,44 @@ public class ShowcaseAutomation {
         spawnHologram(level, domeCenter.getX() + 0.5, baseY + 3.4, domeCenter.getZ() + 0.5, "§b[Biosfera Criogênica - Alpha]");
         spawnHologram(level, domeCenter.getX() + 0.5, baseY + 3.1, domeCenter.getZ() + 0.5, "§7Atmosfera Subzero & Permafrost");
 
-        spawnBabyAnimal(level, domeCenter.getX() + 3.5, baseY + 1.0, domeCenter.getZ() + 3.5, "polar_bear");
-        spawnBabyAnimal(level, domeCenter.getX() - 3.5, baseY + 1.0, domeCenter.getZ() - 2.5, "rabbit");
+        spawnBabyAnimal(level, domeCenter.getX() + 6.5, baseY + 1.0, domeCenter.getZ() + 6.5, "polar_bear");
+        spawnBabyAnimal(level, domeCenter.getX() - 6.5, baseY + 1.0, domeCenter.getZ() - 6.5, "rabbit");
+    }
+
+    private static void buildSpruceTreeFeature(ServerLevel level, BlockPos treePos) {
+        for (int ty = 0; ty < 5; ty++) {
+            level.setBlock(treePos.above(ty), Blocks.SPRUCE_LOG.defaultBlockState(), 2);
+        }
+        for (int lx = -2; lx <= 2; lx++) {
+            for (int lz = -2; lz <= 2; lz++) {
+                if (Math.abs(lx) + Math.abs(lz) <= 3) {
+                    level.setBlock(treePos.offset(lx, 3, lz), Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
+                    level.setBlock(treePos.offset(lx, 4, lz), Blocks.SNOW.defaultBlockState(), 2);
+                }
+            }
+        }
+        for (int lx = -1; lx <= 1; lx++) {
+            for (int lz = -1; lz <= 1; lz++) {
+                level.setBlock(treePos.offset(lx, 5, lz), Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
+                level.setBlock(treePos.offset(lx, 6, lz), Blocks.SNOW.defaultBlockState(), 2);
+            }
+        }
+        level.setBlock(treePos.above(6), Blocks.SPRUCE_LEAVES.defaultBlockState(), 2);
+        level.setBlock(treePos.above(7), Blocks.SNOW.defaultBlockState(), 2);
     }
 
     private static void buildXenoFungalDome(ServerLevel level, BlockPos domeCenter) {
-        int radius = 8;
+        int radius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
         int baseY = domeCenter.getY();
 
         for (int x = -radius - 1; x <= radius + 1; x++) {
             for (int z = -radius - 1; z <= radius + 1; z++) {
-                for (int y = -2; y <= 12; y++) {
-                    BlockPos p = domeCenter.offset(x, y, z);
-                    if (!level.getBlockState(p).isAir()) {
-                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                if (x * x + z * z <= (radius + 1) * (radius + 1)) {
+                    for (int y = -2; y <= 14; y++) {
+                        BlockPos p = domeCenter.offset(x, y, z);
+                        if (!level.getBlockState(p).isAir()) {
+                            level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                        }
                     }
                 }
             }
@@ -1345,9 +1363,14 @@ public class ShowcaseAutomation {
                     level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                     boolean edge = distSq > (radius - 1) * (radius - 1);
                     if (edge) {
+                        boolean entrance = Math.abs(z) <= 1;
                         level.setBlock(p, Blocks.CRIMSON_NYLIUM.defaultBlockState(), 2);
-                        level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
-                        level.setBlock(p.above(2), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                        if (!entrance) {
+                            level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                            level.setBlock(p.above(2), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                        } else {
+                            level.setBlock(p.above(3), Blocks.CRIMSON_NYLIUM.defaultBlockState(), 2);
+                        }
                     } else {
                         int h = Math.abs(x * 11 + z * 5) % 4;
                         Block floor = (h == 0) ? SandStormBlocks.RADIOTROPHIC_MYCELIUM : (h == 1) ? Blocks.WARPED_NYLIUM : Blocks.MYCELIUM;
@@ -1362,28 +1385,19 @@ public class ShowcaseAutomation {
             }
         }
 
-        BlockPos shroomPos = domeCenter.offset(4, 1, -3);
-        level.setBlock(shroomPos, Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
-        level.setBlock(shroomPos.above(), Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
-        level.setBlock(shroomPos.above(2), Blocks.SHROOMLIGHT.defaultBlockState(), 2);
-        for (int mx = -1; mx <= 1; mx++) {
-            for (int mz = -1; mz <= 1; mz++) {
-                level.setBlock(shroomPos.offset(mx, 3, mz), Blocks.RED_MUSHROOM_BLOCK.defaultBlockState(), 2);
-            }
-        }
+        buildMushroomFeature(level, domeCenter.offset(12, 1, -10), Blocks.RED_MUSHROOM_BLOCK);
+        buildMushroomFeature(level, domeCenter.offset(-12, 1, 12), Blocks.BROWN_MUSHROOM_BLOCK);
+        buildMushroomFeature(level, domeCenter.offset(-10, 1, -12), Blocks.WARPED_WART_BLOCK);
+        buildMushroomFeature(level, domeCenter.offset(14, 1, 10), Blocks.SHROOMLIGHT);
 
         BlockPos terraformerPos = domeCenter.above();
         level.setBlock(terraformerPos, SandStormBlocks.ATMOSPHERIC_TERRAFORMER.defaultBlockState(), 3);
         if (level.getBlockEntity(terraformerPos) instanceof AtmosphericTerraformerBlockEntity terraformer) {
-            terraformer.getEnergyStorage().receiveEnergy(500000L);
-            terraformer.setupTier(3);
-            terraformer.setWaterAmount(10000);
-            terraformer.setMineralUnits(64);
-            terraformer.setSeedUnits(64);
+            terraformer.setupTier(1);
             terraformer.setItem(AtmosphericTerraformerBlockEntity.SLOT_UPGRADE, new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_FUNGAL));
         }
 
-        BlockPos incubatorPos = domeCenter.offset(-2, 1, 2);
+        BlockPos incubatorPos = domeCenter.offset(-3, 1, 3);
         level.setBlock(incubatorPos, SandStormBlocks.AMNIOTIC_INCUBATOR.defaultBlockState(), 3);
         if (level.getBlockEntity(incubatorPos) instanceof AmnioticIncubatorBlockEntity incubator) {
             incubator.getEnergyStorage().receiveEnergy(250000L);
@@ -1396,20 +1410,34 @@ public class ShowcaseAutomation {
         spawnHologram(level, domeCenter.getX() + 0.5, baseY + 3.4, domeCenter.getZ() + 0.5, "§d[Biosfera Xeno-Fúngica - Beta]");
         spawnHologram(level, domeCenter.getX() + 0.5, baseY + 3.1, domeCenter.getZ() + 0.5, "§7Micélio Radiotrófico & Esporos");
 
-        spawnBabyAnimal(level, domeCenter.getX() - 3.5, baseY + 1.0, domeCenter.getZ() - 2.5, "mooshroom");
-        spawnBabyAnimal(level, domeCenter.getX() + 2.5, baseY + 1.0, domeCenter.getZ() + 3.5, "frog");
+        spawnBabyAnimal(level, domeCenter.getX() - 6.5, baseY + 1.0, domeCenter.getZ() - 6.5, "mooshroom");
+        spawnBabyAnimal(level, domeCenter.getX() + 6.5, baseY + 1.0, domeCenter.getZ() + 6.5, "frog");
+    }
+
+    private static void buildMushroomFeature(ServerLevel level, BlockPos pos, Block capBlock) {
+        level.setBlock(pos, Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
+        level.setBlock(pos.above(), Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
+        level.setBlock(pos.above(2), Blocks.MUSHROOM_STEM.defaultBlockState(), 2);
+        level.setBlock(pos.above(3), Blocks.SHROOMLIGHT.defaultBlockState(), 2);
+        for (int mx = -1; mx <= 1; mx++) {
+            for (int mz = -1; mz <= 1; mz++) {
+                level.setBlock(pos.offset(mx, 4, mz), capBlock.defaultBlockState(), 2);
+            }
+        }
     }
 
     private static void buildPrimordialOasisDome(ServerLevel level, BlockPos domeCenter) {
-        int radius = 8;
+        int radius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
         int baseY = domeCenter.getY();
 
         for (int x = -radius - 1; x <= radius + 1; x++) {
             for (int z = -radius - 1; z <= radius + 1; z++) {
-                for (int y = -2; y <= 12; y++) {
-                    BlockPos p = domeCenter.offset(x, y, z);
-                    if (!level.getBlockState(p).isAir()) {
-                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                if (x * x + z * z <= (radius + 1) * (radius + 1)) {
+                    for (int y = -2; y <= 14; y++) {
+                        BlockPos p = domeCenter.offset(x, y, z);
+                        if (!level.getBlockState(p).isAir()) {
+                            level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                        }
                     }
                 }
             }
@@ -1423,14 +1451,24 @@ public class ShowcaseAutomation {
                     level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                     boolean edge = distSq > (radius - 1) * (radius - 1);
                     if (edge) {
+                        boolean entrance = Math.abs(z) <= 1;
                         level.setBlock(p, Blocks.MOSS_BLOCK.defaultBlockState(), 2);
-                        level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
-                        level.setBlock(p.above(2), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
-                    } else if (x >= -4 && x <= -1 && z >= -4 && z <= -1) {
-                        level.setBlock(p.below(), Blocks.SEA_LANTERN.defaultBlockState(), 2);
-                        level.setBlock(p, Blocks.WATER.defaultBlockState(), 2);
-                        if (x == -3 && z == -3) {
-                            level.setBlock(p.above(), Blocks.LILY_PAD.defaultBlockState(), 2);
+                        if (!entrance) {
+                            level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                            level.setBlock(p.above(2), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                        } else {
+                            level.setBlock(p.above(3), Blocks.MOSS_BLOCK.defaultBlockState(), 2);
+                        }
+                    } else if (x >= -12 && x <= -4 && z >= -12 && z <= -4) {
+                        int lakeDistSq = (x + 8) * (x + 8) + (z + 8) * (z + 8);
+                        if (lakeDistSq <= 16) {
+                            level.setBlock(p.below(), Blocks.SEA_LANTERN.defaultBlockState(), 2);
+                            level.setBlock(p, Blocks.WATER.defaultBlockState(), 2);
+                            if (lakeDistSq <= 4 && (x + z) % 2 == 0) {
+                                level.setBlock(p.above(), Blocks.LILY_PAD.defaultBlockState(), 2);
+                            }
+                        } else {
+                            level.setBlock(p, Blocks.GRASS_BLOCK.defaultBlockState(), 2);
                         }
                     } else {
                         int h = Math.abs(x * 9 + z * 17) % 4;
@@ -1446,30 +1484,18 @@ public class ShowcaseAutomation {
             }
         }
 
-        BlockPos palmPos = domeCenter.offset(4, 1, 3);
-        for (int ty = 0; ty < 5; ty++) {
-            level.setBlock(palmPos.above(ty), Blocks.JUNGLE_LOG.defaultBlockState(), 2);
-        }
-        for (int lx = -1; lx <= 1; lx++) {
-            for (int lz = -1; lz <= 1; lz++) {
-                level.setBlock(palmPos.offset(lx, 4, lz), Blocks.JUNGLE_LEAVES.defaultBlockState(), 2);
-            }
-        }
-        level.setBlock(palmPos.above(5), Blocks.JUNGLE_LEAVES.defaultBlockState(), 2);
-        level.setBlock(palmPos.offset(0, 3, -1), Blocks.MELON.defaultBlockState(), 2);
+        buildJunglePalmFeature(level, domeCenter.offset(14, 1, 10));
+        buildJunglePalmFeature(level, domeCenter.offset(12, 1, -12));
+        buildJunglePalmFeature(level, domeCenter.offset(-14, 1, 12));
 
         BlockPos terraformerPos = domeCenter.above();
         level.setBlock(terraformerPos, SandStormBlocks.ATMOSPHERIC_TERRAFORMER.defaultBlockState(), 3);
         if (level.getBlockEntity(terraformerPos) instanceof AtmosphericTerraformerBlockEntity terraformer) {
-            terraformer.getEnergyStorage().receiveEnergy(500000L);
-            terraformer.setupTier(3);
-            terraformer.setWaterAmount(10000);
-            terraformer.setMineralUnits(64);
-            terraformer.setSeedUnits(64);
+            terraformer.setupTier(1);
             terraformer.setItem(AtmosphericTerraformerBlockEntity.SLOT_UPGRADE, new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_OASIS));
         }
 
-        BlockPos incubatorPos = domeCenter.offset(2, 1, -2);
+        BlockPos incubatorPos = domeCenter.offset(3, 1, -3);
         level.setBlock(incubatorPos, SandStormBlocks.AMNIOTIC_INCUBATOR.defaultBlockState(), 3);
         if (level.getBlockEntity(incubatorPos) instanceof AmnioticIncubatorBlockEntity incubator) {
             incubator.getEnergyStorage().receiveEnergy(250000L);
@@ -1482,21 +1508,39 @@ public class ShowcaseAutomation {
         spawnHologram(level, domeCenter.getX() + 0.5, baseY + 3.4, domeCenter.getZ() + 0.5, "§a[Oásis Primordial - Gamma]");
         spawnHologram(level, domeCenter.getX() + 0.5, baseY + 3.1, domeCenter.getZ() + 0.5, "§7Regeneração Biológica & Hidratação");
 
-        spawnBabyAnimal(level, domeCenter.getX() + 2.5, baseY + 1.0, domeCenter.getZ() - 3.5, "cow");
-        spawnBabyAnimal(level, domeCenter.getX() - 3.5, baseY + 1.0, domeCenter.getZ() + 3.5, "sheep");
-        spawnBabyAnimal(level, domeCenter.getX() + 1.5, baseY + 1.0, domeCenter.getZ() + 3.5, "chicken");
+        spawnBabyAnimal(level, domeCenter.getX() + 6.5, baseY + 1.0, domeCenter.getZ() - 6.5, "cow");
+        spawnBabyAnimal(level, domeCenter.getX() - 6.5, baseY + 1.0, domeCenter.getZ() + 6.5, "sheep");
+        spawnBabyAnimal(level, domeCenter.getX() + 4.5, baseY + 1.0, domeCenter.getZ() + 6.5, "chicken");
+    }
+
+    private static void buildJunglePalmFeature(ServerLevel level, BlockPos pos) {
+        for (int ty = 0; ty < 6; ty++) {
+            level.setBlock(pos.above(ty), Blocks.JUNGLE_LOG.defaultBlockState(), 2);
+        }
+        for (int lx = -2; lx <= 2; lx++) {
+            for (int lz = -2; lz <= 2; lz++) {
+                if (Math.abs(lx) + Math.abs(lz) <= 3) {
+                    level.setBlock(pos.offset(lx, 5, lz), Blocks.JUNGLE_LEAVES.defaultBlockState(), 2);
+                }
+            }
+        }
+        level.setBlock(pos.above(6), Blocks.JUNGLE_LEAVES.defaultBlockState(), 2);
+        level.setBlock(pos.offset(0, 4, -1), Blocks.MELON.defaultBlockState(), 2);
+        level.setBlock(pos.offset(1, 4, 0), Blocks.BAMBOO.defaultBlockState(), 2);
     }
 
     private static void buildMagneticForestDome(ServerLevel level, BlockPos domeCenter) {
-        int radius = 8;
+        int radius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
         int baseY = domeCenter.getY();
 
         for (int x = -radius - 1; x <= radius + 1; x++) {
             for (int z = -radius - 1; z <= radius + 1; z++) {
-                for (int y = -2; y <= 12; y++) {
-                    BlockPos p = domeCenter.offset(x, y, z);
-                    if (!level.getBlockState(p).isAir()) {
-                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                if (x * x + z * z <= (radius + 1) * (radius + 1)) {
+                    for (int y = -2; y <= 14; y++) {
+                        BlockPos p = domeCenter.offset(x, y, z);
+                        if (!level.getBlockState(p).isAir()) {
+                            level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                        }
                     }
                 }
             }
@@ -1510,9 +1554,14 @@ public class ShowcaseAutomation {
                     level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                     boolean edge = distSq > (radius - 1) * (radius - 1);
                     if (edge) {
+                        boolean entrance = Math.abs(z) <= 1;
                         level.setBlock(p, Blocks.POLISHED_BASALT.defaultBlockState(), 2);
-                        level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
-                        level.setBlock(p.above(2), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                        if (!entrance) {
+                            level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                            level.setBlock(p.above(2), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                        } else {
+                            level.setBlock(p.above(3), Blocks.POLISHED_BASALT.defaultBlockState(), 2);
+                        }
                     } else {
                         int h = Math.abs(x * 13 + z * 19) % 4;
                         Block floor = (h == 0) ? SandStormBlocks.ELECTRIFIED_SAND : (h == 1) ? Blocks.AMETHYST_BLOCK : Blocks.SMOOTH_BASALT;
@@ -1527,24 +1576,19 @@ public class ShowcaseAutomation {
             }
         }
 
-        BlockPos spirePos = domeCenter.offset(-3, 1, -3);
-        level.setBlock(spirePos, Blocks.POLISHED_BASALT.defaultBlockState(), 2);
-        level.setBlock(spirePos.above(), Blocks.POLISHED_BASALT.defaultBlockState(), 2);
-        level.setBlock(spirePos.above(2), Blocks.AMETHYST_BLOCK.defaultBlockState(), 2);
-        level.setBlock(spirePos.above(3), Blocks.AMETHYST_CLUSTER.defaultBlockState(), 2);
+        buildMagneticSpireFeature(level, domeCenter.offset(-12, 1, -12));
+        buildMagneticSpireFeature(level, domeCenter.offset(14, 1, -10));
+        buildMagneticSpireFeature(level, domeCenter.offset(-10, 1, 14));
+        buildMagneticSpireFeature(level, domeCenter.offset(12, 1, 12));
 
         BlockPos terraformerPos = domeCenter.above();
         level.setBlock(terraformerPos, SandStormBlocks.ATMOSPHERIC_TERRAFORMER.defaultBlockState(), 3);
         if (level.getBlockEntity(terraformerPos) instanceof AtmosphericTerraformerBlockEntity terraformer) {
-            terraformer.getEnergyStorage().receiveEnergy(500000L);
-            terraformer.setupTier(3);
-            terraformer.setWaterAmount(10000);
-            terraformer.setMineralUnits(64);
-            terraformer.setSeedUnits(64);
+            terraformer.setupTier(1);
             terraformer.setItem(AtmosphericTerraformerBlockEntity.SLOT_UPGRADE, new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_MAGNETIC));
         }
 
-        BlockPos incubatorPos = domeCenter.offset(2, 1, 2);
+        BlockPos incubatorPos = domeCenter.offset(3, 1, 3);
         level.setBlock(incubatorPos, SandStormBlocks.AMNIOTIC_INCUBATOR.defaultBlockState(), 3);
         if (level.getBlockEntity(incubatorPos) instanceof AmnioticIncubatorBlockEntity incubator) {
             incubator.getEnergyStorage().receiveEnergy(250000L);
@@ -1557,7 +1601,14 @@ public class ShowcaseAutomation {
         spawnHologram(level, domeCenter.getX() + 0.5, baseY + 3.4, domeCenter.getZ() + 0.5, "§6[Floresta Magnética - Delta]");
         spawnHologram(level, domeCenter.getX() + 0.5, baseY + 3.1, domeCenter.getZ() + 0.5, "§7Piezoeletricidade & Eletromagnetismo");
 
-        spawnBabyAnimal(level, domeCenter.getX() - 2.5, baseY + 1.0, domeCenter.getZ() + 3.5, "wolf");
+        spawnBabyAnimal(level, domeCenter.getX() - 6.5, baseY + 1.0, domeCenter.getZ() + 6.5, "wolf");
+    }
+
+    private static void buildMagneticSpireFeature(ServerLevel level, BlockPos spirePos) {
+        level.setBlock(spirePos, Blocks.POLISHED_BASALT.defaultBlockState(), 2);
+        level.setBlock(spirePos.above(), Blocks.POLISHED_BASALT.defaultBlockState(), 2);
+        level.setBlock(spirePos.above(2), Blocks.AMETHYST_BLOCK.defaultBlockState(), 2);
+        level.setBlock(spirePos.above(3), Blocks.AMETHYST_CLUSTER.defaultBlockState(), 2);
     }
 
     @SuppressWarnings("unchecked")
