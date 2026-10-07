@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "sandstorm:block/amniotic_incubator_top",
+    "front": "sandstorm:block/amniotic_incubator_front_active",
+    "side": "sandstorm:block/amniotic_incubator_side"
+  }
+}

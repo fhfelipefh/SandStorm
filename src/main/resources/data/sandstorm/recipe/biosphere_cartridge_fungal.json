@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " F ",
+    "ECE",
+    " F "
+  ],
+  "key": {
+    "E": "sandstorm:empty_cartridge",
+    "C": "sandstorm:circuit_board",
+    "F": "sandstorm:chitinolytic_fungus"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:biosphere_cartridge_fungal"
+  }
+}

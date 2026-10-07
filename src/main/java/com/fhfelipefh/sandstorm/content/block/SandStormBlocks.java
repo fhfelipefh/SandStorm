@@ -1,9 +1,11 @@
 package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.AcousticDefensePylonBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.AmnioticIncubatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericTerraformerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutoAssemblyLineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.CryogenicAtmosphericChillerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
@@ -668,6 +670,20 @@ public class SandStormBlocks {
     public static final MorphingFluidTransitionBlock MORPHING_FLUID_TRANSITION = register("morphing_fluid_transition",
             new MorphingFluidTransitionBlock(MorphingFluidTransitionBlock.createProperties()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("morphing_fluid_transition")))));
+    public static final CryogenicAtmosphericChillerBlock CRYOGENIC_ATMOSPHERIC_CHILLER = register("cryogenic_atmospheric_chiller",
+            new CryogenicAtmosphericChillerBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("cryogenic_atmospheric_chiller")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(4.0f, 8.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final AmnioticIncubatorBlock AMNIOTIC_INCUBATOR = register("amniotic_incubator",
+            new AmnioticIncubatorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("amniotic_incubator")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(4.5f, 9.0f)
+                    .sound(SoundType.HEAVY_CORE)
+                    .noOcclusion()));
 
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -884,6 +900,16 @@ public class SandStormBlocks {
             SandStormMod.id("morphing_fluid_transition"),
             new BlockEntityType<>(MorphingFluidTransitionBlockEntity::new, Set.of(MORPHING_FLUID_TRANSITION))
     );
+    public static final BlockEntityType<CryogenicAtmosphericChillerBlockEntity> CRYOGENIC_ATMOSPHERIC_CHILLER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("cryogenic_atmospheric_chiller"),
+            new BlockEntityType<>(CryogenicAtmosphericChillerBlockEntity::new, Set.of(CRYOGENIC_ATMOSPHERIC_CHILLER))
+    );
+    public static final BlockEntityType<AmnioticIncubatorBlockEntity> AMNIOTIC_INCUBATOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("amniotic_incubator"),
+            new BlockEntityType<>(AmnioticIncubatorBlockEntity::new, Set.of(AMNIOTIC_INCUBATOR))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -938,5 +964,6 @@ public class SandStormBlocks {
         FluidStorage.SIDED.registerForBlockEntity(AtmosphericTerraformerBlockEntity::getFluidStorage, ATMOSPHERIC_TERRAFORMER_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ELECTRIC_FENCE_PYLON_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, QUANTUM_DISK_DRIVE_BE);
+        FluidStorage.SIDED.registerForBlockEntity(AmnioticIncubatorBlockEntity::getFluidStorage, AMNIOTIC_INCUBATOR_BE);
     }
 }

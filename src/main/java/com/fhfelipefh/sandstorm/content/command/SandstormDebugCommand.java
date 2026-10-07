@@ -134,7 +134,8 @@ public class SandstormDebugCommand {
             "geothermal_well",
             "orbital_array",
             "colossal_castle",
-            "computer"
+            "computer",
+            "biospheres_all"
     );
 
     public static void initialize() {
@@ -1598,6 +1599,11 @@ public class SandstormDebugCommand {
             case "computer", "quantum_computer" -> {
                 ShowcaseAutomation.buildQuantumComputerStation(level, center);
                 source.sendSuccess(() -> Component.literal("§a[SandStorm] Computador Quântico completo e energizado montado com sucesso!"), true);
+                return 1;
+            }
+            case "biospheres_all", "biospheres", "biosferas" -> {
+                ShowcaseAutomation.buildBiospheresShowcase(level, center);
+                source.sendSuccess(() -> Component.literal("§a[SandStorm] Domos de Todas as Biosferas Lado a Lado montados com sucesso!"), true);
                 return 1;
             }
             default -> {

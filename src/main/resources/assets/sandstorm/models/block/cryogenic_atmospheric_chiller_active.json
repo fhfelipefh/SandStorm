@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "sandstorm:block/cryogenic_atmospheric_chiller_top",
+    "front": "sandstorm:block/cryogenic_atmospheric_chiller_front_active",
+    "side": "sandstorm:block/cryogenic_atmospheric_chiller_side"
+  }
+}

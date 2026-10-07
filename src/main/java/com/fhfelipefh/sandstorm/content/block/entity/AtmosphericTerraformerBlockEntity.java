@@ -3,10 +3,13 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
+import com.fhfelipefh.sandstorm.content.item.BiosphereCartridgeItem;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.world.biosphere.BiosphereType;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.impl.transfer.fluid.FluidVariantImpl;
@@ -35,6 +38,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LightningBolt;
@@ -57,6 +62,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 
 public class AtmosphericTerraformerBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
     public static final int CONTAINER_SIZE = 7;
@@ -123,6 +129,7 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
                 case 12 -> active ? 1 : 0;
                 case 13 -> lightningEnabled ? 1 : 0;
                 case 14 -> dissipatingTicks;
+                case 15 -> getActiveBiosphereType().ordinal();
                 default -> 0;
             };
         }
@@ -137,7 +144,7 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
 
         @Override
         public int getCount() {
-            return 15;
+            return 16;
         }
     };
 
@@ -268,6 +275,14 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
     public void cycleTier() {
         int nextTier = (this.tier % 3) + 1;
         setTier(nextTier);
+    }
+
+    public BiosphereType getActiveBiosphereType() {
+        ItemStack stack = items.get(SLOT_UPGRADE);
+        if (!stack.isEmpty() && stack.getItem() instanceof BiosphereCartridgeItem cartridge) {
+            return cartridge.getBiosphereType();
+        }
+        return BiosphereType.PRIMORDIAL_OASIS;
     }
 
     public int getRadius() {
@@ -726,8 +741,25 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
     }
 
     private void spawnMachineAtmosphere(ServerLevel serverLevel, BlockPos pos) {
-        serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 3, 0.2, 0.4, 0.2, 0.05);
-        serverLevel.sendParticles(ParticleTypes.GLOW, pos.getX() + 0.5, pos.getY() + 1.6, pos.getZ() + 0.5, 2, 0.1, 0.3, 0.1, 0.02);
+        BiosphereType biosphere = getActiveBiosphereType();
+        switch (biosphere) {
+            case CRYO_TUNDRA -> {
+                serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 4, 0.2, 0.4, 0.2, 0.05);
+                serverLevel.sendParticles(ParticleTypes.ITEM_SNOWBALL, pos.getX() + 0.5, pos.getY() + 1.6, pos.getZ() + 0.5, 2, 0.1, 0.3, 0.1, 0.02);
+            }
+            case XENO_FUNGAL -> {
+                serverLevel.sendParticles(ParticleTypes.WARPED_SPORE, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 4, 0.2, 0.4, 0.2, 0.05);
+                serverLevel.sendParticles(ParticleTypes.MYCELIUM, pos.getX() + 0.5, pos.getY() + 1.6, pos.getZ() + 0.5, 3, 0.1, 0.3, 0.1, 0.02);
+            }
+            case MAGNETIC_FOREST -> {
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 6, 0.2, 0.4, 0.2, 0.08);
+                serverLevel.sendParticles(ParticleTypes.GLOW, pos.getX() + 0.5, pos.getY() + 1.6, pos.getZ() + 0.5, 3, 0.1, 0.3, 0.1, 0.03);
+            }
+            default -> {
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 3, 0.2, 0.4, 0.2, 0.05);
+                serverLevel.sendParticles(ParticleTypes.GLOW, pos.getX() + 0.5, pos.getY() + 1.6, pos.getZ() + 0.5, 2, 0.1, 0.3, 0.1, 0.02);
+            }
+        }
 
         RandomSource random = serverLevel.getRandom();
         int radius = getRadius();
@@ -740,10 +772,37 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
             int px = pos.getX() + ox;
             int pz = pos.getZ() + oz;
             int py = serverLevel.getHeight(Heightmap.Types.MOTION_BLOCKING, px, pz);
-            serverLevel.sendParticles(ParticleTypes.FALLING_WATER, px + 0.5, py + 3.0, pz + 0.5, 2, 0.4, 0.8, 0.4, 0.0);
-            serverLevel.sendParticles(ParticleTypes.RAIN, px + 0.5, py + 3.5, pz + 0.5, 2, 0.4, 0.8, 0.4, 0.0);
-            if (seedUnits > 0 || !items.get(SLOT_SEEDS).isEmpty()) {
-                serverLevel.sendParticles(ParticleTypes.SPORE_BLOSSOM_AIR, px + 0.5, py + 1.2, pz + 0.5, 1, 0.3, 0.3, 0.3, 0.0);
+
+            if (biosphere == BiosphereType.CRYO_TUNDRA) {
+                serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, px + 0.5, py + 1.5, pz + 0.5, 2, 0.3, 0.5, 0.3, 0.01);
+            } else if (biosphere == BiosphereType.XENO_FUNGAL) {
+                serverLevel.sendParticles(ParticleTypes.WARPED_SPORE, px + 0.5, py + 1.2, pz + 0.5, 2, 0.3, 0.3, 0.3, 0.0);
+            } else if (biosphere == BiosphereType.MAGNETIC_FOREST) {
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, px + 0.5, py + 1.0, pz + 0.5, 2, 0.2, 0.3, 0.2, 0.03);
+            } else {
+                serverLevel.sendParticles(ParticleTypes.FALLING_WATER, px + 0.5, py + 3.0, pz + 0.5, 2, 0.4, 0.8, 0.4, 0.0);
+                serverLevel.sendParticles(ParticleTypes.RAIN, px + 0.5, py + 3.5, pz + 0.5, 2, 0.4, 0.8, 0.4, 0.0);
+                if (seedUnits > 0 || !items.get(SLOT_SEEDS).isEmpty()) {
+                    serverLevel.sendParticles(ParticleTypes.SPORE_BLOSSOM_AIR, px + 0.5, py + 1.2, pz + 0.5, 1, 0.3, 0.3, 0.3, 0.0);
+                }
+            }
+        }
+    }
+
+    private void applyBiosphereAtmosphericBuffs(ServerLevel serverLevel, BlockPos pos, BiosphereType biosphere) {
+        if (serverLevel.getGameTime() % 60L != 0L) {
+            return;
+        }
+        AABB area = new AABB(pos).inflate(getRadius());
+        List<Player> nearbyPlayers = serverLevel.getEntitiesOfClass(Player.class, area);
+        for (Player player : nearbyPlayers) {
+            if (biosphere == BiosphereType.PRIMORDIAL_OASIS || biosphere == BiosphereType.TROPICAL_JUNGLE) {
+                if (player.getHealth() < player.getMaxHealth()) {
+                    player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 0, true, false, false));
+                }
+            }
+            if (biosphere == BiosphereType.CRYO_TUNDRA && player.isOnFire()) {
+                player.clearFire();
             }
         }
     }
@@ -752,6 +811,9 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
         RandomSource random = serverLevel.getRandom();
         int radius = getRadius();
         int conversionsCount = getConversionsPerTick();
+        BiosphereType biosphere = getActiveBiosphereType();
+
+        applyBiosphereAtmosphericBuffs(serverLevel, pos, biosphere);
 
         for (int i = 0; i < conversionsCount; i++) {
             int ox = random.nextInt(radius * 2 + 1) - radius;
@@ -770,37 +832,262 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
             }
 
             BlockState targetState = serverLevel.getBlockState(targetPos);
+            switch (biosphere) {
+                case CRYO_TUNDRA -> convertCryogenic(serverLevel, targetPos, targetState, random);
+                case XENO_FUNGAL -> convertFungal(serverLevel, targetPos, targetState, random);
+                case MAGNETIC_FOREST -> convertMagnetic(serverLevel, targetPos, targetState, random);
+                case TEMPERATE_PLAINS -> convertPlains(serverLevel, targetPos, targetState, random);
+                case TEMPERATE_FOREST -> convertForest(serverLevel, targetPos, targetState, random);
+                case TROPICAL_JUNGLE -> convertJungle(serverLevel, targetPos, targetState, random);
+                default -> convertOasis(serverLevel, targetPos, targetState, random);
+            }
+        }
+    }
 
-            if (isAridBlock(targetState)) {
-                if (consumeMineralUnit()) {
-                    serverLevel.setBlock(targetPos, Blocks.DIRT.defaultBlockState(), 3);
-                    serverLevel.sendParticles(ParticleTypes.COMPOSTER, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.05);
-                    serverLevel.sendParticles(ParticleTypes.FALLING_WATER, targetPos.getX() + 0.5, targetPos.getY() + 1.2, targetPos.getZ() + 0.5, 3, 0.2, 0.1, 0.2, 0.01);
-                    serverLevel.playSound(null, targetPos, SoundEvents.COMPOSTER_READY, SoundSource.BLOCKS, 0.25f, 1.0f);
-                }
-            } else if (isDirtBlock(targetState)) {
-                if (consumeSeedUnit()) {
-                    serverLevel.setBlock(targetPos, Blocks.GRASS_BLOCK.defaultBlockState(), 3);
-                    serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 8, 0.3, 0.1, 0.3, 0.05);
-                    serverLevel.playSound(null, targetPos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
-                }
-            } else if (isGrassBlock(targetState)) {
-                BlockPos abovePos = targetPos.above();
-                if (serverLevel.getBlockState(abovePos).isAir()) {
-                    if (hasSaplings()) {
-                        BlockState saplingState = consumeSapling();
-                        if (saplingState != null) {
-                            serverLevel.setBlock(abovePos, saplingState, 3);
-                            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
-                            serverLevel.sendParticles(ParticleTypes.GLOW, abovePos.getX() + 0.5, abovePos.getY() + 0.6, abovePos.getZ() + 0.5, 3, 0.2, 0.2, 0.2, 0.02);
-                            serverLevel.playSound(null, abovePos, SoundEvents.CHERRY_SAPLING_PLACE, SoundSource.BLOCKS, 0.4f, 1.0f);
-                        }
-                    } else if (consumeSeedUnit()) {
-                        BlockState foliageState = getRandomFoliage(random);
-                        serverLevel.setBlock(abovePos, foliageState, 3);
-                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5, abovePos.getY() + 0.3, abovePos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.05);
-                        serverLevel.playSound(null, abovePos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+    private void convertCryogenic(ServerLevel serverLevel, BlockPos targetPos, BlockState targetState, RandomSource random) {
+        if (targetState.is(Blocks.WATER)) {
+            serverLevel.setBlock(targetPos, Blocks.ICE.defaultBlockState(), 3);
+            return;
+        }
+        if (isAridBlock(targetState)) {
+            if (consumeMineralUnit()) {
+                BlockState iceOrSnow = random.nextInt(100) < 30 ? Blocks.PACKED_ICE.defaultBlockState() : Blocks.SNOW_BLOCK.defaultBlockState();
+                serverLevel.setBlock(targetPos, iceOrSnow, 3);
+                serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS, 0.25f, 1.0f);
+            }
+        } else if (isDirtBlock(targetState) || isGrassBlock(targetState)) {
+            if (consumeMineralUnit()) {
+                serverLevel.setBlock(targetPos, Blocks.SNOW_BLOCK.defaultBlockState(), 3);
+                serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.SNOW_PLACE, SoundSource.BLOCKS, 0.25f, 1.0f);
+            }
+        } else if (targetState.is(Blocks.SNOW_BLOCK) || targetState.is(Blocks.PACKED_ICE)) {
+            BlockPos abovePos = targetPos.above();
+            if (serverLevel.getBlockState(abovePos).isAir()) {
+                if (hasSaplings()) {
+                    BlockState saplingState = consumeSapling();
+                    if (saplingState != null) {
+                        serverLevel.setBlock(abovePos, Blocks.SPRUCE_SAPLING.defaultBlockState(), 3);
+                        serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
+                        serverLevel.playSound(null, abovePos, SoundEvents.CHERRY_SAPLING_PLACE, SoundSource.BLOCKS, 0.4f, 1.0f);
                     }
+                } else if (consumeSeedUnit()) {
+                    BlockState foliage = random.nextBoolean() ? Blocks.FERN.defaultBlockState() : Blocks.LILY_OF_THE_VALLEY.defaultBlockState();
+                    serverLevel.setBlock(abovePos, foliage, 3);
+                    serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, abovePos.getX() + 0.5, abovePos.getY() + 0.3, abovePos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.05);
+                } else {
+                    serverLevel.setBlock(abovePos, Blocks.SNOW.defaultBlockState(), 3);
+                }
+            }
+        }
+    }
+
+    private void convertFungal(ServerLevel serverLevel, BlockPos targetPos, BlockState targetState, RandomSource random) {
+        if (isAridBlock(targetState)) {
+            if (consumeMineralUnit()) {
+                serverLevel.setBlock(targetPos, Blocks.PODZOL.defaultBlockState(), 3);
+                serverLevel.sendParticles(ParticleTypes.MYCELIUM, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.GRAVEL_PLACE, SoundSource.BLOCKS, 0.25f, 1.0f);
+            }
+        } else if (isDirtBlock(targetState) || isGrassBlock(targetState)) {
+            if (consumeSeedUnit()) {
+                serverLevel.setBlock(targetPos, Blocks.MYCELIUM.defaultBlockState(), 3);
+                serverLevel.sendParticles(ParticleTypes.MYCELIUM, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 8, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+            }
+        } else if (targetState.is(Blocks.MYCELIUM) || targetState.is(Blocks.PODZOL)) {
+            BlockPos abovePos = targetPos.above();
+            if (serverLevel.getBlockState(abovePos).isAir()) {
+                if (hasSaplings()) {
+                    BlockState saplingState = consumeSapling();
+                    if (saplingState != null) {
+                        BlockState giantMushroom = random.nextBoolean() ? Blocks.RED_MUSHROOM_BLOCK.defaultBlockState() : Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState();
+                        serverLevel.setBlock(abovePos, giantMushroom, 3);
+                        serverLevel.sendParticles(ParticleTypes.WARPED_SPORE, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
+                    }
+                } else if (consumeSeedUnit()) {
+                    int roll = random.nextInt(4);
+                    BlockState shroom = switch (roll) {
+                        case 0 -> Blocks.BROWN_MUSHROOM.defaultBlockState();
+                        case 1 -> Blocks.RED_MUSHROOM.defaultBlockState();
+                        case 2 -> Blocks.WARPED_FUNGUS.defaultBlockState();
+                        default -> Blocks.CRIMSON_FUNGUS.defaultBlockState();
+                    };
+                    serverLevel.setBlock(abovePos, shroom, 3);
+                    serverLevel.sendParticles(ParticleTypes.MYCELIUM, abovePos.getX() + 0.5, abovePos.getY() + 0.3, abovePos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.05);
+                    serverLevel.playSound(null, abovePos, SoundEvents.CHERRY_SAPLING_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+                }
+            }
+        }
+    }
+
+    private void convertMagnetic(ServerLevel serverLevel, BlockPos targetPos, BlockState targetState, RandomSource random) {
+        if (isAridBlock(targetState)) {
+            if (consumeMineralUnit()) {
+                BlockState basalState = Blocks.SMOOTH_BASALT.defaultBlockState();
+                serverLevel.setBlock(targetPos, basalState, 3);
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.BASALT_PLACE, SoundSource.BLOCKS, 0.25f, 1.0f);
+            }
+        } else if (isDirtBlock(targetState) || isGrassBlock(targetState)) {
+            if (consumeMineralUnit()) {
+                serverLevel.setBlock(targetPos, Blocks.POLISHED_BASALT.defaultBlockState(), 3);
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 8, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.BASALT_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+            }
+        } else if (targetState.is(Blocks.SMOOTH_BASALT) || targetState.is(Blocks.POLISHED_BASALT)) {
+            BlockPos abovePos = targetPos.above();
+            if (serverLevel.getBlockState(abovePos).isAir()) {
+                if (hasSaplings()) {
+                    BlockState saplingState = consumeSapling();
+                    if (saplingState != null) {
+                        serverLevel.setBlock(abovePos, SandStormBlocks.SAND_MAGLEV_RAIL.defaultBlockState(), 3);
+                        serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
+                    }
+                } else if (consumeSeedUnit()) {
+                    int roll = random.nextInt(100);
+                    BlockState cluster = roll < 40 ? Blocks.AMETHYST_CLUSTER.defaultBlockState() : roll < 70 ? Blocks.SMALL_AMETHYST_BUD.defaultBlockState() : Blocks.IRON_BARS.defaultBlockState();
+                    serverLevel.setBlock(abovePos, cluster, 3);
+                    serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, abovePos.getX() + 0.5, abovePos.getY() + 0.3, abovePos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.05);
+                    serverLevel.playSound(null, abovePos, SoundEvents.AMETHYST_BLOCK_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+                }
+            }
+        }
+    }
+
+    private void convertPlains(ServerLevel serverLevel, BlockPos targetPos, BlockState targetState, RandomSource random) {
+        if (isAridBlock(targetState)) {
+            if (consumeMineralUnit()) {
+                serverLevel.setBlock(targetPos, Blocks.DIRT.defaultBlockState(), 3);
+                serverLevel.sendParticles(ParticleTypes.COMPOSTER, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.COMPOSTER_READY, SoundSource.BLOCKS, 0.25f, 1.0f);
+            }
+        } else if (isDirtBlock(targetState)) {
+            if (consumeSeedUnit()) {
+                serverLevel.setBlock(targetPos, Blocks.GRASS_BLOCK.defaultBlockState(), 3);
+                serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 8, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+            }
+        } else if (isGrassBlock(targetState)) {
+            BlockPos abovePos = targetPos.above();
+            if (serverLevel.getBlockState(abovePos).isAir()) {
+                if (hasSaplings()) {
+                    BlockState saplingState = consumeSapling();
+                    if (saplingState != null) {
+                        serverLevel.setBlock(abovePos, Blocks.OAK_SAPLING.defaultBlockState(), 3);
+                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
+                    }
+                } else if (consumeSeedUnit()) {
+                    int roll = random.nextInt(100);
+                    BlockState flora = roll < 60 ? Blocks.SHORT_GRASS.defaultBlockState() : roll < 80 ? Blocks.DANDELION.defaultBlockState() : roll < 90 ? Blocks.POPPY.defaultBlockState() : Blocks.AZURE_BLUET.defaultBlockState();
+                    serverLevel.setBlock(abovePos, flora, 3);
+                    serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5, abovePos.getY() + 0.3, abovePos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.05);
+                    serverLevel.playSound(null, abovePos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+                }
+            }
+        }
+    }
+
+    private void convertForest(ServerLevel serverLevel, BlockPos targetPos, BlockState targetState, RandomSource random) {
+        if (isAridBlock(targetState)) {
+            if (consumeMineralUnit()) {
+                BlockState dirtState = random.nextBoolean() ? Blocks.ROOTED_DIRT.defaultBlockState() : Blocks.COARSE_DIRT.defaultBlockState();
+                serverLevel.setBlock(targetPos, dirtState, 3);
+                serverLevel.sendParticles(ParticleTypes.COMPOSTER, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.COMPOSTER_READY, SoundSource.BLOCKS, 0.25f, 1.0f);
+            }
+        } else if (isDirtBlock(targetState)) {
+            if (consumeSeedUnit()) {
+                serverLevel.setBlock(targetPos, Blocks.GRASS_BLOCK.defaultBlockState(), 3);
+                serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 8, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+            }
+        } else if (isGrassBlock(targetState)) {
+            BlockPos abovePos = targetPos.above();
+            if (serverLevel.getBlockState(abovePos).isAir()) {
+                if (hasSaplings()) {
+                    BlockState saplingState = consumeSapling();
+                    if (saplingState != null) {
+                        BlockState forestSapling = random.nextBoolean() ? Blocks.BIRCH_SAPLING.defaultBlockState() : Blocks.OAK_SAPLING.defaultBlockState();
+                        serverLevel.setBlock(abovePos, forestSapling, 3);
+                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
+                    }
+                } else if (consumeSeedUnit()) {
+                    int roll = random.nextInt(100);
+                    BlockState flora = roll < 50 ? Blocks.SHORT_GRASS.defaultBlockState() : roll < 75 ? Blocks.FERN.defaultBlockState() : Blocks.LILY_OF_THE_VALLEY.defaultBlockState();
+                    serverLevel.setBlock(abovePos, flora, 3);
+                    serverLevel.sendParticles(ParticleTypes.FALLING_SPORE_BLOSSOM, abovePos.getX() + 0.5, abovePos.getY() + 0.3, abovePos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.05);
+                    serverLevel.playSound(null, abovePos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+                }
+            }
+        }
+    }
+
+    private void convertJungle(ServerLevel serverLevel, BlockPos targetPos, BlockState targetState, RandomSource random) {
+        if (isAridBlock(targetState)) {
+            if (consumeMineralUnit()) {
+                serverLevel.setBlock(targetPos, Blocks.MUD.defaultBlockState(), 3);
+                serverLevel.sendParticles(ParticleTypes.FALLING_WATER, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.MUD_PLACE, SoundSource.BLOCKS, 0.25f, 1.0f);
+            }
+        } else if (isDirtBlock(targetState)) {
+            if (consumeSeedUnit()) {
+                BlockState ground = random.nextBoolean() ? Blocks.MOSS_BLOCK.defaultBlockState() : Blocks.GRASS_BLOCK.defaultBlockState();
+                serverLevel.setBlock(targetPos, ground, 3);
+                serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 8, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.MOSS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+            }
+        } else if (isGrassBlock(targetState) || targetState.is(Blocks.MOSS_BLOCK)) {
+            BlockPos abovePos = targetPos.above();
+            if (serverLevel.getBlockState(abovePos).isAir()) {
+                if (hasSaplings()) {
+                    BlockState saplingState = consumeSapling();
+                    if (saplingState != null) {
+                        serverLevel.setBlock(abovePos, Blocks.JUNGLE_SAPLING.defaultBlockState(), 3);
+                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
+                    }
+                } else if (consumeSeedUnit()) {
+                    int roll = random.nextInt(100);
+                    BlockState flora = roll < 40 ? Blocks.BAMBOO.defaultBlockState() : roll < 70 ? Blocks.FERN.defaultBlockState() : Blocks.MELON.defaultBlockState();
+                    serverLevel.setBlock(abovePos, flora, 3);
+                    serverLevel.sendParticles(ParticleTypes.SPORE_BLOSSOM_AIR, abovePos.getX() + 0.5, abovePos.getY() + 0.3, abovePos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.05);
+                    serverLevel.playSound(null, abovePos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+                }
+            }
+        }
+    }
+
+    private void convertOasis(ServerLevel serverLevel, BlockPos targetPos, BlockState targetState, RandomSource random) {
+        if (isAridBlock(targetState)) {
+            if (consumeMineralUnit()) {
+                serverLevel.setBlock(targetPos, Blocks.DIRT.defaultBlockState(), 3);
+                serverLevel.sendParticles(ParticleTypes.COMPOSTER, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 6, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.sendParticles(ParticleTypes.FALLING_WATER, targetPos.getX() + 0.5, targetPos.getY() + 1.2, targetPos.getZ() + 0.5, 3, 0.2, 0.1, 0.2, 0.01);
+                serverLevel.playSound(null, targetPos, SoundEvents.COMPOSTER_READY, SoundSource.BLOCKS, 0.25f, 1.0f);
+            }
+        } else if (isDirtBlock(targetState)) {
+            if (consumeSeedUnit()) {
+                serverLevel.setBlock(targetPos, Blocks.GRASS_BLOCK.defaultBlockState(), 3);
+                serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, targetPos.getX() + 0.5, targetPos.getY() + 1.1, targetPos.getZ() + 0.5, 8, 0.3, 0.1, 0.3, 0.05);
+                serverLevel.playSound(null, targetPos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
+            }
+        } else if (isGrassBlock(targetState)) {
+            BlockPos abovePos = targetPos.above();
+            if (serverLevel.getBlockState(abovePos).isAir()) {
+                if (hasSaplings()) {
+                    BlockState saplingState = consumeSapling();
+                    if (saplingState != null) {
+                        serverLevel.setBlock(abovePos, saplingState, 3);
+                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5, abovePos.getY() + 0.5, abovePos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, 0.05);
+                        serverLevel.sendParticles(ParticleTypes.GLOW, abovePos.getX() + 0.5, abovePos.getY() + 0.6, abovePos.getZ() + 0.5, 3, 0.2, 0.2, 0.2, 0.02);
+                        serverLevel.playSound(null, abovePos, SoundEvents.CHERRY_SAPLING_PLACE, SoundSource.BLOCKS, 0.4f, 1.0f);
+                    }
+                } else if (consumeSeedUnit()) {
+                    BlockState foliageState = getRandomFoliage(random);
+                    serverLevel.setBlock(abovePos, foliageState, 3);
+                    serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, abovePos.getX() + 0.5, abovePos.getY() + 0.3, abovePos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.05);
+                    serverLevel.playSound(null, abovePos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.3f, 1.0f);
                 }
             }
         }
@@ -1074,7 +1361,8 @@ public class AtmosphericTerraformerBlockEntity extends BlockEntity implements Wo
                     || stack.is(Items.REDSTONE)
                     || stack.is(Items.REDSTONE_BLOCK);
         } else if (slot == SLOT_UPGRADE) {
-            return stack.is(SandStormItems.CIRCUIT_BOARD)
+            return stack.getItem() instanceof BiosphereCartridgeItem
+                    || stack.is(SandStormItems.CIRCUIT_BOARD)
                     || stack.is(SandStormItems.TECH_DISC)
                     || stack.is(SandStormItems.QUANTUM_MIND_MATRIX)
                     || stack.is(SandStormItems.SUPERCONDUCTOR_TOROID);

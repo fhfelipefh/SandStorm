@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.gui;
 
 import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericTerraformerBlockEntity;
+import com.fhfelipefh.sandstorm.content.world.biosphere.BiosphereType;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,7 +14,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class AtmosphericTerraformerMenu extends AbstractContainerMenu {
-    public static final int DATA_COUNT = 15;
+    public static final int DATA_COUNT = 16;
     public static final int BUTTON_TOGGLE_LIGHTNING = 0;
     public static final int BUTTON_CYCLE_TIER = 1;
 
@@ -133,6 +134,15 @@ public class AtmosphericTerraformerMenu extends AbstractContainerMenu {
 
     public boolean isDissipating() {
         return getDissipatingTicks() > 0;
+    }
+
+    public BiosphereType getActiveBiosphereType() {
+        int ord = this.data.get(15);
+        BiosphereType[] types = BiosphereType.values();
+        if (ord >= 0 && ord < types.length) {
+            return types[ord];
+        }
+        return BiosphereType.PRIMORDIAL_OASIS;
     }
 
     public int getRadius() {

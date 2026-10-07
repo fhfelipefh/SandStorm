@@ -283,7 +283,7 @@ class AtmosphericTerraformerBlockEntityTest {
         );
 
         ContainerData data = terraformer.getDataAccess();
-        assertEquals(15, data.getCount());
+        assertEquals(16, data.getCount());
 
         assertEquals(1, data.get(11));
         data.set(11, 2);

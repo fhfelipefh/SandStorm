@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " L ",
+    "ECE",
+    " L "
+  ],
+  "key": {
+    "E": "sandstorm:empty_cartridge",
+    "C": "sandstorm:circuit_board",
+    "L": "sandstorm:cryo_xerophilic_lichen"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:biosphere_cartridge_cryo"
+  }
+}

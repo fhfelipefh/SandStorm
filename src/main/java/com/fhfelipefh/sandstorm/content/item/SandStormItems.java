@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.storage.QuantumStorageCartridgeItem;
 import com.fhfelipefh.sandstorm.content.storage.StorageCartridgeTier;
+import com.fhfelipefh.sandstorm.content.world.biosphere.BiosphereType;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
@@ -167,6 +168,13 @@ public class SandStormItems {
     public static final Item RAW_GALLIUM = register("raw_gallium", new Item(properties("raw_gallium")));
     public static final Item GALLIUM_INGOT = register("gallium_ingot", new Item(properties("gallium_ingot").rarity(Rarity.UNCOMMON)));
     public static final Item NANITE_GALLIUM_COMPOSITE = register("nanite_gallium_composite", new Item(properties("nanite_gallium_composite").rarity(Rarity.RARE)));
+    public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_PLAINS = register("biosphere_cartridge_plains", new BiosphereCartridgeItem(BiosphereType.TEMPERATE_PLAINS, properties("biosphere_cartridge_plains").rarity(Rarity.UNCOMMON)));
+    public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_FOREST = register("biosphere_cartridge_forest", new BiosphereCartridgeItem(BiosphereType.TEMPERATE_FOREST, properties("biosphere_cartridge_forest").rarity(Rarity.UNCOMMON)));
+    public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_JUNGLE = register("biosphere_cartridge_jungle", new BiosphereCartridgeItem(BiosphereType.TROPICAL_JUNGLE, properties("biosphere_cartridge_jungle").rarity(Rarity.UNCOMMON)));
+    public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_CRYO = register("biosphere_cartridge_cryo", new BiosphereCartridgeItem(BiosphereType.CRYO_TUNDRA, properties("biosphere_cartridge_cryo").rarity(Rarity.RARE)));
+    public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_FUNGAL = register("biosphere_cartridge_fungal", new BiosphereCartridgeItem(BiosphereType.XENO_FUNGAL, properties("biosphere_cartridge_fungal").rarity(Rarity.RARE)));
+    public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_MAGNETIC = register("biosphere_cartridge_magnetic", new BiosphereCartridgeItem(BiosphereType.MAGNETIC_FOREST, properties("biosphere_cartridge_magnetic").rarity(Rarity.RARE)));
+    public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_OASIS = register("biosphere_cartridge_oasis", new BiosphereCartridgeItem(BiosphereType.PRIMORDIAL_OASIS, properties("biosphere_cartridge_oasis").rarity(Rarity.EPIC)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -400,6 +408,15 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.MORPHING_ALLOY_WINDOW);
                         entries.accept(SandStormBlocks.MORPHING_MATRIX_CORE);
                         entries.accept(SandStormBlocks.MORPHING_FLUID_TRANSITION);
+                        entries.accept(BIOSPHERE_CARTRIDGE_PLAINS);
+                        entries.accept(BIOSPHERE_CARTRIDGE_FOREST);
+                        entries.accept(BIOSPHERE_CARTRIDGE_JUNGLE);
+                        entries.accept(BIOSPHERE_CARTRIDGE_CRYO);
+                        entries.accept(BIOSPHERE_CARTRIDGE_FUNGAL);
+                        entries.accept(BIOSPHERE_CARTRIDGE_MAGNETIC);
+                        entries.accept(BIOSPHERE_CARTRIDGE_OASIS);
+                        entries.accept(SandStormBlocks.CRYOGENIC_ATMOSPHERIC_CHILLER);
+                        entries.accept(SandStormBlocks.AMNIOTIC_INCUBATOR);
                     })
                     .build()
     );

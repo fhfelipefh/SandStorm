@@ -187,6 +187,11 @@ public class SandStormMenus {
             new MenuType<>(MorphingMatrixCoreMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<AmnioticIncubatorMenu> AMNIOTIC_INCUBATOR_MENU = register(
+            "amniotic_incubator",
+            new MenuType<>(AmnioticIncubatorMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client;
 
 import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
+import com.fhfelipefh.sandstorm.client.gui.AmnioticIncubatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.AtmosphericTerraformerScreen;
 import com.fhfelipefh.sandstorm.client.gui.AutoAssemblyLineScreen;
 import com.fhfelipefh.sandstorm.client.gui.AutonomousSonicTurretScreen;
@@ -146,6 +147,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.QUANTUM_DISK_DRIVE_MENU, QuantumDiskDriveScreen::new);
         MenuScreens.register(SandStormMenus.QUANTUM_ACCESS_TERMINAL_MENU, QuantumTerminalScreen::new);
         MenuScreens.register(SandStormMenus.MORPHING_MATRIX_CORE_MENU, MorphingMatrixCoreScreen::new);
+        MenuScreens.register(SandStormMenus.AMNIOTIC_INCUBATOR_MENU, AmnioticIncubatorScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

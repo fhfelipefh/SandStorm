@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.survival;
 
 import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
+import com.fhfelipefh.sandstorm.content.block.CryogenicChillerManager;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
@@ -134,6 +135,9 @@ public class SuitSurvivalHandler {
         boolean insideSaltRoom = isInsideSaltBrickRoom(player);
         if (insideSaltRoom) {
             ambientTemperature = 22.0 + (ambientTemperature - 22.0) * 0.4;
+        }
+        if (CryogenicChillerManager.isPointChilled(player.level(), pos)) {
+            ambientTemperature = 16.0;
         }
         SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
         double solarMultiplier = weather.getSolarEfficiencyMultiplier();

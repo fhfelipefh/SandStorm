@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TGT",
+    "GCG",
+    "TNT"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "G": "sandstorm:fulgurite_glass",
+    "C": "sandstorm:circuit_board",
+    "N": "sandstorm:nano_actuator"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:amniotic_incubator"
+  }
+}

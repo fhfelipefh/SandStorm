@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TCT",
+    "PAP",
+    "TTT"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "C": "sandstorm:circuit_board",
+    "P": "sandstorm:smart_fluid_pipe",
+    "A": "sandstorm:solid_state_accumulator"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:cryogenic_atmospheric_chiller"
+  }
+}
