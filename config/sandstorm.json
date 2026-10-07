@@ -1,0 +1,7 @@
+{
+  "cryogenicChillerRadius": 64,
+  "cryogenicChillerEnergyCostPerTick": 50,
+  "amnioticIncubatorCycleDurationTicks": 1200,
+  "amnioticIncubatorEnergyCostPerTick": 80,
+  "atmosphericTerraformerRadius": 64
+}

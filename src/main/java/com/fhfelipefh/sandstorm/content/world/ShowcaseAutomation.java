@@ -178,8 +178,8 @@ public class ShowcaseAutomation {
     public static int executeBiospheresCommand(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
         if (source.getEntity() instanceof ServerPlayer player) {
-            BlockPos targetPos = BlockPos.containing(player.position());
-            buildBiospheresShowcase(source.getLevel(), targetPos);
+            BlockPos center = new BlockPos(0, 160, 0);
+            buildBiospheresShowcase(source.getLevel(), center);
             source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Complexo de 4 Biosferas Lado a Lado montado com sucesso!"), true);
             return 1;
         }
@@ -1174,6 +1174,7 @@ public class ShowcaseAutomation {
     }
 
     public static void buildBiospheresShowcase(ServerLevel level, BlockPos center) {
+        wipeBiospheresArea(level, center);
         int baseY = center.getY();
 
         for (int z = 30; z <= 75; z++) {
@@ -1210,6 +1211,27 @@ public class ShowcaseAutomation {
         buildXenoFungalDome(level, center.offset(-12, 0, 75));
         buildPrimordialOasisDome(level, center.offset(12, 0, 75));
         buildMagneticForestDome(level, center.offset(36, 0, 75));
+    }
+
+    private static void wipeBiospheresArea(ServerLevel level, BlockPos center) {
+        AABB biosphereZone = new AABB(
+            center.getX() - 60, center.getY() - 5, center.getZ() + 25,
+            center.getX() + 60, center.getY() + 25, center.getZ() + 120
+        );
+        List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, biosphereZone, e -> !(e instanceof ServerPlayer));
+        for (Entity e : oldEntities) {
+            e.discard();
+        }
+        for (int x = -58; x <= 58; x++) {
+            for (int z = 27; z <= 118; z++) {
+                for (int y = -5; y <= 25; y++) {
+                    BlockPos p = center.offset(x, y, z);
+                    if (!level.getBlockState(p).isAir()) {
+                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                    }
+                }
+            }
+        }
     }
 
     private static void buildCryogenicDome(ServerLevel level, BlockPos domeCenter) {

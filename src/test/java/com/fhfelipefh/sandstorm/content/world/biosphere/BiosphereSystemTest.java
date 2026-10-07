@@ -94,10 +94,10 @@ class BiosphereSystemTest {
         CryogenicChillerManager.clear();
         assertFalse(CryogenicChillerManager.isPointChilled(Level.OVERWORLD, chillerPos));
 
-        CryogenicChillerManager.registerChiller(Level.OVERWORLD, chillerPos, 48);
+        CryogenicChillerManager.registerChiller(Level.OVERWORLD, chillerPos, 64);
         assertTrue(CryogenicChillerManager.isPointChilled(Level.OVERWORLD, chillerPos));
-        assertTrue(CryogenicChillerManager.isPointChilled(Level.OVERWORLD, chillerPos.offset(20, 0, 20)));
-        assertFalse(CryogenicChillerManager.isPointChilled(Level.OVERWORLD, chillerPos.offset(50, 0, 0)));
+        assertTrue(CryogenicChillerManager.isPointChilled(Level.OVERWORLD, chillerPos.offset(40, 0, 40)));
+        assertFalse(CryogenicChillerManager.isPointChilled(Level.OVERWORLD, chillerPos.offset(70, 0, 0)));
 
         CryogenicChillerManager.unregisterChiller(Level.OVERWORLD, chillerPos);
         assertFalse(CryogenicChillerManager.isPointChilled(Level.OVERWORLD, chillerPos));

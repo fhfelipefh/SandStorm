@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.core;
 
+import com.fhfelipefh.sandstorm.config.SandStormConfig;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.command.SandstormBuildCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormClaimCommand;
@@ -69,6 +70,7 @@ public class SandStormMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        SandStormConfig.load();
         PayloadTypeRegistry.clientboundPlay().register(
                 SuitSyncPayload.TYPE,
                 SuitSyncPayload.STREAM_CODEC

@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.block.entity;
 
 import com.fhfelipefh.sandstorm.component.EnergyStorageComponent;
+import com.fhfelipefh.sandstorm.config.SandStormConfig;
 import com.fhfelipefh.sandstorm.content.block.CryogenicAtmosphericChillerBlock;
 import com.fhfelipefh.sandstorm.content.block.CryogenicChillerManager;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
@@ -22,7 +23,7 @@ import java.util.List;
 public class CryogenicAtmosphericChillerBlockEntity extends BlockEntity {
     public static final long MAX_ENERGY = 500000L;
     public static final long ENERGY_COST_PER_TICK = 50L;
-    public static final int DEFAULT_RADIUS = 48;
+    public static final int DEFAULT_RADIUS = 64;
 
     private final EnergyStorageComponent energyStorage;
     private int radius = DEFAULT_RADIUS;
@@ -31,6 +32,7 @@ public class CryogenicAtmosphericChillerBlockEntity extends BlockEntity {
     public CryogenicAtmosphericChillerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         this.energyStorage = new EnergyStorageComponent(MAX_ENERGY, 5000L, 5000L);
+        this.radius = SandStormConfig.getCryogenicChillerRadius();
     }
 
     public CryogenicAtmosphericChillerBlockEntity(BlockPos pos, BlockState state) {
@@ -46,7 +48,7 @@ public class CryogenicAtmosphericChillerBlockEntity extends BlockEntity {
     }
 
     public void setRadius(int radius) {
-        this.radius = Math.max(8, Math.min(80, radius));
+        this.radius = Math.max(8, Math.min(512, radius));
         setChanged();
     }
 
@@ -59,11 +61,12 @@ public class CryogenicAtmosphericChillerBlockEntity extends BlockEntity {
             return;
         }
 
-        boolean hasEnergy = energyStorage.hasEnergy(ENERGY_COST_PER_TICK);
+        long energyCost = SandStormConfig.getCryogenicChillerEnergyCost();
+        boolean hasEnergy = energyStorage.hasEnergy(energyCost);
         boolean previouslyActive = this.active;
 
         if (hasEnergy) {
-            energyStorage.extractEnergy(ENERGY_COST_PER_TICK);
+            energyStorage.extractEnergy(energyCost);
             this.active = true;
             CryogenicChillerManager.registerChiller(serverLevel.dimension(), pos, this.radius);
 
@@ -131,6 +134,6 @@ public class CryogenicAtmosphericChillerBlockEntity extends BlockEntity {
         super.loadAdditional(input);
         energyStorage.setStoredEnergy(input.getLongOr("storedEnergy", 0L));
         this.active = input.getBooleanOr("active", false);
-        this.radius = input.getIntOr("radius", DEFAULT_RADIUS);
+        this.radius = input.getIntOr("radius", SandStormConfig.getCryogenicChillerRadius());
     }
 }
