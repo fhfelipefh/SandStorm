@@ -77,6 +77,8 @@
     "sandstorm:morphing_matrix_core",
     "sandstorm:cryogenic_atmospheric_chiller",
     "sandstorm:amniotic_incubator",
-    "sandstorm:biosphere_door"
+    "sandstorm:biosphere_door",
+    "sandstorm:biosphere_fence",
+    "sandstorm:biosphere_fence_gate"
   ]
 }

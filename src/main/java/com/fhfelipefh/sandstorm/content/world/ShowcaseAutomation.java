@@ -1244,6 +1244,7 @@ public class ShowcaseAutomation {
         buildTemperateShowcaseDome(level, center.offset(0, 0, 135), 1);
         buildTemperateShowcaseDome(level, center.offset(64, 0, 135), 2);
         buildBiospherePaths(level, center);
+        buildBiosphereFences(level, center);
         placeBiosphereDoor(level, center.offset(-96, 0, 75));
         placeBiosphereDoor(level, center.offset(-32, 0, 75));
         placeBiosphereDoor(level, center.offset(32, 0, 75));
@@ -1251,6 +1252,27 @@ public class ShowcaseAutomation {
         placeBiosphereDoor(level, center.offset(-64, 0, 135));
         placeBiosphereDoor(level, center.offset(0, 0, 135));
         placeBiosphereDoor(level, center.offset(64, 0, 135));
+    }
+
+    private static void buildBiosphereFences(ServerLevel level, BlockPos center) {
+        int radius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
+        BlockPos[] domeCenters = {
+                center.offset(-96, 0, 75),
+                center.offset(-32, 0, 75),
+                center.offset(32, 0, 75),
+                center.offset(96, 0, 75),
+                center.offset(-64, 0, 135),
+                center.offset(0, 0, 135),
+                center.offset(64, 0, 135)
+        };
+        for (BlockPos domeCenter : domeCenters) {
+            for (int x = radius + 2; x <= radius + 5; x++) {
+                level.setBlock(domeCenter.offset(x, 1, -4), SandStormBlocks.BIOSPHERE_FENCE.defaultBlockState(), 2);
+                level.setBlock(domeCenter.offset(x, 1, 3), SandStormBlocks.BIOSPHERE_FENCE.defaultBlockState(), 2);
+            }
+            level.setBlock(domeCenter.offset(radius + 3, 1, -4), SandStormBlocks.BIOSPHERE_FENCE_GATE.defaultBlockState(), 2);
+            level.setBlock(domeCenter.offset(radius + 3, 1, 3), SandStormBlocks.BIOSPHERE_FENCE_GATE.defaultBlockState(), 2);
+        }
     }
 
     private static void buildBiospherePaths(ServerLevel level, BlockPos center) {
@@ -1284,10 +1306,10 @@ public class ShowcaseAutomation {
         BlockPos receiverPos = domeCenter.offset(0, 1, 4);
         level.setBlock(receiverPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
         BlockPos base = domeCenter.offset(radius, 1, -1);
-        for (int z = 0; z < 2; z++) {
+        for (int z = 0; z < 3; z++) {
             for (int y = 0; y < 2; y++) {
                 level.setBlock(base.offset(0, y, z), SandStormBlocks.BIOSPHERE_DOOR.defaultBlockState()
-                        .setValue(BiosphereDoorBlock.SIDE, z == 1), 3);
+                        .setValue(BiosphereDoorBlock.POSITION, z), 3);
             }
         }
     }

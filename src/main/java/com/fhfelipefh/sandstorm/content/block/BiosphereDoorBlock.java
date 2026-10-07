@@ -14,23 +14,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BiosphereDoorBlock extends Block implements EntityBlock {
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
-    public static final BooleanProperty SIDE = BooleanProperty.create("side");
+    public static final IntegerProperty POSITION = IntegerProperty.create("position", 0, 2);
     private static final VoxelShape CLOSED_SHAPE = Block.box(0, 0, 0, 16, 16, 16);
 
     public BiosphereDoorBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(OPEN, false).setValue(SIDE, false));
+        registerDefaultState(stateDefinition.any().setValue(OPEN, false).setValue(POSITION, 1));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(OPEN, SIDE);
+        builder.add(OPEN, POSITION);
     }
 
     @Override

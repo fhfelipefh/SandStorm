@@ -1118,5 +1118,9 @@
   "quest.sandstorm.amniotic_incubator.task": "Build an Amniotic Fauna Incubator.",
   "quest.sandstorm.amniotic_incubator.note": "Synthesize animal babies from biomass & water.",
   "block.sandstorm.biosphere_door": "Fulgurite Biosphere Door",
-  "item.sandstorm.biosphere_door": "Fulgurite Biosphere Door"
+  "item.sandstorm.biosphere_door": "Fulgurite Biosphere Door",
+  "block.sandstorm.biosphere_fence": "Cyan-Violet Biosphere Fence",
+  "item.sandstorm.biosphere_fence": "Cyan-Violet Biosphere Fence",
+  "block.sandstorm.biosphere_fence_gate": "Cyan-Violet Biosphere Gate",
+  "item.sandstorm.biosphere_fence_gate": "Cyan-Violet Biosphere Gate"
 }

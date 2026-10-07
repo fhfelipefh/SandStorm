@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:block/fence_gate",
+  "textures": { "texture": "sandstorm:block/biosphere_fence_gate" }
+}

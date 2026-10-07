@@ -1,15 +1,21 @@
 {
   "variants": {
-    "open=false,side=false": {
+    "open=false,position=0": {
       "model": "sandstorm:block/biosphere_door_closed"
     },
-    "open=false,side=true": {
+    "open=false,position=1": {
       "model": "sandstorm:block/biosphere_door_closed"
     },
-    "open=true,side=false": {
+    "open=false,position=2": {
+      "model": "sandstorm:block/biosphere_door_closed"
+    },
+    "open=true,position=0": {
       "model": "sandstorm:block/biosphere_door_open_left"
     },
-    "open=true,side=true": {
+    "open=true,position=1": {
+      "model": "sandstorm:block/biosphere_door_open_center"
+    },
+    "open=true,position=2": {
       "model": "sandstorm:block/biosphere_door_open_right"
     }
   }

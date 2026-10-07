@@ -125,23 +125,31 @@ class AssetIntegrityTest {
                     JsonElement parsed = JsonParser.parseReader(reader);
                     assertTrue(parsed.isJsonObject());
                     JsonObject root = parsed.getAsJsonObject();
-                    assertTrue(root.has("variants"), "Blockstate must have variants: " + statePath);
-                    JsonObject variants = root.getAsJsonObject("variants");
-
-                    for (Map.Entry<String, JsonElement> variant : variants.entrySet()) {
-                        JsonObject variantObj = variant.getValue().getAsJsonObject();
-                        assertTrue(variantObj.has("model"), "Variant must specify model: " + variant.getKey());
-                        String modelRef = variantObj.get("model").getAsString();
-                        assertTrue(modelRef.startsWith("sandstorm:block/"), "Model must reference sandstorm:block/: " + modelRef);
-                        String modelFile = modelRef.substring("sandstorm:block/".length()) + ".json";
-                        Path resolvedModel = MODELS_BLOCK_DIR.resolve(modelFile);
-                        assertTrue(Files.exists(resolvedModel), "Referenced block model must exist on disk: " + resolvedModel);
+                    if (root.has("variants")) {
+                        JsonObject variants = root.getAsJsonObject("variants");
+                        for (Map.Entry<String, JsonElement> variant : variants.entrySet()) {
+                            assertReferencedBlockModel(variant.getValue().getAsJsonObject(), variant.getKey());
+                        }
+                    } else {
+                        assertTrue(root.has("multipart"), "Blockstate must have variants or multipart: " + statePath);
+                        for (JsonElement part : root.getAsJsonArray("multipart")) {
+                            assertReferencedBlockModel(part.getAsJsonObject().getAsJsonObject("apply"), "multipart");
+                        }
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             });
         }
+    }
+
+    private void assertReferencedBlockModel(JsonObject modelObject, String variantName) {
+        assertTrue(modelObject.has("model"), "Variant must specify model: " + variantName);
+        String modelRef = modelObject.get("model").getAsString();
+        assertTrue(modelRef.startsWith("sandstorm:block/"), "Model must reference sandstorm:block/: " + modelRef);
+        String modelFile = modelRef.substring("sandstorm:block/".length()) + ".json";
+        Path resolvedModel = MODELS_BLOCK_DIR.resolve(modelFile);
+        assertTrue(Files.exists(resolvedModel), "Referenced block model must exist on disk: " + resolvedModel);
     }
 
     @Test

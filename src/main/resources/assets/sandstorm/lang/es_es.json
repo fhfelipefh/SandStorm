@@ -1118,5 +1118,9 @@
   "quest.sandstorm.amniotic_incubator.task": "Construye una Incubadora Amniótica de Fauna.",
   "quest.sandstorm.amniotic_incubator.note": "Sintetiza crías de fauna con agua y biomasa.",
   "block.sandstorm.biosphere_door": "Puerta de Biosfera de Fulgurita",
-  "item.sandstorm.biosphere_door": "Puerta de Biosfera de Fulgurita"
+  "item.sandstorm.biosphere_door": "Puerta de Biosfera de Fulgurita",
+  "block.sandstorm.biosphere_fence": "Valla de Biosfera Cian-Violeta",
+  "item.sandstorm.biosphere_fence": "Valla de Biosfera Cian-Violeta",
+  "block.sandstorm.biosphere_fence_gate": "Puerta de Valla de Biosfera Cian-Violeta",
+  "item.sandstorm.biosphere_fence_gate": "Puerta de Valla de Biosfera Cian-Violeta"
 }

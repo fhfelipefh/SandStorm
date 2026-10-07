@@ -3,6 +3,11 @@
   "textures": {
     "glass": "sandstorm:block/biosphere_door"
   },
+  "display": {
+    "gui": {
+      "rotation": [30, 45, 0]
+    }
+  },
   "elements": [
     {
       "from": [0, 0, 0],

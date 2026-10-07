@@ -1,0 +1,12 @@
+{
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "glass": "sandstorm:block/biosphere_door"
+  },
+  "display": {
+    "gui": {
+      "rotation": [30, 45, 0]
+    }
+  },
+  "elements": []
+}

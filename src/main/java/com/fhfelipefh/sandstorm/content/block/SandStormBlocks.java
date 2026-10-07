@@ -62,6 +62,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
@@ -69,6 +71,7 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
@@ -328,6 +331,20 @@ public class SandStormBlocks {
             new BiosphereDoorBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("biosphere_door")))
                     .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(1.5f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final FenceBlock BIOSPHERE_FENCE = register("biosphere_fence",
+            new FenceBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("biosphere_fence")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(1.5f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final FenceGateBlock BIOSPHERE_FENCE_GATE = register("biosphere_fence_gate",
+            new FenceGateBlock(WoodType.OAK, BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("biosphere_fence_gate")))
+                    .mapColor(MapColor.COLOR_PURPLE)
                     .strength(1.5f)
                     .sound(SoundType.GLASS)
                     .noOcclusion()));
