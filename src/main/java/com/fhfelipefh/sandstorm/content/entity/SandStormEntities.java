@@ -62,6 +62,7 @@ public class SandStormEntities {
             SandStormMod.id("megazord"),
             EntityType.Builder.of(MegazordEntity::new, MobCategory.MISC)
                     .sized(3.5f, 5.0f)
+                    .eyeHeight(4.3f)
                     .build(MEGAZORD_KEY)
     );
     public static final ResourceKey<EntityType<?>> NUTRIENT_BOMB_KEY = ResourceKey.create(

@@ -104,6 +104,11 @@ public class ExcavatorVehicleEntity extends PathfinderMob {
     }
 
     @Override
+    public boolean showVehicleHealth() {
+        return false;
+    }
+
+    @Override
     protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale) {
         return new Vec3(0.0, 0.85 * scale, -0.15 * scale);
     }

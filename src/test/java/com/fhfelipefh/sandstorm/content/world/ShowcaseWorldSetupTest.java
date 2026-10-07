@@ -63,7 +63,7 @@ class ShowcaseWorldSetupTest {
         data.putByte("DifficultyLocked", (byte) 0);
 
         CompoundTag spawn = data.getCompoundOrEmpty("spawn");
-        spawn.putIntArray("pos", new int[]{0, 162, 0});
+        spawn.putIntArray("pos", new int[]{0, 21, 0});
         spawn.putString("dimension", "minecraft:overworld");
         data.put("spawn", spawn);
 
@@ -89,10 +89,32 @@ class ShowcaseWorldSetupTest {
             flatSettings.putByte("lakes", (byte) 0);
 
             ListTag layers = new ListTag();
-            CompoundTag airLayer = new CompoundTag();
-            airLayer.putString("block", "minecraft:air");
-            airLayer.putInt("height", 1);
-            layers.add(airLayer);
+
+            CompoundTag bedrockLayer = new CompoundTag();
+            bedrockLayer.putString("block", "minecraft:bedrock");
+            bedrockLayer.putInt("height", 1);
+            layers.add(bedrockLayer);
+
+            CompoundTag deepslateLayer = new CompoundTag();
+            deepslateLayer.putString("block", "minecraft:deepslate");
+            deepslateLayer.putInt("height", 30);
+            layers.add(deepslateLayer);
+
+            CompoundTag stoneLayer = new CompoundTag();
+            stoneLayer.putString("block", "minecraft:stone");
+            stoneLayer.putInt("height", 30);
+            layers.add(stoneLayer);
+
+            CompoundTag sandstoneLayer = new CompoundTag();
+            sandstoneLayer.putString("block", "minecraft:sandstone");
+            sandstoneLayer.putInt("height", 15);
+            layers.add(sandstoneLayer);
+
+            CompoundTag sandLayer = new CompoundTag();
+            sandLayer.putString("block", "minecraft:sand");
+            sandLayer.putInt("height", 8);
+            layers.add(sandLayer);
+
             flatSettings.put("layers", layers);
             flatSettings.put("structure_overrides", new ListTag());
 

@@ -22,6 +22,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -65,7 +67,8 @@ public class MegazordEntity extends PathfinderMob {
                 .add(Attributes.ARMOR, 25.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.ATTACK_DAMAGE, 30.0)
-                .add(Attributes.FOLLOW_RANGE, 48.0);
+                .add(Attributes.FOLLOW_RANGE, 48.0)
+                .add(Attributes.STEP_HEIGHT, 2.0);
     }
 
     @Override
@@ -176,6 +179,16 @@ public class MegazordEntity extends PathfinderMob {
     }
 
     @Override
+    public boolean showVehicleHealth() {
+        return false;
+    }
+
+    @Override
+    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale) {
+        return new Vec3(0.0, 3.85 * scale, 0.35 * scale);
+    }
+
+    @Override
     public void travel(Vec3 travelVector) {
         if (this.isAlive()) {
             LivingEntity passenger = this.getControllingPassenger();
@@ -191,6 +204,9 @@ public class MegazordEntity extends PathfinderMob {
                 }
                 this.setNoGravity(false);
                 if (travelVector.lengthSqr() > 0.001) {
+                    if (this.onGround() && this.tickCount % 14 == 0) {
+                        this.level().playSound(null, this.blockPosition(), SandStormSoundEvents.MEGAZORD_STEP, SoundSource.PLAYERS, 1.0f, 0.85f);
+                    }
                     energyStorage.extractEnergy(2L);
                 }
             }

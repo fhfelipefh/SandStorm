@@ -42,6 +42,7 @@ import com.fhfelipefh.sandstorm.content.network.SyncTerminalGridPayload;
 import com.fhfelipefh.sandstorm.client.gui.SupercriticalHeatExchangerScreen;
 import com.fhfelipefh.sandstorm.client.gui.ThermalGeneratorScreen;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
+import com.fhfelipefh.sandstorm.client.hud.MachineCockpitHudOverlay;
 import com.fhfelipefh.sandstorm.client.handler.EmpDeafenClientHandler;
 import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
@@ -105,6 +106,7 @@ public class SandStormClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         SurvivalHudOverlay.initialize();
+        MachineCockpitHudOverlay.initialize();
         DatapadClientHelper.initialize();
         SandstormParticleHandler.initialize();
         SandstormFlashlightKeys.initialize();

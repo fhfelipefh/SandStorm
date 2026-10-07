@@ -44,7 +44,7 @@ public class ExcavatorVehicleModel extends EntityModel<ExcavatorVehicleRenderSta
                 .texOffs(102, 105).addBox(-3.0f, -8.0f, 20.0f, 6.0f, 5.0f, 10.0f)
                 .texOffs(136, 105).addBox(-5.0f, -7.0f, 16.0f, 2.0f, 3.0f, 10.0f)
                 .texOffs(136, 105).addBox(3.0f, -7.0f, 16.0f, 2.0f, 3.0f, 10.0f),
-                PartPose.offset(0.0f, 22.0f, 0.0f));
+                PartPose.offsetAndRotation(0.0f, 22.0f, 0.0f, 0.0f, (float) Math.PI, 0.0f));
 
         chassis.addOrReplaceChild("drillHead", CubeListBuilder.create()
                 .texOffs(0, 122).addBox(-5.0f, -5.0f, 0.0f, 10.0f, 10.0f, 8.0f)

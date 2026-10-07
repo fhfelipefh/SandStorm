@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -34,6 +35,16 @@ public class SandboardEntity extends PathfinderMob {
                 .add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.35)
                 .add(Attributes.ARMOR, 2.0);
+    }
+
+    @Override
+    public boolean showVehicleHealth() {
+        return false;
+    }
+
+    @Override
+    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale) {
+        return new Vec3(0.0, 0.15 * scale, 0.0);
     }
 
     @Override

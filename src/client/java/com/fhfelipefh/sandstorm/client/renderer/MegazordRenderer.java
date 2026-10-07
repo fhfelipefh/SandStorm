@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.client.renderer;
 
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
@@ -14,7 +15,13 @@ public class MegazordRenderer extends MobRenderer<MegazordEntity, MegazordRender
     private static final Identifier TEXTURE_APEX = SandStormMod.id("textures/entity/megazord/megazord_apex_dominator.png");
 
     public MegazordRenderer(EntityRendererProvider.Context context) {
-        super(context, new MegazordModel(MegazordModel.createBodyLayer().bakeRoot()), 1.8f);
+        super(context, new MegazordModel(MegazordModel.createBodyLayer().bakeRoot()), 2.2f);
+    }
+
+    @Override
+    protected void scale(MegazordRenderState state, PoseStack poseStack) {
+        super.scale(state, poseStack);
+        poseStack.scale(1.35f, 1.35f, 1.35f);
     }
 
     @Override
@@ -39,6 +46,7 @@ public class MegazordRenderer extends MobRenderer<MegazordEntity, MegazordRender
         state.hasFlightModule = entity.hasFlightModule();
         state.hasSubmersibleModule = entity.hasSubmersibleModule();
         state.hasOverdriveModule = entity.hasOverdriveModule();
+        state.isFlying = entity.hasFlightModule() && !entity.onGround();
         Level lvl = entity.level();
         state.animationTicks = lvl != null ? (lvl.getGameTime() + partialTick) : partialTick;
     }
