@@ -1116,5 +1116,7 @@
   "quest.sandstorm.cryo_chiller.note": "Resfria a atmosfera e estabiliza biomas de gelo.",
   "quest.sandstorm.amniotic_incubator.title": "Gênese Amniótica",
   "quest.sandstorm.amniotic_incubator.task": "Construa uma Incubadora Amniótica de Fauna.",
-  "quest.sandstorm.amniotic_incubator.note": "Sintetize filhotes com biomassa e fluidos."
+  "quest.sandstorm.amniotic_incubator.note": "Sintetize filhotes com biomassa e fluidos.",
+  "block.sandstorm.biosphere_door": "Porta de Biosfera de Fulgurita",
+  "item.sandstorm.biosphere_door": "Porta de Biosfera de Fulgurita"
 }

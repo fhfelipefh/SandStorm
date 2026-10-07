@@ -8,6 +8,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockE
 import com.fhfelipefh.sandstorm.content.block.entity.CryogenicAtmosphericChillerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.BiosphereDoorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CrushingSpikeGateBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CyborgDockingStationBlockEntity;
@@ -321,6 +322,13 @@ public class SandStormBlocks {
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fulgurite_glass")))
                     .mapColor(MapColor.COLOR_YELLOW)
                     .strength(1.0f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final BiosphereDoorBlock BIOSPHERE_DOOR = register("biosphere_door",
+            new BiosphereDoorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("biosphere_door")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(1.5f)
                     .sound(SoundType.GLASS)
                     .noOcclusion()));
     public static final AncientReedBlock ANCIENT_REED_BLOCK = register("ancient_reed_block",
@@ -685,6 +693,11 @@ public class SandStormBlocks {
                     .sound(SoundType.HEAVY_CORE)
                     .noOcclusion()));
 
+    public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("biosphere_door"),
+            new BlockEntityType<>(BiosphereDoorBlockEntity::new, Set.of(BIOSPHERE_DOOR))
+    );
     public static final BlockEntityType<Printer3DBlockEntity> PRINTER_3D_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("printer_3d"),

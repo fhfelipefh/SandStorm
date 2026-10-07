@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "open=false,side=false": {
+      "model": "sandstorm:block/biosphere_door_closed"
+    },
+    "open=false,side=true": {
+      "model": "sandstorm:block/biosphere_door_closed"
+    },
+    "open=true,side=false": {
+      "model": "sandstorm:block/biosphere_door_open_left"
+    },
+    "open=true,side=true": {
+      "model": "sandstorm:block/biosphere_door_open_right"
+    }
+  }
+}

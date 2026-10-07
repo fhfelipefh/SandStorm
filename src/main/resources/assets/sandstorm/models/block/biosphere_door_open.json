@@ -1,0 +1,31 @@
+{
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "glass": "sandstorm:block/biosphere_door"
+  },
+  "display": {
+    "gui": {
+      "rotation": [30, 45, 0]
+    }
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [2, 16, 2],
+      "faces": {
+        "north": {"texture": "#glass"}, "south": {"texture": "#glass"},
+        "east": {"texture": "#glass"}, "west": {"texture": "#glass"},
+        "up": {"texture": "#glass"}, "down": {"texture": "#glass"}
+      }
+    },
+    {
+      "from": [14, 0, 0],
+      "to": [16, 16, 2],
+      "faces": {
+        "north": {"texture": "#glass"}, "south": {"texture": "#glass"},
+        "east": {"texture": "#glass"}, "west": {"texture": "#glass"},
+        "up": {"texture": "#glass"}, "down": {"texture": "#glass"}
+      }
+    }
+  ]
+}

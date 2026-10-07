@@ -1116,5 +1116,7 @@
   "quest.sandstorm.cryo_chiller.note": "Cools the sector and stabilizes ice biomes.",
   "quest.sandstorm.amniotic_incubator.title": "Amniotic Genesis",
   "quest.sandstorm.amniotic_incubator.task": "Build an Amniotic Fauna Incubator.",
-  "quest.sandstorm.amniotic_incubator.note": "Synthesize animal babies from biomass & water."
+  "quest.sandstorm.amniotic_incubator.note": "Synthesize animal babies from biomass & water.",
+  "block.sandstorm.biosphere_door": "Fulgurite Biosphere Door",
+  "item.sandstorm.biosphere_door": "Fulgurite Biosphere Door"
 }

@@ -1,0 +1,17 @@
+{
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "glass": "sandstorm:block/biosphere_door"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 14],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": {"texture": "#glass"}, "south": {"texture": "#glass"},
+        "east": {"texture": "#glass"}, "west": {"texture": "#glass"},
+        "up": {"texture": "#glass"}, "down": {"texture": "#glass"}
+      }
+    }
+  ]
+}

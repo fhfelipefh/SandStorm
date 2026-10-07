@@ -265,6 +265,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.ELECTRIFIED_SAND);
                         entries.accept(SandStormBlocks.FOSSILIZED_AMBER);
                         entries.accept(SandStormBlocks.FULGURITE_GLASS);
+                        entries.accept(SandStormBlocks.BIOSPHERE_DOOR);
                         entries.accept(SandStormBlocks.ANCIENT_REED_BLOCK);
                         entries.accept(ANCIENT_REED);
                         entries.accept(ANCIENT_SEED);

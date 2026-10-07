@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.block.BiosphereDoorBlock;
 import com.fhfelipefh.sandstorm.content.block.SandMaglevRailBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.SolidStateAccumulatorBlock;
@@ -181,7 +182,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             BlockPos center = new BlockPos(0, 160, 0);
             buildBiospheresShowcase(source.getLevel(), center);
-            source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Complexo de 4 Biosferas Lado a Lado montado com sucesso!"), true);
+            source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Complexo com 7 Biosferas e caminhos de conexão montado com sucesso!"), true);
             return 1;
         }
         source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
@@ -1239,19 +1240,161 @@ public class ShowcaseAutomation {
         buildXenoFungalDome(level, center.offset(-32, 0, 75));
         buildPrimordialOasisDome(level, center.offset(32, 0, 75));
         buildMagneticForestDome(level, center.offset(96, 0, 75));
+        buildTemperateShowcaseDome(level, center.offset(-64, 0, 135), 0);
+        buildTemperateShowcaseDome(level, center.offset(0, 0, 135), 1);
+        buildTemperateShowcaseDome(level, center.offset(64, 0, 135), 2);
+        buildBiospherePaths(level, center);
+        placeBiosphereDoor(level, center.offset(-96, 0, 75));
+        placeBiosphereDoor(level, center.offset(-32, 0, 75));
+        placeBiosphereDoor(level, center.offset(32, 0, 75));
+        placeBiosphereDoor(level, center.offset(96, 0, 75));
+        placeBiosphereDoor(level, center.offset(-64, 0, 135));
+        placeBiosphereDoor(level, center.offset(0, 0, 135));
+        placeBiosphereDoor(level, center.offset(64, 0, 135));
+    }
+
+    private static void buildBiospherePaths(ServerLevel level, BlockPos center) {
+        for (int x = -126; x <= 126; x++) {
+            for (int z = 73; z <= 77; z++) {
+                setShowcasePathBlock(level, center.offset(x, 0, z));
+            }
+        }
+        for (int x : new int[]{-64, 0, 64}) {
+            for (int z = 78; z <= 135; z++) {
+                setShowcasePathBlock(level, center.offset(x, 0, z));
+            }
+        }
+        for (int x = -78; x <= 78; x++) {
+            for (int z = 133; z <= 137; z++) {
+                setShowcasePathBlock(level, center.offset(x, 0, z));
+            }
+        }
+    }
+
+    private static void setShowcasePathBlock(ServerLevel level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        if (state.isAir() || state.canBeReplaced()) {
+            boolean light = Math.floorMod(pos.getX() + pos.getZ(), 16) == 0;
+            level.setBlock(pos, light ? Blocks.SEA_LANTERN.defaultBlockState() : Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+        }
+    }
+
+    private static void placeBiosphereDoor(ServerLevel level, BlockPos domeCenter) {
+        int radius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
+        BlockPos receiverPos = domeCenter.offset(0, 1, 4);
+        level.setBlock(receiverPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+        BlockPos base = domeCenter.offset(radius, 1, -1);
+        for (int z = 0; z < 2; z++) {
+            for (int y = 0; y < 2; y++) {
+                level.setBlock(base.offset(0, y, z), SandStormBlocks.BIOSPHERE_DOOR.defaultBlockState()
+                        .setValue(BiosphereDoorBlock.SIDE, z == 1), 3);
+            }
+        }
+    }
+
+    private static void buildTemperateShowcaseDome(ServerLevel level, BlockPos domeCenter, int variant) {
+        int radius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
+        int baseY = domeCenter.getY();
+        for (int x = -radius - 1; x <= radius + 1; x++) {
+            for (int z = -radius - 1; z <= radius + 1; z++) {
+                if (x * x + z * z <= (radius + 1) * (radius + 1)) {
+                    for (int y = -2; y <= 10; y++) {
+                        BlockPos clearPos = domeCenter.offset(x, y, z);
+                        if (!level.getBlockState(clearPos).isAir()) {
+                            level.setBlock(clearPos, Blocks.AIR.defaultBlockState(), 2);
+                        }
+                    }
+                }
+            }
+        }
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                int distance = x * x + z * z;
+                if (distance > radius * radius) {
+                    continue;
+                }
+                BlockPos floorPos = domeCenter.offset(x, 0, z);
+                level.setBlock(floorPos.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = distance > (radius - 1) * (radius - 1);
+                if (edge) {
+                    boolean entrance = Math.abs(z) <= 1;
+                    level.setBlock(floorPos, variant == 2 ? Blocks.MOSS_BLOCK.defaultBlockState() : Blocks.CUT_SANDSTONE.defaultBlockState(), 2);
+                    if (!entrance) {
+                        level.setBlock(floorPos.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                        level.setBlock(floorPos.above(2), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                    }
+                    continue;
+                }
+                int pondDistance = (x + 4) * (x + 4) + (z - 4) * (z - 4);
+                BlockState floor;
+                if (variant == 0) {
+                    floor = pondDistance <= 7 ? Blocks.WATER.defaultBlockState() : (distance % 5 == 0 ? Blocks.FARMLAND.defaultBlockState() : Blocks.GRASS_BLOCK.defaultBlockState());
+                } else if (variant == 1) {
+                    floor = distance % 4 == 0 ? Blocks.PODZOL.defaultBlockState() : Blocks.GRASS_BLOCK.defaultBlockState();
+                } else {
+                    floor = pondDistance <= 9 ? Blocks.WATER.defaultBlockState() : (distance % 3 == 0 ? Blocks.MUD.defaultBlockState() : Blocks.MOSS_BLOCK.defaultBlockState());
+                }
+                level.setBlock(floorPos, floor, 2);
+                int decor = Math.abs(x * 17 + z * 29) % 11;
+                if (floor.is(Blocks.WATER)) {
+                    if (decor == 0) {
+                        setSafeFlora(level, floorPos.above(), Blocks.LILY_PAD.defaultBlockState());
+                    }
+                } else if (variant == 0 && floor.is(Blocks.FARMLAND)) {
+                    setSafeFlora(level, floorPos.above(), decor % 2 == 0 ? Blocks.WHEAT.defaultBlockState() : Blocks.CARROTS.defaultBlockState());
+                } else if (variant == 2 && decor < 2) {
+                    setSafeFlora(level, floorPos.above(), decor == 0 ? Blocks.BAMBOO.defaultBlockState() : Blocks.FERN.defaultBlockState());
+                } else if (decor < 3) {
+                    setSafeFlora(level, floorPos.above(), decor == 0 ? Blocks.POPPY.defaultBlockState() : Blocks.SHORT_GRASS.defaultBlockState());
+                }
+            }
+        }
+        ItemStack cartridge = switch (variant) {
+            case 0 -> new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_PLAINS);
+            case 1 -> new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_FOREST);
+            default -> new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_JUNGLE);
+        };
+        BlockPos terraformerPos = domeCenter.above();
+        level.setBlock(terraformerPos, SandStormBlocks.ATMOSPHERIC_TERRAFORMER.defaultBlockState(), 3);
+        if (level.getBlockEntity(terraformerPos) instanceof AtmosphericTerraformerBlockEntity terraformer) {
+            terraformer.setupTier(1);
+            terraformer.setItem(AtmosphericTerraformerBlockEntity.SLOT_UPGRADE, cartridge);
+        }
+        String title = switch (variant) {
+            case 0 -> "§a[Biosfera de Planícies - Epsilon]";
+            case 1 -> "§2[Biosfera Florestal - Zeta]";
+            default -> "§d[Biosfera Tropical - Eta]";
+        };
+        String subtitle = switch (variant) {
+            case 0 -> "§7Agricultura, pradarias e zonas alagadas";
+            case 1 -> "§7Sub-bosque, podzol e clareiras";
+            default -> "§7Pântano, musgo e vegetação exuberante";
+        };
+        spawnHologram(level, domeCenter.getX() + 0.5, baseY + 3.4, domeCenter.getZ() + 0.5, title);
+        spawnHologram(level, domeCenter.getX() + 0.5, baseY + 3.1, domeCenter.getZ() + 0.5, subtitle);
+        if (variant == 0) {
+            spawnBabyAnimal(level, domeCenter.getX() + 5.5, baseY + 1.0, domeCenter.getZ() + 5.5, "cow");
+            spawnBabyAnimal(level, domeCenter.getX() - 5.5, baseY + 1.0, domeCenter.getZ() - 5.5, "sheep");
+        } else if (variant == 1) {
+            spawnBabyAnimal(level, domeCenter.getX() + 5.5, baseY + 1.0, domeCenter.getZ() - 5.5, "fox");
+            spawnBabyAnimal(level, domeCenter.getX() - 5.5, baseY + 1.0, domeCenter.getZ() + 5.5, "bee");
+        } else {
+            spawnBabyAnimal(level, domeCenter.getX() + 5.5, baseY + 1.0, domeCenter.getZ() + 5.5, "parrot");
+            spawnBabyAnimal(level, domeCenter.getX() - 5.5, baseY + 1.0, domeCenter.getZ() - 5.5, "frog");
+        }
     }
 
     private static void wipeBiospheresArea(ServerLevel level, BlockPos center) {
         AABB biosphereZone = new AABB(
             center.getX() - 130, center.getY() - 5, center.getZ() + 25,
-            center.getX() + 130, center.getY() + 30, center.getZ() + 110
+            center.getX() + 130, center.getY() + 30, center.getZ() + 175
         );
         List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, biosphereZone, e -> !(e instanceof ServerPlayer));
         for (Entity e : oldEntities) {
             e.discard();
         }
         for (int x = -126; x <= 126; x++) {
-            for (int z = 25; z <= 106; z++) {
+            for (int z = 25; z <= 171; z++) {
                 for (int y = -5; y <= 30; y++) {
                     BlockPos p = center.offset(x, y, z);
                     if (!level.getBlockState(p).isAir()) {

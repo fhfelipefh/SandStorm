@@ -2,6 +2,13 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.14.0] - 2026-10-07
+
+### 🌿 Showcase de Biosferas Expandidas
+* Adicionada uma segunda ala com biosferas temperada, florestal e tropical.
+* Cada domo recebe pisos, água, vegetação e fauna próprios.
+* A vegetação do showcase valida o bloco de suporte antes de ser colocada.
+
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
