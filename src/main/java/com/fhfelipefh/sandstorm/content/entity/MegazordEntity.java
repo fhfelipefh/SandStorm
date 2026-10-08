@@ -168,7 +168,7 @@ public class MegazordEntity extends PathfinderMob {
 
     @Override
     protected float getRiddenSpeed(Player player) {
-        float speed = (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
+        float speed = (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 1.85f;
         if (hasOverdriveModule()) {
             speed *= 1.35f;
         }
@@ -194,6 +194,10 @@ public class MegazordEntity extends PathfinderMob {
             LivingEntity passenger = this.getControllingPassenger();
             if (this.isVehicle() && passenger instanceof Player player) {
                 boolean inWater = this.isInWater() || this.isEyeInFluid(FluidTags.WATER);
+                if (this.onGround() && player.isJumping() && !inWater && energyStorage.hasEnergy(20L)) {
+                    this.setDeltaMovement(this.getDeltaMovement().x, hasOverdriveModule() ? 1.25 : 1.05, this.getDeltaMovement().z);
+                    energyStorage.extractEnergy(20L);
+                }
                 if (inWater && hasSubmersibleModule()) {
                     handleSubmersibleTravel(player, travelVector);
                     return;

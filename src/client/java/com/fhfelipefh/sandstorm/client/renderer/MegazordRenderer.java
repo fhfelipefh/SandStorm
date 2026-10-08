@@ -3,6 +3,8 @@ package com.fhfelipefh.sandstorm.client.renderer;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
@@ -16,6 +18,15 @@ public class MegazordRenderer extends MobRenderer<MegazordEntity, MegazordRender
 
     public MegazordRenderer(EntityRendererProvider.Context context) {
         super(context, new MegazordModel(MegazordModel.createBodyLayer().bakeRoot()), 2.2f);
+    }
+
+    @Override
+    public boolean shouldRender(MegazordEntity entity, Frustum frustum, double camX, double camY, double camZ, float distance) {
+        Minecraft client = Minecraft.getInstance();
+        if (client.options.getCameraType().isFirstPerson() && client.player == entity.getControllingPassenger()) {
+            return false;
+        }
+        return super.shouldRender(entity, frustum, camX, camY, camZ, distance);
     }
 
     @Override

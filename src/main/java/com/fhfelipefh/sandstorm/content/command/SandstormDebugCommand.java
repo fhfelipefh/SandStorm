@@ -143,6 +143,11 @@ public class SandstormDebugCommand {
     }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(Commands.literal("megazord_collection")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(SandstormDebugCommand::executeMegazordCollection)
+        );
+
         dispatcher.register(Commands.literal("sandstorm_debug")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("phase")
@@ -156,6 +161,9 @@ public class SandstormDebugCommand {
                                 .suggests((ctx, builder) -> suggestSpawnables(builder))
                                 .executes(ctx -> executeSpawn(ctx, StringArgumentType.getString(ctx, "entityType")))
                         )
+                )
+                .then(Commands.literal("megazord_collection")
+                        .executes(SandstormDebugCommand::executeMegazordCollection)
                 )
                 .then(Commands.literal("robot")
                         .then(Commands.argument("entityType", StringArgumentType.word())
@@ -721,6 +729,41 @@ public class SandstormDebugCommand {
 
         source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§6[SandStorm]§r Kit de testes da §bFase %s§r entregue ao inventário com sucesso!", phaseId)), true);
         return 1;
+    }
+
+    private static int executeMegazordCollection(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
+        if (!(source.getEntity() instanceof ServerPlayer)) {
+            source.sendFailure(Component.literal("A coleção de Megazords exige um jogador no mundo."));
+            return 0;
+        }
+
+        int kitResult = executePhaseKit(ctx, "32");
+        if (kitResult == 0) {
+            return 0;
+        }
+
+        ServerLevel level = source.getLevel();
+        Vec3 origin = source.getPosition();
+        spawnMegazord(level, origin.x - 5.0, origin.y, origin.z, false, false, false);
+        spawnMegazord(level, origin.x - 1.7, origin.y, origin.z, true, false, false);
+        spawnMegazord(level, origin.x + 1.7, origin.y, origin.z, false, true, false);
+        spawnMegazord(level, origin.x + 5.0, origin.y, origin.z, true, true, true);
+        source.sendSuccess(() -> Component.literal("§a[SandStorm] Coleção completa de Megazords gerada: Standard, Aero, Abissal e Apex."), true);
+        return 1;
+    }
+
+    private static void spawnMegazord(ServerLevel level, double x, double y, double z, boolean flight, boolean submersible, boolean overdrive) {
+        MegazordEntity megazord = SandStormEntities.MEGAZORD.create(level, EntitySpawnReason.COMMAND);
+        if (megazord == null) {
+            return;
+        }
+        megazord.setPos(x, y, z);
+        megazord.setFlightModule(flight);
+        megazord.setSubmersibleModule(submersible);
+        megazord.setOverdriveModule(overdrive);
+        megazord.getEnergyStorage().receiveEnergy(overdrive ? MegazordEntity.OVERDRIVE_BATTERY_CAPACITY : MegazordEntity.DEFAULT_BATTERY_CAPACITY);
+        level.addFreshEntity(megazord);
     }
 
     private static int executeSpawn(CommandContext<CommandSourceStack> ctx, String entityType) {

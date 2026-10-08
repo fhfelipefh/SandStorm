@@ -62,6 +62,12 @@ class MegazordUsabilityAndControlArchitectureTest {
     private static final Path CLIENT_JAVA = Path.of(
             "src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "SandStormClient.java"
     );
+    private static final Path DEBUG_COMMAND_JAVA = Path.of(
+            "src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "command", "SandstormDebugCommand.java"
+    );
+    private static final Path MEGAZORD_RENDERER_JAVA = Path.of(
+            "src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "renderer", "MegazordRenderer.java"
+    );
     private static final Path SHOWCASE_TEST_JAVA = Path.of(
             "src", "test", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "ShowcaseWorldSetupTest.java"
     );
@@ -225,6 +231,36 @@ class MegazordUsabilityAndControlArchitectureTest {
         assertTrue(Files.exists(CLIENT_JAVA), "SandStormClient.java must exist");
         String clientCode = Files.readString(CLIENT_JAVA);
         assertTrue(clientCode.contains("MachineCockpitHudOverlay.initialize()"), "SandStormClient must initialize cockpit HUD");
+    }
+
+    @Test
+    void megazordCollectionCommandMustProvideAllVariantsAndModules() throws IOException {
+        assertTrue(Files.exists(DEBUG_COMMAND_JAVA), "SandstormDebugCommand.java must exist");
+        String code = Files.readString(DEBUG_COMMAND_JAVA);
+        assertTrue(code.contains("megazord_collection"), "A dedicated Megazord collection command must exist");
+        assertTrue(code.contains("spawnMegazord(level"), "The collection command must spawn the collection");
+        assertTrue(code.contains("MEGAZORD_FLIGHT_MODULE"), "The collection must provide the flight module kit");
+        assertTrue(code.contains("MEGAZORD_SUBMERSIBLE_HULL"), "The collection must provide the submersible module kit");
+        assertTrue(code.contains("MEGAZORD_TACTICAL_OVERDRIVE"), "The collection must provide the overdrive module kit");
+    }
+
+    @Test
+    void megazordMustSupportHighJumpAndFastRiddenMovement() throws IOException {
+        String code = Files.readString(Path.of(
+                "src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity", "MegazordEntity.java"
+        ));
+        assertTrue(code.contains("player.isJumping()"), "Megazord must respond to the rider jump input");
+        assertTrue(code.contains("1.05"), "Standard Megazord jump impulse must be high");
+        assertTrue(code.contains("1.85f"), "Megazord ridden speed must be significantly increased");
+    }
+
+    @Test
+    void firstPersonMegazordViewMustHideTheOwnBody() throws IOException {
+        assertTrue(Files.exists(MEGAZORD_RENDERER_JAVA), "MegazordRenderer.java must exist");
+        String code = Files.readString(MEGAZORD_RENDERER_JAVA);
+        assertTrue(code.contains("isFirstPerson()"), "Megazord renderer must detect first-person camera");
+        assertTrue(code.contains("getControllingPassenger()"), "Megazord renderer must identify the local pilot");
+        assertTrue(code.contains("return false"), "Megazord renderer must hide the body for the local first-person pilot");
     }
 
     @Test
