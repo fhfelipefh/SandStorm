@@ -2,6 +2,8 @@ package com.fhfelipefh.sandstorm.core;
 
 import com.fhfelipefh.sandstorm.config.SandStormConfig;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.automation.AutoModeManager;
+import com.fhfelipefh.sandstorm.content.command.SandstormAutoCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormBuildCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormClaimCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormDebugCommand;
@@ -123,6 +125,7 @@ public class SandStormMod implements ModInitializer {
         SandStormSoundEvents.initialize();
         SandStormItems.initialize();
         SandStormBlocks.initialize();
+        AutoModeManager.initialize();
         SandStormMenus.initialize();
         SuitSurvivalHandler.initialize();
         VanillaMonsterSuppressionHandler.initialize();
@@ -145,6 +148,7 @@ public class SandStormMod implements ModInitializer {
         QuestRewardHandler.initialize();
         SandwormShowcaseCommand.initialize();
         SandstormWeatherCommand.initialize();
+        SandstormAutoCommand.initialize();
         SandstormClaimCommand.initialize();
         SandstormBuildCommand.initialize();
         SandstormPlantCommand.initialize();
