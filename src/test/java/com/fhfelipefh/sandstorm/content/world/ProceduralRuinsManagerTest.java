@@ -2,6 +2,10 @@ package com.fhfelipefh.sandstorm.content.world;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -28,11 +32,16 @@ class ProceduralRuinsManagerTest {
     }
 
     @Test
-    void constantsShouldHaveExpectedNaturalRuinRarities() {
+    void naturalGenerationShouldOnlyScheduleAbandonedOutposts() throws IOException {
+        Path managerPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "ProceduralRuinsManager.java");
+        String source = Files.readString(managerPath);
+
         assertTrue(ProceduralRuinsManager.OUTPOST_RARITY > 0);
-        assertTrue(ProceduralRuinsManager.FUEL_SILO_RARITY > 0);
         assertEquals(180, ProceduralRuinsManager.OUTPOST_RARITY);
-        assertEquals(150, ProceduralRuinsManager.FUEL_SILO_RARITY);
+        assertTrue(source.contains("AbandonedOutpostGenerator.generate"));
+        assertFalse(source.contains("FUEL_SILO_RARITY"));
+        assertFalse(source.contains("new PendingRuin(level, origin, surfaceY, 0)"));
+        assertFalse(source.contains("ColossalCastleGenerator.generate(ruin.level()"));
     }
 
     @Test

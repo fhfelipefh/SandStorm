@@ -19,7 +19,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ProceduralRuinsManager {
 
     public static final int OUTPOST_RARITY = 180;
-    public static final int FUEL_SILO_RARITY = 150;
 
     private record PendingRuin(ServerLevel level, BlockPos origin, int surfaceY, int ruinType) {}
     private static final Queue<PendingRuin> PENDING_RUINS = new ConcurrentLinkedQueue<>();
@@ -56,14 +55,6 @@ public class ProceduralRuinsManager {
                     BlockPos origin = new BlockPos(samplePos.getX(), surfaceY, samplePos.getZ());
                     level.getServer().execute(() -> {
                         PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 1));
-                    });
-                }
-            } else if ((roll / OUTPOST_RARITY) % FUEL_SILO_RARITY == 0) {
-                if (surfaceY > level.getMinY() + 45) {
-                    int siloY = 32 + (int) (Math.abs(hash >> 16) % 10);
-                    BlockPos origin = new BlockPos(samplePos.getX(), siloY, samplePos.getZ());
-                    level.getServer().execute(() -> {
-                        PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 0));
                     });
                 }
             }
