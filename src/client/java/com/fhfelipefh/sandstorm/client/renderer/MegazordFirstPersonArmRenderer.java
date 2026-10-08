@@ -46,12 +46,13 @@ public final class MegazordFirstPersonArmRenderer {
         }
 
         arm.resetPose();
+        arm.visible = true;
         float movement = Mth.sin(client.player.tickCount * 0.12f) * 0.025f;
         arm.xRot = movement;
         arm.yRot = left ? -0.08f : 0.08f;
         arm.zRot = left ? -0.06f : 0.06f;
         Identifier texture = textureFor(megazord);
-        collector.submitModelPart(arm, poseStack, RenderTypes.entityCutout(texture), packedLight, OverlayTexture.NO_OVERLAY, null);
+        collector.submitModelPart(arm, poseStack, RenderTypes.armorCutoutNoCull(texture), packedLight, OverlayTexture.NO_OVERLAY, null);
         return true;
     }
 

@@ -72,6 +72,9 @@ class MegazordUsabilityAndControlArchitectureTest {
     private static final Path MEGAZORD_CAMERA_MIXIN_JAVA = Path.of(
             "src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "mixin", "MegazordCameraMixin.java"
     );
+    private static final Path MEGAZORD_PILOT_REACH_HANDLER_JAVA = Path.of(
+            "src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity", "MegazordPilotReachHandler.java"
+    );
     private static final Path MEGAZORD_ARM_RENDERER_JAVA = Path.of(
             "src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "renderer", "MegazordFirstPersonArmRenderer.java"
     );
@@ -284,6 +287,8 @@ class MegazordUsabilityAndControlArchitectureTest {
         String armCode = Files.readString(MEGAZORD_ARM_RENDERER_JAVA);
         assertTrue(armCode.contains("renderRightArm"), "Megazord must provide a mechanical right arm");
         assertTrue(armCode.contains("renderLeftArm"), "Megazord must provide a mechanical left arm");
+        assertTrue(armCode.contains("arm.visible = true"), "Megazord arms must be explicitly visible in first person");
+        assertTrue(armCode.contains("RenderTypes.armorCutoutNoCull"), "Megazord first-person arms must render without face culling");
         assertTrue(armCode.contains("isFirstPerson()"), "Megazord arms must only replace the local first-person hands");
 
         String modelCode = Files.readString(MEGAZORD_MODEL_JAVA);
@@ -293,8 +298,8 @@ class MegazordUsabilityAndControlArchitectureTest {
         assertTrue(modelCode.contains("1.0f, -12.05f, -3.5f, 7.0f, 12.1f, 7.0f"), "Megazord thigh must overlap torso and lower leg to avoid a gap");
         assertFalse(modelCode.contains(".texOffs(0, 100)"), "Megazord thighs must not use the transparent texture area");
         assertFalse(modelCode.contains(".texOffs(26, 100)"), "Megazord thighs must not use the transparent texture area");
-        assertTrue(modelCode.contains(".texOffs(18, 45)"), "Left thigh must use the matching leg armor texture");
-        assertTrue(modelCode.contains(".texOffs(142, 45)"), "Right thigh must use the matching leg armor texture");
+        assertTrue(modelCode.contains(".texOffs(142, 45).addBox(1.0f, -12.05f, -3.5f, 7.0f, 12.1f, 7.0f)"), "Left thigh must use the same armor texture as the right thigh");
+        assertTrue(modelCode.contains(".texOffs(142, 45).addBox(-8.0f, -12.05f, -3.5f, 7.0f, 12.1f, 7.0f)"), "Right thigh must use the shared armor texture");
         assertTrue(modelCode.contains(".texOffs(172, 45).addBox(1.5f, -5.0f, -4.5f, 6.0f, 3.0f, 2.0f)"), "Left thigh must use the mirrored knee plate texture");
         assertTrue(modelCode.contains(".texOffs(172, 45).addBox(-7.5f, -5.0f, -4.5f, 6.0f, 3.0f, 2.0f)"), "Right thigh must have a front knee plate");
         assertTrue(modelCode.contains(".texOffs(172, 45).addBox(-3.0f, 7.0f, -4.5f, 6.0f, 3.0f, 2.0f)"), "Left lower leg must use the mirrored knee plate texture");
@@ -315,6 +320,16 @@ class MegazordUsabilityAndControlArchitectureTest {
     }
 
     @Test
+    void megazordPilotMustReceiveExtendedBlockReachOnlyWhileMounted() throws IOException {
+        assertTrue(Files.exists(MEGAZORD_PILOT_REACH_HANDLER_JAVA), "MegazordPilotReachHandler.java must exist");
+        String handlerCode = Files.readString(MEGAZORD_PILOT_REACH_HANDLER_JAVA);
+        assertTrue(handlerCode.contains("BLOCK_REACH_BONUS = 8.0"), "Megazord pilot must receive substantial extra block reach");
+        assertTrue(handlerCode.contains("Attributes.BLOCK_INTERACTION_RANGE"), "Megazord pilot reach must use the vanilla block interaction range");
+        assertTrue(handlerCode.contains("player.getVehicle() instanceof MegazordEntity"), "Extra block reach must be limited to Megazord pilots");
+        assertTrue(handlerCode.contains("reach.removeModifier(BLOCK_REACH_MODIFIER_ID)"), "Extra block reach must be removed after dismounting");
+    }
+
+    @Test
     void megazordPilotPoseMixinMustDisableVanillaPassengerPose() throws IOException {
         Path poseMixin = Path.of(
                 "src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "mixin", "MegazordPilotPoseMixin.java"
@@ -323,10 +338,12 @@ class MegazordUsabilityAndControlArchitectureTest {
         String poseCode = Files.readString(poseMixin);
         assertTrue(poseCode.contains("state.isPassenger = false"),
                 "Megazord pilots must render standing instead of using the seated passenger pose");
-        assertTrue(poseCode.contains("state.isInvisible = true"),
-                "Megazord pilot body must not clip through the external armor render");
-        assertTrue(poseCode.contains("state.isInvisibleToPlayer = true"),
-                "Megazord pilot must be fully hidden instead of rendered translucently");
+        assertTrue(poseCode.contains("isLocalFirstPersonPilot"),
+                "Megazord pilot pose must distinguish the local first-person camera");
+        assertTrue(poseCode.contains("state.isInvisible = !isLocalFirstPersonPilot"),
+                "Megazord pilot body must stay hidden externally without suppressing first-person arms");
+        assertTrue(poseCode.contains("state.isInvisibleToPlayer = !isLocalFirstPersonPilot"),
+                "Megazord pilot must be fully hidden outside the local first-person camera");
     }
 
     @Test

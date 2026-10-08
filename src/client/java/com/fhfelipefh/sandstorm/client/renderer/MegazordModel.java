@@ -51,7 +51,7 @@ public class MegazordModel extends EntityModel<MegazordRenderState> {
                 PartPose.ZERO);
 
         body.addOrReplaceChild("leftThigh", CubeListBuilder.create()
-                .texOffs(18, 45).addBox(1.0f, -12.05f, -3.5f, 7.0f, 12.1f, 7.0f)
+                .texOffs(142, 45).addBox(1.0f, -12.05f, -3.5f, 7.0f, 12.1f, 7.0f)
                 .texOffs(172, 45).addBox(1.5f, -5.0f, -4.5f, 6.0f, 3.0f, 2.0f),
                 PartPose.ZERO);
 

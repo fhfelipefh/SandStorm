@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client.mixin;
 
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.world.entity.Avatar;
@@ -15,9 +16,11 @@ public abstract class MegazordPilotPoseMixin {
     @Inject(method = "extractRenderState", at = @At("TAIL"))
     private void useStandingPilotPose(Avatar avatar, AvatarRenderState state, float partialTick, CallbackInfo ci) {
         if (avatar instanceof Player player && player.getVehicle() instanceof MegazordEntity) {
+            boolean isLocalFirstPersonPilot = player == Minecraft.getInstance().player
+                    && Minecraft.getInstance().options.getCameraType().isFirstPerson();
             state.isPassenger = false;
-            state.isInvisible = true;
-            state.isInvisibleToPlayer = true;
+            state.isInvisible = !isLocalFirstPersonPilot;
+            state.isInvisibleToPlayer = !isLocalFirstPersonPilot;
         }
     }
 }

@@ -10,6 +10,7 @@ import com.fhfelipefh.sandstorm.content.command.SandstormPlantCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormTerraformerCommand;
 import com.fhfelipefh.sandstorm.content.command.SandstormWeatherCommand;
 import com.fhfelipefh.sandstorm.content.command.SandwormShowcaseCommand;
+import com.fhfelipefh.sandstorm.content.entity.MegazordPilotReachHandler;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.gui.QuantumTerminalMenu;
@@ -129,6 +130,7 @@ public class SandStormMod implements ModInitializer {
         DesertPredationHandler.initialize();
         SandstormWeatherHandler.initialize();
         SandStormEntities.initialize();
+        MegazordPilotReachHandler.initialize();
         SeismicSurvivalHandler.initialize();
         TechnologyToolRestrictionHandler.initialize();
         BedRestrictionHandler.initialize();
