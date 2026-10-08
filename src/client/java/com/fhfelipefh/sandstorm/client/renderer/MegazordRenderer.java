@@ -58,6 +58,9 @@ public class MegazordRenderer extends MobRenderer<MegazordEntity, MegazordRender
         state.hasSubmersibleModule = entity.hasSubmersibleModule();
         state.hasOverdriveModule = entity.hasOverdriveModule();
         state.isFlying = entity.hasFlightModule() && !entity.onGround();
+        Minecraft client = Minecraft.getInstance();
+        state.isFirstPersonPilot = client.options.getCameraType().isFirstPerson()
+                && client.player == entity.getControllingPassenger();
         Level lvl = entity.level();
         state.animationTicks = lvl != null ? (lvl.getGameTime() + partialTick) : partialTick;
     }

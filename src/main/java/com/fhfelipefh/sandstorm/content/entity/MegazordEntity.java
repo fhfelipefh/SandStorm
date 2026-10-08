@@ -185,7 +185,7 @@ public class MegazordEntity extends PathfinderMob {
 
     @Override
     protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale) {
-        return new Vec3(0.0, 3.85 * scale, 0.35 * scale);
+        return MegazordPilotProfile.passengerAttachment(scale);
     }
 
     @Override

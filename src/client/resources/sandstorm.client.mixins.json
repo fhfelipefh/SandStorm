@@ -10,7 +10,12 @@
 		"FlashlightLightMixin",
 		"CompassIonInterferenceMixin",
 		"SandStormWorldPresetSelectionMixin",
-		"FirstPersonSuitArmMixin"
+		"FirstPersonSuitArmMixin",
+		"MegazordCameraMixin",
+		"MegazordPilotPoseMixin",
+		"MegazordPickabilityMixin",
+		"MegazordBlockRaycastMixin",
+		"MegazordItemTransformMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

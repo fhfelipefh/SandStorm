@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -86,7 +87,7 @@ class VehicleUsabilityAndAdaptiveHudArchitectureTest {
         Method megazordMethod = MegazordEntity.class.getDeclaredMethod("getPassengerAttachmentPoint", Entity.class, EntityDimensions.class, float.class);
         megazordMethod.setAccessible(true);
         Vec3 megazordSeat = (Vec3) megazordMethod.invoke(megazord, null, null, 1.0f);
-        assertTrue(megazordSeat.y >= 3.5, "Megazord rider must be elevated to upper cockpit (Y >= 3.5)");
+        assertEquals(2.68, megazordSeat.y, 0.001, "Megazord rider must stand on the cockpit floor");
         assertTrue(megazordSeat.z > 0.0, "Megazord rider must face forward toward chest canopy (Z > 0)");
 
         ExcavatorVehicleEntity excavator = (ExcavatorVehicleEntity) unsafe.allocateInstance(ExcavatorVehicleEntity.class);

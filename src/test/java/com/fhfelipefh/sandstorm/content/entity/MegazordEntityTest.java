@@ -47,6 +47,15 @@ class MegazordEntityTest {
     }
 
     @Test
+    void shouldKeepPilotProfileCenteredAndInsideCockpit() {
+        Vec3 attachment = MegazordPilotProfile.passengerAttachment(1.0f);
+        assertEquals(0.0, attachment.x, 0.001);
+        assertEquals(MegazordPilotProfile.COCKPIT_FLOOR_Y, attachment.y, 0.001);
+        assertEquals(MegazordPilotProfile.COCKPIT_FORWARD_Z, attachment.z, 0.001);
+        assertEquals(MegazordPilotProfile.COCKPIT_FLOOR_Y * 1.5, MegazordPilotProfile.passengerAttachment(1.5f).y, 0.001);
+    }
+
+    @Test
     void shouldDefineStandardSpecifications() {
         assertEquals(100000L, MegazordEntity.DEFAULT_BATTERY_CAPACITY);
         assertEquals(250000L, MegazordEntity.OVERDRIVE_BATTERY_CAPACITY);
@@ -71,12 +80,12 @@ class MegazordEntityTest {
 
         Vec3 point = (Vec3) method.invoke(megazord, null, null, 1.0f);
         assertEquals(0.0, point.x, 0.001);
-        assertEquals(3.85, point.y, 0.001);
+        assertEquals(2.68, point.y, 0.001);
         assertEquals(0.35, point.z, 0.001);
 
         Vec3 scaledPoint = (Vec3) method.invoke(megazord, null, null, 1.5f);
         assertEquals(0.0, scaledPoint.x, 0.001);
-        assertEquals(5.775, scaledPoint.y, 0.001);
+        assertEquals(4.02, scaledPoint.y, 0.001);
         assertEquals(0.525, scaledPoint.z, 0.001);
     }
 }

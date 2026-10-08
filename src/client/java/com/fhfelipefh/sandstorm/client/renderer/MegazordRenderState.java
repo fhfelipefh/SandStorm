@@ -9,5 +9,6 @@ public class MegazordRenderState extends LivingEntityRenderState {
     public boolean hasSubmersibleModule;
     public boolean hasOverdriveModule;
     public boolean isFlying;
+    public boolean isFirstPersonPilot;
     public float animationTicks;
 }
