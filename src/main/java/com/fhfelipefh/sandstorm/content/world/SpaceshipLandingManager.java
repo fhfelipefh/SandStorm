@@ -14,6 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.FurnaceBlock;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -82,6 +83,10 @@ public class SpaceshipLandingManager {
             placeSpaceshipCrashSite(server, level, data);
         } else {
             cachedCabinSpawnPos = data.getCabinPos();
+            if (data.getDesignVersion() < 3) {
+                buildExpandedSpaceship(level, cachedCabinSpawnPos);
+                data.setDesignVersion(3);
+            }
             if (!SpawnSafety.isSafePosition(level, cachedCabinSpawnPos)) {
                 carveCabinInterior(level, cachedCabinSpawnPos);
             }
@@ -107,8 +112,8 @@ public class SpaceshipLandingManager {
     }
 
     private static void placeSpaceshipCrashSite(MinecraftServer server, ServerLevel level, SpaceshipSavedData data) {
-        for (int cx = -1; cx <= 1; cx++) {
-            for (int cz = -1; cz <= 1; cz++) {
+        for (int cx = -3; cx <= 3; cx++) {
+            for (int cz = -3; cz <= 3; cz++) {
                 level.getChunk(cx, cz);
             }
         }
@@ -175,9 +180,165 @@ public class SpaceshipLandingManager {
         level.setRespawnData(LevelData.RespawnData.of(Level.OVERWORLD, cabinSpawn, 0.0f, 0.0f));
         data.setCabinPos(cabinSpawn.getX(), cabinSpawn.getY(), cabinSpawn.getZ());
         data.setPlaced(true);
+        buildExpandedSpaceship(level, cabinSpawn);
+        data.setDesignVersion(3);
         level.getDataStorage().set(SpaceshipSavedData.TYPE, data);
         cachedCabinSpawnPos = cabinSpawn;
         SandStormMod.LOGGER.info("SandStorm: Crashed spaceship placed safely with 4x4 blast door at {}", cachedCabinSpawnPos);
+    }
+
+    private static void buildExpandedSpaceship(ServerLevel level, BlockPos cabinSpawn) {
+        clearPreviousShip(level, cabinSpawn);
+        BlockState hull = Blocks.POLISHED_DEEPSLATE.defaultBlockState();
+        BlockState darkHull = Blocks.POLISHED_BASALT.defaultBlockState();
+        BlockState metal = Blocks.IRON_BLOCK.defaultBlockState();
+        BlockState accent = Blocks.PRISMARINE.defaultBlockState();
+        BlockState glass = Blocks.TINTED_GLASS.defaultBlockState();
+        BlockState light = Blocks.SEA_LANTERN.defaultBlockState();
+
+        for (int z = -30; z <= 30; z++) {
+            int halfWidth = fuselageHalfWidth(z);
+            for (int x = -halfWidth; x <= halfWidth; x++) {
+                for (int y = 0; y <= 10; y++) {
+                    BlockPos pos = cabinSpawn.offset(x, y, z);
+                    if (isOriginalCabin(pos, cabinSpawn)) {
+                        continue;
+                    }
+                    boolean shell = Math.abs(x) == halfWidth || y == 0 || y == 10;
+                    level.setBlock(pos, shell ? hull : Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+            for (int x = -halfWidth + 1; x < halfWidth; x++) {
+                placeIfOutsideOriginalCabin(level, cabinSpawn.offset(x, 1, z), metal, cabinSpawn);
+                if (z % 5 == 0) {
+                    placeIfOutsideOriginalCabin(level, cabinSpawn.offset(x, 9, z), darkHull, cabinSpawn);
+                }
+            }
+        }
+
+        for (int z = -20; z <= 18; z++) {
+            int span = wingSpan(z);
+            for (int x = 10; x <= span; x++) {
+                int wingY = 2 + Math.max(0, (z - 3) / 8);
+                placeIfOutsideOriginalCabin(level, cabinSpawn.offset(x, wingY, z), darkHull, cabinSpawn);
+                placeIfOutsideOriginalCabin(level, cabinSpawn.offset(-x, wingY, z), darkHull, cabinSpawn);
+                if (x == 10 || x == span) {
+                    placeIfOutsideOriginalCabin(level, cabinSpawn.offset(x, wingY + 1, z), accent, cabinSpawn);
+                    placeIfOutsideOriginalCabin(level, cabinSpawn.offset(-x, wingY + 1, z), accent, cabinSpawn);
+                }
+            }
+        }
+
+        for (int z = 12; z <= 27; z++) {
+            int finHeight = Math.max(2, 14 - (z - 12) / 2);
+            for (int y = 10; y <= finHeight; y++) {
+                placeIfOutsideOriginalCabin(level, cabinSpawn.offset(0, y, z), darkHull, cabinSpawn);
+                placeIfOutsideOriginalCabin(level, cabinSpawn.offset(-1, y, z), hull, cabinSpawn);
+                placeIfOutsideOriginalCabin(level, cabinSpawn.offset(1, y, z), hull, cabinSpawn);
+            }
+        }
+
+        for (int z = -20; z <= -12; z++) {
+            int halfWidth = fuselageHalfWidth(z);
+            for (int x = -halfWidth + 1; x < halfWidth; x++) {
+                if (Math.abs(x) <= halfWidth - 2) {
+                    placeIfOutsideOriginalCabin(level, cabinSpawn.offset(x, 6, z), glass, cabinSpawn);
+                }
+            }
+        }
+
+        for (int z = -18; z <= 22; z += 8) {
+            int halfWidth = fuselageHalfWidth(z);
+            placeIfOutsideOriginalCabin(level, cabinSpawn.offset(-halfWidth, 4, z), accent, cabinSpawn);
+            placeIfOutsideOriginalCabin(level, cabinSpawn.offset(halfWidth, 4, z), accent, cabinSpawn);
+            placeIfOutsideOriginalCabin(level, cabinSpawn.offset(0, 9, z), light, cabinSpawn);
+        }
+
+        for (int z = 25; z <= 34; z++) {
+            for (int x : new int[]{-7, -4, 4, 7}) {
+                placeIfOutsideOriginalCabin(level, cabinSpawn.offset(x, 3, z), darkHull, cabinSpawn);
+                placeIfOutsideOriginalCabin(level, cabinSpawn.offset(x, 4, z), Blocks.CRYING_OBSIDIAN.defaultBlockState(), cabinSpawn);
+                placeIfOutsideOriginalCabin(level, cabinSpawn.offset(x, 5, z), accent, cabinSpawn);
+            }
+        }
+
+        for (int z = -16; z <= -4; z++) {
+            for (int x = -2; x <= 2; x++) {
+                level.setBlock(cabinSpawn.offset(x, 0, z), Blocks.AIR.defaultBlockState(), 3);
+                level.setBlock(cabinSpawn.offset(x, 1, z), Blocks.AIR.defaultBlockState(), 3);
+                level.setBlock(cabinSpawn.offset(x, 2, z), Blocks.AIR.defaultBlockState(), 3);
+                level.setBlock(cabinSpawn.offset(x, -1, z), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
+            }
+        }
+        for (int z = -28; z <= -17; z++) {
+            for (int x = -2; x <= 2; x++) {
+                level.setBlock(cabinSpawn.offset(x, 0, z), Blocks.AIR.defaultBlockState(), 3);
+                level.setBlock(cabinSpawn.offset(x, 1, z), Blocks.AIR.defaultBlockState(), 3);
+                level.setBlock(cabinSpawn.offset(x, 2, z), Blocks.AIR.defaultBlockState(), 3);
+                level.setBlock(cabinSpawn.offset(x, -1, z), Blocks.SMOOTH_STONE_SLAB.defaultBlockState(), 3);
+            }
+        }
+        for (int z = -26; z <= -16; z++) {
+            placeIfOutsideOriginalCabin(level, cabinSpawn.offset(-3, 1, z), accent, cabinSpawn);
+            placeIfOutsideOriginalCabin(level, cabinSpawn.offset(3, 1, z), accent, cabinSpawn);
+        }
+    }
+
+    private static int fuselageHalfWidth(int z) {
+        int distance = Math.abs(z + 1);
+        if (distance >= 27) {
+            return 2;
+        }
+        if (distance >= 20) {
+            return 4;
+        }
+        if (distance >= 12) {
+            return 6;
+        }
+        return 8;
+    }
+
+    private static int wingSpan(int z) {
+        if (z < -10) {
+            return 10;
+        }
+        if (z < 6) {
+            return 10 + (z + 10);
+        }
+        return Math.max(10, 26 - (z - 6));
+    }
+
+    private static void clearPreviousShip(ServerLevel level, BlockPos cabinSpawn) {
+        for (int x = -28; x <= 28; x++) {
+            for (int y = 0; y <= 18; y++) {
+                for (int z = -34; z <= 38; z++) {
+                    BlockPos pos = cabinSpawn.offset(x, y, z);
+                    if (!isOriginalCabin(pos, cabinSpawn) && isPreviousShipBlock(level.getBlockState(pos))) {
+                        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean isPreviousShipBlock(BlockState state) {
+        return state.is(Blocks.POLISHED_DEEPSLATE) || state.is(Blocks.POLISHED_BASALT)
+                || state.is(Blocks.IRON_BLOCK) || state.is(Blocks.TINTED_GLASS)
+                || state.is(Blocks.CRYING_OBSIDIAN) || state.is(Blocks.PRISMARINE)
+                || state.is(Blocks.SEA_LANTERN);
+    }
+
+    private static boolean isOriginalCabin(BlockPos pos, BlockPos cabinSpawn) {
+        return pos.getX() >= cabinSpawn.getX() - 7 && pos.getX() <= cabinSpawn.getX() + 7
+                && pos.getZ() >= cabinSpawn.getZ() - 8 && pos.getZ() <= cabinSpawn.getZ() + 12
+                && pos.getY() <= cabinSpawn.getY() + 6;
+    }
+
+    private static void placeIfOutsideOriginalCabin(ServerLevel level, BlockPos pos, BlockState state,
+                                                     BlockPos cabinSpawn) {
+        if (!isOriginalCabin(pos, cabinSpawn)) {
+            level.setBlock(pos, state, 3);
+        }
     }
 
     public static void carveCabinInterior(ServerLevel level, BlockPos cabinSpawn) {
@@ -265,6 +426,12 @@ public class SpaceshipLandingManager {
                 }
             }
         }
+    }
+
+    public static boolean isNearSpaceship(BlockPos pos) {
+        int dx = pos.getX() - cachedCabinSpawnPos.getX();
+        int dz = pos.getZ() - cachedCabinSpawnPos.getZ();
+        return dx * dx + dz * dz <= 192 * 192;
     }
 
     public static BlockPos getCabinSpawnPos() {

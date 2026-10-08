@@ -1,7 +1,7 @@
 package com.fhfelipefh.sandstorm.content.world;
 
 import com.fhfelipefh.sandstorm.content.world.structure.AbandonedOutpostGenerator;
-import com.fhfelipefh.sandstorm.content.world.structure.ColossalCastleGenerator;
+
 import com.fhfelipefh.sandstorm.content.world.structure.FuelSiloGenerator;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -20,7 +20,6 @@ public class ProceduralRuinsManager {
 
     public static final int OUTPOST_RARITY = 180;
     public static final int FUEL_SILO_RARITY = 150;
-    public static final int CASTLE_RARITY = 500;
 
     private record PendingRuin(ServerLevel level, BlockPos origin, int surfaceY, int ruinType) {}
     private static final Queue<PendingRuin> PENDING_RUINS = new ConcurrentLinkedQueue<>();
@@ -43,7 +42,7 @@ public class ProceduralRuinsManager {
             data.markChunkProcessed(chunkKey);
 
             BlockPos samplePos = pos.getBlockAt(8, 64, 8);
-            if (!level.getBiome(samplePos).is(Biomes.DESERT)) {
+            if (!level.getBiome(samplePos).is(Biomes.DESERT) || SpaceshipLandingManager.isNearSpaceship(samplePos)) {
                 return;
             }
 
@@ -52,14 +51,7 @@ public class ProceduralRuinsManager {
             long roll = Math.abs(hash);
 
             int surfaceY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, 8, 8);
-            if (roll % CASTLE_RARITY == 0 && surfaceY >= 70) {
-                if (surfaceY > level.getMinY() + 20) {
-                    BlockPos origin = new BlockPos(samplePos.getX(), surfaceY, samplePos.getZ());
-                    level.getServer().execute(() -> {
-                        PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 2));
-                    });
-                }
-            } else if (roll % OUTPOST_RARITY == 0 && surfaceY >= 72) {
+            if (roll % OUTPOST_RARITY == 0 && surfaceY >= 72) {
                 if (surfaceY > level.getMinY() + 15) {
                     BlockPos origin = new BlockPos(samplePos.getX(), surfaceY, samplePos.getZ());
                     level.getServer().execute(() -> {
@@ -90,8 +82,6 @@ public class ProceduralRuinsManager {
                     processed++;
                     if (ruin.ruinType() == 1) {
                         AbandonedOutpostGenerator.generate(ruin.level(), ruin.origin());
-                    } else if (ruin.ruinType() == 2) {
-                        ColossalCastleGenerator.generate(ruin.level(), ruin.origin());
                     } else {
                         FuelSiloGenerator.generate(ruin.level(), ruin.origin(), ruin.surfaceY());
                     }
@@ -112,9 +102,6 @@ public class ProceduralRuinsManager {
         return FuelSiloGenerator.generate(level, origin, surfaceY);
     }
 
-    public static boolean generateCastleAt(ServerLevel level, BlockPos origin) {
-        return ColossalCastleGenerator.generate(level, origin) > 0;
-    }
 
     public static long hash64(long k) {
         k ^= k >>> 33;

@@ -14,7 +14,8 @@ public class SpaceshipSavedData extends SavedData {
             Codec.BOOL.optionalFieldOf("placed", false).forGetter(SpaceshipSavedData::isPlaced),
             Codec.INT.optionalFieldOf("cabin_x", 0).forGetter(SpaceshipSavedData::getCabinX),
             Codec.INT.optionalFieldOf("cabin_y", 64).forGetter(SpaceshipSavedData::getCabinY),
-            Codec.INT.optionalFieldOf("cabin_z", 0).forGetter(SpaceshipSavedData::getCabinZ)
+            Codec.INT.optionalFieldOf("cabin_z", 0).forGetter(SpaceshipSavedData::getCabinZ),
+            Codec.INT.optionalFieldOf("design_version", 0).forGetter(SpaceshipSavedData::getDesignVersion)
     ).apply(instance, SpaceshipSavedData::new));
 
     public static final SavedDataType<SpaceshipSavedData> TYPE = new SavedDataType<>(
@@ -28,16 +29,22 @@ public class SpaceshipSavedData extends SavedData {
     private int cabinX;
     private int cabinY;
     private int cabinZ;
+    private int designVersion;
 
     public SpaceshipSavedData() {
-        this(false, 0, 64, 0);
+        this(false, 0, 64, 0, 0);
     }
 
     public SpaceshipSavedData(boolean placed, int cabinX, int cabinY, int cabinZ) {
+        this(placed, cabinX, cabinY, cabinZ, 0);
+    }
+
+    public SpaceshipSavedData(boolean placed, int cabinX, int cabinY, int cabinZ, int designVersion) {
         this.placed = placed;
         this.cabinX = cabinX;
         this.cabinY = cabinY;
         this.cabinZ = cabinZ;
+        this.designVersion = designVersion;
     }
 
     public boolean isPlaced() {
@@ -59,6 +66,15 @@ public class SpaceshipSavedData extends SavedData {
 
     public int getCabinZ() {
         return cabinZ;
+    }
+
+    public int getDesignVersion() {
+        return designVersion;
+    }
+
+    public void setDesignVersion(int designVersion) {
+        this.designVersion = Math.max(0, designVersion);
+        setDirty();
     }
 
     public BlockPos getCabinPos() {
