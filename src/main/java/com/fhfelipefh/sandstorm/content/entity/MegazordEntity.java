@@ -56,6 +56,7 @@ public class MegazordEntity extends PathfinderMob {
 
     public MegazordEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
+        setPersistenceRequired();
         energyStorage.setStoredEnergy(DEFAULT_BATTERY_CAPACITY);
     }
 
