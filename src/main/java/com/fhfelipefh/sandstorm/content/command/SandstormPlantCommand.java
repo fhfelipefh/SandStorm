@@ -122,7 +122,7 @@ public class SandstormPlantCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("plant_field")
+        dispatcher.register(Commands.literal("sandstorm_plant_field")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeRows(ctx, 7, null))
                 .then(Commands.argument("length", IntegerArgumentType.integer(2, 32))
@@ -133,7 +133,7 @@ public class SandstormPlantCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("plantar")
+        dispatcher.register(Commands.literal("sandstorm_plantar")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeLine(ctx, 4, null))
                 .then(Commands.argument("count", IntegerArgumentType.integer(1, 32))

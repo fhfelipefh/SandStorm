@@ -20,7 +20,7 @@ public class SandstormClaimCommand {
     }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("claim")
+        dispatcher.register(Commands.literal("sandstorm_claim")
                 .executes(SandstormClaimCommand::claimAll)
                 .then(Commands.literal("all")
                         .executes(SandstormClaimCommand::claimAll)
@@ -36,7 +36,7 @@ public class SandstormClaimCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("resgatar")
+        dispatcher.register(Commands.literal("sandstorm_resgatar")
                 .executes(SandstormClaimCommand::claimAll)
                 .then(Commands.literal("tudo")
                         .executes(SandstormClaimCommand::claimAll)

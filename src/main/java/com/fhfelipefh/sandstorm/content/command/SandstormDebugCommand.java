@@ -143,7 +143,7 @@ public class SandstormDebugCommand {
     }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("megazord_collection")
+        dispatcher.register(Commands.literal("sandstorm_megazord_collection")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(SandstormDebugCommand::executeMegazordCollection)
         );

@@ -138,7 +138,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_structure")
+        dispatcher.register(Commands.literal("sandstorm_build_structure")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.argument("structure", StringArgumentType.word())
                         .suggests((ctx, builder) -> suggestStructures(builder))
@@ -171,7 +171,7 @@ public class SandstormBuildCommand {
     }
 
     private static void registerDirectShortcuts(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("build_colony")
+        dispatcher.register(Commands.literal("sandstorm_build_colony")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "colony_outpost", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -179,7 +179,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_defense")
+        dispatcher.register(Commands.literal("sandstorm_build_defense")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "defense_perimeter", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -187,7 +187,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_greenhouse")
+        dispatcher.register(Commands.literal("sandstorm_build_greenhouse")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "hydroponics_greenhouse", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -195,7 +195,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_mining")
+        dispatcher.register(Commands.literal("sandstorm_build_mining")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "mining_complex", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -203,7 +203,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_energy")
+        dispatcher.register(Commands.literal("sandstorm_build_energy")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "energy_grid", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -211,7 +211,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_ruins")
+        dispatcher.register(Commands.literal("sandstorm_build_ruins")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "ruins_laboratory", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -219,7 +219,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_dome")
+        dispatcher.register(Commands.literal("sandstorm_build_dome")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "biosphere_dome", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -227,7 +227,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_citadel")
+        dispatcher.register(Commands.literal("sandstorm_build_citadel")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "planetary_citadel", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -235,7 +235,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_silo")
+        dispatcher.register(Commands.literal("sandstorm_build_silo")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "orbital_launch_silo", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -243,7 +243,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_pyramid")
+        dispatcher.register(Commands.literal("sandstorm_build_pyramid")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "desert_tech_pyramid", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -251,7 +251,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_castle")
+        dispatcher.register(Commands.literal("sandstorm_build_castle")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "colossal_castle", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -259,7 +259,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_colossal_castle")
+        dispatcher.register(Commands.literal("sandstorm_build_colossal_castle")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "colossal_castle", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
@@ -267,7 +267,7 @@ public class SandstormBuildCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("build_castelo")
+        dispatcher.register(Commands.literal("sandstorm_build_castelo")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "colossal_castle", null))
                 .then(Commands.argument("pos", BlockPosArgument.blockPos())

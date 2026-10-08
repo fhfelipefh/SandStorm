@@ -122,6 +122,15 @@ class MegazordUsabilityAndControlArchitectureTest {
     }
 
     @Test
+    void megazordMustBePersistentAcrossWorldUnloads() throws IOException {
+        String code = Files.readString(Path.of(
+                "src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity", "MegazordEntity.java"
+        ));
+        assertTrue(code.contains("setPersistenceRequired()"),
+                "Megazords must be marked persistent so world unloads do not remove them");
+    }
+
+    @Test
     void megazordAttributesMustDefineStepHeightForSmoothMobility() {
         AttributeSupplier.Builder builder = MegazordEntity.createAttributes();
         assertNotNull(builder);
@@ -246,6 +255,10 @@ class MegazordUsabilityAndControlArchitectureTest {
         assertTrue(Files.exists(CLIENT_JAVA), "SandStormClient.java must exist");
         String clientCode = Files.readString(CLIENT_JAVA);
         assertTrue(clientCode.contains("MachineCockpitHudOverlay.initialize()"), "SandStormClient must initialize cockpit HUD");
+        String hudCode = Files.readString(MACHINE_HUD_JAVA);
+        assertFalse(hudCode.contains("MEGAZORD"), "Megazord HUD must not repeat the vehicle name");
+        assertFalse(hudCode.contains("TERRESTRE"), "Megazord HUD must not state the ground movement type");
+        assertFalse(hudCode.contains("VTOL"), "Megazord HUD must not state the movement type");
     }
 
     @Test
@@ -303,6 +316,8 @@ class MegazordUsabilityAndControlArchitectureTest {
         assertTrue(modelCode.contains(".texOffs(172, 45).addBox(1.5f, -5.0f, -4.5f, 6.0f, 3.0f, 2.0f)"), "Left thigh must use the mirrored knee plate texture");
         assertTrue(modelCode.contains(".texOffs(172, 45).addBox(-7.5f, -5.0f, -4.5f, 6.0f, 3.0f, 2.0f)"), "Right thigh must have a front knee plate");
         assertTrue(modelCode.contains(".texOffs(172, 45).addBox(-3.0f, 7.0f, -4.5f, 6.0f, 3.0f, 2.0f)"), "Left lower leg must use the mirrored knee plate texture");
+        assertTrue(modelCode.contains(".texOffs(18, 45).addBox(-3.5f, 6.5f, -3.5f, 7.0f, 5.0f, 7.0f)"), "Left knee must overlap the upper and lower leg armor");
+        assertTrue(modelCode.contains(".texOffs(142, 45).addBox(-3.5f, 6.5f, -3.5f, 7.0f, 5.0f, 7.0f)"), "Right knee must overlap the upper and lower leg armor");
         assertTrue(modelCode.contains("14.0f, 2.0f, 12.0f"), "Flight wings must be horizontal side panels with an aircraft wing chord");
         assertTrue(modelCode.contains("this.flightWings.xRot = 0.0f"), "Flight wings must remain level on the ground and in level flight");
     }

@@ -20,7 +20,7 @@ public class SandwormShowcaseCommand {
     }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("sandworm_showcase")
+        dispatcher.register(Commands.literal("sandstorm_sandworm_showcase")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> execute(ctx, 2))
                 .then(Commands.argument("size", IntegerArgumentType.integer(1, 4))

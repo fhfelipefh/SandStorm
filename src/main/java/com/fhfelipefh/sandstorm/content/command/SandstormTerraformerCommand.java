@@ -57,7 +57,7 @@ public class SandstormTerraformerCommand {
                 )
         );
 
-        dispatcher.register(Commands.literal("terraformer")
+        dispatcher.register(Commands.literal("sandstorm_terraformer")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("tier1")
                         .executes(ctx -> executeTier(ctx, 1, false))

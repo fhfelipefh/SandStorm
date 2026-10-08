@@ -76,7 +76,6 @@ public class MachineCockpitHudOverlay implements HudElement {
 
         extractor.pose().pushMatrix();
         extractor.pose().scale(scale, scale);
-        boolean overdrive = megazord.hasOverdriveModule();
         int healthColor;
         float health = megazord.getHealth();
         float maxHealth = megazord.getMaxHealth();
@@ -85,17 +84,14 @@ public class MachineCockpitHudOverlay implements HudElement {
         long energy = megazord.getEnergyStorage().getStoredEnergy();
         long capacity = megazord.getEnergyStorage().getCapacity();
         float energyPct = capacity > 0 ? Math.clamp((float) energy / (float) capacity, 0.0f, 1.0f) : 0.0f;
-        int energyColor = overdrive ? 0xFFFF1744 : 0xFF00E5FF;
+        int energyColor = megazord.hasOverdriveModule() ? 0xFFFF1744 : 0xFF00E5FF;
 
-        extractor.text(client.font, Component.literal("\u00A76MEGAZORD"), x, y, 0xFFFFFFFF);
-        extractor.text(client.font, Component.literal(String.format(Locale.ROOT, "HP %.0f%%", healthPct * 100.0f)), x, y + 11, healthColor);
-        extractor.text(client.font, Component.literal(String.format(Locale.ROOT, overdrive ? "OVERDRIVE" : "PWR %.0f%%", energyPct * 100.0f)), x + 70, y + 11, energyColor);
-        extractor.fill(x, y + 21, x + barW, y + 23, 0x66444444);
-        extractor.fill(x, y + 21, x + (int) (barW * healthPct), y + 23, healthColor);
-        extractor.fill(x + 70, y + 21, x + 70 + barW, y + 23, 0x66444444);
-        extractor.fill(x + 70, y + 21, x + 70 + (int) (barW * energyPct), y + 23, energyColor);
-        String movementStatus = megazord.hasFlightModule() && !megazord.onGround() ? "\u00A7bVTOL" : "\u00A77TERRESTRE";
-        extractor.text(client.font, Component.literal(movementStatus), x, y + 27, 0xFFFFFFFF);
+        extractor.text(client.font, Component.literal(String.format(Locale.ROOT, "HP %.0f%%", healthPct * 100.0f)), x, y, healthColor);
+        extractor.text(client.font, Component.literal(String.format(Locale.ROOT, "PWR %.0f%%", energyPct * 100.0f)), x + 70, y, energyColor);
+        extractor.fill(x, y + 10, x + barW, y + 12, 0x66444444);
+        extractor.fill(x, y + 10, x + (int) (barW * healthPct), y + 12, healthColor);
+        extractor.fill(x + 70, y + 10, x + 70 + barW, y + 12, 0x66444444);
+        extractor.fill(x + 70, y + 10, x + 70 + (int) (barW * energyPct), y + 12, energyColor);
         extractor.pose().popMatrix();
     }
 }

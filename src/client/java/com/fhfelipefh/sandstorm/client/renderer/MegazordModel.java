@@ -101,6 +101,7 @@ public class MegazordModel extends EntityModel<MegazordRenderState> {
 
         root.addOrReplaceChild("leftLeg", CubeListBuilder.create()
                 .texOffs(18, 45).addBox(-3.5f, 0.0f, -3.5f, 7.0f, 8.0f, 7.0f)
+                .texOffs(18, 45).addBox(-3.5f, 6.5f, -3.5f, 7.0f, 5.0f, 7.0f)
                 .texOffs(172, 45).addBox(-3.0f, 7.0f, -4.5f, 6.0f, 3.0f, 2.0f)
                 .texOffs(66, 45).addBox(-4.0f, 8.0f, -4.0f, 8.0f, 8.0f, 8.0f)
                 .texOffs(100, 45).addBox(-4.5f, 15.0f, -6.5f, 9.0f, 3.0f, 11.0f),
@@ -108,6 +109,7 @@ public class MegazordModel extends EntityModel<MegazordRenderState> {
 
         root.addOrReplaceChild("rightLeg", CubeListBuilder.create()
                 .texOffs(142, 45).addBox(-3.5f, 0.0f, -3.5f, 7.0f, 8.0f, 7.0f)
+                .texOffs(142, 45).addBox(-3.5f, 6.5f, -3.5f, 7.0f, 5.0f, 7.0f)
                 .texOffs(172, 45).addBox(-3.0f, 7.0f, -4.5f, 6.0f, 3.0f, 2.0f)
                 .texOffs(190, 45).addBox(-4.0f, 8.0f, -4.0f, 8.0f, 8.0f, 8.0f)
                 .texOffs(0, 63).addBox(-4.5f, 15.0f, -6.5f, 9.0f, 3.0f, 11.0f),
