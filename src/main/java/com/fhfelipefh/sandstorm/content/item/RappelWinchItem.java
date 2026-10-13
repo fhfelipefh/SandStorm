@@ -21,9 +21,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.function.Consumer;
 
 public class RappelWinchItem extends Item {
+    private final boolean glowing;
 
     public RappelWinchItem(Item.Properties properties) {
+        this(properties, false);
+    }
+
+    public RappelWinchItem(Item.Properties properties, boolean glowing) {
         super(properties);
+        this.glowing = glowing;
+    }
+
+    public boolean isGlowing() {
+        return this.glowing;
     }
 
     @Override
@@ -47,7 +57,8 @@ public class RappelWinchItem extends Item {
 
         if (!level.isClientSide()) {
             Direction facing = face.getAxis().isHorizontal() ? face : (player != null ? player.getDirection().getOpposite() : Direction.NORTH);
-            BlockState anchorState = SandStormBlocks.RAPPEL_ANCHOR.defaultBlockState()
+            BlockState anchorState = (this.glowing ? SandStormBlocks.GLOWING_RAPPEL_ANCHOR : SandStormBlocks.RAPPEL_ANCHOR)
+                    .defaultBlockState()
                     .setValue(RappelAnchorBlock.FACING, facing);
             level.setBlock(placePos, anchorState, 3);
 
@@ -69,7 +80,11 @@ public class RappelWinchItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
         super.appendHoverText(stack, context, display, tooltipAdder, flag);
-        tooltipAdder.accept(Component.translatable("tooltip.sandstorm.rappel_winch_desc"));
+        if (this.glowing) {
+            tooltipAdder.accept(Component.translatable("tooltip.sandstorm.glowing_rappel_winch_desc"));
+        } else {
+            tooltipAdder.accept(Component.translatable("tooltip.sandstorm.rappel_winch_desc"));
+        }
         tooltipAdder.accept(Component.translatable("tooltip.sandstorm.rappel_winch_usage"));
     }
 }

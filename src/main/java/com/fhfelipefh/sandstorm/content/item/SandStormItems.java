@@ -176,7 +176,9 @@ public class SandStormItems {
     public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_MAGNETIC = register("biosphere_cartridge_magnetic", new BiosphereCartridgeItem(BiosphereType.MAGNETIC_FOREST, properties("biosphere_cartridge_magnetic").rarity(Rarity.RARE)));
     public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_OASIS = register("biosphere_cartridge_oasis", new BiosphereCartridgeItem(BiosphereType.PRIMORDIAL_OASIS, properties("biosphere_cartridge_oasis").rarity(Rarity.EPIC)));
     public static final Item SYNTHETIC_FIBER = register("synthetic_fiber", new Item(properties("synthetic_fiber")));
+    public static final Item FIBERGLASS = register("fiberglass", new Item(properties("fiberglass")));
     public static final RappelWinchItem RAPPEL_WINCH = register("rappel_winch", new RappelWinchItem(properties("rappel_winch").stacksTo(1)));
+    public static final RappelWinchItem GLOWING_RAPPEL_WINCH = register("glowing_rappel_winch", new RappelWinchItem(properties("glowing_rappel_winch").stacksTo(1), true));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -187,9 +189,13 @@ public class SandStormItems {
                     .displayItems((context, entries) -> {
                         entries.accept(SURVIVAL_DATAPAD);
                         entries.accept(SYNTHETIC_FIBER);
+                        entries.accept(FIBERGLASS);
                         entries.accept(RAPPEL_WINCH);
+                        entries.accept(GLOWING_RAPPEL_WINCH);
                         entries.accept(SandStormBlocks.RAPPEL_ANCHOR);
+                        entries.accept(SandStormBlocks.GLOWING_RAPPEL_ANCHOR);
                         entries.accept(SandStormBlocks.RAPPEL_ROPE);
+                        entries.accept(SandStormBlocks.GLOWING_RAPPEL_ROPE);
                         entries.accept(SPACE_RATION);
                         entries.accept(SPACE_SUIT_HELMET);
                         entries.accept(SPACE_SUIT_CHESTPLATE);
@@ -426,6 +432,9 @@ public class SandStormItems {
                         entries.accept(BIOSPHERE_CARTRIDGE_OASIS);
                         entries.accept(SandStormBlocks.CRYOGENIC_ATMOSPHERIC_CHILLER);
                         entries.accept(SandStormBlocks.AMNIOTIC_INCUBATOR);
+                        entries.accept(SandStormBlocks.IRRIGATION_PUMP);
+                        entries.accept(SandStormBlocks.IRRIGATION_HOSE);
+                        entries.accept(SandStormBlocks.IRRIGATION_SPRINKLER);
                     })
                     .build()
     );

@@ -24,16 +24,24 @@ class RappelSystemArchitectureTest {
         String client = Files.readString(CLIENT_JAVA);
 
         assertTrue(items.contains("SYNTHETIC_FIBER"), "SYNTHETIC_FIBER must be registered");
+        assertTrue(items.contains("FIBERGLASS"), "FIBERGLASS must be registered");
         assertTrue(items.contains("RAPPEL_WINCH"), "RAPPEL_WINCH must be registered");
+        assertTrue(items.contains("GLOWING_RAPPEL_WINCH"), "GLOWING_RAPPEL_WINCH must be registered");
         assertTrue(blocks.contains("RAPPEL_ANCHOR"), "RAPPEL_ANCHOR must be registered");
+        assertTrue(blocks.contains("GLOWING_RAPPEL_ANCHOR"), "GLOWING_RAPPEL_ANCHOR must be registered");
         assertTrue(blocks.contains("RAPPEL_ROPE"), "RAPPEL_ROPE must be registered");
+        assertTrue(blocks.contains("GLOWING_RAPPEL_ROPE"), "GLOWING_RAPPEL_ROPE must be registered");
         assertTrue(blocks.contains("RAPPEL_ANCHOR_BE"), "RAPPEL_ANCHOR_BE must be registered");
         assertTrue(entities.contains("RAPPEL_HARNESS"), "RAPPEL_HARNESS must be registered");
 
         assertTrue(items.contains("entries.accept(SYNTHETIC_FIBER);"), "SYNTHETIC_FIBER must be in creative tab");
+        assertTrue(items.contains("entries.accept(FIBERGLASS);"), "FIBERGLASS must be in creative tab");
         assertTrue(items.contains("entries.accept(RAPPEL_WINCH);"), "RAPPEL_WINCH must be in creative tab");
+        assertTrue(items.contains("entries.accept(GLOWING_RAPPEL_WINCH);"), "GLOWING_RAPPEL_WINCH must be in creative tab");
         assertTrue(items.contains("entries.accept(SandStormBlocks.RAPPEL_ANCHOR);"), "RAPPEL_ANCHOR must be in creative tab");
+        assertTrue(items.contains("entries.accept(SandStormBlocks.GLOWING_RAPPEL_ANCHOR);"), "GLOWING_RAPPEL_ANCHOR must be in creative tab");
         assertTrue(items.contains("entries.accept(SandStormBlocks.RAPPEL_ROPE);"), "RAPPEL_ROPE must be in creative tab");
+        assertTrue(items.contains("entries.accept(SandStormBlocks.GLOWING_RAPPEL_ROPE);"), "GLOWING_RAPPEL_ROPE must be in creative tab");
 
         assertTrue(client.contains("RappelAnchorBlockEntityRenderer"), "RappelAnchorBlockEntityRenderer must be registered");
         assertTrue(client.contains("RappelHarnessRenderer"), "RappelHarnessRenderer must be registered");
@@ -43,23 +51,40 @@ class RappelSystemArchitectureTest {
     void rappelAssetsAndTexturesMustPhysicallyExist() {
         List<Path> requiredFiles = List.of(
                 Path.of("src", "main", "resources", "assets", "sandstorm", "items", "synthetic_fiber.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "items", "fiberglass.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "items", "rappel_winch.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "items", "glowing_rappel_winch.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "items", "rappel_anchor.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "items", "glowing_rappel_anchor.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "items", "rappel_rope.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "items", "glowing_rappel_rope.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item", "synthetic_fiber.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item", "fiberglass.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item", "rappel_winch.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item", "glowing_rappel_winch.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item", "rappel_anchor.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item", "glowing_rappel_anchor.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item", "rappel_rope.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item", "glowing_rappel_rope.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "models", "block", "rappel_anchor.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "models", "block", "glowing_rappel_anchor.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "models", "block", "rappel_rope.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "models", "block", "glowing_rappel_rope.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "blockstates", "rappel_anchor.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "blockstates", "glowing_rappel_anchor.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "blockstates", "rappel_rope.json"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "blockstates", "glowing_rappel_rope.json"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "item", "synthetic_fiber.png"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "item", "fiberglass.png"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "item", "rappel_winch.png"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "item", "glowing_rappel_winch.png"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "block", "rappel_anchor.png"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "block", "glowing_rappel_anchor.png"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "block", "rappel_rope.png"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "block", "glowing_rappel_rope.png"),
                 Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "entity", "rappel_harness", "rappel_harness.png"),
-                Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "entity", "rappel_anchor", "rappel_anchor_mechanism.png")
+                Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "entity", "rappel_anchor", "rappel_anchor_mechanism.png"),
+                Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "entity", "rappel_anchor", "glowing_rappel_anchor_mechanism.png")
         );
 
         for (Path file : requiredFiles) {
@@ -74,7 +99,11 @@ class RappelSystemArchitectureTest {
                 Path.of("src", "main", "resources", "data", "sandstorm", "recipe", "synthetic_fiber_from_string.json"),
                 Path.of("src", "main", "resources", "data", "sandstorm", "recipe", "synthetic_fiber_from_ancient_reed.json"),
                 Path.of("src", "main", "resources", "data", "sandstorm", "recipe", "synthetic_fiber_from_dune_ephedra.json"),
-                Path.of("src", "main", "resources", "data", "sandstorm", "recipe", "rappel_winch.json")
+                Path.of("src", "main", "resources", "data", "sandstorm", "recipe", "rappel_winch.json"),
+                Path.of("src", "main", "resources", "data", "sandstorm", "recipe", "rappel_winch_from_fiberglass.json"),
+                Path.of("src", "main", "resources", "data", "sandstorm", "recipe", "glowing_rappel_winch.json"),
+                Path.of("src", "main", "resources", "data", "sandstorm", "recipe", "glowing_rappel_winch_from_fiberglass.json"),
+                Path.of("src", "main", "resources", "data", "sandstorm", "recipe", "glowing_rappel_winch_from_winch.json")
         );
 
         for (Path file : requiredRecipes) {

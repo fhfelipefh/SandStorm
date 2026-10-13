@@ -21,6 +21,8 @@ import com.fhfelipefh.sandstorm.content.block.entity.ElectricFencePylonBlockEnti
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.IrrigationPumpBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.IrrigationSprinklerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticRailgunBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.LithoPlasmaExtractorBlockEntity;
@@ -717,6 +719,14 @@ public class SandStormBlocks {
                     .strength(2.0f, 6.0f)
                     .sound(SoundType.COPPER)
                     .noOcclusion()));
+    public static final RappelAnchorBlock GLOWING_RAPPEL_ANCHOR = register("glowing_rappel_anchor",
+            new RappelAnchorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("glowing_rappel_anchor")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(2.0f, 6.0f)
+                    .sound(SoundType.COPPER)
+                    .lightLevel(state -> 10)
+                    .noOcclusion()));
     public static final RappelRopeBlock RAPPEL_ROPE = register("rappel_rope",
             new RappelRopeBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("rappel_rope")))
@@ -725,6 +735,35 @@ public class SandStormBlocks {
                     .sound(SoundType.WOOL)
                     .noOcclusion()
                     .noCollision()));
+    public static final RappelRopeBlock GLOWING_RAPPEL_ROPE = register("glowing_rappel_rope",
+            new RappelRopeBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("glowing_rappel_rope")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(0.4f)
+                    .sound(SoundType.WOOL)
+                    .lightLevel(state -> 15)
+                    .noOcclusion()
+                    .noCollision(), true));
+    public static final IrrigationPumpBlock IRRIGATION_PUMP = register("irrigation_pump",
+            new IrrigationPumpBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("irrigation_pump")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.0f, 6.0f)
+                    .sound(SoundType.METAL)));
+    public static final IrrigationHoseBlock IRRIGATION_HOSE = register("irrigation_hose",
+            new IrrigationHoseBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("irrigation_hose")))
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(0.4f)
+                    .sound(SoundType.SLIME_BLOCK)
+                    .noOcclusion()));
+    public static final IrrigationSprinklerBlock IRRIGATION_SPRINKLER = register("irrigation_sprinkler",
+            new IrrigationSprinklerBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("irrigation_sprinkler")))
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(1.2f)
+                    .sound(SoundType.COPPER)
+                    .noOcclusion()));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -959,7 +998,17 @@ public class SandStormBlocks {
     public static final BlockEntityType<RappelAnchorBlockEntity> RAPPEL_ANCHOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("rappel_anchor"),
-            new BlockEntityType<>(RappelAnchorBlockEntity::new, Set.of(RAPPEL_ANCHOR))
+            new BlockEntityType<>(RappelAnchorBlockEntity::new, Set.of(RAPPEL_ANCHOR, GLOWING_RAPPEL_ANCHOR))
+    );
+    public static final BlockEntityType<IrrigationPumpBlockEntity> IRRIGATION_PUMP_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("irrigation_pump"),
+            new BlockEntityType<>(IrrigationPumpBlockEntity::new, Set.of(IRRIGATION_PUMP))
+    );
+    public static final BlockEntityType<IrrigationSprinklerBlockEntity> IRRIGATION_SPRINKLER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("irrigation_sprinkler"),
+            new BlockEntityType<>(IrrigationSprinklerBlockEntity::new, Set.of(IRRIGATION_SPRINKLER))
     );
 
     public static <T extends Block> T register(String path, T block) {
@@ -1016,5 +1065,7 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ELECTRIC_FENCE_PYLON_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, QUANTUM_DISK_DRIVE_BE);
         FluidStorage.SIDED.registerForBlockEntity(AmnioticIncubatorBlockEntity::getFluidStorage, AMNIOTIC_INCUBATOR_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, IRRIGATION_PUMP_BE);
+        FluidStorage.SIDED.registerForBlockEntity(IrrigationPumpBlockEntity::getFluidStorage, IRRIGATION_PUMP_BE);
     }
 }

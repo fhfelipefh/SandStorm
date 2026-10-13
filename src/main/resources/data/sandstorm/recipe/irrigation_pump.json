@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "minecraft:iron_block",
+    "P": "sandstorm:smart_fluid_pipe",
+    "E": "sandstorm:electric_component",
+    "B": "minecraft:bucket",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "SES",
+    "IPI",
+    "SBS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:irrigation_pump"
+  }
+}

@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -90,7 +91,7 @@ public class RappelAnchorBlockEntity extends BlockEntity {
                 break;
             }
             BlockState st = this.level.getBlockState(checkPos);
-            if (st.isAir() || st.is(SandStormBlocks.RAPPEL_ROPE)) {
+            if (st.isAir() || st.is(SandStormBlocks.RAPPEL_ROPE) || st.is(SandStormBlocks.GLOWING_RAPPEL_ROPE)) {
                 depth = i;
             } else {
                 break;
@@ -110,6 +111,7 @@ public class RappelAnchorBlockEntity extends BlockEntity {
         }
 
         this.tickTimer++;
+        boolean isGlowing = state.is(SandStormBlocks.GLOWING_RAPPEL_ANCHOR);
 
         if (this.state == STATE_DEPLOYING) {
             if (this.tickTimer % 2 == 0) {
@@ -118,9 +120,14 @@ public class RappelAnchorBlockEntity extends BlockEntity {
                     BlockPos ropePos = pos.below(this.deployedDepth);
                     BlockState currentSt = level.getBlockState(ropePos);
                     if (currentSt.isAir() || currentSt.canBeReplaced()) {
-                        level.setBlock(ropePos, SandStormBlocks.RAPPEL_ROPE.defaultBlockState(), 3);
+                        BlockState ropeState = isGlowing ? SandStormBlocks.GLOWING_RAPPEL_ROPE.defaultBlockState() : SandStormBlocks.RAPPEL_ROPE.defaultBlockState();
+                        level.setBlock(ropePos, ropeState, 3);
                         if (level instanceof ServerLevel serverLevel) {
-                            serverLevel.sendParticles(ParticleTypes.CRIT, ropePos.getX() + 0.5, ropePos.getY() + 0.5, ropePos.getZ() + 0.5, 2, 0.1, 0.1, 0.1, 0.05);
+                            if (isGlowing) {
+                                serverLevel.sendParticles(ParticleTypes.GLOW, ropePos.getX() + 0.5, ropePos.getY() + 0.5, ropePos.getZ() + 0.5, 3, 0.1, 0.1, 0.1, 0.02);
+                            } else {
+                                serverLevel.sendParticles(ParticleTypes.CRIT, ropePos.getX() + 0.5, ropePos.getY() + 0.5, ropePos.getZ() + 0.5, 2, 0.1, 0.1, 0.1, 0.05);
+                            }
                         }
                         if (this.deployedDepth % 4 == 0) {
                             level.playSound(null, pos, SoundEvents.CHAIN_STEP, SoundSource.BLOCKS, 0.6f, 1.4f);
@@ -139,7 +146,8 @@ public class RappelAnchorBlockEntity extends BlockEntity {
         } else if (this.state == STATE_RETRACTING) {
             if (this.deployedDepth > 0) {
                 BlockPos ropePos = pos.below(this.deployedDepth);
-                if (level.getBlockState(ropePos).is(SandStormBlocks.RAPPEL_ROPE)) {
+                BlockState currentRope = level.getBlockState(ropePos);
+                if (currentRope.is(SandStormBlocks.RAPPEL_ROPE) || currentRope.is(SandStormBlocks.GLOWING_RAPPEL_ROPE)) {
                     level.setBlock(ropePos, Blocks.AIR.defaultBlockState(), 3);
                 }
                 this.deployedDepth--;
@@ -151,7 +159,8 @@ public class RappelAnchorBlockEntity extends BlockEntity {
             } else {
                 this.state = STATE_IDLE;
                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-                ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(SandStormItems.RAPPEL_WINCH));
+                Item dropItem = isGlowing ? SandStormItems.GLOWING_RAPPEL_WINCH : SandStormItems.RAPPEL_WINCH;
+                ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(dropItem));
                 level.addFreshEntity(itemEntity);
                 level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 1.0f, 1.0f);
             }
@@ -164,7 +173,8 @@ public class RappelAnchorBlockEntity extends BlockEntity {
         }
         for (int i = 1; i <= Math.max(this.deployedDepth, MAX_DEPTH); i++) {
             BlockPos ropePos = this.worldPosition.below(i);
-            if (this.level.getBlockState(ropePos).is(SandStormBlocks.RAPPEL_ROPE)) {
+            BlockState st = this.level.getBlockState(ropePos);
+            if (st.is(SandStormBlocks.RAPPEL_ROPE) || st.is(SandStormBlocks.GLOWING_RAPPEL_ROPE)) {
                 this.level.setBlock(ropePos, Blocks.AIR.defaultBlockState(), 3);
             }
         }

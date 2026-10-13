@@ -80,6 +80,9 @@
     "sandstorm:biosphere_door",
     "sandstorm:biosphere_fence",
     "sandstorm:biosphere_fence_gate",
-    "sandstorm:rappel_anchor"
+    "sandstorm:rappel_anchor",
+    "sandstorm:glowing_rappel_anchor",
+    "sandstorm:irrigation_pump",
+    "sandstorm:irrigation_sprinkler"
   ]
 }

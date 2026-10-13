@@ -172,7 +172,7 @@ public class RappelHarnessEntity extends PathfinderMob {
 
         if (!this.level().isClientSide()) {
             BlockPos anchor = getAnchorPos();
-            if (!anchor.equals(BlockPos.ZERO) && !this.level().getBlockState(anchor).is(SandStormBlocks.RAPPEL_ANCHOR)) {
+            if (!anchor.equals(BlockPos.ZERO) && !this.level().getBlockState(anchor).is(SandStormBlocks.RAPPEL_ANCHOR) && !this.level().getBlockState(anchor).is(SandStormBlocks.GLOWING_RAPPEL_ANCHOR)) {
                 this.discard();
                 return;
             }

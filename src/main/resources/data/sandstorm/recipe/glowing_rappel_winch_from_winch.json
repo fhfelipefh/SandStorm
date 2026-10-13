@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:rappel_winch",
+    "minecraft:glow_ink_sac"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:glowing_rappel_winch"
+  }
+}

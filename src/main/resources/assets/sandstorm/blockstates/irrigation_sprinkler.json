@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "active=false": { "model": "sandstorm:block/irrigation_sprinkler" },
+    "active=true":  { "model": "sandstorm:block/irrigation_sprinkler" }
+  }
+}

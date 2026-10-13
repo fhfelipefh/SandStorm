@@ -2,6 +2,8 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -17,9 +19,19 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RappelRopeBlock extends Block {
     private static final VoxelShape SHAPE = Block.box(7.0, 0.0, 7.0, 9.0, 16.0, 9.0);
+    private final boolean glowing;
 
     public RappelRopeBlock(Properties properties) {
+        this(properties, false);
+    }
+
+    public RappelRopeBlock(Properties properties, boolean glowing) {
         super(properties);
+        this.glowing = glowing;
+    }
+
+    public boolean isGlowing() {
+        return this.glowing;
     }
 
     @Override
@@ -46,15 +58,30 @@ public class RappelRopeBlock extends Block {
         return useWithoutItem(state, level, pos, player, hitResult);
     }
 
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (this.glowing && random.nextInt(4) == 0) {
+            level.addParticle(
+                    ParticleTypes.GLOW,
+                    pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 0.2,
+                    pos.getY() + random.nextDouble(),
+                    pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 0.2,
+                    0.0,
+                    0.01,
+                    0.0
+            );
+        }
+    }
+
     public static BlockPos findAnchorPos(Level level, BlockPos startPos) {
         BlockPos current = startPos.above();
         int checks = 0;
         while (checks < 130 && current.getY() < level.getMaxY()) {
             BlockState st = level.getBlockState(current);
-            if (st.is(SandStormBlocks.RAPPEL_ANCHOR)) {
+            if (st.is(SandStormBlocks.RAPPEL_ANCHOR) || st.is(SandStormBlocks.GLOWING_RAPPEL_ANCHOR)) {
                 return current;
             }
-            if (!st.is(SandStormBlocks.RAPPEL_ROPE)) {
+            if (!st.is(SandStormBlocks.RAPPEL_ROPE) && !st.is(SandStormBlocks.GLOWING_RAPPEL_ROPE)) {
                 return null;
             }
             current = current.above();

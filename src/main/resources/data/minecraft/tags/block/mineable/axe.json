@@ -3,6 +3,8 @@
   "values": [
     "sandstorm:ancient_reed_block",
     "sandstorm:heavy_sap_cactus",
-    "sandstorm:rappel_rope"
+    "sandstorm:rappel_rope",
+    "sandstorm:glowing_rappel_rope",
+    "sandstorm:irrigation_hose"
   ]
 }

@@ -1,0 +1,78 @@
+{
+  "parent": "minecraft:block/block",
+  "display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.625, 0.625, 0.625]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "fixed": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "thirdperson_righthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.375, 0.375, 0.375]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 45, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 225, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.4, 0.4, 0.4]
+    }
+  },
+  "textures": {
+    "particle": "sandstorm:block/irrigation_hose",
+    "hose": "sandstorm:block/irrigation_hose"
+  },
+  "elements": [
+    {
+      "name": "core",
+      "from": [6, 0, 6],
+      "to": [10, 2, 10],
+      "faces": {
+        "down": {"uv": [6, 6, 10, 10], "texture": "#hose"},
+        "up": {"uv": [6, 6, 10, 10], "texture": "#hose"},
+        "north": {"uv": [6, 0, 10, 2], "texture": "#hose"},
+        "south": {"uv": [6, 0, 10, 2], "texture": "#hose"},
+        "west": {"uv": [6, 0, 10, 2], "texture": "#hose"},
+        "east": {"uv": [6, 0, 10, 2], "texture": "#hose"}
+      }
+    },
+    {
+      "name": "arm_north",
+      "from": [6, 0, 0],
+      "to": [10, 2, 6],
+      "faces": {
+        "down": {"uv": [6, 0, 10, 6], "texture": "#hose"},
+        "up": {"uv": [6, 0, 10, 6], "texture": "#hose"},
+        "north": {"uv": [6, 0, 10, 2], "texture": "#hose"},
+        "west": {"uv": [0, 0, 6, 2], "texture": "#hose"},
+        "east": {"uv": [10, 0, 16, 2], "texture": "#hose"}
+      }
+    },
+    {
+      "name": "arm_south",
+      "from": [6, 0, 10],
+      "to": [10, 2, 16],
+      "faces": {
+        "down": {"uv": [6, 10, 10, 16], "texture": "#hose"},
+        "up": {"uv": [6, 10, 10, 16], "texture": "#hose"},
+        "south": {"uv": [6, 0, 10, 2], "texture": "#hose"},
+        "west": {"uv": [10, 0, 16, 2], "texture": "#hose"},
+        "east": {"uv": [0, 0, 6, 2], "texture": "#hose"}
+      }
+    }
+  ]
+}

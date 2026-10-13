@@ -9,4 +9,5 @@ public class RappelAnchorRenderState extends BlockEntityRenderState {
     public int deployedDepth = 0;
     public float spoolAngle = 0.0f;
     public float animationTicks = 0.0f;
+    public boolean isGlowing = false;
 }

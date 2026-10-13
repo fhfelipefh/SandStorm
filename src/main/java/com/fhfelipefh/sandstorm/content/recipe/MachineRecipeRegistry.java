@@ -104,6 +104,13 @@ public class MachineRecipeRegistry {
                         List.of(() -> new ItemStack(SandStormItems.MINERAL_SALT)),
                         150,
                         150
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.FIBERGLASS, 2),
+                        List.of(() -> new ItemStack(Items.GLASS), () -> new ItemStack(Items.GLASS_PANE)),
+                        List.of(() -> new ItemStack(Items.GLASS), () -> new ItemStack(Items.GLASS_PANE)),
+                        100,
+                        60
                 )
         );
         RECIPES.put("sandstorm:printer_3d", Collections.unmodifiableList(list));

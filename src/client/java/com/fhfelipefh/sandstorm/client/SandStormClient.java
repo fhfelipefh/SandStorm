@@ -20,6 +20,7 @@ import com.fhfelipefh.sandstorm.client.gui.ElectricFencePylonScreen;
 import com.fhfelipefh.sandstorm.client.gui.GridMonitorConsoleScreen;
 import com.fhfelipefh.sandstorm.client.gui.HoloTacticalSpireScreen;
 import com.fhfelipefh.sandstorm.client.gui.HydroponicChamberScreen;
+import com.fhfelipefh.sandstorm.client.gui.IrrigationPumpScreen;
 import com.fhfelipefh.sandstorm.client.gui.KineticRailgunScreen;
 import com.fhfelipefh.sandstorm.client.gui.KineticShieldScreen;
 import com.fhfelipefh.sandstorm.client.gui.LithoPlasmaExtractorScreen;
@@ -154,6 +155,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.MORPHING_MATRIX_CORE_MENU, MorphingMatrixCoreScreen::new);
         MenuScreens.register(SandStormMenus.AMNIOTIC_INCUBATOR_MENU, AmnioticIncubatorScreen::new);
         MenuScreens.register(SandStormMenus.CRYOGENIC_ATMOSPHERIC_CHILLER_MENU, CryogenicAtmosphericChillerScreen::new);
+        MenuScreens.register(SandStormMenus.IRRIGATION_PUMP_MENU, IrrigationPumpScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

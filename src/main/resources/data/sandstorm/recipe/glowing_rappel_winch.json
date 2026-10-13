@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GS ",
+    "FTF",
+    " F "
+  ],
+  "key": {
+    "G": "minecraft:glow_ink_sac",
+    "S": "sandstorm:scrap_metal",
+    "T": "sandstorm:tool_base",
+    "F": "sandstorm:synthetic_fiber"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:glowing_rappel_winch"
+  }
+}

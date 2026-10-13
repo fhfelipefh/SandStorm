@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "sandstorm:fiberglass",
+    "S": "sandstorm:scrap_metal",
+    "R": "minecraft:slime_ball"
+  },
+  "pattern": [
+    " F ",
+    "FRF",
+    " S "
+  ],
+  "result": {
+    "count": 16,
+    "id": "sandstorm:irrigation_hose"
+  }
+}

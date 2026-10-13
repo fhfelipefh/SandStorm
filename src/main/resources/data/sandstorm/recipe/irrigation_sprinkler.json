@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "P": "sandstorm:fluid_pipe",
+    "R": "minecraft:redstone",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    " R ",
+    "IPI",
+    " S "
+  ],
+  "result": {
+    "count": 4,
+    "id": "sandstorm:irrigation_sprinkler"
+  }
+}

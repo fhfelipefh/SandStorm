@@ -1,0 +1,48 @@
+{
+  "parent": "minecraft:block/block",
+  "display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.625, 0.625, 0.625]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "fixed": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "thirdperson_righthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.375, 0.375, 0.375]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 45, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.4, 0.4, 0.4]
+    }
+  },
+  "textures": {
+    "particle": "sandstorm:block/glowing_rappel_rope",
+    "rope": "sandstorm:block/glowing_rappel_rope"
+  },
+  "elements": [
+    {
+      "from": [7, 0, 7],
+      "to": [9, 16, 9],
+      "faces": {
+        "north": {"uv": [7, 0, 9, 16], "texture": "#rope"},
+        "south": {"uv": [7, 0, 9, 16], "texture": "#rope"},
+        "west":  {"uv": [7, 0, 9, 16], "texture": "#rope"},
+        "east":  {"uv": [7, 0, 9, 16], "texture": "#rope"},
+        "up":    {"uv": [7, 7, 9, 9],   "texture": "#rope"},
+        "down":  {"uv": [7, 7, 9, 9],   "texture": "#rope"}
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "sandstorm:block/irrigation_pump_bottom",
+    "east": "sandstorm:block/irrigation_pump_side",
+    "north": "sandstorm:block/irrigation_pump_front",
+    "particle": "sandstorm:block/irrigation_pump_front",
+    "south": "sandstorm:block/irrigation_pump_side",
+    "up": "sandstorm:block/irrigation_pump_top",
+    "west": "sandstorm:block/irrigation_pump_side"
+  }
+}

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -72,6 +73,17 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             ItemStack out = items.get(2);
             return out.isEmpty();
         }
+        if (in0.is(Items.GLASS) || in0.is(Items.GLASS_PANE)) {
+            if (!in1.isEmpty() && !in1.is(Items.GLASS) && !in1.is(Items.GLASS_PANE)) {
+                return false;
+            }
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                return true;
+            }
+            int yield = in1.isEmpty() ? 1 : 2;
+            return out.is(SandStormItems.FIBERGLASS) && out.getCount() + yield <= out.getMaxStackSize();
+        }
         return false;
     }
 
@@ -108,6 +120,19 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             in0.shrink(1);
             in1.shrink(1);
             items.set(2, new ItemStack(SandStormItems.HYPO_INJECTOR));
+        } else if (in0.is(Items.GLASS) || in0.is(Items.GLASS_PANE)) {
+            in0.shrink(1);
+            int yield = 1;
+            if (in1.is(Items.GLASS) || in1.is(Items.GLASS_PANE)) {
+                in1.shrink(1);
+                yield = 2;
+            }
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                items.set(2, new ItemStack(SandStormItems.FIBERGLASS, yield));
+            } else {
+                out.grow(yield);
+            }
         }
     }
 
@@ -144,6 +169,9 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             if (in0.is(SandStormItems.RAW_SILICON)) {
                 return new ItemStack(SandStormItems.ELECTRIC_COMPONENT);
             }
+            if (in0.is(Items.GLASS) || in0.is(Items.GLASS_PANE)) {
+                return new ItemStack(SandStormItems.FIBERGLASS);
+            }
             return new ItemStack(SandStormItems.CIRCUIT_BOARD);
         }
         return this.getItem(2);
@@ -173,10 +201,10 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == 0) {
-            return stack.is(SandStormItems.SILICON_WAFER) || stack.is(SandStormItems.CIRCUIT_BOARD) || stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.TITANIUM_CHITIN_COMPOSITE);
+            return stack.is(SandStormItems.SILICON_WAFER) || stack.is(SandStormItems.CIRCUIT_BOARD) || stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.TITANIUM_CHITIN_COMPOSITE) || stack.is(Items.GLASS) || stack.is(Items.GLASS_PANE);
         }
         if (slot == 1) {
-            return stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.SCRAP_METAL) || stack.is(SandStormItems.NANO_ACTUATOR) || stack.is(SandStormItems.PRESSURE_SEAL);
+            return stack.is(SandStormItems.RAW_SILICON) || stack.is(SandStormItems.SCRAP_METAL) || stack.is(SandStormItems.NANO_ACTUATOR) || stack.is(SandStormItems.PRESSURE_SEAL) || stack.is(Items.GLASS) || stack.is(Items.GLASS_PANE);
         }
         if (slot == 3) {
             return getFuelEnergy(stack) > 0;

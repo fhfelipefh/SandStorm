@@ -197,6 +197,11 @@ public class SandStormMenus {
         new MenuType<>(CryogenicAtmosphericChillerMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<IrrigationPumpMenu> IRRIGATION_PUMP_MENU = register(
+        "irrigation_pump",
+        new MenuType<>(IrrigationPumpMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

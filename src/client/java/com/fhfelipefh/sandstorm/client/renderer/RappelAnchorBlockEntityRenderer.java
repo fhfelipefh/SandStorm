@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client.renderer;
 
 import com.fhfelipefh.sandstorm.content.block.RappelAnchorBlock;
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class RappelAnchorBlockEntityRenderer implements BlockEntityRenderer<RappelAnchorBlockEntity, RappelAnchorRenderState> {
     private static final Identifier TEXTURE = SandStormMod.id("textures/entity/rappel_anchor/rappel_anchor_mechanism.png");
+    private static final Identifier GLOWING_TEXTURE = SandStormMod.id("textures/entity/rappel_anchor/glowing_rappel_anchor_mechanism.png");
     private final RappelAnchorModel model;
 
     public RappelAnchorBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
@@ -39,6 +41,7 @@ public class RappelAnchorBlockEntityRenderer implements BlockEntityRenderer<Rapp
         state.state = entity.getState();
         state.deployedDepth = entity.getDeployedDepth();
         state.spoolAngle = entity.getSpoolAngle();
+        state.isGlowing = entity.getBlockState().is(SandStormBlocks.GLOWING_RAPPEL_ANCHOR);
 
         Level level = entity.getLevel();
         state.animationTicks = level != null ? (level.getGameTime() + partialTick) : partialTick;
@@ -52,13 +55,16 @@ public class RappelAnchorBlockEntityRenderer implements BlockEntityRenderer<Rapp
         poseStack.rotateDegrees(Axis.YP, yRot);
         poseStack.scale(1.0f / 16.0f, 1.0f / 16.0f, 1.0f / 16.0f);
 
-        collector.submitModelPart(this.model.getBase(), poseStack, RenderTypes.entityCutout(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, null);
+        Identifier texture = state.isGlowing ? GLOWING_TEXTURE : TEXTURE;
+        int light = state.isGlowing ? 15728880 : state.lightCoords;
+
+        collector.submitModelPart(this.model.getBase(), poseStack, RenderTypes.entityCutout(texture), light, OverlayTexture.NO_OVERLAY, null);
 
         poseStack.pushPose();
         poseStack.translate(0.0f, 4.5f, 0.0f);
         poseStack.rotateDegrees(Axis.XP, state.spoolAngle);
         poseStack.translate(0.0f, -4.5f, 0.0f);
-        collector.submitModelPart(this.model.getSpool(), poseStack, RenderTypes.entityCutout(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, null);
+        collector.submitModelPart(this.model.getSpool(), poseStack, RenderTypes.entityCutout(texture), light, OverlayTexture.NO_OVERLAY, null);
         poseStack.popPose();
 
         poseStack.popPose();

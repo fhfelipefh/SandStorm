@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/glowing_rappel_anchor"
+    }
+  }
+}

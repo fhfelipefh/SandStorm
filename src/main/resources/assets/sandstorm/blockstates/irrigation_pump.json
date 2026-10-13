@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "active=false,facing=north": { "model": "sandstorm:block/irrigation_pump" },
+    "active=false,facing=east":  { "model": "sandstorm:block/irrigation_pump", "y": 90 },
+    "active=false,facing=south": { "model": "sandstorm:block/irrigation_pump", "y": 180 },
+    "active=false,facing=west":  { "model": "sandstorm:block/irrigation_pump", "y": 270 },
+    "active=true,facing=north":  { "model": "sandstorm:block/irrigation_pump_active" },
+    "active=true,facing=east":   { "model": "sandstorm:block/irrigation_pump_active", "y": 90 },
+    "active=true,facing=south":  { "model": "sandstorm:block/irrigation_pump_active", "y": 180 },
+    "active=true,facing=west":   { "model": "sandstorm:block/irrigation_pump_active", "y": 270 }
+  }
+}
