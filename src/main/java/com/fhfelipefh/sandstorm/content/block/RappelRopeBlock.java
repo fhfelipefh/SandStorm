@@ -2,7 +2,9 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -10,7 +12,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -37,6 +42,38 @@ public class RappelRopeBlock extends Block {
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
+    }
+
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockState above = level.getBlockState(pos.above());
+        return above.is(SandStormBlocks.RAPPEL_ANCHOR)
+                || above.is(SandStormBlocks.GLOWING_RAPPEL_ANCHOR)
+                || above.is(SandStormBlocks.RAPPEL_ROPE)
+                || above.is(SandStormBlocks.GLOWING_RAPPEL_ROPE);
+    }
+
+    @Override
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+        if (!canSurvive(state, level, pos)) {
+            return Blocks.AIR.defaultBlockState();
+        }
+        return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
+    }
+
+    @Override
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+        BlockPos.MutableBlockPos cursor = pos.below().mutable();
+        while (cursor.getY() >= level.getMinY()) {
+            BlockState ropeState = level.getBlockState(cursor);
+            if (ropeState.is(SandStormBlocks.RAPPEL_ROPE) || ropeState.is(SandStormBlocks.GLOWING_RAPPEL_ROPE)) {
+                level.setBlock(cursor, Blocks.AIR.defaultBlockState(), 3);
+                cursor.move(Direction.DOWN);
+            } else {
+                break;
+            }
+        }
+        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
     }
 
     @Override

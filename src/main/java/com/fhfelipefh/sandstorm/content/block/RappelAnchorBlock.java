@@ -12,6 +12,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -84,9 +85,15 @@ public class RappelAnchorBlock extends Block implements EntityBlock {
 
     @Override
     protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof RappelAnchorBlockEntity anchor) {
-            anchor.cleanupRope();
+        BlockPos.MutableBlockPos cursor = pos.below().mutable();
+        while (cursor.getY() >= level.getMinY()) {
+            BlockState ropeState = level.getBlockState(cursor);
+            if (ropeState.is(SandStormBlocks.RAPPEL_ROPE) || ropeState.is(SandStormBlocks.GLOWING_RAPPEL_ROPE)) {
+                level.setBlock(cursor, Blocks.AIR.defaultBlockState(), 3);
+                cursor.move(Direction.DOWN);
+            } else {
+                break;
+            }
         }
         super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
     }

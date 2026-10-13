@@ -110,4 +110,18 @@ class RappelSystemArchitectureTest {
             assertTrue(Files.exists(file), "Recipe file must exist: " + file);
         }
     }
+
+    @Test
+    void rappelRopeAndAnchorMustEnforceSupportAndCascadeRemoval() throws IOException {
+        Path ropePath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "block", "RappelRopeBlock.java");
+        Path anchorPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "block", "RappelAnchorBlock.java");
+
+        String ropeCode = Files.readString(ropePath);
+        String anchorCode = Files.readString(anchorPath);
+
+        assertTrue(ropeCode.contains("canSurvive"), "RappelRopeBlock must implement canSurvive");
+        assertTrue(ropeCode.contains("updateShape"), "RappelRopeBlock must implement updateShape");
+        assertTrue(ropeCode.contains("affectNeighborsAfterRemoval"), "RappelRopeBlock must implement affectNeighborsAfterRemoval");
+        assertTrue(anchorCode.contains("affectNeighborsAfterRemoval"), "RappelAnchorBlock must implement affectNeighborsAfterRemoval");
+    }
 }
