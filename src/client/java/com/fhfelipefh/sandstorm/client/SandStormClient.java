@@ -61,6 +61,8 @@ import com.fhfelipefh.sandstorm.client.renderer.MegastructureConstructorBlockEnt
 import com.fhfelipefh.sandstorm.client.renderer.NaniteFabricatorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.Printer3DBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.QuantumDiskDriveBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.RappelAnchorBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.RappelHarnessRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ExcavatorVehicleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MegazordRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandboardRenderer;
@@ -161,6 +163,7 @@ public class SandStormClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(SandStormBlocks.AUTONOMOUS_SONIC_TURRET_BE, AutonomousSonicTurretRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.CRUSHING_SPIKE_GATE_BE, CrushingSpikeGateRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.QUANTUM_DISK_DRIVE_BE, QuantumDiskDriveBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.RAPPEL_ANCHOR_BE, RappelAnchorBlockEntityRenderer::new);
 
         ArmorRenderer.register(new SpaceSuitArmorRenderer(),
                 SandStormItems.SPACE_SUIT_HELMET,
@@ -188,6 +191,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.SCOUT_DRONE, ScoutDroneRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CRAWLER_DRONE, CrawlerDroneRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CYBERNETIC_GOLEM, CyberneticGolemRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.RAPPEL_HARNESS, RappelHarnessRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

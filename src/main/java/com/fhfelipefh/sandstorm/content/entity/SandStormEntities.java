@@ -276,6 +276,19 @@ public class SandStormEntities {
                     .build(CYBERNETIC_GOLEM_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> RAPPEL_HARNESS_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("rappel_harness")
+    );
+
+    public static final EntityType<RappelHarnessEntity> RAPPEL_HARNESS = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("rappel_harness"),
+            EntityType.Builder.of(RappelHarnessEntity::new, MobCategory.MISC)
+                    .sized(0.8f, 0.8f)
+                    .build(RAPPEL_HARNESS_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
@@ -295,5 +308,6 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(SCOUT_DRONE, ScoutDroneEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CRAWLER_DRONE, CrawlerDroneEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CYBERNETIC_GOLEM, CyberneticGolemEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(RAPPEL_HARNESS, RappelHarnessEntity.createAttributes());
     }
 }

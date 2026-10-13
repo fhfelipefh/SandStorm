@@ -79,6 +79,7 @@
     "sandstorm:amniotic_incubator",
     "sandstorm:biosphere_door",
     "sandstorm:biosphere_fence",
-    "sandstorm:biosphere_fence_gate"
+    "sandstorm:biosphere_fence_gate",
+    "sandstorm:rappel_anchor"
   ]
 }

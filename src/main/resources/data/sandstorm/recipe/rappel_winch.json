@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "FTF",
+    " F "
+  ],
+  "key": {
+    "S": "sandstorm:scrap_metal",
+    "T": "sandstorm:tool_base",
+    "F": "sandstorm:synthetic_fiber"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:rappel_winch"
+  }
+}

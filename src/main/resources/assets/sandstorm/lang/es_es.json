@@ -1128,5 +1128,15 @@
   "block.sandstorm.biosphere_fence": "Valla de Biosfera Cian-Violeta",
   "item.sandstorm.biosphere_fence": "Valla de Biosfera Cian-Violeta",
   "block.sandstorm.biosphere_fence_gate": "Puerta de Valla de Biosfera Cian-Violeta",
-  "item.sandstorm.biosphere_fence_gate": "Puerta de Valla de Biosfera Cian-Violeta"
+  "item.sandstorm.biosphere_fence_gate": "Puerta de Valla de Biosfera Cian-Violeta",
+  "item.sandstorm.synthetic_fiber": "Fibra Sintética",
+  "item.sandstorm.rappel_winch": "Cabrestante de Rapel Táctico",
+  "block.sandstorm.rappel_anchor": "Anclaje de Rapel",
+  "block.sandstorm.rappel_rope": "Cable de Rapel de Nanofibra",
+  "item.sandstorm.rappel_anchor": "Anclaje de Rapel",
+  "item.sandstorm.rappel_rope": "Cable de Rapel de Nanofibra",
+  "entity.sandstorm.rappel_harness": "Arnés Motorizado de Rapel",
+  "tooltip.sandstorm.synthetic_fiber_desc": "Fibra de alta tenacidad para cables.",
+  "tooltip.sandstorm.rappel_winch_desc": "Fija en roca para soltar hasta 128m de cable.",
+  "tooltip.sandstorm.rappel_winch_usage": "Sube y baja con W/S con bloqueo anticaída."
 }

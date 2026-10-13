@@ -34,6 +34,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.OrbitalMassDriverBlockEntit
 import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SpectralSurveyTelescopeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SmartFluidPipeBlockEntity;
@@ -709,6 +710,21 @@ public class SandStormBlocks {
                     .strength(4.5f, 9.0f)
                     .sound(SoundType.HEAVY_CORE)
                     .noOcclusion()));
+    public static final RappelAnchorBlock RAPPEL_ANCHOR = register("rappel_anchor",
+            new RappelAnchorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("rappel_anchor")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(2.0f, 6.0f)
+                    .sound(SoundType.COPPER)
+                    .noOcclusion()));
+    public static final RappelRopeBlock RAPPEL_ROPE = register("rappel_rope",
+            new RappelRopeBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("rappel_rope")))
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(0.4f)
+                    .sound(SoundType.WOOL)
+                    .noOcclusion()
+                    .noCollision()));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -939,6 +955,11 @@ public class SandStormBlocks {
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("amniotic_incubator"),
             new BlockEntityType<>(AmnioticIncubatorBlockEntity::new, Set.of(AMNIOTIC_INCUBATOR))
+    );
+    public static final BlockEntityType<RappelAnchorBlockEntity> RAPPEL_ANCHOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("rappel_anchor"),
+            new BlockEntityType<>(RappelAnchorBlockEntity::new, Set.of(RAPPEL_ANCHOR))
     );
 
     public static <T extends Block> T register(String path, T block) {

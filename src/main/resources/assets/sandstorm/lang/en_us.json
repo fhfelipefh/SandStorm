@@ -1128,5 +1128,15 @@
   "block.sandstorm.biosphere_fence": "Cyan-Violet Biosphere Fence",
   "item.sandstorm.biosphere_fence": "Cyan-Violet Biosphere Fence",
   "block.sandstorm.biosphere_fence_gate": "Cyan-Violet Biosphere Gate",
-  "item.sandstorm.biosphere_fence_gate": "Cyan-Violet Biosphere Gate"
+  "item.sandstorm.biosphere_fence_gate": "Cyan-Violet Biosphere Gate",
+  "item.sandstorm.synthetic_fiber": "Synthetic Fiber",
+  "item.sandstorm.rappel_winch": "Tactical Rappel Winch",
+  "block.sandstorm.rappel_anchor": "Rappel Anchor Hook",
+  "block.sandstorm.rappel_rope": "Nanofiber Rappel Cable",
+  "item.sandstorm.rappel_anchor": "Rappel Anchor Hook",
+  "item.sandstorm.rappel_rope": "Nanofiber Rappel Cable",
+  "entity.sandstorm.rappel_harness": "Motorized Rappel Harness",
+  "tooltip.sandstorm.synthetic_fiber_desc": "High-tenacity weave for tactical cables.",
+  "tooltip.sandstorm.rappel_winch_desc": "Anchor to rock to drop up to 128m cable.",
+  "tooltip.sandstorm.rappel_winch_usage": "Climb up/down with W/S with zero-fall lock."
 }

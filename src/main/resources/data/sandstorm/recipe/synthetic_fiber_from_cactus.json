@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:cactus"
+  ],
+  "result": {
+    "count": 2,
+    "id": "sandstorm:synthetic_fiber"
+  }
+}

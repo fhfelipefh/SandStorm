@@ -1128,5 +1128,15 @@
   "block.sandstorm.biosphere_fence": "Cerca de Biosfera Ciano-Violeta",
   "item.sandstorm.biosphere_fence": "Cerca de Biosfera Ciano-Violeta",
   "block.sandstorm.biosphere_fence_gate": "Portão de Biosfera Ciano-Violeta",
-  "item.sandstorm.biosphere_fence_gate": "Portão de Biosfera Ciano-Violeta"
+  "item.sandstorm.biosphere_fence_gate": "Portão de Biosfera Ciano-Violeta",
+  "item.sandstorm.synthetic_fiber": "Fibra Sintética",
+  "item.sandstorm.rappel_winch": "Gancho de Rapel Tático",
+  "block.sandstorm.rappel_anchor": "Gancho de Fixação de Rapel",
+  "block.sandstorm.rappel_rope": "Cabo de Rapel de Nanofibra",
+  "item.sandstorm.rappel_anchor": "Gancho de Fixação de Rapel",
+  "item.sandstorm.rappel_rope": "Cabo de Rapel de Nanofibra",
+  "entity.sandstorm.rappel_harness": "Arnês Motorizado de Rapel",
+  "tooltip.sandstorm.synthetic_fiber_desc": "Fibra de alta tenacidade para cabos.",
+  "tooltip.sandstorm.rappel_winch_desc": "Crave na rocha para lançar até 128m de cabo.",
+  "tooltip.sandstorm.rappel_winch_usage": "Suba/desça com W/S preso com trava total."
 }

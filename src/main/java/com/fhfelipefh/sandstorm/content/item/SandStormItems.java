@@ -175,6 +175,8 @@ public class SandStormItems {
     public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_FUNGAL = register("biosphere_cartridge_fungal", new BiosphereCartridgeItem(BiosphereType.XENO_FUNGAL, properties("biosphere_cartridge_fungal").rarity(Rarity.RARE)));
     public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_MAGNETIC = register("biosphere_cartridge_magnetic", new BiosphereCartridgeItem(BiosphereType.MAGNETIC_FOREST, properties("biosphere_cartridge_magnetic").rarity(Rarity.RARE)));
     public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_OASIS = register("biosphere_cartridge_oasis", new BiosphereCartridgeItem(BiosphereType.PRIMORDIAL_OASIS, properties("biosphere_cartridge_oasis").rarity(Rarity.EPIC)));
+    public static final Item SYNTHETIC_FIBER = register("synthetic_fiber", new Item(properties("synthetic_fiber")));
+    public static final RappelWinchItem RAPPEL_WINCH = register("rappel_winch", new RappelWinchItem(properties("rappel_winch").stacksTo(1)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -184,6 +186,10 @@ public class SandStormItems {
                     .title(Component.translatable("itemGroup.sandstorm.general"))
                     .displayItems((context, entries) -> {
                         entries.accept(SURVIVAL_DATAPAD);
+                        entries.accept(SYNTHETIC_FIBER);
+                        entries.accept(RAPPEL_WINCH);
+                        entries.accept(SandStormBlocks.RAPPEL_ANCHOR);
+                        entries.accept(SandStormBlocks.RAPPEL_ROPE);
                         entries.accept(SPACE_RATION);
                         entries.accept(SPACE_SUIT_HELMET);
                         entries.accept(SPACE_SUIT_CHESTPLATE);
