@@ -23,12 +23,12 @@ class SandstormClaimCommandTest {
         CommandDispatcher<CommandSourceStack> dispatcher = new CommandDispatcher<>();
         SandstormClaimCommand.register(dispatcher);
 
-        CommandNode<CommandSourceStack> claimNode = dispatcher.getRoot().getChild("claim");
+        CommandNode<CommandSourceStack> claimNode = dispatcher.getRoot().getChild("sandstorm_claim");
         assertNotNull(claimNode);
         assertNotNull(claimNode.getChild("all"));
         assertNotNull(claimNode.getChild("questId"));
 
-        CommandNode<CommandSourceStack> resgatarNode = dispatcher.getRoot().getChild("resgatar");
+        CommandNode<CommandSourceStack> resgatarNode = dispatcher.getRoot().getChild("sandstorm_resgatar");
         assertNotNull(resgatarNode);
         assertNotNull(resgatarNode.getChild("tudo"));
         assertNotNull(resgatarNode.getChild("questId"));

@@ -66,6 +66,25 @@ public class LaborerUnitModel extends EntityModel<LaborerUnitRenderState> {
     public void setupAnim(LaborerUnitRenderState state) {
         super.setupAnim(state);
 
+        if (state.isDeactivated) {
+            this.body.xRot = 0.25f;
+            this.head.xRot = 0.75f;
+            this.head.yRot = -0.1f;
+            this.head.zRot = 0.15f;
+            this.rightLeg.xRot = 0.0f;
+            this.leftLeg.xRot = 0.0f;
+            this.leftArm.xRot = 0.1f;
+            this.leftArm.zRot = 0.1f;
+            this.rightArm.xRot = 0.15f;
+            this.rightArm.zRot = -0.1f;
+            return;
+        }
+
+        this.body.xRot = 0.0f;
+        this.head.zRot = 0.0f;
+        this.leftArm.zRot = 0.0f;
+        this.rightArm.zRot = 0.0f;
+
         float walkPos = state.walkAnimationPos;
         float walkSpeed = state.walkAnimationSpeed;
 

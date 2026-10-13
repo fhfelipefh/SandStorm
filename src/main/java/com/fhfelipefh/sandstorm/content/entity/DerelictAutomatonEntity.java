@@ -41,9 +41,10 @@ import net.minecraft.world.phys.AABB;
 import java.util.EnumSet;
 import java.util.List;
 
-public class DerelictAutomatonEntity extends PathfinderMob implements Enemy {
+public class DerelictAutomatonEntity extends PathfinderMob implements Enemy, DeactivatableAndroid {
     private static final EntityDataAccessor<Boolean> DATA_OVERCHARGING = SynchedEntityData.defineId(DerelictAutomatonEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_FUSE = SynchedEntityData.defineId(DerelictAutomatonEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(DerelictAutomatonEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final int MAX_FUSE = 30;
     private int oldFuse = 0;
@@ -67,6 +68,7 @@ public class DerelictAutomatonEntity extends PathfinderMob implements Enemy {
         super.defineSynchedData(builder);
         builder.define(DATA_OVERCHARGING, false);
         builder.define(DATA_FUSE, 0);
+        builder.define(DATA_DEACTIVATED, false);
     }
 
     @Override
@@ -104,7 +106,42 @@ public class DerelictAutomatonEntity extends PathfinderMob implements Enemy {
     }
 
     @Override
+    public boolean isDeactivated() {
+        return this.entityData.get(DATA_DEACTIVATED);
+    }
+
+    @Override
+    public void setDeactivated(boolean deactivated) {
+        this.entityData.set(DATA_DEACTIVATED, deactivated);
+        this.setNoAi(deactivated);
+        if (deactivated) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1.0);
+            this.setHealth(1.0f);
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0);
+            this.setFuse(0);
+            this.setOvercharging(false);
+            this.setTarget(null);
+            this.getNavigation().stop();
+        }
+    }
+
+    @Override
+    public Component getName() {
+        if (this.isDeactivated()) {
+            return Component.translatable(this.getType().getDescriptionId() + ".deactivated");
+        }
+        return super.getName();
+    }
+
+    @Override
     public void tick() {
+        if (this.isDeactivated()) {
+            super.tick();
+            this.setDeltaMovement(0.0, Math.min(0.0, this.getDeltaMovement().y), 0.0);
+            this.yBodyRot = this.getYRot();
+            this.yHeadRot = this.getYRot();
+            return;
+        }
         this.oldFuse = this.getFuse();
         super.tick();
 
@@ -174,6 +211,13 @@ public class DerelictAutomatonEntity extends PathfinderMob implements Enemy {
     @Override
     protected void dropCustomDeathLoot(ServerLevel serverLevel, DamageSource damageSource, boolean recentlyHit) {
         super.dropCustomDeathLoot(serverLevel, damageSource, recentlyHit);
+        if (this.isDeactivated()) {
+            this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SCRAP_METAL, 1));
+            if (this.random.nextFloat() < 0.15f) {
+                this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.CIRCUIT_BOARD, 1));
+            }
+            return;
+        }
         int scrapCount = 1 + this.random.nextInt(2);
         this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SCRAP_METAL, scrapCount));
         if (this.random.nextFloat() < 0.35f) {
@@ -183,12 +227,12 @@ public class DerelictAutomatonEntity extends PathfinderMob implements Enemy {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.IRON_GOLEM_HURT;
+        return this.isDeactivated() ? SoundEvents.NETHERITE_BLOCK_BREAK : SoundEvents.IRON_GOLEM_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.IRON_GOLEM_DEATH;
+        return this.isDeactivated() ? SoundEvents.ITEM_BREAK.value() : SoundEvents.IRON_GOLEM_DEATH;
     }
 
     @Override
@@ -196,6 +240,7 @@ public class DerelictAutomatonEntity extends PathfinderMob implements Enemy {
         super.addAdditionalSaveData(output);
         output.putBoolean("Overcharging", this.isOvercharging());
         output.putInt("Fuse", this.getFuse());
+        output.putBoolean("Deactivated", this.isDeactivated());
     }
 
     @Override
@@ -203,6 +248,7 @@ public class DerelictAutomatonEntity extends PathfinderMob implements Enemy {
         super.readAdditionalSaveData(input);
         this.setOvercharging(input.getBooleanOr("Overcharging", false));
         this.setFuse(input.getIntOr("Fuse", 0));
+        this.setDeactivated(input.getBooleanOr("Deactivated", false));
     }
 
     private static class AutomatonOverchargeGoal extends Goal {

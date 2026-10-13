@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 public class ScrapSentinelRenderer extends MobRenderer<ScrapSentinelEntity, ScrapSentinelRenderState, ScrapSentinelModel> {
     private static final Identifier TEXTURE_ACTIVE = SandStormMod.id("textures/entity/scrap_sentinel/scrap_sentinel_active.png");
     private static final Identifier TEXTURE_DORMANT = SandStormMod.id("textures/entity/scrap_sentinel/scrap_sentinel_dormant.png");
+    private static final Identifier TEXTURE_DEACTIVATED = SandStormMod.id("textures/entity/scrap_sentinel/scrap_sentinel_deactivated.png");
 
     public ScrapSentinelRenderer(EntityRendererProvider.Context context) {
         super(context, new ScrapSentinelModel(ScrapSentinelModel.createBodyLayer().bakeRoot()), 0.5f);
@@ -17,6 +18,9 @@ public class ScrapSentinelRenderer extends MobRenderer<ScrapSentinelEntity, Scra
 
     @Override
     public Identifier getTextureLocation(ScrapSentinelRenderState state) {
+        if (state.isDeactivated) {
+            return TEXTURE_DEACTIVATED;
+        }
         return state.isDormant ? TEXTURE_DORMANT : TEXTURE_ACTIVE;
     }
 
@@ -28,6 +32,7 @@ public class ScrapSentinelRenderer extends MobRenderer<ScrapSentinelEntity, Scra
     @Override
     public void extractRenderState(ScrapSentinelEntity entity, ScrapSentinelRenderState state, float partialTick) {
         super.extractRenderState(entity, state, partialTick);
+        state.isDeactivated = entity.isDeactivated();
         state.isDormant = entity.isDormant();
         state.attackAnim = entity.getAttackAnim();
         Level lvl = entity.level();

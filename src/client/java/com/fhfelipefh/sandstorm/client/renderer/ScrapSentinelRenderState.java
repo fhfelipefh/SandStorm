@@ -6,4 +6,5 @@ public class ScrapSentinelRenderState extends LivingEntityRenderState {
     public boolean isDormant = true;
     public int attackAnim = 0;
     public float animationTicks = 0.0f;
+    public boolean isDeactivated = false;
 }

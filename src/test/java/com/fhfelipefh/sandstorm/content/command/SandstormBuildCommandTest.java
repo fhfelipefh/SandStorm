@@ -40,7 +40,7 @@ class SandstormBuildCommandTest {
         assertNotNull(sandstormBuildNode.getChild("structure"));
         assertNotNull(sandstormBuildNode.getChild("structure").getChild("pos"));
 
-        CommandNode<CommandSourceStack> buildStructureNode = dispatcher.getRoot().getChild("build_structure");
+        CommandNode<CommandSourceStack> buildStructureNode = dispatcher.getRoot().getChild("sandstorm_build_structure");
         assertNotNull(buildStructureNode);
         assertNotNull(buildStructureNode.getChild("structure"));
 
@@ -49,18 +49,18 @@ class SandstormBuildCommandTest {
         assertNotNull(dispatcher.getRoot().getChild("sandstorm_clear"));
         assertNotNull(dispatcher.getRoot().getChild("sandstorm_clear").getChild("radius"));
 
-        assertNotNull(dispatcher.getRoot().getChild("build_colony"));
-        assertNotNull(dispatcher.getRoot().getChild("build_defense"));
-        assertNotNull(dispatcher.getRoot().getChild("build_greenhouse"));
-        assertNotNull(dispatcher.getRoot().getChild("build_mining"));
-        assertNotNull(dispatcher.getRoot().getChild("build_energy"));
-        assertNotNull(dispatcher.getRoot().getChild("build_ruins"));
-        assertNotNull(dispatcher.getRoot().getChild("build_dome"));
-        assertNotNull(dispatcher.getRoot().getChild("build_citadel"));
-        assertNotNull(dispatcher.getRoot().getChild("build_silo"));
-        assertNotNull(dispatcher.getRoot().getChild("build_pyramid"));
-        assertNotNull(dispatcher.getRoot().getChild("build_castle"));
-        assertNotNull(dispatcher.getRoot().getChild("build_colossal_castle"));
-        assertNotNull(dispatcher.getRoot().getChild("build_castelo"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_colony"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_defense"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_greenhouse"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_mining"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_energy"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_ruins"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_dome"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_citadel"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_silo"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_pyramid"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_castle"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_colossal_castle"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_castelo"));
     }
 }

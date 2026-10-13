@@ -1,7 +1,12 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.DesertExplorationWanderGoal;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -19,15 +24,17 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import com.fhfelipefh.sandstorm.content.entity.ai.DesertExplorationWanderGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
-public class LaborerUnitEntity extends PathfinderMob implements Enemy {
+public class LaborerUnitEntity extends PathfinderMob implements Enemy, DeactivatableAndroid {
+    private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(LaborerUnitEntity.class, EntityDataSerializers.BOOLEAN);
 
     public LaborerUnitEntity(EntityType<? extends LaborerUnitEntity> entityType, Level level) {
         super(entityType, level);
@@ -44,6 +51,12 @@ public class LaborerUnitEntity extends PathfinderMob implements Enemy {
     }
 
     @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_DEACTIVATED, false);
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.1, false));
@@ -56,7 +69,48 @@ public class LaborerUnitEntity extends PathfinderMob implements Enemy {
     }
 
     @Override
+    public boolean isDeactivated() {
+        return this.entityData.get(DATA_DEACTIVATED);
+    }
+
+    @Override
+    public void setDeactivated(boolean deactivated) {
+        this.entityData.set(DATA_DEACTIVATED, deactivated);
+        this.setNoAi(deactivated);
+        if (deactivated) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1.0);
+            this.setHealth(1.0f);
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0);
+            this.setTarget(null);
+            this.getNavigation().stop();
+        }
+    }
+
+    @Override
+    public Component getName() {
+        if (this.isDeactivated()) {
+            return Component.translatable(this.getType().getDescriptionId() + ".deactivated");
+        }
+        return super.getName();
+    }
+
+    @Override
+    public void tick() {
+        if (this.isDeactivated()) {
+            super.tick();
+            this.setDeltaMovement(0.0, Math.min(0.0, this.getDeltaMovement().y), 0.0);
+            this.yBodyRot = this.getYRot();
+            this.yHeadRot = this.getYRot();
+            return;
+        }
+        super.tick();
+    }
+
+    @Override
     public boolean doHurtTarget(ServerLevel serverLevel, Entity target) {
+        if (this.isDeactivated()) {
+            return false;
+        }
         boolean hurt = super.doHurtTarget(serverLevel, target);
         if (hurt && target instanceof LivingEntity living) {
             living.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
@@ -69,6 +123,16 @@ public class LaborerUnitEntity extends PathfinderMob implements Enemy {
     @Override
     protected void dropCustomDeathLoot(ServerLevel serverLevel, DamageSource damageSource, boolean recentlyHit) {
         super.dropCustomDeathLoot(serverLevel, damageSource, recentlyHit);
+        if (this.isDeactivated()) {
+            this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SCRAP_METAL, 1));
+            if (this.random.nextFloat() < 0.2f) {
+                this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.LOOSE_WIRES, 1));
+            }
+            if (this.random.nextFloat() < 0.2f) {
+                this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.RAW_SILICON, 1));
+            }
+            return;
+        }
         int scrapCount = 2 + this.random.nextInt(3);
         this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SCRAP_METAL, scrapCount));
         this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.LOOSE_WIRES, 1 + this.random.nextInt(2)));
@@ -79,16 +143,28 @@ public class LaborerUnitEntity extends PathfinderMob implements Enemy {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.IRON_GOLEM_HURT;
+        return this.isDeactivated() ? SoundEvents.NETHERITE_BLOCK_BREAK : SoundEvents.IRON_GOLEM_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.IRON_GOLEM_DEATH;
+        return this.isDeactivated() ? SoundEvents.ITEM_BREAK.value() : SoundEvents.IRON_GOLEM_DEATH;
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.IRON_GOLEM_STEP;
+        return this.isDeactivated() ? null : SoundEvents.IRON_GOLEM_STEP;
+    }
+
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("Deactivated", this.isDeactivated());
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.setDeactivated(input.getBooleanOr("Deactivated", false));
     }
 }

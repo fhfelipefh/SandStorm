@@ -36,7 +36,7 @@ class SandstormTerraformerCommandTest {
         assertNotNull(terraformerSub.getChild("lightning"));
         assertNotNull(terraformerSub.getChild("thunder"));
 
-        CommandNode<CommandSourceStack> standaloneTerraformer = dispatcher.getRoot().getChild("terraformer");
+        CommandNode<CommandSourceStack> standaloneTerraformer = dispatcher.getRoot().getChild("sandstorm_terraformer");
         assertNotNull(standaloneTerraformer);
         assertNotNull(standaloneTerraformer.getChild("tier1"));
         assertNotNull(standaloneTerraformer.getChild("tier1").getChild("lightning"));

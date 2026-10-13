@@ -73,6 +73,30 @@ public class CrawlerDroneModel extends EntityModel<CrawlerDroneRenderState> {
     public void setupAnim(CrawlerDroneRenderState state) {
         super.setupAnim(state);
 
+        if (state.isDeactivated) {
+            this.head.xRot = 0.5f;
+            this.head.yRot = -0.25f;
+            this.head.zRot = 0.35f;
+            this.rightHindLeg.zRot = -0.1f;
+            this.leftHindLeg.zRot = 0.15f;
+            this.rightMiddleHindLeg.zRot = -0.05f;
+            this.leftMiddleHindLeg.zRot = 0.2f;
+            this.rightMiddleFrontLeg.zRot = -0.2f;
+            this.leftMiddleFrontLeg.zRot = 0.05f;
+            this.rightFrontLeg.zRot = -0.3f;
+            this.leftFrontLeg.zRot = 0.1f;
+            this.rightHindLeg.yRot = 0.8f;
+            this.leftHindLeg.yRot = -0.6f;
+            this.rightMiddleHindLeg.yRot = 0.3f;
+            this.leftMiddleHindLeg.yRot = -0.2f;
+            this.rightMiddleFrontLeg.yRot = -0.5f;
+            this.leftMiddleFrontLeg.yRot = 0.7f;
+            this.rightFrontLeg.yRot = -0.9f;
+            this.leftFrontLeg.yRot = 0.6f;
+            return;
+        }
+
+        this.head.zRot = 0.0f;
         this.head.yRot = state.yRot * ((float) Math.PI / 180.0f);
         this.head.xRot = state.xRot * ((float) Math.PI / 180.0f);
 

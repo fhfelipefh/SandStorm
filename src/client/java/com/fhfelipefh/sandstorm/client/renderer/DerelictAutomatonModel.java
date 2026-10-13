@@ -72,6 +72,30 @@ public class DerelictAutomatonModel extends EntityModel<DerelictAutomatonRenderS
     public void setupAnim(DerelictAutomatonRenderState state) {
         super.setupAnim(state);
 
+        if (state.isDeactivated) {
+            this.body.xRot = 0.35f;
+            this.body.zRot = -0.1f;
+            this.head.xRot = 0.6f;
+            this.head.yRot = -0.3f;
+            this.head.zRot = 0.2f;
+            this.leftLeg.xRot = 0.1f;
+            this.leftLeg.yRot = 0.0f;
+            this.leftLeg.zRot = 0.1f;
+            this.rightLeg.xRot = -0.1f;
+            this.rightLeg.yRot = 0.0f;
+            this.rightLeg.zRot = -0.1f;
+            this.leftArm.xRot = -0.1f;
+            this.leftArm.zRot = 0.2f;
+            this.rightArm.xRot = 0.2f;
+            this.rightArm.zRot = -0.15f;
+            return;
+        }
+
+        this.body.zRot = 0.0f;
+        this.head.zRot = 0.0f;
+        this.leftLeg.zRot = 0.0f;
+        this.rightLeg.zRot = 0.0f;
+
         float walkPos = state.walkAnimationPos;
         float walkSpeed = state.walkAnimationSpeed;
 

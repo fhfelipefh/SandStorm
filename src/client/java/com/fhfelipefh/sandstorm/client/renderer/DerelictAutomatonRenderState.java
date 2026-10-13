@@ -6,4 +6,5 @@ public class DerelictAutomatonRenderState extends LivingEntityRenderState {
     public boolean isOvercharging = false;
     public float overchargeProgress = 0.0f;
     public float animationTicks = 0.0f;
+    public boolean isDeactivated = false;
 }

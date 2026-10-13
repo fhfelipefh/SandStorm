@@ -81,6 +81,46 @@ public class CyberHoundModel extends EntityModel<CyberHoundRenderState> {
     public void setupAnim(CyberHoundRenderState state) {
         super.setupAnim(state);
 
+        if (state.isDeactivated) {
+            this.body.setPos(0.0f, 19.0f, 2.0f);
+            this.body.xRot = ((float) Math.PI / 2.0f);
+            this.body.zRot = 0.2f;
+            this.upperBody.setPos(-1.0f, 19.0f, -3.0f);
+            this.upperBody.xRot = ((float) Math.PI / 2.0f);
+            this.upperBody.zRot = 0.2f;
+            this.head.setPos(-1.0f, 19.5f, -7.0f);
+            this.head.xRot = 0.6f;
+            this.head.yRot = -0.4f;
+            this.head.zRot = 0.3f;
+
+            this.rightHindLeg.setPos(-2.5f, 22.0f, 7.0f);
+            this.rightHindLeg.xRot = 1.2f;
+            this.rightHindLeg.zRot = -0.6f;
+            this.leftHindLeg.setPos(0.5f, 22.0f, 7.0f);
+            this.leftHindLeg.xRot = -0.8f;
+            this.leftHindLeg.zRot = 0.5f;
+
+            this.rightFrontLeg.setPos(-2.5f, 22.0f, -4.0f);
+            this.rightFrontLeg.xRot = -1.1f;
+            this.rightFrontLeg.zRot = -0.5f;
+            this.leftFrontLeg.setPos(0.5f, 22.0f, -4.0f);
+            this.leftFrontLeg.xRot = 0.9f;
+            this.leftFrontLeg.zRot = 0.6f;
+
+            this.tail.setPos(-1.0f, 18.0f, 8.0f);
+            this.tail.xRot = 0.1f;
+            this.tail.yRot = 0.3f;
+            return;
+        }
+
+        this.body.zRot = 0.0f;
+        this.upperBody.zRot = 0.0f;
+        this.head.zRot = 0.0f;
+        this.rightHindLeg.zRot = 0.0f;
+        this.leftHindLeg.zRot = 0.0f;
+        this.rightFrontLeg.zRot = 0.0f;
+        this.leftFrontLeg.zRot = 0.0f;
+
         this.head.xRot = state.xRot * ((float) Math.PI / 180.0f);
         this.head.yRot = state.yRot * ((float) Math.PI / 180.0f);
 

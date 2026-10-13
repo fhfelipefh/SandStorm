@@ -41,8 +41,8 @@ class SandstormPlantCommandTest {
         assertNotNull(sandstormNode.getChild("plant_field"));
 
         assertNotNull(dispatcher.getRoot().getChild("sandstorm_plants"));
-        assertNotNull(dispatcher.getRoot().getChild("plant_field"));
-        assertNotNull(dispatcher.getRoot().getChild("plantar"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_plant_field"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_plantar"));
     }
 
     @Test

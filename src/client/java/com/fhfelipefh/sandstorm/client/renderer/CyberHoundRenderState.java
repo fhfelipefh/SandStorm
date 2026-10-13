@@ -6,4 +6,5 @@ public class CyberHoundRenderState extends LivingEntityRenderState {
     public boolean isTame = false;
     public boolean isSitting = false;
     public float animationTicks = 0.0f;
+    public boolean isDeactivated = false;
 }

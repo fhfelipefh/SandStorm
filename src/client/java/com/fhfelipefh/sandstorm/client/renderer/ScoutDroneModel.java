@@ -66,6 +66,25 @@ public class ScoutDroneModel extends EntityModel<ScoutDroneRenderState> {
     public void setupAnim(ScoutDroneRenderState state) {
         super.setupAnim(state);
 
+        if (state.isDeactivated) {
+            this.head.xRot = 0.5f;
+            this.head.yRot = 0.3f;
+            this.head.zRot = 0.4f;
+            this.rightArm.xRot = 0.2f;
+            this.rightArm.yRot = 0.0f;
+            this.rightArm.zRot = -0.1f;
+            this.leftArm.xRot = 0.1f;
+            this.leftArm.yRot = 0.0f;
+            this.leftArm.zRot = 0.15f;
+            this.rightLeg.xRot = 0.0f;
+            this.leftLeg.xRot = 0.0f;
+            return;
+        }
+
+        this.head.zRot = 0.0f;
+        this.rightArm.zRot = 0.0f;
+        this.leftArm.zRot = 0.0f;
+
         float walkPos = state.walkAnimationPos;
         float walkSpeed = state.walkAnimationSpeed;
 

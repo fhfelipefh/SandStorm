@@ -74,6 +74,28 @@ public class ScrapSentinelModel extends EntityModel<ScrapSentinelRenderState> {
     public void setupAnim(ScrapSentinelRenderState state) {
         super.setupAnim(state);
 
+        if (state.isDeactivated) {
+            this.body.y = 17.0f;
+            this.body.yRot = -0.2f;
+            this.body.xRot = 0.3f;
+            this.crest.xRot = 0.9f;
+            this.leftArm.xRot = 0.4f;
+            this.leftArm.yRot = 0.2f;
+            this.leftArm.zRot = 0.3f;
+            this.rightArm.xRot = 0.1f;
+            this.rightArm.yRot = -0.3f;
+            this.rightArm.zRot = -0.6f;
+            this.leftLeg.y = 16.0f;
+            this.leftLeg.xRot = -1.2f;
+            this.leftLeg.yRot = 0.2f;
+            this.rightLeg.y = 16.0f;
+            this.rightLeg.xRot = -0.8f;
+            this.rightLeg.yRot = -0.3f;
+            return;
+        }
+
+        this.body.xRot = 0.0f;
+
         if (state.isDormant) {
             this.body.y = 16.0f;
             this.body.yRot = 0.0f;

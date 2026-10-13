@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.defense.AcousticDefenseTracker;
 import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.DeactivatableAndroid;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
 import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
@@ -109,14 +110,27 @@ public class DesertMobSpawnManager {
             if (!level.getBiome(spawnPos).is(Biomes.DESERT)) {
                 continue;
             }
-            if (isPositionVisibleToAnyPlayer(level, spawnPos)) {
+
+            boolean deactivatedRoll = random.nextInt(10) == 0;
+            BlockPos targetPos = spawnPos;
+            if (deactivatedRoll) {
+                BlockPos underPos = findSubterraneanSpawnPos(level, candidateX, candidateZ, surfaceY, random);
+                if (underPos != null) {
+                    targetPos = underPos;
+                }
+            }
+
+            if (isPositionVisibleToAnyPlayer(level, targetPos)) {
                 continue;
             }
 
             EntityType<? extends Mob> entityType = selectArtificialMobType(random);
             Mob mob = entityType.create(level, EntitySpawnReason.NATURAL);
             if (mob != null) {
-                mob.setPos(candidateX + 0.5, surfaceY, candidateZ + 0.5);
+                mob.setPos(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
+                if (deactivatedRoll && mob instanceof DeactivatableAndroid deactivatable) {
+                    deactivatable.setDeactivated(true);
+                }
                 mob.addTag(VanillaMonsterSuppressionHandler.ALLOWED_TAG);
                 level.addFreshEntity(mob);
                 break;
@@ -171,18 +185,54 @@ public class DesertMobSpawnManager {
                 || state.is(Blocks.TERRACOTTA);
     }
 
+    public static boolean isSubterraneanGround(BlockState state) {
+        if (state == null || state.isAir()) {
+            return false;
+        }
+        return state.is(Blocks.STONE)
+                || state.is(Blocks.DEEPSLATE)
+                || state.is(Blocks.TUFF)
+                || state.is(Blocks.GRANITE)
+                || state.is(Blocks.DIORITE)
+                || state.is(Blocks.ANDESITE)
+                || state.is(Blocks.SANDSTONE)
+                || state.is(Blocks.RED_SANDSTONE)
+                || state.is(Blocks.SMOOTH_SANDSTONE)
+                || state.is(Blocks.DIRT)
+                || state.is(Blocks.GRAVEL)
+                || isSpawnableGround(state);
+    }
+
+    public static BlockPos findSubterraneanSpawnPos(ServerLevel level, int x, int z, int surfaceY, RandomSource random) {
+        int minY = Math.max(level.getMinY() + 4, surfaceY - 60);
+        int currentY = surfaceY - 5;
+        while (currentY > minY) {
+            BlockPos checkPos = new BlockPos(x, currentY, z);
+            BlockPos belowPos = checkPos.below();
+            if (isSubterraneanGround(level.getBlockState(belowPos))
+                    && level.getBlockState(checkPos).isAir()
+                    && level.getBlockState(checkPos.above()).isAir()) {
+                return checkPos;
+            }
+            currentY--;
+        }
+        return null;
+    }
+
     public static EntityType<? extends Mob> selectArtificialMobType(RandomSource random) {
         int roll = random.nextInt(100);
-        if (roll < 30) {
+        if (roll < 25) {
             return SandStormEntities.DERELICT_AUTOMATON;
-        } else if (roll < 55) {
+        } else if (roll < 45) {
             return SandStormEntities.CYBER_HOUND;
-        } else if (roll < 75) {
+        } else if (roll < 65) {
             return SandStormEntities.LABORER_UNIT;
-        } else if (roll < 90) {
+        } else if (roll < 80) {
             return SandStormEntities.SCOUT_DRONE;
-        } else {
+        } else if (roll < 92) {
             return SandStormEntities.CRAWLER_DRONE;
+        } else {
+            return SandStormEntities.SCRAP_SENTINEL;
         }
     }
 

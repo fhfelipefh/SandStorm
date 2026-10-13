@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 
 public class DerelictAutomatonRenderer extends MobRenderer<DerelictAutomatonEntity, DerelictAutomatonRenderState, DerelictAutomatonModel> {
     private static final Identifier TEXTURE = SandStormMod.id("textures/entity/derelict_automaton/derelict_automaton.png");
+    private static final Identifier TEXTURE_DEACTIVATED = SandStormMod.id("textures/entity/derelict_automaton/derelict_automaton_deactivated.png");
 
     public DerelictAutomatonRenderer(EntityRendererProvider.Context context) {
         super(context, new DerelictAutomatonModel(DerelictAutomatonModel.createBodyLayer().bakeRoot()), 0.5f);
@@ -16,7 +17,7 @@ public class DerelictAutomatonRenderer extends MobRenderer<DerelictAutomatonEnti
 
     @Override
     public Identifier getTextureLocation(DerelictAutomatonRenderState state) {
-        return TEXTURE;
+        return state.isDeactivated ? TEXTURE_DEACTIVATED : TEXTURE;
     }
 
     @Override
@@ -29,6 +30,7 @@ public class DerelictAutomatonRenderer extends MobRenderer<DerelictAutomatonEnti
         super.extractRenderState(entity, state, partialTick);
         state.isOvercharging = entity.isOvercharging();
         state.overchargeProgress = entity.getOverchargeProgress(partialTick);
+        state.isDeactivated = entity.isDeactivated();
         Level level = entity.level();
         state.animationTicks = level != null ? (level.getGameTime() + partialTick) : partialTick;
     }

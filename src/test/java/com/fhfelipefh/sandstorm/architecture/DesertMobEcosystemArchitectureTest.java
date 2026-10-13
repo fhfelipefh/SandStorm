@@ -56,10 +56,47 @@ class DesertMobEcosystemArchitectureTest {
     }
 
     @Test
-    void versionMustBeOnePointNineteenThree() throws IOException {
+    void versionMustBeOnePointNineteenSix() throws IOException {
         Path gradleProps = Path.of("gradle.properties");
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.19.3"), "gradle.properties must be 1.19.3");
+        assertTrue(content.contains("version=1.19.6"), "gradle.properties must be 1.19.6");
+    }
+
+    @Test
+    void allArtificialMobsMustImplementDeactivatedStateAndTextures() throws IOException {
+        Path entityDir = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity");
+        Path textureBase = Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "entity");
+        List<String> deactivatableEntities = List.of(
+                "DerelictAutomatonEntity.java",
+                "LaborerUnitEntity.java",
+                "ScoutDroneEntity.java",
+                "CrawlerDroneEntity.java",
+                "CyberHoundEntity.java",
+                "ScrapSentinelEntity.java"
+        );
+        for (String filename : deactivatableEntities) {
+            Path file = entityDir.resolve(filename);
+            assertTrue(Files.exists(file), "Missing artificial mob file: " + filename);
+            String content = Files.readString(file);
+            assertTrue(content.contains("DeactivatableAndroid"),
+                    filename + " must implement DeactivatableAndroid");
+            assertTrue(content.contains("isDeactivated()"),
+                    filename + " must support isDeactivated()");
+        }
+
+        List<String> textureFiles = List.of(
+                "crawler_drone/crawler_drone_deactivated.png",
+                "derelict_automaton/derelict_automaton_deactivated.png",
+                "laborer_unit/laborer_unit_deactivated.png",
+                "scout_drone/scout_drone_deactivated.png",
+                "cyber_hound/cyber_hound_deactivated.png",
+                "scrap_sentinel/scrap_sentinel_deactivated.png"
+        );
+        for (String relTexture : textureFiles) {
+            Path texPath = textureBase.resolve(relTexture);
+            assertTrue(Files.exists(texPath), "Missing deactivated texture: " + relTexture);
+            assertTrue(Files.size(texPath) > 0, "Texture must not be empty: " + relTexture);
+        }
     }
 
     @Test

@@ -3,7 +3,7 @@
   "category": "misc",
   "cookingtime": 200,
   "experience": 0.25,
-  "ingredient": "minecraft:sand",
+  "ingredient": "sandstorm:salinized_sand",
   "result": {
     "count": 1,
     "id": "sandstorm:raw_silicon"

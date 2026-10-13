@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.entity;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.survival.FlashlightStateServer;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
+import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -33,6 +34,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -41,9 +43,10 @@ import net.minecraft.world.phys.AABB;
 import java.util.EnumSet;
 import java.util.List;
 
-public class ScrapSentinelEntity extends PathfinderMob implements Enemy {
+public class ScrapSentinelEntity extends PathfinderMob implements Enemy, DeactivatableAndroid {
     private static final EntityDataAccessor<Boolean> DATA_DORMANT = SynchedEntityData.defineId(ScrapSentinelEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_ATTACK_ANIM = SynchedEntityData.defineId(ScrapSentinelEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(ScrapSentinelEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int empCooldown = 0;
 
@@ -66,6 +69,7 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy {
         super.defineSynchedData(builder);
         builder.define(DATA_DORMANT, true);
         builder.define(DATA_ATTACK_ANIM, 0);
+        builder.define(DATA_DEACTIVATED, false);
     }
 
     @Override
@@ -79,6 +83,33 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy {
 
         this.targetSelector.addGoal(1, new SentinelHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new SentinelNearestAttackableTargetGoal(this));
+    }
+
+    @Override
+    public boolean isDeactivated() {
+        return this.entityData.get(DATA_DEACTIVATED);
+    }
+
+    @Override
+    public void setDeactivated(boolean deactivated) {
+        this.entityData.set(DATA_DEACTIVATED, deactivated);
+        this.setNoAi(deactivated);
+        if (deactivated) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1.0);
+            this.setHealth(1.0f);
+            this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0);
+            this.setDormant(true);
+            this.setTarget(null);
+            this.getNavigation().stop();
+        }
+    }
+
+    @Override
+    public Component getName() {
+        if (this.isDeactivated()) {
+            return Component.translatable(this.getType().getDescriptionId() + ".deactivated");
+        }
+        return super.getName();
     }
 
     public boolean isDormant() {
@@ -102,6 +133,9 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy {
     }
 
     public void awaken(LivingEntity trigger) {
+        if (this.isDeactivated()) {
+            return;
+        }
         if (!isDormant()) {
             if (trigger != null && getTarget() == null) {
                 setTarget(trigger);
@@ -135,6 +169,13 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy {
 
     @Override
     public void tick() {
+        if (this.isDeactivated()) {
+            super.tick();
+            this.setDeltaMovement(0.0, Math.min(0.0, this.getDeltaMovement().y), 0.0);
+            this.yBodyRot = this.getYRot();
+            this.yHeadRot = this.getYRot();
+            return;
+        }
         super.tick();
 
         if (isDormant()) {
@@ -156,6 +197,9 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy {
     }
 
     private void checkFlashlightAwakening() {
+        if (this.isDeactivated()) {
+            return;
+        }
         AABB scanBox = this.getBoundingBox().inflate(10.0);
         List<Player> nearby = this.level().getEntitiesOfClass(Player.class, scanBox);
         for (Player player : nearby) {
@@ -168,6 +212,9 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy {
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
+        if (this.isDeactivated()) {
+            return super.hurtServer(level, source, amount);
+        }
         if (isDormant()) {
             if (source.getEntity() instanceof LivingEntity attacker) {
                 awaken(attacker);
@@ -238,13 +285,24 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy {
     }
 
     @Override
+    protected void dropCustomDeathLoot(ServerLevel serverLevel, DamageSource damageSource, boolean recentlyHit) {
+        super.dropCustomDeathLoot(serverLevel, damageSource, recentlyHit);
+        if (this.isDeactivated()) {
+            this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SCRAP_METAL, 1));
+            if (this.random.nextFloat() < 0.2f) {
+                this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.ELECTRIC_COMPONENT, 1));
+            }
+        }
+    }
+
+    @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.IRON_GOLEM_HURT;
+        return this.isDeactivated() ? SoundEvents.NETHERITE_BLOCK_BREAK : SoundEvents.IRON_GOLEM_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.IRON_GOLEM_DEATH;
+        return this.isDeactivated() ? SoundEvents.ITEM_BREAK.value() : SoundEvents.IRON_GOLEM_DEATH;
     }
 
     @Override
@@ -252,6 +310,7 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy {
         super.addAdditionalSaveData(output);
         output.putBoolean("Dormant", isDormant());
         output.putInt("EmpCooldown", this.empCooldown);
+        output.putBoolean("Deactivated", this.isDeactivated());
     }
 
     @Override
@@ -259,6 +318,7 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy {
         super.readAdditionalSaveData(input);
         setDormant(input.getBooleanOr("Dormant", true));
         this.empCooldown = input.getIntOr("EmpCooldown", 0);
+        this.setDeactivated(input.getBooleanOr("Deactivated", false));
     }
 
     private static class SentinelFloatGoal extends FloatGoal {
