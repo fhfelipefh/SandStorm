@@ -83,6 +83,11 @@
     "sandstorm:rappel_anchor",
     "sandstorm:glowing_rappel_anchor",
     "sandstorm:irrigation_pump",
-    "sandstorm:irrigation_sprinkler"
+    "sandstorm:irrigation_sprinkler",
+    "sandstorm:storm_wind_turbine",
+    "sandstorm:fiberglass_corrugated_sheet",
+    "sandstorm:fiberglass_corrugated_slab",
+    "sandstorm:fiberglass_corrugated_pane",
+    "sandstorm:fiberglass_chemical_pipe"
   ]
 }

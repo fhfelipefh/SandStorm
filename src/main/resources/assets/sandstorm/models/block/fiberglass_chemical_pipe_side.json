@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.625, 0.625, 0.625]
+    }
+  },
+  "textures": {
+    "particle": "sandstorm:block/fiberglass_chemical_pipe",
+    "pipe": "sandstorm:block/fiberglass_chemical_pipe"
+  },
+  "elements": [
+    {
+      "name": "arm",
+      "from": [4, 4, 0],
+      "to": [12, 12, 4],
+      "faces": {
+        "down": {"uv": [4, 0, 12, 4], "texture": "#pipe"},
+        "up": {"uv": [4, 0, 12, 4], "texture": "#pipe"},
+        "north": {"uv": [4, 4, 12, 12], "texture": "#pipe"},
+        "west": {"uv": [0, 4, 4, 12], "texture": "#pipe"},
+        "east": {"uv": [12, 4, 16, 12], "texture": "#pipe"}
+      }
+    }
+  ]
+}

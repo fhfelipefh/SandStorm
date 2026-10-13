@@ -177,6 +177,9 @@ public class SandStormItems {
     public static final BiosphereCartridgeItem BIOSPHERE_CARTRIDGE_OASIS = register("biosphere_cartridge_oasis", new BiosphereCartridgeItem(BiosphereType.PRIMORDIAL_OASIS, properties("biosphere_cartridge_oasis").rarity(Rarity.EPIC)));
     public static final Item SYNTHETIC_FIBER = register("synthetic_fiber", new Item(properties("synthetic_fiber")));
     public static final Item FIBERGLASS = register("fiberglass", new Item(properties("fiberglass")));
+    public static final Item FIBERGLASS_TURBINE_BLADE = register("fiberglass_turbine_blade", new Item(properties("fiberglass_turbine_blade")));
+    public static final CompositeRecurveBowItem COMPOSITE_RECURVE_BOW = register("composite_recurve_bow", new CompositeRecurveBowItem(properties("composite_recurve_bow").durability(768).rarity(Rarity.UNCOMMON)));
+    public static final SandDepthProbeItem SAND_DEPTH_PROBE = register("sand_depth_probe", new SandDepthProbeItem(properties("sand_depth_probe").durability(384)));
     public static final RappelWinchItem RAPPEL_WINCH = register("rappel_winch", new RappelWinchItem(properties("rappel_winch").stacksTo(1)));
     public static final RappelWinchItem GLOWING_RAPPEL_WINCH = register("glowing_rappel_winch", new RappelWinchItem(properties("glowing_rappel_winch").stacksTo(1), true));
 
@@ -190,6 +193,14 @@ public class SandStormItems {
                         entries.accept(SURVIVAL_DATAPAD);
                         entries.accept(SYNTHETIC_FIBER);
                         entries.accept(FIBERGLASS);
+                        entries.accept(FIBERGLASS_TURBINE_BLADE);
+                        entries.accept(COMPOSITE_RECURVE_BOW);
+                        entries.accept(SAND_DEPTH_PROBE);
+                        entries.accept(SandStormBlocks.STORM_WIND_TURBINE);
+                        entries.accept(SandStormBlocks.FIBERGLASS_CORRUGATED_SHEET);
+                        entries.accept(SandStormBlocks.FIBERGLASS_CORRUGATED_SLAB);
+                        entries.accept(SandStormBlocks.FIBERGLASS_CORRUGATED_PANE);
+                        entries.accept(SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE);
                         entries.accept(RAPPEL_WINCH);
                         entries.accept(GLOWING_RAPPEL_WINCH);
                         entries.accept(SandStormBlocks.RAPPEL_ANCHOR);

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "sandstorm:fiberglass",
+    "G": "sandstorm:fulgurite_glass"
+  },
+  "pattern": [
+    "FGF",
+    "FGF"
+  ],
+  "result": {
+    "count": 8,
+    "id": "sandstorm:fiberglass_chemical_pipe"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:fiberglass_turbine_blade",
+    "C": "sandstorm:electric_component",
+    "I": "sandstorm:structural_plate"
+  },
+  "pattern": [
+    " B ",
+    "BCB",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:storm_wind_turbine"
+  }
+}

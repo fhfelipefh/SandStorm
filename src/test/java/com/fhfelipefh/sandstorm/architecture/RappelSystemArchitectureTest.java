@@ -124,4 +124,33 @@ class RappelSystemArchitectureTest {
         assertTrue(ropeCode.contains("affectNeighborsAfterRemoval"), "RappelRopeBlock must implement affectNeighborsAfterRemoval");
         assertTrue(anchorCode.contains("affectNeighborsAfterRemoval"), "RappelAnchorBlock must implement affectNeighborsAfterRemoval");
     }
+
+    @Test
+    void rappelRopeMustPreventFallDamageAndAutoCatch() throws IOException {
+        Path ropePath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "block", "RappelRopeBlock.java");
+        Path anchorEntityPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "block", "entity", "RappelAnchorBlockEntity.java");
+        Path harnessPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity", "RappelHarnessEntity.java");
+        Path anchorBlockPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "block", "RappelAnchorBlock.java");
+
+        String ropeCode = Files.readString(ropePath);
+        String anchorEntityCode = Files.readString(anchorEntityPath);
+        String harnessCode = Files.readString(harnessPath);
+        String anchorBlockCode = Files.readString(anchorBlockPath);
+
+        assertTrue(ropeCode.contains("getCollisionShape"), "RappelRopeBlock must override getCollisionShape");
+        assertTrue(ropeCode.contains("Shapes.empty()"), "RappelRopeBlock collision shape must be empty for pass-through");
+        assertTrue(ropeCode.contains("entityInside"), "RappelRopeBlock must implement entityInside");
+        assertTrue(ropeCode.contains("resetFallDistance"), "RappelRopeBlock must reset fall distance on contact");
+        assertTrue(ropeCode.contains("tryAutoCatch"), "RappelRopeBlock must support tryAutoCatch");
+
+        assertTrue(anchorEntityCode.contains("checkProximityCatch"), "RappelAnchorBlockEntity must implement checkProximityCatch");
+        assertTrue(anchorEntityCode.contains("canAutoCatch"), "RappelAnchorBlockEntity must validate canAutoCatch");
+        assertTrue(anchorEntityCode.contains("resetFallDistance"), "RappelAnchorBlockEntity must reset fall distance");
+
+        assertTrue(harnessCode.contains("DISMOUNT_COOLDOWNS"), "RappelHarnessEntity must track dismount cooldowns");
+        assertTrue(harnessCode.contains("isOnDismountCooldown"), "RappelHarnessEntity must expose isOnDismountCooldown");
+        assertTrue(harnessCode.contains("resetFallDistance"), "RappelHarnessEntity must reset fall distance");
+
+        assertTrue(anchorBlockCode.contains("fallOn"), "RappelAnchorBlock must override fallOn to prevent fall damage");
+    }
 }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": "sandstorm:fiberglass",
+    "Q": "sandstorm:piezo_quartz_shard"
+  },
+  "pattern": [
+    " Q",
+    "F ",
+    "F "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:sand_depth_probe"
+  }
+}

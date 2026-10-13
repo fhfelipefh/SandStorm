@@ -2,6 +2,9 @@ package com.fhfelipefh.sandstorm.content.entity;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.item.SpaceSuitItem;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -35,6 +38,17 @@ public class RappelHarnessEntity extends PathfinderMob {
             SynchedEntityData.defineId(RappelHarnessEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_DESCENDING =
             SynchedEntityData.defineId(RappelHarnessEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final Map<UUID, Long> DISMOUNT_COOLDOWNS = new ConcurrentHashMap<>();
+
+    public static void setDismountCooldown(UUID uuid, long expiryGameTime) {
+        DISMOUNT_COOLDOWNS.entrySet().removeIf(entry -> entry.getValue() <= expiryGameTime);
+        DISMOUNT_COOLDOWNS.put(uuid, expiryGameTime);
+    }
+
+    public static boolean isOnDismountCooldown(UUID uuid, long gameTime) {
+        Long expiry = DISMOUNT_COOLDOWNS.get(uuid);
+        return expiry != null && gameTime < expiry;
+    }
 
     public RappelHarnessEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -187,6 +201,9 @@ public class RappelHarnessEntity extends PathfinderMob {
         super.removePassenger(passenger);
         if (passenger instanceof LivingEntity living) {
             living.resetFallDistance();
+        }
+        if (passenger instanceof Player player) {
+            setDismountCooldown(player.getUUID(), this.level().getGameTime() + 25L);
         }
         if (!this.level().isClientSide()) {
             this.discard();

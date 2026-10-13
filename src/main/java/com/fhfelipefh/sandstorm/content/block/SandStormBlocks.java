@@ -18,11 +18,13 @@ import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DewCondenserBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ElectricFencePylonBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.FiberglassChemicalPipeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.IrrigationPumpBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.IrrigationSprinklerBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.StormWindTurbineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticRailgunBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.LithoPlasmaExtractorBlockEntity;
@@ -764,6 +766,41 @@ public class SandStormBlocks {
                     .strength(1.2f)
                     .sound(SoundType.COPPER)
                     .noOcclusion()));
+    public static final StormWindTurbineBlock STORM_WIND_TURBINE = register("storm_wind_turbine",
+            new StormWindTurbineBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("storm_wind_turbine")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
+    public static final FiberglassSheetBlock FIBERGLASS_CORRUGATED_SHEET = register("fiberglass_corrugated_sheet",
+            new FiberglassSheetBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fiberglass_corrugated_sheet")))
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(1.2f, 8.0f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final FiberglassSlabBlock FIBERGLASS_CORRUGATED_SLAB = register("fiberglass_corrugated_slab",
+            new FiberglassSlabBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fiberglass_corrugated_slab")))
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(1.2f, 8.0f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final FiberglassPaneBlock FIBERGLASS_CORRUGATED_PANE = register("fiberglass_corrugated_pane",
+            new FiberglassPaneBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fiberglass_corrugated_pane")))
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(1.2f, 8.0f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final FiberglassChemicalPipeBlock FIBERGLASS_CHEMICAL_PIPE = register("fiberglass_chemical_pipe",
+            new FiberglassChemicalPipeBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fiberglass_chemical_pipe")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(1.8f, 10.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -1010,6 +1047,16 @@ public class SandStormBlocks {
             SandStormMod.id("irrigation_sprinkler"),
             new BlockEntityType<>(IrrigationSprinklerBlockEntity::new, Set.of(IRRIGATION_SPRINKLER))
     );
+    public static final BlockEntityType<StormWindTurbineBlockEntity> STORM_WIND_TURBINE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("storm_wind_turbine"),
+            new BlockEntityType<>(StormWindTurbineBlockEntity::new, Set.of(STORM_WIND_TURBINE))
+    );
+    public static final BlockEntityType<FiberglassChemicalPipeBlockEntity> FIBERGLASS_CHEMICAL_PIPE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("fiberglass_chemical_pipe"),
+            new BlockEntityType<>(FiberglassChemicalPipeBlockEntity::new, Set.of(FIBERGLASS_CHEMICAL_PIPE))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -1067,5 +1114,6 @@ public class SandStormBlocks {
         FluidStorage.SIDED.registerForBlockEntity(AmnioticIncubatorBlockEntity::getFluidStorage, AMNIOTIC_INCUBATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, IRRIGATION_PUMP_BE);
         FluidStorage.SIDED.registerForBlockEntity(IrrigationPumpBlockEntity::getFluidStorage, IRRIGATION_PUMP_BE);
+        FluidStorage.SIDED.registerForBlockEntity(FiberglassChemicalPipeBlockEntity::getFluidStorage, FIBERGLASS_CHEMICAL_PIPE_BE);
     }
 }

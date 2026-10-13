@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": "sandstorm:fiberglass",
+    "S": "sandstorm:synthetic_fiber"
+  },
+  "pattern": [
+    " FS",
+    "F S",
+    " FS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:composite_recurve_bow"
+  }
+}

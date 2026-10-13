@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import java.util.List;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 
 public class RappelAnchorBlockEntity extends BlockEntity {
     public static final int STATE_IDLE = 0;
@@ -113,6 +115,10 @@ public class RappelAnchorBlockEntity extends BlockEntity {
         this.tickTimer++;
         boolean isGlowing = state.is(SandStormBlocks.GLOWING_RAPPEL_ANCHOR);
 
+        if (this.state != STATE_RETRACTING && this.deployedDepth > 0) {
+            checkProximityCatch(level, pos);
+        }
+
         if (this.state == STATE_DEPLOYING) {
             if (this.tickTimer % 2 == 0) {
                 if (this.deployedDepth < this.targetDepth) {
@@ -167,6 +173,40 @@ public class RappelAnchorBlockEntity extends BlockEntity {
         }
     }
 
+    private void checkProximityCatch(Level level, BlockPos pos) {
+        AABB catchBox = new AABB(
+                pos.getX() - 0.75,
+                pos.getY() - this.deployedDepth - 0.5,
+                pos.getZ() - 0.75,
+                pos.getX() + 1.75,
+                pos.getY() + 0.5,
+                pos.getZ() + 1.75
+        );
+        List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, catchBox);
+        for (Player player : nearbyPlayers) {
+            player.resetFallDistance();
+            if (canAutoCatch(player, pos)) {
+                attachPlayer(player, player.blockPosition());
+            }
+        }
+    }
+
+    public boolean canAutoCatch(Player player, BlockPos anchorPos) {
+        if (player.isPassenger() || player.isSpectator()) {
+            return false;
+        }
+        if (RappelHarnessEntity.isOnDismountCooldown(player.getUUID(), player.level().getGameTime())) {
+            return false;
+        }
+        if (player.isShiftKeyDown() && player.onGround()) {
+            return false;
+        }
+        if (player.getY() >= anchorPos.getY() - 0.1 && player.onGround() && player.fallDistance <= 0.0f) {
+            return false;
+        }
+        return true;
+    }
+
     public void cleanupRope() {
         if (this.level == null || this.level.isClientSide()) {
             return;
@@ -188,15 +228,18 @@ public class RappelAnchorBlockEntity extends BlockEntity {
             return;
         }
 
-        double spawnY = Math.min(this.worldPosition.getY() - 0.2, interactionPos.getY() + 0.5);
         double minY = this.worldPosition.getY() - Math.max(1, this.deployedDepth) + 0.1;
         double maxY = this.worldPosition.getY() - 0.2;
+        double spawnY = Math.max(minY, Math.min(maxY, player.getY()));
 
         RappelHarnessEntity harness = new RappelHarnessEntity(SandStormEntities.RAPPEL_HARNESS, this.level);
         harness.setPos(this.worldPosition.getX() + 0.5, spawnY, this.worldPosition.getZ() + 0.5);
         harness.setAnchorPos(this.worldPosition);
         harness.setMinY(minY);
         harness.setMaxY(maxY);
+
+        player.setDeltaMovement(0.0, 0.0, 0.0);
+        player.resetFallDistance();
 
         this.level.addFreshEntity(harness);
         player.startRiding(harness);

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "sandstorm:block/fiberglass_corrugated_slab"
+    },
+    "type=double": {
+      "model": "sandstorm:block/fiberglass_corrugated_sheet"
+    },
+    "type=top": {
+      "model": "sandstorm:block/fiberglass_corrugated_slab_top"
+    }
+  }
+}

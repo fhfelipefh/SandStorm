@@ -64,6 +64,7 @@ import com.fhfelipefh.sandstorm.client.renderer.Printer3DBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.QuantumDiskDriveBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.RappelAnchorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.RappelHarnessRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.StormWindTurbineBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ExcavatorVehicleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MegazordRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandboardRenderer;
@@ -166,6 +167,7 @@ public class SandStormClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(SandStormBlocks.CRUSHING_SPIKE_GATE_BE, CrushingSpikeGateRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.QUANTUM_DISK_DRIVE_BE, QuantumDiskDriveBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.RAPPEL_ANCHOR_BE, RappelAnchorBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.STORM_WIND_TURBINE_BE, StormWindTurbineBlockEntityRenderer::new);
 
         ArmorRenderer.register(new SpaceSuitArmorRenderer(),
                 SandStormItems.SPACE_SUIT_HELMET,

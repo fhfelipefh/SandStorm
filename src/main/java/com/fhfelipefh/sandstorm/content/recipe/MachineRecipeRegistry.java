@@ -111,6 +111,20 @@ public class MachineRecipeRegistry {
                         List.of(() -> new ItemStack(Items.GLASS), () -> new ItemStack(Items.GLASS_PANE)),
                         100,
                         60
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.FIBERGLASS_TURBINE_BLADE),
+                        List.of(() -> new ItemStack(SandStormItems.FIBERGLASS)),
+                        List.of(() -> new ItemStack(SandStormItems.NANO_ACTUATOR)),
+                        180,
+                        120
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormBlocks.FIBERGLASS_CORRUGATED_SHEET, 2),
+                        List.of(() -> new ItemStack(SandStormItems.FIBERGLASS)),
+                        List.of(() -> new ItemStack(SandStormItems.FIBERGLASS)),
+                        120,
+                        80
                 )
         );
         RECIPES.put("sandstorm:printer_3d", Collections.unmodifiableList(list));

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/template_glass_pane_noside",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "pane": "sandstorm:block/fiberglass_corrugated_sheet",
+    "edge": "sandstorm:block/fiberglass_corrugated_sheet"
+  }
+}

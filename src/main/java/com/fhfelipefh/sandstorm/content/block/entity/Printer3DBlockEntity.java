@@ -84,6 +84,17 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             int yield = in1.isEmpty() ? 1 : 2;
             return out.is(SandStormItems.FIBERGLASS) && out.getCount() + yield <= out.getMaxStackSize();
         }
+        if (in0.is(SandStormItems.FIBERGLASS)) {
+            if (in1.is(SandStormItems.NANO_ACTUATOR)) {
+                ItemStack out = items.get(2);
+                return out.isEmpty() || (out.is(SandStormItems.FIBERGLASS_TURBINE_BLADE) && out.getCount() < out.getMaxStackSize());
+            }
+            if (in1.is(SandStormItems.FIBERGLASS)) {
+                ItemStack out = items.get(2);
+                return out.isEmpty() || (out.is(SandStormBlocks.FIBERGLASS_CORRUGATED_SHEET.asItem()) && out.getCount() + 2 <= out.getMaxStackSize());
+            }
+            return false;
+        }
         return false;
     }
 
@@ -132,6 +143,26 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
                 items.set(2, new ItemStack(SandStormItems.FIBERGLASS, yield));
             } else {
                 out.grow(yield);
+            }
+        } else if (in0.is(SandStormItems.FIBERGLASS)) {
+            if (in1.is(SandStormItems.NANO_ACTUATOR)) {
+                in0.shrink(1);
+                in1.shrink(1);
+                ItemStack out = items.get(2);
+                if (out.isEmpty()) {
+                    items.set(2, new ItemStack(SandStormItems.FIBERGLASS_TURBINE_BLADE));
+                } else {
+                    out.grow(1);
+                }
+            } else if (in1.is(SandStormItems.FIBERGLASS)) {
+                in0.shrink(1);
+                in1.shrink(1);
+                ItemStack out = items.get(2);
+                if (out.isEmpty()) {
+                    items.set(2, new ItemStack(SandStormBlocks.FIBERGLASS_CORRUGATED_SHEET, 2));
+                } else {
+                    out.grow(2);
+                }
             }
         }
     }

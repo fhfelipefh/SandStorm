@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "S": "sandstorm:fiberglass_corrugated_sheet"
+  },
+  "pattern": [
+    "SSS"
+  ],
+  "result": {
+    "count": 6,
+    "id": "sandstorm:fiberglass_corrugated_slab"
+  }
+}

@@ -15,7 +15,7 @@ class MachineRecipeRegistryTest {
     void testPrinter3DRecipes() {
         List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:printer_3d");
         assertFalse(recipes.isEmpty());
-        assertEquals(10, recipes.size());
+        assertEquals(12, recipes.size());
 
         MachineRecipe r1 = recipes.get(0);
         assertEquals(200, r1.getEnergyCost());
@@ -76,6 +76,18 @@ class MachineRecipeRegistryTest {
         assertEquals(60, r10.getProcessTicks());
         assertEquals(2, r10.getSlot0InputCount());
         assertEquals(2, r10.getSlot1InputCount());
+
+        MachineRecipe r11 = recipes.get(10);
+        assertEquals(180, r11.getEnergyCost());
+        assertEquals(120, r11.getProcessTicks());
+        assertEquals(1, r11.getSlot0InputCount());
+        assertEquals(1, r11.getSlot1InputCount());
+
+        MachineRecipe r12 = recipes.get(11);
+        assertEquals(120, r12.getEnergyCost());
+        assertEquals(80, r12.getProcessTicks());
+        assertEquals(1, r12.getSlot0InputCount());
+        assertEquals(1, r12.getSlot1InputCount());
     }
 
     @Test
