@@ -4,6 +4,23 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 
 ## [1.19.14] - 2026-10-14
 
+### 🛡️ Metalurgia Pesada, Concreto Armado & Blindagem Radiológica de Chumbo
+* **Novos Blocos Ultra-Resistentes para Dungeons e Bunkers Subterrâneos**:
+  * `reinforced_concrete` (**Concreto Armado**): concreto de alta densidade estrutural com armação interna de vergalhões de aço. Possui dureza 55.0 e resistência a explosões 1500.0 (superando a obsidiana vanilla!), exigindo picareta de diamante/netherite para extração e sendo imune a explosões convencionais de TNT e mísseis.
+  * `weathered_reinforced_concrete` (**Concreto Armado Milenar**): variante envelhecida de concreto armado exposta a milênios de pressão tectônica e corrosão geológica, revelando fissuras e malha de aço oxidada. Dureza 50.0 e resistência 1200.0.
+  * `lead_block` (**Bloco de Chumbo**): bloco maciço metálico de chumbo denso com acabamento bisotado e tom cinza-azulado característico.
+  * `lead_shielding_block` (**Bloco de Blindagem de Chumbo**): placa reforçada de blindagem radiológica com rebites perimetrais e carcaça de contenção de radiação pesada, utilizada para isolar piscinas de combustível e depósitos de resíduos.
+* **Novos Itens Metalúrgicos**:
+  * `steel_rebar` (**Vergalhão de Aço**): barras caneladas de aço industrial para armação de estruturas e manufatura de concreto armado.
+  * `lead_ingot` (**Lingote de Chumbo**): lingote de metal pesado denso para proteção radiológica e equipamentos de contenção.
+  * `raw_lead` (**Chumbo Bruto**): fragmento de galena/minério bruto denso de chumbo encontrado em cofres de depósitos e estratos profundos.
+* **Integração Arquitetônica nas Dungeons Procedurais**:
+  * `BaseDungeonComponent`: o exoesqueleto estrutural dos complexos agora intercala Concreto Armado e Concreto Armado Milenar em tetos e paredes de contenção.
+  * `MillennialRepositoryCatalog`: as piscinas de combustível irradiado (`SpentFuelPoolVault`) e áreas de descarte (`CorrodedWasteDepot`) possuem perímetros blindados com Bloco de Chumbo e Blindagem de Chumbo. Baús de espólio agora contêm Vergalhões de Aço, Lingotes de Chumbo e Chumbo Bruto.
+  * `AncientBunkerCatalog`: câmaras de armazenamento de resíduos ganham contenção de blindagem de chumbo e espólio metalúrgico reforçado.
+* **Rede Subterrânea do Showcase (`ShowcaseAutomation`)**:
+  * O subsolo sob a exibição de blocos foi preenchido com 4 megadungeons colossais (693 salas no total), passarelas de vidro fúlgurita com vista para o abismo, tubos de descida com escadas e teleportadores rápidos.
+
 ### ☢️ Depósito Geológico Profundo Multi-Andar & Barris Radioativos Milenares
 * **Dungeon Procedural Multi-Andar (`MillennialRepositoryDungeon` / `MillennialRepositoryCatalog`)**:
   * Implementação de gerador procedural de megadungeons verticais com $N$ andares (2 a 6 andares, padrão de 3 andares e salas $7 \times 7$).

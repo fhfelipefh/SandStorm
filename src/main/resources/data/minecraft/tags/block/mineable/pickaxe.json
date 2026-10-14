@@ -89,6 +89,10 @@
     "sandstorm:fiberglass_corrugated_slab",
     "sandstorm:fiberglass_corrugated_pane",
     "sandstorm:fiberglass_chemical_pipe",
-    "sandstorm:radioactive_waste_barrel"
+    "sandstorm:radioactive_waste_barrel",
+    "sandstorm:reinforced_concrete",
+    "sandstorm:weathered_reinforced_concrete",
+    "sandstorm:lead_block",
+    "sandstorm:lead_shielding_block"
   ]
 }

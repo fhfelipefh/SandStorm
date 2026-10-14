@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world.dungeon;
 
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -62,7 +63,10 @@ public abstract class BaseDungeonComponent implements DungeonComponent {
                     }
                 }
 
-                setLocalBlock(level, origin, rotation, lx, 5, lz, size, Blocks.POLISHED_DEEPSLATE.defaultBlockState());
+                BlockState ceilingState = (lx + lz) % 2 == 0
+                        ? Blocks.POLISHED_DEEPSLATE.defaultBlockState()
+                        : SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState();
+                setLocalBlock(level, origin, rotation, lx, 5, lz, size, ceilingState);
 
                 for (int ly = 1; ly <= 4; ly++) {
                     boolean isNorthWall = (lz == 0);
@@ -85,9 +89,17 @@ public abstract class BaseDungeonComponent implements DungeonComponent {
                         if (isDoorway) {
                             setLocalBlock(level, origin, rotation, lx, ly, lz, size, Blocks.AIR.defaultBlockState());
                         } else {
-                            BlockState wallState = (lx * 3 + lz * 7 + ly) % 5 == 0
-                                    ? Blocks.CRACKED_DEEPSLATE_BRICKS.defaultBlockState()
-                                    : Blocks.DEEPSLATE_BRICKS.defaultBlockState();
+                            int pattern = (lx * 3 + lz * 7 + ly) % 6;
+                            BlockState wallState;
+                            if (pattern == 0) {
+                                wallState = SandStormBlocks.WEATHERED_REINFORCED_CONCRETE.defaultBlockState();
+                            } else if (pattern == 1) {
+                                wallState = SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState();
+                            } else if (pattern == 2) {
+                                wallState = Blocks.CRACKED_DEEPSLATE_BRICKS.defaultBlockState();
+                            } else {
+                                wallState = Blocks.DEEPSLATE_BRICKS.defaultBlockState();
+                            }
                             setLocalBlock(level, origin, rotation, lx, ly, lz, size, wallState);
                         }
                     } else {

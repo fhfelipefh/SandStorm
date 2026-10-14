@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "LPL",
+    "PBP",
+    "LPL"
+  ],
+  "key": {
+    "L": "sandstorm:lead_ingot",
+    "P": "sandstorm:structural_plate",
+    "B": "sandstorm:lead_block"
+  },
+  "result": {
+    "count": 4,
+    "id": "sandstorm:lead_shielding_block"
+  }
+}

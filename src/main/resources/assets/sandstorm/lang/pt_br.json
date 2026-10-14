@@ -1197,5 +1197,16 @@
   "item.sandstorm.radioactive_sludge_bucket": "Balde de Lodo Radioativo",
   "block.sandstorm.radioactive_sludge": "Lodo Radioativo",
   "item.sandstorm.defective_sentinel_spawn_egg": "Ovo Gerador de Sentinela Defeituoso",
-  "entity.sandstorm.defective_sentinel": "Sentinela Defeituoso"
+  "entity.sandstorm.defective_sentinel": "Sentinela Defeituoso",
+  "item.sandstorm.steel_rebar": "Vergalhão de Aço",
+  "item.sandstorm.lead_ingot": "Lingote de Chumbo",
+  "item.sandstorm.raw_lead": "Chumbo Bruto",
+  "block.sandstorm.reinforced_concrete": "Concreto Armado",
+  "item.sandstorm.reinforced_concrete": "Concreto Armado",
+  "block.sandstorm.weathered_reinforced_concrete": "Concreto Armado Milenar",
+  "item.sandstorm.weathered_reinforced_concrete": "Concreto Armado Milenar",
+  "block.sandstorm.lead_block": "Bloco de Chumbo",
+  "item.sandstorm.lead_block": "Bloco de Chumbo",
+  "block.sandstorm.lead_shielding_block": "Bloco de Blindagem de Chumbo",
+  "item.sandstorm.lead_shielding_block": "Bloco de Blindagem de Chumbo"
 }

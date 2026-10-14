@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " I",
+    "CI",
+    "C "
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "C": "minecraft:coal"
+  },
+  "result": {
+    "count": 4,
+    "id": "sandstorm:steel_rebar"
+  }
+}

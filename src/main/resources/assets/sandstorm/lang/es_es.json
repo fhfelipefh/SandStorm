@@ -1197,5 +1197,16 @@
   "item.sandstorm.radioactive_sludge_bucket": "Cubo de Lodo Radiactivo",
   "block.sandstorm.radioactive_sludge": "Lodo Radiactivo",
   "item.sandstorm.defective_sentinel_spawn_egg": "Huevo de Centinela Defectuoso",
-  "entity.sandstorm.defective_sentinel": "Centinela Defectuoso"
+  "entity.sandstorm.defective_sentinel": "Centinela Defectuoso",
+  "item.sandstorm.steel_rebar": "Varilla de Acero",
+  "item.sandstorm.lead_ingot": "Lingote de Plomo",
+  "item.sandstorm.raw_lead": "Plomo Bruto",
+  "block.sandstorm.reinforced_concrete": "Hormigón Armado",
+  "item.sandstorm.reinforced_concrete": "Hormigón Armado",
+  "block.sandstorm.weathered_reinforced_concrete": "Hormigón Armado Milenario",
+  "item.sandstorm.weathered_reinforced_concrete": "Hormigón Armado Milenario",
+  "block.sandstorm.lead_block": "Bloque de Plomo",
+  "item.sandstorm.lead_block": "Bloque de Plomo",
+  "block.sandstorm.lead_shielding_block": "Bloque de Blindaje de Plomo",
+  "item.sandstorm.lead_shielding_block": "Bloque de Blindaje de Plomo"
 }

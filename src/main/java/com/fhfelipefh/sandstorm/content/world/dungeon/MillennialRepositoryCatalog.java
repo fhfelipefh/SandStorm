@@ -499,6 +499,13 @@ public class MillennialRepositoryCatalog {
             setLocalBlock(level, origin, rotation, 1, 1, 4, size, SandStormBlocks.RADIOACTIVE_WASTE_BARREL.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 1, 4, size, SandStormBlocks.RADIOACTIVE_WASTE_BARREL.defaultBlockState());
 
+            setLocalBlock(level, origin, rotation, 1, 0, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 2, 0, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 4, 0, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 0, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 0, 4, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 0, 4, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+
             setLocalBlock(level, origin, rotation, 2, 0, 2, size, SandStormBlocks.RADIOACTIVE_SLUDGE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 4, 0, 2, size, SandStormBlocks.RADIOACTIVE_SLUDGE.defaultBlockState());
 
@@ -511,7 +518,9 @@ public class MillennialRepositoryCatalog {
 
         private void populateDepotChest(Container container, RandomSource random) {
             container.setItem(0, new ItemStack(SandStormItems.RADIOACTIVE_SLUDGE_BUCKET, 1));
+            container.setItem(2, new ItemStack(SandStormItems.RAW_LEAD, 3 + random.nextInt(4)));
             container.setItem(4, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 2 + random.nextInt(3)));
+            container.setItem(8, new ItemStack(SandStormItems.STEEL_REBAR, 4 + random.nextInt(5)));
             container.setItem(12, new ItemStack(Items.IRON_INGOT, 4 + random.nextInt(6)));
             container.setItem(20, new ItemStack(Items.REDSTONE, 8 + random.nextInt(8)));
         }
@@ -599,6 +608,18 @@ public class MillennialRepositoryCatalog {
                 }
             }
 
+            setLocalBlock(level, origin, rotation, 1, 0, 1, size, SandStormBlocks.LEAD_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 0, 1, size, SandStormBlocks.LEAD_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 0, 5, size, SandStormBlocks.LEAD_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 0, 5, size, SandStormBlocks.LEAD_BLOCK.defaultBlockState());
+            for (int i = 2; i <= 4; i++) {
+                setLocalBlock(level, origin, rotation, i, 0, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+                setLocalBlock(level, origin, rotation, 1, 0, i, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+                setLocalBlock(level, origin, rotation, 5, 0, i, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            }
+            setLocalBlock(level, origin, rotation, 2, 0, 5, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 4, 0, 5, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+
             setLocalBlock(level, origin, rotation, 1, 1, 1, size, SandStormBlocks.RADIOACTIVE_WASTE_BARREL.defaultBlockState());
             setLocalBlock(level, origin, rotation, 1, 2, 1, size, SandStormBlocks.RADIOACTIVE_WASTE_BARREL.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 1, 1, size, SandStormBlocks.RADIOACTIVE_WASTE_BARREL.defaultBlockState());
@@ -621,7 +642,9 @@ public class MillennialRepositoryCatalog {
 
         private void populateVaultChest(Container container, RandomSource random) {
             container.setItem(0, new ItemStack(SandStormBlocks.ANCIENT_DATA_CORE.asItem(), 1));
+            container.setItem(2, new ItemStack(SandStormItems.LEAD_INGOT, 4 + random.nextInt(5)));
             container.setItem(4, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 4 + random.nextInt(4)));
+            container.setItem(6, new ItemStack(SandStormItems.STEEL_REBAR, 8 + random.nextInt(9)));
             container.setItem(8, new ItemStack(Items.DIAMOND, 2 + random.nextInt(3)));
             container.setItem(13, new ItemStack(Items.EMERALD, 4 + random.nextInt(5)));
             container.setItem(18, new ItemStack(Items.REDSTONE, 16 + random.nextInt(16)));

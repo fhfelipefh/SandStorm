@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/lead_shielding_block"
+    }
+  }
+}

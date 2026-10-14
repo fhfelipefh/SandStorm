@@ -472,6 +472,10 @@ public class AncientBunkerCatalog {
             setLocalBlock(level, origin, rotation, 5, 1, 1, size, SandStormBlocks.RADIOACTIVE_WASTE_BARREL.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 1, 2, size, SandStormBlocks.RADIOACTIVE_WASTE_BARREL.defaultBlockState());
 
+            setLocalBlock(level, origin, rotation, 1, 0, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 0, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 0, 2, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+
             setLocalBlock(level, origin, rotation, 2, 0, 2, size, SandStormBlocks.RADIOACTIVE_SLUDGE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 1, 0, 2, size, SandStormBlocks.RADIOACTIVE_SLUDGE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 2, 0, 1, size, SandStormBlocks.RADIOACTIVE_SLUDGE.defaultBlockState());
@@ -540,6 +544,12 @@ public class AncientBunkerCatalog {
         }
         if (random.nextInt(3) == 0) {
             chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 1));
+        }
+        if (random.nextInt(3) == 0) {
+            chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.STEEL_REBAR, 2 + random.nextInt(4)));
+        }
+        if (random.nextInt(4) == 0) {
+            chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.LEAD_INGOT, 1 + random.nextInt(3)));
         }
         if (random.nextInt(4) == 0) {
             chest.setItem(random.nextInt(slots), new ItemStack(Items.REDSTONE, 4 + random.nextInt(8)));

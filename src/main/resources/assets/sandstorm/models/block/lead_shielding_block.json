@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "sandstorm:block/lead_shielding_block"
+  }
+}

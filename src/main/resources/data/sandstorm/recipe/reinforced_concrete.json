@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "CRC",
+    "RSR",
+    "CRC"
+  ],
+  "key": {
+    "C": "minecraft:gray_concrete",
+    "R": "sandstorm:steel_rebar",
+    "S": "sandstorm:structural_plate"
+  },
+  "result": {
+    "count": 4,
+    "id": "sandstorm:reinforced_concrete"
+  }
+}

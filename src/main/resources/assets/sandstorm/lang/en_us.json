@@ -1197,5 +1197,16 @@
   "item.sandstorm.radioactive_sludge_bucket": "Radioactive Sludge Bucket",
   "block.sandstorm.radioactive_sludge": "Radioactive Sludge",
   "item.sandstorm.defective_sentinel_spawn_egg": "Defective Sentinel Spawn Egg",
-  "entity.sandstorm.defective_sentinel": "Defective Sentinel"
+  "entity.sandstorm.defective_sentinel": "Defective Sentinel",
+  "item.sandstorm.steel_rebar": "Steel Rebar",
+  "item.sandstorm.lead_ingot": "Lead Ingot",
+  "item.sandstorm.raw_lead": "Raw Lead",
+  "block.sandstorm.reinforced_concrete": "Reinforced Concrete",
+  "item.sandstorm.reinforced_concrete": "Reinforced Concrete",
+  "block.sandstorm.weathered_reinforced_concrete": "Weathered Reinforced Concrete",
+  "item.sandstorm.weathered_reinforced_concrete": "Weathered Reinforced Concrete",
+  "block.sandstorm.lead_block": "Lead Block",
+  "item.sandstorm.lead_block": "Lead Block",
+  "block.sandstorm.lead_shielding_block": "Lead Shielding Block",
+  "item.sandstorm.lead_shielding_block": "Lead Shielding Block"
 }

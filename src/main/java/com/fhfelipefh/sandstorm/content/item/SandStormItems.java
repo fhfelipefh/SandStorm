@@ -186,6 +186,9 @@ public class SandStormItems {
     public static final SandDepthProbeItem SAND_DEPTH_PROBE = register("sand_depth_probe", new SandDepthProbeItem(properties("sand_depth_probe").durability(384)));
     public static final RappelWinchItem RAPPEL_WINCH = register("rappel_winch", new RappelWinchItem(properties("rappel_winch").stacksTo(1)));
     public static final RappelWinchItem GLOWING_RAPPEL_WINCH = register("glowing_rappel_winch", new RappelWinchItem(properties("glowing_rappel_winch").stacksTo(1), true));
+    public static final Item STEEL_REBAR = register("steel_rebar", new Item(properties("steel_rebar").rarity(Rarity.UNCOMMON)));
+    public static final Item LEAD_INGOT = register("lead_ingot", new Item(properties("lead_ingot").rarity(Rarity.UNCOMMON)));
+    public static final Item RAW_LEAD = register("raw_lead", new Item(properties("raw_lead")));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -453,6 +456,13 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.IRRIGATION_PUMP);
                         entries.accept(SandStormBlocks.IRRIGATION_HOSE);
                         entries.accept(SandStormBlocks.IRRIGATION_SPRINKLER);
+                        entries.accept(STEEL_REBAR);
+                        entries.accept(LEAD_INGOT);
+                        entries.accept(RAW_LEAD);
+                        entries.accept(SandStormBlocks.REINFORCED_CONCRETE);
+                        entries.accept(SandStormBlocks.WEATHERED_REINFORCED_CONCRETE);
+                        entries.accept(SandStormBlocks.LEAD_BLOCK);
+                        entries.accept(SandStormBlocks.LEAD_SHIELDING_BLOCK);
                     })
                     .build()
     );

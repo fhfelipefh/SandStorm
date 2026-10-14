@@ -826,6 +826,34 @@ public class SandStormBlocks {
                     .strength(1.8f, 10.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .noOcclusion()));
+    public static final Block REINFORCED_CONCRETE = register("reinforced_concrete",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("reinforced_concrete")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(55.0f, 1500.0f)
+                    .sound(SoundType.DEEPSLATE)
+                    .requiresCorrectToolForDrops()));
+    public static final Block WEATHERED_REINFORCED_CONCRETE = register("weathered_reinforced_concrete",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("weathered_reinforced_concrete")))
+                    .mapColor(MapColor.DEEPSLATE)
+                    .strength(50.0f, 1200.0f)
+                    .sound(SoundType.DEEPSLATE)
+                    .requiresCorrectToolForDrops()));
+    public static final Block LEAD_BLOCK = register("lead_block",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("lead_block")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(5.0f, 12.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
+    public static final Block LEAD_SHIELDING_BLOCK = register("lead_shielding_block",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("lead_shielding_block")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(8.0f, 45.0f)
+                    .sound(SoundType.HEAVY_CORE)
+                    .requiresCorrectToolForDrops()));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,

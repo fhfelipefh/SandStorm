@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "LLL",
+    "LLL",
+    "LLL"
+  ],
+  "key": {
+    "L": "sandstorm:lead_ingot"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:lead_block"
+  }
+}

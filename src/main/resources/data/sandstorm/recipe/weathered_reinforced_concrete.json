@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "sandstorm:reinforced_concrete",
+    "minecraft:sand"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:weathered_reinforced_concrete"
+  }
+}
