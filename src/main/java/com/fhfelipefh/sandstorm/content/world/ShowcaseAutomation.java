@@ -28,9 +28,14 @@ import com.fhfelipefh.sandstorm.content.storage.QuantumDiskStorage;
 import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkControllerBlock;
 import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkControllerBlockEntity;
 import com.fhfelipefh.sandstorm.content.storage.StoredItemEntry;
+import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
+import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -42,6 +47,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -59,6 +66,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -69,18 +77,27 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.AABB;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class ShowcaseAutomation {
 
     private static final Set<UUID> GENERATED_PLAYERS = new HashSet<>();
+    private static final List<ShowcaseTeleportPad> TELEPORT_PADS = new ArrayList<>();
+    private static final Map<UUID, Long> TELEPORT_COOLDOWNS = new HashMap<>();
     private static BlockPos regeneratingRockPos = null;
     private static CyborgExcavatorEntity loopMiner = null;
     private static boolean showcaseActive = false;
+
+    private record ShowcaseTeleportPad(BlockPos triggerPos, BlockPos destination, String label) {}
 
     public static boolean isShowcaseActive() {
         return showcaseActive;
@@ -101,7 +118,8 @@ public class ShowcaseAutomation {
         });
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            if (server.getTickCount() % 40 == 0 && regeneratingRockPos != null) {
+            long tick = server.getTickCount();
+            if (tick % 40 == 0 && regeneratingRockPos != null) {
                 ServerLevel level = server.overworld();
                 if (level != null && level.isLoaded(regeneratingRockPos)) {
                     if (level.getBlockState(regeneratingRockPos).isAir()) {
@@ -109,6 +127,29 @@ public class ShowcaseAutomation {
                     }
                     if (loopMiner != null && loopMiner.isAlive()) {
                         loopMiner.setEnergy(50000);
+                    }
+                }
+            }
+
+            if (!TELEPORT_PADS.isEmpty()) {
+                ServerLevel level = server.overworld();
+                if (level != null) {
+                    for (ServerPlayer player : level.players()) {
+                        long lastTp = TELEPORT_COOLDOWNS.getOrDefault(player.getUUID(), 0L);
+                        if (tick - lastTp < 25) {
+                            continue;
+                        }
+                        BlockPos playerPos = player.blockPosition();
+                        for (ShowcaseTeleportPad pad : TELEPORT_PADS) {
+                            if (pad.triggerPos().closerThan(playerPos, 1.25)) {
+                                TELEPORT_COOLDOWNS.put(player.getUUID(), tick);
+                                BlockPos dest = pad.destination();
+                                player.teleportTo(level, dest.getX() + 0.5, dest.getY() + 0.1, dest.getZ() + 0.5, Set.of(), player.getYRot(), player.getXRot(), true);
+                                level.playSound(null, player.blockPosition(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.8f, 1.2f);
+                                player.sendSystemMessage(Component.literal("§6[SandStorm] §aTeleportado para: §f" + pad.label()), true);
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -129,6 +170,14 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeBiospheresCommand)
                 )
+                .then(Commands.literal("dungeon")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ctx -> executeDungeonTeleportCommand(ctx, "west"))
+                        .then(Commands.argument("sector", StringArgumentType.word())
+                                .suggests((c, b) -> suggestDungeonSectors(b))
+                                .executes(ctx -> executeDungeonTeleportCommand(ctx, StringArgumentType.getString(ctx, "sector")))
+                        )
+                )
         );
 
         dispatcher.register(Commands.literal("sandstorm_debug")
@@ -144,6 +193,14 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeBiospheresCommand)
                 )
+                .then(Commands.literal("dungeon")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ctx -> executeDungeonTeleportCommand(ctx, "west"))
+                        .then(Commands.argument("sector", StringArgumentType.word())
+                                .suggests((c, b) -> suggestDungeonSectors(b))
+                                .executes(ctx -> executeDungeonTeleportCommand(ctx, StringArgumentType.getString(ctx, "sector")))
+                        )
+                )
         );
 
         dispatcher.register(Commands.literal("sandstorm_computer")
@@ -154,6 +211,15 @@ public class ShowcaseAutomation {
         dispatcher.register(Commands.literal("sandstorm_biospheres")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ShowcaseAutomation::executeBiospheresCommand)
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_showcase_dungeon")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeDungeonTeleportCommand(ctx, "west"))
+                .then(Commands.argument("sector", StringArgumentType.word())
+                        .suggests((c, b) -> suggestDungeonSectors(b))
+                        .executes(ctx -> executeDungeonTeleportCommand(ctx, StringArgumentType.getString(ctx, "sector")))
+                )
         );
     }
 
@@ -216,6 +282,7 @@ public class ShowcaseAutomation {
         buildQuantumComputerStation(level, center.offset(16, 0, 0));
         buildQuantumComputerWalkway(level, center);
         buildBiospheresShowcase(level, center);
+        buildUndergroundDungeonNetwork(level, center);
 
         player.setGameMode(GameType.CREATIVE);
         player.getAbilities().mayfly = true;
@@ -387,6 +454,26 @@ public class ShowcaseAutomation {
             }
             spawnBlockHologram(level, targetPos, targetBlock);
             placeIdentificationSign(level, pedestalCenter.offset(0, 0, -2), targetBlock);
+        }
+
+        int maxBlockZ = startZ + (totalRows * spacing) + 4;
+        for (int z = 4; z <= maxBlockZ; z++) {
+            level.setBlock(center.offset(0, 0, z), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
+            level.setBlock(center.offset(-1, 0, z), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
+            level.setBlock(center.offset(1, 0, z), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
+            Block edgeBlock = (z % 4 == 0) ? Blocks.OCHRE_FROGLIGHT : Blocks.CUT_SANDSTONE;
+            level.setBlock(center.offset(-2, 0, z), edgeBlock.defaultBlockState(), 3);
+            level.setBlock(center.offset(2, 0, z), edgeBlock.defaultBlockState(), 3);
+        }
+
+        for (int row = 0; row < totalRows; row++) {
+            int pz = startZ + (row * spacing);
+            for (int x = -5; x <= -3; x++) {
+                level.setBlock(center.offset(x, 0, pz), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 3);
+            }
+            for (int x = 3; x <= 5; x++) {
+                level.setBlock(center.offset(x, 0, pz), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 3);
+            }
         }
     }
 
@@ -2072,5 +2159,185 @@ public class ShowcaseAutomation {
                 level.addFreshEntity(animal);
             }
         }
+    }
+
+    private static void buildUndergroundDungeonNetwork(ServerLevel level, BlockPos center) {
+        TELEPORT_PADS.clear();
+
+        BlockPos westOrigin = center.offset(-58, -40, 8);
+        buildFoundationPlate(level, westOrigin.getX() - 2, westOrigin.getX() + 58, westOrigin.getZ() - 2, westOrigin.getZ() + 58, westOrigin.getY() - 40, 3);
+        MillennialRepositoryDungeon.generate(level, westOrigin, 6, 8, 8);
+        BlockPos westEntry = westOrigin.offset(4 * 7 + 3, 1, 3);
+        BlockPos westReturn = westOrigin.offset(4 * 7 + 3, 1, 1);
+        setupReturnPad(level, westReturn);
+        TELEPORT_PADS.add(new ShowcaseTeleportPad(westReturn, center.above(), "Praça Central do Showcase"));
+
+        BlockPos eastOrigin = center.offset(4, -40, 8);
+        buildFoundationPlate(level, eastOrigin.getX() - 2, eastOrigin.getX() + 58, eastOrigin.getZ() - 2, eastOrigin.getZ() + 58, eastOrigin.getY() - 1, 3);
+        AncientBunkerComplexDungeon.generate(level, eastOrigin, 8, 8);
+        BlockPos eastEntry = eastOrigin.offset(4 * 7 + 3, 1, 3);
+        BlockPos eastReturn = eastOrigin.offset(4 * 7 + 3, 1, 1);
+        setupReturnPad(level, eastReturn);
+        TELEPORT_PADS.add(new ShowcaseTeleportPad(eastReturn, center.above(), "Praça Central do Showcase"));
+
+        BlockPos southOrigin = center.offset(-24, -45, -60);
+        buildFoundationPlate(level, southOrigin.getX() - 2, southOrigin.getX() + 51, southOrigin.getZ() - 2, southOrigin.getZ() + 51, southOrigin.getY() - 24, 3);
+        MillennialRepositoryDungeon.generate(level, southOrigin, 4, 7, 7);
+        BlockPos southEntry = southOrigin.offset(3 * 7 + 3, 1, 3);
+        BlockPos southReturn = southOrigin.offset(3 * 7 + 3, 1, 1);
+        setupReturnPad(level, southReturn);
+        TELEPORT_PADS.add(new ShowcaseTeleportPad(southReturn, center.above(), "Praça Central do Showcase"));
+
+        BlockPos northOrigin = center.offset(-24, -45, 74);
+        buildFoundationPlate(level, northOrigin.getX() - 2, northOrigin.getX() + 51, northOrigin.getZ() - 2, northOrigin.getZ() + 51, northOrigin.getY() - 1, 3);
+        AncientBunkerComplexDungeon.generate(level, northOrigin, 7, 7);
+        BlockPos northEntry = northOrigin.offset(3 * 7 + 3, 1, 3);
+        BlockPos northReturn = northOrigin.offset(3 * 7 + 3, 1, 1);
+        setupReturnPad(level, northReturn);
+        TELEPORT_PADS.add(new ShowcaseTeleportPad(northReturn, center.above(), "Praça Central do Showcase"));
+
+        BlockPos westShaftTop = center.offset(-4, 0, 4);
+        buildGlassObservationTube(level, westShaftTop, westEntry.getY());
+        buildCatwalk(level, new BlockPos(westShaftTop.getX(), westEntry.getY(), westShaftTop.getZ()), westEntry.north());
+        level.setBlock(westEntry.north(), Blocks.AIR.defaultBlockState(), 2);
+        level.setBlock(westEntry.north().above(), Blocks.AIR.defaultBlockState(), 2);
+        setupShaftTrigger(level, westShaftTop, westEntry, "Megadungeon Oeste (6 Andares, 8x8)", "6 Andares | Grade 8x8 | 384 Salas");
+
+        BlockPos eastShaftTop = center.offset(4, 0, 4);
+        buildGlassObservationTube(level, eastShaftTop, eastEntry.getY());
+        buildCatwalk(level, new BlockPos(eastShaftTop.getX(), eastEntry.getY(), eastShaftTop.getZ()), eastEntry.north());
+        level.setBlock(eastEntry.north(), Blocks.AIR.defaultBlockState(), 2);
+        level.setBlock(eastEntry.north().above(), Blocks.AIR.defaultBlockState(), 2);
+        setupShaftTrigger(level, eastShaftTop, eastEntry, "Complexo Bunker Leste (8x8)", "1 Andar Colossal | Grade 8x8 | 64 Salas");
+
+        BlockPos southTerminal = center.offset(0, 0, -4);
+        setupTerminalTrigger(level, southTerminal, southEntry, "Depósito Geológico Sul (4 Andares)", "4 Andares | Grade 7x7 | 196 Salas");
+
+        int maxBlockZ = getCheckerboardMaxZ();
+        BlockPos northTerminal = center.offset(0, 0, maxBlockZ);
+        setupTerminalTrigger(level, northTerminal, northEntry, "Complexo Bunker Norte (7x7)", "1 Andar Colossal | Grade 7x7 | 49 Salas");
+    }
+
+    private static void setupReturnPad(ServerLevel level, BlockPos pos) {
+        level.setBlock(pos.below(), SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState(), 3);
+        level.setBlock(pos, Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.defaultBlockState(), 3);
+        spawnHologram(level, pos.getX() + 0.5, pos.getY() + 1.4, pos.getZ() + 0.5, "§a§l▲ RETORNAR AO SHOWCASE ▲");
+        spawnHologram(level, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, "§7Pise para voltar à Praça Central");
+    }
+
+    private static void setupShaftTrigger(ServerLevel level, BlockPos top, BlockPos destination, String title, String subtitle) {
+        level.setBlock(top, SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState(), 3);
+        level.setBlock(top.above(), Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.defaultBlockState(), 3);
+        spawnHologram(level, top.getX() + 0.5, top.getY() + 2.5, top.getZ() + 0.5, "§6§l▼ " + title + " ▼");
+        spawnHologram(level, top.getX() + 0.5, top.getY() + 2.2, top.getZ() + 0.5, "§7" + subtitle);
+        spawnHologram(level, top.getX() + 0.5, top.getY() + 1.9, top.getZ() + 0.5, "§ePise para teleporte ou use o tubo");
+        TELEPORT_PADS.add(new ShowcaseTeleportPad(top.above(), destination, title));
+    }
+
+    private static void setupTerminalTrigger(ServerLevel level, BlockPos floorPos, BlockPos destination, String title, String subtitle) {
+        level.setBlock(floorPos, SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState(), 3);
+        level.setBlock(floorPos.above(), Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.defaultBlockState(), 3);
+        spawnHologram(level, floorPos.getX() + 0.5, floorPos.getY() + 2.5, floorPos.getZ() + 0.5, "§d§l▼ " + title + " ▼");
+        spawnHologram(level, floorPos.getX() + 0.5, floorPos.getY() + 2.2, floorPos.getZ() + 0.5, "§7" + subtitle);
+        spawnHologram(level, floorPos.getX() + 0.5, floorPos.getY() + 1.9, floorPos.getZ() + 0.5, "§ePise para teleporte rápido");
+        TELEPORT_PADS.add(new ShowcaseTeleportPad(floorPos.above(), destination, title));
+    }
+
+    private static void buildGlassObservationTube(ServerLevel level, BlockPos top, int bottomY) {
+        for (int y = bottomY; y <= top.getY(); y++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    BlockPos p = new BlockPos(top.getX() + dx, y, top.getZ() + dz);
+                    if (dx == 0 && dz == 0) {
+                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                        level.setBlock(new BlockPos(top.getX(), y, top.getZ() - 1), Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH), 2);
+                        if (y % 8 == 0) {
+                            level.setBlock(p, Blocks.LANTERN.defaultBlockState(), 2);
+                        }
+                    } else {
+                        level.setBlock(p, SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void buildCatwalk(ServerLevel level, BlockPos start, BlockPos end) {
+        int x1 = Math.min(start.getX(), end.getX());
+        int x2 = Math.max(start.getX(), end.getX());
+        int z1 = Math.min(start.getZ(), end.getZ());
+        int z2 = Math.max(start.getZ(), end.getZ());
+        int y = start.getY();
+
+        for (int x = x1; x <= x2; x++) {
+            level.setBlock(new BlockPos(x, y - 1, start.getZ()), Blocks.POLISHED_DEEPSLATE.defaultBlockState(), 2);
+            level.setBlock(new BlockPos(x, y, start.getZ()), Blocks.AIR.defaultBlockState(), 2);
+            level.setBlock(new BlockPos(x, y + 1, start.getZ()), Blocks.AIR.defaultBlockState(), 2);
+            level.setBlock(new BlockPos(x, y + 2, start.getZ()), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+            level.setBlock(new BlockPos(x, y, start.getZ() - 1), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+            level.setBlock(new BlockPos(x, y, start.getZ() + 1), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+        }
+
+        for (int z = z1; z <= z2; z++) {
+            level.setBlock(new BlockPos(end.getX(), y - 1, z), Blocks.POLISHED_DEEPSLATE.defaultBlockState(), 2);
+            level.setBlock(new BlockPos(end.getX(), y, z), Blocks.AIR.defaultBlockState(), 2);
+            level.setBlock(new BlockPos(end.getX(), y + 1, z), Blocks.AIR.defaultBlockState(), 2);
+            level.setBlock(new BlockPos(end.getX(), y + 2, z), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+            level.setBlock(new BlockPos(end.getX() - 1, y, z), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+            level.setBlock(new BlockPos(end.getX() + 1, y, z), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+        }
+    }
+
+    private static void buildFoundationPlate(ServerLevel level, int minX, int maxX, int minZ, int maxZ, int topY, int thickness) {
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                for (int ty = 0; ty < thickness; ty++) {
+                    int y = topY - ty;
+                    Block block = (ty == 0) ? Blocks.DEEPSLATE_BRICKS : ((x + z) % 3 == 0 ? SandStormBlocks.PIEZO_QUARTZ_BLOCK : Blocks.SMOOTH_BASALT);
+                    level.setBlock(new BlockPos(x, y, z), block.defaultBlockState(), 2);
+                }
+            }
+        }
+    }
+
+    private static int getCheckerboardMaxZ() {
+        List<Block> blocks = BuiltInRegistries.BLOCK.stream()
+                .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
+                .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR))
+                .toList();
+        int cols = 8;
+        int spacing = 4;
+        int startZ = 8;
+        int totalRows = (blocks.size() + cols - 1) / cols;
+        return startZ + (totalRows * spacing) + 4;
+    }
+
+    public static int executeDungeonTeleportCommand(CommandContext<CommandSourceStack> ctx, String sector) {
+        CommandSourceStack source = ctx.getSource();
+        if (source.getEntity() instanceof ServerPlayer player) {
+            ServerLevel level = source.getLevel();
+            BlockPos center = new BlockPos(0, 160, 0);
+            String norm = (sector != null) ? sector.toLowerCase(Locale.ROOT) : "west";
+            BlockPos dest = switch (norm) {
+                case "east", "bunker", "leste", "single" -> center.offset(4 + 4 * 7 + 3, -39, 8 + 3);
+                case "south", "sul" -> center.offset(-24 + 3 * 7 + 3, -44, -60 + 3);
+                case "north", "norte" -> center.offset(-24 + 3 * 7 + 3, -44, 74 + 3);
+                default -> center.offset(-58 + 4 * 7 + 3, -39, 8 + 3);
+            };
+            player.teleportTo(level, dest.getX() + 0.5, dest.getY() + 0.1, dest.getZ() + 0.5, Set.of(), 0.0f, 0.0f, true);
+            level.playSound(null, player.blockPosition(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1.0f, 1.2f);
+            source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§6[SandStorm]§a Teleportado para o subsolo do showcase (Setor %s) em [%d, %d, %d]!", norm, dest.getX(), dest.getY(), dest.getZ())), true);
+            return 1;
+        }
+        source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
+        return 0;
+    }
+
+    private static CompletableFuture<Suggestions> suggestDungeonSectors(SuggestionsBuilder builder) {
+        builder.suggest("west");
+        builder.suggest("east");
+        builder.suggest("south");
+        builder.suggest("north");
+        return builder.buildFuture();
     }
 }
