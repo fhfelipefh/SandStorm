@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.world;
 
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
+import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
 import com.fhfelipefh.sandstorm.content.world.structure.AbandonedOutpostGenerator;
 import com.fhfelipefh.sandstorm.content.world.structure.AncientBunkerGenerator;
 import com.fhfelipefh.sandstorm.content.world.structure.FuelSiloGenerator;
@@ -22,8 +23,9 @@ public class ProceduralRuinsManager {
     public static final int OUTPOST_RARITY = 180;
     public static final int BUNKER_RARITY = 135;
     public static final int COMPLEX_DUNGEON_RARITY = 160;
+    public static final int MULTIFLOOR_DUNGEON_RARITY = 220;
 
-    private record PendingRuin(ServerLevel level, BlockPos origin, int surfaceY, int ruinType, int gridWidth, int gridDepth) {}
+    private record PendingRuin(ServerLevel level, BlockPos origin, int surfaceY, int ruinType, int gridWidth, int gridDepth, int floors) {}
     private static final Queue<PendingRuin> PENDING_RUINS = new ConcurrentLinkedQueue<>();
 
     public static void initialize() {
@@ -53,26 +55,35 @@ public class ProceduralRuinsManager {
             long roll = Math.abs(hash);
 
             int surfaceY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, 8, 8);
-            if (roll % COMPLEX_DUNGEON_RARITY == 0) {
+            if (roll % MULTIFLOOR_DUNGEON_RARITY == 0) {
+                int dungeonY = -28 - (int) (Math.abs(hash >>> 18) % 15);
+                int floors = 2 + (int) (Math.abs(hash >>> 22) % 3);
+                int gridWidth = 3 + (int) (Math.abs(hash >>> 26) % 3);
+                int gridDepth = 3 + (int) (Math.abs(hash >>> 30) % 3);
+                BlockPos origin = new BlockPos(samplePos.getX(), dungeonY, samplePos.getZ());
+                level.getServer().execute(() -> {
+                    PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 5, gridWidth, gridDepth, floors));
+                });
+            } else if (roll % COMPLEX_DUNGEON_RARITY == 0) {
                 int dungeonY = -52 + (int) (Math.abs(hash >>> 20) % 33);
                 int gridWidth = 3 + (int) (Math.abs(hash >>> 26) % 4);
                 int gridDepth = 3 + (int) (Math.abs(hash >>> 30) % 4);
                 BlockPos origin = new BlockPos(samplePos.getX(), dungeonY, samplePos.getZ());
                 level.getServer().execute(() -> {
-                    PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 4, gridWidth, gridDepth));
+                    PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 4, gridWidth, gridDepth, 0));
                 });
             } else if (roll % OUTPOST_RARITY == 0 && surfaceY >= 72) {
                 if (surfaceY > level.getMinY() + 15) {
                     BlockPos origin = new BlockPos(samplePos.getX(), surfaceY, samplePos.getZ());
                     level.getServer().execute(() -> {
-                        PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 1, 0, 0));
+                        PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 1, 0, 0, 0));
                     });
                 }
             } else if (roll % BUNKER_RARITY == 0) {
                 int bunkerY = -15 + (int) (Math.abs(hash >>> 16) % 45);
                 BlockPos origin = new BlockPos(samplePos.getX(), bunkerY, samplePos.getZ());
                 level.getServer().execute(() -> {
-                    PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 2, 0, 0));
+                    PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 2, 0, 0, 0));
                 });
             }
         });
@@ -94,6 +105,8 @@ public class ProceduralRuinsManager {
                         AncientBunkerGenerator.generate(ruin.level(), ruin.origin());
                     } else if (ruin.ruinType() == 4) {
                         AncientBunkerComplexDungeon.generate(ruin.level(), ruin.origin(), ruin.gridWidth(), ruin.gridDepth());
+                    } else if (ruin.ruinType() == 5) {
+                        MillennialRepositoryDungeon.generate(ruin.level(), ruin.origin(), ruin.floors(), ruin.gridWidth(), ruin.gridDepth());
                     } else {
                         FuelSiloGenerator.generate(ruin.level(), ruin.origin(), ruin.surfaceY());
                     }

@@ -13,6 +13,7 @@ import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.megastructure.MegastructureBlueprint;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
+import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
 import com.fhfelipefh.sandstorm.content.world.structure.AncientBunkerGenerator;
 import com.fhfelipefh.sandstorm.content.world.structure.ColossalCastleGenerator;
 import com.mojang.brigadier.CommandDispatcher;
@@ -64,7 +65,9 @@ public class SandstormBuildCommand {
             "ruins_laboratory",
             "colossal_castle",
             "ancient_bunker",
-            "procedural_dungeon"
+            "procedural_dungeon",
+            "multi_floor_dungeon",
+            "millennial_repository"
     );
 
     static {
@@ -74,6 +77,10 @@ public class SandstormBuildCommand {
         STRUCTURE_MAP.put("dungeon", "procedural_dungeon");
         STRUCTURE_MAP.put("ancient_complex", "procedural_dungeon");
         STRUCTURE_MAP.put("complex", "procedural_dungeon");
+        STRUCTURE_MAP.put("multi_floor_dungeon", "multi_floor_dungeon");
+        STRUCTURE_MAP.put("multidungeon", "multi_floor_dungeon");
+        STRUCTURE_MAP.put("millennial_repository", "multi_floor_dungeon");
+        STRUCTURE_MAP.put("repository", "multi_floor_dungeon");
         STRUCTURE_MAP.put("biosphere_dome", "biosphere_dome");
         STRUCTURE_MAP.put("dome", "biosphere_dome");
         STRUCTURE_MAP.put("planetary_citadel", "planetary_citadel");
@@ -341,6 +348,47 @@ public class SandstormBuildCommand {
                         .executes(ctx -> executeBuild(ctx, "procedural_dungeon", EntityArgument.getPlayer(ctx, "player").blockPosition()))
                 )
         );
+
+        dispatcher.register(Commands.literal("sandstorm_build_multidungeon")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeBuildMultiDungeon(ctx, null, MillennialRepositoryDungeon.DEFAULT_FLOORS, MillennialRepositoryDungeon.DEFAULT_GRID_WIDTH, MillennialRepositoryDungeon.DEFAULT_GRID_DEPTH))
+                .then(Commands.argument("floors", IntegerArgumentType.integer(2, 6))
+                        .executes(ctx -> executeBuildMultiDungeon(ctx, null, IntegerArgumentType.getInteger(ctx, "floors"), MillennialRepositoryDungeon.DEFAULT_GRID_WIDTH, MillennialRepositoryDungeon.DEFAULT_GRID_DEPTH))
+                        .then(Commands.argument("width", IntegerArgumentType.integer(3, 9))
+                                .then(Commands.argument("depth", IntegerArgumentType.integer(3, 9))
+                                        .executes(ctx -> executeBuildMultiDungeon(ctx, null, IntegerArgumentType.getInteger(ctx, "floors"), IntegerArgumentType.getInteger(ctx, "width"), IntegerArgumentType.getInteger(ctx, "depth")))
+                                        .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                                .executes(ctx -> executeBuildMultiDungeon(ctx, BlockPosArgument.getLoadedBlockPos(ctx, "pos"), IntegerArgumentType.getInteger(ctx, "floors"), IntegerArgumentType.getInteger(ctx, "width"), IntegerArgumentType.getInteger(ctx, "depth")))
+                                        )
+                                )
+                        )
+                )
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .executes(ctx -> executeBuildMultiDungeon(ctx, BlockPosArgument.getLoadedBlockPos(ctx, "pos"), MillennialRepositoryDungeon.DEFAULT_FLOORS, MillennialRepositoryDungeon.DEFAULT_GRID_WIDTH, MillennialRepositoryDungeon.DEFAULT_GRID_DEPTH))
+                )
+                .then(Commands.argument("player", EntityArgument.player())
+                        .executes(ctx -> executeBuildMultiDungeon(ctx, EntityArgument.getPlayer(ctx, "player").blockPosition(), MillennialRepositoryDungeon.DEFAULT_FLOORS, MillennialRepositoryDungeon.DEFAULT_GRID_WIDTH, MillennialRepositoryDungeon.DEFAULT_GRID_DEPTH))
+                )
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_build_multi_floor_dungeon")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeBuildMultiDungeon(ctx, null, MillennialRepositoryDungeon.DEFAULT_FLOORS, MillennialRepositoryDungeon.DEFAULT_GRID_WIDTH, MillennialRepositoryDungeon.DEFAULT_GRID_DEPTH))
+                .then(Commands.argument("floors", IntegerArgumentType.integer(2, 6))
+                        .executes(ctx -> executeBuildMultiDungeon(ctx, null, IntegerArgumentType.getInteger(ctx, "floors"), MillennialRepositoryDungeon.DEFAULT_GRID_WIDTH, MillennialRepositoryDungeon.DEFAULT_GRID_DEPTH))
+                        .then(Commands.argument("width", IntegerArgumentType.integer(3, 9))
+                                .then(Commands.argument("depth", IntegerArgumentType.integer(3, 9))
+                                        .executes(ctx -> executeBuildMultiDungeon(ctx, null, IntegerArgumentType.getInteger(ctx, "floors"), IntegerArgumentType.getInteger(ctx, "width"), IntegerArgumentType.getInteger(ctx, "depth")))
+                                        .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                                .executes(ctx -> executeBuildMultiDungeon(ctx, BlockPosArgument.getLoadedBlockPos(ctx, "pos"), IntegerArgumentType.getInteger(ctx, "floors"), IntegerArgumentType.getInteger(ctx, "width"), IntegerArgumentType.getInteger(ctx, "depth")))
+                                        )
+                                )
+                        )
+                )
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .executes(ctx -> executeBuildMultiDungeon(ctx, BlockPosArgument.getLoadedBlockPos(ctx, "pos"), MillennialRepositoryDungeon.DEFAULT_FLOORS, MillennialRepositoryDungeon.DEFAULT_GRID_WIDTH, MillennialRepositoryDungeon.DEFAULT_GRID_DEPTH))
+                )
+        );
     }
 
     private static CompletableFuture<Suggestions> suggestStructures(SuggestionsBuilder builder) {
@@ -375,6 +423,13 @@ public class SandstormBuildCommand {
                     player.teleportTo(level, targetPos.getX() + entryX + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 3.5, Set.of(), 0.0f, 0.0f, true);
                 }
             }
+        } else if ("multi_floor_dungeon".equals(normalizedId)) {
+            for (ServerPlayer player : level.players()) {
+                if (player.blockPosition().closerThan(targetPos, 16.0)) {
+                    int entryX = (MillennialRepositoryDungeon.DEFAULT_GRID_WIDTH / 2) * MillennialRepositoryDungeon.ROOM_SIZE + 3;
+                    player.teleportTo(level, targetPos.getX() + entryX + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 3.5, Set.of(), 0.0f, 0.0f, true);
+                }
+            }
         }
         source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§a[SandStorm]§r Estrutura '%s' construída com sucesso em [%d, %d, %d]! (%d blocos gerados)", normalizedId, targetPos.getX(), targetPos.getY(), targetPos.getZ(), blocksPlaced)), true);
         return blocksPlaced;
@@ -397,6 +452,26 @@ public class SandstormBuildCommand {
 
         source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§a[SandStorm]§r Complexo Dungeon Procedural %dx%d construído com sucesso em [%d, %d, %d]! (%d blocos gerados)", clampedWidth, clampedDepth, targetPos.getX(), targetPos.getY(), targetPos.getZ(), blocksPlaced)), true);
         return blocksPlaced;
+    }
+
+    private static int executeBuildMultiDungeon(CommandContext<CommandSourceStack> ctx, BlockPos explicitPos, int floors, int width, int depth) {
+        CommandSourceStack source = ctx.getSource();
+        ServerLevel level = source.getLevel();
+        BlockPos targetPos = (explicitPos != null) ? explicitPos : BlockPos.containing(source.getPosition());
+        int clampedFloors = Math.clamp(floors, 2, 6);
+        int clampedWidth = Math.clamp(width, 3, 9);
+        int clampedDepth = Math.clamp(depth, 3, 9);
+        int roomsPlaced = MillennialRepositoryDungeon.generate(level, targetPos, clampedFloors, clampedWidth, clampedDepth);
+
+        for (ServerPlayer player : level.players()) {
+            if (player.blockPosition().closerThan(targetPos, 16.0)) {
+                int entryX = (clampedWidth / 2) * MillennialRepositoryDungeon.ROOM_SIZE + 3;
+                player.teleportTo(level, targetPos.getX() + entryX + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 3.5, Set.of(), 0.0f, 0.0f, true);
+            }
+        }
+
+        source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§a[SandStorm]§r Depósito Geológico Multi-Andar construído com sucesso! (%d andares, %dx%d salas/andar, %d salas totais) em [%d, %d, %d]", clampedFloors, clampedWidth, clampedDepth, roomsPlaced, targetPos.getX(), targetPos.getY(), targetPos.getZ())), true);
+        return roomsPlaced;
     }
 
     private static int executeInstantFinish(CommandContext<CommandSourceStack> ctx) {
@@ -497,6 +572,7 @@ public class SandstormBuildCommand {
             case "colossal_castle" -> ColossalCastleGenerator.generate(level, center);
             case "ancient_bunker" -> AncientBunkerGenerator.generate(level, center);
             case "procedural_dungeon" -> AncientBunkerComplexDungeon.generate(level, center);
+            case "multi_floor_dungeon" -> MillennialRepositoryDungeon.generate(level, center);
             default -> 0;
         };
     }

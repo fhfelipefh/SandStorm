@@ -2,6 +2,30 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.14] - 2026-10-14
+
+### ☢️ Depósito Geológico Profundo Multi-Andar & Barris Radioativos Milenares
+* **Dungeon Procedural Multi-Andar (`MillennialRepositoryDungeon` / `MillennialRepositoryCatalog`)**:
+  * Implementação de gerador procedural de megadungeons verticais com $N$ andares (2 a 6 andares, padrão de 3 andares e salas $7 \times 7$).
+  * Inspirado em depósitos geológicos de lixo nuclear milenares (Onkalo/WIPP) abandonados nas profundezas do deserto sob o deepslate.
+  * Conexão física garantida entre pavimentos vizinhos via alinhamento exato de coordenadas $(X, Z)$ entre âncoras verticais:
+    * `StairwellDown`: escadaria helicoidal em espiral ao redor de pilar central que desce 8 blocos até o piso inferior.
+    * `StairwellUp`: poço receptor de escada helicoidal conectando ao nível superior.
+    * `CargoHoistShaft`: poço vertical de montacargas de carga ($3 \times 3$) com correntes de ferro (`IRON_CHAIN`), escadas de serviço e grades de contenção perimetrais.
+    * `SpentFuelPoolVault`: câmara de contenção primária no andar mais profundo contendo piscina de lodo radioativo, resíduos milenares e cofre com Núcleo de Dados Antigo e compósito de titânio.
+    * `SurfaceAccessTerminal`: antecâmara de despressurização e acesso de superfície no topo do complexo.
+* **Texturas de Barris Radioativos Envelhecidos e Corroídos**:
+  * Renovação completa das texturas de `radioactive_waste_barrel` (`side`, `top`, `bottom`) para refletir milênios de exposição.
+  * Adição de oxidação ferrosa realista, manchas de ferrugem, escorrimento químico e desgaste superficial com estêncil de perigo radioativo rasgado e desbotado pelo tempo.
+* **Novos Comandos de Construção Rápida**:
+  * `/sandstorm_build_multidungeon [andares] [largura] [profundidade] [pos]`: geração instantânea da megadungeon multi-andar com teleporte para a antecâmara do primeiro piso.
+  * `/sandstorm_build_multi_floor_dungeon`: atalho direto configurável.
+  * Integração de `multi_floor_dungeon` e `millennial_repository` no comando `/sandstorm build` e `/sandstorm structure`.
+* **Geração Natural em Camadas Profundas (`ProceduralRuinsManager`)**:
+  * Nova raridade `MULTIFLOOR_DUNGEON_RARITY = 220`, gerando complexos entre $Y = -28$ e $Y = -43$ na camada de deepslate.
+  * Preservação integral da dungeon térrea pré-existente (`AncientBunkerComplexDungeon`, raridade 160).
+  * Execução assíncrona por fila em `ServerTickEvents.END_SERVER_TICK` evitando deadlocks e travamento de threads.
+
 ## [1.19.13] - 2026-10-14
 
 ### 🔭 Observatório Astronômico & Varredura Procedural de Galáxias em Tempo Real

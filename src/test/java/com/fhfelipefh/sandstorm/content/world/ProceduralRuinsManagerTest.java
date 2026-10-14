@@ -55,6 +55,26 @@ class ProceduralRuinsManagerTest {
     }
 
     @Test
+    void naturalGenerationShouldSupportComplexDungeon() throws IOException {
+        Path managerPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "ProceduralRuinsManager.java");
+        String source = Files.readString(managerPath);
+
+        assertTrue(ProceduralRuinsManager.COMPLEX_DUNGEON_RARITY > 0);
+        assertEquals(160, ProceduralRuinsManager.COMPLEX_DUNGEON_RARITY);
+        assertTrue(source.contains("AncientBunkerComplexDungeon.generate"));
+    }
+
+    @Test
+    void naturalGenerationShouldSupportMultiFloorDungeon() throws IOException {
+        Path managerPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "ProceduralRuinsManager.java");
+        String source = Files.readString(managerPath);
+
+        assertTrue(ProceduralRuinsManager.MULTIFLOOR_DUNGEON_RARITY > 0);
+        assertEquals(220, ProceduralRuinsManager.MULTIFLOOR_DUNGEON_RARITY);
+        assertTrue(source.contains("MillennialRepositoryDungeon.generate"));
+    }
+
+    @Test
     void proceduralRuinsSavedDataShouldTrackProcessedChunks() {
         ProceduralRuinsSavedData data = new ProceduralRuinsSavedData();
         long chunkKey = 1048580L;
