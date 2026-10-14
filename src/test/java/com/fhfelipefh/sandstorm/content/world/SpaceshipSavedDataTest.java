@@ -51,5 +51,22 @@ class SpaceshipSavedDataTest {
         assertEquals(0, decoded.getCabinX());
         assertEquals(75, decoded.getCabinY());
         assertEquals(0, decoded.getCabinZ());
+        assertEquals(0, decoded.getDesignVersion());
+    }
+
+    @Test
+    void shouldSupportDesignVersionPersistence() {
+        SpaceshipSavedData data = new SpaceshipSavedData(true, 10, 80, 20, 4);
+        assertEquals(4, data.getDesignVersion());
+
+        DataResult<Tag> encodeResult = SpaceshipSavedData.CODEC.encodeStart(NbtOps.INSTANCE, data);
+        assertTrue(encodeResult.isSuccess());
+
+        Tag encodedTag = encodeResult.getOrThrow();
+        DataResult<SpaceshipSavedData> decodeResult = SpaceshipSavedData.CODEC.parse(NbtOps.INSTANCE, encodedTag);
+        assertTrue(decodeResult.isSuccess());
+
+        SpaceshipSavedData decoded = decodeResult.getOrThrow();
+        assertEquals(4, decoded.getDesignVersion());
     }
 }

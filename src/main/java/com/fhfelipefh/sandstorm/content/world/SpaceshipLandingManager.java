@@ -83,9 +83,10 @@ public class SpaceshipLandingManager {
             placeSpaceshipCrashSite(server, level, data);
         } else {
             cachedCabinSpawnPos = data.getCabinPos();
-            if (data.getDesignVersion() < 3) {
-                buildExpandedSpaceship(level, cachedCabinSpawnPos);
-                data.setDesignVersion(3);
+            if (data.getDesignVersion() < 4 || !isSpaceshipIntact(level, cachedCabinSpawnPos)) {
+                loadSpaceshipChunks(level, cachedCabinSpawnPos);
+                rebuildSpaceship(server, level, cachedCabinSpawnPos);
+                data.setDesignVersion(4);
             }
             if (!SpawnSafety.isSafePosition(level, cachedCabinSpawnPos)) {
                 carveCabinInterior(level, cachedCabinSpawnPos);
@@ -93,6 +94,60 @@ public class SpaceshipLandingManager {
             ensureCabinWorkstations(level, cachedCabinSpawnPos);
             level.setRespawnData(LevelData.RespawnData.of(Level.OVERWORLD, cachedCabinSpawnPos, 0.0f, 0.0f));
         }
+    }
+
+    public static void loadSpaceshipChunks(ServerLevel level, BlockPos cabinSpawn) {
+        int originCx = cabinSpawn.getX() >> 4;
+        int originCz = cabinSpawn.getZ() >> 4;
+        for (int cx = originCx - 3; cx <= originCx + 3; cx++) {
+            for (int cz = originCz - 3; cz <= originCz + 3; cz++) {
+                level.getChunk(cx, cz);
+            }
+        }
+    }
+
+    public static void markSpaceshipChunksDirty(ServerLevel level, BlockPos cabinSpawn) {
+        int originCx = cabinSpawn.getX() >> 4;
+        int originCz = cabinSpawn.getZ() >> 4;
+        for (int cx = originCx - 3; cx <= originCx + 3; cx++) {
+            for (int cz = originCz - 3; cz <= originCz + 3; cz++) {
+                level.getChunk(cx, cz).markUnsaved();
+            }
+        }
+    }
+
+    public static boolean isSpaceshipIntact(ServerLevel level, BlockPos cabinSpawn) {
+        int solidShipBlocks = 0;
+        BlockPos[] checks = new BlockPos[]{
+                cabinSpawn.offset(-6, 1, 0),
+                cabinSpawn.offset(6, 1, 0),
+                cabinSpawn.offset(0, -1, 4),
+                cabinSpawn.offset(0, 5, 4),
+                cabinSpawn.offset(-8, 2, 4)
+        };
+        for (BlockPos p : checks) {
+            BlockState state = level.getBlockState(p);
+            if (!state.isAir() && !state.is(Blocks.SAND) && !state.is(Blocks.SANDSTONE)) {
+                solidShipBlocks++;
+            }
+        }
+        return solidShipBlocks >= 3;
+    }
+
+    public static void rebuildSpaceship(MinecraftServer server, ServerLevel level, BlockPos cabinSpawn) {
+        loadSpaceshipChunks(level, cabinSpawn);
+        BlockPos originPos = new BlockPos(cabinSpawn.getX() - 6, cabinSpawn.getY() - 1, cabinSpawn.getZ() - 8);
+        StructureTemplateManager templateManager = server.getStructureTemplateManager();
+        Optional<StructureTemplate> templateOpt = templateManager.get(SandStormMod.id("spaceship_crash_site"));
+        if (templateOpt.isPresent()) {
+            StructureTemplate template = templateOpt.get();
+            StructurePlaceSettings settings = new StructurePlaceSettings().setIgnoreEntities(false);
+            template.placeInWorld(level, originPos, originPos, settings, level.getRandom(), 2);
+        }
+        carveCabinInterior(level, cabinSpawn);
+        buildExpandedSpaceship(level, cabinSpawn);
+        ensureCabinWorkstations(level, cabinSpawn);
+        markSpaceshipChunksDirty(level, cabinSpawn);
     }
 
     public static int findGroundSurfaceY(ServerLevel level, int x, int z) {
@@ -112,11 +167,7 @@ public class SpaceshipLandingManager {
     }
 
     private static void placeSpaceshipCrashSite(MinecraftServer server, ServerLevel level, SpaceshipSavedData data) {
-        for (int cx = -3; cx <= 3; cx++) {
-            for (int cz = -3; cz <= 3; cz++) {
-                level.getChunk(cx, cz);
-            }
-        }
+        loadSpaceshipChunks(level, new BlockPos(0, 64, 4));
 
         int centerGroundY = findGroundSurfaceY(level, 0, 4);
         int maxSurface = centerGroundY;
@@ -140,7 +191,6 @@ public class SpaceshipLandingManager {
             cabinBase = new BlockPos(0, surfaceY, 4);
         }
 
-        BlockPos originPos = new BlockPos(-6, surfaceY, -4);
         BlockPos cabinSpawn = new BlockPos(0, surfaceY + 1, 4);
 
         int minFoundationY = Math.max(surfaceY - 12, level.getMinY());
@@ -167,23 +217,13 @@ public class SpaceshipLandingManager {
             }
         }
 
-        StructureTemplateManager templateManager = server.getStructureTemplateManager();
-        Optional<StructureTemplate> templateOpt = templateManager.get(SandStormMod.id("spaceship_crash_site"));
-        if (templateOpt.isPresent()) {
-            StructureTemplate template = templateOpt.get();
-            StructurePlaceSettings settings = new StructurePlaceSettings().setIgnoreEntities(false);
-            template.placeInWorld(level, originPos, originPos, settings, level.getRandom(), 2);
-        }
-
-        carveCabinInterior(level, cabinSpawn);
-
         level.setRespawnData(LevelData.RespawnData.of(Level.OVERWORLD, cabinSpawn, 0.0f, 0.0f));
         data.setCabinPos(cabinSpawn.getX(), cabinSpawn.getY(), cabinSpawn.getZ());
         data.setPlaced(true);
-        buildExpandedSpaceship(level, cabinSpawn);
-        data.setDesignVersion(3);
+        data.setDesignVersion(4);
         level.getDataStorage().set(SpaceshipSavedData.TYPE, data);
         cachedCabinSpawnPos = cabinSpawn;
+        rebuildSpaceship(server, level, cabinSpawn);
         SandStormMod.LOGGER.info("SandStorm: Crashed spaceship placed safely with 4x4 blast door at {}", cachedCabinSpawnPos);
     }
 
@@ -331,7 +371,7 @@ public class SpaceshipLandingManager {
     private static boolean isOriginalCabin(BlockPos pos, BlockPos cabinSpawn) {
         return pos.getX() >= cabinSpawn.getX() - 7 && pos.getX() <= cabinSpawn.getX() + 7
                 && pos.getZ() >= cabinSpawn.getZ() - 8 && pos.getZ() <= cabinSpawn.getZ() + 12
-                && pos.getY() <= cabinSpawn.getY() + 6;
+                && pos.getY() >= cabinSpawn.getY() - 1 && pos.getY() <= cabinSpawn.getY() + 6;
     }
 
     private static void placeIfOutsideOriginalCabin(ServerLevel level, BlockPos pos, BlockState state,
@@ -405,8 +445,8 @@ public class SpaceshipLandingManager {
         level.setBlock(receiverPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER.defaultBlockState(), 3);
         WirelessSolarReceiverManager.registerReceiver(level.dimension(), receiverPos, 1);
 
-        for (int dx = -3; dx <= 3; dx++) {
-            for (int dz = -2; dz <= 4; dz++) {
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = 0; dz <= 2; dz++) {
                 for (int dy = 7; dy <= 25; dy++) {
                     BlockPos p = cabinSpawn.offset(dx, dy, dz);
                     if (!p.equals(receiverPos) && !level.getBlockState(p).isAir()) {

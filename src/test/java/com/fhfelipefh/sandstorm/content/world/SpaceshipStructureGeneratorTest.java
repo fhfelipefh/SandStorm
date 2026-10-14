@@ -7,6 +7,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.Bootstrap;
+import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -57,7 +60,7 @@ class SpaceshipStructureGeneratorTest {
 
         for (int i = 0; i < paletteTag.size(); i++) {
             CompoundTag entry = paletteTag.getCompoundOrEmpty(i);
-            String id = entry.getStringOr("id", "");
+            String id = entry.getStringOr("Name", entry.getStringOr("id", ""));
             assertFalse(id.contains("chest"), "Spaceship must not contain shared chests: " + id);
             assertFalse(id.contains("barrel"), "Spaceship must not contain shared barrels: " + id);
             assertFalse(id.contains("shulker"), "Spaceship must not contain shulker boxes: " + id);
@@ -66,6 +69,10 @@ class SpaceshipStructureGeneratorTest {
 
         ListTag blocksTag = loadedTag.getListOrEmpty("blocks");
         assertEquals(SIZE_X * SIZE_Y * SIZE_Z, blocksTag.size());
+
+        StructureTemplate template = new StructureTemplate();
+        template.load(BuiltInRegistries.BLOCK, loadedTag);
+        assertEquals(new Vec3i(SIZE_X, SIZE_Y, SIZE_Z), template.getSize());
     }
 
     private static CompoundTag buildSpaceshipStructureTag() {
@@ -288,12 +295,14 @@ class SpaceshipStructureGeneratorTest {
             return indices.get(key);
         }
         CompoundTag entry = new CompoundTag();
+        entry.putString("Name", id);
         entry.putString("id", id);
         if (properties != null && !properties.isEmpty()) {
             CompoundTag propTag = new CompoundTag();
             for (Map.Entry<String, String> prop : properties.entrySet()) {
                 propTag.putString(prop.getKey(), prop.getValue());
             }
+            entry.put("Properties", propTag);
             entry.put("properties", propTag);
         }
         int index = palette.size();
