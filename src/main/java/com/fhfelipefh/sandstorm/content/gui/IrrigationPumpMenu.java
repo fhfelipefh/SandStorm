@@ -35,15 +35,15 @@ public class IrrigationPumpMenu extends AbstractContainerMenu implements Machine
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, SLOT_WATER_IN, 26, 20));
-        this.addSlot(new Slot(container, SLOT_WATER_OUT, 26, 52) {
+        this.addSlot(new Slot(container, SLOT_WATER_IN, 28, 22));
+        this.addSlot(new Slot(container, SLOT_WATER_OUT, 28, 50) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
             }
         });
-        this.addSlot(new Slot(container, SLOT_NUTRIENTS, 80, 36));
-        this.addSlot(new Slot(container, SLOT_BATTERY, 134, 36));
+        this.addSlot(new Slot(container, SLOT_NUTRIENTS, 132, 22));
+        this.addSlot(new Slot(container, SLOT_BATTERY, 132, 50));
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {

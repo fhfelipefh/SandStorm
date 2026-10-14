@@ -10,12 +10,14 @@ import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -94,11 +96,13 @@ public class AbandonedOutpostGenerator {
         BlockPos dataTerminalPos = center.offset(0, 2, 1);
         level.setBlock(dataTerminalPos, SandStormBlocks.ANCIENT_DATA_CORE.defaultBlockState(), 3);
 
-        ScrapSentinelEntity sentinel = new ScrapSentinelEntity(SandStormEntities.SCRAP_SENTINEL, level);
-        sentinel.setPos(center.getX() + 1.5, center.getY() + 1.0, center.getZ() + 1.5);
-        sentinel.setDormant(true);
-        sentinel.setPersistenceRequired();
-        level.addFreshEntity(sentinel);
+        if (ScrapSentinelEntity.canSpawnInArea(level, center)) {
+            ScrapSentinelEntity sentinel = new ScrapSentinelEntity(SandStormEntities.SCRAP_SENTINEL, level);
+            sentinel.setPos(center.getX() + 1.5, center.getY() + 1.0, center.getZ() + 1.5);
+            sentinel.setDormant(true);
+            sentinel.setPersistenceRequired();
+            level.addFreshEntity(sentinel);
+        }
 
         DerelictAutomatonEntity automaton = new DerelictAutomatonEntity(SandStormEntities.DERELICT_AUTOMATON, level);
         automaton.setPos(center.getX() - 1.5, center.getY() + 1.0, center.getZ() - 1.5);
@@ -134,12 +138,25 @@ public class AbandonedOutpostGenerator {
         level.setBlock(center.offset(-3, 1, -1), SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
 
         BlockPos chestPos = center.offset(3, 1, 2);
-        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+        Direction facing = determineOpenFacing(level, chestPos, Direction.NORTH);
+        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, facing), 3);
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             populateChest(chest, random);
         }
 
         return true;
+    }
+
+    public static Direction determineOpenFacing(ServerLevel level, BlockPos pos, Direction preferredFacing) {
+        if (!level.getBlockState(pos.relative(preferredFacing)).isSolid()) {
+            return preferredFacing;
+        }
+        for (Direction dir : Direction.Plane.HORIZONTAL) {
+            if (!level.getBlockState(pos.relative(dir)).isSolid()) {
+                return dir;
+            }
+        }
+        return preferredFacing;
     }
 
     public static void populateChest(Container chest, RandomSource random) {

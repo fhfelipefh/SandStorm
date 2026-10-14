@@ -15,6 +15,7 @@ import com.fhfelipefh.sandstorm.content.command.SandwormShowcaseCommand;
 import com.fhfelipefh.sandstorm.content.entity.MegazordPilotReachHandler;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
+import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
 import com.fhfelipefh.sandstorm.content.gui.QuantumTerminalMenu;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
@@ -123,6 +124,7 @@ public class SandStormMod implements ModInitializer {
                 TerminalActionPayload.STREAM_CODEC
         );
         SandStormSoundEvents.initialize();
+        SandStormFluids.initialize();
         SandStormItems.initialize();
         SandStormBlocks.initialize();
         AutoModeManager.initialize();

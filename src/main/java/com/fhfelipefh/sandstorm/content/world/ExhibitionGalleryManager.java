@@ -46,7 +46,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.entity.SignTextSlot;
@@ -253,7 +256,18 @@ public class ExhibitionGalleryManager {
             list.add(new RawDisplayEntry("Bloco: " + name, 2, (level, x, groundY, z) -> {
                 BlockPos base = new BlockPos(x, groundY, z);
                 placePedestal(level, base);
-                level.setBlock(base.above(), block.defaultBlockState(), 3);
+                if (block instanceof LiquidBlock) {
+                    level.setBlock(base.above().north(), Blocks.GLASS.defaultBlockState(), 3);
+                    level.setBlock(base.above().south(), Blocks.GLASS.defaultBlockState(), 3);
+                    level.setBlock(base.above().east(), Blocks.GLASS.defaultBlockState(), 3);
+                    level.setBlock(base.above().west(), Blocks.GLASS.defaultBlockState(), 3);
+                }
+                if (block instanceof DoorBlock) {
+                    level.setBlock(base.above(), block.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER), 3);
+                    level.setBlock(base.above(2), block.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), 3);
+                } else {
+                    level.setBlock(base.above(), block.defaultBlockState(), 3);
+                }
                 placeSign(level, base.offset(0, 0, -2), name, "Bloco");
             }));
         }

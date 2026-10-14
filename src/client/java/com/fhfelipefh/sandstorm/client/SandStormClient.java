@@ -75,12 +75,15 @@ import com.fhfelipefh.sandstorm.client.renderer.LaborerUnitRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ScoutDroneRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CrawlerDroneRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ScrapSentinelRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.DefectiveSentinelRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.NomadScavengerRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SpaceSuitArmorRenderer;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
+import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.core.SandStormMod;
 import com.fhfelipefh.sandstorm.content.network.CallGolemPayload;
 import com.fhfelipefh.sandstorm.content.network.EmpDeafenPayload;
 import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
@@ -93,14 +96,17 @@ import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.block.FluidModel;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -187,6 +193,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.CYBORG_BUILDER, CyborgRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CYBORG_HARVESTER, CyborgRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SCRAP_SENTINEL, ScrapSentinelRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.DEFECTIVE_SENTINEL, DefectiveSentinelRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.AQUIFER_BEETLE, AquiferBeetleRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.NOMAD_SCAVENGER, NomadScavengerRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.DERELICT_AUTOMATON, DerelictAutomatonRenderer::new);
@@ -289,6 +296,16 @@ public class SandStormClient implements ClientModInitializer {
             });
         });
         LevelRenderEvents.COLLECT_SUBMITS.register(ClientUplinkRenderer::render);
+        FluidRenderingRegistry.register(
+                SandStormFluids.RADIOACTIVE_SLUDGE,
+                SandStormFluids.FLOWING_RADIOACTIVE_SLUDGE,
+                new FluidModel.Unbaked(
+                        new Material(SandStormMod.id("block/radioactive_sludge_still")),
+                        new Material(SandStormMod.id("block/radioactive_sludge_flow")),
+                        null,
+                        null
+                )
+        );
     }
 
     private static void playFlashlightSound(Minecraft client, int mode) {

@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
+import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
 import com.fhfelipefh.sandstorm.content.storage.QuantumStorageCartridgeItem;
 import com.fhfelipefh.sandstorm.content.storage.StorageCartridgeTier;
 import com.fhfelipefh.sandstorm.content.world.biosphere.BiosphereType;
@@ -12,6 +13,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -75,6 +77,7 @@ public class SandStormItems {
     public static final Item PIEZO_QUARTZ_SHARD = register("piezo_quartz_shard", new Item(properties("piezo_quartz_shard").rarity(Rarity.UNCOMMON)));
     public static final Item PIEZO_RESONATOR = register("piezo_resonator", new Item(properties("piezo_resonator").rarity(Rarity.RARE)));
     public static final Item PRESSURIZED_FOSSIL_FLUID_BUCKET = register("pressurized_fossil_fluid_bucket", new Item(properties("pressurized_fossil_fluid_bucket").craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final BucketItem RADIOACTIVE_SLUDGE_BUCKET = register("radioactive_sludge_bucket", new BucketItem(SandStormFluids.RADIOACTIVE_SLUDGE, properties("radioactive_sludge_bucket").craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final Item TITANIUM_CHITIN_COMPOSITE = register("titanium_chitin_composite", new Item(properties("titanium_chitin_composite").rarity(Rarity.RARE)));
     public static final HeavyPlasmaCannonItem HEAVY_PLASMA_CANNON = register("heavy_plasma_cannon", new HeavyPlasmaCannonItem(properties("heavy_plasma_cannon")));
     public static final OrbitalSurveySatelliteItem ORBITAL_SURVEY_SATELLITE = register("orbital_survey_satellite", new OrbitalSurveySatelliteItem(properties("orbital_survey_satellite")));
@@ -121,6 +124,7 @@ public class SandStormItems {
     public static final SpawnEggItem CYBORG_BUILDER_SPAWN_EGG = register("cyborg_builder_spawn_egg", new SpawnEggItem(properties("cyborg_builder_spawn_egg").spawnEgg(SandStormEntities.CYBORG_BUILDER)));
     public static final SpawnEggItem CYBORG_HARVESTER_SPAWN_EGG = register("cyborg_harvester_spawn_egg", new SpawnEggItem(properties("cyborg_harvester_spawn_egg").spawnEgg(SandStormEntities.CYBORG_HARVESTER)));
     public static final SpawnEggItem SCRAP_SENTINEL_SPAWN_EGG = register("scrap_sentinel_spawn_egg", new SpawnEggItem(properties("scrap_sentinel_spawn_egg").spawnEgg(SandStormEntities.SCRAP_SENTINEL)));
+    public static final SpawnEggItem DEFECTIVE_SENTINEL_SPAWN_EGG = register("defective_sentinel_spawn_egg", new SpawnEggItem(properties("defective_sentinel_spawn_egg").spawnEgg(SandStormEntities.DEFECTIVE_SENTINEL)));
     public static final SpawnEggItem AQUIFER_BEETLE_SPAWN_EGG = register("aquifer_beetle_spawn_egg", new SpawnEggItem(properties("aquifer_beetle_spawn_egg").spawnEgg(SandStormEntities.AQUIFER_BEETLE)));
     public static final SpawnEggItem NOMAD_SCAVENGER_SPAWN_EGG = register("nomad_scavenger_spawn_egg", new SpawnEggItem(properties("nomad_scavenger_spawn_egg").spawnEgg(SandStormEntities.NOMAD_SCAVENGER)));
     public static final SpawnEggItem DERELICT_AUTOMATON_SPAWN_EGG = register("derelict_automaton_spawn_egg", new SpawnEggItem(properties("derelict_automaton_spawn_egg").spawnEgg(SandStormEntities.DERELICT_AUTOMATON)));
@@ -277,6 +281,8 @@ public class SandStormItems {
                         entries.accept(PIEZO_QUARTZ_SHARD);
                         entries.accept(PIEZO_RESONATOR);
                         entries.accept(PRESSURIZED_FOSSIL_FLUID_BUCKET);
+                        entries.accept(RADIOACTIVE_SLUDGE_BUCKET);
+                        entries.accept(SandStormBlocks.RADIOACTIVE_WASTE_BARREL);
                         entries.accept(SandStormBlocks.PIEZO_QUARTZ_BLOCK);
                         entries.accept(SandStormBlocks.BUDDING_PIEZO_QUARTZ);
                         entries.accept(SandStormBlocks.PIEZO_QUARTZ_CLUSTER);
@@ -355,6 +361,7 @@ public class SandStormItems {
                         entries.accept(CYBORG_BUILDER_SPAWN_EGG);
                         entries.accept(CYBORG_HARVESTER_SPAWN_EGG);
                         entries.accept(SCRAP_SENTINEL_SPAWN_EGG);
+                        entries.accept(DEFECTIVE_SENTINEL_SPAWN_EGG);
                         entries.accept(AQUIFER_BEETLE_SPAWN_EGG);
                         entries.accept(NOMAD_SCAVENGER_SPAWN_EGG);
                         entries.accept(DERELICT_AUTOMATON_SPAWN_EGG);

@@ -163,4 +163,24 @@ class ShowcaseComputerAndBlocksTest {
         assertTrue(blocks.contains(SandStormBlocks.SEISMIC_DAMPENER_PAVING));
         assertTrue(blocks.contains(SandStormBlocks.SALT_BRICKS));
     }
+
+    @Test
+    void shouldEnsureBiospheresShowcaseDoesNotOverlapBlocks() {
+        List<Block> blocks = BuiltInRegistries.BLOCK.stream()
+                .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
+                .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR))
+                .toList();
+        int cols = 8;
+        int spacing = 4;
+        int startZ = 8;
+        int totalRows = (blocks.size() + cols - 1) / cols;
+        int maxBlockZ = startZ + (totalRows * spacing) + 4;
+
+        int frontZ = ShowcaseAutomation.getBiosphereFrontZ();
+        int domeRadius = 24;
+        int nearestDomeEdgeZ = frontZ - domeRadius;
+
+        assertTrue(nearestDomeEdgeZ > maxBlockZ, "Biospheres front edge must be strictly past block checkerboard");
+        assertTrue(nearestDomeEdgeZ - maxBlockZ >= 16, "Must maintain at least 16 blocks buffer between exhibition and biospheres");
+    }
 }

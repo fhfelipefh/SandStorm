@@ -81,11 +81,13 @@ public class FuelSiloGenerator {
             reagentChest.setChanged();
         }
 
-        ScrapSentinelEntity sentinel = new ScrapSentinelEntity(SandStormEntities.SCRAP_SENTINEL, level);
-        sentinel.setPos(center.getX() + 0.5, center.getY() + 1.0, center.getZ() + 0.5);
-        sentinel.setDormant(true);
-        sentinel.setPersistenceRequired();
-        level.addFreshEntity(sentinel);
+        if (ScrapSentinelEntity.canSpawnInArea(level, center)) {
+            ScrapSentinelEntity sentinel = new ScrapSentinelEntity(SandStormEntities.SCRAP_SENTINEL, level);
+            sentinel.setPos(center.getX() + 0.5, center.getY() + 1.0, center.getZ() + 0.5);
+            sentinel.setDormant(true);
+            sentinel.setPersistenceRequired();
+            level.addFreshEntity(sentinel);
+        }
 
         return true;
     }

@@ -56,7 +56,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
@@ -192,14 +195,17 @@ public class ShowcaseAutomation {
     public static void buildShowcase(ServerLevel level, ServerPlayer player) {
         showcaseActive = true;
         BlockPos center = new BlockPos(0, 160, 0);
+        int frontZ = getBiosphereFrontZ();
+        int backZ = frontZ + 60;
+        int maxZ = backZ + AtmosphericTerraformerBlockEntity.TIER1_RADIUS + 20;
 
-        AABB showcaseArea = new AABB(center.getX() - 140, center.getY() - 100, center.getZ() - 140, center.getX() + 140, center.getY() + 120, center.getZ() + 140);
+        AABB showcaseArea = new AABB(center.getX() - 140, center.getY() - 100, center.getZ() - 140, center.getX() + 140, center.getY() + 120, center.getZ() + maxZ);
         List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, showcaseArea, e -> !(e instanceof ServerPlayer));
         for (Entity old : oldEntities) {
             old.discard();
         }
 
-        clearUnderneath(level, center);
+        clearUnderneath(level, center, maxZ);
         buildCentralPlaza(level, center);
         buildBlockCheckerboard(level, center);
         buildItemWing(level, center);
@@ -223,9 +229,9 @@ public class ShowcaseAutomation {
         level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "weather clear");
     }
 
-    private static void clearUnderneath(ServerLevel level, BlockPos center) {
+    private static void clearUnderneath(ServerLevel level, BlockPos center, int maxZ) {
         for (int x = -70; x <= 70; x++) {
-            for (int z = -90; z <= 95; z++) {
+            for (int z = -90; z <= maxZ; z++) {
                 for (int y = -64; y < center.getY(); y++) {
                     BlockPos p = new BlockPos(x, y, z);
                     if (!level.getBlockState(p).isAir()) {
@@ -316,9 +322,21 @@ public class ShowcaseAutomation {
         int startZ = 8;
         int totalRows = (blocks.size() + cols - 1) / cols;
 
+        for (int x = -26; x <= 26; x++) {
+            for (int z = startZ - 2; z <= startZ + (totalRows * spacing) + 4; z++) {
+                for (int y = 1; y <= 4; y++) {
+                    BlockPos p = center.offset(x, y, z);
+                    BlockState bs = level.getBlockState(p);
+                    if (bs.getBlock() instanceof LiquidBlock || !bs.getFluidState().isEmpty()) {
+                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                    }
+                }
+            }
+        }
+
         for (int col = 0; col < cols; col++) {
+            int px = getCheckerboardX(col);
             for (int row = 0; row < totalRows; row++) {
-                int px = (col - (cols / 2)) * spacing;
                 int pz = startZ + (row * spacing);
                 for (int dx = -1; dx <= 1; dx++) {
                     for (int dz = -1; dz <= 1; dz++) {
@@ -337,7 +355,7 @@ public class ShowcaseAutomation {
             int col = i % cols;
             int row = i / cols;
 
-            int px = (col - (cols / 2)) * spacing;
+            int px = getCheckerboardX(col);
             int pz = startZ + (row * spacing);
 
             boolean isEvenTile = (col + row) % 2 == 0;
@@ -355,10 +373,25 @@ public class ShowcaseAutomation {
 
             Block targetBlock = blocks.get(i);
             BlockPos targetPos = pedestalCenter.above();
-            level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
+            if (targetBlock instanceof LiquidBlock) {
+                level.setBlock(targetPos.north(), Blocks.GLASS.defaultBlockState(), 3);
+                level.setBlock(targetPos.south(), Blocks.GLASS.defaultBlockState(), 3);
+                level.setBlock(targetPos.east(), Blocks.GLASS.defaultBlockState(), 3);
+                level.setBlock(targetPos.west(), Blocks.GLASS.defaultBlockState(), 3);
+            }
+            if (targetBlock instanceof DoorBlock) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER), 3);
+                level.setBlock(targetPos.above(), targetBlock.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), 3);
+            } else {
+                level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
+            }
             spawnBlockHologram(level, targetPos, targetBlock);
             placeIdentificationSign(level, pedestalCenter.offset(0, 0, -2), targetBlock);
         }
+    }
+
+    private static int getCheckerboardX(int col) {
+        return (col < 4) ? (-18 + col * 4) : (6 + (col - 4) * 4);
     }
 
     private static void placeIdentificationSign(ServerLevel level, BlockPos signPos, Block block) {
@@ -383,8 +416,10 @@ public class ShowcaseAutomation {
     private static void spawnBlockHologram(ServerLevel level, BlockPos blockPos, Block block) {
         String name = block.getName().getString();
         String role = getBlockExplanation(block);
-        spawnHologram(level, blockPos.getX() + 0.5, blockPos.getY() + 1.45, blockPos.getZ() + 0.5, "§e" + name);
-        spawnHologram(level, blockPos.getX() + 0.5, blockPos.getY() + 1.15, blockPos.getZ() + 0.5, "§7" + role);
+        double yName = (block instanceof DoorBlock) ? 2.45 : 1.45;
+        double yRole = (block instanceof DoorBlock) ? 2.15 : 1.15;
+        spawnHologram(level, blockPos.getX() + 0.5, blockPos.getY() + yName, blockPos.getZ() + 0.5, "§e" + name);
+        spawnHologram(level, blockPos.getX() + 0.5, blockPos.getY() + yRole, blockPos.getZ() + 0.5, "§7" + role);
     }
 
     private static String getBlockExplanation(Block block) {
@@ -831,7 +866,7 @@ public class ShowcaseAutomation {
         int chestCount = (items.size() + itemsPerChest - 1) / itemsPerChest;
 
         for (int c = 0; c < chestCount; c++) {
-            int side = (c % 2 == 0) ? -18 : 18;
+            int side = (c % 2 == 0) ? -24 : 24;
             int row = c / 2;
             int pz = 8 + (row * 6);
 
@@ -1015,6 +1050,9 @@ public class ShowcaseAutomation {
         stand.setPos(x, y, z);
         stand.setInvisible(true);
         stand.setNoGravity(true);
+        stand.setNoBasePlate(true);
+        byte flags = stand.getEntityData().get(ArmorStand.DATA_CLIENT_FLAGS);
+        stand.getEntityData().set(ArmorStand.DATA_CLIENT_FLAGS, (byte) (flags | ArmorStand.CLIENT_FLAG_MARKER));
         stand.setCustomName(Component.literal(text));
         stand.setCustomNameVisible(true);
         level.addFreshEntity(stand);
@@ -1203,27 +1241,52 @@ public class ShowcaseAutomation {
         }
     }
 
-    public static void buildBiospheresShowcase(ServerLevel level, BlockPos center) {
-        wipeBiospheresArea(level, center);
+    public static int getBiosphereFrontZ() {
+        List<Block> blocks = BuiltInRegistries.BLOCK.stream()
+                .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
+                .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR))
+                .toList();
+        int cols = 8;
+        int spacing = 4;
+        int startZ = 8;
+        int totalRows = (blocks.size() + cols - 1) / cols;
+        int maxBlockZ = startZ + (totalRows * spacing) + 4;
 
-        for (int z = 30; z <= 75; z++) {
+        List<Item> items = BuiltInRegistries.ITEM.stream()
+                .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(SandStormMod.MOD_ID))
+                .toList();
+        int itemsPerChest = 27;
+        int chestCount = (items.size() + itemsPerChest - 1) / itemsPerChest;
+        int maxItemZ = startZ + (((chestCount + 1) / 2) * 6) + 4;
+
+        int exhibitionMaxZ = Math.max(maxBlockZ, maxItemZ);
+        int domeRadius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
+        return exhibitionMaxZ + domeRadius + 16;
+    }
+
+    public static void buildBiospheresShowcase(ServerLevel level, BlockPos center) {
+        int frontZ = getBiosphereFrontZ();
+        int backZ = frontZ + 60;
+        wipeBiospheresArea(level, center, frontZ, backZ);
+
+        for (int z = 4; z <= frontZ; z++) {
             for (int x = -2; x <= 2; x++) {
                 BlockPos bp = center.offset(x, 0, z);
                 boolean edge = (Math.abs(x) == 2);
                 boolean light = (x == 0 && z % 5 == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_SANDSTONE);
                 level.setBlock(bp, b.defaultBlockState(), 2);
-                if (edge) {
+                if (edge && (z <= 8 || z >= frontZ - 30)) {
                     level.setBlock(bp.above(), Blocks.SANDSTONE_WALL.defaultBlockState(), 2);
                 }
             }
         }
 
         for (int x = -122; x <= 122; x++) {
-            for (int z = 73; z <= 77; z++) {
+            for (int z = frontZ - 2; z <= frontZ + 2; z++) {
                 BlockPos bp = center.offset(x, 0, z);
-                boolean edge = (z == 73 || z == 77);
-                boolean light = (x % 8 == 0 && z == 75);
+                boolean edge = (z == frontZ - 2 || z == frontZ + 2);
+                boolean light = (x % 8 == 0 && z == frontZ);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_SANDSTONE);
                 level.setBlock(bp, b.defaultBlockState(), 2);
                 if (edge && (Math.abs(x) < 4 || Math.abs(x) == 16 || Math.abs(x) == 48 || Math.abs(x) == 80 || Math.abs(x) == 112)) {
@@ -1232,38 +1295,39 @@ public class ShowcaseAutomation {
             }
         }
 
-        BlockPos entranceHolo = center.offset(0, 1, 32);
+        int holoZ = frontZ - AtmosphericTerraformerBlockEntity.TIER1_RADIUS - 6;
+        BlockPos entranceHolo = center.offset(0, 1, holoZ);
         spawnHologram(level, entranceHolo.getX() + 0.5, entranceHolo.getY() + 1.2, entranceHolo.getZ() + 0.5, "§6[Complexo de Biosferas Planetárias]");
         spawnHologram(level, entranceHolo.getX() + 0.5, entranceHolo.getY() + 0.9, entranceHolo.getZ() + 0.5, "§bRestauração de Biomas & Síntese de Fauna");
 
-        buildCryogenicDome(level, center.offset(-96, 0, 75));
-        buildXenoFungalDome(level, center.offset(-32, 0, 75));
-        buildPrimordialOasisDome(level, center.offset(32, 0, 75));
-        buildMagneticForestDome(level, center.offset(96, 0, 75));
-        buildTemperateShowcaseDome(level, center.offset(-64, 0, 135), 0);
-        buildTemperateShowcaseDome(level, center.offset(0, 0, 135), 1);
-        buildTemperateShowcaseDome(level, center.offset(64, 0, 135), 2);
-        buildBiospherePaths(level, center);
-        buildBiosphereFences(level, center);
-        placeBiosphereDoor(level, center.offset(-96, 0, 75));
-        placeBiosphereDoor(level, center.offset(-32, 0, 75));
-        placeBiosphereDoor(level, center.offset(32, 0, 75));
-        placeBiosphereDoor(level, center.offset(96, 0, 75));
-        placeBiosphereDoor(level, center.offset(-64, 0, 135));
-        placeBiosphereDoor(level, center.offset(0, 0, 135));
-        placeBiosphereDoor(level, center.offset(64, 0, 135));
+        buildCryogenicDome(level, center.offset(-96, 0, frontZ));
+        buildXenoFungalDome(level, center.offset(-32, 0, frontZ));
+        buildPrimordialOasisDome(level, center.offset(32, 0, frontZ));
+        buildMagneticForestDome(level, center.offset(96, 0, frontZ));
+        buildTemperateShowcaseDome(level, center.offset(-64, 0, backZ), 0);
+        buildTemperateShowcaseDome(level, center.offset(0, 0, backZ), 1);
+        buildTemperateShowcaseDome(level, center.offset(64, 0, backZ), 2);
+        buildBiospherePaths(level, center, frontZ, backZ);
+        buildBiosphereFences(level, center, frontZ, backZ);
+        placeBiosphereDoor(level, center.offset(-96, 0, frontZ));
+        placeBiosphereDoor(level, center.offset(-32, 0, frontZ));
+        placeBiosphereDoor(level, center.offset(32, 0, frontZ));
+        placeBiosphereDoor(level, center.offset(96, 0, frontZ));
+        placeBiosphereDoor(level, center.offset(-64, 0, backZ));
+        placeBiosphereDoor(level, center.offset(0, 0, backZ));
+        placeBiosphereDoor(level, center.offset(64, 0, backZ));
     }
 
-    private static void buildBiosphereFences(ServerLevel level, BlockPos center) {
+    private static void buildBiosphereFences(ServerLevel level, BlockPos center, int frontZ, int backZ) {
         int radius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
         BlockPos[] domeCenters = {
-                center.offset(-96, 0, 75),
-                center.offset(-32, 0, 75),
-                center.offset(32, 0, 75),
-                center.offset(96, 0, 75),
-                center.offset(-64, 0, 135),
-                center.offset(0, 0, 135),
-                center.offset(64, 0, 135)
+                center.offset(-96, 0, frontZ),
+                center.offset(-32, 0, frontZ),
+                center.offset(32, 0, frontZ),
+                center.offset(96, 0, frontZ),
+                center.offset(-64, 0, backZ),
+                center.offset(0, 0, backZ),
+                center.offset(64, 0, backZ)
         };
         for (BlockPos domeCenter : domeCenters) {
             for (int x = radius + 2; x <= radius + 5; x++) {
@@ -1275,19 +1339,19 @@ public class ShowcaseAutomation {
         }
     }
 
-    private static void buildBiospherePaths(ServerLevel level, BlockPos center) {
+    private static void buildBiospherePaths(ServerLevel level, BlockPos center, int frontZ, int backZ) {
         for (int x = -126; x <= 126; x++) {
-            for (int z = 73; z <= 77; z++) {
+            for (int z = frontZ - 2; z <= frontZ + 2; z++) {
                 setShowcasePathBlock(level, center.offset(x, 0, z));
             }
         }
         for (int x : new int[]{-64, 0, 64}) {
-            for (int z = 78; z <= 135; z++) {
+            for (int z = frontZ + 3; z <= backZ; z++) {
                 setShowcasePathBlock(level, center.offset(x, 0, z));
             }
         }
         for (int x = -78; x <= 78; x++) {
-            for (int z = 133; z <= 137; z++) {
+            for (int z = backZ - 2; z <= backZ + 2; z++) {
                 setShowcasePathBlock(level, center.offset(x, 0, z));
             }
         }
@@ -1406,33 +1470,23 @@ public class ShowcaseAutomation {
         }
     }
 
-    private static void wipeBiospheresArea(ServerLevel level, BlockPos center) {
-        AABB entranceZone = new AABB(
-            center.getX() - 6, center.getY() - 5, center.getZ() + 25,
-            center.getX() + 6, center.getY() + 30, center.getZ() + 56
-        );
+    private static void wipeBiospheresArea(ServerLevel level, BlockPos center, int frontZ, int backZ) {
+        int radius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
+        int startClearZ = frontZ - radius - 8;
+        int endClearZ = backZ + radius + 10;
         AABB domesZone = new AABB(
-            center.getX() - 130, center.getY() - 5, center.getZ() + 56,
-            center.getX() + 130, center.getY() + 30, center.getZ() + 175
+            center.getX() - 130, center.getY() - 5, center.getZ() + startClearZ,
+            center.getX() + 130, center.getY() + 30, center.getZ() + endClearZ
         );
-        List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, entranceZone.minmax(domesZone), e -> !(e instanceof ServerPlayer));
+
+        List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, domesZone, e -> !(e instanceof ServerPlayer));
         for (Entity e : oldEntities) {
-            if (entranceZone.contains(e.position()) || domesZone.contains(e.position())) {
+            if (domesZone.contains(e.position())) {
                 e.discard();
             }
         }
-        for (int x = -6; x <= 6; x++) {
-            for (int z = 25; z <= 56; z++) {
-                for (int y = -5; y <= 30; y++) {
-                    BlockPos p = center.offset(x, y, z);
-                    if (!level.getBlockState(p).isAir()) {
-                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
-                    }
-                }
-            }
-        }
         for (int x = -126; x <= 126; x++) {
-            for (int z = 57; z <= 171; z++) {
+            for (int z = startClearZ; z <= endClearZ; z++) {
                 for (int y = -5; y <= 30; y++) {
                     BlockPos p = center.offset(x, y, z);
                     if (!level.getBlockState(p).isAir()) {

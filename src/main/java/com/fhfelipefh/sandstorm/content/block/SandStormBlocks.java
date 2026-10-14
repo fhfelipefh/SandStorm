@@ -38,9 +38,12 @@ import com.fhfelipefh.sandstorm.content.block.entity.OrbitalMassDriverBlockEntit
 import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.RadioactiveWasteBarrelBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SpectralSurveyTelescopeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
+import com.fhfelipefh.sandstorm.content.fluid.RadioactiveSludgeBlock;
+import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
 import com.fhfelipefh.sandstorm.content.block.entity.SmartFluidPipeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SupercriticalHeatExchangerBlockEntity;
@@ -66,7 +69,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DoubleHighBlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -102,6 +108,25 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_BLUE)
                     .strength(1.5f)
                     .sound(SoundType.MUD)));
+    public static final RadioactiveSludgeBlock RADIOACTIVE_SLUDGE = Registry.register(
+            BuiltInRegistries.BLOCK,
+            SandStormMod.id("radioactive_sludge"),
+            new RadioactiveSludgeBlock(SandStormFluids.RADIOACTIVE_SLUDGE, BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("radioactive_sludge")))
+                    .mapColor(MapColor.COLOR_LIGHT_GREEN)
+                    .replaceable()
+                    .noCollision()
+                    .strength(100.0f)
+                    .noLootTable()
+                    .liquid()
+                    .sound(SoundType.EMPTY))
+    );
+    public static final RadioactiveWasteBarrelBlock RADIOACTIVE_WASTE_BARREL = register("radioactive_waste_barrel",
+            new RadioactiveWasteBarrelBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("radioactive_waste_barrel")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(2.5f, 6.0f)
+                    .sound(SoundType.METAL)));
     public static final ThumperBlock THUMPER = register("thumper",
             new ThumperBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("thumper")))
@@ -1057,10 +1082,18 @@ public class SandStormBlocks {
             SandStormMod.id("fiberglass_chemical_pipe"),
             new BlockEntityType<>(FiberglassChemicalPipeBlockEntity::new, Set.of(FIBERGLASS_CHEMICAL_PIPE))
     );
+    public static final BlockEntityType<RadioactiveWasteBarrelBlockEntity> RADIOACTIVE_WASTE_BARREL_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("radioactive_waste_barrel"),
+            new BlockEntityType<>(RadioactiveWasteBarrelBlockEntity::new, Set.of(RADIOACTIVE_WASTE_BARREL))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
-        SandStormItems.register(path, new BlockItem(registeredBlock, SandStormItems.properties(path).useBlockDescriptionPrefix()));
+        Item item = (registeredBlock instanceof DoorBlock)
+                ? new DoubleHighBlockItem(registeredBlock, SandStormItems.properties(path).useBlockDescriptionPrefix())
+                : new BlockItem(registeredBlock, SandStormItems.properties(path).useBlockDescriptionPrefix());
+        SandStormItems.register(path, item);
         return registeredBlock;
     }
 

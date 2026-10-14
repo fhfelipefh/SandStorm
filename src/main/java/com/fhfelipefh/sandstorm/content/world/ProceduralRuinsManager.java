@@ -1,7 +1,8 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.structure.AbandonedOutpostGenerator;
-
+import com.fhfelipefh.sandstorm.content.world.structure.AncientBunkerGenerator;
 import com.fhfelipefh.sandstorm.content.world.structure.FuelSiloGenerator;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -19,8 +20,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ProceduralRuinsManager {
 
     public static final int OUTPOST_RARITY = 180;
+    public static final int BUNKER_RARITY = 135;
+    public static final int COMPLEX_DUNGEON_RARITY = 160;
 
-    private record PendingRuin(ServerLevel level, BlockPos origin, int surfaceY, int ruinType) {}
+    private record PendingRuin(ServerLevel level, BlockPos origin, int surfaceY, int ruinType, int gridWidth, int gridDepth) {}
     private static final Queue<PendingRuin> PENDING_RUINS = new ConcurrentLinkedQueue<>();
 
     public static void initialize() {
@@ -50,13 +53,27 @@ public class ProceduralRuinsManager {
             long roll = Math.abs(hash);
 
             int surfaceY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, 8, 8);
-            if (roll % OUTPOST_RARITY == 0 && surfaceY >= 72) {
+            if (roll % COMPLEX_DUNGEON_RARITY == 0) {
+                int dungeonY = -52 + (int) (Math.abs(hash >>> 20) % 33);
+                int gridWidth = 3 + (int) (Math.abs(hash >>> 26) % 4);
+                int gridDepth = 3 + (int) (Math.abs(hash >>> 30) % 4);
+                BlockPos origin = new BlockPos(samplePos.getX(), dungeonY, samplePos.getZ());
+                level.getServer().execute(() -> {
+                    PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 4, gridWidth, gridDepth));
+                });
+            } else if (roll % OUTPOST_RARITY == 0 && surfaceY >= 72) {
                 if (surfaceY > level.getMinY() + 15) {
                     BlockPos origin = new BlockPos(samplePos.getX(), surfaceY, samplePos.getZ());
                     level.getServer().execute(() -> {
-                        PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 1));
+                        PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 1, 0, 0));
                     });
                 }
+            } else if (roll % BUNKER_RARITY == 0) {
+                int bunkerY = -15 + (int) (Math.abs(hash >>> 16) % 45);
+                BlockPos origin = new BlockPos(samplePos.getX(), bunkerY, samplePos.getZ());
+                level.getServer().execute(() -> {
+                    PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 2, 0, 0));
+                });
             }
         });
 
@@ -73,6 +90,10 @@ public class ProceduralRuinsManager {
                     processed++;
                     if (ruin.ruinType() == 1) {
                         AbandonedOutpostGenerator.generate(ruin.level(), ruin.origin());
+                    } else if (ruin.ruinType() == 2) {
+                        AncientBunkerGenerator.generate(ruin.level(), ruin.origin());
+                    } else if (ruin.ruinType() == 4) {
+                        AncientBunkerComplexDungeon.generate(ruin.level(), ruin.origin(), ruin.gridWidth(), ruin.gridDepth());
                     } else {
                         FuelSiloGenerator.generate(ruin.level(), ruin.origin(), ruin.surfaceY());
                     }
@@ -87,6 +108,14 @@ public class ProceduralRuinsManager {
 
     public static boolean generateOutpostAt(ServerLevel level, BlockPos origin) {
         return AbandonedOutpostGenerator.generate(level, origin);
+    }
+
+    public static boolean generateBunkerAt(ServerLevel level, BlockPos origin) {
+        return AncientBunkerGenerator.generate(level, origin) > 0;
+    }
+
+    public static int generateComplexDungeonAt(ServerLevel level, BlockPos origin, int gridWidth, int gridDepth) {
+        return AncientBunkerComplexDungeon.generate(level, origin, gridWidth, gridDepth);
     }
 
     public static boolean generateFuelSiloAt(ServerLevel level, BlockPos origin, int surfaceY) {

@@ -12,6 +12,8 @@ import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.megastructure.MegastructureBlueprint;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
+import com.fhfelipefh.sandstorm.content.world.structure.AncientBunkerGenerator;
 import com.fhfelipefh.sandstorm.content.world.structure.ColossalCastleGenerator;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -22,8 +24,10 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,6 +35,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -40,6 +45,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class SandstormBuildCommand {
@@ -56,10 +62,18 @@ public class SandstormBuildCommand {
             "mining_complex",
             "energy_grid",
             "ruins_laboratory",
-            "colossal_castle"
+            "colossal_castle",
+            "ancient_bunker",
+            "procedural_dungeon"
     );
 
     static {
+        STRUCTURE_MAP.put("ancient_bunker", "ancient_bunker");
+        STRUCTURE_MAP.put("bunker", "ancient_bunker");
+        STRUCTURE_MAP.put("procedural_dungeon", "procedural_dungeon");
+        STRUCTURE_MAP.put("dungeon", "procedural_dungeon");
+        STRUCTURE_MAP.put("ancient_complex", "procedural_dungeon");
+        STRUCTURE_MAP.put("complex", "procedural_dungeon");
         STRUCTURE_MAP.put("biosphere_dome", "biosphere_dome");
         STRUCTURE_MAP.put("dome", "biosphere_dome");
         STRUCTURE_MAP.put("planetary_citadel", "planetary_citadel");
@@ -102,6 +116,9 @@ public class SandstormBuildCommand {
                                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
                                         .executes(ctx -> executeBuild(ctx, StringArgumentType.getString(ctx, "structure"), BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
                                 )
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .executes(ctx -> executeBuild(ctx, StringArgumentType.getString(ctx, "structure"), EntityArgument.getPlayer(ctx, "player").blockPosition()))
+                                )
                         )
                 )
                 .then(Commands.literal("structure")
@@ -110,6 +127,9 @@ public class SandstormBuildCommand {
                                 .executes(ctx -> executeBuild(ctx, StringArgumentType.getString(ctx, "structure"), null))
                                 .then(Commands.argument("pos", BlockPosArgument.blockPos())
                                         .executes(ctx -> executeBuild(ctx, StringArgumentType.getString(ctx, "structure"), BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
+                                )
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .executes(ctx -> executeBuild(ctx, StringArgumentType.getString(ctx, "structure"), EntityArgument.getPlayer(ctx, "player").blockPosition()))
                                 )
                         )
                 )
@@ -135,6 +155,9 @@ public class SandstormBuildCommand {
                         .then(Commands.argument("pos", BlockPosArgument.blockPos())
                                 .executes(ctx -> executeBuild(ctx, StringArgumentType.getString(ctx, "structure"), BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
                         )
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(ctx -> executeBuild(ctx, StringArgumentType.getString(ctx, "structure"), EntityArgument.getPlayer(ctx, "player").blockPosition()))
+                        )
                 )
         );
 
@@ -145,6 +168,9 @@ public class SandstormBuildCommand {
                         .executes(ctx -> executeBuild(ctx, StringArgumentType.getString(ctx, "structure"), null))
                         .then(Commands.argument("pos", BlockPosArgument.blockPos())
                                 .executes(ctx -> executeBuild(ctx, StringArgumentType.getString(ctx, "structure"), BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
+                        )
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(ctx -> executeBuild(ctx, StringArgumentType.getString(ctx, "structure"), EntityArgument.getPlayer(ctx, "player").blockPosition()))
                         )
                 )
         );
@@ -274,6 +300,47 @@ public class SandstormBuildCommand {
                         .executes(ctx -> executeBuild(ctx, "colossal_castle", BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
                 )
         );
+
+        dispatcher.register(Commands.literal("sandstorm_build_bunker")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeBuild(ctx, "ancient_bunker", null))
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .executes(ctx -> executeBuild(ctx, "ancient_bunker", BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
+                )
+                .then(Commands.argument("player", EntityArgument.player())
+                        .executes(ctx -> executeBuild(ctx, "ancient_bunker", EntityArgument.getPlayer(ctx, "player").blockPosition()))
+                )
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_build_ancient_bunker")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeBuild(ctx, "ancient_bunker", null))
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .executes(ctx -> executeBuild(ctx, "ancient_bunker", BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
+                )
+                .then(Commands.argument("player", EntityArgument.player())
+                        .executes(ctx -> executeBuild(ctx, "ancient_bunker", EntityArgument.getPlayer(ctx, "player").blockPosition()))
+                )
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_build_dungeon")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeBuild(ctx, "procedural_dungeon", null))
+                .then(Commands.argument("width", IntegerArgumentType.integer(3, 9))
+                        .then(Commands.argument("depth", IntegerArgumentType.integer(3, 9))
+                                .executes(ctx -> executeBuildDungeonWithSize(ctx, null, IntegerArgumentType.getInteger(ctx, "width"), IntegerArgumentType.getInteger(ctx, "depth")))
+                                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                        .executes(ctx -> executeBuildDungeonWithSize(ctx, BlockPosArgument.getLoadedBlockPos(ctx, "pos"), IntegerArgumentType.getInteger(ctx, "width"), IntegerArgumentType.getInteger(ctx, "depth")))
+                                )
+                        )
+                )
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .executes(ctx -> executeBuild(ctx, "procedural_dungeon", BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
+                )
+                .then(Commands.argument("player", EntityArgument.player())
+                        .executes(ctx -> executeBuild(ctx, "procedural_dungeon", EntityArgument.getPlayer(ctx, "player").blockPosition()))
+                )
+        );
     }
 
     private static CompletableFuture<Suggestions> suggestStructures(SuggestionsBuilder builder) {
@@ -295,7 +362,40 @@ public class SandstormBuildCommand {
         }
 
         int blocksPlaced = build(level, targetPos, normalizedId);
+        if ("ancient_bunker".equals(normalizedId)) {
+            for (ServerPlayer player : level.players()) {
+                if (player.blockPosition().closerThan(targetPos, 8.0)) {
+                    player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY() + 1.0, targetPos.getZ() - 4.0, Set.of(), 0.0f, 0.0f, true);
+                }
+            }
+        } else if ("procedural_dungeon".equals(normalizedId)) {
+            for (ServerPlayer player : level.players()) {
+                if (player.blockPosition().closerThan(targetPos, 16.0)) {
+                    int entryX = (AncientBunkerComplexDungeon.DEFAULT_GRID_WIDTH / 2) * AncientBunkerComplexDungeon.ROOM_SIZE + 3;
+                    player.teleportTo(level, targetPos.getX() + entryX + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 3.5, Set.of(), 0.0f, 0.0f, true);
+                }
+            }
+        }
         source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§a[SandStorm]§r Estrutura '%s' construída com sucesso em [%d, %d, %d]! (%d blocos gerados)", normalizedId, targetPos.getX(), targetPos.getY(), targetPos.getZ(), blocksPlaced)), true);
+        return blocksPlaced;
+    }
+
+    private static int executeBuildDungeonWithSize(CommandContext<CommandSourceStack> ctx, BlockPos explicitPos, int width, int depth) {
+        CommandSourceStack source = ctx.getSource();
+        ServerLevel level = source.getLevel();
+        BlockPos targetPos = (explicitPos != null) ? explicitPos : BlockPos.containing(source.getPosition());
+        int clampedWidth = Math.clamp(width, 3, 9);
+        int clampedDepth = Math.clamp(depth, 3, 9);
+        int blocksPlaced = AncientBunkerComplexDungeon.generate(level, targetPos, clampedWidth, clampedDepth);
+
+        for (ServerPlayer player : level.players()) {
+            if (player.blockPosition().closerThan(targetPos, 16.0)) {
+                int entryX = (clampedWidth / 2) * AncientBunkerComplexDungeon.ROOM_SIZE + 3;
+                player.teleportTo(level, targetPos.getX() + entryX + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 3.5, Set.of(), 0.0f, 0.0f, true);
+            }
+        }
+
+        source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§a[SandStorm]§r Complexo Dungeon Procedural %dx%d construído com sucesso em [%d, %d, %d]! (%d blocos gerados)", clampedWidth, clampedDepth, targetPos.getX(), targetPos.getY(), targetPos.getZ(), blocksPlaced)), true);
         return blocksPlaced;
     }
 
@@ -395,6 +495,8 @@ public class SandstormBuildCommand {
             case "energy_grid" -> buildEnergyGrid(level, center);
             case "ruins_laboratory" -> buildRuinsLaboratory(level, center);
             case "colossal_castle" -> ColossalCastleGenerator.generate(level, center);
+            case "ancient_bunker" -> AncientBunkerGenerator.generate(level, center);
+            case "procedural_dungeon" -> AncientBunkerComplexDungeon.generate(level, center);
             default -> 0;
         };
     }
@@ -489,7 +591,7 @@ public class SandstormBuildCommand {
         placedCount++;
 
         BlockPos chestPos = origin.offset(0, 1, -4);
-        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH), 3);
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.RAW_SILICON, 16));
             chest.setItem(1, new ItemStack(SandStormItems.SILICON_WAFER, 8));
@@ -699,7 +801,7 @@ public class SandstormBuildCommand {
         placedCount += 2;
 
         BlockPos chestPos = origin.offset(4, 1, -2);
-        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST), 3);
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.RAW_SILICON, 32));
             chest.setItem(1, new ItemStack(SandStormItems.SILICON_WAFER, 16));
@@ -811,7 +913,7 @@ public class SandstormBuildCommand {
         placedCount += 2;
 
         BlockPos chestPos = origin.offset(-3, 1, 1);
-        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.EAST), 3);
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.TECH_DISC, 2));
             chest.setItem(1, new ItemStack(SandStormItems.CIRCUIT_BOARD, 4));

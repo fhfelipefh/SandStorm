@@ -36,6 +36,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
@@ -44,6 +45,11 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class ScrapSentinelEntity extends PathfinderMob implements Enemy, DeactivatableAndroid {
+    public static final double DENSITY_RADIUS_WIDE = 16.0;
+    public static final int MAX_SENTINELS_WIDE = 3;
+    public static final double DENSITY_RADIUS_TIGHT = 8.0;
+    public static final int MAX_SENTINELS_TIGHT = 2;
+
     private static final EntityDataAccessor<Boolean> DATA_DORMANT = SynchedEntityData.defineId(ScrapSentinelEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_ATTACK_ANIM = SynchedEntityData.defineId(ScrapSentinelEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(ScrapSentinelEntity.class, EntityDataSerializers.BOOLEAN);
@@ -193,6 +199,75 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy, Deactiv
         int currentAnim = getAttackAnim();
         if (currentAnim > 0) {
             setAttackAnim(currentAnim - 1);
+        }
+
+        if (!this.level().isClientSide() && (this.tickCount + this.getId()) % 60 == 0) {
+            enforceDensityCap();
+        }
+    }
+
+    public static boolean canSpawnInArea(Level level, BlockPos pos) {
+        if (level == null || pos == null) {
+            return false;
+        }
+        AABB tightBox = new AABB(pos).inflate(DENSITY_RADIUS_TIGHT);
+        List<ScrapSentinelEntity> tightList = level.getEntitiesOfClass(
+                ScrapSentinelEntity.class,
+                tightBox,
+                Entity::isAlive
+        );
+        if (tightList.size() >= MAX_SENTINELS_TIGHT) {
+            return false;
+        }
+
+        AABB wideBox = new AABB(pos).inflate(DENSITY_RADIUS_WIDE);
+        List<ScrapSentinelEntity> wideList = level.getEntitiesOfClass(
+                ScrapSentinelEntity.class,
+                wideBox,
+                Entity::isAlive
+        );
+        return wideList.size() < MAX_SENTINELS_WIDE;
+    }
+
+    @Override
+    public boolean checkSpawnObstruction(LevelReader levelReader) {
+        if (levelReader instanceof Level level && !canSpawnInArea(level, this.blockPosition())) {
+            return false;
+        }
+        return super.checkSpawnObstruction(levelReader);
+    }
+
+    private void enforceDensityCap() {
+        if (this.isDeactivated()) {
+            return;
+        }
+        AABB tightBox = this.getBoundingBox().inflate(DENSITY_RADIUS_TIGHT);
+        List<ScrapSentinelEntity> tightSentinels = this.level().getEntitiesOfClass(
+                ScrapSentinelEntity.class,
+                tightBox,
+                Entity::isAlive
+        );
+        if (tightSentinels.size() > MAX_SENTINELS_TIGHT) {
+            tightSentinels.sort((a, b) -> Integer.compare(a.getId(), b.getId()));
+            int rank = tightSentinels.indexOf(this);
+            if (rank >= MAX_SENTINELS_TIGHT) {
+                this.discard();
+                return;
+            }
+        }
+
+        AABB wideBox = this.getBoundingBox().inflate(DENSITY_RADIUS_WIDE);
+        List<ScrapSentinelEntity> wideSentinels = this.level().getEntitiesOfClass(
+                ScrapSentinelEntity.class,
+                wideBox,
+                Entity::isAlive
+        );
+        if (wideSentinels.size() > MAX_SENTINELS_WIDE) {
+            wideSentinels.sort((a, b) -> Integer.compare(a.getId(), b.getId()));
+            int rank = wideSentinels.indexOf(this);
+            if (rank >= MAX_SENTINELS_WIDE) {
+                this.discard();
+            }
         }
     }
 

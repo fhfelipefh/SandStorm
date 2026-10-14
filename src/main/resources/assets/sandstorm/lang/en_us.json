@@ -1191,5 +1191,11 @@
   "message.sandstorm.sand_depth_probe.dense": "Acoustic sonar: bedrock detected.",
   "message.sandstorm.sand_depth_probe.cavity": "Warning: hollow cavity detected below!",
   "message.sandstorm.sand_depth_probe.loose": "Warning: unstable loose sand layer detected!",
-  "message.sandstorm.sand_depth_probe.solid": "Subsurface scan: stable solid bedrock."
+  "message.sandstorm.sand_depth_probe.solid": "Subsurface scan: stable solid bedrock.",
+  "block.sandstorm.radioactive_waste_barrel": "Radioactive Waste Barrel",
+  "item.sandstorm.radioactive_waste_barrel": "Radioactive Waste Barrel",
+  "item.sandstorm.radioactive_sludge_bucket": "Radioactive Sludge Bucket",
+  "block.sandstorm.radioactive_sludge": "Radioactive Sludge",
+  "item.sandstorm.defective_sentinel_spawn_egg": "Defective Sentinel Spawn Egg",
+  "entity.sandstorm.defective_sentinel": "Defective Sentinel"
 }

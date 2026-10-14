@@ -191,8 +191,58 @@ class BlockTextureAndResolutionArchitectureTest {
             if (isAllTransparent) {
                 errors.add(category + " texture '" + filename + "' is 100% transparent (completely invisible)");
             }
+            if (hasBakedCheckerboard(image)) {
+                errors.add(category + " texture '" + filename + "' contains a baked-in fake transparency checkerboard pattern");
+            }
         } catch (IOException e) {
             errors.add(category + " texture '" + filename + "' failed to read: " + e.getMessage());
         }
+    }
+
+    private boolean hasBakedCheckerboard(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        int[] blockSizes = new int[]{1, 2, 4};
+        for (int blockSize : blockSizes) {
+            int checkerPairs = 0;
+            for (int y = 0; y < height - blockSize; y += blockSize) {
+                for (int x = 0; x < width - blockSize; x += blockSize) {
+                    int argb1 = image.getRGB(x, y);
+                    int argb2 = image.getRGB(x + blockSize, y);
+                    int argb3 = image.getRGB(x, y + blockSize);
+                    int argbDiag = image.getRGB(x + blockSize, y + blockSize);
+
+                    if (isNeutralOpaque(argb1) && isNeutralOpaque(argb2) && isNeutralOpaque(argb3) && isNeutralOpaque(argbDiag)) {
+                        int r1 = (argb1 >> 16) & 0xFF;
+                        int r2 = (argb2 >> 16) & 0xFF;
+                        int r3 = (argb3 >> 16) & 0xFF;
+                        int rDiag = (argbDiag >> 16) & 0xFF;
+
+                        int diffH = Math.abs(r1 - r2);
+                        int diffV = Math.abs(r1 - r3);
+                        int diffDiag = Math.abs(r1 - rDiag);
+
+                        if (diffH >= 20 && diffH <= 65 && diffV >= 20 && diffV <= 65 && diffDiag <= 5) {
+                            checkerPairs++;
+                        }
+                    }
+                }
+            }
+            if (checkerPairs >= 8) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isNeutralOpaque(int argb) {
+        int a = (argb >> 24) & 0xFF;
+        if (a < 255) {
+            return false;
+        }
+        int r = (argb >> 16) & 0xFF;
+        int g = (argb >> 8) & 0xFF;
+        int b = argb & 0xFF;
+        return r >= 180 && Math.abs(r - g) <= 2 && Math.abs(g - b) <= 2;
     }
 }

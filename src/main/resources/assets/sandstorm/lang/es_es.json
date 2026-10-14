@@ -1191,5 +1191,11 @@
   "message.sandstorm.sand_depth_probe.dense": "Sonar: lecho de roca detectado.",
   "message.sandstorm.sand_depth_probe.cavity": "Aviso: cavidad hueca detectada abajo.",
   "message.sandstorm.sand_depth_probe.loose": "Alerta: capa inestable de arena suelta.",
-  "message.sandstorm.sand_depth_probe.solid": "Escaneo: sustrato rocoso estable."
+  "message.sandstorm.sand_depth_probe.solid": "Escaneo: sustrato rocoso estable.",
+  "block.sandstorm.radioactive_waste_barrel": "Barril de Residuos Radiactivos",
+  "item.sandstorm.radioactive_waste_barrel": "Barril de Residuos Radiactivos",
+  "item.sandstorm.radioactive_sludge_bucket": "Cubo de Lodo Radiactivo",
+  "block.sandstorm.radioactive_sludge": "Lodo Radiactivo",
+  "item.sandstorm.defective_sentinel_spawn_egg": "Huevo de Centinela Defectuoso",
+  "entity.sandstorm.defective_sentinel": "Centinela Defectuoso"
 }

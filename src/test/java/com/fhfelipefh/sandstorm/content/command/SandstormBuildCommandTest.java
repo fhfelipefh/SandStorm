@@ -28,6 +28,7 @@ class SandstormBuildCommandTest {
         assertNotNull(sandstormNode.getChild("build"));
         assertNotNull(sandstormNode.getChild("build").getChild("structure"));
         assertNotNull(sandstormNode.getChild("build").getChild("structure").getChild("pos"));
+        assertNotNull(sandstormNode.getChild("build").getChild("structure").getChild("player"));
         assertNotNull(sandstormNode.getChild("structure"));
         assertNotNull(sandstormNode.getChild("structure").getChild("structure"));
         assertNotNull(sandstormNode.getChild("instant_build"));
@@ -39,10 +40,13 @@ class SandstormBuildCommandTest {
         assertNotNull(sandstormBuildNode);
         assertNotNull(sandstormBuildNode.getChild("structure"));
         assertNotNull(sandstormBuildNode.getChild("structure").getChild("pos"));
+        assertNotNull(sandstormBuildNode.getChild("structure").getChild("player"));
 
         CommandNode<CommandSourceStack> buildStructureNode = dispatcher.getRoot().getChild("sandstorm_build_structure");
         assertNotNull(buildStructureNode);
         assertNotNull(buildStructureNode.getChild("structure"));
+        assertNotNull(buildStructureNode.getChild("structure").getChild("pos"));
+        assertNotNull(buildStructureNode.getChild("structure").getChild("player"));
 
         assertNotNull(dispatcher.getRoot().getChild("sandstorm_finish"));
         assertNotNull(dispatcher.getRoot().getChild("sandstorm_instant"));
@@ -62,5 +66,22 @@ class SandstormBuildCommandTest {
         assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_castle"));
         assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_colossal_castle"));
         assertNotNull(dispatcher.getRoot().getChild("sandstorm_build_castelo"));
+
+        CommandNode<CommandSourceStack> bunkerNode = dispatcher.getRoot().getChild("sandstorm_build_bunker");
+        assertNotNull(bunkerNode);
+        assertNotNull(bunkerNode.getChild("pos"));
+        assertNotNull(bunkerNode.getChild("player"));
+
+        CommandNode<CommandSourceStack> ancientBunkerNode = dispatcher.getRoot().getChild("sandstorm_build_ancient_bunker");
+        assertNotNull(ancientBunkerNode);
+        assertNotNull(ancientBunkerNode.getChild("pos"));
+        assertNotNull(ancientBunkerNode.getChild("player"));
+
+        CommandNode<CommandSourceStack> dungeonNode = dispatcher.getRoot().getChild("sandstorm_build_dungeon");
+        assertNotNull(dungeonNode);
+        assertNotNull(dungeonNode.getChild("pos"));
+        assertNotNull(dungeonNode.getChild("player"));
+        assertNotNull(dungeonNode.getChild("width"));
+        assertNotNull(dungeonNode.getChild("width").getChild("depth"));
     }
 }

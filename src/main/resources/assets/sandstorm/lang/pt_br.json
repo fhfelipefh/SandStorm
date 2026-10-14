@@ -1191,5 +1191,11 @@
   "message.sandstorm.sand_depth_probe.dense": "Sonar: rocha-mãe detectada.",
   "message.sandstorm.sand_depth_probe.cavity": "Atenção: cavidade oca detectada abaixo!",
   "message.sandstorm.sand_depth_probe.loose": "Alerta: camada instável de areia solta!",
-  "message.sandstorm.sand_depth_probe.solid": "Varredura: substrato rochoso estável."
+  "message.sandstorm.sand_depth_probe.solid": "Varredura: substrato rochoso estável.",
+  "block.sandstorm.radioactive_waste_barrel": "Barril de Lixo Radioativo",
+  "item.sandstorm.radioactive_waste_barrel": "Barril de Lixo Radioativo",
+  "item.sandstorm.radioactive_sludge_bucket": "Balde de Lodo Radioativo",
+  "block.sandstorm.radioactive_sludge": "Lodo Radioativo",
+  "item.sandstorm.defective_sentinel_spawn_egg": "Ovo Gerador de Sentinela Defeituoso",
+  "entity.sandstorm.defective_sentinel": "Sentinela Defeituoso"
 }

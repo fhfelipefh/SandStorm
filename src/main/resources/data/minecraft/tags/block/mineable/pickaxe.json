@@ -88,6 +88,7 @@
     "sandstorm:fiberglass_corrugated_sheet",
     "sandstorm:fiberglass_corrugated_slab",
     "sandstorm:fiberglass_corrugated_pane",
-    "sandstorm:fiberglass_chemical_pipe"
+    "sandstorm:fiberglass_chemical_pipe",
+    "sandstorm:radioactive_waste_barrel"
   ]
 }

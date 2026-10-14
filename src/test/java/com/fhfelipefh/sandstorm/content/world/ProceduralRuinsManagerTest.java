@@ -45,6 +45,16 @@ class ProceduralRuinsManagerTest {
     }
 
     @Test
+    void naturalGenerationShouldSupportAncientBunkers() throws IOException {
+        Path managerPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "ProceduralRuinsManager.java");
+        String source = Files.readString(managerPath);
+
+        assertTrue(ProceduralRuinsManager.BUNKER_RARITY > 0);
+        assertEquals(135, ProceduralRuinsManager.BUNKER_RARITY);
+        assertTrue(source.contains("AncientBunkerGenerator.generate"));
+    }
+
+    @Test
     void proceduralRuinsSavedDataShouldTrackProcessedChunks() {
         ProceduralRuinsSavedData data = new ProceduralRuinsSavedData();
         long chunkKey = 1048580L;

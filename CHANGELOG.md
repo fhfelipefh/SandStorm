@@ -2,6 +2,77 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.12] - 2026-10-14
+
+### ☣️ Salas Radioativas, Perigos Químicos & Sentinelas Defeituosos
+* **Líquido de Lixo Radioativo (`radioactive_sludge`)**:
+  * Implementação completa de fluido customizado (`FlowingFluid` / `Source` / `Flowing`) e bloco de fluido (`RadioactiveSludgeBlock`).
+  * Efeitos imediatos de dano mágico ao tocar ou submergir, aplicando Enjoo (`NAUSEA`), Lentidão (`SLOWNESS`) e Veneno (`POISON`).
+  * Item de Balde de Lodo Radioativo (`radioactive_sludge_bucket`) integrado à aba criativa SandStorm e cadeias de renderização completas.
+* **Barris de Resíduos Radioativos (`radioactive_waste_barrel`)**:
+  * Bloco tecnológico de contenção industrial com BlockEntity ativa (`RadioactiveWasteBarrelBlockEntity`).
+  * Emissão de radiação contínua em raio de 4 blocos com partículas de fumaça verde e efeito sonoro de vazamento, aplicando Decomposição (`WITHER`) e Enjoo (`NAUSEA`) a jogadores que permaneçam expostos na vizinhança.
+  * Tag de mineração com picareta (`mineable/pickaxe`) e tabela de loot associada.
+* **Sentinela Defeituoso (`defective_sentinel`)**:
+  * Nova entidade hostil exclusiva de dungeons profundas e oficinas subterrâneas abandonadas.
+  * Comportamento errático com espasmos visuais em alta frequência, faíscas elétricas constantes e descarga de choque em área (5 blocos) com desaceleração.
+  * Ataque corpo a corpo eletrificado e autodestruição violenta por curto-circuito (explosão com faíscas ao morrer).
+  * Renderizador customizado (`DefectiveSentinelRenderer`), modelo tridimensional (`DefectiveSentinelModel`) e ovo de spawn (`defective_sentinel_spawn_egg`).
+* **Novas Variações Criativas de Salas WFC (`AncientBunkerCatalog`)**:
+  * `SludgeCorridor` (`bunker_sludge_corridor`): canal central inundado de lodo radioativo com pedras de salto para parkour e barreiras de ferro laterais.
+  * `WasteStorageDepot` (`bunker_waste_storage_depot`): depósito de barris de resíduos empilhados, poças de vazamento radioativo e baú de suprimentos com abertura voltada para o corredor.
+  * `DefectiveSentinelWorkshop` (`bunker_sentinel_workshop`): oficina abandonada com sentinelas defeituosos patrulhando entre bancadas, peças de tecnologia enterrada e bigornas.
+* **Geração Natural de Megadungeons em Grandes Profundidades**:
+  * Integração ao `ProceduralRuinsManager` gerando complexos subterrâneos entre `Y = -52` e `Y = -20` na camada de deepslate.
+  * Variação procedural de dimensões de grade (3x3 até 6x6, totalizando de 9 a 36 módulos conectados via WFC por dungeon).
+  * Execução assíncrona desacoplada em fila `END_SERVER_TICK` prevenindo deadlocks no carregamento de chunks.
+* **Teto Rígido de Densidade para Sentinelas por m²**:
+  * Implementação de verificador de densidade volumétrica (`DENSITY_RADIUS_TIGHT = 8.0` máx 2, `DENSITY_RADIUS_WIDE = 16.0` máx 3) em `DefectiveSentinelEntity` e `ScrapSentinelEntity`.
+  * Verificação preemptiva em `canSpawnInArea` e expurgo de segurança no tick (`enforceDensityCap`) para impedir acúmulo excessivo e quedas de FPS em qualquer hardware.
+* **Correção da Porta de Liga Morfoenergética & Hologramas do Showcase**:
+  * Registro de portas convertido para `DoubleHighBlockItem`, garantindo posicionamento atômico das metades inferior (`LOWER`) e superior (`UPPER`).
+  * Posicionamento programático de ambas as metades da porta nos pedestais de `ShowcaseAutomation` e `ExhibitionGalleryManager`.
+  * Elevação do texto dos hologramas de porta para `Y + 2.45` e `Y + 2.15`, posicionando-o limpo acima da porta de 2 blocos.
+  * Hologramas convertidos com `setNoBasePlate(true)` e flag `CLIENT_FLAG_MARKER`, removendo contornos de hitbox, placa de chão e interferência na mira do jogador.
+  * Testes de arquitetura dedicados `DoorBlockstateArchitectureTest` e `SentinelDensityArchitectureTest` para prevenir regressões.
+
+
+## [1.19.11] - 2026-10-14
+
+### 🏛️ Espaçamento Dinâmico no Showcase & Bunker Subterrâneo
+* **Espaçamento Dinâmico do Complexo de Biosferas**:
+  * Implementado cálculo procedural e dinâmico (`getBiosphereFrontZ()`) que afasta as 7 biosferas automaticamente com base na quantidade real de blocos e baús registrados no mod.
+  * Resolução definitiva do conflito onde os domos (especialmente o Domo Xeno-Fúngico) cortavam pedestais de blocos e paredes do mostruário.
+  * Abertura de corredor central desimpedido no mostruário de blocos (`X = -2..2`), posicionando colunas de pedestais organizadamente em ambos os lados (`X = -18..-6` e `X = 6..18`).
+  * Deslocamento das alas de baús para os flancos externos (`X = -24` e `X = 24`), garantindo avenidas amplas de circulação.
+  * Otimização da limpeza de área (`wipeBiospheresArea`) para operar estritamente na zona pós-mostruário, preservando todos os blocos expostos.
+* **Geração e Comandos do Bunker Antigo**:
+  * Adicionado suporte a posicionamento na localização do jogador (`@s`, entidade do jogador ou padrão sem argumentos).
+  * Reposicionamento seguro na entrada do bunker `(0, 1, -4)` para prevenir sufocamento dentro do pedestal do Núcleo de Dados Antigo.
+  * Registro de novos atalhos `/sandstorm_build_bunker` e `/sandstorm_build_ancient_bunker`.
+* **Engine Procedural de Dungeons Modulares (WFC)**:
+  * Criação do sistema modular de componentes com conectores (*sockets* direcionais: `WALL`, `CORRIDOR`, `DOOR`, `SOLID`) e álgebra de rotações discretas 2D/3D.
+  * Implementação do algoritmo Wave Function Collapse (`WaveFunctionCollapseSolver`) com heurística de menor entropia, propagação de restrições em cascata (AC-3), suporte a âncoras fixas e salas únicas.
+  * Catálogo de 10 módulos subterrâneos (`AncientBunkerCatalog`): câmara de entrada, corredores retos, esquinas em L, entroncamentos em T, encruzilhadas 4-way, becos com baús, cofre do Núcleo de Dados, sala de acumuladores de energia, arquivo de servidores técnicos e rocha sólida de preenchimento.
+  * Passagem de acabamento estético (`AncientBunkerClutterPass`) com desgaste de tijolos rachados, teias de aranha e cristais de quartzo piezoelétrico.
+* **Correção Visual da Porta de Liga Morfogenética (`morphing_alloy_door`)**:
+  * Implementação dos 8 modelos canônicos do sistema de portas do Minecraft 1.21.4 (`bottom_left`, `bottom_left_open`, `bottom_right`, `bottom_right_open`, `top_left`, `top_left_open`, `top_right`, `top_right_open`).
+  * Reestruturação completa do blockstate com as 32 combinações de rotação Y e modelos correspondentes ao padrão do `iron_door` vanilla, eliminando a discrepância ortogonal de 90° onde o modelo 3D ficava desconectado da hitbox/bounding box do bloco.
+  * Criação do teste de arquitetura dedicado `DoorBlockstateArchitectureTest` para prevenir regressões nos estados e modelos de portas.
+* **Ativação e Iluminação das Lâmpadas de Redstone nas Dungeons**:
+  * Correção do estado de inicialização das lâmpadas de redstone (`Blocks.REDSTONE_LAMP`), que anteriormente permaneciam apagadas (`lit=false`) por serem instanciadas com flag 2 sem notificação de vizinhos (`UPDATE_NEIGHBORS`).
+  * Atualização de `AncientBunkerCatalog` e `AncientBunkerGenerator` para definir `BlockStateProperties.LIT = true` e aplicar flag 3 (`Block.UPDATE_ALL`) no bloco de redstone e lâmpada, garantindo propagação imediata de sinal e emissão de luz nível 15 através dos claraboias de vidro fulgurito.
+  * Criação do teste de arquitetura `AncientBunkerLightingArchitectureTest` para auditar e garantir a ativação correta de fontes de redstone e iluminação.
+* **Orientação Automática de Baús em Dungeons e Estruturas**:
+  * Adicionado algoritmo de rotação direcional em `DungeonRotation.rotateDirection(Direction)` e detecção de face desimpedida (`determineOpenFacing`) em `BaseDungeonComponent`.
+  * Todos os baús em salas de dungeon (`AncientBunkerCatalog.DeadEnd`, `AncientBunkerGenerator`, `AbandonedOutpostGenerator` e comandos de laboratórios/bunkers) agora orientam seu fecho frontal (`ChestBlock.FACING`) em direção ao interior e às entradas das salas, nunca virados de costas para o jogador ou contra paredes sólidas.
+  * Criado o teste unitário e de arquitetura `DungeonChestOrientationTest` para auditar a rotação das faces e validar a ausência de baús desorientados.
+* **Componente de Estrutura NBT (`NbtDungeonComponent`) e Comandos de Megadungeon**:
+  * Integração nativa com templates `.nbt` do Minecraft (`StructureTemplateManager`) mapeando rotações discretas (`Rotation.NONE`, `CLOCKWISE_90`, `CLOCKWISE_180`, `COUNTERCLOCKWISE_90`) com fallback procedural.
+  * Expansão dos comandos `/sandstorm_build_dungeon` e `/sandstorm build procedural_dungeon` para suportar dimensões customizadas de grade (ex.: 5x5 = 25 salas, 7x7 = 49 salas).
+
+---
+
 ## [1.14.0] - 2026-10-07
 
 ### 🌿 Showcase de Biosferas Expandidas

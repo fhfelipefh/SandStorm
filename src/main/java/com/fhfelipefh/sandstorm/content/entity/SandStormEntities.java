@@ -172,6 +172,19 @@ public class SandStormEntities {
                     .build(SCRAP_SENTINEL_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> DEFECTIVE_SENTINEL_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("defective_sentinel")
+    );
+
+    public static final EntityType<DefectiveSentinelEntity> DEFECTIVE_SENTINEL = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("defective_sentinel"),
+            EntityType.Builder.of(DefectiveSentinelEntity::new, MobCategory.MONSTER)
+                    .sized(0.9f, 1.6f)
+                    .build(DEFECTIVE_SENTINEL_KEY)
+    );
+
     public static final ResourceKey<EntityType<?>> AQUIFER_BEETLE_KEY = ResourceKey.create(
             Registries.ENTITY_TYPE,
             SandStormMod.id("aquifer_beetle")
@@ -300,6 +313,7 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(CYBORG_BUILDER, CyborgBuilderEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CYBORG_HARVESTER, CyborgHarvesterEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SCRAP_SENTINEL, ScrapSentinelEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DEFECTIVE_SENTINEL, DefectiveSentinelEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(AQUIFER_BEETLE, AquiferBeetleEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(NOMAD_SCAVENGER, NomadScavengerEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(DERELICT_AUTOMATON, DerelictAutomatonEntity.createAttributes());
