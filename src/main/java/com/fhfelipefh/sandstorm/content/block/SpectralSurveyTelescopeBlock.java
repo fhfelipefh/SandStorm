@@ -3,9 +3,10 @@ package com.fhfelipefh.sandstorm.content.block;
 import com.fhfelipefh.sandstorm.content.block.entity.SpectralSurveyTelescopeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -69,9 +70,21 @@ public class SpectralSurveyTelescopeBlock extends Block implements EntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide()) {
-            level.playSound(null, pos, SoundEvents.SPYGLASS_USE, SoundSource.BLOCKS, 1.0f, 1.2f);
-            player.sendSystemMessage(Component.translatable("telemetry.sandstorm.telescope_scan_active"));
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof SpectralSurveyTelescopeBlockEntity telescopeBe) {
+                player.openMenu(telescopeBe);
+                level.playSound(null, pos, SoundEvents.SPYGLASS_USE, SoundSource.BLOCKS, 1.0f, 1.2f);
+            }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof SpectralSurveyTelescopeBlockEntity telescopeBe) {
+            Containers.dropContents(level, pos, telescopeBe);
+        }
+        super.affectNeighborsAfterRemoval(state, level, pos, isMoving);
     }
 }

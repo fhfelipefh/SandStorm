@@ -202,6 +202,11 @@ public class SandStormMenus {
         new MenuType<>(IrrigationPumpMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<SpectralSurveyTelescopeMenu> SPECTRAL_SURVEY_TELESCOPE_MENU = register(
+        "spectral_survey_telescope",
+        new MenuType<>(SpectralSurveyTelescopeMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

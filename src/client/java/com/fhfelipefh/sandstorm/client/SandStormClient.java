@@ -38,6 +38,7 @@ import com.fhfelipefh.sandstorm.client.gui.QuantumDiskDriveScreen;
 import com.fhfelipefh.sandstorm.client.gui.QuantumSleeperScreen;
 import com.fhfelipefh.sandstorm.client.gui.QuantumTerminalScreen;
 import com.fhfelipefh.sandstorm.client.gui.SolidStateAccumulatorScreen;
+import com.fhfelipefh.sandstorm.client.gui.SpectralSurveyTelescopeScreen;
 import com.fhfelipefh.sandstorm.content.gui.QuantumTerminalMenu;
 import com.fhfelipefh.sandstorm.content.network.SyncTerminalGridPayload;
 import com.fhfelipefh.sandstorm.client.gui.SupercriticalHeatExchangerScreen;
@@ -163,6 +164,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.AMNIOTIC_INCUBATOR_MENU, AmnioticIncubatorScreen::new);
         MenuScreens.register(SandStormMenus.CRYOGENIC_ATMOSPHERIC_CHILLER_MENU, CryogenicAtmosphericChillerScreen::new);
         MenuScreens.register(SandStormMenus.IRRIGATION_PUMP_MENU, IrrigationPumpScreen::new);
+        MenuScreens.register(SandStormMenus.SPECTRAL_SURVEY_TELESCOPE_MENU, SpectralSurveyTelescopeScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

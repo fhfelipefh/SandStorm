@@ -2,6 +2,30 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.13] - 2026-10-14
+
+### 🔭 Observatório Astronômico & Varredura Procedural de Galáxias em Tempo Real
+* **Interface Gráfica do Telescópio de Varredura Espectral (`spectral_survey_telescope`)**:
+  * Substituição do envio de texto no chat por uma GUI imersiva com chassi de observatório em ciano (`230x208`) e visor astronômico de espaço profundo (`120x90`).
+  * Varredura procedural simulada em tempo real com rotação contínua de campo estelar, cintilação e renderização vetorial de 5 corpos celestes:
+    * **Galáxia de Andrômeda**: núcleo elíptico denso com braços espirais em rotação matemática contínua.
+    * **Nebulosa do Caranguejo**: filamentos difusos, lóbulos de gás ionizado e pulso radiativo.
+    * **Exoplaneta Kepler**: esfera planetária com sombreamento volumétrico e anéis orbitais elípticos inclinados.
+    * **Pulsar de Cygnus**: estrela de nêutrons compacta com jatos relativísticos opostos e pulsação periódica.
+    * **Corona Solar**: núcleo incandescente com proeminências magnéticas dinâmicas e flare solar.
+  * **HUD de Observação Astronômica**:
+    * Coordenadas equatoriais celestes dinâmicas (Ascensão Reta $\alpha$ e Declinação $\delta$) calculadas proceduralmente em função do alvo e tempo orbital.
+    * Retículo de mira com cantoneiras, anel central de foco e escala métrica espacial.
+  * **Sintonia de Filtros Espectrais**:
+    * **Banda Óptica / Visível (`OPT`)**: mapeia estrelas visíveis e poeira reflexiva em tons de ciano e dourado.
+    * **Banda Infravermelha Térmica (`INF`)**: revela calor latente de exoplanetas e protoestrelas em tons quentes e âmbar.
+    * **Banda de Rádio & Raios-X (`RAD`)**: destaca radiações de alta energia de pulsares e remanescentes de supernova em magenta e verde néon.
+  * **Sistemas do Bloco & Integração de Energia**:
+    * Acumulador interno de 50.000 EU com recarga solar contínua sob o céu aberto (50 EU/tick) e medidor visual segmentado com percentual de carga.
+    * Disparo manual de varredura profunda com consumo de 500 EU, avanço percentual e efeitos sonoros e visuais de partículas no mundo.
+    * Radar orbital meteorológico acoplado detectando frentes de tempestade de areia e contagem regressiva para impactos no setor.
+    * Slot de inserção para dados e documentos ópticos integrado ao inventário do jogador.
+
 ## [1.19.12] - 2026-10-14
 
 ### ☣️ Salas Radioativas, Perigos Químicos & Sentinelas Defeituosos
