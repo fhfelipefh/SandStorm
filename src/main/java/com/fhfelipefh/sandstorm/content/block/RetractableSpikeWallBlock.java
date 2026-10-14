@@ -23,7 +23,6 @@ import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
@@ -31,6 +30,12 @@ import java.util.List;
 public class RetractableSpikeWallBlock extends Block {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    private static final VoxelShape SHAPE_RETRACTED_UP = Block.box(0.0, 0.0, 0.0, 16.0, 13.0, 16.0);
+    private static final VoxelShape SHAPE_RETRACTED_DOWN = Block.box(0.0, 3.0, 0.0, 16.0, 16.0, 16.0);
+    private static final VoxelShape SHAPE_RETRACTED_NORTH = Block.box(0.0, 0.0, 3.0, 16.0, 16.0, 16.0);
+    private static final VoxelShape SHAPE_RETRACTED_SOUTH = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 13.0);
+    private static final VoxelShape SHAPE_RETRACTED_WEST = Block.box(3.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+    private static final VoxelShape SHAPE_RETRACTED_EAST = Block.box(0.0, 0.0, 0.0, 13.0, 16.0, 16.0);
     private static final VoxelShape COLLISION_EXTENDED = Block.box(1.0, 0.0, 1.0, 15.0, 15.0, 15.0);
     private static final VoxelShape OUTLINE_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 
@@ -52,12 +57,32 @@ public class RetractableSpikeWallBlock extends Block {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if (!state.getValue(POWERED)) {
+            return switch (state.getValue(FACING)) {
+                case DOWN -> SHAPE_RETRACTED_DOWN;
+                case NORTH -> SHAPE_RETRACTED_NORTH;
+                case SOUTH -> SHAPE_RETRACTED_SOUTH;
+                case WEST -> SHAPE_RETRACTED_WEST;
+                case EAST -> SHAPE_RETRACTED_EAST;
+                default -> SHAPE_RETRACTED_UP;
+            };
+        }
         return OUTLINE_SHAPE;
     }
 
     @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return state.getValue(POWERED) ? COLLISION_EXTENDED : Shapes.block();
+        if (state.getValue(POWERED)) {
+            return COLLISION_EXTENDED;
+        }
+        return switch (state.getValue(FACING)) {
+            case DOWN -> SHAPE_RETRACTED_DOWN;
+            case NORTH -> SHAPE_RETRACTED_NORTH;
+            case SOUTH -> SHAPE_RETRACTED_SOUTH;
+            case WEST -> SHAPE_RETRACTED_WEST;
+            case EAST -> SHAPE_RETRACTED_EAST;
+            default -> SHAPE_RETRACTED_UP;
+        };
     }
 
     @Override

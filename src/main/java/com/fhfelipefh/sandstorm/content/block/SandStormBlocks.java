@@ -248,7 +248,8 @@ public class SandStormBlocks {
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("heavy_sap_cactus")))
                     .mapColor(MapColor.COLOR_GREEN)
                     .strength(1.2f)
-                    .sound(SoundType.WOOL)));
+                    .sound(SoundType.WOOL)
+                    .noOcclusion()));
     public static final SalinizedSandBlock SALINIZED_SAND = register("salinized_sand",
             new SalinizedSandBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("salinized_sand")))
@@ -260,7 +261,8 @@ public class SandStormBlocks {
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("halophyte_plant")))
                     .mapColor(MapColor.COLOR_LIGHT_GREEN)
                     .strength(0.3f)
-                    .sound(SoundType.GRASS)));
+                    .sound(SoundType.GRASS)
+                    .noOcclusion()));
     public static final AutonomousSonicTurretBlock AUTONOMOUS_SONIC_TURRET = register("autonomous_sonic_turret",
             new AutonomousSonicTurretBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("autonomous_sonic_turret")))
@@ -427,7 +429,8 @@ public class SandStormBlocks {
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("retractable_spike_wall")))
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(3.5f, 6.0f)
-                    .sound(SoundType.METAL)));
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
     public static final ElectrifiedSpikeBarrierBlock ELECTRIFIED_SPIKE_BARRIER = register("electrified_spike_barrier",
             new ElectrifiedSpikeBarrierBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("electrified_spike_barrier")))
@@ -653,19 +656,22 @@ public class SandStormBlocks {
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("salt_brick_stairs")))
                     .mapColor(MapColor.SNOW)
                     .strength(1.5f, 6.0f)
-                    .sound(SoundType.STONE)));
+                    .sound(SoundType.STONE)
+                    .noOcclusion()));
     public static final SlabBlock SALT_BRICK_SLAB = register("salt_brick_slab",
             new SlabBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("salt_brick_slab")))
                     .mapColor(MapColor.SNOW)
                     .strength(1.5f, 6.0f)
-                    .sound(SoundType.STONE)));
+                    .sound(SoundType.STONE)
+                    .noOcclusion()));
     public static final WallBlock SALT_BRICK_WALL = register("salt_brick_wall",
             new WallBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("salt_brick_wall")))
                     .mapColor(MapColor.SNOW)
                     .strength(1.5f, 6.0f)
-                    .sound(SoundType.STONE)));
+                    .sound(SoundType.STONE)
+                    .noOcclusion()));
     public static final QuantumNetworkControllerBlock QUANTUM_NETWORK_CONTROLLER = register("quantum_network_controller",
             new QuantumNetworkControllerBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("quantum_network_controller")))
@@ -724,6 +730,7 @@ public class SandStormBlocks {
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("morphing_matrix_core")))));
     public static final MorphingFluidTransitionBlock MORPHING_FLUID_TRANSITION = register("morphing_fluid_transition",
             new MorphingFluidTransitionBlock(MorphingFluidTransitionBlock.createProperties()
+                    .noOcclusion()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("morphing_fluid_transition")))));
     public static final CryogenicAtmosphericChillerBlock CRYOGENIC_ATMOSPHERIC_CHILLER = register("cryogenic_atmospheric_chiller",
             new CryogenicAtmosphericChillerBlock(BlockBehaviour.Properties.of()
