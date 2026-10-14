@@ -77,13 +77,24 @@ public class MillennialRepositoryDungeon {
                 prevTransZ = currDownZ;
             }
 
+            List<DungeonComponent> floorComponents = components;
+            if (floor == 0) {
+                floorComponents = components.stream()
+                        .filter(c -> !c.id().equals("repository_stairwell_up"))
+                        .toList();
+            } else if (floor == clampedFloors - 1) {
+                floorComponents = components.stream()
+                        .filter(c -> !c.id().equals("repository_stairwell_down"))
+                        .toList();
+            }
+
             int roomsOnFloor = ModularDungeonBuilder.build(
                     level,
                     floorOrigin,
                     clampedWidth,
                     clampedDepth,
                     ROOM_SIZE,
-                    components,
+                    floorComponents,
                     anchors,
                     clutterPass,
                     random

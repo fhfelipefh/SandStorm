@@ -189,11 +189,24 @@ public class MillennialRepositoryCatalog {
                 setLocalBlock(level, origin, rotation, 3, ly, 3, size, Blocks.IRON_BARS.defaultBlockState());
             }
 
-            for (int lx = 2; lx <= 4; lx++) {
-                for (int lz = 2; lz <= 4; lz++) {
-                    setLocalBlock(level, origin, rotation, lx, 5, lz, size, Blocks.AIR.defaultBlockState());
-                    setLocalBlock(level, origin, rotation, lx, 0, lz, size, Blocks.POLISHED_DEEPSLATE.defaultBlockState());
+            BlockPos aboveProbe = origin.offset(rotation.rotateOffset(3, 8, 3, size));
+            boolean hasFloorAbove = !level.getBlockState(aboveProbe).isAir();
+
+            if (hasFloorAbove) {
+                for (int lx = 2; lx <= 4; lx++) {
+                    for (int lz = 2; lz <= 4; lz++) {
+                        setLocalBlock(level, origin, rotation, lx, 5, lz, size, Blocks.AIR.defaultBlockState());
+                        setLocalBlock(level, origin, rotation, lx, 0, lz, size, Blocks.POLISHED_DEEPSLATE.defaultBlockState());
+                    }
                 }
+            } else {
+                for (int lx = 2; lx <= 4; lx++) {
+                    for (int lz = 2; lz <= 4; lz++) {
+                        setLocalBlock(level, origin, rotation, lx, 0, lz, size, Blocks.POLISHED_DEEPSLATE.defaultBlockState());
+                    }
+                }
+                setLocalBlock(level, origin, rotation, 3, 5, 3, size, Blocks.REDSTONE_LAMP.defaultBlockState().setValue(BlockStateProperties.LIT, true), 3);
+                setLocalBlock(level, origin, rotation, 3, 6, 3, size, Blocks.REDSTONE_BLOCK.defaultBlockState(), 3);
             }
 
             setLocalBlock(level, origin, rotation, 1, 1, 5, size, Blocks.REDSTONE_LAMP.defaultBlockState().setValue(BlockStateProperties.LIT, true));
@@ -211,12 +224,12 @@ public class MillennialRepositoryCatalog {
 
         @Override
         public int weight() {
-            return 4;
+            return 3;
         }
 
         @Override
         public boolean isUnique() {
-            return false;
+            return true;
         }
 
         @Override
@@ -232,26 +245,48 @@ public class MillennialRepositoryCatalog {
             buildBaseShell(level, origin, rotation, size, DungeonSocket.CORRIDOR, DungeonSocket.WALL, DungeonSocket.CORRIDOR, DungeonSocket.WALL);
 
             for (int lx = 2; lx <= 4; lx++) {
+                setLocalBlock(level, origin, rotation, lx, 5, 3, size, SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState());
+            }
+            for (int lz = 2; lz <= 4; lz++) {
+                setLocalBlock(level, origin, rotation, 3, 5, lz, size, SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState());
+            }
+            setLocalBlock(level, origin, rotation, 3, 5, 3, size, Blocks.CHISELED_DEEPSLATE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 4, 3, size, Blocks.IRON_BLOCK.defaultBlockState());
+
+            for (int lx = 2; lx <= 4; lx++) {
                 for (int lz = 2; lz <= 4; lz++) {
-                    for (int ly = -8; ly <= 5; ly++) {
+                    for (int ly = -7; ly <= 0; ly++) {
+                        if (lx == 2 && lz == 2) {
+                            continue;
+                        }
                         setLocalBlock(level, origin, rotation, lx, ly, lz, size, Blocks.AIR.defaultBlockState());
                     }
                 }
             }
 
-            for (int ly = -8; ly <= 5; ly++) {
-                setLocalBlock(level, origin, rotation, 3, ly, 3, size, Blocks.IRON_CHAIN.defaultBlockState());
-                setLocalBlock(level, origin, rotation, 2, ly, 1, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
+            for (int ly = -7; ly <= 4; ly++) {
+                setLocalBlock(level, origin, rotation, 2, ly, 1, size, Blocks.POLISHED_DEEPSLATE.defaultBlockState());
             }
 
-            for (int lx = 2; lx <= 4; lx++) {
-                setLocalBlock(level, origin, rotation, lx, 1, 1, size, Blocks.IRON_BARS.defaultBlockState());
-                setLocalBlock(level, origin, rotation, lx, 1, 5, size, Blocks.IRON_BARS.defaultBlockState());
+            for (int ly = -7; ly <= 1; ly++) {
+                setLocalBlock(level, origin, rotation, 2, ly, 2, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
             }
-            for (int lz = 2; lz <= 4; lz++) {
-                setLocalBlock(level, origin, rotation, 1, 1, lz, size, Blocks.IRON_BARS.defaultBlockState());
-                setLocalBlock(level, origin, rotation, 5, 1, lz, size, Blocks.IRON_BARS.defaultBlockState());
+
+            for (int ly = -6; ly <= 3; ly++) {
+                setLocalBlock(level, origin, rotation, 3, ly, 3, size, Blocks.IRON_CHAIN.defaultBlockState());
             }
+            setLocalBlock(level, origin, rotation, 3, -7, 3, size, SandStormBlocks.RADIOACTIVE_WASTE_BARREL.defaultBlockState());
+
+            setLocalBlock(level, origin, rotation, 3, 1, 1, size, Blocks.IRON_BARS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 4, 1, 1, size, Blocks.IRON_BARS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 2, 1, 5, size, Blocks.IRON_BARS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 1, 5, size, Blocks.IRON_BARS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 4, 1, 5, size, Blocks.IRON_BARS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 1, 2, size, Blocks.IRON_BARS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 1, 3, size, Blocks.IRON_BARS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 1, 4, size, Blocks.IRON_BARS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 1, 3, size, Blocks.IRON_BARS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 1, 4, size, Blocks.IRON_BARS.defaultBlockState());
         }
     }
 

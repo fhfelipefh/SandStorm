@@ -2,6 +2,19 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.15] - 2026-10-14
+
+### 🔧 Correções Estruturais nas Dungeons Procedurais & Poços Verticais
+* **Eliminação de Correntes Flutuantes (*Dangling Chains*)**:
+  * Em `CargoHoistShaft`, as correntes do guincho agora são ancoradas diretamente em vigas de suporte e no motor de guincho industrial (`IRON_BLOCK` e `CHISELED_DEEPSLATE`) no teto da sala.
+  * O teto no nível `ly = 5` permanece 100% sólido e fechado, prevenindo aberturas involuntárias para o vácuo ou céu. A corrente desce com carga suspensa (`RADIOACTIVE_WASTE_BARREL`) diretamente sobre o poço inferior.
+* **Correção da Sobreposição de Grades de Ferro em Escadas (*Ladder / Iron Bars Overlap*)**:
+  * O poço vertical do guincho agora possui um pilar estrutural dedicado de deepslate polido em `(2, ly, 1)`.
+  * As escadas de mão (`LADDER`) são instaladas na face sul do pilar sem qualquer interferência de grades de ferro. O guarda-corpo perimétrico foi reajustado para manter a entrada da escada totalmente desobstruída e acessível.
+* **Vedação e Blindagem de Tetos nas Megadungeons do Showcase**:
+  * `StairwellUp` agora verifica se há pavimentos acima antes de abrir o teto; no pavimento superior (Floor 0), o teto permanece hermeticamente vedado e iluminado com luminária de redstone.
+  * Adicionada a rotina `buildRoofCap` em `ShowcaseAutomation`, cobrindo as 4 megadungeons com laje espessa de contenção de concreto armado e concreto milenar.
+
 ## [1.19.14] - 2026-10-14
 
 ### 🛡️ Metalurgia Pesada, Concreto Armado & Blindagem Radiológica de Chumbo

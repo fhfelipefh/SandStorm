@@ -2167,6 +2167,7 @@ public class ShowcaseAutomation {
         BlockPos westOrigin = center.offset(-58, -40, 8);
         buildFoundationPlate(level, westOrigin.getX() - 2, westOrigin.getX() + 58, westOrigin.getZ() - 2, westOrigin.getZ() + 58, westOrigin.getY() - 40, 3);
         MillennialRepositoryDungeon.generate(level, westOrigin, 6, 8, 8);
+        buildRoofCap(level, westOrigin.getX(), westOrigin.getX() + 56, westOrigin.getZ(), westOrigin.getZ() + 56, westOrigin.getY() + 5);
         BlockPos westEntry = westOrigin.offset(4 * 7 + 3, 1, 3);
         BlockPos westReturn = westOrigin.offset(4 * 7 + 3, 1, 1);
         setupReturnPad(level, westReturn);
@@ -2175,6 +2176,7 @@ public class ShowcaseAutomation {
         BlockPos eastOrigin = center.offset(4, -40, 8);
         buildFoundationPlate(level, eastOrigin.getX() - 2, eastOrigin.getX() + 58, eastOrigin.getZ() - 2, eastOrigin.getZ() + 58, eastOrigin.getY() - 1, 3);
         AncientBunkerComplexDungeon.generate(level, eastOrigin, 8, 8);
+        buildRoofCap(level, eastOrigin.getX(), eastOrigin.getX() + 56, eastOrigin.getZ(), eastOrigin.getZ() + 56, eastOrigin.getY() + 5);
         BlockPos eastEntry = eastOrigin.offset(4 * 7 + 3, 1, 3);
         BlockPos eastReturn = eastOrigin.offset(4 * 7 + 3, 1, 1);
         setupReturnPad(level, eastReturn);
@@ -2183,6 +2185,7 @@ public class ShowcaseAutomation {
         BlockPos southOrigin = center.offset(-24, -45, -60);
         buildFoundationPlate(level, southOrigin.getX() - 2, southOrigin.getX() + 51, southOrigin.getZ() - 2, southOrigin.getZ() + 51, southOrigin.getY() - 24, 3);
         MillennialRepositoryDungeon.generate(level, southOrigin, 4, 7, 7);
+        buildRoofCap(level, southOrigin.getX(), southOrigin.getX() + 49, southOrigin.getZ(), southOrigin.getZ() + 49, southOrigin.getY() + 5);
         BlockPos southEntry = southOrigin.offset(3 * 7 + 3, 1, 3);
         BlockPos southReturn = southOrigin.offset(3 * 7 + 3, 1, 1);
         setupReturnPad(level, southReturn);
@@ -2191,6 +2194,7 @@ public class ShowcaseAutomation {
         BlockPos northOrigin = center.offset(-24, -45, 74);
         buildFoundationPlate(level, northOrigin.getX() - 2, northOrigin.getX() + 51, northOrigin.getZ() - 2, northOrigin.getZ() + 51, northOrigin.getY() - 1, 3);
         AncientBunkerComplexDungeon.generate(level, northOrigin, 7, 7);
+        buildRoofCap(level, northOrigin.getX(), northOrigin.getX() + 49, northOrigin.getZ(), northOrigin.getZ() + 49, northOrigin.getY() + 5);
         BlockPos northEntry = northOrigin.offset(3 * 7 + 3, 1, 3);
         BlockPos northReturn = northOrigin.offset(3 * 7 + 3, 1, 1);
         setupReturnPad(level, northReturn);
@@ -2295,6 +2299,20 @@ public class ShowcaseAutomation {
                     int y = topY - ty;
                     Block block = (ty == 0) ? Blocks.DEEPSLATE_BRICKS : ((x + z) % 3 == 0 ? SandStormBlocks.PIEZO_QUARTZ_BLOCK : Blocks.SMOOTH_BASALT);
                     level.setBlock(new BlockPos(x, y, z), block.defaultBlockState(), 2);
+                }
+            }
+        }
+    }
+
+    private static void buildRoofCap(ServerLevel level, int minX, int maxX, int minZ, int maxZ, int topY) {
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                BlockPos p = new BlockPos(x, topY, z);
+                if (level.getBlockState(p).isAir()) {
+                    BlockState roofState = ((x + z) % 4 == 0)
+                            ? SandStormBlocks.WEATHERED_REINFORCED_CONCRETE.defaultBlockState()
+                            : SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState();
+                    level.setBlock(p, roofState, 2);
                 }
             }
         }
