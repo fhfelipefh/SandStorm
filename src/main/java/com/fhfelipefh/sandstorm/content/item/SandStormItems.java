@@ -463,6 +463,14 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.WEATHERED_REINFORCED_CONCRETE);
                         entries.accept(SandStormBlocks.LEAD_BLOCK);
                         entries.accept(SandStormBlocks.LEAD_SHIELDING_BLOCK);
+                        entries.accept(SandStormBlocks.MILITARY_ARMOR_PLATE);
+                        entries.accept(SandStormBlocks.HAZARD_STRIPE_BLOCK);
+                        entries.accept(SandStormBlocks.STEEL_VENT_GRATE);
+                        entries.accept(SandStormBlocks.TACTICAL_RADAR_CONSOLE);
+                        entries.accept(SandStormBlocks.MILITARY_MUNITIONS_CRATE);
+                        entries.accept(SandStormBlocks.REINFORCED_VENT_DUCT);
+                        entries.accept(SandStormBlocks.RUSTED_MILITARY_PLATE);
+                        entries.accept(SandStormBlocks.WEATHERED_HAZARD_STRIPE);
                     })
                     .build()
     );

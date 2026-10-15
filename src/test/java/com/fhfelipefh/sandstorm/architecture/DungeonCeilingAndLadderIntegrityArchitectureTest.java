@@ -48,4 +48,16 @@ class DungeonCeilingAndLadderIntegrityArchitectureTest {
         assertTrue(content.contains("repository_stairwell_down"),
                 "MillennialRepositoryDungeon must filter out repository_stairwell_down on bottom floor");
     }
+
+    @Test
+    void militaryLabDungeonMustFilterVerticalTransitionsPerFloor() throws IOException {
+        Path dungeonPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "AbandonedMilitaryLabDungeon.java");
+        assertTrue(Files.exists(dungeonPath), "AbandonedMilitaryLabDungeon.java must exist");
+        String content = Files.readString(dungeonPath);
+
+        assertTrue(content.contains("military_lab_stairwell_up"),
+                "AbandonedMilitaryLabDungeon must filter out military_lab_stairwell_up on floor 0");
+        assertTrue(content.contains("military_lab_stairwell_down"),
+                "AbandonedMilitaryLabDungeon must filter out military_lab_stairwell_down on bottom floor");
+    }
 }

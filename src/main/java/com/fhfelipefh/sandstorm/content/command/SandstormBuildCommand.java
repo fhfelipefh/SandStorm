@@ -12,6 +12,7 @@ import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.megastructure.MegastructureBlueprint;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedMilitaryLabDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
 import com.fhfelipefh.sandstorm.content.world.structure.AncientBunkerGenerator;
@@ -67,10 +68,14 @@ public class SandstormBuildCommand {
             "ancient_bunker",
             "procedural_dungeon",
             "multi_floor_dungeon",
-            "millennial_repository"
+            "millennial_repository",
+            "military_lab"
     );
 
     static {
+        STRUCTURE_MAP.put("military_lab", "military_lab");
+        STRUCTURE_MAP.put("military_facility", "military_lab");
+        STRUCTURE_MAP.put("black_site", "military_lab");
         STRUCTURE_MAP.put("ancient_bunker", "ancient_bunker");
         STRUCTURE_MAP.put("bunker", "ancient_bunker");
         STRUCTURE_MAP.put("procedural_dungeon", "procedural_dungeon");
@@ -430,6 +435,13 @@ public class SandstormBuildCommand {
                     player.teleportTo(level, targetPos.getX() + entryX + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 3.5, Set.of(), 0.0f, 0.0f, true);
                 }
             }
+        } else if ("military_lab".equals(normalizedId)) {
+            for (ServerPlayer player : level.players()) {
+                if (player.blockPosition().closerThan(targetPos, 16.0)) {
+                    int entryX = (AbandonedMilitaryLabDungeon.DEFAULT_GRID_WIDTH / 2) * AbandonedMilitaryLabDungeon.ROOM_SIZE + 3;
+                    player.teleportTo(level, targetPos.getX() + entryX + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 3.5, Set.of(), 0.0f, 0.0f, true);
+                }
+            }
         }
         source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§a[SandStorm]§r Estrutura '%s' construída com sucesso em [%d, %d, %d]! (%d blocos gerados)", normalizedId, targetPos.getX(), targetPos.getY(), targetPos.getZ(), blocksPlaced)), true);
         return blocksPlaced;
@@ -573,6 +585,7 @@ public class SandstormBuildCommand {
             case "ancient_bunker" -> AncientBunkerGenerator.generate(level, center);
             case "procedural_dungeon" -> AncientBunkerComplexDungeon.generate(level, center);
             case "multi_floor_dungeon" -> MillennialRepositoryDungeon.generate(level, center);
+            case "military_lab" -> AbandonedMilitaryLabDungeon.generate(level, center);
             default -> 0;
         };
     }

@@ -28,6 +28,7 @@ import com.fhfelipefh.sandstorm.content.storage.QuantumDiskStorage;
 import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkControllerBlock;
 import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkControllerBlockEntity;
 import com.fhfelipefh.sandstorm.content.storage.StoredItemEntry;
+import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedMilitaryLabDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
@@ -170,6 +171,10 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeBiospheresCommand)
                 )
+                .then(Commands.literal("military_lab")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
+                )
                 .then(Commands.literal("dungeon")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "west"))
@@ -193,6 +198,10 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeBiospheresCommand)
                 )
+                .then(Commands.literal("military_lab")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
+                )
                 .then(Commands.literal("dungeon")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "west"))
@@ -211,6 +220,11 @@ public class ShowcaseAutomation {
         dispatcher.register(Commands.literal("sandstorm_biospheres")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ShowcaseAutomation::executeBiospheresCommand)
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_military_lab")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
         );
 
         dispatcher.register(Commands.literal("sandstorm_showcase_dungeon")
@@ -2192,8 +2206,8 @@ public class ShowcaseAutomation {
         TELEPORT_PADS.add(new ShowcaseTeleportPad(southReturn, center.above(), "Praça Central do Showcase"));
 
         BlockPos northOrigin = center.offset(-24, -45, 74);
-        buildFoundationPlate(level, northOrigin.getX() - 2, northOrigin.getX() + 51, northOrigin.getZ() - 2, northOrigin.getZ() + 51, northOrigin.getY() - 1, 3);
-        AncientBunkerComplexDungeon.generate(level, northOrigin, 7, 7);
+        buildFoundationPlate(level, northOrigin.getX() - 2, northOrigin.getX() + 51, northOrigin.getZ() - 2, northOrigin.getZ() + 51, northOrigin.getY() - 24, 3);
+        AbandonedMilitaryLabDungeon.generate(level, northOrigin, 4, 7, 7);
         buildRoofCap(level, northOrigin.getX(), northOrigin.getX() + 49, northOrigin.getZ(), northOrigin.getZ() + 49, northOrigin.getY() + 5);
         BlockPos northEntry = northOrigin.offset(3 * 7 + 3, 1, 3);
         BlockPos northReturn = northOrigin.offset(3 * 7 + 3, 1, 1);
@@ -2219,7 +2233,7 @@ public class ShowcaseAutomation {
 
         int maxBlockZ = getCheckerboardMaxZ();
         BlockPos northTerminal = center.offset(0, 0, maxBlockZ);
-        setupTerminalTrigger(level, northTerminal, northEntry, "Complexo Bunker Norte (7x7)", "1 Andar Colossal | Grade 7x7 | 49 Salas");
+        setupTerminalTrigger(level, northTerminal, northEntry, "Laboratório Militar Abandonado Norte", "4 Andares | Grade 7x7 | 196 Salas | Black Site");
     }
 
     private static void setupReturnPad(ServerLevel level, BlockPos pos) {
@@ -2339,12 +2353,15 @@ public class ShowcaseAutomation {
             BlockPos dest = switch (norm) {
                 case "east", "bunker", "leste", "single" -> center.offset(4 + 4 * 7 + 3, -39, 8 + 3);
                 case "south", "sul" -> center.offset(-24 + 3 * 7 + 3, -44, -60 + 3);
-                case "north", "norte" -> center.offset(-24 + 3 * 7 + 3, -44, 74 + 3);
+                case "north", "norte", "military_lab", "military", "lab", "militar" -> center.offset(-24 + 3 * 7 + 3, -44, 74 + 3);
                 default -> center.offset(-58 + 4 * 7 + 3, -39, 8 + 3);
             };
             player.teleportTo(level, dest.getX() + 0.5, dest.getY() + 0.1, dest.getZ() + 0.5, Set.of(), 0.0f, 0.0f, true);
             level.playSound(null, player.blockPosition(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1.0f, 1.2f);
-            source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§6[SandStorm]§a Teleportado para o subsolo do showcase (Setor %s) em [%d, %d, %d]!", norm, dest.getX(), dest.getY(), dest.getZ())), true);
+            String label = (norm.equals("military_lab") || norm.equals("military") || norm.equals("lab") || norm.equals("militar") || norm.equals("north") || norm.equals("norte"))
+                    ? "Laboratório Militar Abandonado (Setor Norte)"
+                    : "Subsolo do Showcase (" + norm + ")";
+            source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§6[SandStorm]§a Teleportado para: §f%s §7em [%d, %d, %d]!", label, dest.getX(), dest.getY(), dest.getZ())), true);
             return 1;
         }
         source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
@@ -2356,6 +2373,7 @@ public class ShowcaseAutomation {
         builder.suggest("east");
         builder.suggest("south");
         builder.suggest("north");
+        builder.suggest("military_lab");
         return builder.buildFuture();
     }
 }

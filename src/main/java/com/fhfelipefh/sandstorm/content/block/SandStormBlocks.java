@@ -861,6 +861,63 @@ public class SandStormBlocks {
                     .strength(8.0f, 45.0f)
                     .sound(SoundType.HEAVY_CORE)
                     .requiresCorrectToolForDrops()));
+    public static final Block MILITARY_ARMOR_PLATE = register("military_armor_plate",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("military_armor_plate")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(60.0f, 1800.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
+    public static final Block HAZARD_STRIPE_BLOCK = register("hazard_stripe_block",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("hazard_stripe_block")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(30.0f, 600.0f)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()));
+    public static final Block STEEL_VENT_GRATE = register("steel_vent_grate",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("steel_vent_grate")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(15.0f, 100.0f)
+                    .sound(SoundType.COPPER_GRATE)
+                    .requiresCorrectToolForDrops()));
+    public static final Block TACTICAL_RADAR_CONSOLE = register("tactical_radar_console",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("tactical_radar_console")))
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(10.0f, 50.0f)
+                    .lightLevel(state -> 9)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()));
+    public static final Block MILITARY_MUNITIONS_CRATE = register("military_munitions_crate",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("military_munitions_crate")))
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(8.0f, 40.0f)
+                    .sound(SoundType.WOOD)
+                    .requiresCorrectToolForDrops()));
+    public static final Block REINFORCED_VENT_DUCT = register("reinforced_vent_duct",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("reinforced_vent_duct")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(25.0f, 300.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
+    public static final Block RUSTED_MILITARY_PLATE = register("rusted_military_plate",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("rusted_military_plate")))
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(50.0f, 1500.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
+    public static final Block WEATHERED_HAZARD_STRIPE = register("weathered_hazard_stripe",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("weathered_hazard_stripe")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(25.0f, 500.0f)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,

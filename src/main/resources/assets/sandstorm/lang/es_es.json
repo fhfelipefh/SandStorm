@@ -1208,5 +1208,21 @@
   "block.sandstorm.lead_block": "Bloque de Plomo",
   "item.sandstorm.lead_block": "Bloque de Plomo",
   "block.sandstorm.lead_shielding_block": "Bloque de Blindaje de Plomo",
-  "item.sandstorm.lead_shielding_block": "Bloque de Blindaje de Plomo"
+  "item.sandstorm.lead_shielding_block": "Bloque de Blindaje de Plomo",
+  "block.sandstorm.military_armor_plate": "Placa de Blindaje Militar",
+  "item.sandstorm.military_armor_plate": "Placa de Blindaje Militar",
+  "block.sandstorm.hazard_stripe_block": "Bloque de Franjas de Peligro",
+  "item.sandstorm.hazard_stripe_block": "Bloque de Franjas de Peligro",
+  "block.sandstorm.steel_vent_grate": "Rejilla de Ventilación de Acero",
+  "item.sandstorm.steel_vent_grate": "Rejilla de Ventilación de Acero",
+  "block.sandstorm.tactical_radar_console": "Consola de Radar Táctico",
+  "item.sandstorm.tactical_radar_console": "Consola de Radar Táctico",
+  "block.sandstorm.military_munitions_crate": "Caja de Municiones Militar",
+  "item.sandstorm.military_munitions_crate": "Caja de Municiones Militar",
+  "block.sandstorm.reinforced_vent_duct": "Conducto de Ventilación Reforzado",
+  "item.sandstorm.reinforced_vent_duct": "Conducto de Ventilación Reforzado",
+  "block.sandstorm.rusted_military_plate": "Placa de Blindaje Militar Oxidada",
+  "item.sandstorm.rusted_military_plate": "Placa de Blindaje Militar Oxidada",
+  "block.sandstorm.weathered_hazard_stripe": "Bloque de Franjas de Peligro Desgastado",
+  "item.sandstorm.weathered_hazard_stripe": "Bloque de Franjas de Peligro Desgastado"
 }

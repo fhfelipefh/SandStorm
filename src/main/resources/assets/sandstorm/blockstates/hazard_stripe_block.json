@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/hazard_stripe_block"
+    }
+  }
+}

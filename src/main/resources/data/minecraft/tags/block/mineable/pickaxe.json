@@ -93,6 +93,14 @@
     "sandstorm:reinforced_concrete",
     "sandstorm:weathered_reinforced_concrete",
     "sandstorm:lead_block",
-    "sandstorm:lead_shielding_block"
+    "sandstorm:lead_shielding_block",
+    "sandstorm:military_armor_plate",
+    "sandstorm:hazard_stripe_block",
+    "sandstorm:steel_vent_grate",
+    "sandstorm:tactical_radar_console",
+    "sandstorm:military_munitions_crate",
+    "sandstorm:reinforced_vent_duct",
+    "sandstorm:rusted_military_plate",
+    "sandstorm:weathered_hazard_stripe"
   ]
 }

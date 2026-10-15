@@ -1208,5 +1208,21 @@
   "block.sandstorm.lead_block": "Lead Block",
   "item.sandstorm.lead_block": "Lead Block",
   "block.sandstorm.lead_shielding_block": "Lead Shielding Block",
-  "item.sandstorm.lead_shielding_block": "Lead Shielding Block"
+  "item.sandstorm.lead_shielding_block": "Lead Shielding Block",
+  "block.sandstorm.military_armor_plate": "Military Armor Plate",
+  "item.sandstorm.military_armor_plate": "Military Armor Plate",
+  "block.sandstorm.hazard_stripe_block": "Hazard Stripe Block",
+  "item.sandstorm.hazard_stripe_block": "Hazard Stripe Block",
+  "block.sandstorm.steel_vent_grate": "Steel Vent Grate",
+  "item.sandstorm.steel_vent_grate": "Steel Vent Grate",
+  "block.sandstorm.tactical_radar_console": "Tactical Radar Console",
+  "item.sandstorm.tactical_radar_console": "Tactical Radar Console",
+  "block.sandstorm.military_munitions_crate": "Military Munitions Crate",
+  "item.sandstorm.military_munitions_crate": "Military Munitions Crate",
+  "block.sandstorm.reinforced_vent_duct": "Reinforced Vent Duct",
+  "item.sandstorm.reinforced_vent_duct": "Reinforced Vent Duct",
+  "block.sandstorm.rusted_military_plate": "Rusted Military Armor Plate",
+  "item.sandstorm.rusted_military_plate": "Rusted Military Armor Plate",
+  "block.sandstorm.weathered_hazard_stripe": "Weathered Hazard Stripe Block",
+  "item.sandstorm.weathered_hazard_stripe": "Weathered Hazard Stripe Block"
 }

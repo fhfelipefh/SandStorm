@@ -1208,5 +1208,21 @@
   "block.sandstorm.lead_block": "Bloco de Chumbo",
   "item.sandstorm.lead_block": "Bloco de Chumbo",
   "block.sandstorm.lead_shielding_block": "Bloco de Blindagem de Chumbo",
-  "item.sandstorm.lead_shielding_block": "Bloco de Blindagem de Chumbo"
+  "item.sandstorm.lead_shielding_block": "Bloco de Blindagem de Chumbo",
+  "block.sandstorm.military_armor_plate": "Placa de Blindagem Militar",
+  "item.sandstorm.military_armor_plate": "Placa de Blindagem Militar",
+  "block.sandstorm.hazard_stripe_block": "Bloco de Faixas de Perigo",
+  "item.sandstorm.hazard_stripe_block": "Bloco de Faixas de Perigo",
+  "block.sandstorm.steel_vent_grate": "Grelha de Ventilação de Aço",
+  "item.sandstorm.steel_vent_grate": "Grelha de Ventilação de Aço",
+  "block.sandstorm.tactical_radar_console": "Console de Radar Tático",
+  "item.sandstorm.tactical_radar_console": "Console de Radar Tático",
+  "block.sandstorm.military_munitions_crate": "Caixa de Munições Militar",
+  "item.sandstorm.military_munitions_crate": "Caixa de Munições Militar",
+  "block.sandstorm.reinforced_vent_duct": "Duto de Ventilação Reforçado",
+  "item.sandstorm.reinforced_vent_duct": "Duto de Ventilação Reforçado",
+  "block.sandstorm.rusted_military_plate": "Placa de Blindagem Militar Enferrujada",
+  "item.sandstorm.rusted_military_plate": "Placa de Blindagem Militar Enferrujada",
+  "block.sandstorm.weathered_hazard_stripe": "Bloco de Faixas de Perigo Desgastado",
+  "item.sandstorm.weathered_hazard_stripe": "Bloco de Faixas de Perigo Desgastado"
 }

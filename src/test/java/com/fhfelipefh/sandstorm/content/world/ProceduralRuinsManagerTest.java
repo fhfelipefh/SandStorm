@@ -75,6 +75,16 @@ class ProceduralRuinsManagerTest {
     }
 
     @Test
+    void naturalGenerationShouldSupportMilitaryLabDungeon() throws IOException {
+        Path managerPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "ProceduralRuinsManager.java");
+        String source = Files.readString(managerPath);
+
+        assertTrue(ProceduralRuinsManager.MILITARY_LAB_RARITY > 0);
+        assertEquals(320, ProceduralRuinsManager.MILITARY_LAB_RARITY);
+        assertTrue(source.contains("AbandonedMilitaryLabDungeon.generate"));
+    }
+
+    @Test
     void proceduralRuinsSavedDataShouldTrackProcessedChunks() {
         ProceduralRuinsSavedData data = new ProceduralRuinsSavedData();
         long chunkKey = 1048580L;

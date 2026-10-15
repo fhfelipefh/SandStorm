@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/reinforced_vent_duct"
+    }
+  }
+}
