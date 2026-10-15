@@ -573,6 +573,9 @@ public class AncientBunkerCatalog {
         if (random.nextBoolean()) {
             chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.STEEL_REBAR, 4 + random.nextInt(8)));
         }
+        if (random.nextInt(3) == 0) {
+            chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.SUBSPACE_WARP_CORE, 1));
+        }
         chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.STRUCTURAL_PLATE, 2 + random.nextInt(4)));
     }
 

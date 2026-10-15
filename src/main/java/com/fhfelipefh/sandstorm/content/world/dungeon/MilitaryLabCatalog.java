@@ -8,7 +8,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -398,7 +397,8 @@ public class MilitaryLabCatalog {
         private void populateChest(ServerLevel level, BlockPos origin, DungeonRotation rotation, int lx, int ly, int lz, int size, RandomSource random) {
             BlockPos pos = origin.offset(rotation.rotateOffset(lx, ly, lz, size));
             if (level.getBlockEntity(pos) instanceof ChestBlockEntity chest) {
-                chest.setItem(random.nextInt(chest.getContainerSize()), new ItemStack(Items.IRON_INGOT, 3 + random.nextInt(4)));
+                chest.setItem(random.nextInt(chest.getContainerSize()), new ItemStack(SandStormItems.KINETIC_SLUG, 8 + random.nextInt(12)));
+                chest.setItem(random.nextInt(chest.getContainerSize()), new ItemStack(SandStormItems.CIRCUIT_BOARD, 2 + random.nextInt(3)));
                 if (random.nextBoolean()) {
                     chest.setItem(random.nextInt(chest.getContainerSize()), new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 1 + random.nextInt(2)));
                 }
@@ -568,9 +568,9 @@ public class MilitaryLabCatalog {
         private void populateArmoryChest(ServerLevel level, BlockPos origin, DungeonRotation rotation, int lx, int ly, int lz, int size, RandomSource random) {
             BlockPos pos = origin.offset(rotation.rotateOffset(lx, ly, lz, size));
             if (level.getBlockEntity(pos) instanceof ChestBlockEntity chest) {
-                chest.setItem(0, new ItemStack(Items.IRON_SWORD));
-                chest.setItem(1, new ItemStack(Items.BOW));
-                chest.setItem(2, new ItemStack(Items.ARROW, 16 + random.nextInt(16)));
+                chest.setItem(0, new ItemStack(SandStormItems.TECH_DISC, 1));
+                chest.setItem(1, new ItemStack(SandStormItems.KINETIC_SLUG, 16 + random.nextInt(16)));
+                chest.setItem(2, new ItemStack(SandStormItems.VIBRO_CRYSKNIFE, 1));
                 if (random.nextBoolean()) {
                     chest.setItem(3, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 2));
                 }
@@ -786,9 +786,10 @@ public class MilitaryLabCatalog {
         private void populateVaultChest(ServerLevel level, BlockPos origin, DungeonRotation rotation, int lx, int ly, int lz, int size, RandomSource random) {
             BlockPos pos = origin.offset(rotation.rotateOffset(lx, ly, lz, size));
             if (level.getBlockEntity(pos) instanceof ChestBlockEntity chest) {
-                chest.setItem(0, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 4 + random.nextInt(4)));
-                chest.setItem(1, new ItemStack(Items.DIAMOND, 2 + random.nextInt(3)));
-                chest.setItem(2, new ItemStack(Items.NETHERITE_SCRAP, 1));
+                chest.setItem(0, new ItemStack(SandStormItems.SUBSPACE_WARP_CORE, 1 + random.nextInt(2)));
+                chest.setItem(1, new ItemStack(SandStormItems.TECH_DISC, 1 + random.nextInt(2)));
+                chest.setItem(2, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 4 + random.nextInt(4)));
+                chest.setItem(3, new ItemStack(SandStormItems.SUPERCONDUCTOR_TOROID, 2));
             }
         }
     }

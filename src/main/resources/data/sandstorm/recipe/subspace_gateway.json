@@ -6,12 +6,13 @@
     "C": "sandstorm:circuit_board",
     "N": "sandstorm:nano_actuator",
     "Q": "sandstorm:piezo_quartz_cluster",
-    "T": "sandstorm:titanium_chitin_composite"
+    "T": "sandstorm:titanium_chitin_composite",
+    "W": "sandstorm:subspace_warp_core"
   },
   "pattern": [
     "TQT",
-    "NAN",
-    "TCT"
+    "NWN",
+    "TCA"
   ],
   "result": {
     "count": 1,

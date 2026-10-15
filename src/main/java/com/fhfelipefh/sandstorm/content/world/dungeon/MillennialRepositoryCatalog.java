@@ -677,11 +677,12 @@ public class MillennialRepositoryCatalog {
 
         private void populateVaultChest(Container container, RandomSource random) {
             container.setItem(0, new ItemStack(SandStormBlocks.ANCIENT_DATA_CORE.asItem(), 1));
+            container.setItem(1, new ItemStack(SandStormItems.SUBSPACE_WARP_CORE, 1));
             container.setItem(2, new ItemStack(SandStormItems.LEAD_INGOT, 4 + random.nextInt(5)));
             container.setItem(4, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 4 + random.nextInt(4)));
             container.setItem(6, new ItemStack(SandStormItems.STEEL_REBAR, 8 + random.nextInt(9)));
-            container.setItem(8, new ItemStack(Items.DIAMOND, 2 + random.nextInt(3)));
-            container.setItem(13, new ItemStack(Items.EMERALD, 4 + random.nextInt(5)));
+            container.setItem(8, new ItemStack(SandStormItems.TECH_DISC, 1 + random.nextInt(2)));
+            container.setItem(13, new ItemStack(SandStormItems.CIRCUIT_BOARD, 4 + random.nextInt(4)));
             container.setItem(18, new ItemStack(Items.REDSTONE, 16 + random.nextInt(16)));
             container.setItem(22, new ItemStack(SandStormBlocks.SOLID_STATE_ACCUMULATOR.asItem(), 1));
         }

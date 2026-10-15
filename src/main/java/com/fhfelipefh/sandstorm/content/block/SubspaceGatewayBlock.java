@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block;
 
 import com.fhfelipefh.sandstorm.content.block.entity.BaseMachineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SubspaceGatewayBlockEntity;
+import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -71,6 +72,9 @@ public class SubspaceGatewayBlock extends Block implements EntityBlock {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof SubspaceGatewayBlockEntity gateway) {
             int fuelValue = BaseMachineBlockEntity.getFuelEnergy(stack);
+            if (stack.is(SandStormItems.SUBSPACE_WARP_CORE)) {
+                fuelValue = 50000;
+            }
             if (fuelValue > 0 && gateway.getEnergy() < SubspaceGatewayBlockEntity.MAX_ENERGY) {
                 gateway.setEnergy(gateway.getEnergy() + fuelValue);
                 if (!player.getAbilities().instabuild) {

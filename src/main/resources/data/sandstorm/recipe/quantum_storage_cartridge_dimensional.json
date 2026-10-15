@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "C": "sandstorm:quantum_storage_cartridge_64k",
+    "T": "sandstorm:titanium_chitin_composite",
+    "W": "sandstorm:subspace_warp_core"
+  },
+  "pattern": [
+    "TAT",
+    "WCW",
+    "TAT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:quantum_storage_cartridge_dimensional"
+  }
+}

@@ -193,6 +193,7 @@ public class SandStormItems {
     public static final CryoCellCoolerItem CRYO_CELL_COOLER = register("cryo_cell_cooler", new CryoCellCoolerItem(properties("cryo_cell_cooler")));
     public static final SubdermalTremorSensorItem SUBDERMAL_TREMOR_SENSOR = register("subdermal_tremor_sensor", new SubdermalTremorSensorItem(properties("subdermal_tremor_sensor")));
     public static final GeologicalSurveyorDroneItem GEOLOGICAL_SURVEYOR_DRONE = register("geological_surveyor_drone", new GeologicalSurveyorDroneItem(properties("geological_surveyor_drone")));
+    public static final Item SUBSPACE_WARP_CORE = register("subspace_warp_core", new Item(properties("subspace_warp_core").stacksTo(16).rarity(Rarity.EPIC)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -420,6 +421,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.ORBITAL_GROUND_STATION);
                         entries.accept(SandStormBlocks.SPECTRAL_SURVEY_TELESCOPE);
                         entries.accept(SandStormBlocks.SUBSPACE_GATEWAY);
+                        entries.accept(SUBSPACE_WARP_CORE);
                         entries.accept(ADVANCED_REFRACTION_LENS);
                         entries.accept(SandStormBlocks.SEISMIC_DAMPENER_PAVING);
                         entries.accept(SandStormBlocks.SALT_BRICKS);

@@ -1292,5 +1292,8 @@
   "hud.sandstorm.surveyor_drone.minerals_found": "Assinaturas minerais raras: %s veios.",
   "hud.sandstorm.surveyor_drone.no_anomalies": "Nenhuma cavidade detectada no raio de 48m.",
   "block.sandstorm.maglev_conveyor": "Esteira Logística Maglev",
-  "item.sandstorm.maglev_conveyor": "Esteira Logística Maglev"
+  "item.sandstorm.maglev_conveyor": "Esteira Logística Maglev",
+  "item.sandstorm.subspace_warp_core": "Núcleo de Dobra Subespacial",
+  "tooltip.sandstorm.tech.subspace_warp_core_lore": "Artefato de Dobra Quântica Pré-Colapso",
+  "tooltip.sandstorm.tech.subspace_warp_core_function": "Estabiliza o Portal Subespacial"
 }

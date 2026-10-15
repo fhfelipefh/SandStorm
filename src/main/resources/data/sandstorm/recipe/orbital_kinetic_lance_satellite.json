@@ -3,14 +3,14 @@
   "category": "misc",
   "pattern": [
     " K ",
-    "TCT",
+    "TDT",
     " M "
   ],
   "key": {
+    "D": "sandstorm:tech_disc",
     "K": "sandstorm:kinetic_slug",
-    "T": "sandstorm:superconductor_toroid",
-    "C": "sandstorm:circuit_board",
-    "M": "sandstorm:mantle_alloy_ingot"
+    "M": "sandstorm:mantle_alloy_ingot",
+    "T": "sandstorm:superconductor_toroid"
   },
   "result": {
     "count": 1,

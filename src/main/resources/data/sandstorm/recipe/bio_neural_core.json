@@ -3,17 +3,17 @@
   "category": "misc",
   "pattern": [
     " N ",
-    "MWM",
+    "MDM",
     " A "
   ],
   "key": {
-    "N": "sandstorm:neuroactive_alkaloids",
+    "A": "sandstorm:nano_actuator",
+    "D": "sandstorm:tech_disc",
     "M": "sandstorm:radioprotective_melanin",
-    "W": "sandstorm:silicon_wafer",
-    "A": "sandstorm:nano_actuator"
+    "N": "sandstorm:neuroactive_alkaloids"
   },
   "result": {
-    "id": "sandstorm:bio_neural_core",
-    "count": 1
+    "count": 1,
+    "id": "sandstorm:bio_neural_core"
   }
 }

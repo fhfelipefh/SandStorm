@@ -284,5 +284,9 @@ public class TechnicalSpecificationRegistry {
                 .add(Component.translatable("tooltip.sandstorm.tech.function_satellite"))
                 .add(Component.translatable("tooltip.sandstorm.tech.network_orbital"))
                 .build());
+        register(SandStormItems.SUBSPACE_WARP_CORE, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.subspace_warp_core_lore"))
+                .add(Component.translatable("tooltip.sandstorm.tech.subspace_warp_core_function"))
+                .build());
     }
 }

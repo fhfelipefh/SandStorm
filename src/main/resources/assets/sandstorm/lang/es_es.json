@@ -1292,5 +1292,8 @@
   "hud.sandstorm.surveyor_drone.minerals_found": "Minerales raros detectados: %s vetas.",
   "hud.sandstorm.surveyor_drone.no_anomalies": "Sin cavidades detectadas en 48m.",
   "block.sandstorm.maglev_conveyor": "Cinta Transportadora Maglev",
-  "item.sandstorm.maglev_conveyor": "Cinta Transportadora Maglev"
+  "item.sandstorm.maglev_conveyor": "Cinta Transportadora Maglev",
+  "item.sandstorm.subspace_warp_core": "Núcleo de Curvatura Subespacial",
+  "tooltip.sandstorm.tech.subspace_warp_core_lore": "Artefacto de Curvatura Cuántica Pre-Colapso",
+  "tooltip.sandstorm.tech.subspace_warp_core_function": "Estabiliza el Portal Subespacial"
 }

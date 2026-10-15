@@ -1292,5 +1292,8 @@
   "hud.sandstorm.surveyor_drone.minerals_found": "Rare mineral signatures detected: %s veins.",
   "hud.sandstorm.surveyor_drone.no_anomalies": "No subterranean cavities detected in 48m.",
   "block.sandstorm.maglev_conveyor": "Maglev Logistics Conveyor",
-  "item.sandstorm.maglev_conveyor": "Maglev Logistics Conveyor"
+  "item.sandstorm.maglev_conveyor": "Maglev Logistics Conveyor",
+  "item.sandstorm.subspace_warp_core": "Subspace Warp Core",
+  "tooltip.sandstorm.tech.subspace_warp_core_lore": "Pre-Collapse Quantum Warp Artifact",
+  "tooltip.sandstorm.tech.subspace_warp_core_function": "Stabilizes Subspace Gateway transit"
 }
