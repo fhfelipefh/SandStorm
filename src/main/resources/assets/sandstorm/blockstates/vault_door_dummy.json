@@ -1,0 +1,9 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "sandstorm:block/vault_door_dummy"
+      }
+    }
+  ]
+}

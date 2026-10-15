@@ -135,7 +135,8 @@ public class SandstormDebugCommand {
             "orbital_array",
             "colossal_castle",
             "computer",
-            "biospheres_all"
+            "biospheres_all",
+            "vault"
     );
 
     public static void initialize() {
@@ -1647,6 +1648,11 @@ public class SandstormDebugCommand {
             case "biospheres_all", "biospheres", "biosferas" -> {
                 ShowcaseAutomation.buildBiospheresShowcase(level, center);
                 source.sendSuccess(() -> Component.literal("§a[SandStorm] Domos de Todas as Biosferas Lado a Lado montados com sucesso!"), true);
+                return 1;
+            }
+            case "vault", "armored_vault", "cofre" -> {
+                ShowcaseAutomation.buildVaultShowcase(level, center);
+                source.sendSuccess(() -> Component.literal("§a[SandStorm] Câmara de Cofre Blindada 3x3 montada com sucesso!"), true);
                 return 1;
             }
             default -> {

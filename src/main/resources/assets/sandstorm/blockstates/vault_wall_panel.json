@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "vertical=bottom": {
+      "model": "sandstorm:block/vault_wall_panel_bottom"
+    },
+    "vertical=middle": {
+      "model": "sandstorm:block/vault_wall_panel_middle"
+    },
+    "vertical=single": {
+      "model": "sandstorm:block/vault_wall_panel_single"
+    },
+    "vertical=top": {
+      "model": "sandstorm:block/vault_wall_panel_top"
+    }
+  }
+}

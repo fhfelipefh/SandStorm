@@ -1242,5 +1242,11 @@
   "block.sandstorm.damaged_munitions_crate": "Damaged Munitions Crate",
   "item.sandstorm.damaged_munitions_crate": "Damaged Munitions Crate",
   "block.sandstorm.broken_radar_console": "Broken Tactical Radar Console",
-  "item.sandstorm.broken_radar_console": "Broken Tactical Radar Console"
+  "item.sandstorm.broken_radar_console": "Broken Tactical Radar Console",
+  "block.sandstorm.vault_door_controller": "Armored Vault Door Controller",
+  "item.sandstorm.vault_door_controller": "Armored Vault Door Controller",
+  "block.sandstorm.vault_wall_panel": "Armored Vault Wall Panel",
+  "item.sandstorm.vault_wall_panel": "Armored Vault Wall Panel",
+  "block.sandstorm.vault_wall_seam": "Armored Vault Wall Seam Pillar",
+  "item.sandstorm.vault_wall_seam": "Armored Vault Wall Seam Pillar"
 }

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "PPP",
+    "RSR",
+    "PPP"
+  ],
+  "key": {
+    "P": "sandstorm:structural_plate",
+    "R": "sandstorm:steel_rebar",
+    "S": "minecraft:iron_ingot"
+  },
+  "result": {
+    "count": 4,
+    "id": "sandstorm:vault_wall_panel"
+  }
+}

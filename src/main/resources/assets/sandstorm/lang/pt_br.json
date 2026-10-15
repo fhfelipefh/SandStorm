@@ -1242,5 +1242,11 @@
   "block.sandstorm.damaged_munitions_crate": "Caixa de Munições Danificada",
   "item.sandstorm.damaged_munitions_crate": "Caixa de Munições Danificada",
   "block.sandstorm.broken_radar_console": "Console de Radar Quebrado",
-  "item.sandstorm.broken_radar_console": "Console de Radar Quebrado"
+  "item.sandstorm.broken_radar_console": "Console de Radar Quebrado",
+  "block.sandstorm.vault_door_controller": "Controlador de Porta de Cofre Blindada",
+  "item.sandstorm.vault_door_controller": "Controlador de Porta de Cofre Blindada",
+  "block.sandstorm.vault_wall_panel": "Painel de Parede Blindada de Cofre",
+  "item.sandstorm.vault_wall_panel": "Painel de Parede Blindada de Cofre",
+  "block.sandstorm.vault_wall_seam": "Pilar de Junção de Parede de Cofre",
+  "item.sandstorm.vault_wall_seam": "Pilar de Junção de Parede de Cofre"
 }

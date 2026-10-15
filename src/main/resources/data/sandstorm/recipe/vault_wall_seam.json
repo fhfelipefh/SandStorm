@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "R",
+    "P",
+    "R"
+  ],
+  "key": {
+    "P": "sandstorm:vault_wall_panel",
+    "R": "sandstorm:steel_rebar"
+  },
+  "result": {
+    "count": 2,
+    "id": "sandstorm:vault_wall_seam"
+  }
+}

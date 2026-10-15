@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "sandstorm:block/vault_wall_seam_top",
+    "side": "sandstorm:block/vault_wall_seam"
+  }
+}

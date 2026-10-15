@@ -81,20 +81,26 @@ class ShowcaseComputerAndBlocksTest {
         assertNotNull(sandstorm);
         assertNotNull(sandstorm.getChild("showcase"));
         assertNotNull(sandstorm.getChild("computer"));
+        assertNotNull(sandstorm.getChild("vault"));
 
         CommandNode<CommandSourceStack> sandstormDebug = dispatcher.getRoot().getChild("sandstorm_debug");
         assertNotNull(sandstormDebug);
         assertNotNull(sandstormDebug.getChild("showcase"));
         assertNotNull(sandstormDebug.getChild("computer"));
+        assertNotNull(sandstormDebug.getChild("vault"));
 
         CommandNode<CommandSourceStack> sandstormComputer = dispatcher.getRoot().getChild("sandstorm_computer");
         assertNotNull(sandstormComputer);
+
+        CommandNode<CommandSourceStack> sandstormVault = dispatcher.getRoot().getChild("sandstorm_vault");
+        assertNotNull(sandstormVault);
     }
 
     @Test
     void shouldIncludeComputerInDebugFacilities() {
         List<String> facilities = SandstormDebugCommand.getSupportedFacilities();
         assertTrue(facilities.contains("computer"));
+        assertTrue(facilities.contains("vault"));
     }
 
     @Test
@@ -106,6 +112,9 @@ class ShowcaseComputerAndBlocksTest {
         String driveExp = (String) explanationMethod.invoke(null, SandStormBlocks.QUANTUM_DISK_DRIVE);
         String terminalExp = (String) explanationMethod.invoke(null, SandStormBlocks.QUANTUM_ACCESS_TERMINAL);
         String cableExp = (String) explanationMethod.invoke(null, SandStormBlocks.QUANTUM_NETWORK_CABLE);
+        String vaultControllerExp = (String) explanationMethod.invoke(null, SandStormBlocks.VAULT_DOOR_CONTROLLER);
+        String vaultWallPanelExp = (String) explanationMethod.invoke(null, SandStormBlocks.VAULT_WALL_PANEL);
+        String vaultWallSeamExp = (String) explanationMethod.invoke(null, SandStormBlocks.VAULT_WALL_SEAM);
 
         assertNotNull(controllerExp);
         assertFalse(controllerExp.equals("Tecnologia Estrutural SandStorm"));
@@ -122,6 +131,18 @@ class ShowcaseComputerAndBlocksTest {
         assertNotNull(cableExp);
         assertFalse(cableExp.equals("Tecnologia Estrutural SandStorm"));
         assertTrue(cableExp.length() <= 45);
+
+        assertNotNull(vaultControllerExp);
+        assertFalse(vaultControllerExp.equals("Tecnologia Estrutural SandStorm"));
+        assertTrue(vaultControllerExp.length() <= 45);
+
+        assertNotNull(vaultWallPanelExp);
+        assertFalse(vaultWallPanelExp.equals("Tecnologia Estrutural SandStorm"));
+        assertTrue(vaultWallPanelExp.length() <= 45);
+
+        assertNotNull(vaultWallSeamExp);
+        assertFalse(vaultWallSeamExp.equals("Tecnologia Estrutural SandStorm"));
+        assertTrue(vaultWallSeamExp.length() <= 45);
     }
 
     @Test
@@ -150,7 +171,7 @@ class ShowcaseComputerAndBlocksTest {
     void shouldEnsureAllModBlocksAreCoveredInShowcaseCheckerboard() {
         List<Block> blocks = BuiltInRegistries.BLOCK.stream()
                 .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
-                .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR))
+                .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR) && !b.equals(SandStormBlocks.VAULT_DOOR_DUMMY))
                 .toList();
 
         assertFalse(blocks.isEmpty());
@@ -158,6 +179,9 @@ class ShowcaseComputerAndBlocksTest {
         assertTrue(blocks.contains(SandStormBlocks.QUANTUM_DISK_DRIVE));
         assertTrue(blocks.contains(SandStormBlocks.QUANTUM_ACCESS_TERMINAL));
         assertTrue(blocks.contains(SandStormBlocks.QUANTUM_NETWORK_CABLE));
+        assertTrue(blocks.contains(SandStormBlocks.VAULT_DOOR_CONTROLLER));
+        assertTrue(blocks.contains(SandStormBlocks.VAULT_WALL_PANEL));
+        assertTrue(blocks.contains(SandStormBlocks.VAULT_WALL_SEAM));
         assertTrue(blocks.contains(SandStormBlocks.ELECTRIC_FENCE_PYLON));
         assertTrue(blocks.contains(SandStormBlocks.SUBSPACE_GATEWAY));
         assertTrue(blocks.contains(SandStormBlocks.SEISMIC_DAMPENER_PAVING));
@@ -168,7 +192,7 @@ class ShowcaseComputerAndBlocksTest {
     void shouldEnsureBiospheresShowcaseDoesNotOverlapBlocks() {
         List<Block> blocks = BuiltInRegistries.BLOCK.stream()
                 .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
-                .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR))
+                .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR) && !b.equals(SandStormBlocks.VAULT_DOOR_DUMMY))
                 .toList();
         int cols = 8;
         int spacing = 4;

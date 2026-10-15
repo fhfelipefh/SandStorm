@@ -110,6 +110,9 @@
     "sandstorm:rusted_steel_vent_grate",
     "sandstorm:broken_steel_vent_grate",
     "sandstorm:damaged_munitions_crate",
-    "sandstorm:broken_radar_console"
+    "sandstorm:broken_radar_console",
+    "sandstorm:vault_door_controller",
+    "sandstorm:vault_wall_panel",
+    "sandstorm:vault_wall_seam"
   ]
 }

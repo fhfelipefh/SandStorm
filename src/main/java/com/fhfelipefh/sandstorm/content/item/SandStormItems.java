@@ -480,6 +480,9 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.BROKEN_STEEL_VENT_GRATE);
                         entries.accept(SandStormBlocks.DAMAGED_MUNITIONS_CRATE);
                         entries.accept(SandStormBlocks.BROKEN_RADAR_CONSOLE);
+                        entries.accept(SandStormBlocks.VAULT_DOOR_CONTROLLER);
+                        entries.accept(SandStormBlocks.VAULT_WALL_PANEL);
+                        entries.accept(SandStormBlocks.VAULT_WALL_SEAM);
                     })
                     .build()
     );

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "sandstorm:block/vault_wall_seam",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "sandstorm:block/vault_wall_seam"
+    },
+    "axis=z": {
+      "model": "sandstorm:block/vault_wall_seam",
+      "x": 90
+    }
+  }
+}

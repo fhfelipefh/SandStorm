@@ -1,6 +1,10 @@
 package com.fhfelipefh.sandstorm.content.world.dungeon;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.VaultDoorControllerBlock;
+import com.fhfelipefh.sandstorm.content.block.VaultDoorDummyBlock;
+import com.fhfelipefh.sandstorm.content.block.VaultWallPanelBlock;
+import com.fhfelipefh.sandstorm.content.block.VerticalConnection;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.entity.DefectiveSentinelEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
@@ -35,6 +39,8 @@ public class AncientBunkerCatalog {
                 new SludgeCorridor(),
                 new WasteStorageDepot(),
                 new DefectiveSentinelWorkshop(),
+                new VaultGateCorridor(),
+                new ArmoredVaultChamber(),
                 new SolidRock()
         );
     }
@@ -553,6 +559,135 @@ public class AncientBunkerCatalog {
         }
         if (random.nextInt(4) == 0) {
             chest.setItem(random.nextInt(slots), new ItemStack(Items.REDSTONE, 4 + random.nextInt(8)));
+        }
+    }
+
+    private static void populateVaultLoot(Container chest, RandomSource random) {
+        int slots = chest.getContainerSize();
+        chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 2 + random.nextInt(3)));
+        chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.TECH_DISC, 1 + random.nextInt(2)));
+        chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.CIRCUIT_BOARD, 2 + random.nextInt(4)));
+        if (random.nextBoolean()) {
+            chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.NANO_ACTUATOR, 1 + random.nextInt(2)));
+        }
+        if (random.nextBoolean()) {
+            chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.STEEL_REBAR, 4 + random.nextInt(8)));
+        }
+        chest.setItem(random.nextInt(slots), new ItemStack(SandStormItems.STRUCTURAL_PLATE, 2 + random.nextInt(4)));
+    }
+
+    public static class VaultGateCorridor extends BaseDungeonComponent {
+        @Override
+        public String id() {
+            return "bunker_vault_gate_corridor";
+        }
+
+        @Override
+        public int weight() {
+            return 3;
+        }
+
+        @Override
+        public boolean isUnique() {
+            return true;
+        }
+
+        @Override
+        public DungeonSocket getSocket(DungeonDirection direction) {
+            if (direction == DungeonDirection.NORTH) {
+                return DungeonSocket.CORRIDOR;
+            }
+            if (direction == DungeonDirection.SOUTH) {
+                return DungeonSocket.VAULT_DOOR;
+            }
+            return DungeonSocket.WALL;
+        }
+
+        @Override
+        public void build(ServerLevel level, BlockPos origin, DungeonRotation rotation, RandomSource random, int size) {
+            buildBaseShell(level, origin, rotation, size, DungeonSocket.CORRIDOR, DungeonSocket.WALL, DungeonSocket.CORRIDOR, DungeonSocket.WALL);
+            setLocalBlock(level, origin, rotation, 3, 5, 3, size, SandStormBlocks.FULGURITE_GLASS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 7, 3, size, Blocks.REDSTONE_BLOCK.defaultBlockState(), 3);
+            setLocalBlock(level, origin, rotation, 3, 6, 3, size, Blocks.REDSTONE_LAMP.defaultBlockState().setValue(BlockStateProperties.LIT, true), 3);
+
+            for (int y = 1; y <= 4; y++) {
+                setLocalBlock(level, origin, rotation, 1, y, 1, size, SandStormBlocks.VAULT_WALL_SEAM.defaultBlockState());
+                setLocalBlock(level, origin, rotation, 5, y, 1, size, SandStormBlocks.VAULT_WALL_SEAM.defaultBlockState());
+                setLocalBlock(level, origin, rotation, 1, y, 5, size, SandStormBlocks.VAULT_WALL_SEAM.defaultBlockState());
+                setLocalBlock(level, origin, rotation, 5, y, 5, size, SandStormBlocks.VAULT_WALL_SEAM.defaultBlockState());
+            }
+
+            BlockPos controllerPos = origin.offset(rotation.rotateOffset(3, 1, 5, size));
+            Direction doorFacing = rotation.rotateDirection(Direction.NORTH);
+            level.setBlock(controllerPos, SandStormBlocks.VAULT_DOOR_CONTROLLER.defaultBlockState()
+                    .setValue(VaultDoorControllerBlock.FACING, doorFacing)
+                    .setValue(VaultDoorControllerBlock.OPEN, false)
+                    .setValue(VaultDoorControllerBlock.POWERED, false), 3);
+            for (int col = 0; col <= 2; col++) {
+                for (int row = 0; row <= 2; row++) {
+                    if (col == 1 && row == 0) {
+                        continue;
+                    }
+                    BlockPos dummyPos = VaultDoorControllerBlock.getRelativePos(controllerPos, doorFacing, col, row);
+                    level.setBlock(dummyPos, SandStormBlocks.VAULT_DOOR_DUMMY.defaultBlockState()
+                            .setValue(VaultDoorDummyBlock.FACING, doorFacing)
+                            .setValue(VaultDoorDummyBlock.COL, col)
+                            .setValue(VaultDoorDummyBlock.ROW, row), 3);
+                }
+            }
+        }
+    }
+
+    public static class ArmoredVaultChamber extends BaseDungeonComponent {
+        @Override
+        public String id() {
+            return "bunker_armored_vault_chamber";
+        }
+
+        @Override
+        public int weight() {
+            return 3;
+        }
+
+        @Override
+        public boolean isUnique() {
+            return true;
+        }
+
+        @Override
+        public DungeonSocket getSocket(DungeonDirection direction) {
+            return direction == DungeonDirection.NORTH ? DungeonSocket.VAULT_INTERIOR : DungeonSocket.WALL;
+        }
+
+        @Override
+        public void build(ServerLevel level, BlockPos origin, DungeonRotation rotation, RandomSource random, int size) {
+            buildBaseShell(level, origin, rotation, size, DungeonSocket.CORRIDOR, DungeonSocket.WALL, DungeonSocket.WALL, DungeonSocket.WALL);
+
+            for (int lx = 1; lx <= 5; lx++) {
+                for (int lz = 1; lz <= 5; lz++) {
+                    setLocalBlock(level, origin, rotation, lx, 0, lz, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+                }
+            }
+
+            for (int y = 1; y <= 4; y++) {
+                setLocalBlock(level, origin, rotation, 1, y, 1, size, SandStormBlocks.VAULT_WALL_SEAM.defaultBlockState());
+                setLocalBlock(level, origin, rotation, 5, y, 1, size, SandStormBlocks.VAULT_WALL_SEAM.defaultBlockState());
+                setLocalBlock(level, origin, rotation, 1, y, 5, size, SandStormBlocks.VAULT_WALL_SEAM.defaultBlockState());
+                setLocalBlock(level, origin, rotation, 5, y, 5, size, SandStormBlocks.VAULT_WALL_SEAM.defaultBlockState());
+            }
+
+            setLocalBlock(level, origin, rotation, 3, 5, 3, size, SandStormBlocks.FULGURITE_GLASS.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 7, 3, size, Blocks.REDSTONE_BLOCK.defaultBlockState(), 3);
+            setLocalBlock(level, origin, rotation, 3, 6, 3, size, Blocks.REDSTONE_LAMP.defaultBlockState().setValue(BlockStateProperties.LIT, true), 3);
+
+            setLocalBlock(level, origin, rotation, 3, 1, 3, size, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, rotation.rotateDirection(Direction.SOUTH)));
+            BlockPos chestPos = origin.offset(rotation.rotateOffset(3, 1, 3, size));
+            if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
+                populateVaultLoot(chest, random);
+            }
+
+            setLocalBlock(level, origin, rotation, 2, 1, 3, size, SandStormBlocks.VAULT_WALL_PANEL.defaultBlockState().setValue(VaultWallPanelBlock.VERTICAL, VerticalConnection.SINGLE));
+            setLocalBlock(level, origin, rotation, 4, 1, 3, size, SandStormBlocks.VAULT_WALL_PANEL.defaultBlockState().setValue(VaultWallPanelBlock.VERTICAL, VerticalConnection.SINGLE));
         }
     }
 }

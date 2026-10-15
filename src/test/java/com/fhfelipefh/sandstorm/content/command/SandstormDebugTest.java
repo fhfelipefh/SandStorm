@@ -137,7 +137,8 @@ class SandstormDebugTest {
         assertTrue(facilities.contains("colossal_castle"));
         assertTrue(facilities.contains("computer"));
         assertTrue(facilities.contains("biospheres_all"));
-        assertEquals(22, facilities.size());
+        assertTrue(facilities.contains("vault"));
+        assertEquals(23, facilities.size());
     }
 
     @Test

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "PPP",
+    "PSP",
+    "RCR"
+  ],
+  "key": {
+    "P": "sandstorm:vault_wall_panel",
+    "S": "sandstorm:structural_plate",
+    "R": "sandstorm:steel_rebar",
+    "C": "sandstorm:circuit_board"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:vault_door_controller"
+  }
+}

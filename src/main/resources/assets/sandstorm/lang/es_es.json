@@ -1242,5 +1242,11 @@
   "block.sandstorm.damaged_munitions_crate": "Caja de Municiones Dañada",
   "item.sandstorm.damaged_munitions_crate": "Caja de Municiones Dañada",
   "block.sandstorm.broken_radar_console": "Consola de Radar Rota",
-  "item.sandstorm.broken_radar_console": "Consola de Radar Rota"
+  "item.sandstorm.broken_radar_console": "Consola de Radar Rota",
+  "block.sandstorm.vault_door_controller": "Controlador de Puerta de Bóveda Blindada",
+  "item.sandstorm.vault_door_controller": "Controlador de Puerta de Bóveda Blindada",
+  "block.sandstorm.vault_wall_panel": "Panel de Pared Blindada de Bóveda",
+  "item.sandstorm.vault_wall_panel": "Panel de Pared Blindada de Bóveda",
+  "block.sandstorm.vault_wall_seam": "Pilar de Unión de Pared de Bóveda",
+  "item.sandstorm.vault_wall_seam": "Pilar de Unión de Pared de Bóveda"
 }

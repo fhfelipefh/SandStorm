@@ -40,6 +40,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.Printer3DBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.RadioactiveWasteBarrelBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.VaultDoorControllerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SpectralSurveyTelescopeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.fluid.RadioactiveSludgeBlock;
@@ -981,6 +982,37 @@ public class SandStormBlocks {
                     .strength(6.0f, 30.0f)
                     .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()));
+    public static final VaultDoorControllerBlock VAULT_DOOR_CONTROLLER = register("vault_door_controller",
+            new VaultDoorControllerBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("vault_door_controller")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(50.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final VaultDoorDummyBlock VAULT_DOOR_DUMMY = Registry.register(
+            BuiltInRegistries.BLOCK,
+            SandStormMod.id("vault_door_dummy"),
+            new VaultDoorDummyBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("vault_door_dummy")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(50.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noLootTable()
+                    .noOcclusion())
+    );
+    public static final VaultWallPanelBlock VAULT_WALL_PANEL = register("vault_wall_panel",
+            new VaultWallPanelBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("vault_wall_panel")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(50.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final VaultWallSeamBlock VAULT_WALL_SEAM = register("vault_wall_seam",
+            new VaultWallSeamBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("vault_wall_seam")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(50.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -1241,6 +1273,11 @@ public class SandStormBlocks {
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("radioactive_waste_barrel"),
             new BlockEntityType<>(RadioactiveWasteBarrelBlockEntity::new, Set.of(RADIOACTIVE_WASTE_BARREL))
+    );
+    public static final BlockEntityType<VaultDoorControllerBlockEntity> VAULT_DOOR_CONTROLLER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("vault_door_controller"),
+            new BlockEntityType<>(VaultDoorControllerBlockEntity::new, Set.of(VAULT_DOOR_CONTROLLER))
     );
 
     public static <T extends Block> T register(String path, T block) {
