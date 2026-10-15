@@ -7,6 +7,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.AutoAssemblyLineBlockEntity
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CryogenicAtmosphericChillerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CryostasisPodBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.CryoRevivalVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BiosphereDoorBlockEntity;
@@ -1062,6 +1063,20 @@ public class SandStormBlocks {
                     .strength(6.0f, 30.0f)
                     .sound(SoundType.HEAVY_CORE)
                     .requiresCorrectToolForDrops()));
+    public static final CryoRevivalVatBlock CRYO_REVIVAL_VAT = register("cryo_revival_vat",
+            new CryoRevivalVatBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("cryo_revival_vat")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(4.0f, 15.0f)
+                    .sound(SoundType.GLASS)
+                    .requiresCorrectToolForDrops()));
+    public static final MaglevConveyorBlock MAGLEV_CONVEYOR = register("maglev_conveyor",
+            new MaglevConveyorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("maglev_conveyor")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.0f, 10.0f)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -1333,6 +1348,11 @@ public class SandStormBlocks {
             SandStormMod.id("cryostasis_pod"),
             new BlockEntityType<>(CryostasisPodBlockEntity::new, Set.of(CRYOSTASIS_POD))
     );
+    public static final BlockEntityType<CryoRevivalVatBlockEntity> CRYO_REVIVAL_VAT_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("cryo_revival_vat"),
+            new BlockEntityType<>(CryoRevivalVatBlockEntity::new, Set.of(CRYO_REVIVAL_VAT))
+    );
 
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
@@ -1394,5 +1414,6 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, IRRIGATION_PUMP_BE);
         FluidStorage.SIDED.registerForBlockEntity(IrrigationPumpBlockEntity::getFluidStorage, IRRIGATION_PUMP_BE);
         FluidStorage.SIDED.registerForBlockEntity(FiberglassChemicalPipeBlockEntity::getFluidStorage, FIBERGLASS_CHEMICAL_PIPE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, CRYO_REVIVAL_VAT_BE);
     }
 }

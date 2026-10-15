@@ -16,7 +16,8 @@ public class CyborgUpgradeItem extends Item {
         ACID_CHITIN_PLATING("acid_chitin_plating", Rarity.RARE, 1),
         CRYO_TREHALOSE_CELL("cryo_trehalose_cell", Rarity.RARE, 2),
         LONG_RANGE_LIDAR_LENS("long_range_lidar_lens", Rarity.UNCOMMON, 4),
-        PIEZO_HOVER_THRUSTER("piezo_hover_thruster", Rarity.EPIC, 8);
+        PIEZO_HOVER_THRUSTER("piezo_hover_thruster", Rarity.EPIC, 8),
+        SUBDERMAL_TREMOR_SENSOR("subdermal_tremor_sensor", Rarity.EPIC, 16);
 
         private final String id;
         private final Rarity rarity;
@@ -87,6 +88,12 @@ public class CyborgUpgradeItem extends Item {
                         .withStyle(ChatFormatting.LIGHT_PURPLE));
                 tooltipAdder.accept(Component.translatable("tooltip.sandstorm.piezo_hover_thruster.desc2")
                         .withStyle(ChatFormatting.DARK_PURPLE));
+            }
+            case SUBDERMAL_TREMOR_SENSOR -> {
+                tooltipAdder.accept(Component.translatable("tooltip.sandstorm.subdermal_tremor_sensor.desc1")
+                        .withStyle(ChatFormatting.GOLD));
+                tooltipAdder.accept(Component.translatable("tooltip.sandstorm.subdermal_tremor_sensor.desc2")
+                        .withStyle(ChatFormatting.YELLOW));
             }
         }
 

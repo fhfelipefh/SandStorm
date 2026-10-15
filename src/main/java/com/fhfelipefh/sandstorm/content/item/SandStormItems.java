@@ -189,6 +189,10 @@ public class SandStormItems {
     public static final Item STEEL_REBAR = register("steel_rebar", new Item(properties("steel_rebar").rarity(Rarity.UNCOMMON)));
     public static final Item LEAD_INGOT = register("lead_ingot", new Item(properties("lead_ingot").rarity(Rarity.UNCOMMON)));
     public static final Item RAW_LEAD = register("raw_lead", new Item(properties("raw_lead")));
+    public static final CryoLanceItem CRYO_LANCE = register("cryo_lance", new CryoLanceItem(properties("cryo_lance")));
+    public static final CryoCellCoolerItem CRYO_CELL_COOLER = register("cryo_cell_cooler", new CryoCellCoolerItem(properties("cryo_cell_cooler")));
+    public static final SubdermalTremorSensorItem SUBDERMAL_TREMOR_SENSOR = register("subdermal_tremor_sensor", new SubdermalTremorSensorItem(properties("subdermal_tremor_sensor")));
+    public static final GeologicalSurveyorDroneItem GEOLOGICAL_SURVEYOR_DRONE = register("geological_surveyor_drone", new GeologicalSurveyorDroneItem(properties("geological_surveyor_drone")));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -490,6 +494,12 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.CRYO_INSULATION);
                         entries.accept(SandStormBlocks.CHISELED_CRYO_INSULATION);
                         entries.accept(SandStormBlocks.CRYO_REACTOR_CORE);
+                        entries.accept(CRYO_LANCE);
+                        entries.accept(CRYO_CELL_COOLER);
+                        entries.accept(SandStormBlocks.CRYO_REVIVAL_VAT);
+                        entries.accept(SUBDERMAL_TREMOR_SENSOR);
+                        entries.accept(GEOLOGICAL_SURVEYOR_DRONE);
+                        entries.accept(SandStormBlocks.MAGLEV_CONVEYOR);
                     })
                     .build()
     );

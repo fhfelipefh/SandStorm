@@ -120,6 +120,8 @@
     "sandstorm:subglacial_ice_spike",
     "sandstorm:cryo_insulation",
     "sandstorm:chiseled_cryo_insulation",
-    "sandstorm:cryo_reactor_core"
+    "sandstorm:cryo_reactor_core",
+    "sandstorm:cryo_revival_vat",
+    "sandstorm:maglev_conveyor"
   ]
 }
