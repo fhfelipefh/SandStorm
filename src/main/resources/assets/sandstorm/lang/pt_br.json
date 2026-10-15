@@ -1248,5 +1248,17 @@
   "block.sandstorm.vault_wall_panel": "Painel de Parede Blindada de Cofre",
   "item.sandstorm.vault_wall_panel": "Painel de Parede Blindada de Cofre",
   "block.sandstorm.vault_wall_seam": "Pilar de Junção de Parede de Cofre",
-  "item.sandstorm.vault_wall_seam": "Pilar de Junção de Parede de Cofre"
+  "item.sandstorm.vault_wall_seam": "Pilar de Junção de Parede de Cofre",
+  "block.sandstorm.cryo_sprayer": "Ejetor de Nitrogênio Criogênico",
+  "item.sandstorm.cryo_sprayer": "Ejetor de Nitrogênio Criogênico",
+  "block.sandstorm.cryostasis_pod": "Câmara de Criostase Selada",
+  "item.sandstorm.cryostasis_pod": "Câmara de Criostase Selada",
+  "block.sandstorm.brittle_permafrost": "Placa de Permafrost Frágil",
+  "item.sandstorm.brittle_permafrost": "Placa de Permafrost Frágil",
+  "block.sandstorm.subglacial_ice_spike": "Espinho de Gelo Subglacial",
+  "item.sandstorm.subglacial_ice_spike": "Espinho de Gelo Subglacial",
+  "block.sandstorm.cryo_insulation": "Isolamento Criogênico de Aerogel",
+  "item.sandstorm.cryo_insulation": "Isolamento Criogênico de Aerogel",
+  "block.sandstorm.chiseled_cryo_insulation": "Isolamento Criogênico de Aerogel Talhado",
+  "item.sandstorm.chiseled_cryo_insulation": "Isolamento Criogênico de Aerogel Talhado"
 }

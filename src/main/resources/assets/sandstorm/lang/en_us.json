@@ -1248,5 +1248,17 @@
   "block.sandstorm.vault_wall_panel": "Armored Vault Wall Panel",
   "item.sandstorm.vault_wall_panel": "Armored Vault Wall Panel",
   "block.sandstorm.vault_wall_seam": "Armored Vault Wall Seam Pillar",
-  "item.sandstorm.vault_wall_seam": "Armored Vault Wall Seam Pillar"
+  "item.sandstorm.vault_wall_seam": "Armored Vault Wall Seam Pillar",
+  "block.sandstorm.cryo_sprayer": "Cryogenic Nitrogen Sprayer",
+  "item.sandstorm.cryo_sprayer": "Cryogenic Nitrogen Sprayer",
+  "block.sandstorm.cryostasis_pod": "Hermetic Cryostasis Pod",
+  "item.sandstorm.cryostasis_pod": "Hermetic Cryostasis Pod",
+  "block.sandstorm.brittle_permafrost": "Brittle Permafrost Tile",
+  "item.sandstorm.brittle_permafrost": "Brittle Permafrost Tile",
+  "block.sandstorm.subglacial_ice_spike": "Subglacial Ice Spike",
+  "item.sandstorm.subglacial_ice_spike": "Subglacial Ice Spike",
+  "block.sandstorm.cryo_insulation": "Cryogenic Aerogel Insulation",
+  "item.sandstorm.cryo_insulation": "Cryogenic Aerogel Insulation",
+  "block.sandstorm.chiseled_cryo_insulation": "Chiseled Cryogenic Aerogel Insulation",
+  "item.sandstorm.chiseled_cryo_insulation": "Chiseled Cryogenic Aerogel Insulation"
 }

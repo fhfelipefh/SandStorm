@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north,occupied=false,powered=false": { "model": "sandstorm:block/cryostasis_pod" },
+    "facing=north,occupied=false,powered=true": { "model": "sandstorm:block/cryostasis_pod" },
+    "facing=north,occupied=true,powered=false": { "model": "sandstorm:block/cryostasis_pod" },
+    "facing=north,occupied=true,powered=true": { "model": "sandstorm:block/cryostasis_pod" },
+    "facing=south,occupied=false,powered=false": { "model": "sandstorm:block/cryostasis_pod", "y": 180 },
+    "facing=south,occupied=false,powered=true": { "model": "sandstorm:block/cryostasis_pod", "y": 180 },
+    "facing=south,occupied=true,powered=false": { "model": "sandstorm:block/cryostasis_pod", "y": 180 },
+    "facing=south,occupied=true,powered=true": { "model": "sandstorm:block/cryostasis_pod", "y": 180 },
+    "facing=west,occupied=false,powered=false": { "model": "sandstorm:block/cryostasis_pod", "y": 270 },
+    "facing=west,occupied=false,powered=true": { "model": "sandstorm:block/cryostasis_pod", "y": 270 },
+    "facing=west,occupied=true,powered=false": { "model": "sandstorm:block/cryostasis_pod", "y": 270 },
+    "facing=west,occupied=true,powered=true": { "model": "sandstorm:block/cryostasis_pod", "y": 270 },
+    "facing=east,occupied=false,powered=false": { "model": "sandstorm:block/cryostasis_pod", "y": 90 },
+    "facing=east,occupied=false,powered=true": { "model": "sandstorm:block/cryostasis_pod", "y": 90 },
+    "facing=east,occupied=true,powered=false": { "model": "sandstorm:block/cryostasis_pod", "y": 90 },
+    "facing=east,occupied=true,powered=true": { "model": "sandstorm:block/cryostasis_pod", "y": 90 }
+  }
+}

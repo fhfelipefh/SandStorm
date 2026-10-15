@@ -483,6 +483,12 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.VAULT_DOOR_CONTROLLER);
                         entries.accept(SandStormBlocks.VAULT_WALL_PANEL);
                         entries.accept(SandStormBlocks.VAULT_WALL_SEAM);
+                        entries.accept(SandStormBlocks.CRYO_SPRAYER);
+                        entries.accept(SandStormBlocks.CRYOSTASIS_POD);
+                        entries.accept(SandStormBlocks.BRITTLE_PERMAFROST);
+                        entries.accept(SandStormBlocks.SUBGLACIAL_ICE_SPIKE);
+                        entries.accept(SandStormBlocks.CRYO_INSULATION);
+                        entries.accept(SandStormBlocks.CHISELED_CRYO_INSULATION);
                     })
                     .build()
     );

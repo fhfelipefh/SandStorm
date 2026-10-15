@@ -2,6 +2,22 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.20] - 2026-10-15
+
+### ❄️ Cofre Criogênico Subglacial (*Subglacial Cryo-Vault*) & Blocos Mecânicos
+* **Nova Megadungeon Procedural Subterrânea Multi-Andar**:
+  * Gerada nas profundezas congeladas do subsolo desértico (`Y = -48`), apresentando arquitetura hermética com isolamento térmico avançado (`CRYO_INSULATION`), câmaras de estase, compressores de nitrogênio e o cobiçado **Cofre Sub-Zero de Sementes** (*Sub-Zero Seed Vault*).
+  * Iluminação 100% atmosférica orgânica por líquen luminoso (`GLOW_LICHEN`), sem uso de tochas ou lanternas convencionais.
+* **Novos Blocos com Mecânicas Ativas**:
+  * `cryo_sprayer` (**Pulverizador Criogênico**): mecanismo direcional acionado por redstone que projeta jatos de nitrogênio subzero; congela água em gelo compactado, resfria lava em obsidiana, apaga fogo, inflige dano por congelamento, aplica lentidão e acumula hipotermia extrema em entidades vivas.
+  * `brittle_permafrost` (**Permafrost Quebradiço**): sedimento de gelo instável que suporta caminhada cuidadosa/agachada; corridas ou impactos pesados fraturam o bloco, quebrando-o em estilhaços sonoros e derrubando invasores em abismos de estacas pontiagudas.
+  * `subglacial_ice_spike` (**Espinho de Gelo Subglacial**): estalagmites/estalactites congeladas que causam perfuração letal e hipotermia em qualquer criatura que cair ou pisar sobre elas.
+  * `cryostasis_pod` (**Câmara de Estase Criogênica**): dispositivo de estase médica com BlockEntity integrada. Cura 1 HP a cada 10 ticks e expurga veneno/wither, acumulando risco de hipotermia se ocupada por mais de 100 ticks, além de ejeção emergencial via redstone.
+  * `cryo_insulation` e `chiseled_cryo_insulation` (**Isolamento Criogênico**): blocos de contenção térmica de alta tecnologia para salas limpas e laboratórios criogênicos.
+* **Comandos e Showcase Automation**:
+  * Adicionados `/sandstorm build cryo_vault` e `/sandstorm_build_cryo_vault` para construção procedural instantânea.
+  * Integração total na vitrine do Showcase (`ShowcaseAutomation`), com plataforma de fundação, teto reforçado e terminal com teleporte rápido na Praça Central.
+
 ## [1.19.15] - 2026-10-14
 
 ### 🔧 Correções Estruturais nas Dungeons Procedurais & Poços Verticais

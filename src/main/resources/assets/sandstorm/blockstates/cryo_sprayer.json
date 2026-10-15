@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=down,powered=false": { "model": "sandstorm:block/cryo_sprayer", "x": 90 },
+    "facing=down,powered=true": { "model": "sandstorm:block/cryo_sprayer", "x": 90 },
+    "facing=up,powered=false": { "model": "sandstorm:block/cryo_sprayer", "x": 270 },
+    "facing=up,powered=true": { "model": "sandstorm:block/cryo_sprayer", "x": 270 },
+    "facing=north,powered=false": { "model": "sandstorm:block/cryo_sprayer" },
+    "facing=north,powered=true": { "model": "sandstorm:block/cryo_sprayer" },
+    "facing=south,powered=false": { "model": "sandstorm:block/cryo_sprayer", "y": 180 },
+    "facing=south,powered=true": { "model": "sandstorm:block/cryo_sprayer", "y": 180 },
+    "facing=west,powered=false": { "model": "sandstorm:block/cryo_sprayer", "y": 270 },
+    "facing=west,powered=true": { "model": "sandstorm:block/cryo_sprayer", "y": 270 },
+    "facing=east,powered=false": { "model": "sandstorm:block/cryo_sprayer", "y": 90 },
+    "facing=east,powered=true": { "model": "sandstorm:block/cryo_sprayer", "y": 90 }
+  }
+}

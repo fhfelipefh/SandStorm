@@ -163,5 +163,59 @@ class DungeonCeilingAndLadderIntegrityArchitectureTest {
 
         assertTrue(repositoryContent.contains("rotation.rotateDirection(Direction.SOUTH)"),
                 "MillennialRepositoryCatalog must rotate ladder horizontal facing with component rotation");
+
+        Path cryoCatalogPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "CryoVaultCatalog.java");
+        assertTrue(Files.exists(cryoCatalogPath), "CryoVaultCatalog.java must exist");
+        String cryoContent = Files.readString(cryoCatalogPath);
+
+        assertTrue(cryoContent.contains("SandStormBlocks.CRYO_INSULATION.defaultBlockState()"),
+                "CryoVaultCatalog must place cryo insulation pillars for ladders");
+        assertTrue(cryoContent.contains("rotation.rotateDirection(Direction.SOUTH)"),
+                "CryoVaultCatalog must rotate ladder horizontal facing with component rotation");
+
+        Path cryoDungeonPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "SubglacialCryoVaultDungeon.java");
+        assertTrue(Files.exists(cryoDungeonPath), "SubglacialCryoVaultDungeon.java must exist");
+        String cryoDungeonContent = Files.readString(cryoDungeonPath);
+
+        assertTrue(cryoDungeonContent.contains("SandStormBlocks.CRYO_INSULATION.defaultBlockState()"),
+                "SubglacialCryoVaultDungeon must place cryo insulation pillars in shafts");
+        assertTrue(cryoDungeonContent.contains("Direction.SOUTH"),
+                "SubglacialCryoVaultDungeon must orient shaft ladders to attach to solid pillar");
+    }
+
+    @Test
+    void cryoVaultMustOnlyUseGlowLichenForIllumination() throws IOException {
+        Path catalogPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "CryoVaultCatalog.java");
+        assertTrue(Files.exists(catalogPath), "CryoVaultCatalog.java must exist");
+        String catalogContent = Files.readString(catalogPath);
+
+        assertFalse(catalogContent.contains("Blocks.LANTERN"),
+                "CryoVaultCatalog must not use lanterns");
+        assertFalse(catalogContent.contains("Blocks.SEA_LANTERN"),
+                "CryoVaultCatalog must not use sea lanterns");
+        assertFalse(catalogContent.contains("Blocks.SHROOMLIGHT"),
+                "CryoVaultCatalog must not use shroomlights");
+        assertFalse(catalogContent.contains("Blocks.TORCH"),
+                "CryoVaultCatalog must not use torches");
+
+        Path dungeonPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "SubglacialCryoVaultDungeon.java");
+        assertTrue(Files.exists(dungeonPath), "SubglacialCryoVaultDungeon.java must exist");
+        String dungeonContent = Files.readString(dungeonPath);
+
+        assertFalse(dungeonContent.contains("Blocks.LANTERN"),
+                "SubglacialCryoVaultDungeon must not use lanterns");
+        assertFalse(dungeonContent.contains("Blocks.SEA_LANTERN"),
+                "SubglacialCryoVaultDungeon must not use sea lanterns");
+        assertFalse(dungeonContent.contains("Blocks.SHROOMLIGHT"),
+                "SubglacialCryoVaultDungeon must not use shroomlights");
+
+        Path clutterPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "CryoVaultClutterPass.java");
+        assertTrue(Files.exists(clutterPath), "CryoVaultClutterPass.java must exist");
+        String clutterContent = Files.readString(clutterPath);
+
+        assertTrue(clutterContent.contains("Blocks.GLOW_LICHEN"),
+                "CryoVaultClutterPass must grow organic glow lichen on solid walls");
+        assertFalse(clutterContent.contains("Blocks.LANTERN"),
+                "CryoVaultClutterPass must not use lanterns");
     }
 }

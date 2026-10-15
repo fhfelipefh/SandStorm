@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "sandstorm:block/subglacial_ice_spike"
+  }
+}

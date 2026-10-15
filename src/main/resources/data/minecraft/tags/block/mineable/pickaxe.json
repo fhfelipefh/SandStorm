@@ -113,6 +113,12 @@
     "sandstorm:broken_radar_console",
     "sandstorm:vault_door_controller",
     "sandstorm:vault_wall_panel",
-    "sandstorm:vault_wall_seam"
+    "sandstorm:vault_wall_seam",
+    "sandstorm:cryo_sprayer",
+    "sandstorm:cryostasis_pod",
+    "sandstorm:brittle_permafrost",
+    "sandstorm:subglacial_ice_spike",
+    "sandstorm:cryo_insulation",
+    "sandstorm:chiseled_cryo_insulation"
   ]
 }

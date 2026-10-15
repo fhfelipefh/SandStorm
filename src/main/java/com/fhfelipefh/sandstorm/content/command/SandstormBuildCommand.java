@@ -16,6 +16,7 @@ import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedExcavationHiveDun
 import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedMilitaryLabDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
+import com.fhfelipefh.sandstorm.content.world.dungeon.SubglacialCryoVaultDungeon;
 import com.fhfelipefh.sandstorm.content.world.ShowcaseAutomation;
 import com.fhfelipefh.sandstorm.content.world.structure.AncientBunkerGenerator;
 import com.fhfelipefh.sandstorm.content.world.structure.ColossalCastleGenerator;
@@ -73,10 +74,16 @@ public class SandstormBuildCommand {
             "millennial_repository",
             "military_lab",
             "armored_vault",
-            "excavation_hive"
+            "excavation_hive",
+            "cryo_vault"
     );
 
     static {
+        STRUCTURE_MAP.put("cryo_vault", "cryo_vault");
+        STRUCTURE_MAP.put("cryovault", "cryo_vault");
+        STRUCTURE_MAP.put("vault_cryo", "cryo_vault");
+        STRUCTURE_MAP.put("subglacial_cryo_vault", "cryo_vault");
+        STRUCTURE_MAP.put("subglacial_vault", "cryo_vault");
         STRUCTURE_MAP.put("armored_vault", "armored_vault");
         STRUCTURE_MAP.put("vault", "armored_vault");
         STRUCTURE_MAP.put("cofre", "armored_vault");
@@ -300,6 +307,17 @@ public class SandstormBuildCommand {
                 )
         );
 
+        dispatcher.register(Commands.literal("sandstorm_build_cryo_vault")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeBuild(ctx, "cryo_vault", null))
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .executes(ctx -> executeBuild(ctx, "cryo_vault", BlockPosArgument.getLoadedBlockPos(ctx, "pos")))
+                )
+                .then(Commands.argument("player", EntityArgument.player())
+                        .executes(ctx -> executeBuild(ctx, "cryo_vault", EntityArgument.getPlayer(ctx, "player").blockPosition()))
+                )
+        );
+
         dispatcher.register(Commands.literal("sandstorm_build_castle")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeBuild(ctx, "colossal_castle", null))
@@ -466,6 +484,13 @@ public class SandstormBuildCommand {
                     player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 6.0, Set.of(), 180.0f, 0.0f, true);
                 }
             }
+        } else if ("cryo_vault".equals(normalizedId)) {
+            for (ServerPlayer player : level.players()) {
+                if (player.blockPosition().closerThan(targetPos, 16.0)) {
+                    int entryX = (SubglacialCryoVaultDungeon.DEFAULT_GRID_WIDTH / 2) * SubglacialCryoVaultDungeon.ROOM_SIZE + 3;
+                    player.teleportTo(level, targetPos.getX() + entryX + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 3.5, Set.of(), 0.0f, 0.0f, true);
+                }
+            }
         }
         source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§a[SandStorm]§r Estrutura '%s' construída com sucesso em [%d, %d, %d]! (%d blocos gerados)", normalizedId, targetPos.getX(), targetPos.getY(), targetPos.getZ(), blocksPlaced)), true);
         return blocksPlaced;
@@ -611,6 +636,7 @@ public class SandstormBuildCommand {
             case "multi_floor_dungeon" -> MillennialRepositoryDungeon.generate(level, center);
             case "military_lab" -> AbandonedMilitaryLabDungeon.generate(level, center);
             case "excavation_hive" -> AbandonedExcavationHiveDungeon.generate(level, center);
+            case "cryo_vault" -> SubglacialCryoVaultDungeon.generate(level, center);
             case "armored_vault" -> {
                 ShowcaseAutomation.buildVaultShowcase(level, center);
                 yield 1;

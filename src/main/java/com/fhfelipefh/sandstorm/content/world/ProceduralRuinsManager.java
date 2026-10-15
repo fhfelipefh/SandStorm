@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedExcavationHiveDun
 import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedMilitaryLabDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
+import com.fhfelipefh.sandstorm.content.world.dungeon.SubglacialCryoVaultDungeon;
 import com.fhfelipefh.sandstorm.content.world.structure.AbandonedOutpostGenerator;
 import com.fhfelipefh.sandstorm.content.world.structure.AncientBunkerGenerator;
 import com.fhfelipefh.sandstorm.content.world.structure.FuelSiloGenerator;
@@ -28,6 +29,7 @@ public class ProceduralRuinsManager {
     public static final int MULTIFLOOR_DUNGEON_RARITY = 220;
     public static final int MILITARY_LAB_RARITY = 320;
     public static final int EXCAVATION_HIVE_RARITY = 260;
+    public static final int CRYO_VAULT_RARITY = 280;
 
     private record PendingRuin(ServerLevel level, BlockPos origin, int surfaceY, int ruinType, int gridWidth, int gridDepth, int floors) {}
     private static final Queue<PendingRuin> PENDING_RUINS = new ConcurrentLinkedQueue<>();
@@ -67,6 +69,15 @@ public class ProceduralRuinsManager {
                 BlockPos origin = new BlockPos(samplePos.getX(), dungeonY, samplePos.getZ());
                 level.getServer().execute(() -> {
                     PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 6, gridWidth, gridDepth, floors));
+                });
+            } else if (roll % CRYO_VAULT_RARITY == 0) {
+                int dungeonY = -48 - (int) (Math.abs(hash >>> 15) % 10);
+                int floors = 3 + (int) (Math.abs(hash >>> 19) % 2);
+                int gridWidth = 4 + (int) (Math.abs(hash >>> 23) % 3);
+                int gridDepth = 4 + (int) (Math.abs(hash >>> 27) % 3);
+                BlockPos origin = new BlockPos(samplePos.getX(), dungeonY, samplePos.getZ());
+                level.getServer().execute(() -> {
+                    PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 8, gridWidth, gridDepth, floors));
                 });
             } else if (roll % MULTIFLOOR_DUNGEON_RARITY == 0) {
                 int dungeonY = -28 - (int) (Math.abs(hash >>> 18) % 15);
@@ -133,6 +144,8 @@ public class ProceduralRuinsManager {
                         AbandonedMilitaryLabDungeon.generate(ruin.level(), ruin.origin(), ruin.floors(), ruin.gridWidth(), ruin.gridDepth());
                     } else if (ruin.ruinType() == 7) {
                         AbandonedExcavationHiveDungeon.generate(ruin.level(), ruin.origin(), ruin.floors(), ruin.gridWidth(), ruin.gridDepth());
+                    } else if (ruin.ruinType() == 8) {
+                        SubglacialCryoVaultDungeon.generate(ruin.level(), ruin.origin(), ruin.floors(), ruin.gridWidth(), ruin.gridDepth());
                     } else {
                         FuelSiloGenerator.generate(ruin.level(), ruin.origin(), ruin.surfaceY());
                     }
@@ -163,6 +176,10 @@ public class ProceduralRuinsManager {
 
     public static int generateExcavationHiveAt(ServerLevel level, BlockPos origin, int floors, int gridWidth, int gridDepth) {
         return AbandonedExcavationHiveDungeon.generate(level, origin, floors, gridWidth, gridDepth);
+    }
+
+    public static int generateCryoVaultAt(ServerLevel level, BlockPos origin, int floors, int gridWidth, int gridDepth) {
+        return SubglacialCryoVaultDungeon.generate(level, origin, floors, gridWidth, gridDepth);
     }
 
     public static boolean generateFuelSiloAt(ServerLevel level, BlockPos origin, int surfaceY) {

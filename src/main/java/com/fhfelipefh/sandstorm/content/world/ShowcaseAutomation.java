@@ -36,6 +36,7 @@ import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedExcavationHiveDun
 import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedMilitaryLabDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
+import com.fhfelipefh.sandstorm.content.world.dungeon.SubglacialCryoVaultDungeon;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -199,6 +200,10 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
                 )
+                .then(Commands.literal("cryo_vault")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ctx -> executeDungeonTeleportCommand(ctx, "cryo_vault"))
+                )
                 .then(Commands.literal("dungeon")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "west"))
@@ -233,6 +238,10 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
                 )
+                .then(Commands.literal("cryo_vault")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ctx -> executeDungeonTeleportCommand(ctx, "cryo_vault"))
+                )
                 .then(Commands.literal("dungeon")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "west"))
@@ -264,6 +273,11 @@ public class ShowcaseAutomation {
         dispatcher.register(Commands.literal("sandstorm_military_lab")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_cryo_vault")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> executeDungeonTeleportCommand(ctx, "cryo_vault"))
         );
 
         dispatcher.register(Commands.literal("sandstorm_showcase_dungeon")
@@ -2528,6 +2542,17 @@ public class ShowcaseAutomation {
 
         BlockPos hiveTerminal = center.offset(-4, 0, -4);
         setupTerminalTrigger(level, hiveTerminal, hiveEntry, "Complexo de Mineração Infestado", "3 Andares | Mega-Broca 14x14 | Ninho dos Sandworms");
+
+        BlockPos cryoOrigin = center.offset(40, -45, -60);
+        buildFoundationPlate(level, cryoOrigin.getX() - 2, cryoOrigin.getX() + 38, cryoOrigin.getZ() - 2, cryoOrigin.getZ() + 38, cryoOrigin.getY() - 24, 3);
+        SubglacialCryoVaultDungeon.generate(level, cryoOrigin, 3, 5, 5);
+        buildRoofCap(level, cryoOrigin.getX(), cryoOrigin.getX() + 36, cryoOrigin.getZ(), cryoOrigin.getZ() + 36, cryoOrigin.getY() + 5);
+        BlockPos cryoEntry = cryoOrigin.offset(2 * 7 + 3, 1, 3);
+        BlockPos cryoReturn = cryoOrigin.offset(2 * 7 + 3, 1, 1);
+        setupReturnPad(level, cryoReturn);
+
+        BlockPos cryoTerminal = center.offset(4, 0, -4);
+        setupTerminalTrigger(level, cryoTerminal, cryoEntry, "Cofre Criogênico Subglacial", "3 Andares | Câmaras Criogênicas | Cofre Sub-Zero");
     }
 
     private static void setupReturnPad(ServerLevel level, BlockPos pos) {
@@ -2648,13 +2673,16 @@ public class ShowcaseAutomation {
                 case "east", "bunker", "leste", "single" -> center.offset(4 + 4 * 7 + 3, -39, 8 + 3);
                 case "south", "sul" -> center.offset(-24 + 3 * 7 + 3, -44, -60 + 3);
                 case "north", "norte", "military_lab", "military", "lab", "militar" -> center.offset(-24 + 3 * 7 + 3, -44, 74 + 3);
+                case "cryo", "cryo_vault", "vault_cryo", "gelo" -> center.offset(40 + 2 * 7 + 3, -44, -60 + 3);
                 default -> center.offset(-58 + 4 * 7 + 3, -39, 8 + 3);
             };
             player.teleportTo(level, dest.getX() + 0.5, dest.getY() + 0.1, dest.getZ() + 0.5, Set.of(), 0.0f, 0.0f, true);
             level.playSound(null, player.blockPosition(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1.0f, 1.2f);
-            String label = (norm.equals("military_lab") || norm.equals("military") || norm.equals("lab") || norm.equals("militar") || norm.equals("north") || norm.equals("norte"))
-                    ? "Laboratório Militar Abandonado (Setor Norte)"
-                    : "Subsolo do Showcase (" + norm + ")";
+            String label = switch (norm) {
+                case "military_lab", "military", "lab", "militar", "north", "norte" -> "Laboratório Militar Abandonado (Setor Norte)";
+                case "cryo", "cryo_vault", "vault_cryo", "gelo" -> "Cofre Criogênico Subglacial";
+                default -> "Subsolo do Showcase (" + norm + ")";
+            };
             source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§6[SandStorm]§a Teleportado para: §f%s §7em [%d, %d, %d]!", label, dest.getX(), dest.getY(), dest.getZ())), true);
             return 1;
         }
@@ -2668,6 +2696,7 @@ public class ShowcaseAutomation {
         builder.suggest("south");
         builder.suggest("north");
         builder.suggest("military_lab");
+        builder.suggest("cryo_vault");
         return builder.buildFuture();
     }
 }

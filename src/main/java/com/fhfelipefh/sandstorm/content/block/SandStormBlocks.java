@@ -6,6 +6,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericTerraformerBlock
 import com.fhfelipefh.sandstorm.content.block.entity.AutoAssemblyLineBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CryogenicAtmosphericChillerBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.CryostasisPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BiosphereDoorBlockEntity;
@@ -1013,6 +1014,47 @@ public class SandStormBlocks {
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(50.0f, 1200.0f)
                     .sound(SoundType.NETHERITE_BLOCK)));
+    public static final CryoSprayerBlock CRYO_SPRAYER = register("cryo_sprayer",
+            new CryoSprayerBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("cryo_sprayer")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(4.0f, 20.0f)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()));
+    public static final CryostasisPodBlock CRYOSTASIS_POD = register("cryostasis_pod",
+            new CryostasisPodBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("cryostasis_pod")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(5.0f, 25.0f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final BrittlePermafrostBlock BRITTLE_PERMAFROST = register("brittle_permafrost",
+            new BrittlePermafrostBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("brittle_permafrost")))
+                    .mapColor(MapColor.ICE)
+                    .strength(0.6f, 0.6f)
+                    .sound(SoundType.GLASS)));
+    public static final SubglacialIceSpikeBlock SUBGLACIAL_ICE_SPIKE = register("subglacial_ice_spike",
+            new SubglacialIceSpikeBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("subglacial_ice_spike")))
+                    .mapColor(MapColor.ICE)
+                    .strength(1.2f, 2.0f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final Block CRYO_INSULATION = register("cryo_insulation",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("cryo_insulation")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(3.5f, 15.0f)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()));
+    public static final Block CHISELED_CRYO_INSULATION = register("chiseled_cryo_insulation",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("chiseled_cryo_insulation")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(3.5f, 15.0f)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -1278,6 +1320,11 @@ public class SandStormBlocks {
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("vault_door_controller"),
             new BlockEntityType<>(VaultDoorControllerBlockEntity::new, Set.of(VAULT_DOOR_CONTROLLER))
+    );
+    public static final BlockEntityType<CryostasisPodBlockEntity> CRYOSTASIS_POD_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("cryostasis_pod"),
+            new BlockEntityType<>(CryostasisPodBlockEntity::new, Set.of(CRYOSTASIS_POD))
     );
 
     public static <T extends Block> T register(String path, T block) {
