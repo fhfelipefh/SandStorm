@@ -1055,6 +1055,13 @@ public class SandStormBlocks {
                     .strength(3.5f, 15.0f)
                     .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()));
+    public static final CryoReactorCoreBlock CRYO_REACTOR_CORE = register("cryo_reactor_core",
+            new CryoReactorCoreBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("cryo_reactor_core")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(6.0f, 30.0f)
+                    .sound(SoundType.HEAVY_CORE)
+                    .requiresCorrectToolForDrops()));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,

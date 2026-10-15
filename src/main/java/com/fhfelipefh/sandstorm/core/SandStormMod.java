@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.core;
 
 import com.fhfelipefh.sandstorm.config.SandStormConfig;
+import com.fhfelipefh.sandstorm.content.block.CryoVaultReactorManager;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.automation.AutoModeManager;
 import com.fhfelipefh.sandstorm.content.command.SandstormAutoCommand;
@@ -127,6 +128,7 @@ public class SandStormMod implements ModInitializer {
         SandStormFluids.initialize();
         SandStormItems.initialize();
         SandStormBlocks.initialize();
+        CryoVaultReactorManager.initialize();
         AutoModeManager.initialize();
         SandStormMenus.initialize();
         SuitSurvivalHandler.initialize();

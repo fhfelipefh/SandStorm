@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "operational=true": {
+      "model": "sandstorm:block/cryo_reactor_core"
+    },
+    "operational=false": {
+      "model": "sandstorm:block/cryo_reactor_core_broken"
+    }
+  }
+}

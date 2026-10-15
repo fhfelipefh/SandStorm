@@ -119,6 +119,7 @@
     "sandstorm:brittle_permafrost",
     "sandstorm:subglacial_ice_spike",
     "sandstorm:cryo_insulation",
-    "sandstorm:chiseled_cryo_insulation"
+    "sandstorm:chiseled_cryo_insulation",
+    "sandstorm:cryo_reactor_core"
   ]
 }

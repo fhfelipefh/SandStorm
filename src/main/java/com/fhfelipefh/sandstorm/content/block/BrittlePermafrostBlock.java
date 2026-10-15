@@ -43,6 +43,20 @@ public class BrittlePermafrostBlock extends Block {
         level.destroyBlock(pos, false);
     }
 
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (!level.isClientSide()) {
+            CryoVaultReactorManager.registerPermafrost(level.dimension(), pos);
+        }
+    }
+
+    @Override
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+        CryoVaultReactorManager.unregisterPermafrost(level.dimension(), pos);
+    }
+
     private void triggerFracture(Level level, BlockPos pos) {
         if (!level.getBlockTicks().hasScheduledTick(pos, this)) {
             level.playSound(null, pos, SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 0.9F, 1.8F);

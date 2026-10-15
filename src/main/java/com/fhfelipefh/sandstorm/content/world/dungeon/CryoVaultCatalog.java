@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world.dungeon;
 
+import com.fhfelipefh.sandstorm.content.block.CryoReactorCoreBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
@@ -419,7 +420,7 @@ public class CryoVaultCatalog {
             setLocalBlock(level, origin, rotation, 3, 1, 2, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 2, 2, size, SandStormBlocks.CRYO_SPRAYER.defaultBlockState().setValue(BlockStateProperties.FACING, rotation.rotateDirection(Direction.SOUTH)));
 
-            setLocalBlock(level, origin, rotation, 3, 1, 1, size, SandStormBlocks.LEAD_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 1, 1, size, SandStormBlocks.CRYO_REACTOR_CORE.defaultBlockState().setValue(CryoReactorCoreBlock.OPERATIONAL, true));
             setLocalBlock(level, origin, rotation, 3, 2, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
             setLocalBlock(level, origin, rotation, 2, 1, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
             setLocalBlock(level, origin, rotation, 4, 1, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());

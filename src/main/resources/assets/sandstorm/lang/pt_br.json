@@ -1260,5 +1260,7 @@
   "block.sandstorm.cryo_insulation": "Isolamento Criogênico de Aerogel",
   "item.sandstorm.cryo_insulation": "Isolamento Criogênico de Aerogel",
   "block.sandstorm.chiseled_cryo_insulation": "Isolamento Criogênico de Aerogel Talhado",
-  "item.sandstorm.chiseled_cryo_insulation": "Isolamento Criogênico de Aerogel Talhado"
+  "item.sandstorm.chiseled_cryo_insulation": "Isolamento Criogênico de Aerogel Talhado",
+  "block.sandstorm.cryo_reactor_core": "Núcleo do Reator Criogênico",
+  "item.sandstorm.cryo_reactor_core": "Núcleo do Reator Criogênico"
 }

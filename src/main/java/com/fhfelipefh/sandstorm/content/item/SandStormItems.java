@@ -489,6 +489,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.SUBGLACIAL_ICE_SPIKE);
                         entries.accept(SandStormBlocks.CRYO_INSULATION);
                         entries.accept(SandStormBlocks.CHISELED_CRYO_INSULATION);
+                        entries.accept(SandStormBlocks.CRYO_REACTOR_CORE);
                     })
                     .build()
     );

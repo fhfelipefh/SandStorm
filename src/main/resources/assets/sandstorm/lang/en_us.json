@@ -1260,5 +1260,7 @@
   "block.sandstorm.cryo_insulation": "Cryogenic Aerogel Insulation",
   "item.sandstorm.cryo_insulation": "Cryogenic Aerogel Insulation",
   "block.sandstorm.chiseled_cryo_insulation": "Chiseled Cryogenic Aerogel Insulation",
-  "item.sandstorm.chiseled_cryo_insulation": "Chiseled Cryogenic Aerogel Insulation"
+  "item.sandstorm.chiseled_cryo_insulation": "Chiseled Cryogenic Aerogel Insulation",
+  "block.sandstorm.cryo_reactor_core": "Cryo-Reactor Core",
+  "item.sandstorm.cryo_reactor_core": "Cryo-Reactor Core"
 }
