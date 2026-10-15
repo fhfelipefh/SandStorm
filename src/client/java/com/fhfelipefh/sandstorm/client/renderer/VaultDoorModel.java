@@ -41,7 +41,8 @@ public class VaultDoorModel {
                 .texOffs(0, 72).addBox(-37.0f, -20.0f, 1.0f, 36.0f, 40.0f, 2.0f)
                 .texOffs(0, 72).addBox(-35.0f, -16.0f, -3.0f, 32.0f, 32.0f, 4.0f)
                 .texOffs(76, 74).addBox(-32.0f, -18.0f, -2.5f, 26.0f, 36.0f, 5.0f)
-                .texOffs(76, 74).addBox(-37.0f, -13.0f, -2.5f, 36.0f, 26.0f, 5.0f)
+                .texOffs(76, 74).addBox(-37.0f, -13.0f, -2.5f, 5.0f, 26.0f, 5.0f)
+                .texOffs(76, 74).addBox(-6.0f, -13.0f, -2.5f, 5.0f, 26.0f, 5.0f)
                 .texOffs(0, 110).addBox(-27.0f, -8.0f, -4.0f, 16.0f, 16.0f, 2.0f)
                 .texOffs(36, 110).addBox(-34.0f, -15.0f, -4.0f, 30.0f, 30.0f, 1.0f),
                 PartPose.ZERO);

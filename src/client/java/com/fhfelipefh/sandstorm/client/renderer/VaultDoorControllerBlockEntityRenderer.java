@@ -31,8 +31,8 @@ public class VaultDoorControllerBlockEntityRenderer implements BlockEntityRender
     }
 
     @Override
-    public boolean shouldRenderOffScreen() {
-        return true;
+    public int getViewDistance() {
+        return 128;
     }
 
     @Override
