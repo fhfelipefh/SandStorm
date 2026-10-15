@@ -38,6 +38,8 @@ class VaultDoorModelTest {
         assertNotNull(model.getWheel());
         assertFalse(model.getFrame().isEmpty());
         assertFalse(model.getDoorBody().isEmpty());
+        assertFalse(model.getLockingBars().isEmpty());
+        assertFalse(model.getWheel().isEmpty());
     }
 
     @Test

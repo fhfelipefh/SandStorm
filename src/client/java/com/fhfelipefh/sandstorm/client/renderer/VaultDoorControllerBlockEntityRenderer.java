@@ -31,6 +31,11 @@ public class VaultDoorControllerBlockEntityRenderer implements BlockEntityRender
     }
 
     @Override
+    public boolean shouldRenderOffScreen() {
+        return true;
+    }
+
+    @Override
     public void extractRenderState(VaultDoorControllerBlockEntity entity, VaultDoorRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderState.extractBase(entity, state, crumblingOverlay);
         if (entity.getBlockState().hasProperty(VaultDoorControllerBlock.FACING)) {
@@ -52,30 +57,40 @@ public class VaultDoorControllerBlockEntityRenderer implements BlockEntityRender
         collector.submitModelPart(this.model.getFrame(), poseStack, RenderTypes.entityCutout(TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 
         float p = state.progress;
-        float phase1 = Mth.clamp(p / 0.333f, 0.0f, 1.0f);
-        float wheelRot = phase1 * 360.0f;
-        float retractProgress = Mth.clamp((phase1 - 0.5f) / 0.5f, 0.0f, 1.0f);
-        float barScale = 1.0f - (retractProgress * 0.25f);
+        float wheelRot;
+        float barScale;
+        float doorAngle;
+
+        if (p < 0.333f) {
+            float phase1 = Mth.clamp(p / 0.333f, 0.0f, 1.0f);
+            wheelRot = phase1 * 360.0f;
+            float retractProgress = Mth.clamp((phase1 - 0.5f) / 0.5f, 0.0f, 1.0f);
+            barScale = 1.0f - (retractProgress * 0.2f);
+            doorAngle = 0.0f;
+        } else {
+            float phase2 = Mth.clamp((p - 0.333f) / 0.667f, 0.0f, 1.0f);
+            wheelRot = 360.0f;
+            barScale = 0.8f;
+            float eased = phase2 < 0.5f ? 4.0f * phase2 * phase2 * phase2 : 1.0f - (float) Math.pow(-2.0f * phase2 + 2.0f, 3) / 2.0f;
+            doorAngle = -eased * 95.0f;
+        }
 
         poseStack.pushPose();
         poseStack.translate(19.0 / 16.0, 24.0 / 16.0, 0.0);
-
-        if (p >= 0.333f) {
-            float phase2 = Mth.clamp((p - 0.333f) / 0.667f, 0.0f, 1.0f);
-            float eased = phase2 < 0.5f ? 4.0f * phase2 * phase2 * phase2 : 1.0f - (float) Math.pow(-2.0f * phase2 + 2.0f, 3) / 2.0f;
-            poseStack.rotateDegrees(Axis.YP, -eased * 95.0f);
+        if (doorAngle != 0.0f) {
+            poseStack.rotateDegrees(Axis.YP, doorAngle);
         }
 
         collector.submitModelPart(this.model.getDoorBody(), poseStack, RenderTypes.entityCutout(TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 
         poseStack.pushPose();
-        poseStack.translate(-19.0 / 16.0, 0.0, -4.2 / 16.0);
+        poseStack.translate(-19.0 / 16.0, 0.0, -2.0 / 16.0);
         poseStack.scale(barScale, barScale, 1.0f);
         collector.submitModelPart(this.model.getLockingBars(), poseStack, RenderTypes.entityCutout(TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
         poseStack.popPose();
 
         poseStack.pushPose();
-        poseStack.translate(-19.0 / 16.0, 0.0, -5.2 / 16.0);
+        poseStack.translate(-19.0 / 16.0, 0.0, -4.5 / 16.0);
         poseStack.rotateDegrees(Axis.ZP, wheelRot);
         collector.submitModelPart(this.model.getWheel(), poseStack, RenderTypes.entityCutout(TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
         poseStack.popPose();
