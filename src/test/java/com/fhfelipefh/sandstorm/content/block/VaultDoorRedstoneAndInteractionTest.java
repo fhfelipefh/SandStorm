@@ -8,6 +8,8 @@ import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +21,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class VaultDoorRedstoneAndInteractionTest {
 
@@ -106,6 +109,28 @@ class VaultDoorRedstoneAndInteractionTest {
     }
 
     @Test
+    void shouldVerifyControllerOriginIdentityAtColOneRowZero() {
+        BlockPos controllerPos = new BlockPos(42, 64, -77);
+        Direction[] facings = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
+
+        for (Direction facing : facings) {
+            BlockPos relativeOrigin = VaultDoorControllerBlock.getRelativePos(controllerPos, facing, 1, 0);
+            assertEquals(controllerPos, relativeOrigin);
+        }
+    }
+
+    @Test
+    void shouldReturnEmptyCollisionWhenOpenAndBlockCollisionWhenClosed() {
+        BlockState closedState = SandStormBlocks.VAULT_DOOR_CONTROLLER.defaultBlockState()
+                .setValue(VaultDoorControllerBlock.OPEN, false);
+        BlockState openState = SandStormBlocks.VAULT_DOOR_CONTROLLER.defaultBlockState()
+                .setValue(VaultDoorControllerBlock.OPEN, true);
+
+        assertEquals(Shapes.block(), SandStormBlocks.VAULT_DOOR_CONTROLLER.getCollisionShape(closedState, null, BlockPos.ZERO, CollisionContext.empty()));
+        assertEquals(Shapes.empty(), SandStormBlocks.VAULT_DOOR_CONTROLLER.getCollisionShape(openState, null, BlockPos.ZERO, CollisionContext.empty()));
+    }
+
+    @Test
     void shouldAdvanceAndInterpolateAnimationProgressCorrectly() {
         BlockPos pos = new BlockPos(0, 60, 0);
         BlockState closedState = SandStormBlocks.VAULT_DOOR_CONTROLLER.defaultBlockState()
@@ -132,5 +157,22 @@ class VaultDoorRedstoneAndInteractionTest {
             assertEquals(expected, entity.getProgress(1.0f), 0.001f);
         }
         assertEquals(0.0f, entity.getProgress(1.0f), 0.001f);
+    }
+
+    @Test
+    void shouldRemainBoundedUnderRepeatedStateTogglesWithoutFlickering() {
+        BlockPos pos = new BlockPos(10, 60, 10);
+        BlockState closedState = SandStormBlocks.VAULT_DOOR_CONTROLLER.defaultBlockState()
+                .setValue(VaultDoorControllerBlock.OPEN, false);
+        BlockState openState = closedState.setValue(VaultDoorControllerBlock.OPEN, true);
+        VaultDoorControllerBlockEntity entity = new VaultDoorControllerBlockEntity(pos, closedState);
+
+        for (int i = 0; i < 200; i++) {
+            BlockState currentState = (i % 2 == 0) ? openState : closedState;
+            VaultDoorControllerBlockEntity.tick(null, pos, currentState, entity);
+            float progress = entity.getProgress(0.5f);
+            assertTrue(progress >= 0.0f);
+            assertTrue(progress <= 1.0f);
+        }
     }
 }

@@ -1550,24 +1550,17 @@ public class ShowcaseAutomation {
             chest.setItem(8, new ItemStack(SandStormItems.HEAVY_PLASMA_CANNON, 1));
         }
 
-        spawnMannequin(level, stationCenter.offset(-2, 1, -1), "§6Guardião de Segurança Alfa",
-                new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
-                new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS), new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
-                new ItemStack(SandStormItems.PLASMA_RIFLE), ItemStack.EMPTY);
-
-        spawnMannequin(level, stationCenter.offset(2, 1, -1), "§6Guardião de Segurança Beta",
-                new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
-                new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS), new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
-                new ItemStack(SandStormItems.HEAVY_PLASMA_CANNON), ItemStack.EMPTY);
-
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 6.2, stationCenter.getZ() + 4.5, "§6§l[Câmara de Cofre Blindada SandStorm]");
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 5.85, stationCenter.getZ() + 4.5, "§aPorta Mecânica 3x3 Multi-Bloco com Volante");
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 5.5, stationCenter.getZ() + 4.5, "§eClique na Porta ou na Alavanca para Abrir/Fechar");
 
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.4, stationCenter.getZ() + 0.5, "§6§l[Reserva Blindada de Alta Tecnologia]");
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.1, stationCenter.getZ() + 0.5, "§7Ligas de Titânio, Processadores Quânticos e Tesouros");
+        setupVaultReturnPad(level, stationCenter.offset(-3, 1, -3));
+    }
 
-        setupReturnPad(level, stationCenter.offset(-3, 1, -3));
+    private static void setupVaultReturnPad(ServerLevel level, BlockPos pos) {
+        level.setBlock(pos.below(), SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState(), 3);
+        level.setBlock(pos, Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.defaultBlockState(), 3);
+        TELEPORT_PADS.add(new ShowcaseTeleportPad(pos, new BlockPos(0, 161, 0), "Praça Central do Showcase"));
     }
 
     private static void buildVaultWalkway(ServerLevel level, BlockPos center) {
