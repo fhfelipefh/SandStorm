@@ -60,4 +60,16 @@ class DungeonCeilingAndLadderIntegrityArchitectureTest {
         assertTrue(content.contains("military_lab_stairwell_down"),
                 "AbandonedMilitaryLabDungeon must filter out military_lab_stairwell_down on bottom floor");
     }
+
+    @Test
+    void militaryLabMustExecutePostGenerationVerticalShaftLinkage() throws IOException {
+        Path dungeonPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "AbandonedMilitaryLabDungeon.java");
+        assertTrue(Files.exists(dungeonPath), "AbandonedMilitaryLabDungeon.java must exist");
+        String content = Files.readString(dungeonPath);
+
+        assertTrue(content.contains("connectAllVerticalShafts("),
+                "AbandonedMilitaryLabDungeon must connect all shafts after all floors generate");
+        assertTrue(content.contains("ensureDoorwaysOpen("),
+                "AbandonedMilitaryLabDungeon must ensure stairwell doorways are open to corridors");
+    }
 }

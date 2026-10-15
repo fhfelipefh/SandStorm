@@ -20,10 +20,52 @@ public class MilitaryLabClutterPass implements DungeonClutterPass {
                     BlockPos pos = origin.offset(x, y, z);
                     BlockState state = level.getBlockState(pos);
 
-                    if (state.is(SandStormBlocks.MILITARY_ARMOR_PLATE) && random.nextInt(6) == 0) {
-                        level.setBlock(pos, SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState(), 2);
-                    } else if (state.is(SandStormBlocks.HAZARD_STRIPE_BLOCK) && random.nextInt(4) == 0) {
-                        level.setBlock(pos, SandStormBlocks.WEATHERED_HAZARD_STRIPE.defaultBlockState(), 2);
+                    if (state.is(SandStormBlocks.MILITARY_ARMOR_PLATE)) {
+                        int r = random.nextInt(10);
+                        if (r < 3) {
+                            level.setBlock(pos, SandStormBlocks.WEATHERED_MILITARY_PLATE.defaultBlockState(), 2);
+                        } else if (r < 5) {
+                            level.setBlock(pos, SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState(), 2);
+                        } else if (r == 5) {
+                            level.setBlock(pos, SandStormBlocks.FRACTURED_MILITARY_PLATE.defaultBlockState(), 2);
+                        }
+                    } else if (state.is(SandStormBlocks.RUSTED_MILITARY_PLATE)) {
+                        if (random.nextInt(5) == 0) {
+                            level.setBlock(pos, SandStormBlocks.FRACTURED_MILITARY_PLATE.defaultBlockState(), 2);
+                        }
+                    } else if (state.is(SandStormBlocks.HAZARD_STRIPE_BLOCK)) {
+                        int r = random.nextInt(6);
+                        if (r < 2) {
+                            level.setBlock(pos, SandStormBlocks.WEATHERED_HAZARD_STRIPE.defaultBlockState(), 2);
+                        } else if (r == 2) {
+                            level.setBlock(pos, SandStormBlocks.CORRODED_HAZARD_STRIPE.defaultBlockState(), 2);
+                        }
+                    } else if (state.is(SandStormBlocks.WEATHERED_HAZARD_STRIPE)) {
+                        if (random.nextInt(4) == 0) {
+                            level.setBlock(pos, SandStormBlocks.CORRODED_HAZARD_STRIPE.defaultBlockState(), 2);
+                        }
+                    } else if (state.is(SandStormBlocks.REINFORCED_VENT_DUCT)) {
+                        int r = random.nextInt(6);
+                        if (r < 2) {
+                            level.setBlock(pos, SandStormBlocks.RUSTED_VENT_DUCT.defaultBlockState(), 2);
+                        } else if (r == 2) {
+                            level.setBlock(pos, SandStormBlocks.DAMAGED_VENT_DUCT.defaultBlockState(), 2);
+                        }
+                    } else if (state.is(SandStormBlocks.STEEL_VENT_GRATE)) {
+                        int r = random.nextInt(6);
+                        if (r < 2) {
+                            level.setBlock(pos, SandStormBlocks.RUSTED_STEEL_VENT_GRATE.defaultBlockState(), 2);
+                        } else if (r == 2) {
+                            level.setBlock(pos, SandStormBlocks.BROKEN_STEEL_VENT_GRATE.defaultBlockState(), 2);
+                        }
+                    } else if (state.is(SandStormBlocks.MILITARY_MUNITIONS_CRATE)) {
+                        if (random.nextInt(3) == 0) {
+                            level.setBlock(pos, SandStormBlocks.DAMAGED_MUNITIONS_CRATE.defaultBlockState(), 2);
+                        }
+                    } else if (state.is(SandStormBlocks.TACTICAL_RADAR_CONSOLE)) {
+                        if (random.nextInt(3) == 0) {
+                            level.setBlock(pos, SandStormBlocks.BROKEN_RADAR_CONSOLE.defaultBlockState(), 2);
+                        }
                     } else if (state.isAir() && y == 4 && random.nextInt(25) == 0) {
                         BlockPos above = pos.above();
                         if (level.getBlockState(above).isSolid()) {
@@ -37,7 +79,10 @@ public class MilitaryLabClutterPass implements DungeonClutterPass {
                                     || level.getBlockState(pos.east()).isSolid()
                                     || level.getBlockState(pos.west()).isSolid();
                             if (nextToWall && random.nextBoolean()) {
-                                level.setBlock(pos, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState(), 2);
+                                BlockState crateState = random.nextBoolean()
+                                        ? SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState()
+                                        : SandStormBlocks.DAMAGED_MUNITIONS_CRATE.defaultBlockState();
+                                level.setBlock(pos, crateState, 2);
                             } else {
                                 level.setBlock(pos, Blocks.REDSTONE_WIRE.defaultBlockState(), 3);
                             }

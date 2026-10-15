@@ -55,10 +55,10 @@ public class MilitaryLabCatalog {
     public static DungeonComponent getStairwellDownComponent() {
         Identifier id = Identifier.fromNamespaceAndPath("sandstorm", "military_lab/military_lab_stairwell_down");
         Map<DungeonDirection, DungeonSocket> sockets = Map.of(
-                DungeonDirection.NORTH, DungeonSocket.WALL,
-                DungeonDirection.EAST, DungeonSocket.WALL,
+                DungeonDirection.NORTH, DungeonSocket.CORRIDOR,
+                DungeonDirection.EAST, DungeonSocket.CORRIDOR,
                 DungeonDirection.SOUTH, DungeonSocket.CORRIDOR,
-                DungeonDirection.WEST, DungeonSocket.WALL
+                DungeonDirection.WEST, DungeonSocket.CORRIDOR
         );
         return new NbtDungeonComponent("military_lab_stairwell_down", id, 1, true, sockets, new StairwellDownFallback());
     }
@@ -66,10 +66,10 @@ public class MilitaryLabCatalog {
     public static DungeonComponent getStairwellUpComponent() {
         Identifier id = Identifier.fromNamespaceAndPath("sandstorm", "military_lab/military_lab_stairwell_up");
         Map<DungeonDirection, DungeonSocket> sockets = Map.of(
-                DungeonDirection.NORTH, DungeonSocket.WALL,
-                DungeonDirection.EAST, DungeonSocket.WALL,
+                DungeonDirection.NORTH, DungeonSocket.CORRIDOR,
+                DungeonDirection.EAST, DungeonSocket.CORRIDOR,
                 DungeonDirection.SOUTH, DungeonSocket.CORRIDOR,
-                DungeonDirection.WEST, DungeonSocket.WALL
+                DungeonDirection.WEST, DungeonSocket.CORRIDOR
         );
         return new NbtDungeonComponent("military_lab_stairwell_up", id, 1, true, sockets, new StairwellUpFallback());
     }
@@ -98,9 +98,13 @@ public class MilitaryLabCatalog {
 
                     BlockState floorState;
                     if (isCenterline && (lx + lz) % 2 == 0) {
-                        floorState = SandStormBlocks.STEEL_VENT_GRATE.defaultBlockState();
-                    } else if ((lx * 3 + lz * 5) % 4 == 0) {
+                        floorState = ((lx + lz) % 4 == 0)
+                                ? SandStormBlocks.RUSTED_STEEL_VENT_GRATE.defaultBlockState()
+                                : SandStormBlocks.STEEL_VENT_GRATE.defaultBlockState();
+                    } else if ((lx * 3 + lz * 5) % 6 == 0) {
                         floorState = SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState();
+                    } else if ((lx * 3 + lz * 5) % 4 == 0) {
+                        floorState = SandStormBlocks.WEATHERED_MILITARY_PLATE.defaultBlockState();
                     } else {
                         floorState = SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState();
                     }
@@ -116,9 +120,13 @@ public class MilitaryLabCatalog {
 
                     BlockState ceilingState;
                     if (lx == size / 2 || lz == size / 2) {
-                        ceilingState = SandStormBlocks.REINFORCED_VENT_DUCT.defaultBlockState();
-                    } else if ((lx * 2 + lz) % 3 == 0) {
+                        ceilingState = ((lx + lz) % 3 == 0)
+                                ? SandStormBlocks.RUSTED_VENT_DUCT.defaultBlockState()
+                                : SandStormBlocks.REINFORCED_VENT_DUCT.defaultBlockState();
+                    } else if ((lx * 2 + lz) % 5 == 0) {
                         ceilingState = SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState();
+                    } else if ((lx * 2 + lz) % 3 == 0) {
+                        ceilingState = SandStormBlocks.WEATHERED_MILITARY_PLATE.defaultBlockState();
                     } else {
                         ceilingState = SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState();
                     }
@@ -148,16 +156,27 @@ public class MilitaryLabCatalog {
                             } else {
                                 BlockState wallState;
                                 if (ly == 1) {
-                                    wallState = ((lx + lz) % 3 == 0)
+                                    int mod = (lx + lz) % 4;
+                                    wallState = (mod == 0)
                                             ? SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState()
+                                            : (mod == 1)
+                                            ? SandStormBlocks.WEATHERED_MILITARY_PLATE.defaultBlockState()
                                             : SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState();
                                 } else if (ly == 2) {
-                                    wallState = ((lx * 2 + lz) % 2 == 0)
+                                    int mod = (lx * 2 + lz) % 4;
+                                    wallState = (mod == 0)
+                                            ? SandStormBlocks.CORRODED_HAZARD_STRIPE.defaultBlockState()
+                                            : (mod == 1 || mod == 2)
                                             ? SandStormBlocks.WEATHERED_HAZARD_STRIPE.defaultBlockState()
                                             : SandStormBlocks.HAZARD_STRIPE_BLOCK.defaultBlockState();
                                 } else if (ly == 3) {
-                                    wallState = ((lx * 3 + lz) % 4 == 0)
+                                    int mod = (lx * 3 + lz) % 5;
+                                    wallState = (mod == 0)
+                                            ? SandStormBlocks.FRACTURED_MILITARY_PLATE.defaultBlockState()
+                                            : (mod == 1)
                                             ? SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState()
+                                            : (mod == 2)
+                                            ? SandStormBlocks.WEATHERED_MILITARY_PLATE.defaultBlockState()
                                             : SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState();
                                 } else {
                                     wallState = ((lx + lz) % 2 == 0)
@@ -455,16 +474,16 @@ public class MilitaryLabCatalog {
             for (int x = 1; x <= 5; x++) {
                 setLocalBlock(level, origin, rotation, x, 1, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
                 setLocalBlock(level, origin, rotation, x, 2, 1, size, (x % 2 == 0)
-                        ? SandStormBlocks.WEATHERED_HAZARD_STRIPE.defaultBlockState()
-                        : SandStormBlocks.HAZARD_STRIPE_BLOCK.defaultBlockState());
+                        ? SandStormBlocks.CORRODED_HAZARD_STRIPE.defaultBlockState()
+                        : SandStormBlocks.WEATHERED_HAZARD_STRIPE.defaultBlockState());
                 setLocalBlock(level, origin, rotation, x, 3, 1, size, (x % 2 == 0)
-                        ? SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState()
-                        : SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState());
+                        ? SandStormBlocks.FRACTURED_MILITARY_PLATE.defaultBlockState()
+                        : SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState());
             }
             setLocalBlock(level, origin, rotation, 3, 1, 4, size, SandStormBlocks.AUTONOMOUS_SONIC_TURRET.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 1, 1, 5, size, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 1, 5, size, SandStormBlocks.DAMAGED_MUNITIONS_CRATE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 1, 2, 5, size, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 5, 1, 5, size, SandStormBlocks.TACTICAL_RADAR_CONSOLE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 1, 5, size, SandStormBlocks.BROKEN_RADAR_CONSOLE.defaultBlockState());
         }
     }
 
@@ -494,10 +513,13 @@ public class MilitaryLabCatalog {
             buildMilitaryShell(level, origin, rotation, size, DungeonSocket.WALL, DungeonSocket.WALL, DungeonSocket.CORRIDOR, DungeonSocket.WALL);
             setLocalBlock(level, origin, rotation, 3, 1, 3, size, SandStormBlocks.HOLO_TACTICAL_SPIRE.defaultBlockState());
             for (int x = 1; x <= 5; x++) {
-                setLocalBlock(level, origin, rotation, x, 1, 1, size, SandStormBlocks.TACTICAL_RADAR_CONSOLE.defaultBlockState());
-                setLocalBlock(level, origin, rotation, x, 2, 1, size, SandStormBlocks.TACTICAL_RADAR_CONSOLE.defaultBlockState());
+                BlockState console = (x == 2 || x == 4)
+                        ? SandStormBlocks.BROKEN_RADAR_CONSOLE.defaultBlockState()
+                        : SandStormBlocks.TACTICAL_RADAR_CONSOLE.defaultBlockState();
+                setLocalBlock(level, origin, rotation, x, 1, 1, size, console);
+                setLocalBlock(level, origin, rotation, x, 2, 1, size, console);
             }
-            setLocalBlock(level, origin, rotation, 1, 1, 4, size, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 1, 4, size, SandStormBlocks.DAMAGED_MUNITIONS_CRATE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 1, 4, size, SandStormBlocks.QUANTUM_ACCESS_TERMINAL.defaultBlockState());
         }
     }
@@ -614,11 +636,11 @@ public class MilitaryLabCatalog {
         public void build(ServerLevel level, BlockPos origin, DungeonRotation rotation, RandomSource random, int size) {
             buildMilitaryShell(level, origin, rotation, size, DungeonSocket.WALL, DungeonSocket.WALL, DungeonSocket.CORRIDOR, DungeonSocket.WALL);
             setLocalBlock(level, origin, rotation, 3, 1, 2, size, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 2, 1, 2, size, SandStormBlocks.REINFORCED_VENT_DUCT.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 4, 1, 2, size, SandStormBlocks.REINFORCED_VENT_DUCT.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 2, 1, 2, size, SandStormBlocks.DAMAGED_VENT_DUCT.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 4, 1, 2, size, SandStormBlocks.RUSTED_VENT_DUCT.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 2, 2, size, SandStormBlocks.REINFORCED_VENT_DUCT.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 1, 1, 4, size, SandStormBlocks.WEATHERED_HAZARD_STRIPE.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 5, 1, 4, size, SandStormBlocks.TACTICAL_RADAR_CONSOLE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 1, 4, size, SandStormBlocks.CORRODED_HAZARD_STRIPE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 1, 4, size, SandStormBlocks.BROKEN_RADAR_CONSOLE.defaultBlockState());
         }
     }
 
@@ -640,12 +662,12 @@ public class MilitaryLabCatalog {
 
         @Override
         public DungeonSocket getSocket(DungeonDirection direction) {
-            return direction == DungeonDirection.SOUTH ? DungeonSocket.CORRIDOR : DungeonSocket.WALL;
+            return DungeonSocket.CORRIDOR;
         }
 
         @Override
         public void build(ServerLevel level, BlockPos origin, DungeonRotation rotation, RandomSource random, int size) {
-            buildMilitaryShell(level, origin, rotation, size, DungeonSocket.WALL, DungeonSocket.WALL, DungeonSocket.CORRIDOR, DungeonSocket.WALL);
+            buildMilitaryShell(level, origin, rotation, size, DungeonSocket.CORRIDOR, DungeonSocket.CORRIDOR, DungeonSocket.CORRIDOR, DungeonSocket.CORRIDOR);
 
             for (int lx = 2; lx <= 4; lx++) {
                 for (int lz = 2; lz <= 4; lz++) {
@@ -662,7 +684,7 @@ public class MilitaryLabCatalog {
                 setLocalBlock(level, origin, rotation, 2, ly, 2, size, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState());
             }
 
-            for (int ly = -7; ly <= 1; ly++) {
+            for (int ly = -7; ly <= 2; ly++) {
                 setLocalBlock(level, origin, rotation, 2, ly, 3, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
             }
 
@@ -672,9 +694,8 @@ public class MilitaryLabCatalog {
             setLocalBlock(level, origin, rotation, 4, 1, 3, size, Blocks.IRON_BARS.defaultBlockState());
             setLocalBlock(level, origin, rotation, 4, 1, 4, size, Blocks.IRON_BARS.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 1, 4, size, Blocks.IRON_BARS.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 2, 1, 4, size, Blocks.IRON_BARS.defaultBlockState());
 
-            setLocalBlock(level, origin, rotation, 1, 1, 1, size, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 1, 1, size, SandStormBlocks.DAMAGED_MUNITIONS_CRATE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 1, 1, size, SandStormBlocks.TACTICAL_RADAR_CONSOLE.defaultBlockState());
         }
     }
@@ -697,12 +718,12 @@ public class MilitaryLabCatalog {
 
         @Override
         public DungeonSocket getSocket(DungeonDirection direction) {
-            return direction == DungeonDirection.SOUTH ? DungeonSocket.CORRIDOR : DungeonSocket.WALL;
+            return DungeonSocket.CORRIDOR;
         }
 
         @Override
         public void build(ServerLevel level, BlockPos origin, DungeonRotation rotation, RandomSource random, int size) {
-            buildMilitaryShell(level, origin, rotation, size, DungeonSocket.WALL, DungeonSocket.WALL, DungeonSocket.CORRIDOR, DungeonSocket.WALL);
+            buildMilitaryShell(level, origin, rotation, size, DungeonSocket.CORRIDOR, DungeonSocket.CORRIDOR, DungeonSocket.CORRIDOR, DungeonSocket.CORRIDOR);
 
             for (int lx = 2; lx <= 4; lx++) {
                 for (int lz = 2; lz <= 4; lz++) {
@@ -711,13 +732,13 @@ public class MilitaryLabCatalog {
                 }
             }
 
-            for (int ly = 1; ly <= 6; ly++) {
+            for (int ly = 1; ly <= 8; ly++) {
                 setLocalBlock(level, origin, rotation, 2, ly, 2, size, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState());
                 setLocalBlock(level, origin, rotation, 2, ly, 3, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
             }
 
             setLocalBlock(level, origin, rotation, 1, 1, 5, size, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 5, 1, 5, size, SandStormBlocks.TACTICAL_RADAR_CONSOLE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 1, 5, size, SandStormBlocks.BROKEN_RADAR_CONSOLE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 1, 1, 1, size, SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState());
         }
     }
@@ -749,16 +770,16 @@ public class MilitaryLabCatalog {
             setLocalBlock(level, origin, rotation, 3, 1, 2, size, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH));
             populateVaultChest(level, origin, rotation, 3, 1, 2, size, random);
 
-            setLocalBlock(level, origin, rotation, 2, 1, 2, size, SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 4, 1, 2, size, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 2, 2, 2, size, SandStormBlocks.WEATHERED_HAZARD_STRIPE.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 4, 2, 2, size, SandStormBlocks.HAZARD_STRIPE_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 2, 1, 2, size, SandStormBlocks.FRACTURED_MILITARY_PLATE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 4, 1, 2, size, SandStormBlocks.RUSTED_MILITARY_PLATE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 2, 2, 2, size, SandStormBlocks.CORRODED_HAZARD_STRIPE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 4, 2, 2, size, SandStormBlocks.WEATHERED_HAZARD_STRIPE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 2, 2, size, Blocks.IRON_BARS.defaultBlockState());
 
-            setLocalBlock(level, origin, rotation, 1, 1, 1, size, SandStormBlocks.TACTICAL_RADAR_CONSOLE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 1, 1, size, SandStormBlocks.BROKEN_RADAR_CONSOLE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 1, 1, size, SandStormBlocks.QUANTUM_ACCESS_TERMINAL.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 1, 4, size, SandStormBlocks.HOLO_TACTICAL_SPIRE.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 1, 1, 3, size, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 1, 3, size, SandStormBlocks.DAMAGED_MUNITIONS_CRATE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 1, 3, size, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState());
         }
 

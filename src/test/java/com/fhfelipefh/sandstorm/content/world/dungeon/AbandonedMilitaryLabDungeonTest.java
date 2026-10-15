@@ -94,14 +94,14 @@ class AbandonedMilitaryLabDungeonTest {
         List<DungeonComponent> components = MilitaryLabCatalog.getComponents();
         WaveFunctionCollapseSolver solver = new WaveFunctionCollapseSolver(5, 5, components);
         solver.pinAnchor(2, 0, MilitaryLabCatalog.getEntranceComponent(), DungeonRotation.NONE);
-        solver.pinAnchor(4, 4, MilitaryLabCatalog.getStairwellDownComponent(), DungeonRotation.NONE);
+        solver.pinAnchor(2, 2, MilitaryLabCatalog.getStairwellDownComponent(), DungeonRotation.NONE);
 
         RandomSource random = RandomSource.create(12345L);
         RotatedComponent[][] solution = solver.solve(random, 20);
         assertNotNull(solution);
 
         assertEquals("military_lab_entrance", solution[2][0].component().id());
-        assertEquals("military_lab_stairwell_down", solution[4][4].component().id());
+        assertEquals("military_lab_stairwell_down", solution[2][2].component().id());
     }
 
     @Test

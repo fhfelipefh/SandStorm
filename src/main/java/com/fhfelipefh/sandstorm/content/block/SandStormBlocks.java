@@ -918,6 +918,69 @@ public class SandStormBlocks {
                     .strength(25.0f, 500.0f)
                     .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()));
+    public static final Block WEATHERED_MILITARY_PLATE = register("weathered_military_plate",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("weathered_military_plate")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(55.0f, 1600.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
+    public static final Block FRACTURED_MILITARY_PLATE = register("fractured_military_plate",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fractured_military_plate")))
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(40.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
+    public static final Block CORRODED_HAZARD_STRIPE = register("corroded_hazard_stripe",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("corroded_hazard_stripe")))
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(20.0f, 400.0f)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()));
+    public static final Block RUSTED_VENT_DUCT = register("rusted_vent_duct",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("rusted_vent_duct")))
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(20.0f, 250.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
+    public static final Block DAMAGED_VENT_DUCT = register("damaged_vent_duct",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("damaged_vent_duct")))
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(15.0f, 180.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
+    public static final Block RUSTED_STEEL_VENT_GRATE = register("rusted_steel_vent_grate",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("rusted_steel_vent_grate")))
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(12.0f, 80.0f)
+                    .sound(SoundType.COPPER_GRATE)
+                    .requiresCorrectToolForDrops()));
+    public static final Block BROKEN_STEEL_VENT_GRATE = register("broken_steel_vent_grate",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("broken_steel_vent_grate")))
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(8.0f, 50.0f)
+                    .sound(SoundType.COPPER_GRATE)
+                    .requiresCorrectToolForDrops()));
+    public static final Block DAMAGED_MUNITIONS_CRATE = register("damaged_munitions_crate",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("damaged_munitions_crate")))
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(5.0f, 20.0f)
+                    .sound(SoundType.WOOD)
+                    .requiresCorrectToolForDrops()));
+    public static final Block BROKEN_RADAR_CONSOLE = register("broken_radar_console",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("broken_radar_console")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(6.0f, 30.0f)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,

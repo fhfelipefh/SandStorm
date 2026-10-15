@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sandstorm:block/corroded_hazard_stripe"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "sandstorm:block/damaged_munitions_crate"
+  }
+}
