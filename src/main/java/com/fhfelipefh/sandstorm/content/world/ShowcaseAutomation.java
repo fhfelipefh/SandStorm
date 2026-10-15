@@ -32,6 +32,7 @@ import com.fhfelipefh.sandstorm.content.storage.QuantumDiskStorage;
 import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkControllerBlock;
 import com.fhfelipefh.sandstorm.content.storage.QuantumNetworkControllerBlockEntity;
 import com.fhfelipefh.sandstorm.content.storage.StoredItemEntry;
+import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedExcavationHiveDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedMilitaryLabDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
@@ -2496,6 +2497,14 @@ public class ShowcaseAutomation {
         BlockPos northReturn = northOrigin.offset(3 * 7 + 3, 1, 1);
         setupReturnPad(level, northReturn);
 
+        BlockPos hiveOrigin = center.offset(-84, -45, -60);
+        buildFoundationPlate(level, hiveOrigin.getX() - 2, hiveOrigin.getX() + 38, hiveOrigin.getZ() - 2, hiveOrigin.getZ() + 38, hiveOrigin.getY() - 24, 3);
+        AbandonedExcavationHiveDungeon.generate(level, hiveOrigin, 3, 5, 5);
+        buildRoofCap(level, hiveOrigin.getX(), hiveOrigin.getX() + 36, hiveOrigin.getZ(), hiveOrigin.getZ() + 36, hiveOrigin.getY() + 5);
+        BlockPos hiveEntry = hiveOrigin.offset(2 * 7 + 3, 1, 3);
+        BlockPos hiveReturn = hiveOrigin.offset(2 * 7 + 3, 1, 1);
+        setupReturnPad(level, hiveReturn);
+
         BlockPos westShaftTop = center.offset(-4, 0, 4);
         buildGlassObservationTube(level, westShaftTop, westEntry.getY());
         buildCatwalk(level, new BlockPos(westShaftTop.getX(), westEntry.getY(), westShaftTop.getZ()), westEntry.north());
@@ -2516,6 +2525,9 @@ public class ShowcaseAutomation {
         int maxBlockZ = getCheckerboardMaxZ();
         BlockPos northTerminal = center.offset(0, 0, maxBlockZ);
         setupTerminalTrigger(level, northTerminal, northEntry, "Laboratório Militar Abandonado Norte", "4 Andares | Grade 7x7 | 196 Salas | Black Site");
+
+        BlockPos hiveTerminal = center.offset(-4, 0, -4);
+        setupTerminalTrigger(level, hiveTerminal, hiveEntry, "Complexo de Mineração Infestado", "3 Andares | Mega-Broca 14x14 | Ninho dos Sandworms");
     }
 
     private static void setupReturnPad(ServerLevel level, BlockPos pos) {

@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedExcavationHiveDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedMilitaryLabDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
@@ -26,6 +27,7 @@ public class ProceduralRuinsManager {
     public static final int COMPLEX_DUNGEON_RARITY = 160;
     public static final int MULTIFLOOR_DUNGEON_RARITY = 220;
     public static final int MILITARY_LAB_RARITY = 320;
+    public static final int EXCAVATION_HIVE_RARITY = 260;
 
     private record PendingRuin(ServerLevel level, BlockPos origin, int surfaceY, int ruinType, int gridWidth, int gridDepth, int floors) {}
     private static final Queue<PendingRuin> PENDING_RUINS = new ConcurrentLinkedQueue<>();
@@ -75,6 +77,15 @@ public class ProceduralRuinsManager {
                 level.getServer().execute(() -> {
                     PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 5, gridWidth, gridDepth, floors));
                 });
+            } else if (roll % EXCAVATION_HIVE_RARITY == 0) {
+                int dungeonY = -35 - (int) (Math.abs(hash >>> 17) % 15);
+                int floors = 3 + (int) (Math.abs(hash >>> 21) % 2);
+                int gridWidth = 4 + (int) (Math.abs(hash >>> 25) % 2);
+                int gridDepth = 4 + (int) (Math.abs(hash >>> 29) % 2);
+                BlockPos origin = new BlockPos(samplePos.getX(), dungeonY, samplePos.getZ());
+                level.getServer().execute(() -> {
+                    PENDING_RUINS.add(new PendingRuin(level, origin, surfaceY, 7, gridWidth, gridDepth, floors));
+                });
             } else if (roll % COMPLEX_DUNGEON_RARITY == 0) {
                 int dungeonY = -52 + (int) (Math.abs(hash >>> 20) % 33);
                 int gridWidth = 3 + (int) (Math.abs(hash >>> 26) % 4);
@@ -120,6 +131,8 @@ public class ProceduralRuinsManager {
                         MillennialRepositoryDungeon.generate(ruin.level(), ruin.origin(), ruin.floors(), ruin.gridWidth(), ruin.gridDepth());
                     } else if (ruin.ruinType() == 6) {
                         AbandonedMilitaryLabDungeon.generate(ruin.level(), ruin.origin(), ruin.floors(), ruin.gridWidth(), ruin.gridDepth());
+                    } else if (ruin.ruinType() == 7) {
+                        AbandonedExcavationHiveDungeon.generate(ruin.level(), ruin.origin(), ruin.floors(), ruin.gridWidth(), ruin.gridDepth());
                     } else {
                         FuelSiloGenerator.generate(ruin.level(), ruin.origin(), ruin.surfaceY());
                     }
@@ -146,6 +159,10 @@ public class ProceduralRuinsManager {
 
     public static int generateMilitaryLabAt(ServerLevel level, BlockPos origin, int floors, int gridWidth, int gridDepth) {
         return AbandonedMilitaryLabDungeon.generate(level, origin, floors, gridWidth, gridDepth);
+    }
+
+    public static int generateExcavationHiveAt(ServerLevel level, BlockPos origin, int floors, int gridWidth, int gridDepth) {
+        return AbandonedExcavationHiveDungeon.generate(level, origin, floors, gridWidth, gridDepth);
     }
 
     public static boolean generateFuelSiloAt(ServerLevel level, BlockPos origin, int surfaceY) {

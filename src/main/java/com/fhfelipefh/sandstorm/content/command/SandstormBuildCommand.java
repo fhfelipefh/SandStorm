@@ -12,6 +12,7 @@ import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.megastructure.MegastructureBlueprint;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedExcavationHiveDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedMilitaryLabDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
@@ -71,13 +72,18 @@ public class SandstormBuildCommand {
             "multi_floor_dungeon",
             "millennial_repository",
             "military_lab",
-            "armored_vault"
+            "armored_vault",
+            "excavation_hive"
     );
 
     static {
         STRUCTURE_MAP.put("armored_vault", "armored_vault");
         STRUCTURE_MAP.put("vault", "armored_vault");
         STRUCTURE_MAP.put("cofre", "armored_vault");
+        STRUCTURE_MAP.put("excavation_hive", "excavation_hive");
+        STRUCTURE_MAP.put("hive", "excavation_hive");
+        STRUCTURE_MAP.put("ninho", "excavation_hive");
+        STRUCTURE_MAP.put("sandworm_hive", "excavation_hive");
         STRUCTURE_MAP.put("military_lab", "military_lab");
         STRUCTURE_MAP.put("military_facility", "military_lab");
         STRUCTURE_MAP.put("black_site", "military_lab");
@@ -447,6 +453,13 @@ public class SandstormBuildCommand {
                     player.teleportTo(level, targetPos.getX() + entryX + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 3.5, Set.of(), 0.0f, 0.0f, true);
                 }
             }
+        } else if ("excavation_hive".equals(normalizedId)) {
+            for (ServerPlayer player : level.players()) {
+                if (player.blockPosition().closerThan(targetPos, 16.0)) {
+                    int entryX = (AbandonedExcavationHiveDungeon.DEFAULT_GRID_WIDTH / 2) * AbandonedExcavationHiveDungeon.ROOM_SIZE + 3;
+                    player.teleportTo(level, targetPos.getX() + entryX + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 3.5, Set.of(), 0.0f, 0.0f, true);
+                }
+            }
         } else if ("armored_vault".equals(normalizedId)) {
             for (ServerPlayer player : level.players()) {
                 if (player.blockPosition().closerThan(targetPos, 16.0)) {
@@ -597,6 +610,7 @@ public class SandstormBuildCommand {
             case "procedural_dungeon" -> AncientBunkerComplexDungeon.generate(level, center);
             case "multi_floor_dungeon" -> MillennialRepositoryDungeon.generate(level, center);
             case "military_lab" -> AbandonedMilitaryLabDungeon.generate(level, center);
+            case "excavation_hive" -> AbandonedExcavationHiveDungeon.generate(level, center);
             case "armored_vault" -> {
                 ShowcaseAutomation.buildVaultShowcase(level, center);
                 yield 1;
