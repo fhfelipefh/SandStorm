@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -76,6 +77,22 @@ public class VaultDoorDummyBlock extends Block {
             return controllerState.useWithoutItem(level, player, hitResult.withPosition(controllerPos));
         }
         return InteractionResult.PASS;
+    }
+
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, Orientation orientation, boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, orientation, movedByPiston);
+        if (!level.isClientSide()) {
+            BlockPos controllerPos = getControllerPos(state, pos);
+            BlockState controllerState = level.getBlockState(controllerPos);
+            if (controllerState.getBlock() instanceof VaultDoorControllerBlock doorBlock) {
+                boolean powered = level.hasNeighborSignal(pos) || level.hasNeighborSignal(controllerPos);
+                if (powered != controllerState.getValue(VaultDoorControllerBlock.POWERED)) {
+                    level.setBlock(controllerPos, controllerState.setValue(VaultDoorControllerBlock.POWERED, powered).setValue(VaultDoorControllerBlock.OPEN, powered), 3);
+                    doorBlock.playToggleSound(level, controllerPos, powered);
+                }
+            }
+        }
     }
 
     @Override

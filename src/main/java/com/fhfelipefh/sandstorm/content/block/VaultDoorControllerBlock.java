@@ -136,7 +136,7 @@ public class VaultDoorControllerBlock extends Block implements EntityBlock {
         }
     }
 
-    private void playToggleSound(Level level, BlockPos pos, boolean open) {
+    public void playToggleSound(Level level, BlockPos pos, boolean open) {
         float pitch = open ? 0.85f : 0.65f;
         level.playSound(null, pos, SoundEvents.VAULT_OPEN_SHUTTER, SoundSource.BLOCKS, 1.5f, pitch);
         level.playSound(null, pos, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 1.0f, pitch);
@@ -154,7 +154,7 @@ public class VaultDoorControllerBlock extends Block implements EntityBlock {
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
+        return RenderShape.INVISIBLE;
     }
 
     @Override

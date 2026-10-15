@@ -69,8 +69,10 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -1528,8 +1530,11 @@ public class ShowcaseAutomation {
         }
 
         BlockPos leverWallPos = stationCenter.offset(2, 2, 5);
-        level.setBlock(stationCenter.offset(2, 1, 5), SandStormBlocks.VAULT_WALL_SEAM.defaultBlockState(), 3);
-        level.setBlock(leverWallPos, Blocks.LEVER.defaultBlockState(), 3);
+        level.setBlock(stationCenter.offset(2, 1, 5), Blocks.AIR.defaultBlockState(), 3);
+        BlockState leverState = Blocks.LEVER.defaultBlockState()
+                .setValue(LeverBlock.FACE, AttachFace.WALL)
+                .setValue(LeverBlock.FACING, Direction.SOUTH);
+        level.setBlock(leverWallPos, leverState, 3);
 
         BlockPos chestPos = stationCenter.offset(0, 1, 0);
         level.setBlock(chestPos, Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH), 3);
@@ -1555,15 +1560,14 @@ public class ShowcaseAutomation {
                 new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS), new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
                 new ItemStack(SandStormItems.HEAVY_PLASMA_CANNON), ItemStack.EMPTY);
 
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.8, stationCenter.getZ() + 4.5, "§6§l[Câmara de Cofre Blindada SandStorm]");
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.45, stationCenter.getZ() + 4.5, "§aPorta Mecânica 3x3 Multi-Bloco com Volante");
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.1, stationCenter.getZ() + 4.5, "§eClique na Porta ou na Alavanca para Abrir/Fechar");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 6.2, stationCenter.getZ() + 4.5, "§6§l[Câmara de Cofre Blindada SandStorm]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 5.85, stationCenter.getZ() + 4.5, "§aPorta Mecânica 3x3 Multi-Bloco com Volante");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 5.5, stationCenter.getZ() + 4.5, "§eClique na Porta ou na Alavanca para Abrir/Fechar");
 
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.5, stationCenter.getZ() + 0.5, "§6§l[Reserva Blindada de Alta Tecnologia]");
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.2, stationCenter.getZ() + 0.5, "§7Ligas de Titânio, Processadores Quânticos e Tesouros");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.4, stationCenter.getZ() + 0.5, "§6§l[Reserva Blindada de Alta Tecnologia]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.1, stationCenter.getZ() + 0.5, "§7Ligas de Titânio, Processadores Quânticos e Tesouros");
 
         setupReturnPad(level, stationCenter.offset(-3, 1, 3));
-        setupReturnPad(level, stationCenter.offset(0, 1, 6));
     }
 
     private static void buildVaultWalkway(ServerLevel level, BlockPos center) {
@@ -2481,8 +2485,8 @@ public class ShowcaseAutomation {
     private static void setupReturnPad(ServerLevel level, BlockPos pos) {
         level.setBlock(pos.below(), SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState(), 3);
         level.setBlock(pos, Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.defaultBlockState(), 3);
-        spawnHologram(level, pos.getX() + 0.5, pos.getY() + 1.4, pos.getZ() + 0.5, "§a§l▲ RETORNAR AO SHOWCASE ▲");
-        spawnHologram(level, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, "§7Pise para voltar à Praça Central");
+        spawnHologram(level, pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5, "§a§l▲ RETORNAR AO SHOWCASE ▲");
+        spawnHologram(level, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, "§7Pise para voltar à Praça Central");
         TELEPORT_PADS.add(new ShowcaseTeleportPad(pos, new BlockPos(0, 161, 0), "Praça Central do Showcase"));
     }
 
