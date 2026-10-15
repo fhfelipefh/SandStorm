@@ -18,15 +18,15 @@ public class VaultDoorModel {
         this.root = root;
         this.frame = root.getChild("frame");
         this.doorBody = root.getChild("door_body");
-        this.lockingBars = this.doorBody.getChild("locking_bars");
-        this.wheel = this.doorBody.getChild("wheel");
+        this.lockingBars = root.getChild("locking_bars");
+        this.wheel = root.getChild("wheel");
     }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        PartDefinition frame = root.addOrReplaceChild("frame", CubeListBuilder.create()
+        root.addOrReplaceChild("frame", CubeListBuilder.create()
                 .texOffs(0, 0).addBox(-24.0f, 0.0f, -4.0f, 48.0f, 4.0f, 8.0f)
                 .texOffs(0, 12).addBox(-24.0f, 44.0f, -4.0f, 48.0f, 4.0f, 8.0f)
                 .texOffs(0, 24).addBox(-24.0f, 4.0f, -4.0f, 6.0f, 40.0f, 8.0f)
@@ -36,14 +36,14 @@ public class VaultDoorModel {
                 .texOffs(56, 40).addBox(17.5f, 4.0f, -2.0f, 4.0f, 40.0f, 4.0f),
                 PartPose.ZERO);
 
-        PartDefinition doorBody = root.addOrReplaceChild("door_body", CubeListBuilder.create()
+        root.addOrReplaceChild("door_body", CubeListBuilder.create()
                 .texOffs(72, 40).addBox(-3.0f, -12.0f, -5.0f, 5.0f, 24.0f, 10.0f)
-                .texOffs(0, 72).addBox(-37.5f, -20.5f, -3.5f, 37.0f, 41.0f, 7.0f)
-                .texOffs(36, 110).addBox(-35.0f, -18.0f, -4.0f, 32.0f, 36.0f, 1.0f)
-                .texOffs(0, 110).addBox(-27.0f, -8.0f, -4.5f, 16.0f, 16.0f, 1.0f),
-                PartPose.offset(19.0f, 24.0f, 0.0f));
+                .texOffs(0, 72).addBox(-37.5f, -20.5f, -3.0f, 37.0f, 41.0f, 6.0f)
+                .texOffs(36, 110).addBox(-35.0f, -18.0f, -3.5f, 32.0f, 36.0f, 1.0f)
+                .texOffs(0, 110).addBox(-27.0f, -8.0f, -3.8f, 16.0f, 16.0f, 1.0f),
+                PartPose.ZERO);
 
-        doorBody.addOrReplaceChild("locking_bars", CubeListBuilder.create()
+        root.addOrReplaceChild("locking_bars", CubeListBuilder.create()
                 .texOffs(98, 0).addBox(-1.5f, 13.0f, -1.0f, 3.0f, 6.0f, 2.0f)
                 .texOffs(98, 0).addBox(-1.5f, -19.0f, -1.0f, 3.0f, 6.0f, 2.0f)
                 .texOffs(98, 8).addBox(-19.0f, -1.5f, -1.0f, 6.0f, 3.0f, 2.0f)
@@ -52,9 +52,9 @@ public class VaultDoorModel {
                 .texOffs(110, 0).addBox(10.0f, 10.0f, -1.0f, 4.0f, 4.0f, 2.0f)
                 .texOffs(110, 0).addBox(-14.0f, -14.0f, -1.0f, 4.0f, 4.0f, 2.0f)
                 .texOffs(110, 0).addBox(10.0f, -14.0f, -1.0f, 4.0f, 4.0f, 2.0f),
-                PartPose.offset(-19.0f, 0.0f, -2.0f));
+                PartPose.ZERO);
 
-        doorBody.addOrReplaceChild("wheel", CubeListBuilder.create()
+        root.addOrReplaceChild("wheel", CubeListBuilder.create()
                 .texOffs(96, 18).addBox(-3.0f, -3.0f, -2.0f, 6.0f, 6.0f, 2.0f)
                 .texOffs(96, 26).addBox(-5.0f, 4.0f, -2.5f, 10.0f, 2.0f, 1.0f)
                 .texOffs(96, 26).addBox(-5.0f, -6.0f, -2.5f, 10.0f, 2.0f, 1.0f)
@@ -66,7 +66,7 @@ public class VaultDoorModel {
                 .texOffs(116, 18).addBox(-1.5f, -10.0f, -3.5f, 3.0f, 3.0f, 3.0f)
                 .texOffs(116, 18).addBox(-10.0f, -1.5f, -3.5f, 3.0f, 3.0f, 3.0f)
                 .texOffs(116, 18).addBox(7.0f, -1.5f, -3.5f, 3.0f, 3.0f, 3.0f),
-                PartPose.offset(-19.0f, 0.0f, -4.5f));
+                PartPose.ZERO);
 
         return LayerDefinition.create(mesh, 128, 128);
     }
