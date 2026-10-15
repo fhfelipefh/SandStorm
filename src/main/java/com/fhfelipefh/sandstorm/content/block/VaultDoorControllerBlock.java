@@ -54,6 +54,24 @@ public class VaultDoorControllerBlock extends Block implements EntityBlock {
         return controllerPos.relative(horizontalOffsetDir, dist).above(row);
     }
 
+    public static boolean isStructurePowered(Level level, BlockPos controllerPos, Direction facing) {
+        if (level.hasNeighborSignal(controllerPos)) {
+            return true;
+        }
+        for (int col = 0; col <= 2; col++) {
+            for (int row = 0; row <= 2; row++) {
+                if (col == 1 && row == 0) {
+                    continue;
+                }
+                BlockPos dummyPos = getRelativePos(controllerPos, facing, col, row);
+                if (level.hasNeighborSignal(dummyPos)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction facing = context.getHorizontalDirection().getOpposite();
@@ -70,7 +88,7 @@ public class VaultDoorControllerBlock extends Block implements EntityBlock {
                 }
             }
         }
-        boolean powered = level.hasNeighborSignal(basePos);
+        boolean powered = isStructurePowered(level, basePos, facing);
         return defaultBlockState().setValue(FACING, facing).setValue(OPEN, powered).setValue(POWERED, powered);
     }
 
@@ -127,7 +145,8 @@ public class VaultDoorControllerBlock extends Block implements EntityBlock {
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, Orientation orientation, boolean movedByPiston) {
         super.neighborChanged(state, level, pos, neighborBlock, orientation, movedByPiston);
         if (!level.isClientSide()) {
-            boolean powered = level.hasNeighborSignal(pos);
+            Direction facing = state.getValue(FACING);
+            boolean powered = isStructurePowered(level, pos, facing);
             if (powered != state.getValue(POWERED)) {
                 boolean open = powered;
                 level.setBlock(pos, state.setValue(POWERED, powered).setValue(OPEN, open), 3);

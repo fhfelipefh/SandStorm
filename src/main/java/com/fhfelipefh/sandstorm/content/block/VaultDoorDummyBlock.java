@@ -86,7 +86,8 @@ public class VaultDoorDummyBlock extends Block {
             BlockPos controllerPos = getControllerPos(state, pos);
             BlockState controllerState = level.getBlockState(controllerPos);
             if (controllerState.getBlock() instanceof VaultDoorControllerBlock doorBlock) {
-                boolean powered = level.hasNeighborSignal(pos) || level.hasNeighborSignal(controllerPos);
+                Direction facing = controllerState.getValue(VaultDoorControllerBlock.FACING);
+                boolean powered = VaultDoorControllerBlock.isStructurePowered(level, controllerPos, facing);
                 if (powered != controllerState.getValue(VaultDoorControllerBlock.POWERED)) {
                     level.setBlock(controllerPos, controllerState.setValue(VaultDoorControllerBlock.POWERED, powered).setValue(VaultDoorControllerBlock.OPEN, powered), 3);
                     doorBlock.playToggleSound(level, controllerPos, powered);

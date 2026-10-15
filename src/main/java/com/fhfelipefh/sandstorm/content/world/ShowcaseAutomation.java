@@ -1567,7 +1567,7 @@ public class ShowcaseAutomation {
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.4, stationCenter.getZ() + 0.5, "§6§l[Reserva Blindada de Alta Tecnologia]");
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.1, stationCenter.getZ() + 0.5, "§7Ligas de Titânio, Processadores Quânticos e Tesouros");
 
-        setupReturnPad(level, stationCenter.offset(-3, 1, 3));
+        setupReturnPad(level, stationCenter.offset(-3, 1, -3));
     }
 
     private static void buildVaultWalkway(ServerLevel level, BlockPos center) {
