@@ -54,6 +54,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -61,6 +62,7 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.vehicle.minecart.Minecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -75,6 +77,7 @@ import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
@@ -117,6 +120,7 @@ public class ShowcaseAutomation {
             ServerPlayer player = handler.getPlayer();
             String levelName = player.level().getServer().getWorldData().getLevelName();
             if (levelName != null && levelName.toLowerCase().contains("showcase")) {
+                cleanupShowcaseDroppedItems((ServerLevel) player.level());
                 if (!GENERATED_PLAYERS.contains(player.getUUID())) {
                     GENERATED_PLAYERS.add(player.getUUID());
                     buildShowcase((ServerLevel) player.level(), player);
@@ -126,6 +130,12 @@ public class ShowcaseAutomation {
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             long tick = server.getTickCount();
+            if (tick % 100 == 0 && showcaseActive) {
+                ServerLevel overworld = server.overworld();
+                if (overworld != null) {
+                    cleanupShowcaseDroppedItems(overworld);
+                }
+            }
             if (tick % 40 == 0 && regeneratingRockPos != null) {
                 ServerLevel level = server.overworld();
                 if (level != null && level.isLoaded(regeneratingRockPos)) {
@@ -371,6 +381,35 @@ public class ShowcaseAutomation {
         level.getServer().getGameRules().set(GameRules.ADVANCE_TIME, false, level.getServer());
         level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "time set noon");
         level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "weather clear");
+        cleanupShowcaseDroppedItems(level);
+    }
+
+    public static void cleanupShowcaseDroppedItems(ServerLevel level) {
+        BlockPos center = new BlockPos(0, 160, 0);
+        int frontZ = getBiosphereFrontZ();
+        int backZ = frontZ + 60;
+        int maxZ = backZ + AtmosphericTerraformerBlockEntity.TIER1_RADIUS + 20;
+        AABB showcaseArea = new AABB(center.getX() - 140, center.getY() - 100, center.getZ() - 140, center.getX() + 140, center.getY() + 120, center.getZ() + maxZ);
+        List<ItemEntity> droppedItems = level.getEntitiesOfClass(ItemEntity.class, showcaseArea);
+        for (ItemEntity item : droppedItems) {
+            item.discard();
+        }
+    }
+
+    public static void setAirSafe(ServerLevel level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof Container container) {
+            container.clearContent();
+        }
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+    }
+
+    public static void setChestSafe(ServerLevel level, BlockPos pos, BlockState state) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof Container container) {
+            container.clearContent();
+        }
+        level.setBlock(pos, state, 3);
     }
 
     private static void clearUnderneath(ServerLevel level, BlockPos center, int maxZ) {
@@ -398,7 +437,7 @@ public class ShowcaseAutomation {
         }
 
         BlockPos chestPos = center.above();
-        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.SURVIVAL_DATAPAD));
             chest.setItem(1, new ItemStack(SandStormItems.SPACE_SUIT_HELMET));
@@ -730,7 +769,7 @@ public class ShowcaseAutomation {
         level.setBlock(cSE, SandStormBlocks.SAND_MAGLEV_RAIL.defaultBlockState().setValue(SandMaglevRailBlock.SHAPE, RailShape.NORTH_WEST), 3);
 
         BlockPos chestPos = new BlockPos(xMax + 1, baseY + 1, 10);
-        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.SANDBOARD, 1));
             chest.setItem(1, new ItemStack(Items.MINECART, 4));
@@ -837,7 +876,7 @@ public class ShowcaseAutomation {
         }
 
         BlockPos farmChest = farmCenter.offset(5, 1, 0);
-        level.setBlock(farmChest, Blocks.CHEST.defaultBlockState(), 3);
+        setChestSafe(level, farmChest, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(farmChest) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(Items.WHEAT, 64));
             chest.setItem(1, new ItemStack(Items.CARROT, 64));
@@ -1063,7 +1102,7 @@ public class ShowcaseAutomation {
             }
 
             BlockPos chestPos = pedestalCenter.above();
-            level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+            setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
             if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
                 int startIdx = c * itemsPerChest;
                 int endIdx = Math.min(startIdx + itemsPerChest, items.size());
@@ -1281,7 +1320,7 @@ public class ShowcaseAutomation {
                 for (int dy = 1; dy <= 5; dy++) {
                     BlockPos p = stationCenter.offset(dx, dy, dz);
                     if (!level.getBlockState(p).isAir()) {
-                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                        setAirSafe(level, p);
                     }
                 }
             }
@@ -1325,6 +1364,10 @@ public class ShowcaseAutomation {
             ctrlBe.setChanged();
         }
 
+        BlockEntity existingDrive = level.getBlockEntity(drivePos);
+        if (existingDrive instanceof Container container) {
+            container.clearContent();
+        }
         level.setBlock(drivePos, SandStormBlocks.QUANTUM_DISK_DRIVE.defaultBlockState().setValue(QuantumDiskDriveBlock.FACING, Direction.SOUTH), 3);
         if (level.getBlockEntity(drivePos) instanceof QuantumDiskDriveBlockEntity driveBe) {
             ItemStack c0 = new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_64K);
@@ -1394,7 +1437,7 @@ public class ShowcaseAutomation {
         level.setBlock(terminalPos, SandStormBlocks.QUANTUM_ACCESS_TERMINAL.defaultBlockState().setValue(QuantumAccessTerminalBlock.FACING, Direction.SOUTH), 3);
 
         BlockPos chestPos = stationCenter.offset(2, 1, 0);
-        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_1K, 4));
             chest.setItem(1, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_4K, 4));
@@ -1432,7 +1475,7 @@ public class ShowcaseAutomation {
                 for (int dy = 1; dy <= 5; dy++) {
                     BlockPos p = stationCenter.offset(dx, dy, dz);
                     if (!level.getBlockState(p).isAir()) {
-                        level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                        setAirSafe(level, p);
                     }
                 }
             }
@@ -1537,7 +1580,7 @@ public class ShowcaseAutomation {
         level.setBlock(leverWallPos, leverState, 3);
 
         BlockPos chestPos = stationCenter.offset(0, 1, 0);
-        level.setBlock(chestPos, Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH), 3);
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 32));
             chest.setItem(1, new ItemStack(SandStormItems.MANTLE_ALLOY_INGOT, 16));

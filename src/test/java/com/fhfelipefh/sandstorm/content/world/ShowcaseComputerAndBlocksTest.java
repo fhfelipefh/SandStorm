@@ -10,14 +10,17 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
 import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.Bootstrap;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -206,5 +209,17 @@ class ShowcaseComputerAndBlocksTest {
 
         assertTrue(nearestDomeEdgeZ > maxBlockZ, "Biospheres front edge must be strictly past block checkerboard");
         assertTrue(nearestDomeEdgeZ - maxBlockZ >= 16, "Must maintain at least 16 blocks buffer between exhibition and biospheres");
+    }
+
+    @Test
+    void shouldExposeShowcaseItemCleanupAndSafeBlockSetters() throws Exception {
+        Method cleanupMethod = ShowcaseAutomation.class.getMethod("cleanupShowcaseDroppedItems", ServerLevel.class);
+        assertNotNull(cleanupMethod);
+
+        Method setAirSafeMethod = ShowcaseAutomation.class.getMethod("setAirSafe", ServerLevel.class, BlockPos.class);
+        assertNotNull(setAirSafeMethod);
+
+        Method setChestSafeMethod = ShowcaseAutomation.class.getMethod("setChestSafe", ServerLevel.class, BlockPos.class, BlockState.class);
+        assertNotNull(setChestSafeMethod);
     }
 }

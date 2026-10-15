@@ -84,7 +84,7 @@ public class VaultDoorControllerBlockEntityRenderer implements BlockEntityRender
         collector.submitModelPart(this.model.getDoorBody(), poseStack, RenderTypes.entityCutout(TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
 
         poseStack.pushPose();
-        poseStack.translate(-19.0 / 16.0, 0.0, -2.0 / 16.0);
+        poseStack.translate(-19.0 / 16.0, 0.0, -2.5 / 16.0);
         poseStack.scale(barScale, barScale, 1.0f);
         collector.submitModelPart(this.model.getLockingBars(), poseStack, RenderTypes.entityCutout(TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
         poseStack.popPose();
