@@ -306,6 +306,8 @@ public class CryoVaultCatalog {
             setLocalBlock(level, origin, rotation, 3, 1, 2, size, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, rotation.rotateDirection(Direction.SOUTH)));
             populateVaultChest(level, origin, rotation, 3, 1, 2, size, random);
 
+            setLocalBlock(level, origin, rotation, 3, 1, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 2, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
             setLocalBlock(level, origin, rotation, 2, 1, 2, size, SandStormBlocks.CHISELED_CRYO_INSULATION.defaultBlockState());
             setLocalBlock(level, origin, rotation, 4, 1, 2, size, SandStormBlocks.CHISELED_CRYO_INSULATION.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 0, 2, size, Blocks.BLUE_ICE.defaultBlockState());
@@ -414,8 +416,13 @@ public class CryoVaultCatalog {
         public void build(ServerLevel level, BlockPos origin, DungeonRotation rotation, RandomSource random, int size) {
             buildCryoShell(level, origin, rotation, size, DungeonSocket.WALL, DungeonSocket.CORRIDOR, DungeonSocket.CORRIDOR, DungeonSocket.CORRIDOR);
 
-            setLocalBlock(level, origin, rotation, 3, 1, 2, size, SandStormBlocks.CHISELED_CRYO_INSULATION.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 1, 2, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 2, 2, size, SandStormBlocks.CRYO_SPRAYER.defaultBlockState().setValue(BlockStateProperties.FACING, rotation.rotateDirection(Direction.SOUTH)));
+
+            setLocalBlock(level, origin, rotation, 3, 1, 1, size, SandStormBlocks.LEAD_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 2, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 2, 1, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 4, 1, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
 
             setLocalBlock(level, origin, rotation, 2, 1, 2, size, Blocks.IRON_BARS.defaultBlockState());
             setLocalBlock(level, origin, rotation, 4, 1, 2, size, Blocks.IRON_BARS.defaultBlockState());
@@ -425,8 +432,8 @@ public class CryoVaultCatalog {
             setLocalBlock(level, origin, rotation, 3, 1, 3, size, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 1, 4, size, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE.defaultBlockState());
 
-            setLocalBlock(level, origin, rotation, 1, 1, 1, size, SandStormBlocks.CHISELED_CRYO_INSULATION.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 5, 1, 1, size, SandStormBlocks.CHISELED_CRYO_INSULATION.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 1, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 1, 1, size, SandStormBlocks.LEAD_SHIELDING_BLOCK.defaultBlockState());
         }
     }
 
