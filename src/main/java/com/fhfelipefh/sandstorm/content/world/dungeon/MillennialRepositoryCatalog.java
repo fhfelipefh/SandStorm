@@ -269,7 +269,7 @@ public class MillennialRepositoryCatalog {
             }
 
             for (int ly = -7; ly <= 1; ly++) {
-                setLocalBlock(level, origin, rotation, 2, ly, 2, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
+                setLocalBlock(level, origin, rotation, 2, ly, 2, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotateDirection(Direction.SOUTH)));
             }
 
             for (int ly = -6; ly <= 3; ly++) {

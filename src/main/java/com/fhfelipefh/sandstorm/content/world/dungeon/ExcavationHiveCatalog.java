@@ -72,6 +72,23 @@ public class ExcavationHiveCatalog {
         return new MacroDrillQuadrantSE();
     }
 
+    private static BlockState glowLichenFloor() {
+        return Blocks.GLOW_LICHEN.defaultBlockState().setValue(BlockStateProperties.DOWN, true);
+    }
+
+    private static BlockState glowLichenCeiling() {
+        return Blocks.GLOW_LICHEN.defaultBlockState().setValue(BlockStateProperties.UP, true);
+    }
+
+    private static BlockState glowLichenWall(Direction facing) {
+        return switch (facing) {
+            case NORTH -> Blocks.GLOW_LICHEN.defaultBlockState().setValue(BlockStateProperties.NORTH, true);
+            case SOUTH -> Blocks.GLOW_LICHEN.defaultBlockState().setValue(BlockStateProperties.SOUTH, true);
+            case WEST -> Blocks.GLOW_LICHEN.defaultBlockState().setValue(BlockStateProperties.WEST, true);
+            default -> Blocks.GLOW_LICHEN.defaultBlockState().setValue(BlockStateProperties.EAST, true);
+        };
+    }
+
     private static void setSafeChest(ServerLevel level, BlockPos pos, Direction facing, boolean isVault, RandomSource random) {
         if (level.getBlockEntity(pos) instanceof Container container) {
             container.clearContent();
@@ -155,7 +172,7 @@ public class ExcavationHiveCatalog {
 
             setLocalBlock(level, origin, rotation, 3, 1, 3, size, Blocks.ANVIL.defaultBlockState());
             setLocalBlock(level, origin, rotation, 1, 1, 1, size, SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 5, 1, 1, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, false));
+            setLocalBlock(level, origin, rotation, 5, 1, 1, size, glowLichenFloor());
 
             BlockPos chestPos = origin.offset(rotation.rotateOffset(1, 1, 2, size));
             setSafeChest(level, chestPos, rotation.rotateDirection(Direction.EAST), false, random);
@@ -190,10 +207,10 @@ public class ExcavationHiveCatalog {
             for (int lx = 2; lx <= 4; lx++) {
                 for (int lz = 2; lz <= 4; lz++) {
                     for (int dy = 0; dy >= -8; dy--) {
-                        if (lx == 3 && lz == 3) {
-                            setLocalBlock(level, origin, rotation, lx, dy, lz, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotateDirection(Direction.NORTH)));
-                        } else if (lx == 2 && lz == 2) {
-                            setLocalBlock(level, origin, rotation, lx, dy, lz, size, Blocks.SCAFFOLDING.defaultBlockState());
+                        if (lx == 2 && lz == 2) {
+                            setLocalBlock(level, origin, rotation, lx, dy, lz, size, SandStormBlocks.WEATHERED_REINFORCED_CONCRETE.defaultBlockState());
+                        } else if (lx == 2 && lz == 3) {
+                            setLocalBlock(level, origin, rotation, lx, dy, lz, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotateDirection(Direction.SOUTH)));
                         } else if (lx == 4 && lz == 4) {
                             setLocalBlock(level, origin, rotation, lx, dy, lz, size, Blocks.IRON_CHAIN.defaultBlockState());
                         } else {
@@ -203,8 +220,8 @@ public class ExcavationHiveCatalog {
                 }
             }
 
-            setLocalBlock(level, origin, rotation, 1, 1, 1, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, false));
-            setLocalBlock(level, origin, rotation, 5, 1, 5, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, false));
+            setLocalBlock(level, origin, rotation, 1, 1, 1, size, glowLichenFloor());
+            setLocalBlock(level, origin, rotation, 5, 1, 5, size, glowLichenFloor());
         }
     }
 
@@ -235,24 +252,18 @@ public class ExcavationHiveCatalog {
 
             for (int lx = 2; lx <= 4; lx++) {
                 for (int lz = 2; lz <= 4; lz++) {
-                    if (lx == 3 && lz == 3) {
-                        for (int ly = 1; ly <= 5; ly++) {
-                            setLocalBlock(level, origin, rotation, lx, ly, lz, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotateDirection(Direction.NORTH)));
-                        }
-                    } else if (lx == 2 && lz == 2) {
-                        for (int ly = 1; ly <= 5; ly++) {
-                            setLocalBlock(level, origin, rotation, lx, ly, lz, size, Blocks.SCAFFOLDING.defaultBlockState());
-                        }
-                    } else if (lx == 4 && lz == 4) {
-                        for (int ly = 1; ly <= 5; ly++) {
-                            setLocalBlock(level, origin, rotation, lx, ly, lz, size, Blocks.IRON_CHAIN.defaultBlockState());
-                        }
-                    }
+                    setLocalBlock(level, origin, rotation, lx, 5, lz, size, Blocks.AIR.defaultBlockState());
+                    setLocalBlock(level, origin, rotation, lx, 6, lz, size, Blocks.AIR.defaultBlockState());
                 }
             }
 
-            setLocalBlock(level, origin, rotation, 1, 1, 5, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, false));
-            setLocalBlock(level, origin, rotation, 5, 1, 1, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, false));
+            for (int ly = 1; ly <= 8; ly++) {
+                setLocalBlock(level, origin, rotation, 2, ly, 2, size, SandStormBlocks.WEATHERED_REINFORCED_CONCRETE.defaultBlockState());
+                setLocalBlock(level, origin, rotation, 2, ly, 3, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotateDirection(Direction.SOUTH)));
+            }
+
+            setLocalBlock(level, origin, rotation, 1, 1, 5, size, glowLichenFloor());
+            setLocalBlock(level, origin, rotation, 5, 1, 1, size, glowLichenFloor());
         }
     }
 
@@ -330,7 +341,7 @@ public class ExcavationHiveCatalog {
 
             setLocalBlock(level, origin, rotation, 2, 1, 2, size, SandStormBlocks.WEATHERED_REINFORCED_CONCRETE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 2, 2, 2, size, Blocks.IRON_CHAIN.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 2, 3, 2, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, true));
+            setLocalBlock(level, origin, rotation, 2, 3, 2, size, glowLichenWall(Direction.NORTH));
 
             setLocalBlock(level, origin, rotation, 3, 1, 1, size, Blocks.RAIL.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 1, 2, size, Blocks.RAIL.defaultBlockState());
@@ -418,7 +429,7 @@ public class ExcavationHiveCatalog {
 
             setLocalBlock(level, origin, rotation, 3, 5, 3, size, SandStormBlocks.FULGURITE_GLASS.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 4, 3, size, Blocks.IRON_CHAIN.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 3, 3, 3, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, true));
+            setLocalBlock(level, origin, rotation, 3, 3, 3, size, glowLichenCeiling());
         }
     }
 
@@ -599,7 +610,7 @@ public class ExcavationHiveCatalog {
             setLocalBlock(level, origin, rotation, 5, 3, 3, size, Blocks.AIR.defaultBlockState());
 
             setLocalBlock(level, origin, rotation, 2, 1, 3, size, Blocks.IRON_BARS.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 2, 2, 3, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, true));
+            setLocalBlock(level, origin, rotation, 2, 2, 3, size, glowLichenWall(Direction.WEST));
 
             BlockPos chestPos = origin.offset(rotation.rotateOffset(1, 1, 2, size));
             setSafeChest(level, chestPos, rotation.rotateDirection(Direction.EAST), false, random);
@@ -645,7 +656,8 @@ public class ExcavationHiveCatalog {
             setLocalBlock(level, origin, rotation, 4, 1, 2, size, Blocks.COBWEB.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 1, 2, size, Blocks.BONE_BLOCK.defaultBlockState());
 
-            setLocalBlock(level, origin, rotation, 3, 5, 3, size, Blocks.SHROOMLIGHT.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 5, 3, size, Blocks.POLISHED_DEEPSLATE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 4, 3, size, glowLichenCeiling());
         }
     }
 
@@ -689,8 +701,8 @@ public class ExcavationHiveCatalog {
             setLocalBlock(level, origin, rotation, 2, 4, 4, size, Blocks.AMETHYST_CLUSTER.defaultBlockState().setValue(BlockStateProperties.FACING, Direction.DOWN));
             setLocalBlock(level, origin, rotation, 4, 4, 4, size, Blocks.AMETHYST_CLUSTER.defaultBlockState().setValue(BlockStateProperties.FACING, Direction.DOWN));
 
-            setLocalBlock(level, origin, rotation, 3, 1, 3, size, SandStormBlocks.FULGURITE_GLASS.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 3, 2, 3, size, Blocks.SEA_LANTERN.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 3, 1, 3, size, glowLichenFloor());
+            setLocalBlock(level, origin, rotation, 3, 4, 3, size, glowLichenCeiling());
         }
     }
 
@@ -786,7 +798,7 @@ public class ExcavationHiveCatalog {
 
             setLocalBlock(level, origin, rotation, 3, 1, 5, size, Blocks.SCAFFOLDING.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 2, 5, size, Blocks.SCAFFOLDING.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 3, 3, 5, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, false));
+            setLocalBlock(level, origin, rotation, 3, 3, 5, size, glowLichenWall(Direction.SOUTH));
         }
     }
 
@@ -832,7 +844,7 @@ public class ExcavationHiveCatalog {
 
             setLocalBlock(level, origin, rotation, 4, 1, 5, size, Blocks.SCAFFOLDING.defaultBlockState());
             setLocalBlock(level, origin, rotation, 4, 2, 5, size, Blocks.SCAFFOLDING.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 4, 3, 5, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, false));
+            setLocalBlock(level, origin, rotation, 4, 3, 5, size, glowLichenWall(Direction.SOUTH));
         }
     }
 
@@ -877,7 +889,7 @@ public class ExcavationHiveCatalog {
 
             setLocalBlock(level, origin, rotation, 2, 4, 2, size, Blocks.IRON_CHAIN.defaultBlockState());
             setLocalBlock(level, origin, rotation, 2, 3, 2, size, Blocks.IRON_CHAIN.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 2, 2, 2, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, true));
+            setLocalBlock(level, origin, rotation, 2, 2, 2, size, glowLichenWall(Direction.NORTH));
         }
     }
 
@@ -922,7 +934,7 @@ public class ExcavationHiveCatalog {
 
             setLocalBlock(level, origin, rotation, 4, 4, 4, size, Blocks.IRON_CHAIN.defaultBlockState());
             setLocalBlock(level, origin, rotation, 4, 3, 4, size, Blocks.IRON_CHAIN.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 4, 2, 4, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, true));
+            setLocalBlock(level, origin, rotation, 4, 2, 4, size, glowLichenWall(Direction.NORTH));
         }
     }
 
@@ -971,7 +983,7 @@ public class ExcavationHiveCatalog {
 
             setLocalBlock(level, origin, rotation, 3, 5, 3, size, SandStormBlocks.FULGURITE_GLASS.defaultBlockState());
             setLocalBlock(level, origin, rotation, 3, 4, 3, size, Blocks.IRON_CHAIN.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 3, 3, 3, size, Blocks.LANTERN.defaultBlockState().setValue(BlockStateProperties.HANGING, true));
+            setLocalBlock(level, origin, rotation, 3, 3, 3, size, glowLichenCeiling());
 
             BlockPos chestPos = origin.offset(rotation.rotateOffset(3, 1, 3, size));
             setSafeChest(level, chestPos, rotation.rotateDirection(Direction.SOUTH), true, random);

@@ -2563,15 +2563,14 @@ public class ShowcaseAutomation {
                     BlockPos p = new BlockPos(top.getX() + dx, y, top.getZ() + dz);
                     if (dx == 0 && dz == 0) {
                         level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
-                        level.setBlock(new BlockPos(top.getX(), y, top.getZ() - 1), Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH), 2);
-                        if (y % 8 == 0) {
-                            level.setBlock(p, Blocks.LANTERN.defaultBlockState(), 2);
-                        }
+                    } else if (dx == 0 && dz == -1) {
+                        level.setBlock(p, SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState(), 2);
                     } else {
                         level.setBlock(p, SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
                     }
                 }
             }
+            level.setBlock(new BlockPos(top.getX(), y, top.getZ()), Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH), 2);
         }
     }
 

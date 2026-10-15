@@ -72,4 +72,96 @@ class DungeonCeilingAndLadderIntegrityArchitectureTest {
         assertTrue(content.contains("ensureDoorwaysOpen("),
                 "AbandonedMilitaryLabDungeon must ensure stairwell doorways are open to corridors");
     }
+
+    @Test
+    void excavationHiveMustSupportLaddersWithSolidPillars() throws IOException {
+        Path catalogPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "ExcavationHiveCatalog.java");
+        assertTrue(Files.exists(catalogPath), "ExcavationHiveCatalog.java must exist");
+        String catalogContent = Files.readString(catalogPath);
+
+        assertTrue(catalogContent.contains("SandStormBlocks.WEATHERED_REINFORCED_CONCRETE.defaultBlockState()"),
+                "ExcavationHiveCatalog must place weathered reinforced concrete pillars for ladders");
+        assertTrue(catalogContent.contains("rotation.rotateDirection(Direction.SOUTH)"),
+                "ExcavationHiveCatalog must rotate ladder horizontal facing with component rotation");
+
+        Path dungeonPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "AbandonedExcavationHiveDungeon.java");
+        assertTrue(Files.exists(dungeonPath), "AbandonedExcavationHiveDungeon.java must exist");
+        String dungeonContent = Files.readString(dungeonPath);
+
+        assertTrue(dungeonContent.contains("SandStormBlocks.WEATHERED_REINFORCED_CONCRETE.defaultBlockState()"),
+                "AbandonedExcavationHiveDungeon must place weathered reinforced concrete pillars in shafts");
+        assertTrue(dungeonContent.contains("Direction.SOUTH"),
+                "AbandonedExcavationHiveDungeon must orient shaft ladders to attach to solid pillar");
+    }
+
+    @Test
+    void excavationHiveMustOnlyUseGlowLichenForIllumination() throws IOException {
+        Path catalogPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "ExcavationHiveCatalog.java");
+        assertTrue(Files.exists(catalogPath), "ExcavationHiveCatalog.java must exist");
+        String catalogContent = Files.readString(catalogPath);
+
+        assertTrue(catalogContent.contains("Blocks.GLOW_LICHEN"),
+                "ExcavationHiveCatalog must use glow lichen for atmospheric lighting");
+        assertFalse(catalogContent.contains("Blocks.LANTERN"),
+                "ExcavationHiveCatalog must not use lanterns");
+        assertFalse(catalogContent.contains("Blocks.SEA_LANTERN"),
+                "ExcavationHiveCatalog must not use sea lanterns");
+        assertFalse(catalogContent.contains("Blocks.SHROOMLIGHT"),
+                "ExcavationHiveCatalog must not use shroomlights");
+        assertFalse(catalogContent.contains("Blocks.TORCH"),
+                "ExcavationHiveCatalog must not use torches");
+
+        Path dungeonPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "AbandonedExcavationHiveDungeon.java");
+        assertTrue(Files.exists(dungeonPath), "AbandonedExcavationHiveDungeon.java must exist");
+        String dungeonContent = Files.readString(dungeonPath);
+
+        assertFalse(dungeonContent.contains("Blocks.LANTERN"),
+                "AbandonedExcavationHiveDungeon must not use lanterns");
+        assertFalse(dungeonContent.contains("Blocks.SEA_LANTERN"),
+                "AbandonedExcavationHiveDungeon must not use sea lanterns");
+        assertFalse(dungeonContent.contains("Blocks.SHROOMLIGHT"),
+                "AbandonedExcavationHiveDungeon must not use shroomlights");
+
+        Path clutterPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "ExcavationHiveClutterPass.java");
+        assertTrue(Files.exists(clutterPath), "ExcavationHiveClutterPass.java must exist");
+        String clutterContent = Files.readString(clutterPath);
+
+        assertTrue(clutterContent.contains("Blocks.GLOW_LICHEN"),
+                "ExcavationHiveClutterPass must grow organic glow lichen on solid walls");
+        assertFalse(clutterContent.contains("Blocks.LANTERN"),
+                "ExcavationHiveClutterPass must not use lanterns");
+    }
+
+    @Test
+    void allGeneratorsMustBackLaddersWithSolidBlocks() throws IOException {
+        Path castlePath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "structure", "ColossalCastleGenerator.java");
+        assertTrue(Files.exists(castlePath), "ColossalCastleGenerator.java must exist");
+        String castleContent = Files.readString(castlePath);
+
+        assertTrue(castleContent.contains("Blocks.SPRUCE_LOG.defaultBlockState()"),
+                "ColossalCastleGenerator must back tower ladder with solid spruce log pillar");
+        assertFalse(castleContent.contains("level.setBlock(mpos, Blocks.LADDER.defaultBlockState(), 2);"),
+                "ColossalCastleGenerator must never place unbacked floating ladders");
+
+        Path showcasePath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "ShowcaseAutomation.java");
+        assertTrue(Files.exists(showcasePath), "ShowcaseAutomation.java must exist");
+        String showcaseContent = Files.readString(showcasePath);
+
+        assertTrue(showcaseContent.contains("SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState()"),
+                "ShowcaseAutomation must back observation tube ladder with solid concrete");
+
+        Path militaryCatalogPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "MilitaryLabCatalog.java");
+        assertTrue(Files.exists(militaryCatalogPath), "MilitaryLabCatalog.java must exist");
+        String militaryContent = Files.readString(militaryCatalogPath);
+
+        assertTrue(militaryContent.contains("rotation.rotateDirection(Direction.SOUTH)"),
+                "MilitaryLabCatalog must rotate ladder horizontal facing with component rotation");
+
+        Path repositoryCatalogPath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "dungeon", "MillennialRepositoryCatalog.java");
+        assertTrue(Files.exists(repositoryCatalogPath), "MillennialRepositoryCatalog.java must exist");
+        String repositoryContent = Files.readString(repositoryCatalogPath);
+
+        assertTrue(repositoryContent.contains("rotation.rotateDirection(Direction.SOUTH)"),
+                "MillennialRepositoryCatalog must rotate ladder horizontal facing with component rotation");
+    }
 }

@@ -685,7 +685,7 @@ public class MilitaryLabCatalog {
             }
 
             for (int ly = -7; ly <= 2; ly++) {
-                setLocalBlock(level, origin, rotation, 2, ly, 3, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
+                setLocalBlock(level, origin, rotation, 2, ly, 3, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotateDirection(Direction.SOUTH)));
             }
 
             setLocalBlock(level, origin, rotation, 3, 1, 1, size, Blocks.IRON_BARS.defaultBlockState());
@@ -734,7 +734,7 @@ public class MilitaryLabCatalog {
 
             for (int ly = 1; ly <= 8; ly++) {
                 setLocalBlock(level, origin, rotation, 2, ly, 2, size, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState());
-                setLocalBlock(level, origin, rotation, 2, ly, 3, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));
+                setLocalBlock(level, origin, rotation, 2, ly, 3, size, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, rotation.rotateDirection(Direction.SOUTH)));
             }
 
             setLocalBlock(level, origin, rotation, 1, 1, 5, size, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState());

@@ -160,10 +160,10 @@ public class AbandonedExcavationHiveDungeon {
             for (int lx = 2; lx <= 4; lx++) {
                 for (int lz = 2; lz <= 4; lz++) {
                     for (int ly = -floorHeight + 1; ly <= 4; ly++) {
-                        if (lx == 3 && lz == 3) {
+                        if (lx == 2 && lz == 2) {
                             continue;
                         }
-                        if (lx == 2 && lz == 2) {
+                        if (lx == 2 && lz == 3 && ly <= 2) {
                             continue;
                         }
                         BlockPos p = roomOrigin.offset(lx, ly, lz);
@@ -178,8 +178,8 @@ public class AbandonedExcavationHiveDungeon {
             }
 
             for (int ly = -floorHeight + 1; ly <= 2; ly++) {
-                BlockPos ladderPos = roomOrigin.offset(3, ly, 3);
-                level.setBlock(ladderPos, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH), 2);
+                BlockPos ladderPos = roomOrigin.offset(2, ly, 3);
+                level.setBlock(ladderPos, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH), 2);
             }
 
             ensureDoorwaysOpen(level, roomOrigin, roomSize);

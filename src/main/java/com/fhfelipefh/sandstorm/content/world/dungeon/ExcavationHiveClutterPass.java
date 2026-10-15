@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class ExcavationHiveClutterPass implements DungeonClutterPass {
 
@@ -53,6 +54,24 @@ public class ExcavationHiveClutterPass implements DungeonClutterPass {
                                     level.setBlock(pos, Blocks.GRAVEL.defaultBlockState(), 2);
                                 }
                             }
+                        }
+                    } else if (state.isAir() && random.nextInt(20) == 0) {
+                        boolean downSolid = level.getBlockState(pos.below()).isSolid();
+                        boolean upSolid = level.getBlockState(pos.above()).isSolid();
+                        boolean northSolid = level.getBlockState(pos.north()).isSolid();
+                        boolean southSolid = level.getBlockState(pos.south()).isSolid();
+                        boolean eastSolid = level.getBlockState(pos.east()).isSolid();
+                        boolean westSolid = level.getBlockState(pos.west()).isSolid();
+
+                        if (downSolid || upSolid || northSolid || southSolid || eastSolid || westSolid) {
+                            BlockState lichenState = Blocks.GLOW_LICHEN.defaultBlockState()
+                                    .setValue(BlockStateProperties.DOWN, downSolid)
+                                    .setValue(BlockStateProperties.UP, upSolid)
+                                    .setValue(BlockStateProperties.NORTH, northSolid)
+                                    .setValue(BlockStateProperties.SOUTH, southSolid)
+                                    .setValue(BlockStateProperties.EAST, eastSolid)
+                                    .setValue(BlockStateProperties.WEST, westSolid);
+                            level.setBlock(pos, lichenState, 2);
                         }
                     }
                 }

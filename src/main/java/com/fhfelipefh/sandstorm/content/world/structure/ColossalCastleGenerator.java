@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class ColossalCastleGenerator {
 
@@ -183,16 +185,21 @@ public class ColossalCastleGenerator {
                         }
                         count++;
                     } else if (dist < rInner) {
-                        if (isFloor) {
-                            level.setBlock(mpos, Blocks.SPRUCE_PLANKS.defaultBlockState(), 2);
+                        if (dx == 0 && dz == 0) {
+                            level.setBlock(mpos, Blocks.SPRUCE_LOG.defaultBlockState(), 2);
                             count++;
-                        } else {
-                            if (dx == 0 && dz == 0 && y > 1) {
-                                level.setBlock(mpos, Blocks.LADDER.defaultBlockState(), 2);
+                        } else if (dx == 0 && dz == 1) {
+                            if (y > 1 && y <= height) {
+                                level.setBlock(mpos, Blocks.LADDER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH), 2);
                                 count++;
                             } else {
                                 level.setBlock(mpos, Blocks.AIR.defaultBlockState(), 2);
                             }
+                        } else if (isFloor) {
+                            level.setBlock(mpos, Blocks.SPRUCE_PLANKS.defaultBlockState(), 2);
+                            count++;
+                        } else {
+                            level.setBlock(mpos, Blocks.AIR.defaultBlockState(), 2);
                         }
                     }
                 }
