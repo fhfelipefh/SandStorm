@@ -69,6 +69,16 @@ public class RappelAnchorBlockEntity extends BlockEntity {
         }
     }
 
+    public void setupShowcaseDeployed(int depth) {
+        this.deployedDepth = depth;
+        this.targetDepth = depth;
+        this.state = STATE_IDLE;
+        setChanged();
+        if (this.level != null && !this.level.isClientSide()) {
+            this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
     public void startRetraction(Player player) {
         if (this.level == null) {
             return;

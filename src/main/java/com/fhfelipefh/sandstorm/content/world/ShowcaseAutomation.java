@@ -1,6 +1,10 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.block.AcousticDefensePylonBlock;
+import com.fhfelipefh.sandstorm.content.block.AutonomousSonicTurretBlock;
 import com.fhfelipefh.sandstorm.content.block.BiosphereDoorBlock;
+import com.fhfelipefh.sandstorm.content.block.KineticRailgunBlock;
+import com.fhfelipefh.sandstorm.content.block.RappelAnchorBlock;
 import com.fhfelipefh.sandstorm.content.block.SandMaglevRailBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.SolidStateAccumulatorBlock;
@@ -8,11 +12,20 @@ import com.fhfelipefh.sandstorm.content.block.VaultDoorControllerBlock;
 import com.fhfelipefh.sandstorm.content.block.VaultDoorDummyBlock;
 import com.fhfelipefh.sandstorm.content.block.VaultWallPanelBlock;
 import com.fhfelipefh.sandstorm.content.block.VerticalConnection;
+import com.fhfelipefh.sandstorm.content.block.entity.AcousticDefensePylonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AmnioticIncubatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericTerraformerBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CryogenicAtmosphericChillerBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.KineticRailgunBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.OrbitalGroundStationBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.OrbitalMassDriverBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SubspaceGatewayBlockEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
@@ -196,6 +209,26 @@ public class ShowcaseAutomation {
                                 .executes(ShowcaseAutomation::executeVaultBuildCommand)
                         )
                 )
+                .then(Commands.literal("gateway")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeGatewayCommand)
+                )
+                .then(Commands.literal("portal")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeGatewayCommand)
+                )
+                .then(Commands.literal("rappel")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeRappelCommand)
+                )
+                .then(Commands.literal("defense")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeDefenseCommand)
+                )
+                .then(Commands.literal("orbital")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeOrbitalCommand)
+                )
                 .then(Commands.literal("military_lab")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
@@ -234,6 +267,26 @@ public class ShowcaseAutomation {
                                 .executes(ShowcaseAutomation::executeVaultBuildCommand)
                         )
                 )
+                .then(Commands.literal("gateway")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeGatewayCommand)
+                )
+                .then(Commands.literal("portal")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeGatewayCommand)
+                )
+                .then(Commands.literal("rappel")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeRappelCommand)
+                )
+                .then(Commands.literal("defense")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeDefenseCommand)
+                )
+                .then(Commands.literal("orbital")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeOrbitalCommand)
+                )
                 .then(Commands.literal("military_lab")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
@@ -258,6 +311,31 @@ public class ShowcaseAutomation {
                 .then(Commands.literal("build")
                         .executes(ShowcaseAutomation::executeVaultBuildCommand)
                 )
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_gateway")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeGatewayCommand)
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_portal")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeGatewayCommand)
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_rappel")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeRappelCommand)
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_defense")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeDefenseCommand)
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_orbital")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeOrbitalCommand)
         );
 
         dispatcher.register(Commands.literal("sandstorm_computer")
@@ -357,6 +435,82 @@ public class ShowcaseAutomation {
         return 0;
     }
 
+    public static int executeGatewayCommand(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
+        if (source.getEntity() instanceof ServerPlayer player) {
+            ServerLevel level = source.getLevel();
+            if (showcaseActive) {
+                BlockPos targetPos = new BlockPos(32, 161, -26);
+                player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 0.0f, 0.0f, true);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para a Estação do Portal do Subespaço!"), true);
+            } else {
+                BlockPos targetPos = BlockPos.containing(player.position()).relative(player.getDirection(), 4);
+                buildSubspaceGatewayStation(level, targetPos);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Estação do Portal do Subespaço montada com sucesso!"), true);
+            }
+            return 1;
+        }
+        source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
+        return 0;
+    }
+
+    public static int executeRappelCommand(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
+        if (source.getEntity() instanceof ServerPlayer player) {
+            ServerLevel level = source.getLevel();
+            if (showcaseActive) {
+                BlockPos targetPos = new BlockPos(-32, 161, -12);
+                player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Abismo e Torre de Rapel (128 Blocos)!"), true);
+            } else {
+                BlockPos targetPos = BlockPos.containing(player.position()).relative(player.getDirection(), 4);
+                buildRappelTestTowerAndChasm(level, targetPos);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Estação de Testes de Rapel montada com sucesso!"), true);
+            }
+            return 1;
+        }
+        source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
+        return 0;
+    }
+
+    public static int executeDefenseCommand(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
+        if (source.getEntity() instanceof ServerPlayer player) {
+            ServerLevel level = source.getLevel();
+            if (showcaseActive) {
+                BlockPos targetPos = new BlockPos(-32, 161, -30);
+                player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Perímetro de Defesa & Balística!"), true);
+            } else {
+                BlockPos targetPos = BlockPos.containing(player.position()).relative(player.getDirection(), 4);
+                buildDefenseAndBallisticsRange(level, targetPos);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Perímetro de Defesa & Balística montado com sucesso!"), true);
+            }
+            return 1;
+        }
+        source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
+        return 0;
+    }
+
+    public static int executeOrbitalCommand(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
+        if (source.getEntity() instanceof ServerPlayer player) {
+            ServerLevel level = source.getLevel();
+            if (showcaseActive) {
+                BlockPos targetPos = new BlockPos(45, 161, -12);
+                player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para a Estação de Lançamento Orbital!"), true);
+            } else {
+                BlockPos targetPos = BlockPos.containing(player.position()).relative(player.getDirection(), 4);
+                buildOrbitalLaunchStation(level, targetPos);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Estação Orbital montada com sucesso!"), true);
+            }
+            return 1;
+        }
+        source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
+        return 0;
+    }
+
     public static void buildShowcase(ServerLevel level, ServerPlayer player) {
         showcaseActive = true;
         TELEPORT_PADS.clear();
@@ -383,6 +537,14 @@ public class ShowcaseAutomation {
         buildQuantumComputerWalkway(level, center);
         buildVaultShowcase(level, center.offset(28, 0, -14));
         buildVaultWalkway(level, center);
+        buildSubspaceGatewayStation(level, center.offset(32, 0, -28));
+        buildSubspaceGatewayWalkway(level, center);
+        buildRappelTestTowerAndChasm(level, center.offset(-32, 0, -14));
+        buildRappelWalkway(level, center);
+        buildDefenseAndBallisticsRange(level, center.offset(-32, 0, -32));
+        buildDefenseWalkway(level, center);
+        buildOrbitalLaunchStation(level, center.offset(45, 0, -14));
+        buildOrbitalWalkway(level, center);
         buildBiospheresShowcase(level, center);
         buildUndergroundDungeonNetwork(level, center);
 
@@ -483,11 +645,46 @@ public class ShowcaseAutomation {
             chest.setItem(26, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL, 2));
         }
 
+        BlockPos chestPos2 = center.offset(0, 1, -1);
+        setChestSafe(level, chestPos2, Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(chestPos2) instanceof ChestBlockEntity chest2) {
+            chest2.setItem(0, new ItemStack(SandStormItems.RAPPEL_WINCH));
+            chest2.setItem(1, new ItemStack(SandStormItems.GLOWING_RAPPEL_WINCH));
+            chest2.setItem(2, new ItemStack(SandStormBlocks.RAPPEL_ANCHOR, 8));
+            chest2.setItem(3, new ItemStack(SandStormBlocks.GLOWING_RAPPEL_ANCHOR, 8));
+            chest2.setItem(4, new ItemStack(SandStormBlocks.RAPPEL_ROPE, 64));
+            chest2.setItem(5, new ItemStack(SandStormBlocks.GLOWING_RAPPEL_ROPE, 64));
+            chest2.setItem(6, new ItemStack(SandStormItems.SUBSPACE_WARP_CORE, 16));
+            chest2.setItem(7, new ItemStack(SandStormBlocks.SUBSPACE_GATEWAY, 4));
+            chest2.setItem(8, new ItemStack(SandStormBlocks.SEISMIC_DAMPENER_PAVING, 32));
+            chest2.setItem(9, new ItemStack(SandStormBlocks.KINETIC_RAILGUN, 2));
+            chest2.setItem(10, new ItemStack(SandStormItems.KINETIC_SLUG, 64));
+            chest2.setItem(11, new ItemStack(SandStormBlocks.AUTONOMOUS_SONIC_TURRET, 2));
+            chest2.setItem(12, new ItemStack(SandStormBlocks.ACOUSTIC_DEFENSE_PYLON, 2));
+            chest2.setItem(13, new ItemStack(SandStormBlocks.PLASMA_SHIELD_GENERATOR, 2));
+            chest2.setItem(14, new ItemStack(SandStormBlocks.KINETIC_SHIELD_GENERATOR, 2));
+            chest2.setItem(15, new ItemStack(SandStormBlocks.RETRACTABLE_SPIKE_WALL, 16));
+            chest2.setItem(16, new ItemStack(SandStormBlocks.KINETIC_FLOOR_SPIKES, 16));
+            chest2.setItem(17, new ItemStack(SandStormBlocks.CRUSHING_SPIKE_GATE, 16));
+            chest2.setItem(18, new ItemStack(SandStormBlocks.SOLID_STATE_ACCUMULATOR, 4));
+            chest2.setItem(19, new ItemStack(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2, 4));
+            chest2.setItem(20, new ItemStack(SandStormBlocks.WPT_RELAY_TOWER, 8));
+            chest2.setItem(21, new ItemStack(SandStormItems.COMPOSITE_RECURVE_BOW));
+            chest2.setItem(22, new ItemStack(SandStormItems.SAND_DEPTH_PROBE));
+            chest2.setItem(23, new ItemStack(SandStormItems.CRYO_LANCE));
+            chest2.setItem(24, new ItemStack(SandStormItems.CRYO_CELL_COOLER));
+            chest2.setItem(25, new ItemStack(SandStormItems.SUBDERMAL_TREMOR_SENSOR));
+            chest2.setItem(26, new ItemStack(SandStormItems.GEOLOGICAL_SURVEYOR_DRONE));
+        }
+
         AABB clearBox = new AABB(center).inflate(8.0);
         List<ArmorStand> existingStands = level.getEntitiesOfClass(ArmorStand.class, clearBox);
         for (ArmorStand stand : existingStands) {
             stand.discard();
         }
+
+        spawnHologram(level, center.getX() + 0.5, center.getY() + 2.4, center.getZ() + 0.5, "§6[Baú de Sobrevivência & Órbita]");
+        spawnHologram(level, center.getX() + 0.5, center.getY() + 2.4, center.getZ() - 0.5, "§b[Baú de Rapel, Dobra & Defesa]");
 
         spawnMannequin(level, center.offset(-2, 1, 0), "§bTraje Espacial Completo",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
@@ -506,6 +703,25 @@ public class ShowcaseAutomation {
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(Items.ELYTRA),
                 ItemStack.EMPTY, ItemStack.EMPTY,
                 new ItemStack(SandStormItems.SUIT_UPGRADE_JETPACK), new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE));
+
+        spawnMannequin(level, center.offset(-2, 1, -2), "§eExplorador de Abismos",
+                new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
+                new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS), new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
+                new ItemStack(SandStormItems.RAPPEL_WINCH), new ItemStack(SandStormItems.GLOWING_RAPPEL_WINCH));
+
+        spawnMannequin(level, center.offset(2, 1, -2), "§3Especialista Dimensional",
+                ItemStack.EMPTY, new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
+                ItemStack.EMPTY, ItemStack.EMPTY,
+                new ItemStack(SandStormItems.SUBSPACE_WARP_CORE), new ItemStack(SandStormItems.VIBRO_CRYSKNIFE));
+
+        spawnMannequin(level, center.offset(-2, 1, 2), "§cArtilheiro Balístico",
+                ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY,
+                new ItemStack(SandStormBlocks.KINETIC_RAILGUN), new ItemStack(SandStormItems.KINETIC_SLUG));
+
+        spawnMannequin(level, center.offset(2, 1, 2), "§9Engenheiro Orbital",
+                new ItemStack(SandStormItems.SPACE_SUIT_HELMET), ItemStack.EMPTY,
+                ItemStack.EMPTY, ItemStack.EMPTY,
+                new ItemStack(SandStormItems.ORBITAL_KINETIC_LANCE_SATELLITE), new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE));
     }
 
     private static void buildBlockCheckerboard(ServerLevel level, BlockPos center) {
@@ -1643,6 +1859,432 @@ public class ShowcaseAutomation {
             }
         }
         setupTerminalTrigger(level, center.offset(4, 0, -2), new BlockPos(28, 161, -6), "Câmara de Cofre Blindada", "Porta Mecânica 3x3 | Estrutura Blindada");
+    }
+
+    public static void buildSubspaceGatewayStation(ServerLevel level, BlockPos stationCenter) {
+        int baseY = stationCenter.getY();
+
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                for (int dy = 1; dy <= 5; dy++) {
+                    BlockPos p = stationCenter.offset(dx, dy, dz);
+                    if (!level.getBlockState(p).isAir()) {
+                        setAirSafe(level, p);
+                    }
+                }
+            }
+        }
+
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                BlockPos p = stationCenter.offset(dx, 0, dz);
+                boolean edge = Math.abs(dx) == 4 || Math.abs(dz) == 4;
+                boolean corner = Math.abs(dx) == 4 && Math.abs(dz) == 4;
+                Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : SandStormBlocks.MORPHING_ALLOY_BLOCK);
+                level.setBlock(p, b.defaultBlockState(), 3);
+                if (edge && !corner) {
+                    level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
+                }
+            }
+        }
+
+        BlockPos gatewayPos = stationCenter.offset(0, 1, 0);
+        level.setBlock(gatewayPos, SandStormBlocks.SUBSPACE_GATEWAY.defaultBlockState().setValue(BlockStateProperties.LIT, true), 3);
+        if (level.getBlockEntity(gatewayPos) instanceof SubspaceGatewayBlockEntity gatewayBe) {
+            gatewayBe.setEnergy(SubspaceGatewayBlockEntity.MAX_ENERGY);
+        }
+
+        BlockPos[] coils = {
+                stationCenter.offset(-2, 1, 0),
+                stationCenter.offset(2, 1, 0),
+                stationCenter.offset(0, 1, -2),
+                stationCenter.offset(0, 1, 2)
+        };
+        for (BlockPos coilPos : coils) {
+            level.setBlock(coilPos, SandStormBlocks.PIEZO_QUARTZ_BLOCK.defaultBlockState(), 3);
+            level.setBlock(coilPos.above(), Blocks.SEA_LANTERN.defaultBlockState(), 3);
+        }
+
+        BlockPos accumulatorPos = stationCenter.offset(-2, 1, -2);
+        level.setBlock(accumulatorPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        if (level.getBlockEntity(accumulatorPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
+            accBe.setStoredEnergy(500000);
+        }
+
+        BlockPos solarPos = stationCenter.offset(-2, 1, -3);
+        level.setBlock(solarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+
+        BlockPos cable1 = stationCenter.offset(-1, 1, -2);
+        BlockPos cable2 = stationCenter.offset(-1, 1, -1);
+        level.setBlock(cable1, SandStormBlocks.QUANTUM_NETWORK_CABLE.defaultBlockState(), 3);
+        level.setBlock(cable2, SandStormBlocks.QUANTUM_NETWORK_CABLE.defaultBlockState(), 3);
+
+        BlockPos chestPos = stationCenter.offset(2, 1, 0);
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(SandStormItems.SUBSPACE_WARP_CORE, 16));
+            chest.setItem(1, new ItemStack(SandStormItems.SUPERCONDUCTOR_TOROID, 8));
+            chest.setItem(2, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 16));
+            chest.setItem(3, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL, 2));
+            chest.setItem(4, new ItemStack(SandStormItems.SURVIVAL_DATAPAD, 1));
+        }
+
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.2, stationCenter.getZ() + 0.5, "§5§l[Estação de Trânsito Subespacial]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.85, stationCenter.getZ() + 0.5, "§aOnline | 100.000 J | Portal de Dobra Ativo");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.5, stationCenter.getZ() + 0.5, "§ePise no portal para transitar entre dimensões!");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.15, stationCenter.getZ() + 0.5, "§7Alimente com Subspace Warp Core para recarga");
+
+        setupReturnPad(level, stationCenter.offset(-3, 1, 3));
+    }
+
+    private static void buildSubspaceGatewayWalkway(ServerLevel level, BlockPos center) {
+        for (int z = -14; z >= -28; z--) {
+            for (int dx = -1; dx <= 1; dx++) {
+                BlockPos p = center.offset(28 + dx, 0, z);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = (dx != 0);
+                boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+        for (int x = 28; x <= 32; x++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                BlockPos p = center.offset(x, 0, -28 + dz);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = (dz != 0);
+                boolean light = (x % 3 == 0 && dz == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+        setupTerminalTrigger(level, center.offset(4, 0, 0), new BlockPos(32, 161, -26), "Portal do Subespaço Ativo", "Viagem Dimensional Imediata | 100.000 J");
+    }
+
+    public static void buildRappelTestTowerAndChasm(ServerLevel level, BlockPos stationCenter) {
+        int baseY = stationCenter.getY();
+
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                for (int dy = 1; dy <= 6; dy++) {
+                    BlockPos p = stationCenter.offset(dx, dy, dz);
+                    if (!level.getBlockState(p).isAir()) {
+                        setAirSafe(level, p);
+                    }
+                }
+            }
+        }
+
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                BlockPos p = stationCenter.offset(dx, 0, dz);
+                boolean isDropHole = (dx >= -1 && dx <= 3 && dz >= 1 && dz <= 3);
+                if (isDropHole) {
+                    level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+                    continue;
+                }
+                boolean edge = Math.abs(dx) == 4 || Math.abs(dz) == 4;
+                boolean corner = Math.abs(dx) == 4 && Math.abs(dz) == 4;
+                Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : SandStormBlocks.REINFORCED_CONCRETE);
+                level.setBlock(p, b.defaultBlockState(), 3);
+                if (edge && !corner) {
+                    level.setBlock(p.above(), Blocks.IRON_BARS.defaultBlockState(), 3);
+                }
+            }
+        }
+
+        BlockPos anchorPos1 = stationCenter.offset(0, 1, 0);
+        level.setBlock(anchorPos1, SandStormBlocks.RAPPEL_ANCHOR.defaultBlockState().setValue(RappelAnchorBlock.FACING, Direction.SOUTH), 3);
+
+        BlockPos anchorPos2 = stationCenter.offset(2, 1, 0);
+        level.setBlock(anchorPos2, SandStormBlocks.GLOWING_RAPPEL_ANCHOR.defaultBlockState().setValue(RappelAnchorBlock.FACING, Direction.SOUTH), 3);
+
+        BlockPos testPadPos = stationCenter.offset(-2, 1, 0);
+        level.setBlock(testPadPos, SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState(), 3);
+
+        int maxDepth = RappelAnchorBlockEntity.MAX_DEPTH;
+        for (int y = 1; y <= maxDepth; y++) {
+            for (int dx = -2; dx <= 4; dx++) {
+                for (int dz = 0; dz <= 4; dz++) {
+                    BlockPos airPos = stationCenter.offset(dx, 1 - y, dz);
+                    if (y < maxDepth || (dx != 0 && dx != 2) || dz != 1) {
+                        level.setBlock(airPos, Blocks.AIR.defaultBlockState(), 2);
+                    }
+                }
+            }
+            BlockPos rPos1 = anchorPos1.below(y);
+            level.setBlock(rPos1, SandStormBlocks.RAPPEL_ROPE.defaultBlockState(), 3);
+            BlockPos rPos2 = anchorPos2.below(y);
+            level.setBlock(rPos2, SandStormBlocks.GLOWING_RAPPEL_ROPE.defaultBlockState(), 3);
+        }
+
+        if (level.getBlockEntity(anchorPos1) instanceof RappelAnchorBlockEntity be1) {
+            be1.setupShowcaseDeployed(maxDepth);
+        }
+        if (level.getBlockEntity(anchorPos2) instanceof RappelAnchorBlockEntity be2) {
+            be2.setupShowcaseDeployed(maxDepth);
+        }
+
+        int bottomY = baseY - maxDepth;
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -1; dz <= 5; dz++) {
+                BlockPos floorPos = new BlockPos(stationCenter.getX() + dx, bottomY, stationCenter.getZ() + dz);
+                boolean isUnderRope = (dx == 0 || dx == 2) && dz == 1;
+                Block b = isUnderRope ? SandStormBlocks.SEISMIC_DAMPENER_PAVING : Blocks.POLISHED_DEEPSLATE;
+                if (Math.abs(dx) == 4 || dz == -1 || dz == 5) {
+                    b = Blocks.OCHRE_FROGLIGHT;
+                }
+                level.setBlock(floorPos, b.defaultBlockState(), 3);
+            }
+        }
+
+        BlockPos bottomChestPos = new BlockPos(stationCenter.getX() - 3, bottomY + 1, stationCenter.getZ() + 1);
+        setChestSafe(level, bottomChestPos, Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(bottomChestPos) instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(SandStormItems.RAPPEL_WINCH, 4));
+            chest.setItem(1, new ItemStack(SandStormItems.GLOWING_RAPPEL_WINCH, 4));
+            chest.setItem(2, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS, 1));
+            chest.setItem(3, new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE, 16));
+        }
+
+        BlockPos bottomReturnPos = new BlockPos(stationCenter.getX() + 3, bottomY + 1, stationCenter.getZ() + 1);
+        setupReturnPad(level, bottomReturnPos);
+
+        spawnHologram(level, stationCenter.getX() + 1.0, bottomY + 3.0, stationCenter.getZ() + 1.0, "§a§l[Fundo do Abismo - 128 Blocos]");
+        spawnHologram(level, stationCenter.getX() + 1.0, bottomY + 2.7, stationCenter.getZ() + 1.0, "§7Escale com a corda ou pise na placa para subir");
+
+        BlockPos topChestPos = stationCenter.offset(-3, 1, -2);
+        setChestSafe(level, topChestPos, Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(topChestPos) instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(SandStormItems.RAPPEL_WINCH, 8));
+            chest.setItem(1, new ItemStack(SandStormItems.GLOWING_RAPPEL_WINCH, 8));
+            chest.setItem(2, new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE, 1));
+            chest.setItem(3, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS, 1));
+            chest.setItem(4, new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE, 32));
+        }
+
+        spawnHologram(level, stationCenter.getX() + 1.0, baseY + 4.2, stationCenter.getZ() + 0.5, "§e§l[Zona de Testes: Rapel (128 Blocos)]");
+        spawnHologram(level, stationCenter.getX() + 1.0, baseY + 3.85, stationCenter.getZ() + 0.5, "§bComprimento Máximo: 128 Blocos Verticais");
+        spawnHologram(level, stationCenter.getX() + 1.0, baseY + 3.5, stationCenter.getZ() + 0.5, "§fClique com botão direito ou pule na corda");
+        spawnHologram(level, stationCenter.getX() + 1.0, baseY + 3.15, stationCenter.getZ() + 0.5, "§a[W/Pulo] Subir | [S/Agachar] Descer");
+        spawnHologram(level, stationCenter.getX() + 1.0, baseY + 2.8, stationCenter.getZ() + 0.5, "§6[Anti-Queda]: Pule no vão e seja capturado!");
+
+        setupReturnPad(level, stationCenter.offset(-3, 1, -3));
+    }
+
+    private static void buildRappelWalkway(ServerLevel level, BlockPos center) {
+        for (int x = -5; x >= -28; x--) {
+            for (int z = -1; z <= 1; z++) {
+                BlockPos p = center.offset(x, 0, z);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = (z != 0);
+                boolean light = (Math.abs(x) % 3 == 0 && z == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+        for (int z = -2; z >= -14; z--) {
+            for (int dx = -1; dx <= 1; dx++) {
+                BlockPos p = center.offset(-28 + dx, 0, z);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = (dx != 0);
+                boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+        setupTerminalTrigger(level, center.offset(-4, 0, 0), new BlockPos(-32, 161, -12), "Torre e Abismo de Rapel (128 Blocos)", "Comprimento Máximo | Queda Livre e Subida");
+    }
+
+    public static void buildDefenseAndBallisticsRange(ServerLevel level, BlockPos stationCenter) {
+        int baseY = stationCenter.getY();
+
+        for (int dx = -5; dx <= 5; dx++) {
+            for (int dz = -4; dz <= 5; dz++) {
+                for (int dy = 1; dy <= 5; dy++) {
+                    BlockPos p = stationCenter.offset(dx, dy, dz);
+                    if (!level.getBlockState(p).isAir()) {
+                        setAirSafe(level, p);
+                    }
+                }
+            }
+        }
+
+        for (int dx = -5; dx <= 5; dx++) {
+            for (int dz = -4; dz <= 5; dz++) {
+                BlockPos p = stationCenter.offset(dx, 0, dz);
+                boolean edge = Math.abs(dx) == 5 || dz == -4 || dz == 5;
+                boolean corner = (Math.abs(dx) == 5 && (dz == -4 || dz == 5));
+                Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : SandStormBlocks.REINFORCED_CONCRETE);
+                level.setBlock(p, b.defaultBlockState(), 3);
+                if (edge && !corner && dz != 5) {
+                    level.setBlock(p.above(), Blocks.IRON_BARS.defaultBlockState(), 3);
+                }
+            }
+        }
+
+        BlockPos railgunPos = stationCenter.offset(-2, 1, 0);
+        level.setBlock(railgunPos, SandStormBlocks.KINETIC_RAILGUN.defaultBlockState().setValue(KineticRailgunBlock.FACING, Direction.SOUTH), 3);
+        if (level.getBlockEntity(railgunPos) instanceof KineticRailgunBlockEntity railgunBe) {
+            railgunBe.setItem(0, new ItemStack(SandStormItems.KINETIC_SLUG, 64));
+            railgunBe.setItem(1, new ItemStack(SandStormItems.KINETIC_SLUG, 64));
+        }
+
+        BlockPos turretPos = stationCenter.offset(2, 1, 0);
+        level.setBlock(turretPos, SandStormBlocks.AUTONOMOUS_SONIC_TURRET.defaultBlockState().setValue(AutonomousSonicTurretBlock.FACING, Direction.SOUTH), 3);
+        if (level.getBlockEntity(turretPos) instanceof AutonomousSonicTurretBlockEntity turretBe) {
+            turretBe.setEnergy(50000);
+        }
+
+        BlockPos pylonPos = stationCenter.offset(0, 1, 0);
+        level.setBlock(pylonPos, SandStormBlocks.ACOUSTIC_DEFENSE_PYLON.defaultBlockState().setValue(AcousticDefensePylonBlock.ACTIVE, true), 3);
+        if (level.getBlockEntity(pylonPos) instanceof AcousticDefensePylonBlockEntity pylonBe) {
+            pylonBe.setStoredEnergy(50000);
+        }
+
+        BlockPos plasmaPos = stationCenter.offset(-4, 1, 0);
+        level.setBlock(plasmaPos, SandStormBlocks.PLASMA_SHIELD_GENERATOR.defaultBlockState(), 3);
+        if (level.getBlockEntity(plasmaPos) instanceof PlasmaShieldGeneratorBlockEntity shieldBe) {
+            shieldBe.setStoredEnergy(500000);
+            shieldBe.setShieldActive(true);
+            shieldBe.setFieldRadius(32);
+        }
+
+        BlockPos kineticPos = stationCenter.offset(4, 1, 0);
+        level.setBlock(kineticPos, SandStormBlocks.KINETIC_SHIELD_GENERATOR.defaultBlockState(), 3);
+        if (level.getBlockEntity(kineticPos) instanceof KineticShieldGeneratorBlockEntity kShieldBe) {
+            kShieldBe.setEnergy(50000);
+        }
+
+        level.setBlock(stationCenter.offset(-3, 1, 4), SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER.defaultBlockState(), 3);
+        level.setBlock(stationCenter.offset(-2, 1, 4), SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER.defaultBlockState(), 3);
+        level.setBlock(stationCenter.offset(-1, 1, 4), SandStormBlocks.KINETIC_FLOOR_SPIKES.defaultBlockState(), 3);
+        level.setBlock(stationCenter.offset(0, 1, 4), SandStormBlocks.CRUSHING_SPIKE_GATE.defaultBlockState(), 3);
+        level.setBlock(stationCenter.offset(1, 1, 4), SandStormBlocks.KINETIC_FLOOR_SPIKES.defaultBlockState(), 3);
+        level.setBlock(stationCenter.offset(2, 1, 4), SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL.defaultBlockState(), 3);
+        level.setBlock(stationCenter.offset(3, 1, 4), SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL.defaultBlockState(), 3);
+
+        BlockPos chestPos = stationCenter.offset(0, 1, -2);
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(SandStormItems.KINETIC_SLUG, 64));
+            chest.setItem(1, new ItemStack(SandStormItems.KINETIC_SLUG, 64));
+            chest.setItem(2, new ItemStack(SandStormItems.SONIC_CANNON, 1));
+            chest.setItem(3, new ItemStack(SandStormItems.HEAVY_PLASMA_CANNON, 1));
+            chest.setItem(4, new ItemStack(SandStormItems.PLASMA_RIFLE, 1));
+            chest.setItem(5, new ItemStack(SandStormItems.ANOMALY_RADAR, 1));
+            chest.setItem(6, new ItemStack(SandStormItems.VIBRO_CRYSKNIFE, 1));
+        }
+
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.2, stationCenter.getZ() + 0.5, "§c§l[Perímetro de Defesa & Balística]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.85, stationCenter.getZ() + 0.5, "§7Canhão Railgun 250 kJ | Torreta Sônica | Escudos");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.5, stationCenter.getZ() + 0.5, "§eSistemas energizados e prontos para teste");
+
+        setupReturnPad(level, stationCenter.offset(-4, 1, -3));
+    }
+
+    private static void buildDefenseWalkway(ServerLevel level, BlockPos center) {
+        for (int z = -14; z >= -32; z--) {
+            for (int dx = -1; dx <= 1; dx++) {
+                BlockPos p = center.offset(-32 + dx, 0, z);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = (dx != 0);
+                boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+        setupTerminalTrigger(level, center.offset(-4, 0, -2), new BlockPos(-32, 161, -30), "Perímetro de Defesa & Balística", "Railgun 250 kJ | Torreta Sônica | Escudos");
+    }
+
+    public static void buildOrbitalLaunchStation(ServerLevel level, BlockPos stationCenter) {
+        int baseY = stationCenter.getY();
+
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                for (int dy = 1; dy <= 5; dy++) {
+                    BlockPos p = stationCenter.offset(dx, dy, dz);
+                    if (!level.getBlockState(p).isAir()) {
+                        setAirSafe(level, p);
+                    }
+                }
+            }
+        }
+
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                BlockPos p = stationCenter.offset(dx, 0, dz);
+                boolean edge = Math.abs(dx) == 4 || Math.abs(dz) == 4;
+                boolean corner = Math.abs(dx) == 4 && Math.abs(dz) == 4;
+                Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : SandStormBlocks.MORPHING_ALLOY_BLOCK);
+                level.setBlock(p, b.defaultBlockState(), 3);
+                if (edge && !corner) {
+                    level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
+                }
+            }
+        }
+
+        BlockPos massDriverPos = stationCenter.offset(0, 1, 0);
+        level.setBlock(massDriverPos, SandStormBlocks.ORBITAL_MASS_DRIVER.defaultBlockState(), 3);
+        if (level.getBlockEntity(massDriverPos) instanceof OrbitalMassDriverBlockEntity driverBe) {
+            driverBe.setEnergy(OrbitalMassDriverBlockEntity.MAX_ENERGY);
+        }
+
+        BlockPos groundStationPos = stationCenter.offset(-2, 1, 0);
+        level.setBlock(groundStationPos, SandStormBlocks.ORBITAL_GROUND_STATION.defaultBlockState(), 3);
+        if (level.getBlockEntity(groundStationPos) instanceof OrbitalGroundStationBlockEntity stationBe) {
+            stationBe.setEnergy(100000);
+        }
+
+        BlockPos telescopePos = stationCenter.offset(2, 1, 0);
+        level.setBlock(telescopePos, SandStormBlocks.SPECTRAL_SURVEY_TELESCOPE.defaultBlockState(), 3);
+
+        BlockPos spirePos = stationCenter.offset(0, 1, 2);
+        level.setBlock(spirePos, SandStormBlocks.HOLO_TACTICAL_SPIRE.defaultBlockState(), 3);
+
+        BlockPos accumulatorPos = stationCenter.offset(-2, 1, -2);
+        level.setBlock(accumulatorPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        if (level.getBlockEntity(accumulatorPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
+            accBe.setStoredEnergy(500000);
+        }
+
+        BlockPos solarPos = stationCenter.offset(-2, 1, -3);
+        level.setBlock(solarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+
+        BlockPos cable = stationCenter.offset(-1, 1, 0);
+        level.setBlock(cable, SandStormBlocks.QUANTUM_NETWORK_CABLE.defaultBlockState(), 3);
+
+        BlockPos chestPos = stationCenter.offset(2, 1, -2);
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE, 4));
+            chest.setItem(1, new ItemStack(SandStormItems.ORBITAL_SOLAR_REFLECTOR_SATELLITE, 4));
+            chest.setItem(2, new ItemStack(SandStormItems.SAR_GEOLOGICAL_SATELLITE, 4));
+            chest.setItem(3, new ItemStack(SandStormItems.ORBITAL_KINETIC_LANCE_SATELLITE, 4));
+            chest.setItem(4, new ItemStack(SandStormItems.CYBERNETIC_COMMAND_UPLINK, 2));
+            chest.setItem(5, new ItemStack(SandStormItems.ANOMALY_RADAR, 1));
+        }
+
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.2, stationCenter.getZ() + 0.5, "§3§l[Estação de Lançamento Orbital]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.85, stationCenter.getZ() + 0.5, "§bCanhão de Massa Eletromagnético (500.000 J)");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.5, stationCenter.getZ() + 0.5, "§eInsira um Satélite no Canhão para lançar");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.15, stationCenter.getZ() + 0.5, "§7Use o Uplink Cibernético para comandar a órbita");
+
+        setupReturnPad(level, stationCenter.offset(3, 1, 3));
+    }
+
+    private static void buildOrbitalWalkway(ServerLevel level, BlockPos center) {
+        for (int x = 28; x <= 45; x++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                BlockPos p = center.offset(x, 0, -14 + dz);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = (dz != 0);
+                boolean light = (x % 3 == 0 && dz == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+        setupTerminalTrigger(level, center.offset(4, 0, 2), new BlockPos(45, 161, -12), "Estação Espacial Orbital", "Canhão de Massa 500 kJ | Satélites e Uplink");
     }
 
     public static int getBiosphereFrontZ() {
