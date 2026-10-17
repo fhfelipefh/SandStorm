@@ -21,6 +21,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
@@ -85,7 +86,9 @@ public class SeismicSurvivalHandler {
     }
 
     public static void handlePlayerMovement(ServerPlayer player) {
-        if (!player.onGround() || player.isSpectator() || player.isCreative() || !SandStormWorldHelper.isSandStormWorld(player.level())) {
+        if (!player.onGround() || player.isSpectator() || player.isCreative()
+                || !SandStormWorldHelper.isSandStormWorld(player.level())
+                || player.level().dimension() != Level.OVERWORLD) {
             return;
         }
 

@@ -29,6 +29,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -120,13 +121,14 @@ public class SuitSurvivalHandler {
             player.onUpdateAbilities();
         }
 
+        boolean isOverworld = player.level().dimension() == Level.OVERWORLD;
         BlockPos pos = player.blockPosition();
         boolean canSeeSky = (player.tickCount % 10 == 0)
                 ? player.level().canSeeSkyFromBelowWater(pos)
                 : player.level().canSeeSky(pos);
         boolean isDay = player.level().getSkyDarken() < 4;
-        boolean exposedToSunlight = isDay && canSeeSky && pos.getY() >= 50;
-        boolean underground = pos.getY() < 50;
+        boolean exposedToSunlight = isOverworld && isDay && canSeeSky && pos.getY() >= 50;
+        boolean underground = isOverworld && pos.getY() < 50;
 
         double ambientTemperature = calculateAmbientTemperature(player, pos.getY(), canSeeSky, isDay);
         if (suitData.hasUpgrade(player.getUUID(), "thermal")) {
@@ -234,7 +236,7 @@ public class SuitSurvivalHandler {
             }
         }
 
-        if (sandStormWorld && weather.canCauseSandDamage() && canSeeSky && !suit.isFullSuitEquipped()) {
+        if (isOverworld && sandStormWorld && weather.canCauseSandDamage() && canSeeSky && !suit.isFullSuitEquipped()) {
             if (player.tickCount % 40 == 0) {
                 player.hurtServer(player.level(), player.damageSources().dryOut(), 1.0f);
             }
@@ -272,6 +274,12 @@ public class SuitSurvivalHandler {
     }
 
     public static double calculateAmbientTemperature(ServerPlayer player, int posY, boolean canSeeSky, boolean isDay) {
+        if (player.level().dimension() == Level.NETHER) {
+            return 48.0 + 0.3 * Math.sin(player.tickCount * 0.05);
+        }
+        if (player.level().dimension() == Level.END) {
+            return 5.0 + 0.2 * Math.cos(player.tickCount * 0.05);
+        }
         if (posY < 50) {
             return Math.max(2.0, 20.0 - (50 - posY) * 0.25);
         }

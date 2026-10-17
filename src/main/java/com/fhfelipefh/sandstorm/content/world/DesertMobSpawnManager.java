@@ -24,6 +24,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -65,7 +66,7 @@ public class DesertMobSpawnManager {
             return;
         }
         ServerLevel level = player.level();
-        if (!SandStormWorldHelper.isSandStormWorld(level)) {
+        if (!SandStormWorldHelper.isSandStormWorld(level) || level.dimension() != Level.OVERWORLD) {
             return;
         }
         if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(player.getBlockX(), player.getBlockZ())) {
@@ -246,6 +247,9 @@ public class DesertMobSpawnManager {
     }
 
     public static void cleanupDistantArtificialMobs(ServerLevel level) {
+        if (level.dimension() != Level.OVERWORLD) {
+            return;
+        }
         List<ServerPlayer> players = level.players();
         if (players.isEmpty()) {
             return;

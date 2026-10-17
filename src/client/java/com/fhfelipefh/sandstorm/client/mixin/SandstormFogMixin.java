@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.client.renderer.fog.FogRenderer;
+import net.minecraft.world.level.Level;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,6 +30,10 @@ public class SandstormFogMixin {
             return;
         }
 
+        if (clientLevel.dimension() != Level.OVERWORLD) {
+            return;
+        }
+
         Minecraft mc = Minecraft.getInstance();
         boolean isShowcase = ShowcaseAutomation.isShowcaseActive();
         if (!isShowcase && mc.getSingleplayerServer() != null) {
@@ -38,9 +43,9 @@ public class SandstormFogMixin {
             }
         }
         if (isShowcase) {
-            data.renderDistanceStart = 10000.0f;
+            data.renderDistanceStart = 5000.0f;
             data.renderDistanceEnd = 10000.0f;
-            data.environmentalStart = 10000.0f;
+            data.environmentalStart = 5000.0f;
             data.environmentalEnd = 10000.0f;
             data.skyEnd = 10000.0f;
             data.cloudEnd = 10000.0f;

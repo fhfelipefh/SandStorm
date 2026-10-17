@@ -173,6 +173,7 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
     }
 
     private static int findSafeNetherAltitude(ServerLevel level, int x, int z) {
+        level.getChunk(x >> 4, z >> 4);
         for (int y = 40; y <= 90; y++) {
             BlockPos pos = new BlockPos(x, y, z);
             if (level.getBlockState(pos).isAir() && level.getBlockState(pos.above()).isAir()) {
@@ -183,11 +184,13 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
     }
 
     private static int findSafeOverworldAltitude(ServerLevel level, int x, int z) {
+        level.getChunk(x >> 4, z >> 4);
         int height = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
         return Math.max(64, height);
     }
 
     private static void ensureDestinationLandingGate(ServerLevel destLevel, BlockPos landingPos) {
+        destLevel.getChunk(landingPos.getX() >> 4, landingPos.getZ() >> 4);
         for (int dx = -1; dx <= 1; dx++) {
             for (int dz = -1; dz <= 1; dz++) {
                 BlockPos floorPos = landingPos.offset(dx, 0, dz);

@@ -16,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import com.fhfelipefh.sandstorm.content.item.HypoInjectorItem;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import java.util.Locale;
 
@@ -72,12 +73,14 @@ public class SurvivalHudOverlay implements HudElement {
         int screenWidth = extractor.guiWidth();
         int screenHeight = extractor.guiHeight();
 
-        SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
-        if (weather.isActive() && weather.getIntensity() > 0.02) {
-            int alpha = (int) Math.clamp(weather.getIntensity() * 25, 0, 32);
-            int sandColor = (alpha << 24) | 0xC29B62;
-            extractor.fill(0, 0, screenWidth, screenHeight, sandColor);
-            renderSandGrains(extractor, client, screenWidth, screenHeight, weather.getIntensity());
+        if (client.level != null && client.level.dimension() == Level.OVERWORLD) {
+            SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
+            if (weather.isActive() && weather.getIntensity() > 0.02) {
+                int alpha = (int) Math.clamp(weather.getIntensity() * 25, 0, 32);
+                int sandColor = (alpha << 24) | 0xC29B62;
+                extractor.fill(0, 0, screenWidth, screenHeight, sandColor);
+                renderSandGrains(extractor, client, screenWidth, screenHeight, weather.getIntensity());
+            }
         }
 
         FlashlightFocalRenderer.render(extractor, client, screenWidth, screenHeight);

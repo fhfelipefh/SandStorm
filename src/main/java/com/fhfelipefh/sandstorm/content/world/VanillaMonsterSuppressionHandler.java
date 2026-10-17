@@ -13,6 +13,7 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gamerules.GameRules;
@@ -59,7 +60,7 @@ public class VanillaMonsterSuppressionHandler {
     }
 
     public static boolean shouldSuppressEntity(Entity entity) {
-        if (entity == null || !SandStormWorldHelper.isSandStormWorld(entity.level())) {
+        if (entity == null || !SandStormWorldHelper.isSandStormWorld(entity.level()) || entity.level().dimension() != Level.OVERWORLD) {
             return false;
         }
 

@@ -408,7 +408,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(28, 160, -14);
+                BlockPos targetPos = new BlockPos(32, 160, -16);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 8.0, Set.of(), 180.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para a Vitrine de Cofres Blindados!"), true);
             } else {
@@ -440,7 +440,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(32, 161, -26);
+                BlockPos targetPos = new BlockPos(36, 161, -30);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 0.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para a Estação do Portal do Subespaço!"), true);
             } else {
@@ -459,7 +459,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(-32, 161, -12);
+                BlockPos targetPos = new BlockPos(-36, 161, -14);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Abismo e Torre de Rapel (128 Blocos)!"), true);
             } else {
@@ -478,7 +478,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(-32, 161, -30);
+                BlockPos targetPos = new BlockPos(-36, 161, -34);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Perímetro de Defesa & Balística!"), true);
             } else {
@@ -497,7 +497,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(45, 161, -12);
+                BlockPos targetPos = new BlockPos(52, 161, -14);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para a Estação de Lançamento Orbital!"), true);
             } else {
@@ -519,7 +519,7 @@ public class ShowcaseAutomation {
         int backZ = frontZ + 60;
         int maxZ = backZ + AtmosphericTerraformerBlockEntity.TIER1_RADIUS + 20;
 
-        AABB showcaseArea = new AABB(center.getX() - 140, center.getY() - 100, center.getZ() - 140, center.getX() + 140, center.getY() + 120, center.getZ() + maxZ);
+        AABB showcaseArea = new AABB(center.getX() - 160, center.getY() - 100, center.getZ() - 160, center.getX() + 160, center.getY() + 120, center.getZ() + maxZ + 20);
         List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, showcaseArea, e -> !(e instanceof ServerPlayer));
         for (Entity old : oldEntities) {
             old.discard();
@@ -533,17 +533,17 @@ public class ShowcaseAutomation {
         buildMegastructureDomeShowcase(level, center);
         buildMaglevTestTrack(level, center);
         buildAutonomousCyborgFacility(level, center, player);
-        buildQuantumComputerStation(level, center.offset(16, 0, 0));
+        buildQuantumComputerStation(level, center.offset(18, 0, 0));
         buildQuantumComputerWalkway(level, center);
-        buildVaultShowcase(level, center.offset(28, 0, -14));
+        buildVaultShowcase(level, center.offset(32, 0, -16));
         buildVaultWalkway(level, center);
-        buildSubspaceGatewayStation(level, center.offset(32, 0, -28));
+        buildSubspaceGatewayStation(level, center.offset(36, 0, -32));
         buildSubspaceGatewayWalkway(level, center);
-        buildRappelTestTowerAndChasm(level, center.offset(-32, 0, -14));
+        buildRappelTestTowerAndChasm(level, center.offset(-36, 0, -16));
         buildRappelWalkway(level, center);
-        buildDefenseAndBallisticsRange(level, center.offset(-32, 0, -32));
+        buildDefenseAndBallisticsRange(level, center.offset(-36, 0, -36));
         buildDefenseWalkway(level, center);
-        buildOrbitalLaunchStation(level, center.offset(45, 0, -14));
+        buildOrbitalLaunchStation(level, center.offset(52, 0, -16));
         buildOrbitalWalkway(level, center);
         buildBiospheresShowcase(level, center);
         buildUndergroundDungeonNetwork(level, center);
@@ -566,7 +566,7 @@ public class ShowcaseAutomation {
         int frontZ = getBiosphereFrontZ();
         int backZ = frontZ + 60;
         int maxZ = backZ + AtmosphericTerraformerBlockEntity.TIER1_RADIUS + 20;
-        AABB showcaseArea = new AABB(center.getX() - 140, center.getY() - 100, center.getZ() - 140, center.getX() + 140, center.getY() + 120, center.getZ() + maxZ);
+        AABB showcaseArea = new AABB(center.getX() - 160, center.getY() - 100, center.getZ() - 160, center.getX() + 160, center.getY() + 120, center.getZ() + maxZ + 20);
         List<ItemEntity> droppedItems = level.getEntitiesOfClass(ItemEntity.class, showcaseArea);
         for (ItemEntity item : droppedItems) {
             item.discard();
@@ -590,8 +590,8 @@ public class ShowcaseAutomation {
     }
 
     private static void clearUnderneath(ServerLevel level, BlockPos center, int maxZ) {
-        for (int x = -70; x <= 70; x++) {
-            for (int z = -90; z <= maxZ; z++) {
+        for (int x = -100; x <= 100; x++) {
+            for (int z = -110; z <= maxZ; z++) {
                 for (int y = -64; y < center.getY(); y++) {
                     BlockPos p = new BlockPos(x, y, z);
                     if (!level.getBlockState(p).isAir()) {
@@ -1687,7 +1687,7 @@ public class ShowcaseAutomation {
     }
 
     private static void buildQuantumComputerWalkway(ServerLevel level, BlockPos center) {
-        for (int x = 5; x <= 12; x++) {
+        for (int x = 5; x <= 14; x++) {
             for (int z = -1; z <= 1; z++) {
                 BlockPos p = center.offset(x, 0, z);
                 boolean edge = (z != 0);
@@ -1838,7 +1838,7 @@ public class ShowcaseAutomation {
     }
 
     private static void buildVaultWalkway(ServerLevel level, BlockPos center) {
-        for (int x = 19; x <= 28; x++) {
+        for (int x = 13; x <= 32; x++) {
             for (int z = -1; z <= 1; z++) {
                 BlockPos p = center.offset(x, 0, z);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
@@ -1848,9 +1848,9 @@ public class ShowcaseAutomation {
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        for (int z = -2; z >= -9; z--) {
+        for (int z = -2; z >= -11; z--) {
             for (int dx = -1; dx <= 1; dx++) {
-                BlockPos p = center.offset(28 + dx, 0, z);
+                BlockPos p = center.offset(32 + dx, 0, z);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                 boolean edge = (dx != 0);
                 boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
@@ -1858,7 +1858,7 @@ public class ShowcaseAutomation {
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        setupTerminalTrigger(level, center.offset(4, 0, -2), new BlockPos(28, 161, -6), "Câmara de Cofre Blindada", "Porta Mecânica 3x3 | Estrutura Blindada");
+        setupTerminalTrigger(level, center.offset(8, 0, -3), new BlockPos(32, 161, -8), "Câmara de Cofre Blindada", "Porta Mecânica 3x3 | Estrutura Blindada");
     }
 
     public static void buildSubspaceGatewayStation(ServerLevel level, BlockPos stationCenter) {
@@ -1938,9 +1938,9 @@ public class ShowcaseAutomation {
     }
 
     private static void buildSubspaceGatewayWalkway(ServerLevel level, BlockPos center) {
-        for (int z = -14; z >= -28; z--) {
+        for (int z = -12; z >= -32; z--) {
             for (int dx = -1; dx <= 1; dx++) {
-                BlockPos p = center.offset(28 + dx, 0, z);
+                BlockPos p = center.offset(32 + dx, 0, z);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                 boolean edge = (dx != 0);
                 boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
@@ -1948,9 +1948,9 @@ public class ShowcaseAutomation {
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        for (int x = 28; x <= 32; x++) {
+        for (int x = 32; x <= 36; x++) {
             for (int dz = -1; dz <= 1; dz++) {
-                BlockPos p = center.offset(x, 0, -28 + dz);
+                BlockPos p = center.offset(x, 0, -32 + dz);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                 boolean edge = (dz != 0);
                 boolean light = (x % 3 == 0 && dz == 0);
@@ -1958,7 +1958,7 @@ public class ShowcaseAutomation {
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        setupTerminalTrigger(level, center.offset(4, 0, 0), new BlockPos(32, 161, -26), "Portal do Subespaço Ativo", "Viagem Dimensional Imediata | 100.000 J");
+        setupTerminalTrigger(level, center.offset(12, 0, 0), new BlockPos(36, 161, -30), "Portal do Subespaço Ativo", "Viagem Dimensional Imediata | 100.000 J");
     }
 
     public static void buildRappelTestTowerAndChasm(ServerLevel level, BlockPos stationCenter) {
@@ -2073,7 +2073,7 @@ public class ShowcaseAutomation {
     }
 
     private static void buildRappelWalkway(ServerLevel level, BlockPos center) {
-        for (int x = -5; x >= -28; x--) {
+        for (int x = -5; x >= -32; x--) {
             for (int z = -1; z <= 1; z++) {
                 BlockPos p = center.offset(x, 0, z);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
@@ -2083,9 +2083,9 @@ public class ShowcaseAutomation {
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        for (int z = -2; z >= -14; z--) {
+        for (int z = -2; z >= -16; z--) {
             for (int dx = -1; dx <= 1; dx++) {
-                BlockPos p = center.offset(-28 + dx, 0, z);
+                BlockPos p = center.offset(-32 + dx, 0, z);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                 boolean edge = (dx != 0);
                 boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
@@ -2093,7 +2093,17 @@ public class ShowcaseAutomation {
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        setupTerminalTrigger(level, center.offset(-4, 0, 0), new BlockPos(-32, 161, -12), "Torre e Abismo de Rapel (128 Blocos)", "Comprimento Máximo | Queda Livre e Subida");
+        for (int x = -32; x >= -36; x--) {
+            for (int dz = -1; dz <= 1; dz++) {
+                BlockPos p = center.offset(x, 0, -16 + dz);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = (dz != 0);
+                boolean light = (Math.abs(x) % 3 == 0 && dz == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+        setupTerminalTrigger(level, center.offset(-12, 0, 0), new BlockPos(-36, 161, -14), "Torre e Abismo de Rapel (128 Blocos)", "Comprimento Máximo | Queda Livre e Subida");
     }
 
     public static void buildDefenseAndBallisticsRange(ServerLevel level, BlockPos stationCenter) {
@@ -2184,7 +2194,7 @@ public class ShowcaseAutomation {
     }
 
     private static void buildDefenseWalkway(ServerLevel level, BlockPos center) {
-        for (int z = -14; z >= -32; z--) {
+        for (int z = -17; z >= -36; z--) {
             for (int dx = -1; dx <= 1; dx++) {
                 BlockPos p = center.offset(-32 + dx, 0, z);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
@@ -2194,7 +2204,17 @@ public class ShowcaseAutomation {
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        setupTerminalTrigger(level, center.offset(-4, 0, -2), new BlockPos(-32, 161, -30), "Perímetro de Defesa & Balística", "Railgun 250 kJ | Torreta Sônica | Escudos");
+        for (int x = -32; x >= -36; x--) {
+            for (int dz = -1; dz <= 1; dz++) {
+                BlockPos p = center.offset(x, 0, -36 + dz);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = (dz != 0);
+                boolean light = (Math.abs(x) % 3 == 0 && dz == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+        setupTerminalTrigger(level, center.offset(-8, 0, -3), new BlockPos(-36, 161, -34), "Perímetro de Defesa & Balística", "Railgun 250 kJ | Torreta Sônica | Escudos");
     }
 
     public static void buildOrbitalLaunchStation(ServerLevel level, BlockPos stationCenter) {
@@ -2274,9 +2294,9 @@ public class ShowcaseAutomation {
     }
 
     private static void buildOrbitalWalkway(ServerLevel level, BlockPos center) {
-        for (int x = 28; x <= 45; x++) {
+        for (int x = 32; x <= 52; x++) {
             for (int dz = -1; dz <= 1; dz++) {
-                BlockPos p = center.offset(x, 0, -14 + dz);
+                BlockPos p = center.offset(x, 0, -16 + dz);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                 boolean edge = (dz != 0);
                 boolean light = (x % 3 == 0 && dz == 0);
@@ -2284,7 +2304,7 @@ public class ShowcaseAutomation {
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        setupTerminalTrigger(level, center.offset(4, 0, 2), new BlockPos(45, 161, -12), "Estação Espacial Orbital", "Canhão de Massa 500 kJ | Satélites e Uplink");
+        setupTerminalTrigger(level, center.offset(8, 0, 3), new BlockPos(52, 161, -14), "Estação Espacial Orbital", "Canhão de Massa 500 kJ | Satélites e Uplink");
     }
 
     public static int getBiosphereFrontZ() {
@@ -3121,7 +3141,27 @@ public class ShowcaseAutomation {
     }
 
     private static void buildUndergroundDungeonNetwork(ServerLevel level, BlockPos center) {
-        BlockPos westOrigin = center.offset(-58, -40, 8);
+        for (int z = -5; z >= -9; z--) {
+            for (int x = -6; x <= 6; x++) {
+                BlockPos p = center.offset(x, 0, z);
+                boolean edge = (Math.abs(x) == 6 || z == -9);
+                boolean light = (x % 3 == 0 && (z == -6 || z == -9));
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_SANDSTONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+        for (int z = 4; z <= 6; z++) {
+            for (int x = -8; x <= -4; x++) {
+                BlockPos p = center.offset(x, 0, z);
+                level.setBlock(p, Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+            }
+            for (int x = 4; x <= 8; x++) {
+                BlockPos p = center.offset(x, 0, z);
+                level.setBlock(p, Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+            }
+        }
+
+        BlockPos westOrigin = center.offset(-68, -40, 12);
         buildFoundationPlate(level, westOrigin.getX() - 2, westOrigin.getX() + 58, westOrigin.getZ() - 2, westOrigin.getZ() + 58, westOrigin.getY() - 40, 3);
         MillennialRepositoryDungeon.generate(level, westOrigin, 6, 8, 8);
         buildRoofCap(level, westOrigin.getX(), westOrigin.getX() + 56, westOrigin.getZ(), westOrigin.getZ() + 56, westOrigin.getY() + 5);
@@ -3129,7 +3169,7 @@ public class ShowcaseAutomation {
         BlockPos westReturn = westOrigin.offset(4 * 7 + 3, 1, 1);
         setupReturnPad(level, westReturn);
 
-        BlockPos eastOrigin = center.offset(4, -40, 8);
+        BlockPos eastOrigin = center.offset(14, -40, 12);
         buildFoundationPlate(level, eastOrigin.getX() - 2, eastOrigin.getX() + 58, eastOrigin.getZ() - 2, eastOrigin.getZ() + 58, eastOrigin.getY() - 1, 3);
         AncientBunkerComplexDungeon.generate(level, eastOrigin, 8, 8);
         buildRoofCap(level, eastOrigin.getX(), eastOrigin.getX() + 56, eastOrigin.getZ(), eastOrigin.getZ() + 56, eastOrigin.getY() + 5);
@@ -3137,7 +3177,7 @@ public class ShowcaseAutomation {
         BlockPos eastReturn = eastOrigin.offset(4 * 7 + 3, 1, 1);
         setupReturnPad(level, eastReturn);
 
-        BlockPos southOrigin = center.offset(-24, -45, -60);
+        BlockPos southOrigin = center.offset(-24, -45, -70);
         buildFoundationPlate(level, southOrigin.getX() - 2, southOrigin.getX() + 51, southOrigin.getZ() - 2, southOrigin.getZ() + 51, southOrigin.getY() - 24, 3);
         MillennialRepositoryDungeon.generate(level, southOrigin, 4, 7, 7);
         buildRoofCap(level, southOrigin.getX(), southOrigin.getX() + 49, southOrigin.getZ(), southOrigin.getZ() + 49, southOrigin.getY() + 5);
@@ -3145,7 +3185,7 @@ public class ShowcaseAutomation {
         BlockPos southReturn = southOrigin.offset(3 * 7 + 3, 1, 1);
         setupReturnPad(level, southReturn);
 
-        BlockPos northOrigin = center.offset(-24, -45, 74);
+        BlockPos northOrigin = center.offset(-24, -45, 84);
         buildFoundationPlate(level, northOrigin.getX() - 2, northOrigin.getX() + 51, northOrigin.getZ() - 2, northOrigin.getZ() + 51, northOrigin.getY() - 24, 3);
         AbandonedMilitaryLabDungeon.generate(level, northOrigin, 4, 7, 7);
         buildRoofCap(level, northOrigin.getX(), northOrigin.getX() + 49, northOrigin.getZ(), northOrigin.getZ() + 49, northOrigin.getY() + 5);
@@ -3153,7 +3193,7 @@ public class ShowcaseAutomation {
         BlockPos northReturn = northOrigin.offset(3 * 7 + 3, 1, 1);
         setupReturnPad(level, northReturn);
 
-        BlockPos hiveOrigin = center.offset(-84, -45, -60);
+        BlockPos hiveOrigin = center.offset(-96, -45, -70);
         buildFoundationPlate(level, hiveOrigin.getX() - 2, hiveOrigin.getX() + 38, hiveOrigin.getZ() - 2, hiveOrigin.getZ() + 38, hiveOrigin.getY() - 24, 3);
         AbandonedExcavationHiveDungeon.generate(level, hiveOrigin, 3, 5, 5);
         buildRoofCap(level, hiveOrigin.getX(), hiveOrigin.getX() + 36, hiveOrigin.getZ(), hiveOrigin.getZ() + 36, hiveOrigin.getY() + 5);
@@ -3161,31 +3201,31 @@ public class ShowcaseAutomation {
         BlockPos hiveReturn = hiveOrigin.offset(2 * 7 + 3, 1, 1);
         setupReturnPad(level, hiveReturn);
 
-        BlockPos westShaftTop = center.offset(-4, 0, 4);
+        BlockPos westShaftTop = center.offset(-8, 0, 5);
         buildGlassObservationTube(level, westShaftTop, westEntry.getY());
         buildCatwalk(level, new BlockPos(westShaftTop.getX(), westEntry.getY(), westShaftTop.getZ()), westEntry.north());
         level.setBlock(westEntry.north(), Blocks.AIR.defaultBlockState(), 2);
         level.setBlock(westEntry.north().above(), Blocks.AIR.defaultBlockState(), 2);
         setupShaftTrigger(level, westShaftTop, westEntry, "Megadungeon Oeste (6 Andares, 8x8)", "6 Andares | Grade 8x8 | 384 Salas");
 
-        BlockPos eastShaftTop = center.offset(4, 0, 4);
+        BlockPos eastShaftTop = center.offset(8, 0, 5);
         buildGlassObservationTube(level, eastShaftTop, eastEntry.getY());
         buildCatwalk(level, new BlockPos(eastShaftTop.getX(), eastEntry.getY(), eastShaftTop.getZ()), eastEntry.north());
         level.setBlock(eastEntry.north(), Blocks.AIR.defaultBlockState(), 2);
         level.setBlock(eastEntry.north().above(), Blocks.AIR.defaultBlockState(), 2);
         setupShaftTrigger(level, eastShaftTop, eastEntry, "Complexo Bunker Leste (8x8)", "1 Andar Colossal | Grade 8x8 | 64 Salas");
 
-        BlockPos southTerminal = center.offset(0, 0, -4);
+        BlockPos southTerminal = center.offset(0, 0, -8);
         setupTerminalTrigger(level, southTerminal, southEntry, "Depósito Geológico Sul (4 Andares)", "4 Andares | Grade 7x7 | 196 Salas");
 
         int maxBlockZ = getCheckerboardMaxZ();
         BlockPos northTerminal = center.offset(0, 0, maxBlockZ);
         setupTerminalTrigger(level, northTerminal, northEntry, "Laboratório Militar Abandonado Norte", "4 Andares | Grade 7x7 | 196 Salas | Black Site");
 
-        BlockPos hiveTerminal = center.offset(-4, 0, -4);
+        BlockPos hiveTerminal = center.offset(-5, 0, -8);
         setupTerminalTrigger(level, hiveTerminal, hiveEntry, "Complexo de Mineração Infestado", "3 Andares | Mega-Broca 14x14 | Ninho dos Sandworms");
 
-        BlockPos cryoOrigin = center.offset(40, -45, -60);
+        BlockPos cryoOrigin = center.offset(48, -45, -70);
         buildFoundationPlate(level, cryoOrigin.getX() - 2, cryoOrigin.getX() + 38, cryoOrigin.getZ() - 2, cryoOrigin.getZ() + 38, cryoOrigin.getY() - 24, 3);
         SubglacialCryoVaultDungeon.generate(level, cryoOrigin, 3, 5, 5);
         buildRoofCap(level, cryoOrigin.getX(), cryoOrigin.getX() + 36, cryoOrigin.getZ(), cryoOrigin.getZ() + 36, cryoOrigin.getY() + 5);
@@ -3193,7 +3233,7 @@ public class ShowcaseAutomation {
         BlockPos cryoReturn = cryoOrigin.offset(2 * 7 + 3, 1, 1);
         setupReturnPad(level, cryoReturn);
 
-        BlockPos cryoTerminal = center.offset(4, 0, -4);
+        BlockPos cryoTerminal = center.offset(5, 0, -8);
         setupTerminalTrigger(level, cryoTerminal, cryoEntry, "Cofre Criogênico Subglacial", "3 Andares | Câmaras Criogênicas | Cofre Sub-Zero");
     }
 
@@ -3312,17 +3352,19 @@ public class ShowcaseAutomation {
             BlockPos center = new BlockPos(0, 160, 0);
             String norm = (sector != null) ? sector.toLowerCase(Locale.ROOT) : "west";
             BlockPos dest = switch (norm) {
-                case "east", "bunker", "leste", "single" -> center.offset(4 + 4 * 7 + 3, -39, 8 + 3);
-                case "south", "sul" -> center.offset(-24 + 3 * 7 + 3, -44, -60 + 3);
-                case "north", "norte", "military_lab", "military", "lab", "militar" -> center.offset(-24 + 3 * 7 + 3, -44, 74 + 3);
-                case "cryo", "cryo_vault", "vault_cryo", "gelo" -> center.offset(40 + 2 * 7 + 3, -44, -60 + 3);
-                default -> center.offset(-58 + 4 * 7 + 3, -39, 8 + 3);
+                case "east", "bunker", "leste", "single" -> center.offset(14 + 4 * 7 + 3, -39, 12 + 3);
+                case "south", "sul" -> center.offset(-24 + 3 * 7 + 3, -44, -70 + 3);
+                case "north", "norte", "military_lab", "military", "lab", "militar" -> center.offset(-24 + 3 * 7 + 3, -44, 84 + 3);
+                case "cryo", "cryo_vault", "vault_cryo", "gelo" -> center.offset(48 + 2 * 7 + 3, -44, -70 + 3);
+                case "hive", "mineracao", "mineração", "escavacao", "escavação" -> center.offset(-96 + 2 * 7 + 3, -44, -70 + 3);
+                default -> center.offset(-68 + 4 * 7 + 3, -39, 12 + 3);
             };
             player.teleportTo(level, dest.getX() + 0.5, dest.getY() + 0.1, dest.getZ() + 0.5, Set.of(), 0.0f, 0.0f, true);
             level.playSound(null, player.blockPosition(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 1.0f, 1.2f);
             String label = switch (norm) {
                 case "military_lab", "military", "lab", "militar", "north", "norte" -> "Laboratório Militar Abandonado (Setor Norte)";
                 case "cryo", "cryo_vault", "vault_cryo", "gelo" -> "Cofre Criogênico Subglacial";
+                case "hive", "mineracao", "mineração", "escavacao", "escavação" -> "Complexo de Mineração Infestado";
                 default -> "Subsolo do Showcase (" + norm + ")";
             };
             source.sendSuccess(() -> Component.literal(String.format(Locale.ROOT, "§6[SandStorm]§a Teleportado para: §f%s §7em [%d, %d, %d]!", label, dest.getX(), dest.getY(), dest.getZ())), true);

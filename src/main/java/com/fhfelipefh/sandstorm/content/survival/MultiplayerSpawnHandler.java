@@ -31,7 +31,7 @@ public class MultiplayerSpawnHandler {
     }
 
     public static void relocatePlayerToCrashCabin(ServerPlayer player) {
-        if (!SandStormWorldHelper.isSandStormWorld(player.level())) {
+        if (!SandStormWorldHelper.isSandStormWorld(player.level()) || player.level().dimension() != Level.OVERWORLD) {
             return;
         }
         BlockPos cabinPos = SpaceshipLandingManager.getCabinSpawnPos();

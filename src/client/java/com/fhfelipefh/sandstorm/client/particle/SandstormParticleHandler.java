@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 
 public class SandstormParticleHandler {
     private static final int SAND_GOLD = 0xC49B64;
@@ -19,7 +20,7 @@ public class SandstormParticleHandler {
     }
 
     public static void tick(Minecraft client) {
-        if (client.player == null || client.level == null) {
+        if (client.player == null || client.level == null || client.level.dimension() != Level.OVERWORLD) {
             return;
         }
 

@@ -1,5 +1,7 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
+import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.survival.SpawnSafety;
 import java.util.Collections;
 import java.util.Set;
@@ -7,6 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -52,6 +55,12 @@ public class DimensionPortalRestrictionHandler {
         });
 
         ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> {
+            if (destination != null && destination.dimension() != Level.OVERWORLD) {
+                ServerPlayNetworking.send(player, new SandstormWeatherPayload(false, 0.0));
+            } else if (destination != null && destination.dimension() == Level.OVERWORLD) {
+                SandstormWeatherComponent weather = SandstormWeatherHandler.getWeather();
+                ServerPlayNetworking.send(player, new SandstormWeatherPayload(weather.isActive(), weather.getIntensity()));
+            }
             if (!SandStormWorldHelper.isSandStormWorld(destination)) {
                 return;
             }

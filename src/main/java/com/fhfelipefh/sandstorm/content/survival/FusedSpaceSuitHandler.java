@@ -26,6 +26,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Optional;
@@ -57,14 +58,16 @@ public class FusedSpaceSuitHandler {
         SpaceshipLandingManager.ensureSpaceshipPlaced(server, player.level());
         if (!player.entityTags().contains("sandstorm.fused_suit")) {
             player.addTag("sandstorm.fused_suit");
-            BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
-            SpawnSafety.teleportSafely(player, spawnPos);
+            if (player.level().dimension() == Level.OVERWORLD) {
+                BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
+                SpawnSafety.teleportSafely(player, spawnPos);
+            }
             equipFusedSuit(player);
             giveStarterSurvivalKit(player);
             SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player);
             suit.getEnergyStorage().setStoredEnergy(50000);
             PlayerSuitSavedData.get(server).setSuitData(player.getUUID(), 50000, 37.0);
-        } else if (!SpawnSafety.isSafePosition(player.level(), player.blockPosition()) || player.getY() <= player.level().getMinY() + 10) {
+        } else if (player.level().dimension() == Level.OVERWORLD && (!SpawnSafety.isSafePosition(player.level(), player.blockPosition()) || player.getY() <= player.level().getMinY() + 10)) {
             BlockPos spawnPos = SpaceshipLandingManager.getCabinSpawnPos();
             SpawnSafety.teleportSafely(player, spawnPos);
             SuitSurvivalHandler.getOrCreateSuit(player);

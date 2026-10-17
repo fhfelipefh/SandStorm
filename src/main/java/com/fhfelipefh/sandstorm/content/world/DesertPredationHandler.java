@@ -22,6 +22,7 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
@@ -86,7 +87,7 @@ public class DesertPredationHandler {
             return false;
         }
         ServerLevel level = player.level();
-        if (!SandStormWorldHelper.isSandStormWorld(level)) {
+        if (!SandStormWorldHelper.isSandStormWorld(level) || level.dimension() != Level.OVERWORLD) {
             return false;
         }
         if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(player.getBlockX(), player.getBlockZ())) {
