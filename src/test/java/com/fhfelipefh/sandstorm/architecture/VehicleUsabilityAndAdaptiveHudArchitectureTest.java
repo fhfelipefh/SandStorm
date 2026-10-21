@@ -184,6 +184,32 @@ class VehicleUsabilityAndAdaptiveHudArchitectureTest {
         }
     }
 
+    @Test
+    void sandboardMustImplementCoyoteTimeAndJumpBuffering() {
+        assertNotNull(getMethodOrNull(SandboardEntity.class, "updateJumpBufferAndCoyote", boolean.class, boolean.class),
+                "SandboardEntity must implement updateJumpBufferAndCoyote for edge jumping and pre-landing buffer");
+        assertEquals(2, SandboardEntity.COYOTE_TIME_TICKS, "Sandboard must provide a 100ms (2 ticks) coyote time window");
+        assertEquals(2, SandboardEntity.JUMP_BUFFER_TICKS, "Sandboard must provide a 100ms (2 ticks) jump buffer window");
+    }
+
+    @Test
+    void heavyMachineryMustProvideMechanicalLissajousBobbingAndRotationLag() throws IOException {
+        Path cameraMixin = Path.of("src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "mixin", "MegazordCameraMixin.java");
+        assertTrue(Files.exists(cameraMixin), "MegazordCameraMixin.java must exist");
+        String mixinCode = Files.readString(cameraMixin);
+        assertTrue(mixinCode.contains("HeavyMachineryCameraHandler"), "MegazordCameraMixin must integrate HeavyMachineryCameraHandler");
+        assertTrue(mixinCode.contains("ExcavatorVehicleEntity"), "MegazordCameraMixin must support ExcavatorVehicleEntity cockpit bobbing");
+        assertTrue(mixinCode.contains("calculateMegazordBobbing"), "MegazordCameraMixin must calculate Megazord Lissajous bobbing");
+        assertTrue(mixinCode.contains("calculateExcavatorBobbing"), "MegazordCameraMixin must calculate Excavator Lissajous bobbing");
+        assertTrue(mixinCode.contains("applyRotationalLag"), "MegazordCameraMixin must apply rotational damping lag");
+
+        Path handlerPath = Path.of("src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "handler", "HeavyMachineryCameraHandler.java");
+        assertTrue(Files.exists(handlerPath), "HeavyMachineryCameraHandler.java must exist");
+        String handlerCode = Files.readString(handlerPath);
+        assertTrue(handlerCode.contains("Mth.cos(2.0f * theta)"), "HeavyMachineryCameraHandler must use Lissajous vertical frequency harmonic (2 * theta)");
+        assertTrue(handlerCode.contains("ROTATION_LAG_FACTOR"), "HeavyMachineryCameraHandler must define subtle rotational lag factor");
+    }
+
     private Method getMethodOrNull(Class<?> clazz, String name, Class<?>... paramTypes) {
         try {
             return clazz.getDeclaredMethod(name, paramTypes);

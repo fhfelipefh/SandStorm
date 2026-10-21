@@ -25,6 +25,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class SandboardEntity extends PathfinderMob {
+    public static final int COYOTE_TIME_TICKS = 2;
+    public static final int JUMP_BUFFER_TICKS = 2;
+    public static final double JUMP_VELOCITY = 0.52;
+
+    private int coyoteTicks = 0;
+    private int jumpBufferTicks = 0;
+    private boolean wasJumpingLastTick = false;
 
     public SandboardEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -52,6 +59,51 @@ public class SandboardEntity extends PathfinderMob {
         return this.getFirstPassenger() instanceof LivingEntity living ? living : null;
     }
 
+    public int getCoyoteTicks() {
+        return this.coyoteTicks;
+    }
+
+    public void setCoyoteTicks(int coyoteTicks) {
+        this.coyoteTicks = coyoteTicks;
+    }
+
+    public int getJumpBufferTicks() {
+        return this.jumpBufferTicks;
+    }
+
+    public void setJumpBufferTicks(int jumpBufferTicks) {
+        this.jumpBufferTicks = jumpBufferTicks;
+    }
+
+    public boolean updateJumpBufferAndCoyote(boolean isJumping, boolean onGround) {
+        if (onGround) {
+            this.coyoteTicks = COYOTE_TIME_TICKS;
+        }
+
+        if (isJumping) {
+            if (!this.wasJumpingLastTick) {
+                this.jumpBufferTicks = JUMP_BUFFER_TICKS;
+            }
+            this.wasJumpingLastTick = true;
+        } else {
+            this.wasJumpingLastTick = false;
+        }
+
+        if (this.jumpBufferTicks > 0) {
+            if (this.coyoteTicks > 0) {
+                this.coyoteTicks = 0;
+                this.jumpBufferTicks = 0;
+                return true;
+            }
+            this.jumpBufferTicks--;
+        }
+
+        if (!onGround && this.coyoteTicks > 0) {
+            this.coyoteTicks--;
+        }
+        return false;
+    }
+
     @Override
     protected void tickRidden(Player player, Vec3 travelVector) {
         super.tickRidden(player, travelVector);
@@ -59,6 +111,15 @@ public class SandboardEntity extends PathfinderMob {
         this.yRotO = this.getYRot();
         this.yBodyRot = this.getYRot();
         this.yHeadRot = this.yBodyRot;
+
+        boolean shouldJump = updateJumpBufferAndCoyote(player.isJumping(), this.onGround());
+        if (shouldJump) {
+            Vec3 currentDelta = this.getDeltaMovement();
+            this.setDeltaMovement(currentDelta.x, JUMP_VELOCITY, currentDelta.z);
+            if (this.level() instanceof ServerLevel) {
+                this.level().playSound(null, this.blockPosition(), SoundEvents.SAND_STEP, SoundSource.PLAYERS, 0.9f, 1.4f);
+            }
+        }
     }
 
     @Override

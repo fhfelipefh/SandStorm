@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SandboardEntityTest {
 
@@ -70,5 +71,52 @@ class SandboardEntityTest {
         Method method = SandboardEntity.class.getDeclaredMethod("showVehicleHealth");
         method.setAccessible(true);
         assertFalse((Boolean) method.invoke(sandboard));
+    }
+
+    @Test
+    void shouldPermitJumpDuringCoyoteTimeWindow() throws Exception {
+        Unsafe unsafe = getUnsafe();
+        SandboardEntity sandboard = (SandboardEntity) unsafe.allocateInstance(SandboardEntity.class);
+
+        sandboard.updateJumpBufferAndCoyote(false, true);
+        assertEquals(2, sandboard.getCoyoteTicks());
+
+        sandboard.updateJumpBufferAndCoyote(false, false);
+        assertEquals(1, sandboard.getCoyoteTicks());
+
+        boolean jumped = sandboard.updateJumpBufferAndCoyote(true, false);
+        assertTrue(jumped);
+        assertEquals(0, sandboard.getCoyoteTicks());
+        assertEquals(0, sandboard.getJumpBufferTicks());
+    }
+
+    @Test
+    void shouldExpireCoyoteTimeAfterTwoTicksInAir() throws Exception {
+        Unsafe unsafe = getUnsafe();
+        SandboardEntity sandboard = (SandboardEntity) unsafe.allocateInstance(SandboardEntity.class);
+
+        sandboard.updateJumpBufferAndCoyote(false, true);
+        sandboard.updateJumpBufferAndCoyote(false, false);
+        sandboard.updateJumpBufferAndCoyote(false, false);
+        assertEquals(0, sandboard.getCoyoteTicks());
+
+        boolean jumped = sandboard.updateJumpBufferAndCoyote(true, false);
+        assertFalse(jumped);
+    }
+
+    @Test
+    void shouldBufferJumpCommandBeforeGroundContact() throws Exception {
+        Unsafe unsafe = getUnsafe();
+        SandboardEntity sandboard = (SandboardEntity) unsafe.allocateInstance(SandboardEntity.class);
+
+        sandboard.setCoyoteTicks(0);
+        boolean inAirJump = sandboard.updateJumpBufferAndCoyote(true, false);
+        assertFalse(inAirJump);
+        assertEquals(1, sandboard.getJumpBufferTicks());
+
+        boolean landedJump = sandboard.updateJumpBufferAndCoyote(false, true);
+        assertTrue(landedJump);
+        assertEquals(0, sandboard.getJumpBufferTicks());
+        assertEquals(0, sandboard.getCoyoteTicks());
     }
 }
