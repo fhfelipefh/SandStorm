@@ -63,12 +63,14 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -85,6 +87,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -120,15 +123,21 @@ public class ShowcaseAutomation {
     private static final Map<UUID, Long> TELEPORT_COOLDOWNS = new HashMap<>();
     private static BlockPos regeneratingRockPos = null;
     private static CyborgExcavatorEntity loopMiner = null;
+    private static final List<BlockPos> FARM_CROP_POSITIONS = new ArrayList<>();
+    private static final List<CyborgHarvesterEntity> ACTIVE_FARMERS = new ArrayList<>();
+    private static final List<ShowcasePatrolDrone> ACTIVE_DRONES = new ArrayList<>();
     private static boolean showcaseActive = false;
 
     private record ShowcaseTeleportPad(BlockPos triggerPos, BlockPos destination, String label) {}
+
+    private record ShowcasePatrolDrone(CargoDroneEntity drone, List<BlockPos> waypoints, int[] targetIndex) {}
 
     public static boolean isShowcaseActive() {
         return showcaseActive;
     }
 
     public static void initialize() {
+        ShowcaseCinematicManager.initialize();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> registerCommands(dispatcher));
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
@@ -140,6 +149,7 @@ public class ShowcaseAutomation {
                     GENERATED_PLAYERS.add(player.getUUID());
                     buildShowcase((ServerLevel) player.level(), player);
                 }
+                ShowcaseCinematicManager.scheduleAutoTourIfRequested(player);
             }
         });
 
@@ -159,6 +169,106 @@ public class ShowcaseAutomation {
                     }
                     if (loopMiner != null && loopMiner.isAlive()) {
                         loopMiner.setEnergy(50000);
+                    }
+                }
+            }
+
+            if (tick % 20 == 0 && !FARM_CROP_POSITIONS.isEmpty()) {
+                ServerLevel overworld = server.overworld();
+                if (overworld != null) {
+                    for (BlockPos cropPos : FARM_CROP_POSITIONS) {
+                        if (overworld.isLoaded(cropPos)) {
+                            BlockState state = overworld.getBlockState(cropPos);
+                            if (state.getBlock() instanceof CropBlock cropBlock) {
+                                if (!cropBlock.isMaxAge(state)) {
+                                    overworld.setBlock(cropPos, cropBlock.getStateForAge(cropBlock.getMaxAge()), 3);
+                                    overworld.sendParticles(ParticleTypes.HAPPY_VILLAGER, cropPos.getX() + 0.5, cropPos.getY() + 0.3, cropPos.getZ() + 0.5, 3, 0.2, 0.1, 0.2, 0.05);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (tick % 30 == 0 && !ACTIVE_FARMERS.isEmpty()) {
+                for (CyborgHarvesterEntity farmer : ACTIVE_FARMERS) {
+                    if (farmer.isAlive()) {
+                        farmer.setEnergy(50000);
+                        for (int i = 0; i < farmer.getInventory().getContainerSize(); i++) {
+                            if (farmer.getInventory().getItem(i).getCount() >= 32) {
+                                farmer.getInventory().setItem(i, ItemStack.EMPTY);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (tick % 30 == 0 && ACTIVE_DRONES.isEmpty()) {
+                ServerLevel overworld = server.overworld();
+                if (overworld != null) {
+                    AABB colonyBox = new AABB(-30.0, 158.0, -75.0, 30.0, 172.0, -35.0);
+                    List<CargoDroneEntity> existing = overworld.getEntitiesOfClass(CargoDroneEntity.class, colonyBox);
+                    if (!existing.isEmpty()) {
+                        for (int i = 0; i < existing.size(); i++) {
+                            CargoDroneEntity d = existing.get(i);
+                            List<BlockPos> wps = (i % 2 == 0)
+                                    ? List.of(new BlockPos(10, 163, -45), new BlockPos(0, 164, -58), new BlockPos(0, 163, -64), new BlockPos(0, 164, -46))
+                                    : List.of(new BlockPos(-10, 163, -45), new BlockPos(0, 164, -52), new BlockPos(10, 163, -45), new BlockPos(0, 163, -64));
+                            ACTIVE_DRONES.add(new ShowcasePatrolDrone(d, wps, new int[]{0}));
+                        }
+                    }
+                }
+            }
+
+            if (!ACTIVE_DRONES.isEmpty()) {
+                for (ShowcasePatrolDrone patrol : ACTIVE_DRONES) {
+                    CargoDroneEntity drone = patrol.drone();
+                    if (!drone.isAlive()) {
+                        continue;
+                    }
+                    drone.getEnergyStorage().receiveEnergy(100L);
+                    drone.setNoGravity(true);
+                    List<BlockPos> wps = patrol.waypoints();
+                    int curIdx = patrol.targetIndex()[0];
+                    BlockPos target = wps.get(curIdx);
+                    double tx = target.getX() + 0.5;
+                    double ty = target.getY() + 0.5;
+                    double tz = target.getZ() + 0.5;
+                    double dx = tx - drone.getX();
+                    double dy = ty - drone.getY();
+                    double dz = tz - drone.getZ();
+                    double distSq = dx * dx + dy * dy + dz * dz;
+                    if (distSq < 1.0) {
+                        int nextIdx = (curIdx + 1) % wps.size();
+                        patrol.targetIndex()[0] = nextIdx;
+                        if (nextIdx == 0) {
+                            drone.setCargoStack(new ItemStack(Items.GOLDEN_CARROT, 8));
+                        } else if (nextIdx == 1) {
+                            drone.setCargoStack(new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 4));
+                        } else if (nextIdx == 2) {
+                            drone.setCargoStack(new ItemStack(SandStormItems.CIRCUIT_BOARD, 4));
+                        }
+                    } else {
+                        double dist = Math.sqrt(distSq);
+                        double speed = 0.20;
+                        double moveDist = Math.min(dist, speed);
+                        double mx = (dx / dist) * moveDist;
+                        double my = (dy / dist) * moveDist;
+                        double mz = (dz / dist) * moveDist;
+                        drone.setPos(drone.getX() + mx, drone.getY() + my, drone.getZ() + mz);
+                        drone.setDeltaMovement(mx, my, mz);
+                        float targetYaw = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
+                        drone.setYRot(targetYaw);
+                        drone.yRotO = targetYaw;
+                        drone.yHeadRot = targetYaw;
+                        if (drone.level() instanceof ServerLevel sl) {
+                            if (tick % 2 == 0) {
+                                sl.sendParticles(ParticleTypes.ELECTRIC_SPARK, drone.getX(), drone.getY() + 0.1, drone.getZ(), 1, 0.04, 0.04, 0.04, 0.01);
+                            }
+                            if (tick % 4 == 0) {
+                                sl.sendParticles(ParticleTypes.CLOUD, drone.getX(), drone.getY() - 0.1, drone.getZ(), 1, 0.02, 0.01, 0.02, 0.01);
+                            }
+                        }
                     }
                 }
             }
@@ -245,6 +355,17 @@ public class ShowcaseAutomation {
                                 .executes(ctx -> executeDungeonTeleportCommand(ctx, StringArgumentType.getString(ctx, "sector")))
                         )
                 )
+                .then(Commands.literal("cinematic")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ctx -> ShowcaseCinematicManager.startCinematic(ctx.getSource(), "dungeon"))
+                        .then(Commands.literal("stop")
+                                .executes(ctx -> ShowcaseCinematicManager.stopCinematic(ctx.getSource()))
+                        )
+                        .then(Commands.argument("route", StringArgumentType.word())
+                                .suggests((c, b) -> suggestCinematicRoutes(b))
+                                .executes(ctx -> ShowcaseCinematicManager.startCinematic(ctx.getSource(), StringArgumentType.getString(ctx, "route")))
+                        )
+                )
         );
 
         dispatcher.register(Commands.literal("sandstorm_debug")
@@ -301,6 +422,17 @@ public class ShowcaseAutomation {
                         .then(Commands.argument("sector", StringArgumentType.word())
                                 .suggests((c, b) -> suggestDungeonSectors(b))
                                 .executes(ctx -> executeDungeonTeleportCommand(ctx, StringArgumentType.getString(ctx, "sector")))
+                        )
+                )
+                .then(Commands.literal("cinematic")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ctx -> ShowcaseCinematicManager.startCinematic(ctx.getSource(), "dungeon"))
+                        .then(Commands.literal("stop")
+                                .executes(ctx -> ShowcaseCinematicManager.stopCinematic(ctx.getSource()))
+                        )
+                        .then(Commands.argument("route", StringArgumentType.word())
+                                .suggests((c, b) -> suggestCinematicRoutes(b))
+                                .executes(ctx -> ShowcaseCinematicManager.startCinematic(ctx.getSource(), StringArgumentType.getString(ctx, "route")))
                         )
                 )
         );
@@ -364,6 +496,30 @@ public class ShowcaseAutomation {
                 .then(Commands.argument("sector", StringArgumentType.word())
                         .suggests((c, b) -> suggestDungeonSectors(b))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, StringArgumentType.getString(ctx, "sector")))
+                )
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_showcase_cinematic")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> ShowcaseCinematicManager.startCinematic(ctx.getSource(), "dungeon"))
+                .then(Commands.literal("stop")
+                        .executes(ctx -> ShowcaseCinematicManager.stopCinematic(ctx.getSource()))
+                )
+                .then(Commands.argument("route", StringArgumentType.word())
+                        .suggests((c, b) -> suggestCinematicRoutes(b))
+                        .executes(ctx -> ShowcaseCinematicManager.startCinematic(ctx.getSource(), StringArgumentType.getString(ctx, "route")))
+                )
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_cinematic")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ctx -> ShowcaseCinematicManager.startCinematic(ctx.getSource(), "dungeon"))
+                .then(Commands.literal("stop")
+                        .executes(ctx -> ShowcaseCinematicManager.stopCinematic(ctx.getSource()))
+                )
+                .then(Commands.argument("route", StringArgumentType.word())
+                        .suggests((c, b) -> suggestCinematicRoutes(b))
+                        .executes(ctx -> ShowcaseCinematicManager.startCinematic(ctx.getSource(), StringArgumentType.getString(ctx, "route")))
                 )
         );
     }
@@ -556,8 +712,11 @@ public class ShowcaseAutomation {
 
         level.getServer().getGameRules().set(GameRules.ADVANCE_WEATHER, false, level.getServer());
         level.getServer().getGameRules().set(GameRules.ADVANCE_TIME, false, level.getServer());
-        level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "time set noon");
-        level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack(), "weather clear");
+        level.getServer().getGameRules().set(GameRules.SEND_COMMAND_FEEDBACK, false, level.getServer());
+        level.getServer().getGameRules().set(GameRules.LOG_ADMIN_COMMANDS, false, level.getServer());
+        level.getServer().getGameRules().set(GameRules.SHOW_DEATH_MESSAGES, false, level.getServer());
+        level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack().withSuppressedOutput(), "time set noon");
+        level.getServer().getCommands().performPrefixedCommand(level.getServer().createCommandSourceStack().withSuppressedOutput(), "weather clear");
         cleanupShowcaseDroppedItems(level);
     }
 
@@ -1088,6 +1247,7 @@ public class ShowcaseAutomation {
         spawnHologram(level, quarryCenter.getX() + 0.5, baseY + 2.9, quarryCenter.getZ() + 0.5, "§7Extração e regeneração contínua de minerais");
 
         BlockPos farmCenter = new BlockPos(10, baseY, -52);
+        FARM_CROP_POSITIONS.clear();
         for (int dx = -4; dx <= 4; dx++) {
             for (int dz = -4; dz <= 4; dz++) {
                 BlockPos p = farmCenter.offset(dx, 0, dz);
@@ -1100,8 +1260,18 @@ public class ShowcaseAutomation {
                     level.setBlock(p, Blocks.WATER.defaultBlockState(), 2);
                 } else {
                     level.setBlock(p, Blocks.FARMLAND.defaultBlockState(), 2);
-                    Block crop = (Math.abs(dx + dz) % 3 == 0) ? Blocks.CARROTS : Blocks.WHEAT;
-                    level.setBlock(p.above(), crop.defaultBlockState(), 2);
+                    Block crop = switch (Math.abs(dx + dz) % 4) {
+                        case 0 -> Blocks.CARROTS;
+                        case 1 -> Blocks.POTATOES;
+                        case 2 -> Blocks.BEETROOTS;
+                        default -> Blocks.WHEAT;
+                    };
+                    if (crop instanceof CropBlock cropBlock) {
+                        level.setBlock(p.above(), cropBlock.getStateForAge(cropBlock.getMaxAge()), 2);
+                    } else {
+                        level.setBlock(p.above(), crop.defaultBlockState(), 2);
+                    }
+                    FARM_CROP_POSITIONS.add(p.above());
                 }
             }
         }
@@ -1111,23 +1281,39 @@ public class ShowcaseAutomation {
         if (level.getBlockEntity(farmChest) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(Items.WHEAT, 64));
             chest.setItem(1, new ItemStack(Items.CARROT, 64));
-            chest.setItem(2, new ItemStack(Items.WHEAT_SEEDS, 64));
+            chest.setItem(2, new ItemStack(Items.POTATO, 64));
+            chest.setItem(3, new ItemStack(Items.BEETROOT, 64));
         }
 
-        CyborgHarvesterEntity cyborgHarv = new CyborgHarvesterEntity(SandStormEntities.CYBORG_HARVESTER, level);
-        cyborgHarv.setPos(farmCenter.getX() + 1.5, baseY + 1.0, farmCenter.getZ() + 0.5);
-        cyborgHarv.setOwnerUUID(player.getUUID());
-        cyborgHarv.setEnergy(50000);
-        cyborgHarv.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
-        cyborgHarv.setZoneMin(farmCenter.offset(-3, 0, -3));
-        cyborgHarv.setZoneMax(farmCenter.offset(3, 2, 3));
-        cyborgHarv.setCustomName(Component.literal("§aAndroide Agrícola Autônomo"));
-        cyborgHarv.setCustomNameVisible(true);
-        cyborgHarv.setPersistenceRequired();
-        level.addFreshEntity(cyborgHarv);
+        ACTIVE_FARMERS.clear();
+        CyborgHarvesterEntity cyborgHarv1 = new CyborgHarvesterEntity(SandStormEntities.CYBORG_HARVESTER, level);
+        cyborgHarv1.setPos(farmCenter.getX() + 1.5, baseY + 1.0, farmCenter.getZ() + 1.5);
+        cyborgHarv1.setOwnerUUID(player.getUUID());
+        cyborgHarv1.setEnergy(50000);
+        cyborgHarv1.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
+        cyborgHarv1.setZoneMin(farmCenter.offset(-3, 0, -3));
+        cyborgHarv1.setZoneMax(farmCenter.offset(3, 2, 3));
+        cyborgHarv1.setCustomName(Component.literal("§aAndroide Agrícola Alfa"));
+        cyborgHarv1.setCustomNameVisible(true);
+        cyborgHarv1.setPersistenceRequired();
+        level.addFreshEntity(cyborgHarv1);
+        ACTIVE_FARMERS.add(cyborgHarv1);
+
+        CyborgHarvesterEntity cyborgHarv2 = new CyborgHarvesterEntity(SandStormEntities.CYBORG_HARVESTER, level);
+        cyborgHarv2.setPos(farmCenter.getX() - 1.5, baseY + 1.0, farmCenter.getZ() - 1.5);
+        cyborgHarv2.setOwnerUUID(player.getUUID());
+        cyborgHarv2.setEnergy(50000);
+        cyborgHarv2.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
+        cyborgHarv2.setZoneMin(farmCenter.offset(-3, 0, -3));
+        cyborgHarv2.setZoneMax(farmCenter.offset(3, 2, 3));
+        cyborgHarv2.setCustomName(Component.literal("§aAndroide Agrícola Beta"));
+        cyborgHarv2.setCustomNameVisible(true);
+        cyborgHarv2.setPersistenceRequired();
+        level.addFreshEntity(cyborgHarv2);
+        ACTIVE_FARMERS.add(cyborgHarv2);
 
         spawnHologram(level, farmCenter.getX() + 0.5, baseY + 3.2, farmCenter.getZ() + 0.5, "§a[Zona 2: Agricultura Autônoma]");
-        spawnHologram(level, farmCenter.getX() + 0.5, baseY + 2.9, farmCenter.getZ() + 0.5, "§7Colheita e replantio de culturas");
+        spawnHologram(level, farmCenter.getX() + 0.5, baseY + 2.9, farmCenter.getZ() + 0.5, "§7Colheita contínua e replantio em tempo real");
 
         BlockPos builderCenter = new BlockPos(0, baseY, -64);
         for (int dx = -4; dx <= 4; dx++) {
@@ -1159,8 +1345,44 @@ public class ShowcaseAutomation {
         cyborgBld.setPersistenceRequired();
         level.addFreshEntity(cyborgBld);
 
+        ACTIVE_DRONES.clear();
+
+        CargoDroneEntity droneLogistics1 = new CargoDroneEntity(SandStormEntities.CARGO_DRONE, level);
+        droneLogistics1.setPos(farmCenter.getX(), baseY + 3.0, farmCenter.getZ());
+        droneLogistics1.setNoGravity(true);
+        droneLogistics1.setPersistenceRequired();
+        droneLogistics1.setCustomName(Component.literal("§3Drone Logístico #1 [Colheita]"));
+        droneLogistics1.setCustomNameVisible(true);
+        droneLogistics1.setCargoStack(new ItemStack(Items.GOLDEN_CARROT, 8));
+        droneLogistics1.getEnergyStorage().receiveEnergy(10000L);
+        level.addFreshEntity(droneLogistics1);
+        List<BlockPos> waypoints1 = List.of(
+                farmCenter.offset(0, 3, 0),
+                new BlockPos(0, baseY + 4, -58),
+                builderCenter.offset(0, 3, 0),
+                new BlockPos(0, baseY + 4, -46)
+        );
+        ACTIVE_DRONES.add(new ShowcasePatrolDrone(droneLogistics1, waypoints1, new int[]{0}));
+
+        CargoDroneEntity droneLogistics2 = new CargoDroneEntity(SandStormEntities.CARGO_DRONE, level);
+        droneLogistics2.setPos(quarryCenter.getX(), baseY + 3.5, quarryCenter.getZ());
+        droneLogistics2.setNoGravity(true);
+        droneLogistics2.setPersistenceRequired();
+        droneLogistics2.setCustomName(Component.literal("§6Drone Logístico #2 [Mineração]"));
+        droneLogistics2.setCustomNameVisible(true);
+        droneLogistics2.setCargoStack(new ItemStack(SandStormItems.CIRCUIT_BOARD, 4));
+        droneLogistics2.getEnergyStorage().receiveEnergy(10000L);
+        level.addFreshEntity(droneLogistics2);
+        List<BlockPos> waypoints2 = List.of(
+                quarryCenter.offset(0, 3, 0),
+                new BlockPos(0, baseY + 4, -52),
+                farmCenter.offset(0, 3, 0),
+                builderCenter.offset(0, 3, 0)
+        );
+        ACTIVE_DRONES.add(new ShowcasePatrolDrone(droneLogistics2, waypoints2, new int[]{0}));
+
         spawnHologram(level, builderCenter.getX() + 0.5, baseY + 3.2, builderCenter.getZ() + 0.5, "§b[Zona 3: Manutenção & Doca WPT]");
-        spawnHologram(level, builderCenter.getX() + 0.5, baseY + 2.9, builderCenter.getZ() + 0.5, "§7Recarga, reparos e patrulha da base");
+        spawnHologram(level, builderCenter.getX() + 0.5, baseY + 2.9, builderCenter.getZ() + 0.5, "§7Recarga, reparos e patrulha logística");
     }
 
     private static void buildMegastructureDomeShowcase(ServerLevel level, BlockPos center) {
@@ -3383,4 +3605,14 @@ public class ShowcaseAutomation {
         builder.suggest("cryo_vault");
         return builder.buildFuture();
     }
+
+    private static CompletableFuture<Suggestions> suggestCinematicRoutes(SuggestionsBuilder builder) {
+        builder.suggest("all");
+        builder.suggest("dungeon");
+        builder.suggest("farming");
+        builder.suggest("terraforming");
+        builder.suggest("stop");
+        return builder.buildFuture();
+    }
 }
+

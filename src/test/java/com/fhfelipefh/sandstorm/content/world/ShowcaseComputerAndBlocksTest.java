@@ -222,4 +222,13 @@ class ShowcaseComputerAndBlocksTest {
         Method setChestSafeMethod = ShowcaseAutomation.class.getMethod("setChestSafe", ServerLevel.class, BlockPos.class, BlockState.class);
         assertNotNull(setChestSafeMethod);
     }
+
+    @Test
+    void shouldRegisterCinematicCommands() {
+        CommandDispatcher<CommandSourceStack> dispatcher = new CommandDispatcher<>();
+        ShowcaseAutomation.registerCommands(dispatcher);
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_showcase_cinematic"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm_cinematic"));
+        assertNotNull(dispatcher.getRoot().getChild("sandstorm").getChild("cinematic"));
+    }
 }
