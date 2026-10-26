@@ -80,6 +80,36 @@ public class SandStormEntities {
                     .build(NUTRIENT_BOMB_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> STUN_GRENADE_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("stun_grenade")
+    );
+
+    public static final EntityType<StunGrenadeEntity> STUN_GRENADE = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("stun_grenade"),
+            EntityType.Builder.<StunGrenadeEntity>of(StunGrenadeEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(STUN_GRENADE_KEY)
+    );
+
+    public static final ResourceKey<EntityType<?>> SMOKE_GRENADE_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("smoke_grenade")
+    );
+
+    public static final EntityType<SmokeGrenadeEntity> SMOKE_GRENADE = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("smoke_grenade"),
+            EntityType.Builder.<SmokeGrenadeEntity>of(SmokeGrenadeEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(SMOKE_GRENADE_KEY)
+    );
+
     public static final ResourceKey<EntityType<?>> SANDBOARD_KEY = ResourceKey.create(
             Registries.ENTITY_TYPE,
             SandStormMod.id("sandboard")
@@ -302,6 +332,19 @@ public class SandStormEntities {
                     .build(RAPPEL_HARNESS_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> MIRAGE_DECOY_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("mirage_decoy")
+    );
+
+    public static final EntityType<MirageDecoyEntity> MIRAGE_DECOY = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("mirage_decoy"),
+            EntityType.Builder.of(MirageDecoyEntity::new, MobCategory.MISC)
+                    .sized(0.6f, 1.8f)
+                    .build(MIRAGE_DECOY_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
@@ -323,5 +366,6 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(CRAWLER_DRONE, CrawlerDroneEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CYBERNETIC_GOLEM, CyberneticGolemEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(RAPPEL_HARNESS, RappelHarnessEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(MIRAGE_DECOY, MirageDecoyEntity.createAttributes());
     }
 }

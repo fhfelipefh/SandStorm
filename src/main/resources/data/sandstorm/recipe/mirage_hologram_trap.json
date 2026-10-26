@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "L": "sandstorm:advanced_refraction_lens",
+    "E": "sandstorm:electric_component",
+    "P": "sandstorm:structural_plate",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    " L ",
+    "PEP",
+    "PRP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:mirage_hologram_trap"
+  }
+}

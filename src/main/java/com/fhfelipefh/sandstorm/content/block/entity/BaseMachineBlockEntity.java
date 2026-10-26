@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import java.util.Collections;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -116,6 +117,22 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
             int toAdd = Math.round(cachedWptCharge * 15.0f);
             energy = Math.min(maxEnergy, energy + Math.max(1, toAdd));
             changed = true;
+        }
+
+        if (energy < maxEnergy) {
+            for (Direction dir : Direction.values()) {
+                BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+                if (neighbor instanceof SolidStateAccumulatorBlockEntity acc && acc.getStoredEnergy() > 0) {
+                    int needed = maxEnergy - energy;
+                    int drain = Math.min(needed, Math.min(500, acc.getStoredEnergy()));
+                    acc.setStoredEnergy(acc.getStoredEnergy() - drain);
+                    energy += drain;
+                    changed = true;
+                    if (energy >= maxEnergy) {
+                        break;
+                    }
+                }
+            }
         }
 
         int batterySlot = getBatterySlotIndex();

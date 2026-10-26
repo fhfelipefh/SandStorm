@@ -2,8 +2,10 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 
 import com.fhfelipefh.sandstorm.content.block.AcousticDefensePylonBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.defense.AcousticDefenseTracker;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -32,6 +34,26 @@ public class AcousticDefensePylonBlockEntity extends BlockEntity {
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide()) {
             return;
+        }
+
+        if (this.storedEnergy < MAX_ENERGY) {
+            long wpt = WirelessSolarReceiverManager.getWptChargeAt(level, pos);
+            if (wpt > 0L) {
+                int toAdd = (int) Math.min(MAX_ENERGY - this.storedEnergy, Math.max(10, wpt * 15L));
+                this.storedEnergy += toAdd;
+            }
+            for (Direction dir : Direction.values()) {
+                BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+                if (neighbor instanceof SolidStateAccumulatorBlockEntity acc && acc.getStoredEnergy() > 0) {
+                    int needed = MAX_ENERGY - this.storedEnergy;
+                    int drain = Math.min(needed, Math.min(500, acc.getStoredEnergy()));
+                    acc.setStoredEnergy(acc.getStoredEnergy() - drain);
+                    this.storedEnergy += drain;
+                    if (this.storedEnergy >= MAX_ENERGY) {
+                        break;
+                    }
+                }
+            }
         }
 
         boolean previouslyActive = this.active;

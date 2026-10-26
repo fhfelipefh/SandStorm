@@ -463,6 +463,97 @@ public class SandStormBlocks {
                     .strength(4.0f, 8.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .noOcclusion()));
+    public static final SerratedJawTrapBlock SERRATED_JAW_TRAP = register("serrated_jaw_trap",
+            new SerratedJawTrapBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("serrated_jaw_trap")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(2.0f, 3.5f)
+                    .sound(SoundType.ANVIL)
+                    .noOcclusion()));
+    public static final PiezoShockTrapBlock PIEZO_SHOCK_TRAP = register("piezo_shock_trap",
+            new PiezoShockTrapBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("piezo_shock_trap")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(2.5f, 4.0f)
+                    .sound(SoundType.COPPER)
+                    .noOcclusion()));
+    public static final CollapsibleTrapdoorBlock COLLAPSIBLE_TRAPDOOR = register("collapsible_trapdoor",
+            new CollapsibleTrapdoorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("collapsible_trapdoor")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(3.0f, 6.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final KineticEjectorTrapBlock KINETIC_EJECTOR_TRAP = register("kinetic_ejector_trap",
+            new KineticEjectorTrapBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("kinetic_ejector_trap")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.ANVIL)
+                    .noOcclusion()));
+    public static final ThermalVentTrapBlock THERMAL_VENT_TRAP = register("thermal_vent_trap",
+            new ThermalVentTrapBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("thermal_vent_trap")))
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final MicroSingularityTrapBlock MICRO_SINGULARITY_TRAP = register("micro_singularity_trap",
+            new MicroSingularityTrapBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("micro_singularity_trap")))
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(3.5f, 8.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final NaniteQuicksandBlock NANITE_QUICKSAND = register("nanite_quicksand",
+            new NaniteQuicksandBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("nanite_quicksand")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(1.5f, 2.0f)
+                    .sound(SoundType.SAND)
+                    .noOcclusion()));
+    public static final HoloLaserTripwireBlock HOLO_LASER_TRIPWIRE = register("holo_laser_tripwire",
+            new HoloLaserTripwireBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("holo_laser_tripwire")))
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(1.5f, 3.0f)
+                    .sound(SoundType.COPPER)
+                    .noOcclusion()));
+    public static final SeismicDecoyTrapBlock SEISMIC_DECOY_TRAP = register("seismic_decoy_trap",
+            new SeismicDecoyTrapBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("seismic_decoy_trap")))
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.ANVIL)
+                    .noOcclusion()));
+    public static final CryoFreezeMineBlock CRYO_FREEZE_MINE = register("cryo_freeze_mine",
+            new CryoFreezeMineBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("cryo_freeze_mine")))
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(2.0f, 4.0f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
+    public static final MirageHologramTrapBlock MIRAGE_HOLOGRAM_TRAP = register("mirage_hologram_trap",
+            new MirageHologramTrapBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("mirage_hologram_trap")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(2.0f, 4.0f)
+                    .sound(SoundType.COPPER)
+                    .noOcclusion()));
+    public static final NaniteWebSnareBlock NANITE_WEB_SNARE = register("nanite_web_snare",
+            new NaniteWebSnareBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("nanite_web_snare")))
+                    .mapColor(MapColor.SNOW)
+                    .strength(1.5f, 3.0f)
+                    .sound(SoundType.WOOL)
+                    .noOcclusion()));
+    public static final NeurotoxicSpikesBlock NEUROTOXIC_SPIKES = register("neurotoxic_spikes",
+            new NeurotoxicSpikesBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("neurotoxic_spikes")))
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(2.0f, 3.5f)
+                    .sound(SoundType.ANVIL)
+                    .noOcclusion()));
     public static final MegastructureConstructorBlock MEGASTRUCTURE_CONSTRUCTOR = register("megastructure_constructor",
             new MegastructureConstructorBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("megastructure_constructor")))

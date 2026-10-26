@@ -122,6 +122,18 @@
     "sandstorm:chiseled_cryo_insulation",
     "sandstorm:cryo_reactor_core",
     "sandstorm:cryo_revival_vat",
-    "sandstorm:maglev_conveyor"
+    "sandstorm:maglev_conveyor",
+    "sandstorm:serrated_jaw_trap",
+    "sandstorm:piezo_shock_trap",
+    "sandstorm:collapsible_trapdoor",
+    "sandstorm:kinetic_ejector_trap",
+    "sandstorm:thermal_vent_trap",
+    "sandstorm:micro_singularity_trap",
+    "sandstorm:holo_laser_tripwire",
+    "sandstorm:seismic_decoy_trap",
+    "sandstorm:cryo_freeze_mine",
+    "sandstorm:mirage_hologram_trap",
+    "sandstorm:nanite_web_snare",
+    "sandstorm:neurotoxic_spikes"
   ]
 }

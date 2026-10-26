@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "E": "sandstorm:electric_component",
+    "L": "sandstorm:advanced_refraction_lens",
+    "R": "minecraft:redstone",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    " R ",
+    "SLE",
+    " S "
+  ],
+  "result": {
+    "count": 2,
+    "id": "sandstorm:holo_laser_tripwire"
+  }
+}

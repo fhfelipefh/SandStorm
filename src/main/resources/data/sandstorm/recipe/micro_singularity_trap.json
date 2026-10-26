@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "E": "minecraft:ender_pearl",
+    "P": "sandstorm:structural_plate",
+    "W": "sandstorm:subspace_warp_core"
+  },
+  "pattern": [
+    " E ",
+    "PWP",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:micro_singularity_trap"
+  }
+}

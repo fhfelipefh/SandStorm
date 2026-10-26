@@ -2,10 +2,12 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 
 import com.fhfelipefh.sandstorm.content.block.PlasmaShieldGeneratorBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
 import com.fhfelipefh.sandstorm.content.gui.PlasmaShieldMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -85,6 +87,30 @@ public class PlasmaShieldGeneratorBlockEntity extends BlockEntity implements Men
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide()) {
             return;
+        }
+
+        if (this.storedEnergy < MAX_ENERGY) {
+            long wpt = WirelessSolarReceiverManager.getWptChargeAt(level, pos);
+            if (wpt > 0L) {
+                int toAdd = (int) Math.min(MAX_ENERGY - this.storedEnergy, Math.max(50, wpt * 20L));
+                this.storedEnergy += toAdd;
+            }
+            for (Direction dir : Direction.values()) {
+                BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+                if (neighbor instanceof SolidStateAccumulatorBlockEntity acc && acc.getStoredEnergy() > 0) {
+                    int needed = MAX_ENERGY - this.storedEnergy;
+                    int drain = Math.min(needed, Math.min(2000, acc.getStoredEnergy()));
+                    acc.setStoredEnergy(acc.getStoredEnergy() - drain);
+                    this.storedEnergy += drain;
+                    if (this.storedEnergy >= MAX_ENERGY) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!this.shieldActive && level.hasNeighborSignal(pos) && this.storedEnergy >= UPKEEP_COST) {
+            this.shieldActive = true;
         }
 
         boolean previouslyActive = this.shieldActive;

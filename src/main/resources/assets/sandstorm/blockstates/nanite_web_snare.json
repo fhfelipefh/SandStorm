@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "sandstorm:block/nanite_web_snare"
+    },
+    "active=true": {
+      "model": "sandstorm:block/nanite_web_snare_active"
+    }
+  }
+}

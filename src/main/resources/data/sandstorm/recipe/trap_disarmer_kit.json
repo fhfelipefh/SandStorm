@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "S": "minecraft:shears",
+    "E": "sandstorm:electric_component",
+    "P": "sandstorm:structural_plate",
+    "B": "sandstorm:flexible_biopolymer"
+  },
+  "pattern": [
+    " S ",
+    "BEB",
+    " P "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:trap_disarmer_kit"
+  }
+}

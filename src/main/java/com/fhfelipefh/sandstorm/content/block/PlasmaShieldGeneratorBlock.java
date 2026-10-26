@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.block;
 import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class PlasmaShieldGeneratorBlock extends Block implements EntityBlock {
@@ -71,10 +73,31 @@ public class PlasmaShieldGeneratorBlock extends Block implements EntityBlock {
         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof PlasmaShieldGeneratorBlockEntity generatorBe) {
-                serverPlayer.openMenu(generatorBe);
+                if (player.isShiftKeyDown()) {
+                    generatorBe.toggleShield();
+                    boolean active = generatorBe.isShieldActive();
+                    String msg = active ? "§b[Escudo de Plasma] §aAtivado!" : "§b[Escudo de Plasma] §cDesativado!";
+                    serverPlayer.sendSystemMessage(Component.literal(msg), true);
+                } else {
+                    serverPlayer.openMenu(generatorBe);
+                }
             }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, Orientation orientation, boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, orientation, movedByPiston);
+        if (!level.isClientSide()) {
+            boolean hasSignal = level.hasNeighborSignal(pos);
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof PlasmaShieldGeneratorBlockEntity generatorBe) {
+                if (hasSignal && !generatorBe.isShieldActive() && generatorBe.getStoredEnergy() >= PlasmaShieldGeneratorBlockEntity.UPKEEP_COST) {
+                    generatorBe.setShieldActive(true);
+                }
+            }
+        }
     }
 
     @Override

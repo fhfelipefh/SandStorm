@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": "minecraft:iron_bars",
+    "C": "minecraft:copper_ingot",
+    "M": "minecraft:magma_block",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "BBB",
+    "CMC",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:thermal_vent_trap"
+  }
+}

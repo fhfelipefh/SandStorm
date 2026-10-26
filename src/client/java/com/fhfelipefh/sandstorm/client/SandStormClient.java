@@ -69,6 +69,7 @@ import com.fhfelipefh.sandstorm.client.renderer.StormWindTurbineBlockEntityRende
 import com.fhfelipefh.sandstorm.client.renderer.VaultDoorControllerBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ExcavatorVehicleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MegazordRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.MirageDecoyRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandboardRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandwormRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DerelictAutomatonRenderer;
@@ -186,6 +187,8 @@ public class SandStormClient implements ClientModInitializer {
                 SandStormItems.SPACE_SUIT_BOOTS);
 
         EntityRendererRegistry.register(SandStormEntities.NUTRIENT_BOMB, ThrownItemRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.STUN_GRENADE, ThrownItemRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.SMOKE_GRENADE, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDWORM, SandwormRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CARGO_DRONE, CargoDroneRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.EXCAVATOR_VEHICLE, ExcavatorVehicleRenderer::new);
@@ -207,6 +210,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.CRAWLER_DRONE, CrawlerDroneRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CYBERNETIC_GOLEM, CyberneticGolemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.RAPPEL_HARNESS, RappelHarnessRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.MIRAGE_DECOY, MirageDecoyRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

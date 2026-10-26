@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "E": "sandstorm:electric_component",
+    "P": "sandstorm:structural_plate",
+    "Q": "sandstorm:piezo_quartz_shard",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    " R ",
+    "QEQ",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:piezo_shock_trap"
+  }
+}

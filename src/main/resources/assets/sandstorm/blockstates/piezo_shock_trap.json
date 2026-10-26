@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "charged=true": {
+      "model": "sandstorm:block/piezo_shock_trap"
+    },
+    "charged=false": {
+      "model": "sandstorm:block/piezo_shock_trap_discharged"
+    }
+  }
+}

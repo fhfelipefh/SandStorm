@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "L": "minecraft:heavy_weighted_pressure_plate",
+    "P": "minecraft:piston",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    " L ",
+    "APA",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:kinetic_ejector_trap"
+  }
+}

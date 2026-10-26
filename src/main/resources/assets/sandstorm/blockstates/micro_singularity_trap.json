@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "sandstorm:block/micro_singularity_trap"
+    },
+    "active=true": {
+      "model": "sandstorm:block/micro_singularity_trap_active"
+    }
+  }
+}

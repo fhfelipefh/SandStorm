@@ -2,6 +2,31 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.26] - 2026-10-26
+
+### 📡 Utilitários Táticos, Armadilhas de Teto & Emboscadas Holográficas
+* **Novas Ferramentas e Dispositivos Táticos**:
+  * `tactical_detonator` (**Detonador Remoto Tático**): dispositivo portátil que sintoniza e detona remotamente até 64 blocos de distância qualquer mina ou alçapão instalado.
+  * `trap_disarmer_kit` (**Kit de Desarme Tático**): ferramenta essencial de campo para sobreviventes desativarem minas, tripwires e armadilhas inimigas sem detoná-las.
+  * `mirage_hologram_trap` (**Mina de Camuflagem Holográfica**): gera uma projeção holográfica de androide em movimento que atrai a inteligência artificial dos mobs para longe.
+  * `nanite_web_snare` (**Rede Aérea de Contenção Nanítica**): armadilha de teto que detecta alvos por baixo e dispara microcabos naníticos que suspendem e imobilizam a criatura no ar.
+  * `neurotoxic_spikes` (**Esteira de Espinhos com Neurotoxina**): esteira com espinhos embebidos em toxinas desérticas que infligem dano perfurante, veneno contínuo e fraqueza.
+
+## [1.19.25] - 2026-10-26
+
+### 🛡️ Arsenal Tático de Defesa & Família de Armadilhas Mecânicas de Chão
+* **Novas Armadilhas de Chão e Dispositivos Táticos**:
+  * `collapsible_trapdoor` (**Alçapão Basculante Falso**): alçapão basculante nivelado com o solo que sobrescreve `isPathfindable(LAND) = true`, enganando a inteligência artificial dos mobs para que tratem a armadilha como piso sólido e caminhem sobre ela. Ao ser pisado, colapsa instantaneamente abrindo o vão sob a entidade, retornando à posição fechada após 2.5 segundos (50 ticks).
+  * `kinetic_ejector_trap` (**Ejetor Cinético de Chão**): placa mecânica pneumática acionada por pistão sob pressão que projeta entidades a 14 blocos de altura com impulso vetorial, causando dano de impacto em tetos/paredes e recarregando em 3 segundos.
+  * `thermal_vent_trap` (**Grelha Térmica de Vapor**): respiradouro geotérmico industrial com textura passiva e ativa em ponto de fusão; inflige dano por chão escaldante, incendeia alvos e aplica cegueira e lentidão a androides e jogadores.
+  * `serrated_jaw_trap` (**Armadilha de Mandíbula Serrada**): clássica armadilha de dentes de aço móveis; tranca a vítima no local com lentidão severa até ser desarmada com Shift + botão direito ou picareta.
+  * `piezo_shock_trap` (**Mina de Choque Piezoelétrica**): mina subterrânea de cristais piezoelétricos que descarrega arcos elétricos e raios em área ao detectar pressão.
+* **Novos Projéteis Táticos Arremessáveis**:
+  * `stun_grenade` (**Granada de Luz Fotônica**): clarão concussivo que cega jogadores e reseta o alvo de inteligência artificial de androides.
+  * `smoke_grenade` (**Granada de Fumaça Aerossol**): dispersão de névoa volumétrica densa que quebra rastreamento visual.
+* **Demonstração Interativa no Mapa de Showcase**:
+  * Linha dedicada de testes de armadilhas táticas no Perímetro de Defesa (`ShowcaseAutomation`), com fosso de estacas sob o alçapão basculante, baú de suprimentos táticos e manequim especialista na Praça Central.
+
 ## [1.19.20] - 2026-10-15
 
 ### ❄️ Cofre Criogênico Subglacial (*Subglacial Cryo-Vault*) & Blocos Mecânicos

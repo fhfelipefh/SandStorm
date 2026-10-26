@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,powered=false": { "model": "sandstorm:block/holo_laser_tripwire" },
+    "facing=south,powered=false": { "model": "sandstorm:block/holo_laser_tripwire", "y": 180 },
+    "facing=west,powered=false": { "model": "sandstorm:block/holo_laser_tripwire", "y": 270 },
+    "facing=east,powered=false": { "model": "sandstorm:block/holo_laser_tripwire", "y": 90 },
+    "facing=north,powered=true": { "model": "sandstorm:block/holo_laser_tripwire_powered" },
+    "facing=south,powered=true": { "model": "sandstorm:block/holo_laser_tripwire_powered", "y": 180 },
+    "facing=west,powered=true": { "model": "sandstorm:block/holo_laser_tripwire_powered", "y": 270 },
+    "facing=east,powered=true": { "model": "sandstorm:block/holo_laser_tripwire_powered", "y": 90 }
+  }
+}

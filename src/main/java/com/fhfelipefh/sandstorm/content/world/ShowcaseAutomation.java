@@ -3,15 +3,27 @@ package com.fhfelipefh.sandstorm.content.world;
 import com.fhfelipefh.sandstorm.content.block.AcousticDefensePylonBlock;
 import com.fhfelipefh.sandstorm.content.block.AutonomousSonicTurretBlock;
 import com.fhfelipefh.sandstorm.content.block.BiosphereDoorBlock;
+import com.fhfelipefh.sandstorm.content.block.CorrosiveChitinSpikeWallBlock;
+import com.fhfelipefh.sandstorm.content.block.CryoFreezeMineBlock;
+import com.fhfelipefh.sandstorm.content.block.CryoReactorCoreBlock;
+import com.fhfelipefh.sandstorm.content.block.HoloLaserTripwireBlock;
+import com.fhfelipefh.sandstorm.content.block.KineticEjectorTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.KineticRailgunBlock;
+import com.fhfelipefh.sandstorm.content.block.MicroSingularityTrapBlock;
+import com.fhfelipefh.sandstorm.content.block.PiezoShockTrapBlock;
+import com.fhfelipefh.sandstorm.content.block.PlasmaShieldGeneratorBlock;
 import com.fhfelipefh.sandstorm.content.block.RappelAnchorBlock;
 import com.fhfelipefh.sandstorm.content.block.SandMaglevRailBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.SerratedJawTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.SolidStateAccumulatorBlock;
+import com.fhfelipefh.sandstorm.content.block.SolidStateAccumulatorManager;
+import com.fhfelipefh.sandstorm.content.block.ThermalVentTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.VaultDoorControllerBlock;
 import com.fhfelipefh.sandstorm.content.block.VaultDoorDummyBlock;
 import com.fhfelipefh.sandstorm.content.block.VaultWallPanelBlock;
 import com.fhfelipefh.sandstorm.content.block.VerticalConnection;
+import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.block.entity.AcousticDefensePylonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AmnioticIncubatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericTerraformerBlockEntity;
@@ -30,6 +42,7 @@ import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
+import com.fhfelipefh.sandstorm.content.entity.MirageDecoyEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandboardEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
@@ -75,10 +88,11 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.vehicle.minecart.Minecart;
 import net.minecraft.world.item.Item;
@@ -127,6 +141,17 @@ public class ShowcaseAutomation {
     private static final List<CyborgHarvesterEntity> ACTIVE_FARMERS = new ArrayList<>();
     private static final List<ShowcasePatrolDrone> ACTIVE_DRONES = new ArrayList<>();
     private static boolean showcaseActive = false;
+    private static BlockPos defenseKineticShieldPos = null;
+    private static BlockPos defenseSonicTurretPos = null;
+    private static BlockPos defensePlasmaShieldPos = null;
+    private static BlockPos defensePylonPos = null;
+    private static BlockPos defenseThermalVentPos = null;
+    private static BlockPos defenseCryoMinePos = null;
+    private static BlockPos defenseSingularityPos = null;
+    private static BlockPos defenseMiragePos = null;
+    private static BlockPos defenseEjectorPos = null;
+    private static UUID defenseSonicTargetId = null;
+    private static UUID defenseMirageDecoyId = null;
 
     private record ShowcaseTeleportPad(BlockPos triggerPos, BlockPos destination, String label) {}
 
@@ -159,6 +184,12 @@ public class ShowcaseAutomation {
                 ServerLevel overworld = server.overworld();
                 if (overworld != null) {
                     cleanupShowcaseDroppedItems(overworld);
+                }
+            }
+            if (showcaseActive) {
+                ServerLevel overworld = server.overworld();
+                if (overworld != null) {
+                    tickDefenseDemos(overworld, tick);
                 }
             }
             if (tick % 40 == 0 && regeneratingRockPos != null) {
@@ -881,6 +912,11 @@ public class ShowcaseAutomation {
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), ItemStack.EMPTY,
                 ItemStack.EMPTY, ItemStack.EMPTY,
                 new ItemStack(SandStormItems.ORBITAL_KINETIC_LANCE_SATELLITE), new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE));
+
+        spawnMannequin(level, center.offset(-4, 1, 0), "§4Especialista em Armadilhas",
+                new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
+                ItemStack.EMPTY, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
+                new ItemStack(SandStormItems.STUN_GRENADE), new ItemStack(SandStormItems.SMOKE_GRENADE));
     }
 
     private static void buildBlockCheckerboard(ServerLevel level, BlockPos center) {
@@ -971,9 +1007,46 @@ public class ShowcaseAutomation {
                         level.setBlock(dummyPos, dummyState, 3);
                     }
                 }
+            } else if (targetBlock == SandStormBlocks.PLASMA_SHIELD_GENERATOR) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(PlasmaShieldGeneratorBlock.ACTIVE, true), 3);
+                if (level.getBlockEntity(targetPos) instanceof PlasmaShieldGeneratorBlockEntity psBe) {
+                    psBe.setStoredEnergy(1000000);
+                    psBe.setShieldActive(true);
+                }
+                level.setBlock(pedestalCenter, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+                SolidStateAccumulatorManager.registerAccumulator(level.dimension(), pedestalCenter, 500000, 500000, true, 1);
+            } else if (targetBlock == SandStormBlocks.KINETIC_SHIELD_GENERATOR) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
+                if (level.getBlockEntity(targetPos) instanceof KineticShieldGeneratorBlockEntity ksBe) {
+                    ksBe.setEnergy(20000);
+                }
+            } else if (targetBlock == SandStormBlocks.AUTONOMOUS_SONIC_TURRET) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
+                if (level.getBlockEntity(targetPos) instanceof AutonomousSonicTurretBlockEntity astBe) {
+                    astBe.setEnergy(50000);
+                }
+            } else if (targetBlock == SandStormBlocks.ACOUSTIC_DEFENSE_PYLON) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(AcousticDefensePylonBlock.ACTIVE, true), 3);
+                if (level.getBlockEntity(targetPos) instanceof AcousticDefensePylonBlockEntity adpBe) {
+                    adpBe.setStoredEnergy(50000);
+                }
+            } else if (targetBlock == SandStormBlocks.SOLID_STATE_ACCUMULATOR) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+                if (level.getBlockEntity(targetPos) instanceof SolidStateAccumulatorBlockEntity ssaBe) {
+                    ssaBe.setStoredEnergy(500000);
+                }
+                SolidStateAccumulatorManager.registerAccumulator(level.dimension(), targetPos, 500000, 500000, true, 1);
             } else {
                 level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
             }
+
+            if (targetBlock instanceof ThermalVentTrapBlock || targetBlock instanceof CryoFreezeMineBlock
+                    || targetBlock instanceof KineticEjectorTrapBlock || targetBlock instanceof PiezoShockTrapBlock
+                    || targetBlock instanceof SerratedJawTrapBlock || targetBlock instanceof HoloLaserTripwireBlock) {
+                BlockPos leverPos = pedestalCenter.offset(1, 1, 0);
+                level.setBlock(leverPos, Blocks.LEVER.defaultBlockState().setValue(LeverBlock.FACE, AttachFace.FLOOR).setValue(LeverBlock.FACING, Direction.WEST), 3);
+            }
+
             spawnBlockHologram(level, targetPos, targetBlock);
             placeIdentificationSign(level, pedestalCenter.offset(0, 0, -2), targetBlock);
         }
@@ -986,6 +1059,15 @@ public class ShowcaseAutomation {
             Block edgeBlock = (z % 4 == 0) ? Blocks.OCHRE_FROGLIGHT : Blocks.CUT_SANDSTONE;
             level.setBlock(center.offset(-2, 0, z), edgeBlock.defaultBlockState(), 3);
             level.setBlock(center.offset(2, 0, z), edgeBlock.defaultBlockState(), 3);
+        }
+
+        for (int z = 8; z <= maxBlockZ; z += 16) {
+            BlockPos wptPillar = center.offset(0, 1, z);
+            level.setBlock(wptPillar, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+            SolidStateAccumulatorManager.registerAccumulator(level.dimension(), wptPillar, 500000, 500000, true, 1);
+            level.setBlock(wptPillar.above(), SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+            WirelessSolarReceiverManager.registerReceiver(level.dimension(), wptPillar.above(), 2);
+            level.setBlock(wptPillar.above(2), SandStormBlocks.WPT_RELAY_TOWER.defaultBlockState(), 3);
         }
 
         for (int row = 0; row < totalRows; row++) {
@@ -1104,6 +1186,19 @@ public class ShowcaseAutomation {
         if (block == SandStormBlocks.CHITINOLYTIC_FUNGUS) return "Fungo Decompositor de Quitina";
         if (block == SandStormBlocks.CRYO_XEROPHILIC_LICHEN) return "Líquen Crio-Xerófilo Resistente";
         if (block == SandStormBlocks.DUNE_EPHEDRA) return "Éfedra das Dunas Medicinal";
+        if (block == SandStormBlocks.SERRATED_JAW_TRAP) return "Armadilha de Mandíbula Mecânica";
+        if (block == SandStormBlocks.PIEZO_SHOCK_TRAP) return "Mina Piezoelétrica de Descarga";
+        if (block == SandStormBlocks.COLLAPSIBLE_TRAPDOOR) return "Alçapão Falso com Queda Livre";
+        if (block == SandStormBlocks.KINETIC_EJECTOR_TRAP) return "Ejetor Pneumático Vertical 14m";
+        if (block == SandStormBlocks.THERMAL_VENT_TRAP) return "Grelha Industrial a Vapor Quente";
+        if (block == SandStormBlocks.MIRAGE_HOLOGRAM_TRAP) return "Projetor Holográfico de Isca";
+        if (block == SandStormBlocks.NANITE_WEB_SNARE) return "Armadilha de Teto com Cabos Naníticos";
+        if (block == SandStormBlocks.NEUROTOXIC_SPIKES) return "Piso de Espinhos Neurotóxicos";
+        if (block == SandStormBlocks.CRYO_FREEZE_MINE) return "Mina Criogênica de Congelamento";
+        if (block == SandStormBlocks.MICRO_SINGULARITY_TRAP) return "Armadilha de Micro-Singularidade";
+        if (block == SandStormBlocks.SEISMIC_DECOY_TRAP) return "Isca Sísmica Terrestre";
+        if (block == SandStormBlocks.HOLO_LASER_TRIPWIRE) return "Sensor Laser de Intrusão";
+        if (block == SandStormBlocks.NANITE_QUICKSAND) return "Areia Movediça de Nanites";
         if (block == SandStormBlocks.SMART_FLUID_PIPE) return "Duto Inteligente de Fluidos e Gases";
         return "Tecnologia Estrutural SandStorm";
     }
@@ -1167,9 +1262,13 @@ public class ShowcaseAutomation {
             chest.setItem(3, new ItemStack(SandStormBlocks.SAND_MAGLEV_RAIL, 64));
         }
 
-        Minecart cart = new Minecart(EntityTypes.MINECART, level);
-        cart.setPos(xMin + 0.5, baseY + 1.2, (zMin + zMax) / 2.0);
-        level.addFreshEntity(cart);
+        @SuppressWarnings("unchecked")
+        EntityType<Minecart> minecartType = (EntityType<Minecart>) (EntityType<?>) BuiltInRegistries.ENTITY_TYPE.getValue(SandStormMod.mcId("minecart"));
+        if (minecartType != null) {
+            Minecart cart = new Minecart(minecartType, level);
+            cart.setPos(xMin + 0.5, baseY + 1.2, (zMin + zMax) / 2.0);
+            level.addFreshEntity(cart);
+        }
 
         BlockPos trackHolo = new BlockPos((xMin + xMax) / 2, baseY + 1, 10);
         spawnHologram(level, trackHolo.getX() + 0.5, baseY + 3.0, trackHolo.getZ() + 0.5, "§b[Circuito de Testes: Trilhos Maglev]");
@@ -2328,13 +2427,69 @@ public class ShowcaseAutomation {
         setupTerminalTrigger(level, center.offset(-12, 0, 0), new BlockPos(-36, 161, -14), "Torre e Abismo de Rapel (128 Blocos)", "Comprimento Máximo | Queda Livre e Subida");
     }
 
+    private static void buildIsolatedTestingChamber(ServerLevel level, int minX, int maxX, int minZ, int maxZ, int baseY, int windowX, String title, String subtitle) {
+        int centerX = (minX + maxX) / 2;
+        int centerZ = (minZ + maxZ) / 2;
+
+        BlockPos reactorPos = new BlockPos(centerX, baseY - 1, centerZ);
+        level.setBlock(reactorPos, SandStormBlocks.CRYO_REACTOR_CORE.defaultBlockState().setValue(CryoReactorCoreBlock.OPERATIONAL, true), 3);
+        level.setBlock(reactorPos.east(), SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        SolidStateAccumulatorManager.registerAccumulator(level.dimension(), reactorPos.east(), 500000, 500000, true, 1);
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                BlockPos floor = new BlockPos(x, baseY, z);
+                level.setBlock(floor.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean isEdge = (x == minX || x == maxX || z == minZ || z == maxZ);
+                Block floorBlock = isEdge ? Blocks.CUT_SANDSTONE : SandStormBlocks.SEISMIC_DAMPENER_PAVING;
+                level.setBlock(floor, floorBlock.defaultBlockState(), 2);
+
+                if (isEdge) {
+                    boolean isWindowWall = (x == windowX);
+                    boolean isDoorway = (z == centerZ);
+                    for (int dy = 1; dy <= 3; dy++) {
+                        BlockPos wallPos = floor.above(dy);
+                        if (isWindowWall) {
+                            if (isDoorway) {
+                                setAirSafe(level, wallPos);
+                            } else if (dy == 1) {
+                                level.setBlock(wallPos, Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
+                            } else {
+                                level.setBlock(wallPos, SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
+                            }
+                        } else {
+                            Block wallBlock = (dy == 2 && (Math.abs(z - centerZ) % 3 == 0 || Math.abs(x - centerX) % 3 == 0))
+                                    ? SandStormBlocks.FULGURITE_GLASS
+                                    : SandStormBlocks.REINFORCED_CONCRETE;
+                            level.setBlock(wallPos, wallBlock.defaultBlockState(), 3);
+                        }
+                    }
+                    level.setBlock(floor.above(4), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
+                }
+            }
+        }
+
+        spawnHologram(level, windowX + 0.5, baseY + 4.5, centerZ + 0.5, title);
+        spawnHologram(level, windowX + 0.5, baseY + 4.15, centerZ + 0.5, subtitle);
+    }
+
     public static void buildDefenseAndBallisticsRange(ServerLevel level, BlockPos stationCenter) {
         int baseY = stationCenter.getY();
 
-        for (int dx = -5; dx <= 5; dx++) {
-            for (int dz = -4; dz <= 5; dz++) {
-                for (int dy = 1; dy <= 5; dy++) {
-                    BlockPos p = stationCenter.offset(dx, dy, dz);
+        AABB clearBox = new AABB(-64.0, baseY - 5, -120.0, -10.0, baseY + 12, -34.0);
+        List<ArmorStand> existingStands = level.getEntitiesOfClass(ArmorStand.class, clearBox);
+        for (ArmorStand stand : existingStands) {
+            stand.discard();
+        }
+        List<LivingEntity> existingMobs = level.getEntitiesOfClass(LivingEntity.class, clearBox, e -> !(e instanceof ServerPlayer));
+        for (LivingEntity mob : existingMobs) {
+            mob.discard();
+        }
+
+        for (int x = -62; x <= -12; x++) {
+            for (int z = -34; z >= -118; z--) {
+                for (int dy = 1; dy <= 8; dy++) {
+                    BlockPos p = new BlockPos(x, baseY + dy, z);
                     if (!level.getBlockState(p).isAir()) {
                         setAirSafe(level, p);
                     }
@@ -2342,62 +2497,150 @@ public class ShowcaseAutomation {
             }
         }
 
-        for (int dx = -5; dx <= 5; dx++) {
-            for (int dz = -4; dz <= 5; dz++) {
-                BlockPos p = stationCenter.offset(dx, 0, dz);
-                boolean edge = Math.abs(dx) == 5 || dz == -4 || dz == 5;
-                boolean corner = (Math.abs(dx) == 5 && (dz == -4 || dz == 5));
-                Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : SandStormBlocks.REINFORCED_CONCRETE);
-                level.setBlock(p, b.defaultBlockState(), 3);
-                if (edge && !corner && dz != 5) {
-                    level.setBlock(p.above(), Blocks.IRON_BARS.defaultBlockState(), 3);
-                }
+        for (int z = -36; z >= -114; z--) {
+            for (int x = -38; x <= -34; x++) {
+                BlockPos p = new BlockPos(x, baseY, z);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = (x == -38 || x == -34);
+                boolean light = (Math.abs(z) % 4 == 0 && x == -36);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
 
-        BlockPos railgunPos = stationCenter.offset(-2, 1, 0);
-        level.setBlock(railgunPos, SandStormBlocks.KINETIC_RAILGUN.defaultBlockState().setValue(KineticRailgunBlock.FACING, Direction.SOUTH), 3);
+        BlockPos portalArch = new BlockPos(-36, baseY, -36);
+        level.setBlock(portalArch.offset(-2, 1, 0), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(portalArch.offset(-2, 2, 0), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(portalArch.offset(-2, 3, 0), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(portalArch.offset(2, 1, 0), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(portalArch.offset(2, 2, 0), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(portalArch.offset(2, 3, 0), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(portalArch.offset(-1, 4, 0), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(portalArch.offset(0, 4, 0), Blocks.OCHRE_FROGLIGHT.defaultBlockState(), 3);
+        level.setBlock(portalArch.offset(1, 4, 0), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
+        spawnHologram(level, -35.5, baseY + 4.8, -35.5, "§c§l[Polígono de Defesa & Armadilhas Táticas]");
+        spawnHologram(level, -35.5, baseY + 4.45, -35.5, "§7Complexo de Testes Isolados com Reatores Infinitos");
+
+        buildIsolatedTestingChamber(level, -54, -40, -52, -42, baseY, -40,
+                "§b§l[Câmara 1: Escudo Cinético de Deflexão]", "§7Interceptação balística contínua | Reator Ativo");
+        BlockPos kShieldPos = new BlockPos(-47, baseY + 1, -47);
+        level.setBlock(kShieldPos, SandStormBlocks.KINETIC_SHIELD_GENERATOR.defaultBlockState(), 3);
+        if (level.getBlockEntity(kShieldPos) instanceof KineticShieldGeneratorBlockEntity kShieldBe) {
+            kShieldBe.setEnergy(20000);
+        }
+        defenseKineticShieldPos = kShieldPos;
+        BlockPos railgunPos = new BlockPos(-47, baseY + 1, -44);
+        level.setBlock(railgunPos, SandStormBlocks.KINETIC_RAILGUN.defaultBlockState().setValue(KineticRailgunBlock.FACING, Direction.WEST), 3);
         if (level.getBlockEntity(railgunPos) instanceof KineticRailgunBlockEntity railgunBe) {
             railgunBe.setItem(0, new ItemStack(SandStormItems.KINETIC_SLUG, 64));
             railgunBe.setItem(1, new ItemStack(SandStormItems.KINETIC_SLUG, 64));
         }
 
-        BlockPos turretPos = stationCenter.offset(2, 1, 0);
-        level.setBlock(turretPos, SandStormBlocks.AUTONOMOUS_SONIC_TURRET.defaultBlockState().setValue(AutonomousSonicTurretBlock.FACING, Direction.SOUTH), 3);
+        buildIsolatedTestingChamber(level, -54, -40, -68, -58, baseY, -40,
+                "§b§l[Câmara 2: Torreta Sônica Autônoma]", "§7Rastreamento 360° e disparos sônicos em tempo real");
+        BlockPos turretPos = new BlockPos(-44, baseY + 1, -63);
+        level.setBlock(turretPos, SandStormBlocks.AUTONOMOUS_SONIC_TURRET.defaultBlockState().setValue(AutonomousSonicTurretBlock.FACING, Direction.WEST), 3);
         if (level.getBlockEntity(turretPos) instanceof AutonomousSonicTurretBlockEntity turretBe) {
             turretBe.setEnergy(50000);
         }
+        defenseSonicTurretPos = turretPos;
 
-        BlockPos pylonPos = stationCenter.offset(0, 1, 0);
+        buildIsolatedTestingChamber(level, -54, -40, -84, -74, baseY, -40,
+                "§b§l[Câmara 3: Escudo de Plasma & Pilar Sônico]", "§7Cúpula defensiva de 32m e pulso acústico");
+        BlockPos plasmaPos = new BlockPos(-47, baseY + 1, -77);
+        level.setBlock(plasmaPos, SandStormBlocks.PLASMA_SHIELD_GENERATOR.defaultBlockState(), 3);
+        if (level.getBlockEntity(plasmaPos) instanceof PlasmaShieldGeneratorBlockEntity plasmaBe) {
+            plasmaBe.setStoredEnergy(1000000);
+            plasmaBe.setShieldActive(true);
+            plasmaBe.setFieldRadius(32);
+        }
+        defensePlasmaShieldPos = plasmaPos;
+        BlockPos pylonPos = new BlockPos(-47, baseY + 1, -81);
         level.setBlock(pylonPos, SandStormBlocks.ACOUSTIC_DEFENSE_PYLON.defaultBlockState().setValue(AcousticDefensePylonBlock.ACTIVE, true), 3);
         if (level.getBlockEntity(pylonPos) instanceof AcousticDefensePylonBlockEntity pylonBe) {
             pylonBe.setStoredEnergy(50000);
         }
+        defensePylonPos = pylonPos;
 
-        BlockPos plasmaPos = stationCenter.offset(-4, 1, 0);
-        level.setBlock(plasmaPos, SandStormBlocks.PLASMA_SHIELD_GENERATOR.defaultBlockState(), 3);
-        if (level.getBlockEntity(plasmaPos) instanceof PlasmaShieldGeneratorBlockEntity shieldBe) {
-            shieldBe.setStoredEnergy(500000);
-            shieldBe.setShieldActive(true);
-            shieldBe.setFieldRadius(32);
+        buildIsolatedTestingChamber(level, -54, -40, -100, -90, baseY, -40,
+                "§c§l[Câmara 4: Ejetor Cinético & Fosso Oculto]", "§7Arremesso vertical de 12 blocos e piso retrátil");
+        BlockPos ejectorPos = new BlockPos(-45, baseY + 1, -95);
+        level.setBlock(ejectorPos, SandStormBlocks.KINETIC_EJECTOR_TRAP.defaultBlockState(), 3);
+        defenseEjectorPos = ejectorPos;
+        BlockPos pitTrapPos = new BlockPos(-49, baseY, -95);
+        for (int py = baseY - 1; py >= baseY - 4; py--) {
+            setAirSafe(level, new BlockPos(pitTrapPos.getX(), py, pitTrapPos.getZ()));
         }
+        level.setBlock(new BlockPos(pitTrapPos.getX(), baseY - 4, pitTrapPos.getZ()), SandStormBlocks.KINETIC_FLOOR_SPIKES.defaultBlockState(), 3);
+        level.setBlock(pitTrapPos, SandStormBlocks.COLLAPSIBLE_TRAPDOOR.defaultBlockState(), 3);
+        BlockPos snareArchPos = new BlockPos(-47, baseY + 4, -98);
+        level.setBlock(snareArchPos, Blocks.IRON_BLOCK.defaultBlockState(), 3);
+        level.setBlock(snareArchPos.below(), SandStormBlocks.NANITE_WEB_SNARE.defaultBlockState(), 3);
 
-        BlockPos kineticPos = stationCenter.offset(4, 1, 0);
-        level.setBlock(kineticPos, SandStormBlocks.KINETIC_SHIELD_GENERATOR.defaultBlockState(), 3);
-        if (level.getBlockEntity(kineticPos) instanceof KineticShieldGeneratorBlockEntity kShieldBe) {
-            kShieldBe.setEnergy(50000);
+        buildIsolatedTestingChamber(level, -32, -18, -52, -42, baseY, -32,
+                "§6§l[Câmara 5: Grelha Térmica & Mina Criogênica]", "§7Vapor pressurizado contínuo e névoa criogênica");
+        BlockPos thermalPos = new BlockPos(-25, baseY + 1, -45);
+        level.setBlock(thermalPos, SandStormBlocks.THERMAL_VENT_TRAP.defaultBlockState().setValue(ThermalVentTrapBlock.ACTIVE, true), 3);
+        defenseThermalVentPos = thermalPos;
+        BlockPos cryoPos = new BlockPos(-25, baseY + 1, -49);
+        level.setBlock(cryoPos, SandStormBlocks.CRYO_FREEZE_MINE.defaultBlockState().setValue(CryoFreezeMineBlock.ACTIVE, true), 3);
+        defenseCryoMinePos = cryoPos;
+        BlockPos spikesPos = new BlockPos(-23, baseY + 1, -47);
+        level.setBlock(spikesPos, SandStormBlocks.NEUROTOXIC_SPIKES.defaultBlockState(), 3);
+
+        buildIsolatedTestingChamber(level, -32, -18, -68, -58, baseY, -32,
+                "§5§l[Câmara 6: Micro-Singularidade Gravitacional]", "§7Vórtice que suga e comprime alvos no núcleo");
+        BlockPos singularityPos = new BlockPos(-25, baseY + 1, -63);
+        level.setBlock(singularityPos, SandStormBlocks.MICRO_SINGULARITY_TRAP.defaultBlockState().setValue(MicroSingularityTrapBlock.ACTIVE, true), 3);
+        defenseSingularityPos = singularityPos;
+        BlockPos quicksandPos = new BlockPos(-23, baseY + 1, -63);
+        level.setBlock(quicksandPos, SandStormBlocks.NANITE_QUICKSAND.defaultBlockState(), 3);
+
+        buildIsolatedTestingChamber(level, -32, -18, -84, -74, baseY, -32,
+                "§e§l[Câmara 7: Tripwire Laser & Choque Piezo]", "§7Feixe óptico de detecção e descarga de alta voltagem");
+        BlockPos tripwirePos = new BlockPos(-25, baseY + 1, -76);
+        level.setBlock(tripwirePos.south(), Blocks.IRON_BLOCK.defaultBlockState(), 3);
+        level.setBlock(tripwirePos, SandStormBlocks.HOLO_LASER_TRIPWIRE.defaultBlockState().setValue(HoloLaserTripwireBlock.FACING, Direction.NORTH), 3);
+        BlockPos piezoPos = new BlockPos(-25, baseY + 1, -81);
+        level.setBlock(piezoPos, SandStormBlocks.PIEZO_SHOCK_TRAP.defaultBlockState(), 3);
+        BlockPos jawPos = new BlockPos(-23, baseY + 1, -79);
+        level.setBlock(jawPos, SandStormBlocks.SERRATED_JAW_TRAP.defaultBlockState(), 3);
+
+        buildIsolatedTestingChamber(level, -32, -18, -100, -90, baseY, -32,
+                "§d§l[Câmara 8: Engodo Holográfico & Quitina Corrosiva]", "§7Isca 3D ativa e espinhos com ácido corrosivo");
+        BlockPos miragePos = new BlockPos(-25, baseY + 1, -95);
+        level.setBlock(miragePos, SandStormBlocks.MIRAGE_HOLOGRAM_TRAP.defaultBlockState(), 3);
+        defenseMiragePos = miragePos;
+        BlockPos seismicPos = new BlockPos(-22, baseY + 1, -93);
+        level.setBlock(seismicPos, SandStormBlocks.SEISMIC_DECOY_TRAP.defaultBlockState(), 3);
+        BlockPos chitinPos1 = new BlockPos(-22, baseY + 1, -97);
+        BlockPos chitinPos2 = new BlockPos(-23, baseY + 1, -97);
+        level.setBlock(chitinPos1, SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL.defaultBlockState().setValue(CorrosiveChitinSpikeWallBlock.FACING, Direction.UP), 3);
+        level.setBlock(chitinPos2, SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL.defaultBlockState().setValue(CorrosiveChitinSpikeWallBlock.FACING, Direction.UP), 3);
+        BlockPos barrierPos = new BlockPos(-28, baseY + 1, -95);
+        level.setBlock(barrierPos, SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER.defaultBlockState(), 3);
+        BlockPos gatePos = new BlockPos(-25, baseY + 1, -91);
+        level.setBlock(gatePos, SandStormBlocks.CRUSHING_SPIKE_GATE.defaultBlockState(), 3);
+        level.setBlock(gatePos.east(), Blocks.LEVER.defaultBlockState().setValue(LeverBlock.FACE, AttachFace.FLOOR).setValue(LeverBlock.FACING, Direction.NORTH), 3);
+
+        for (int x = -44; x <= -28; x++) {
+            for (int z = -105; z >= -115; z--) {
+                BlockPos p = new BlockPos(x, baseY, z);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = (x == -44 || x == -28 || z == -105 || z == -115);
+                Block b = edge ? Blocks.CUT_SANDSTONE : SandStormBlocks.SEISMIC_DAMPENER_PAVING;
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
         }
+        BlockPos centralReactor = new BlockPos(-36, baseY - 1, -110);
+        level.setBlock(centralReactor, SandStormBlocks.CRYO_REACTOR_CORE.defaultBlockState().setValue(CryoReactorCoreBlock.OPERATIONAL, true), 3);
+        level.setBlock(centralReactor.west(), SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        level.setBlock(centralReactor.east(), SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        SolidStateAccumulatorManager.registerAccumulator(level.dimension(), centralReactor.west(), 500000, 500000, true, 1);
+        SolidStateAccumulatorManager.registerAccumulator(level.dimension(), centralReactor.east(), 500000, 500000, true, 1);
 
-        level.setBlock(stationCenter.offset(-3, 1, 4), SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER.defaultBlockState(), 3);
-        level.setBlock(stationCenter.offset(-2, 1, 4), SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER.defaultBlockState(), 3);
-        level.setBlock(stationCenter.offset(-1, 1, 4), SandStormBlocks.KINETIC_FLOOR_SPIKES.defaultBlockState(), 3);
-        level.setBlock(stationCenter.offset(0, 1, 4), SandStormBlocks.CRUSHING_SPIKE_GATE.defaultBlockState(), 3);
-        level.setBlock(stationCenter.offset(1, 1, 4), SandStormBlocks.KINETIC_FLOOR_SPIKES.defaultBlockState(), 3);
-        level.setBlock(stationCenter.offset(2, 1, 4), SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL.defaultBlockState(), 3);
-        level.setBlock(stationCenter.offset(3, 1, 4), SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL.defaultBlockState(), 3);
-
-        BlockPos chestPos = stationCenter.offset(0, 1, -2);
-        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
+        BlockPos chestPos = new BlockPos(-39, baseY + 1, -110);
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.KINETIC_SLUG, 64));
             chest.setItem(1, new ItemStack(SandStormItems.KINETIC_SLUG, 64));
@@ -2406,13 +2649,132 @@ public class ShowcaseAutomation {
             chest.setItem(4, new ItemStack(SandStormItems.PLASMA_RIFLE, 1));
             chest.setItem(5, new ItemStack(SandStormItems.ANOMALY_RADAR, 1));
             chest.setItem(6, new ItemStack(SandStormItems.VIBRO_CRYSKNIFE, 1));
+            chest.setItem(7, new ItemStack(SandStormItems.STUN_GRENADE, 16));
+            chest.setItem(8, new ItemStack(SandStormItems.SMOKE_GRENADE, 16));
+            chest.setItem(9, new ItemStack(SandStormBlocks.COLLAPSIBLE_TRAPDOOR, 16));
+            chest.setItem(10, new ItemStack(SandStormBlocks.KINETIC_EJECTOR_TRAP, 16));
+            chest.setItem(11, new ItemStack(SandStormBlocks.THERMAL_VENT_TRAP, 16));
+            chest.setItem(12, new ItemStack(SandStormBlocks.SERRATED_JAW_TRAP, 16));
+            chest.setItem(13, new ItemStack(SandStormBlocks.PIEZO_SHOCK_TRAP, 16));
+            chest.setItem(14, new ItemStack(SandStormItems.TACTICAL_DETONATOR, 1));
+            chest.setItem(15, new ItemStack(SandStormItems.TRAP_DISARMER_KIT, 1));
+            chest.setItem(16, new ItemStack(SandStormBlocks.MIRAGE_HOLOGRAM_TRAP, 16));
+            chest.setItem(17, new ItemStack(SandStormBlocks.NANITE_WEB_SNARE, 16));
+            chest.setItem(18, new ItemStack(SandStormBlocks.NEUROTOXIC_SPIKES, 16));
+            chest.setItem(19, new ItemStack(SandStormBlocks.CRYO_FREEZE_MINE, 16));
+            chest.setItem(20, new ItemStack(SandStormBlocks.MICRO_SINGULARITY_TRAP, 16));
+            chest.setItem(21, new ItemStack(SandStormBlocks.SEISMIC_DECOY_TRAP, 16));
+            chest.setItem(22, new ItemStack(SandStormBlocks.HOLO_LASER_TRIPWIRE, 16));
+            chest.setItem(23, new ItemStack(SandStormBlocks.NANITE_QUICKSAND, 16));
+            chest.setItem(24, new ItemStack(SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER, 16));
+            chest.setItem(25, new ItemStack(SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL, 16));
+            chest.setItem(26, new ItemStack(SandStormBlocks.CRUSHING_SPIKE_GATE, 4));
         }
 
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.2, stationCenter.getZ() + 0.5, "§c§l[Perímetro de Defesa & Balística]");
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.85, stationCenter.getZ() + 0.5, "§7Canhão Railgun 250 kJ | Torreta Sônica | Escudos");
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.5, stationCenter.getZ() + 0.5, "§eSistemas energizados e prontos para teste");
+        BlockPos mannequinPos = new BlockPos(-33, baseY + 1, -110);
+        spawnMannequin(level, mannequinPos, "§bManequim: Traje Espacial Isolante",
+                new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
+                new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS), new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
+                new ItemStack(SandStormItems.TACTICAL_DETONATOR), new ItemStack(SandStormItems.TRAP_DISARMER_KIT));
 
-        setupReturnPad(level, stationCenter.offset(-4, 1, -3));
+        BlockPos returnPos = new BlockPos(-36, baseY + 1, -113);
+        setupReturnPad(level, returnPos);
+
+        spawnHologram(level, -35.5, baseY + 4.5, -105.5, "§6§l[Arsenal Tático & Reator Central de Alimentação]");
+        spawnHologram(level, -35.5, baseY + 4.15, -105.5, "§7Reatores Infinitos | Suprimentos e Retorno à Praça");
+    }
+
+    private static void tickDefenseDemos(ServerLevel level, long tick) {
+        if (tick % 20 == 0) {
+            if (defenseKineticShieldPos != null && level.isLoaded(defenseKineticShieldPos)
+                    && level.getBlockEntity(defenseKineticShieldPos) instanceof KineticShieldGeneratorBlockEntity kShield) {
+                kShield.setEnergy(20000);
+            }
+            if (defenseSonicTurretPos != null && level.isLoaded(defenseSonicTurretPos)
+                    && level.getBlockEntity(defenseSonicTurretPos) instanceof AutonomousSonicTurretBlockEntity turret) {
+                turret.setEnergy(50000);
+            }
+            if (defensePlasmaShieldPos != null && level.isLoaded(defensePlasmaShieldPos)
+                    && level.getBlockEntity(defensePlasmaShieldPos) instanceof PlasmaShieldGeneratorBlockEntity plasma) {
+                plasma.setStoredEnergy(1000000);
+                plasma.setShieldActive(true);
+            }
+            if (defensePylonPos != null && level.isLoaded(defensePylonPos)
+                    && level.getBlockEntity(defensePylonPos) instanceof AcousticDefensePylonBlockEntity pylon) {
+                pylon.setStoredEnergy(50000);
+            }
+        }
+
+        if (tick % 30 == 0 && defenseKineticShieldPos != null && level.isLoaded(defenseKineticShieldPos)) {
+            EntityType<?> arrowType = BuiltInRegistries.ENTITY_TYPE.getValue(SandStormMod.mcId("arrow"));
+            if (arrowType != null) {
+                Entity arrowEntity = arrowType.create(level, EntitySpawnReason.TRIGGERED);
+                if (arrowEntity instanceof Projectile arrow) {
+                    arrow.setPos(defenseKineticShieldPos.getX() + 5.0, defenseKineticShieldPos.getY() + 1.2, defenseKineticShieldPos.getZ() + 0.5);
+                    arrow.shoot(-1.0, 0.05, 0.0, 1.2f, 0.0f);
+                    level.addFreshEntity(arrow);
+                }
+            }
+        }
+
+        if (tick % 30 == 0 && defenseSonicTurretPos != null && level.isLoaded(defenseSonicTurretPos)) {
+            BlockPos targetPos = defenseSonicTurretPos.offset(-7, 0, 0);
+            Entity existingTarget = defenseSonicTargetId != null ? level.getEntity(defenseSonicTargetId) : null;
+            if (existingTarget instanceof LivingEntity living && living.isAlive()) {
+                living.setHealth(living.getMaxHealth());
+            } else {
+                EntityType<?> huskType = BuiltInRegistries.ENTITY_TYPE.getValue(SandStormMod.mcId("husk"));
+                if (huskType != null) {
+                    Entity entity = huskType.create(level, EntitySpawnReason.TRIGGERED);
+                    if (entity instanceof LivingEntity living) {
+                        living.setPos(targetPos.getX() + 0.5, targetPos.getY() + 0.1, targetPos.getZ() + 0.5);
+                        living.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
+                        living.setCustomName(Component.literal("§c[Alvo Hostil de Teste]"));
+                        living.setCustomNameVisible(true);
+                        level.addFreshEntity(living);
+                        defenseSonicTargetId = living.getUUID();
+                    }
+                }
+            }
+        }
+
+        if (tick % 20 == 0 && defenseThermalVentPos != null && level.isLoaded(defenseThermalVentPos)) {
+            level.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, defenseThermalVentPos.getX() + 0.5, defenseThermalVentPos.getY() + 0.3, defenseThermalVentPos.getZ() + 0.5, 6, 0.2, 0.4, 0.2, 0.04);
+            level.sendParticles(ParticleTypes.FLAME, defenseThermalVentPos.getX() + 0.5, defenseThermalVentPos.getY() + 0.2, defenseThermalVentPos.getZ() + 0.5, 3, 0.1, 0.05, 0.1, 0.02);
+        }
+
+        if (tick % 25 == 0 && defenseCryoMinePos != null && level.isLoaded(defenseCryoMinePos)) {
+            level.sendParticles(ParticleTypes.SNOWFLAKE, defenseCryoMinePos.getX() + 0.5, defenseCryoMinePos.getY() + 0.3, defenseCryoMinePos.getZ() + 0.5, 8, 0.3, 0.2, 0.3, 0.02);
+            level.sendParticles(ParticleTypes.CLOUD, defenseCryoMinePos.getX() + 0.5, defenseCryoMinePos.getY() + 0.2, defenseCryoMinePos.getZ() + 0.5, 4, 0.2, 0.1, 0.2, 0.02);
+        }
+
+        if (tick % 15 == 0 && defenseSingularityPos != null && level.isLoaded(defenseSingularityPos)) {
+            level.sendParticles(ParticleTypes.PORTAL, defenseSingularityPos.getX() + 0.5, defenseSingularityPos.getY() + 0.4, defenseSingularityPos.getZ() + 0.5, 14, 0.4, 0.4, 0.4, -0.4);
+            level.sendParticles(ParticleTypes.REVERSE_PORTAL, defenseSingularityPos.getX() + 0.5, defenseSingularityPos.getY() + 0.3, defenseSingularityPos.getZ() + 0.5, 6, 0.2, 0.2, 0.2, -0.05);
+        }
+
+        if (tick % 60 == 0 && defenseMiragePos != null && level.isLoaded(defenseMiragePos)) {
+            Entity existingDecoy = defenseMirageDecoyId != null ? level.getEntity(defenseMirageDecoyId) : null;
+            if (!(existingDecoy instanceof MirageDecoyEntity) || !existingDecoy.isAlive()) {
+                MirageDecoyEntity decoy = new MirageDecoyEntity(SandStormEntities.MIRAGE_DECOY, level);
+                decoy.setPos(defenseMiragePos.getX() + 0.5, defenseMiragePos.getY() + 0.2, defenseMiragePos.getZ() + 0.5);
+                level.addFreshEntity(decoy);
+                defenseMirageDecoyId = decoy.getUUID();
+            }
+        }
+
+        if (tick % 60 == 0 && defenseEjectorPos != null && level.isLoaded(defenseEjectorPos)) {
+            @SuppressWarnings("unchecked")
+            EntityType<ArmorStand> armorStandType = (EntityType<ArmorStand>) (EntityType<?>) BuiltInRegistries.ENTITY_TYPE.getValue(SandStormMod.mcId("armor_stand"));
+            ArmorStand dummy = new ArmorStand(armorStandType, level);
+            dummy.setPos(defenseEjectorPos.getX() + 0.5, defenseEjectorPos.getY() + 0.2, defenseEjectorPos.getZ() + 0.5);
+            dummy.setCustomName(Component.literal("§e[Manequim Balístico]"));
+            dummy.setCustomNameVisible(true);
+            dummy.setDeltaMovement(0.0, 1.3, 0.0);
+            level.addFreshEntity(dummy);
+            level.sendParticles(ParticleTypes.POOF, defenseEjectorPos.getX() + 0.5, defenseEjectorPos.getY() + 0.5, defenseEjectorPos.getZ() + 0.5, 8, 0.2, 0.1, 0.2, 0.05);
+            level.playSound(null, defenseEjectorPos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 1.0f, 1.2f);
+        }
     }
 
     private static void buildDefenseWalkway(ServerLevel level, BlockPos center) {

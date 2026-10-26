@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "active=false": {"model": "sandstorm:block/thermal_vent_trap"},
+    "active=true": {"model": "sandstorm:block/thermal_vent_trap_active"}
+  }
+}

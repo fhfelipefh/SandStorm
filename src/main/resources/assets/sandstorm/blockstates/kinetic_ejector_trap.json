@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "charged=true,facing=north": {"model": "sandstorm:block/kinetic_ejector_trap"},
+    "charged=true,facing=south": {"model": "sandstorm:block/kinetic_ejector_trap", "y": 180},
+    "charged=true,facing=west": {"model": "sandstorm:block/kinetic_ejector_trap", "y": 270},
+    "charged=true,facing=east": {"model": "sandstorm:block/kinetic_ejector_trap", "y": 90},
+    "charged=false,facing=north": {"model": "sandstorm:block/kinetic_ejector_trap_extended"},
+    "charged=false,facing=south": {"model": "sandstorm:block/kinetic_ejector_trap_extended", "y": 180},
+    "charged=false,facing=west": {"model": "sandstorm:block/kinetic_ejector_trap_extended", "y": 270},
+    "charged=false,facing=east": {"model": "sandstorm:block/kinetic_ejector_trap_extended", "y": 90}
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "W": "minecraft:string",
+    "N": "sandstorm:nano_actuator",
+    "P": "sandstorm:structural_plate",
+    "B": "sandstorm:flexible_biopolymer"
+  },
+  "pattern": [
+    " P ",
+    "BNB",
+    "WWW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:nanite_web_snare"
+  }
+}

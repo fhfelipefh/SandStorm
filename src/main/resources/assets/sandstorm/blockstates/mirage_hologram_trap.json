@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "sandstorm:block/mirage_hologram_trap"
+    },
+    "active=true": {
+      "model": "sandstorm:block/mirage_hologram_trap_active"
+    }
+  }
+}

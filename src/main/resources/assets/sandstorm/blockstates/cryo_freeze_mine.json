@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "sandstorm:block/cryo_freeze_mine"
+    },
+    "active=true": {
+      "model": "sandstorm:block/cryo_freeze_mine_active"
+    }
+  }
+}

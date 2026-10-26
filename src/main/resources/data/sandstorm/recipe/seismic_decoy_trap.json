@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "A": "sandstorm:electric_component",
+    "N": "sandstorm:nano_actuator",
+    "P": "sandstorm:structural_plate",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "NAN",
+    "SPS",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:seismic_decoy_trap"
+  }
+}

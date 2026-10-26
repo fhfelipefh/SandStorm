@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "sandstorm:self_healing_nanite_matrix",
+    "minecraft:sand",
+    "minecraft:sand",
+    "minecraft:sand",
+    "minecraft:sand"
+  ],
+  "result": {
+    "count": 4,
+    "id": "sandstorm:nanite_quicksand"
+  }
+}

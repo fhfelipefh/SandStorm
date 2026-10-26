@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "A": "sandstorm:scrap_metal",
+    "E": "sandstorm:electric_component",
+    "P": "sandstorm:structural_plate",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    " A ",
+    "PEP",
+    "PRP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:tactical_detonator"
+  }
+}

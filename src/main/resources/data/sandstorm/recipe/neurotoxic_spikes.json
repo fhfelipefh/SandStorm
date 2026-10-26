@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "T": "sandstorm:sandworm_tooth",
+    "P": "sandstorm:structural_plate",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "TTT",
+    "SSS",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:neurotoxic_spikes"
+  }
+}
