@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "minecraft:copper_ingot",
+    "F": "minecraft:iron_bars",
+    "G": "minecraft:glass",
+    "M": "sandstorm:scrap_metal",
+    "R": "minecraft:redstone",
+    "S": "sandstorm:sandstone_furnace"
+  },
+  "pattern": [
+    "GFG",
+    "CMC",
+    "RSR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:atmospheric_carbon_extractor"
+  }
+}
+

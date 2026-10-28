@@ -207,6 +207,16 @@ public class SandStormMenus {
         new MenuType<>(SpectralSurveyTelescopeMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<ElectricArcFurnaceMenu> ELECTRIC_ARC_FURNACE_MENU = register(
+        "electric_arc_furnace",
+        new MenuType<>(ElectricArcFurnaceMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<AtmosphericCarbonExtractorMenu> ATMOSPHERIC_CARBON_EXTRACTOR_MENU = register(
+        "atmospheric_carbon_extractor",
+        new MenuType<>(AtmosphericCarbonExtractorMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

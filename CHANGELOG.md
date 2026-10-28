@@ -2,6 +2,30 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.31] - 2026-10-28
+
+### ⚡ Fornalha Elétrica de Indução & Captura Atmosférica de Carbono
+* **Fornalha a Arco Elétrico (`electric_arc_furnace`)**:
+  * Fornalha industrial de alta temperatura sem queima de carvão, alimentada pela rede elétrica sem fio de energia solar (WPT), geradores térmicos, acumuladores de estado sólido e baterias.
+  * Consumo inteligente sob demanda: zero gasto de energia em modo de espera (`LIT = false`), acionando os enrolamentos de indução apenas na presença de itens para fundição.
+  * Alta velocidade (80 ticks / 4s por item) com suporte completo a receitas de fundição vanilla (`SMELTING`) e alto-forno (`BLASTING`), viabilizando a obtenção de lâminas de silício a partir de silício bruto sem gastar combustível fóssil.
+  * Renderizador 3D procedural com câmara de quartzo, item suspenso em levitação indutiva e arcos elétricos dinâmicos de alta voltagem.
+* **Capturador de Carbono Atmosférico (`atmospheric_carbon_extractor`)**:
+  * Sistema de Captura Direta de Ar (DAC) e eletrólise de carbonatos fundidos a quente ($CO_2 + \text{energia} \rightarrow C + O_2$).
+  * Desbloqueio definitivo de progressão para seeds desérticas sem carvão ou biomassa, sintetizando carvão sólido (`minecraft:coal`) do ar.
+  * Balanceamento industrial estrito anti-OP: taxa lenta e alta demanda termodinâmica de energia (1.200 ticks / 60s por unidade, 20 E/tick, totalizando 24.000 unidades de energia por carvão).
+  * Requisito de desobstrução atmosférica superior com exaustão de plumas de oxigênio puro (`CLOUD`).
+  * Renderizador 3D com rotor de turbina centrífuga animado em rotação contínua ($15^\circ/\text{tick}$) e núcleo de eletrólito fundido.
+* **Cadeia de Insumos para Early-Game**:
+  * Receitas acessíveis sem dependência circular de carvão ou silício (combinando cobre, arenito, sucata metálica, redstone e grades de ferro).
+
+## [1.19.30] - 2026-10-28
+
+### 🧪 Ecossistema Sináptico de XP Verde Vanilla & Renderizadores Procedurais
+* Paleta líquida de XP padronizada com verde luminoso esmeralda vanilla (`#55FF20` / `#7CFC00`).
+* Condensador sináptico, aspirador de XP, reparador molecular e módulo de sobremarcha neural.
+* Renderizadores 3D procedurais e polimento de animações de caminhada (gait) para drones e cães cibernéticos.
+
 ## [1.19.29] - 2026-10-28
 
 ### 📡 Sistema de Telemetria e Rastreamento Tático & Caixote 3D Animado

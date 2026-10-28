@@ -1,0 +1,35 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "sandstorm:block/atmospheric_carbon_extractor"
+    },
+    "facing=north,lit=true": {
+      "model": "sandstorm:block/atmospheric_carbon_extractor_on"
+    },
+    "facing=east,lit=false": {
+      "model": "sandstorm:block/atmospheric_carbon_extractor",
+      "y": 90
+    },
+    "facing=east,lit=true": {
+      "model": "sandstorm:block/atmospheric_carbon_extractor_on",
+      "y": 90
+    },
+    "facing=south,lit=false": {
+      "model": "sandstorm:block/atmospheric_carbon_extractor",
+      "y": 180
+    },
+    "facing=south,lit=true": {
+      "model": "sandstorm:block/atmospheric_carbon_extractor_on",
+      "y": 180
+    },
+    "facing=west,lit=false": {
+      "model": "sandstorm:block/atmospheric_carbon_extractor",
+      "y": 270
+    },
+    "facing=west,lit=true": {
+      "model": "sandstorm:block/atmospheric_carbon_extractor_on",
+      "y": 270
+    }
+  }
+}
+

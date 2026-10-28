@@ -19,6 +19,8 @@ import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreBoreholeBlockEntity
 import com.fhfelipefh.sandstorm.content.block.entity.DeepCoreDrillBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DesalinationFilterBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.DewCondenserBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.ElectricArcFurnaceBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericCarbonExtractorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ElectricFencePylonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.FiberglassChemicalPipeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
@@ -135,6 +137,22 @@ public class SandStormBlocks {
                     .strength(5.0f, 1200.0f)
                     .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 14 : 0)
                     .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
+    public static final ElectricArcFurnaceBlock ELECTRIC_ARC_FURNACE = register("electric_arc_furnace",
+            new ElectricArcFurnaceBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("electric_arc_furnace")))
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(4.0f, 6.0f)
+                    .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()));
+    public static final AtmosphericCarbonExtractorBlock ATMOSPHERIC_CARBON_EXTRACTOR = register("atmospheric_carbon_extractor",
+            new AtmosphericCarbonExtractorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("atmospheric_carbon_extractor")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.5f, 6.0f)
+                    .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0)
+                    .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()));
     public static final BrackishWaterBlock BRACKISH_AQUIFER = register("brackish_aquifer",
             new BrackishWaterBlock(BlockBehaviour.Properties.of()
@@ -1297,6 +1315,16 @@ public class SandStormBlocks {
             SandStormMod.id("steel_furnace"),
             new BlockEntityType<>(SteelFurnaceBlockEntity::new, Set.of(STEEL_FURNACE))
     );
+    public static final BlockEntityType<ElectricArcFurnaceBlockEntity> ELECTRIC_ARC_FURNACE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("electric_arc_furnace"),
+            new BlockEntityType<>(ElectricArcFurnaceBlockEntity::new, Set.of(ELECTRIC_ARC_FURNACE))
+    );
+    public static final BlockEntityType<AtmosphericCarbonExtractorBlockEntity> ATMOSPHERIC_CARBON_EXTRACTOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("atmospheric_carbon_extractor"),
+            new BlockEntityType<>(AtmosphericCarbonExtractorBlockEntity::new, Set.of(ATMOSPHERIC_CARBON_EXTRACTOR))
+    );
     public static final BlockEntityType<SynapticCondenserBlockEntity> SYNAPTIC_CONDENSER_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("synaptic_condenser"),
@@ -1573,6 +1601,8 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SANDSTONE_CRATE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, INSULATED_FURNACE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, STEEL_FURNACE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ELECTRIC_ARC_FURNACE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, ATMOSPHERIC_CARBON_EXTRACTOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, THERMAL_GENERATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, HYDROPONIC_CHAMBER_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, AUTONOMOUS_SONIC_TURRET_BE);

@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "sandstorm:block/atmospheric_carbon_extractor_bottom",
+    "top": "sandstorm:block/atmospheric_carbon_extractor_top",
+    "front": "sandstorm:block/atmospheric_carbon_extractor_front",
+    "side": "sandstorm:block/atmospheric_carbon_extractor_side"
+  }
+}
+

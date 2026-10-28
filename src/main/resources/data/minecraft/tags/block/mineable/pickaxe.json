@@ -6,6 +6,8 @@
     "sandstorm:sandstone_furnace",
     "sandstorm:insulated_furnace",
     "sandstorm:steel_furnace",
+    "sandstorm:electric_arc_furnace",
+    "sandstorm:atmospheric_carbon_extractor",
     "sandstorm:thumper",
     "sandstorm:printer_3d",
     "sandstorm:desalination_filter",

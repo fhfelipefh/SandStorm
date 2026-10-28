@@ -1378,5 +1378,11 @@
   "item.sandstorm.synaptic_repairer": "Reparador Sináptico",
   "item.sandstorm.neural_overdrive_module": "Módulo de Overdrive Neural",
   "tooltip.sandstorm.synaptic_cartridge.desc": "Armazenador quântico de telemetria e XP.",
-  "tooltip.sandstorm.synaptic_cartridge.use": "Clique para drenar; Shift+clique para sacar."
+  "tooltip.sandstorm.synaptic_cartridge.use": "Clique para drenar; Shift+clique para sacar.",
+  "block.sandstorm.electric_arc_furnace": "Fornalha a Arco Elétrico",
+  "item.sandstorm.electric_arc_furnace": "Fornalha a Arco Elétrico",
+  "container.sandstorm.electric_arc_furnace": "Fornalha a Arco Elétrico",
+  "block.sandstorm.atmospheric_carbon_extractor": "Capturador de Carbono Atmosférico",
+  "item.sandstorm.atmospheric_carbon_extractor": "Capturador de Carbono Atmosférico",
+  "container.sandstorm.atmospheric_carbon_extractor": "Capturador de Carbono Atmosférico"
 }

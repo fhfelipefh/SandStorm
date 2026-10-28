@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "sandstorm:block/electric_arc_furnace_bottom",
+    "top": "sandstorm:block/electric_arc_furnace_top",
+    "front": "sandstorm:block/electric_arc_furnace_front_on",
+    "side": "sandstorm:block/electric_arc_furnace_side"
+  }
+}
+

@@ -3,6 +3,8 @@ package com.fhfelipefh.sandstorm.client;
 import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
 import com.fhfelipefh.sandstorm.client.gui.AmnioticIncubatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.AtmosphericTerraformerScreen;
+import com.fhfelipefh.sandstorm.client.gui.ElectricArcFurnaceScreen;
+import com.fhfelipefh.sandstorm.client.gui.AtmosphericCarbonExtractorScreen;
 import com.fhfelipefh.sandstorm.client.gui.AutoAssemblyLineScreen;
 import com.fhfelipefh.sandstorm.client.gui.AutonomousSonicTurretScreen;
 import com.fhfelipefh.sandstorm.client.gui.BioRegenerationPodScreen;
@@ -58,6 +60,8 @@ import com.fhfelipefh.sandstorm.client.renderer.CrushingSpikeGateRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyberneticGolemRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyborgRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DeepCoreDrillBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.ElectricArcFurnaceBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.AtmosphericCarbonExtractorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DesalinationFilterBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.HydroponicChamberBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.KineticRailgunBlockEntityRenderer;
@@ -173,6 +177,8 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.CRYOGENIC_ATMOSPHERIC_CHILLER_MENU, CryogenicAtmosphericChillerScreen::new);
         MenuScreens.register(SandStormMenus.IRRIGATION_PUMP_MENU, IrrigationPumpScreen::new);
         MenuScreens.register(SandStormMenus.SPECTRAL_SURVEY_TELESCOPE_MENU, SpectralSurveyTelescopeScreen::new);
+        MenuScreens.register(SandStormMenus.ELECTRIC_ARC_FURNACE_MENU, ElectricArcFurnaceScreen::new);
+        MenuScreens.register(SandStormMenus.ATMOSPHERIC_CARBON_EXTRACTOR_MENU, AtmosphericCarbonExtractorScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
@@ -191,6 +197,8 @@ public class SandStormClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(SandStormBlocks.SYNAPTIC_CONDENSER_BE, SynapticCondenserBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.DEEP_CORE_DRILL_BE, DeepCoreDrillBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.KINETIC_RAILGUN_BE, KineticRailgunBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.ELECTRIC_ARC_FURNACE_BE, ElectricArcFurnaceBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR_BE, AtmosphericCarbonExtractorBlockEntityRenderer::new);
 
         ArmorRenderer.register(new SpaceSuitArmorRenderer(),
                 SandStormItems.SPACE_SUIT_HELMET,

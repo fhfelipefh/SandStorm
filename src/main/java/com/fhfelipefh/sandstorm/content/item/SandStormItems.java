@@ -274,6 +274,8 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.SANDSTONE_FURNACE);
                         entries.accept(SandStormBlocks.INSULATED_FURNACE);
                         entries.accept(SandStormBlocks.STEEL_FURNACE);
+                        entries.accept(SandStormBlocks.ELECTRIC_ARC_FURNACE);
+                        entries.accept(SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR);
                         entries.accept(SandStormBlocks.BRACKISH_AQUIFER);
                         entries.accept(SandStormBlocks.THUMPER);
                         entries.accept(SandStormBlocks.PRINTER_3D);
