@@ -18,7 +18,7 @@ public class AtmosphericCarbonExtractorMenu extends AbstractContainerMenu implem
     private final ContainerData data;
 
     public AtmosphericCarbonExtractorMenu(int syncId, Inventory playerInventory) {
-        this(SandStormMenus.ATMOSPHERIC_CARBON_EXTRACTOR_MENU, syncId, playerInventory, new SimpleContainer(3), new SimpleContainerData(6));
+        this(SandStormMenus.ATMOSPHERIC_CARBON_EXTRACTOR_MENU, syncId, playerInventory, new SimpleContainer(3), new SimpleContainerData(7));
     }
 
     public AtmosphericCarbonExtractorMenu(int syncId, Inventory playerInventory, Container container, ContainerData data) {
@@ -28,7 +28,7 @@ public class AtmosphericCarbonExtractorMenu extends AbstractContainerMenu implem
     public AtmosphericCarbonExtractorMenu(MenuType<?> menuType, int syncId, Inventory playerInventory, Container container, ContainerData data) {
         super(menuType, syncId);
         checkContainerSize(container, 3);
-        checkContainerDataCount(data, 6);
+        checkContainerDataCount(data, 7);
         this.container = container;
         this.data = data;
 
@@ -61,6 +61,10 @@ public class AtmosphericCarbonExtractorMenu extends AbstractContainerMenu implem
 
     public boolean isDiamondMode() {
         return (this.slots.get(0).hasItem() && this.slots.get(0).getItem().is(Items.DIAMOND)) || getMaxProgress() > 2000;
+    }
+
+    public int getCombustionBoost() {
+        return data.get(6);
     }
 
     @Override

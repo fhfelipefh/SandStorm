@@ -5,6 +5,8 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
+import java.util.List;
+
 public class AtmosphericCarbonExtractorScreen extends BaseMachineScreen<AtmosphericCarbonExtractorMenu> {
     public AtmosphericCarbonExtractorScreen(AtmosphericCarbonExtractorMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -50,11 +52,21 @@ public class AtmosphericCarbonExtractorScreen extends BaseMachineScreen<Atmosphe
         int maxProg = this.menu.getMaxProgress();
         int prog = this.menu.getProgress();
         float ratio = maxProg > 0 ? (float) prog / (float) maxProg : 0.0f;
+        int boost = this.menu.getCombustionBoost();
+
+        if (boost > 0) {
+            int flameX = cx2 - 7;
+            int flameY = cy1 + 2;
+            extractor.fill(flameX, flameY + 1, flameX + 4, flameY + 5, 0xFFFF5722);
+            extractor.fill(flameX + 1, flameY, flameX + 3, flameY + 3, 0xFFFFD54F);
+            extractor.fill(flameX + 1, flameY + 2, flameX + 3, flameY + 4, 0xFFFF7043);
+        }
 
         if (processing) {
             long ticks = System.currentTimeMillis() / 40;
             int fanOffset = (int) (ticks % 10);
-            extractor.fill(cx1 + 8 + fanOffset, cy1 + 2, cx1 + 11 + fanOffset, cy1 + 5, 0xFF00E5FF);
+            int fanColor = 0xFF00E5FF;
+            extractor.fill(cx1 + 8 + fanOffset, cy1 + 2, cx1 + 11 + fanOffset, cy1 + 5, fanColor);
 
             if (diamondMode) {
                 int beamX = (cx1 + cx2) / 2;
@@ -89,5 +101,32 @@ public class AtmosphericCarbonExtractorScreen extends BaseMachineScreen<Atmosphe
             extractor.fill(cx1 + 8, cy1 + 8, cx2 - 8, cy2 - 8, glowColor);
             extractor.fill(cx1 + 10, cy1 + 10, cx2 - 10, cy2 - 10, innerGlow);
         }
+    }
+
+    @Override
+    protected void renderCustomTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
+        int x = this.leftPos;
+        int y = this.topPos;
+
+        if (isMouseOverProgress(mouseX, mouseY, x, y)) {
+            int maxProg = this.menu.getMaxProgress();
+            int pct = maxProg > 0 ? (this.menu.getProgress() * 100 / maxProg) : 0;
+            String status = this.menu.isProcessing() ? " §a[PROCESSANDO]" : " §7[EM ESPERA]";
+            if (!this.menu.isProcessing() && hasOutputReady()) {
+                pct = 100;
+                status = " §a[PRONTO]";
+            }
+            int boost = this.menu.getCombustionBoost();
+            if (boost > 0) {
+                List<Component> tip = List.of(
+                        Component.literal("§bProgresso: §f" + pct + "%" + status),
+                        Component.literal("§6🔥 ").append(Component.translatable("tooltip.sandstorm.extractor.thermal_draft")),
+                        Component.literal("§e+").append(Component.literal((boost * 100) + "% ")).append(Component.translatable("tooltip.sandstorm.extractor.thermal_speed"))
+                );
+                extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
+                return;
+            }
+        }
+        super.renderCustomTooltips(extractor, mouseX, mouseY);
     }
 }

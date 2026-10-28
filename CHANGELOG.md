@@ -2,6 +2,21 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.33] - 2026-10-28
+
+### 🔥 Efeito Termodinâmico de Tiragem por Combustão no Capturador de Carbono
+* **Aceleração por Combustão Térmica Externa**:
+  * Implementação da mecânica de termodinâmica e concentração de $CO_2$: a presença de chamas vivas e fontes de combustão ao redor do Capturador de Carbono Atmosférico (`Blocks.FIRE`, netherrack em chamas, fogueiras acesas `Blocks.CAMPFIRE`, `Blocks.SOUL_FIRE`, `Blocks.LAVA`, `Blocks.MAGMA_BLOCK`) injeta calor e gás carbônico concentrado nas entradas da máquina.
+  * **Escala de Eficiência e Velocidade**:
+    * 0 chamas: velocidade base (1x).
+    * 1 chama adjacente (ex: netherrack aceso): **+100% de velocidade (2x mais rápido)** — carvão em 30s, diamante em 2 min.
+    * 2 chamas adjacentes: **+200% de velocidade (3x mais rápido)** — carvão em 20s, diamante em 80s.
+    * 3 ou mais chamas adjacentes: **+300% de velocidade (4x mais rápido)** — carvão em 15s, diamante em 60s.
+  * **Feedback Visual e Sensorial**:
+    * Renderizador 3D: rotação da turbina acelerada dinamicamente proporcional à tiragem térmica com linhas de indução térmica radiante no piso.
+    * Partículas: sucção ativa de pequenas chamas (`SMALL_FLAME`) e fumaça quente (`SMOKE`) para a câmara de eletrólise.
+    * GUI & Tooltip: micro-ícone de chama pulsante na câmara e tooltip multinível com porcentagem de tiragem térmica ativa (`+100% Velocidade de Reação Térmica`).
+
 ## [1.19.32] - 2026-10-28
 
 ### 💎 Síntese Epitaxial CVD de Diamante & Upgrade do Capturador Atmosférico

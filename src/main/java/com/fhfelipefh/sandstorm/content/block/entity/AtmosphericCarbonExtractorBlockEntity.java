@@ -13,11 +13,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.ValueInput;
 
 public class AtmosphericCarbonExtractorBlockEntity extends BaseMachineBlockEntity {
@@ -26,6 +29,31 @@ public class AtmosphericCarbonExtractorBlockEntity extends BaseMachineBlockEntit
     private static final int[] SLOTS_SIDES = new int[]{2};
 
     private boolean wasDiamondMode = false;
+    private int cachedCombustionBoost = 0;
+
+    private final ContainerData extractorDataAccess = new ContainerData() {
+        @Override
+        public int get(int index) {
+            if (index == 6) {
+                return cachedCombustionBoost;
+            }
+            return dataAccess.get(index);
+        }
+
+        @Override
+        public void set(int index, int value) {
+            if (index == 6) {
+                cachedCombustionBoost = value;
+            } else {
+                dataAccess.set(index, value);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 7;
+        }
+    };
 
     public AtmosphericCarbonExtractorBlockEntity(BlockPos pos, BlockState state) {
         this(SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR_BE, pos, state);
@@ -34,6 +62,19 @@ public class AtmosphericCarbonExtractorBlockEntity extends BaseMachineBlockEntit
     public AtmosphericCarbonExtractorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, 3, 1200);
         this.energyCostPerTick = 20;
+    }
+
+    public int getCount() {
+        return 7;
+    }
+
+    @Override
+    public ContainerData getDataAccess() {
+        return this.extractorDataAccess;
+    }
+
+    public int getCombustionBoost() {
+        return cachedCombustionBoost;
     }
 
     public boolean isDiamondMode() {
@@ -50,6 +91,45 @@ public class AtmosphericCarbonExtractorBlockEntity extends BaseMachineBlockEntit
         this.energyCostPerTick = diamond ? 35 : 20;
     }
 
+    public static boolean isCombustionSource(BlockState state) {
+        if (state.is(Blocks.FIRE) || state.is(Blocks.SOUL_FIRE)) {
+            return true;
+        }
+        if (state.is(Blocks.CAMPFIRE) || state.is(Blocks.SOUL_CAMPFIRE)) {
+            return state.hasProperty(BlockStateProperties.LIT) && state.getValue(BlockStateProperties.LIT);
+        }
+        if (state.is(Blocks.LAVA) || state.is(Blocks.MAGMA_BLOCK)) {
+            return true;
+        }
+        return false;
+    }
+
+    private int calculateCombustionBoost(Level level, BlockPos pos) {
+        int count = 0;
+        BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos();
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    if (dx == 0 && dz == 0) {
+                        if (dy >= 0) {
+                            continue;
+                        }
+                    }
+                    checkPos.set(pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz);
+                    if (isCombustionSource(level.getBlockState(checkPos))) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return Math.min(3, count);
+    }
+
+    @Override
+    protected int getProgressPerTick() {
+        return 1 + cachedCombustionBoost;
+    }
+
     @Override
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         boolean diamond = isDiamondMode();
@@ -59,6 +139,10 @@ public class AtmosphericCarbonExtractorBlockEntity extends BaseMachineBlockEntit
             this.maxProgress = diamond ? 4800 : 1200;
             this.energyCostPerTick = diamond ? 35 : 20;
             setChanged();
+        }
+
+        if (level.getGameTime() % 10 == 0) {
+            cachedCombustionBoost = calculateCombustionBoost(level, pos);
         }
 
         super.serverTick(level, pos, state);
@@ -73,6 +157,10 @@ public class AtmosphericCarbonExtractorBlockEntity extends BaseMachineBlockEntit
                 serverLevel.sendParticles(ParticleTypes.ENCHANTED_HIT, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 2, 0.1, 0.1, 0.1, 0.02);
             } else {
                 serverLevel.sendParticles(ParticleTypes.CLOUD, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 2, 0.1, 0.1, 0.1, 0.02);
+            }
+            if (cachedCombustionBoost > 0) {
+                serverLevel.sendParticles(ParticleTypes.SMALL_FLAME, pos.getX() + 0.5, pos.getY() + 0.3, pos.getZ() + 0.5, 2, 0.2, 0.1, 0.2, 0.01);
+                serverLevel.sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.4, pos.getZ() + 0.5, 3, 0.2, 0.1, 0.2, 0.02);
             }
         }
     }
@@ -180,6 +268,6 @@ public class AtmosphericCarbonExtractorBlockEntity extends BaseMachineBlockEntit
 
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-        return new AtmosphericCarbonExtractorMenu(syncId, playerInventory, this, this.dataAccess);
+        return new AtmosphericCarbonExtractorMenu(syncId, playerInventory, this, this.extractorDataAccess);
     }
 }

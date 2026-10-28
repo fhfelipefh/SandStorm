@@ -7,5 +7,6 @@ public class AtmosphericCarbonExtractorRenderState extends BlockEntityRenderStat
     public Direction facing = Direction.NORTH;
     public boolean isProcessing = false;
     public boolean isDiamondMode = false;
+    public int combustionBoost = 0;
     public float animationTicks = 0.0f;
 }

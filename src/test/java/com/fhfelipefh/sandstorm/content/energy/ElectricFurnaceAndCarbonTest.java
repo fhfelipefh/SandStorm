@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.energy;
 
+import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericCarbonExtractorBlockEntity;
 import com.fhfelipefh.sandstorm.content.gui.AtmosphericCarbonExtractorMenu;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.minecraft.SharedConstants;
@@ -13,6 +14,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -47,16 +50,17 @@ class ElectricFurnaceAndCarbonTest {
     }
 
     @Test
-    void testAtmosphericCarbonExtractorMenu() {
+    void testAtmosphericCarbonExtractorMenuAndCombustion() {
         Inventory playerInv = new Inventory(null, null);
         SimpleContainer container = new SimpleContainer(3);
-        SimpleContainerData data = new SimpleContainerData(6);
+        SimpleContainerData data = new SimpleContainerData(7);
         data.set(0, 5000);
         data.set(1, 10000);
         data.set(2, 600);
         data.set(3, 1200);
         data.set(4, 1);
         data.set(5, 1);
+        data.set(6, 2);
 
         AtmosphericCarbonExtractorMenu menu = new AtmosphericCarbonExtractorMenu(null, 1, playerInv, container, data);
         assertEquals(39, menu.slots.size());
@@ -66,6 +70,7 @@ class ElectricFurnaceAndCarbonTest {
         assertEquals(1200, menu.getMaxProgress());
         assertTrue(menu.isWptConnected());
         assertTrue(menu.isProcessing());
+        assertEquals(2, menu.getCombustionBoost());
         assertEquals(50, menu.getEnergyScaled(100));
         assertEquals(50, menu.getProgressScaled(100));
 
@@ -77,6 +82,14 @@ class ElectricFurnaceAndCarbonTest {
 
         container.setItem(0, new ItemStack(Items.DIAMOND));
         assertTrue(menu.isDiamondMode());
+
+        assertTrue(AtmosphericCarbonExtractorBlockEntity.isCombustionSource(Blocks.FIRE.defaultBlockState()));
+        assertTrue(AtmosphericCarbonExtractorBlockEntity.isCombustionSource(Blocks.SOUL_FIRE.defaultBlockState()));
+        assertTrue(AtmosphericCarbonExtractorBlockEntity.isCombustionSource(Blocks.CAMPFIRE.defaultBlockState().setValue(BlockStateProperties.LIT, true)));
+        assertFalse(AtmosphericCarbonExtractorBlockEntity.isCombustionSource(Blocks.CAMPFIRE.defaultBlockState().setValue(BlockStateProperties.LIT, false)));
+        assertTrue(AtmosphericCarbonExtractorBlockEntity.isCombustionSource(Blocks.LAVA.defaultBlockState()));
+        assertTrue(AtmosphericCarbonExtractorBlockEntity.isCombustionSource(Blocks.MAGMA_BLOCK.defaultBlockState()));
+        assertFalse(AtmosphericCarbonExtractorBlockEntity.isCombustionSource(Blocks.STONE.defaultBlockState()));
     }
 
     @Test

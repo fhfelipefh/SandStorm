@@ -149,7 +149,7 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
         if (canProcess()) {
             if (energy >= energyCostPerTick) {
                 energy -= energyCostPerTick;
-                progress++;
+                progress += getProgressPerTick();
                 changed = true;
 
                 if (progress >= maxProgress) {
@@ -207,6 +207,10 @@ public abstract class BaseMachineBlockEntity extends BlockEntity implements Worl
 
     protected void spawnProcessCompletedParticles(ServerLevel level, BlockPos pos) {
         level.sendParticles(ParticleTypes.POOF, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, 4, 0.2, 0.1, 0.2, 0.02);
+    }
+
+    protected int getProgressPerTick() {
+        return 1;
     }
 
     protected abstract boolean canProcess();

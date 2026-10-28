@@ -1386,5 +1386,7 @@
   "item.sandstorm.atmospheric_carbon_extractor": "Atmospheric Carbon Extractor",
   "container.sandstorm.atmospheric_carbon_extractor": "Atmospheric Carbon Extractor",
   "gui.sandstorm.extractor.coal": "Atmospheric Carbon Capture",
-  "gui.sandstorm.extractor.diamond": "CVD Diamond Synthesis"
+  "gui.sandstorm.extractor.diamond": "CVD Diamond Synthesis",
+  "tooltip.sandstorm.extractor.thermal_draft": "Thermal Combustion Draft Active",
+  "tooltip.sandstorm.extractor.thermal_speed": "Thermal Reaction Speed"
 }

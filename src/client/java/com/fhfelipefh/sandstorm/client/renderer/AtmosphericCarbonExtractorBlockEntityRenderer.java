@@ -31,6 +31,7 @@ public class AtmosphericCarbonExtractorBlockEntityRenderer implements BlockEntit
         }
         state.isProcessing = entity.isProcessing();
         state.isDiamondMode = entity.isDiamondMode();
+        state.combustionBoost = entity.getCombustionBoost();
 
         Level level = entity.getLevel();
         state.animationTicks = level != null ? (level.getGameTime() + partialTick) : partialTick;
@@ -42,7 +43,7 @@ public class AtmosphericCarbonExtractorBlockEntityRenderer implements BlockEntit
             return;
         }
 
-        float fanAngle = state.animationTicks * 0.25f;
+        float fanAngle = state.animationTicks * (0.25f + state.combustionBoost * 0.15f);
         collector.submitCustomGeometry(poseStack, RenderTypes.LINES, (pose, consumer) -> {
             for (int blade = 0; blade < 4; blade++) {
                 float angle = fanAngle + blade * ((float) Math.PI / 2.0f);
@@ -52,6 +53,13 @@ public class AtmosphericCarbonExtractorBlockEntityRenderer implements BlockEntit
                 float z2 = 0.5f + Mth.sin(angle) * 0.32f;
                 consumer.addVertex(pose, x1, 1.003f, z1).setColor(0, 229, 255, 255).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
                 consumer.addVertex(pose, x2, 1.003f, z2).setColor(128, 222, 234, 255).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
+            }
+
+            if (state.combustionBoost > 0) {
+                float heatPulse = (Mth.sin(state.animationTicks * 0.4f) + 1.0f) * 0.5f;
+                int heatAlpha = 140 + (int) (heatPulse * 90.0f);
+                consumer.addVertex(pose, 0.2f, 0.1f, 0.5f).setColor(255, 87, 34, heatAlpha).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+                consumer.addVertex(pose, 0.8f, 0.1f, 0.5f).setColor(255, 171, 0, heatAlpha).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
             }
 
             if (state.isDiamondMode) {
