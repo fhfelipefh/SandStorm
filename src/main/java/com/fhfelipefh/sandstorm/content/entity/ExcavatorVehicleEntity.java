@@ -144,6 +144,7 @@ public class ExcavatorVehicleEntity extends PathfinderMob {
             if (!state.isAir() && canExcavate(state, targetPos)) {
                 this.energyStorage.extractEnergy(EXCAVATION_ENERGY_COST);
                 this.level().destroyBlock(targetPos, true, this);
+                this.setDeltaMovement(this.getDeltaMovement().subtract(look.scale(0.03)));
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state),
                             targetPos.getX() + 0.5, targetPos.getY() + 0.5, targetPos.getZ() + 0.5,

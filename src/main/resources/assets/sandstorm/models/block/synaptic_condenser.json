@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "sandstorm:block/synaptic_condenser_top",
+    "bottom": "sandstorm:block/synaptic_condenser_bottom",
+    "side": "sandstorm:block/synaptic_condenser_side"
+  }
+}
+

@@ -5,6 +5,8 @@ import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.block.WptRelayTowerBlock;
 import com.fhfelipefh.sandstorm.content.block.WptRelayTowerManager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,6 +23,10 @@ public class WptRelayTowerBlockEntity extends BlockEntity {
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, WptRelayTowerBlockEntity entity) {
+        if (entity.active && level instanceof ServerLevel serverLevel && level.getGameTime() % 10 == 0) {
+            serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, pos.getX() + 0.5, pos.getY() + 0.95, pos.getZ() + 0.5, 2, 0.1, 0.05, 0.1, 0.02);
+        }
+
         if ((level.getGameTime() + pos.hashCode()) % 20 != 0) {
             return;
         }

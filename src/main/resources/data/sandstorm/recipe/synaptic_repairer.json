@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:flexible_biopolymer",
+    "C": "sandstorm:circuit_board",
+    "H": "sandstorm:storage_housing",
+    "L": "minecraft:diamond",
+    "P": "sandstorm:pressure_seal",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "PLP",
+    "CHC",
+    "TBT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:synaptic_repairer"
+  }
+}
+

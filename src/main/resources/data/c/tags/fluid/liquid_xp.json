@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "sandstorm:synaptic_fluid",
+    "sandstorm:flowing_synaptic_fluid"
+  ]
+}

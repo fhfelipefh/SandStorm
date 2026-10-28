@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "sandstorm:flexible_biopolymer",
+    "C": "sandstorm:circuit_board",
+    "T": "sandstorm:titanium_chitin_composite",
+    "W": "sandstorm:subspace_warp_core"
+  },
+  "pattern": [
+    " T ",
+    "BWB",
+    " C "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:synaptic_cartridge"
+  }
+}
+

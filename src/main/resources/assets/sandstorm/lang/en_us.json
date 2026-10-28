@@ -1365,5 +1365,18 @@
   "message.sandstorm.transponder_tag.block_tagged": "Beacon successfully anchored: %s",
   "message.sandstorm.signal_tracker.no_signals": "No active signals on current frequency",
   "message.sandstorm.signal_tracker.target_selected": "Target selected: %s",
-  "message.sandstorm.signal_tracker.other_dimension": "Other Dimension"
+  "message.sandstorm.signal_tracker.other_dimension": "Other Dimension",
+  "block.sandstorm.synaptic_fluid": "Synaptic Fluid",
+  "block.sandstorm.synaptic_condenser": "Synaptic Condenser",
+  "block.sandstorm.xp_vacuum": "XP Vacuum Collector",
+  "block.sandstorm.synaptic_repairer": "Synaptic Repairer",
+  "block.sandstorm.neural_overdrive_module": "Neural Overdrive Module",
+  "item.sandstorm.synaptic_fluid_bucket": "Synaptic Fluid Bucket",
+  "item.sandstorm.synaptic_cartridge": "Synaptic Cartridge",
+  "item.sandstorm.synaptic_condenser": "Synaptic Condenser",
+  "item.sandstorm.xp_vacuum": "XP Vacuum Collector",
+  "item.sandstorm.synaptic_repairer": "Synaptic Repairer",
+  "item.sandstorm.neural_overdrive_module": "Neural Overdrive Module",
+  "tooltip.sandstorm.synaptic_cartridge.desc": "Quantum telemetry and XP storage cartridge.",
+  "tooltip.sandstorm.synaptic_cartridge.use": "Click to store XP; Shift-click to retrieve."
 }

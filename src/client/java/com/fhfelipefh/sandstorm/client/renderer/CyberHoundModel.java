@@ -159,6 +159,9 @@ public class CyberHoundModel extends EntityModel<CyberHoundRenderState> {
             float walkPos = state.walkAnimationPos;
             float walkSpeed = state.walkAnimationSpeed;
 
+            this.body.y = 14.0f + Mth.abs(Mth.sin(walkPos * 0.6662f)) * 1.0f * walkSpeed;
+            this.upperBody.y = 14.0f + Mth.abs(Mth.sin(walkPos * 0.6662f)) * 0.8f * walkSpeed;
+
             this.rightHindLeg.xRot = Mth.cos(walkPos * 0.6662f) * 1.4f * walkSpeed;
             this.leftHindLeg.xRot = Mth.cos(walkPos * 0.6662f + (float) Math.PI) * 1.4f * walkSpeed;
             this.rightFrontLeg.xRot = Mth.cos(walkPos * 0.6662f + (float) Math.PI) * 1.4f * walkSpeed;
@@ -166,7 +169,7 @@ public class CyberHoundModel extends EntityModel<CyberHoundRenderState> {
 
             this.tail.setPos(-1.0f, 12.0f, 8.0f);
             this.tail.xRot = 0.62831855f;
-            this.tail.yRot = state.isTame ? Mth.cos(state.animationTicks * 0.6f) * 0.45f : 0.0f;
+            this.tail.yRot = (state.isTame ? Mth.cos(state.animationTicks * 0.6f) * 0.45f : 0.0f) + Mth.cos(walkPos * 0.6662f) * 0.30f * walkSpeed;
         }
     }
 

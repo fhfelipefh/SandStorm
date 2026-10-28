@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "sandstorm:block/xp_vacuum_top",
+    "bottom": "sandstorm:block/xp_vacuum_bottom",
+    "side": "sandstorm:block/xp_vacuum_side"
+  }
+}
+

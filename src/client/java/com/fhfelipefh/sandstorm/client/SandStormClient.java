@@ -57,8 +57,10 @@ import com.fhfelipefh.sandstorm.client.renderer.ClientUplinkRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CrushingSpikeGateRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyberneticGolemRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyborgRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.DeepCoreDrillBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DesalinationFilterBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.HydroponicChamberBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.KineticRailgunBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MegastructureConstructorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.NaniteFabricatorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.Printer3DBlockEntityRenderer;
@@ -67,7 +69,10 @@ import com.fhfelipefh.sandstorm.client.renderer.RappelAnchorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.RappelHarnessRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandstoneCrateBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.StormWindTurbineBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.SynapticCondenserBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.SynapticRepairerBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.VaultDoorControllerBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.XpVacuumBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ExcavatorVehicleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MegazordRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MirageDecoyRenderer;
@@ -181,6 +186,11 @@ public class SandStormClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(SandStormBlocks.STORM_WIND_TURBINE_BE, StormWindTurbineBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.VAULT_DOOR_CONTROLLER_BE, VaultDoorControllerBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.SANDSTONE_CRATE_BE, SandstoneCrateBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.SYNAPTIC_REPAIRER_BE, SynapticRepairerBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.XP_VACUUM_BE, XpVacuumBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.SYNAPTIC_CONDENSER_BE, SynapticCondenserBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.DEEP_CORE_DRILL_BE, DeepCoreDrillBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.KINETIC_RAILGUN_BE, KineticRailgunBlockEntityRenderer::new);
 
         ArmorRenderer.register(new SpaceSuitArmorRenderer(),
                 SandStormItems.SPACE_SUIT_HELMET,
@@ -312,6 +322,16 @@ public class SandStormClient implements ClientModInitializer {
                 new FluidModel.Unbaked(
                         new Material(SandStormMod.id("block/radioactive_sludge_still")),
                         new Material(SandStormMod.id("block/radioactive_sludge_flow")),
+                        null,
+                        null
+                )
+        );
+        FluidRenderingRegistry.register(
+                SandStormFluids.SYNAPTIC_FLUID,
+                SandStormFluids.FLOWING_SYNAPTIC_FLUID,
+                new FluidModel.Unbaked(
+                        new Material(SandStormMod.id("block/synaptic_fluid_still")),
+                        new Material(SandStormMod.id("block/synaptic_fluid_flow")),
                         null,
                         null
                 )

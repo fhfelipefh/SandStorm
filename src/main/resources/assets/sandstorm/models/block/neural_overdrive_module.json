@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "sandstorm:block/neural_overdrive_module_top",
+    "bottom": "sandstorm:block/neural_overdrive_module_bottom",
+    "side": "sandstorm:block/neural_overdrive_module_side"
+  }
+}
+

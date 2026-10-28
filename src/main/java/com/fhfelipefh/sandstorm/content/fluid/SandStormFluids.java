@@ -41,6 +41,18 @@ public class SandStormFluids {
             new RadioactiveSludgeFluid.Flowing()
     );
 
+    public static final FlowingFluid SYNAPTIC_FLUID = Registry.register(
+            BuiltInRegistries.FLUID,
+            SandStormMod.id("synaptic_fluid"),
+            new SynapticFluid.Source()
+    );
+
+    public static final FlowingFluid FLOWING_SYNAPTIC_FLUID = Registry.register(
+            BuiltInRegistries.FLUID,
+            SandStormMod.id("flowing_synaptic_fluid"),
+            new SynapticFluid.Flowing()
+    );
+
     public static void initialize() {
     }
 }

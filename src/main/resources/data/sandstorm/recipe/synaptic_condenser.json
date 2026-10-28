@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "G": "minecraft:glass",
+    "H": "sandstorm:storage_housing",
+    "I": "minecraft:iron_block",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "TGT",
+    "CHC",
+    "TIT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:synaptic_condenser"
+  }
+}
+

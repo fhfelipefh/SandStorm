@@ -137,6 +137,10 @@
     "sandstorm:cryo_freeze_mine",
     "sandstorm:mirage_hologram_trap",
     "sandstorm:nanite_web_snare",
-    "sandstorm:neurotoxic_spikes"
+    "sandstorm:neurotoxic_spikes",
+    "sandstorm:synaptic_condenser",
+    "sandstorm:xp_vacuum",
+    "sandstorm:synaptic_repairer",
+    "sandstorm:neural_overdrive_module"
   ]
 }

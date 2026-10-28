@@ -125,6 +125,8 @@ public class CrawlerDroneModel extends EntityModel<CrawlerDroneRenderState> {
 
         float swing1 = -(Mth.cos(speedFactor * 2.0f) * 0.4f) * walkSpeed;
         float swing2 = -(Mth.cos(speedFactor * 2.0f + (float) Math.PI) * 0.4f) * walkSpeed;
+        float lift1 = Math.max(0.0f, Mth.sin(speedFactor * 2.0f)) * 0.35f * walkSpeed;
+        float lift2 = Math.max(0.0f, Mth.sin(speedFactor * 2.0f + (float) Math.PI)) * 0.35f * walkSpeed;
 
         this.rightHindLeg.yRot += swing1;
         this.leftHindLeg.yRot += -swing1;
@@ -134,6 +136,15 @@ public class CrawlerDroneModel extends EntityModel<CrawlerDroneRenderState> {
         this.leftMiddleFrontLeg.yRot += -swing1;
         this.rightFrontLeg.yRot += swing2;
         this.leftFrontLeg.yRot += -swing2;
+
+        this.rightHindLeg.zRot += lift1;
+        this.leftHindLeg.zRot -= lift2;
+        this.rightMiddleHindLeg.zRot += lift2;
+        this.leftMiddleHindLeg.zRot -= lift1;
+        this.rightMiddleFrontLeg.zRot += lift1;
+        this.leftMiddleFrontLeg.zRot -= lift2;
+        this.rightFrontLeg.zRot += lift2;
+        this.leftFrontLeg.zRot -= lift1;
     }
 
     public ModelPart getRoot() {

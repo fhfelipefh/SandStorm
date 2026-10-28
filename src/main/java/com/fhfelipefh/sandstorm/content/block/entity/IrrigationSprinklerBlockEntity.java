@@ -59,6 +59,12 @@ public class IrrigationSprinklerBlockEntity extends BlockEntity {
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, IrrigationSprinklerBlockEntity be) {
         be.tickCounter++;
+        if (be.active && be.pressureRadius > 0 && level instanceof ServerLevel serverLevel && be.tickCounter % 3 == 0) {
+            double angle = (be.tickCounter * 0.45) % (Math.PI * 2.0);
+            double vx = Math.cos(angle) * 0.22;
+            double vz = Math.sin(angle) * 0.22;
+            serverLevel.sendParticles(ParticleTypes.SPLASH, pos.getX() + 0.5, pos.getY() + 0.85, pos.getZ() + 0.5, 3, vx, 0.12, vz, 0.08);
+        }
         if (be.tickCounter % 20 != 0 || !be.active || be.pressureRadius <= 0) {
             return;
         }

@@ -201,6 +201,8 @@ public class SandStormItems {
     public static final MolecularCargoCapsuleItem MOLECULAR_CARGO_CAPSULE = register("molecular_cargo_capsule", new MolecularCargoCapsuleItem(properties("molecular_cargo_capsule").rarity(Rarity.RARE).stacksTo(1)));
     public static final TransponderTagItem TRANSPONDER_TAG = register("transponder_tag", new TransponderTagItem(properties("transponder_tag").stacksTo(64).rarity(Rarity.UNCOMMON)));
     public static final SignalTrackerItem SIGNAL_TRACKER = register("signal_tracker", new SignalTrackerItem(properties("signal_tracker").stacksTo(1).rarity(Rarity.RARE)));
+    public static final BucketItem SYNAPTIC_FLUID_BUCKET = register("synaptic_fluid_bucket", new BucketItem(SandStormFluids.SYNAPTIC_FLUID, properties("synaptic_fluid_bucket").craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final SynapticCartridgeItem SYNAPTIC_CARTRIDGE = register("synaptic_cartridge", new SynapticCartridgeItem(properties("synaptic_cartridge").stacksTo(1).rarity(Rarity.EPIC)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -263,6 +265,12 @@ public class SandStormItems {
                         entries.accept(MOLECULAR_CARGO_CAPSULE);
                         entries.accept(TRANSPONDER_TAG);
                         entries.accept(SIGNAL_TRACKER);
+                        entries.accept(SYNAPTIC_CARTRIDGE);
+                        entries.accept(SYNAPTIC_FLUID_BUCKET);
+                        entries.accept(SandStormBlocks.SYNAPTIC_CONDENSER);
+                        entries.accept(SandStormBlocks.XP_VACUUM);
+                        entries.accept(SandStormBlocks.SYNAPTIC_REPAIRER);
+                        entries.accept(SandStormBlocks.NEURAL_OVERDRIVE_MODULE);
                         entries.accept(SandStormBlocks.SANDSTONE_FURNACE);
                         entries.accept(SandStormBlocks.INSULATED_FURNACE);
                         entries.accept(SandStormBlocks.STEEL_FURNACE);

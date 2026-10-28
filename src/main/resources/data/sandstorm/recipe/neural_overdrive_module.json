@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:flexible_biopolymer",
+    "C": "sandstorm:circuit_board",
+    "H": "sandstorm:storage_housing",
+    "R": "sandstorm:piezo_resonator",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "CTC",
+    "RHR",
+    "CBC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:neural_overdrive_module"
+  }
+}
+

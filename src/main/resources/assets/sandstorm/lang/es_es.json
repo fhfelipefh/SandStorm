@@ -1365,5 +1365,18 @@
   "message.sandstorm.transponder_tag.block_tagged": "Baliza anclada con éxito: %s",
   "message.sandstorm.signal_tracker.no_signals": "Ninguna señal activa en la frecuencia",
   "message.sandstorm.signal_tracker.target_selected": "Objetivo seleccionado: %s",
-  "message.sandstorm.signal_tracker.other_dimension": "Otra Dimensión"
+  "message.sandstorm.signal_tracker.other_dimension": "Otra Dimensión",
+  "block.sandstorm.synaptic_fluid": "Fluido Sináptico",
+  "block.sandstorm.synaptic_condenser": "Condensador Sináptico",
+  "block.sandstorm.xp_vacuum": "Aspirador Colector de XP",
+  "block.sandstorm.synaptic_repairer": "Reparador Sináptico",
+  "block.sandstorm.neural_overdrive_module": "Módulo de Sobremarcha Neural",
+  "item.sandstorm.synaptic_fluid_bucket": "Cubo de Fluido Sináptico",
+  "item.sandstorm.synaptic_cartridge": "Cartucho Sináptico",
+  "item.sandstorm.synaptic_condenser": "Condensador Sináptico",
+  "item.sandstorm.xp_vacuum": "Aspirador Colector de XP",
+  "item.sandstorm.synaptic_repairer": "Reparador Sináptico",
+  "item.sandstorm.neural_overdrive_module": "Módulo de Sobremarcha Neural",
+  "tooltip.sandstorm.synaptic_cartridge.desc": "Almacenador cuántico de telemetría y XP.",
+  "tooltip.sandstorm.synaptic_cartridge.use": "Clic para drenar; Mayús+clic para sacar."
 }

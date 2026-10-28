@@ -31,9 +31,10 @@ class AntiCrashBatteryArchitectureTest {
     private static final Path BLOCKS_JAVA = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "block", "SandStormBlocks.java");
     private static final Path ITEMS_JAVA = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "item", "SandStormItems.java");
     private static final Path ENTITIES_JAVA = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity", "SandStormEntities.java");
+    private static final Path FLUIDS_JAVA = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "fluid", "SandStormFluids.java");
 
     private static final Pattern REGISTER_ID_PATTERN = Pattern.compile(
-            "register\\(\"([a-z0-9_]+)\""
+            "(?:register|SandStormMod\\.id)\\(\"([a-z0-9_]+)\""
     );
 
     private static final Pattern CHECK_CONTAINER_DATA_PATTERN = Pattern.compile(
@@ -440,6 +441,12 @@ class AntiCrashBatteryArchitectureTest {
         Matcher blockMatcher = REGISTER_ID_PATTERN.matcher(blocksContent);
         while (blockMatcher.find()) {
             keys.add(blockMatcher.group(1));
+        }
+
+        String fluidsContent = Files.readString(FLUIDS_JAVA);
+        Matcher fluidMatcher = REGISTER_ID_PATTERN.matcher(fluidsContent);
+        while (fluidMatcher.find()) {
+            keys.add(fluidMatcher.group(1));
         }
         return keys;
     }

@@ -48,8 +48,13 @@ import com.fhfelipefh.sandstorm.content.block.entity.SpectralSurveyTelescopeBloc
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneCrateBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SteelFurnaceBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SynapticCondenserBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.XpVacuumBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SynapticRepairerBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.NeuralOverdriveModuleBlockEntity;
 import com.fhfelipefh.sandstorm.content.fluid.RadioactiveSludgeBlock;
 import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
+import com.fhfelipefh.sandstorm.content.fluid.SynapticFluidBlock;
 import com.fhfelipefh.sandstorm.content.block.entity.SmartFluidPipeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SupercriticalHeatExchangerBlockEntity;
@@ -150,6 +155,43 @@ public class SandStormBlocks {
                     .liquid()
                     .sound(SoundType.EMPTY))
     );
+    public static final SynapticFluidBlock SYNAPTIC_FLUID = Registry.register(
+            BuiltInRegistries.BLOCK,
+            SandStormMod.id("synaptic_fluid"),
+            new SynapticFluidBlock(SandStormFluids.SYNAPTIC_FLUID, BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("synaptic_fluid")))
+                    .mapColor(MapColor.COLOR_LIGHT_GREEN)
+                    .replaceable()
+                    .noCollision()
+                    .strength(100.0f)
+                    .noLootTable()
+                    .liquid()
+                    .sound(SoundType.EMPTY))
+    );
+    public static final SynapticCondenserBlock SYNAPTIC_CONDENSER = register("synaptic_condenser",
+            new SynapticCondenserBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("synaptic_condenser")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(3.5f, 6.0f)
+                    .sound(SoundType.METAL)));
+    public static final XpVacuumBlock XP_VACUUM = register("xp_vacuum",
+            new XpVacuumBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("xp_vacuum")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(3.0f, 6.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)));
+    public static final SynapticRepairerBlock SYNAPTIC_REPAIRER = register("synaptic_repairer",
+            new SynapticRepairerBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("synaptic_repairer")))
+                    .mapColor(MapColor.COLOR_BLUE)
+                    .strength(4.0f, 8.0f)
+                    .sound(SoundType.ANVIL)));
+    public static final NeuralOverdriveModuleBlock NEURAL_OVERDRIVE_MODULE = register("neural_overdrive_module",
+            new NeuralOverdriveModuleBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("neural_overdrive_module")))
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(3.0f, 6.0f)
+                    .sound(SoundType.METAL)));
     public static final RadioactiveWasteBarrelBlock RADIOACTIVE_WASTE_BARREL = register("radioactive_waste_barrel",
             new RadioactiveWasteBarrelBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("radioactive_waste_barrel")))
@@ -1255,6 +1297,26 @@ public class SandStormBlocks {
             SandStormMod.id("steel_furnace"),
             new BlockEntityType<>(SteelFurnaceBlockEntity::new, Set.of(STEEL_FURNACE))
     );
+    public static final BlockEntityType<SynapticCondenserBlockEntity> SYNAPTIC_CONDENSER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("synaptic_condenser"),
+            new BlockEntityType<>(SynapticCondenserBlockEntity::new, Set.of(SYNAPTIC_CONDENSER))
+    );
+    public static final BlockEntityType<XpVacuumBlockEntity> XP_VACUUM_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("xp_vacuum"),
+            new BlockEntityType<>(XpVacuumBlockEntity::new, Set.of(XP_VACUUM))
+    );
+    public static final BlockEntityType<SynapticRepairerBlockEntity> SYNAPTIC_REPAIRER_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("synaptic_repairer"),
+            new BlockEntityType<>(SynapticRepairerBlockEntity::new, Set.of(SYNAPTIC_REPAIRER))
+    );
+    public static final BlockEntityType<NeuralOverdriveModuleBlockEntity> NEURAL_OVERDRIVE_MODULE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("neural_overdrive_module"),
+            new BlockEntityType<>(NeuralOverdriveModuleBlockEntity::new, Set.of(NEURAL_OVERDRIVE_MODULE))
+    );
     public static final BlockEntityType<HydroponicChamberBlockEntity> HYDROPONIC_CHAMBER_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("hydroponic_chamber"),
@@ -1550,5 +1612,9 @@ public class SandStormBlocks {
         FluidStorage.SIDED.registerForBlockEntity(IrrigationPumpBlockEntity::getFluidStorage, IRRIGATION_PUMP_BE);
         FluidStorage.SIDED.registerForBlockEntity(FiberglassChemicalPipeBlockEntity::getFluidStorage, FIBERGLASS_CHEMICAL_PIPE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, CRYO_REVIVAL_VAT_BE);
+        FluidStorage.SIDED.registerForBlockEntity(SynapticCondenserBlockEntity::getFluidStorage, SYNAPTIC_CONDENSER_BE);
+        FluidStorage.SIDED.registerForBlockEntity(XpVacuumBlockEntity::getFluidStorage, XP_VACUUM_BE);
+        FluidStorage.SIDED.registerForBlockEntity(SynapticRepairerBlockEntity::getFluidStorage, SYNAPTIC_REPAIRER_BE);
+        FluidStorage.SIDED.registerForBlockEntity(NeuralOverdriveModuleBlockEntity::getFluidStorage, NEURAL_OVERDRIVE_MODULE_BE);
     }
 }
