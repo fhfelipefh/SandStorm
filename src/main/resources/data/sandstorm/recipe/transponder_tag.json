@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "sandstorm:flexible_biopolymer",
+    "C": "sandstorm:circuit_board",
+    "N": "minecraft:iron_nugget"
+  },
+  "pattern": [
+    " N ",
+    " C ",
+    " B "
+  ],
+  "result": {
+    "count": 2,
+    "id": "sandstorm:transponder_tag"
+  }
+}

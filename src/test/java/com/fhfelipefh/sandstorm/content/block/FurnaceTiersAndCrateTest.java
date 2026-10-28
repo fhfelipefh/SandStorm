@@ -1,13 +1,17 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.block.entity.SandstoneCrateBlockEntity;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.LidBlockEntity;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,6 +29,13 @@ class FurnaceTiersAndCrateTest {
 
         ResourceKey<Block> steelKey = ResourceKey.create(Registries.BLOCK, SandStormMod.id("steel_furnace"));
         assertEquals("steel_furnace", steelKey.identifier().getPath());
+    }
+
+    @Test
+    void shouldImplementLidBlockEntityForCrateAnimation() {
+        assertTrue(LidBlockEntity.class.isAssignableFrom(SandstoneCrateBlockEntity.class));
+        Path texture = Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "entity", "chest", "sandstone_crate.png");
+        assertTrue(Files.exists(texture));
     }
 
     @Test

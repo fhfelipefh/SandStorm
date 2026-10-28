@@ -2,6 +2,23 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.29] - 2026-10-28
+
+### 📡 Sistema de Telemetria e Rastreamento Tático & Caixote 3D Animado
+* **Microtransponder Bio-Mecânico (`transponder_tag`)**:
+  * Equivalente tecnológico da etiqueta vanilla, confeccionado com biopolímeros flexíveis e circuitos integrados.
+  * Clique com botão direito em criatura viva (`LivingEntity`) para nomeá-la, travar persistência (`Mob.setPersistenceRequired()`) e registrar frequência na base persistente.
+  * Shift + clique com botão direito em qualquer bloco para fixar uma baliza de telemetria estática persistente (ex: bases, caixotes, minas).
+  * Operação 100% silenciosa sem sons ou ruídos emitidos.
+* **Rastreador Tático de Sinais (`signal_tracker`)**:
+  * Localizador omnidirecional de frequências de telemetria portátil.
+  * Clique direito para alternar sequencialmente entre os transponders ativos sintonizados.
+  * Telemetria na barra de ação (HUD Actionbar) com vetor direcional de mira relativo à visão do jogador (`⬆`, `↗`, `➡`, `↘`, `⬇`, `↙`, `⬅`, `↖`), distância em metros com gradação de cores (Verde, Ciano, Amarelo, Laranja e Vermelho), indicador de altitude (`▲`/`▼`) e detecção interdimensional.
+  * Alcance dimensional global sem sobrecarga de processamento ou carregamento forçado de chunks, preservando TPS e memória.
+* **Caixote de Arenito 3D Animado (`sandstone_crate`)**:
+  * Modelo e renderizador 3D dedicado (`SandstoneCrateBlockEntityRenderer`, `SandstoneCrateModel`) com textura mapeada de 64x64.
+  * Animação mecânica suave de rotação da tampa com controle de abertura/fechamento e sincronização com áudio de baú vanilla.
+
 ## [1.19.28] - 2026-10-28
 
 ### 🚀 Cápsula de Carga Molecular & Logística Portátil Anti-Nesting

@@ -1352,5 +1352,18 @@
   "container.sandstorm.molecular_cargo_capsule": "Molecular Cargo Capsule",
   "tooltip.sandstorm.molecular_cargo_capsule.desc": "Hermetic 27-slot molecular compression storage.",
   "tooltip.sandstorm.molecular_cargo_capsule.use": "Right-click in hand to access field cargo.",
-  "tooltip.sandstorm.molecular_cargo_capsule.anti_nesting": "Molecular anti-distortion field (Non-nestable)."
+  "tooltip.sandstorm.molecular_cargo_capsule.anti_nesting": "Molecular anti-distortion field (Non-nestable).",
+  "item.sandstorm.transponder_tag": "Bio-Mechanical Transponder",
+  "item.sandstorm.signal_tracker": "Tactical Signal Tracker",
+  "tooltip.sandstorm.transponder_tag.desc": "Biopolymeric telemetry RFID tag.",
+  "tooltip.sandstorm.transponder_tag.use": "Right-click on entity to label.",
+  "tooltip.sandstorm.transponder_tag.block": "Shift + right-click on block to anchor.",
+  "tooltip.sandstorm.signal_tracker.desc": "Omnidirectional quantum telemetry scanner.",
+  "tooltip.sandstorm.signal_tracker.use": "Right-click to cycle target frequencies.",
+  "tooltip.sandstorm.signal_tracker.range": "Global tracking range across dimension.",
+  "message.sandstorm.transponder_tag.entity_tagged": "Signal successfully synchronized: %s",
+  "message.sandstorm.transponder_tag.block_tagged": "Beacon successfully anchored: %s",
+  "message.sandstorm.signal_tracker.no_signals": "No active signals on current frequency",
+  "message.sandstorm.signal_tracker.target_selected": "Target selected: %s",
+  "message.sandstorm.signal_tracker.other_dimension": "Other Dimension"
 }

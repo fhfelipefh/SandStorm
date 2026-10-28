@@ -199,6 +199,8 @@ public class SandStormItems {
     public static final GeologicalSurveyorDroneItem GEOLOGICAL_SURVEYOR_DRONE = register("geological_surveyor_drone", new GeologicalSurveyorDroneItem(properties("geological_surveyor_drone")));
     public static final Item SUBSPACE_WARP_CORE = register("subspace_warp_core", new Item(properties("subspace_warp_core").stacksTo(16).rarity(Rarity.EPIC)));
     public static final MolecularCargoCapsuleItem MOLECULAR_CARGO_CAPSULE = register("molecular_cargo_capsule", new MolecularCargoCapsuleItem(properties("molecular_cargo_capsule").rarity(Rarity.RARE).stacksTo(1)));
+    public static final TransponderTagItem TRANSPONDER_TAG = register("transponder_tag", new TransponderTagItem(properties("transponder_tag").stacksTo(64).rarity(Rarity.UNCOMMON)));
+    public static final SignalTrackerItem SIGNAL_TRACKER = register("signal_tracker", new SignalTrackerItem(properties("signal_tracker").stacksTo(1).rarity(Rarity.RARE)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -259,6 +261,8 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.SANDSTONE_WORKBENCH);
                         entries.accept(SandStormBlocks.SANDSTONE_CRATE);
                         entries.accept(MOLECULAR_CARGO_CAPSULE);
+                        entries.accept(TRANSPONDER_TAG);
+                        entries.accept(SIGNAL_TRACKER);
                         entries.accept(SandStormBlocks.SANDSTONE_FURNACE);
                         entries.accept(SandStormBlocks.INSULATED_FURNACE);
                         entries.accept(SandStormBlocks.STEEL_FURNACE);

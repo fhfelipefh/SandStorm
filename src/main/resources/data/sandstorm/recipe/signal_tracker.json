@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "G": "minecraft:glass_pane",
+    "H": "sandstorm:storage_housing",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    " G ",
+    "CHC",
+    " T "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:signal_tracker"
+  }
+}

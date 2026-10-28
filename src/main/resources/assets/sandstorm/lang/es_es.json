@@ -1352,5 +1352,18 @@
   "container.sandstorm.molecular_cargo_capsule": "Cápsula de Carga Molecular",
   "tooltip.sandstorm.molecular_cargo_capsule.desc": "Almacenamiento hermético de 27 ranuras.",
   "tooltip.sandstorm.molecular_cargo_capsule.use": "Clic derecho en mano para abrir la carga.",
-  "tooltip.sandstorm.molecular_cargo_capsule.anti_nesting": "Campo anti-distorsión molecular (No anidable)."
+  "tooltip.sandstorm.molecular_cargo_capsule.anti_nesting": "Campo anti-distorsión molecular (No anidable).",
+  "item.sandstorm.transponder_tag": "Microtranspondedor Biomecánico",
+  "item.sandstorm.signal_tracker": "Rastreador Táctico de Señales",
+  "tooltip.sandstorm.transponder_tag.desc": "Etiqueta RFID de telemetría biopolimérica.",
+  "tooltip.sandstorm.transponder_tag.use": "Clic derecho en criatura para etiquetar.",
+  "tooltip.sandstorm.transponder_tag.block": "Mayús + clic derecho en bloque para anclar.",
+  "tooltip.sandstorm.signal_tracker.desc": "Escáner omnidireccional de telemetría.",
+  "tooltip.sandstorm.signal_tracker.use": "Clic derecho para alternar objetivos.",
+  "tooltip.sandstorm.signal_tracker.range": "Alcance global sin sobrecarga de mapa.",
+  "message.sandstorm.transponder_tag.entity_tagged": "Señal sincronizada con éxito: %s",
+  "message.sandstorm.transponder_tag.block_tagged": "Baliza anclada con éxito: %s",
+  "message.sandstorm.signal_tracker.no_signals": "Ninguna señal activa en la frecuencia",
+  "message.sandstorm.signal_tracker.target_selected": "Objetivo seleccionado: %s",
+  "message.sandstorm.signal_tracker.other_dimension": "Otra Dimensión"
 }
