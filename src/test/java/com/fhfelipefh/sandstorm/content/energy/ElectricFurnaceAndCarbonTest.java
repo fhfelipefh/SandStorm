@@ -1,11 +1,17 @@
 package com.fhfelipefh.sandstorm.content.energy;
 
+import com.fhfelipefh.sandstorm.content.gui.AtmosphericCarbonExtractorMenu;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.Bootstrap;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,6 +22,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ElectricFurnaceAndCarbonTest {
@@ -37,6 +44,39 @@ class ElectricFurnaceAndCarbonTest {
         assertEquals("electric_arc_furnace", furnaceItemKey.identifier().getPath());
         assertEquals("atmospheric_carbon_extractor", extractorBlockKey.identifier().getPath());
         assertEquals("atmospheric_carbon_extractor", extractorItemKey.identifier().getPath());
+    }
+
+    @Test
+    void testAtmosphericCarbonExtractorMenu() {
+        Inventory playerInv = new Inventory(null, null);
+        SimpleContainer container = new SimpleContainer(3);
+        SimpleContainerData data = new SimpleContainerData(6);
+        data.set(0, 5000);
+        data.set(1, 10000);
+        data.set(2, 600);
+        data.set(3, 1200);
+        data.set(4, 1);
+        data.set(5, 1);
+
+        AtmosphericCarbonExtractorMenu menu = new AtmosphericCarbonExtractorMenu(null, 1, playerInv, container, data);
+        assertEquals(39, menu.slots.size());
+        assertEquals(5000, menu.getEnergy());
+        assertEquals(10000, menu.getMaxEnergy());
+        assertEquals(600, menu.getProgress());
+        assertEquals(1200, menu.getMaxProgress());
+        assertTrue(menu.isWptConnected());
+        assertTrue(menu.isProcessing());
+        assertEquals(50, menu.getEnergyScaled(100));
+        assertEquals(50, menu.getProgressScaled(100));
+
+        assertFalse(menu.isDiamondMode());
+        assertTrue(menu.slots.get(0).mayPlace(new ItemStack(Items.DIAMOND)));
+        assertFalse(menu.slots.get(0).mayPlace(new ItemStack(Items.COAL)));
+        assertFalse(menu.slots.get(1).mayPlace(new ItemStack(Items.COAL)));
+        assertFalse(menu.slots.get(1).mayPlace(new ItemStack(Items.DIAMOND)));
+
+        container.setItem(0, new ItemStack(Items.DIAMOND));
+        assertTrue(menu.isDiamondMode());
     }
 
     @Test

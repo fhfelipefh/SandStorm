@@ -6,6 +6,6 @@ import net.minecraft.core.Direction;
 public class AtmosphericCarbonExtractorRenderState extends BlockEntityRenderState {
     public Direction facing = Direction.NORTH;
     public boolean isProcessing = false;
+    public boolean isDiamondMode = false;
     public float animationTicks = 0.0f;
 }
-

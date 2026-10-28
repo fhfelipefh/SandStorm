@@ -24,6 +24,7 @@ public class MachineRecipeRegistry {
         registerMolecularModifierRecipes();
         registerMegastructureConstructorRecipes();
         registerDesalinationFilterRecipes();
+        registerAtmosphericCarbonExtractorRecipes();
     }
 
     private static void registerDesalinationFilterRecipes() {
@@ -342,6 +343,28 @@ public class MachineRecipeRegistry {
                 )
         );
         RECIPES.put("sandstorm:megastructure_constructor", Collections.unmodifiableList(list));
+    }
+
+    private static void registerAtmosphericCarbonExtractorRecipes() {
+        List<MachineRecipe> list = List.of(
+                new MachineRecipe(
+                        () -> new ItemStack(Items.COAL),
+                        () -> Component.translatable("gui.sandstorm.extractor.coal"),
+                        List.of(),
+                        List.of(),
+                        24000,
+                        1200
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(Items.DIAMOND),
+                        () -> Component.translatable("gui.sandstorm.extractor.diamond"),
+                        List.of(() -> new ItemStack(Items.DIAMOND)),
+                        List.of(),
+                        168000,
+                        4800
+                )
+        );
+        RECIPES.put("sandstorm:atmospheric_carbon_extractor", Collections.unmodifiableList(list));
     }
 
     private static ItemStack createUpgradedPreview(ItemLike item) {

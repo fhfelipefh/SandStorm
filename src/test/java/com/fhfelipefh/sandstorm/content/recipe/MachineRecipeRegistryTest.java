@@ -151,6 +151,25 @@ class MachineRecipeRegistryTest {
     }
 
     @Test
+    void testAtmosphericCarbonExtractorRecipes() {
+        List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:atmospheric_carbon_extractor");
+        assertFalse(recipes.isEmpty());
+        assertEquals(2, recipes.size());
+
+        MachineRecipe coalRecipe = recipes.get(0);
+        assertEquals(24000, coalRecipe.getEnergyCost());
+        assertEquals(1200, coalRecipe.getProcessTicks());
+        assertEquals(0, coalRecipe.getSlot0InputCount());
+        assertNotNull(coalRecipe.getTitle());
+
+        MachineRecipe diamondRecipe = recipes.get(1);
+        assertEquals(168000, diamondRecipe.getEnergyCost());
+        assertEquals(4800, diamondRecipe.getProcessTicks());
+        assertEquals(1, diamondRecipe.getSlot0InputCount());
+        assertNotNull(diamondRecipe.getTitle());
+    }
+
+    @Test
     void testUnknownMachineRecipes() {
         List<MachineRecipe> recipes = MachineRecipeRegistry.getRecipes("sandstorm:unknown");
         assertTrue(recipes.isEmpty());

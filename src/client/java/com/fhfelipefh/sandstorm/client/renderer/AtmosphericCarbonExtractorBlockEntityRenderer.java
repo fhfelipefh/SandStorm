@@ -30,6 +30,7 @@ public class AtmosphericCarbonExtractorBlockEntityRenderer implements BlockEntit
             state.facing = entity.getBlockState().getValue(AtmosphericCarbonExtractorBlock.FACING);
         }
         state.isProcessing = entity.isProcessing();
+        state.isDiamondMode = entity.isDiamondMode();
 
         Level level = entity.getLevel();
         state.animationTicks = level != null ? (level.getGameTime() + partialTick) : partialTick;
@@ -53,10 +54,20 @@ public class AtmosphericCarbonExtractorBlockEntityRenderer implements BlockEntit
                 consumer.addVertex(pose, x2, 1.003f, z2).setColor(128, 222, 234, 255).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(2.0f);
             }
 
-            float pulse = (Mth.sin(state.animationTicks * 0.2f) + 1.0f) * 0.5f;
-            int glowAlpha = 150 + (int) (pulse * 105.0f);
-            consumer.addVertex(pose, 0.35f, 0.45f, 0.5f).setColor(255, 87, 34, glowAlpha).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
-            consumer.addVertex(pose, 0.65f, 0.45f, 0.5f).setColor(255, 112, 67, glowAlpha).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+            if (state.isDiamondMode) {
+                float pulse = (Mth.sin(state.animationTicks * 0.3f) + 1.0f) * 0.5f;
+                int alpha = 180 + (int) (pulse * 75.0f);
+                consumer.addVertex(pose, 0.5f, 0.7f, 0.5f).setColor(0, 229, 255, alpha).setNormal(pose, 0.0f, -1.0f, 0.0f).setLineWidth(2.5f);
+                consumer.addVertex(pose, 0.5f, 0.35f, 0.5f).setColor(224, 247, 250, alpha).setNormal(pose, 0.0f, -1.0f, 0.0f).setLineWidth(2.5f);
+
+                consumer.addVertex(pose, 0.42f, 0.35f, 0.42f).setColor(0, 229, 255, alpha).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+                consumer.addVertex(pose, 0.58f, 0.35f, 0.58f).setColor(0, 229, 255, alpha).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+            } else {
+                float pulse = (Mth.sin(state.animationTicks * 0.2f) + 1.0f) * 0.5f;
+                int glowAlpha = 150 + (int) (pulse * 105.0f);
+                consumer.addVertex(pose, 0.35f, 0.45f, 0.5f).setColor(255, 87, 34, glowAlpha).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+                consumer.addVertex(pose, 0.65f, 0.45f, 0.5f).setColor(255, 112, 67, glowAlpha).setNormal(pose, 0.0f, 1.0f, 0.0f).setLineWidth(1.5f);
+            }
         });
     }
 }

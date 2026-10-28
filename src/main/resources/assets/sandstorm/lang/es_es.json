@@ -1384,5 +1384,7 @@
   "container.sandstorm.electric_arc_furnace": "Horno de Arco Eléctrico",
   "block.sandstorm.atmospheric_carbon_extractor": "Extractor de Carbono Atmosférico",
   "item.sandstorm.atmospheric_carbon_extractor": "Extractor de Carbono Atmosférico",
-  "container.sandstorm.atmospheric_carbon_extractor": "Extractor de Carbono Atmosférico"
+  "container.sandstorm.atmospheric_carbon_extractor": "Extractor de Carbono Atmosférico",
+  "gui.sandstorm.extractor.coal": "Captura de Carbono Atmosférico",
+  "gui.sandstorm.extractor.diamond": "Síntesis CVD de Diamante"
 }

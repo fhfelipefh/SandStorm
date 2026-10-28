@@ -2,6 +2,19 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.32] - 2026-10-28
+
+### 💎 Síntese Epitaxial CVD de Diamante & Upgrade do Capturador Atmosférico
+* **Síntese de Diamantes por Deposição Química de Vapor (CVD)**:
+  * Expansão da câmara de reação do Capturador de Carbono Atmosférico com slot dedicado para semente de cristalização (`minecraft:diamond`).
+  * Requisito de substrato epitaxial natural fiel à vida real: o processo de deposição de carbono puro do plasma exige um diamante como semente/matriz de nucleação cristalina. A semente em si é preservada na matriz.
+  * Curva de esforço termodinâmico e balanceamento industrial:
+    * Modo Carvão (sem semente): 1.200 ticks (60s), 20 E/tick, totalizando 24.000 E por carvão.
+    * Modo Diamante (com semente): 4.800 ticks (240s = 4 minutos), 35 E/tick, totalizando 168.000 E por diamante gerado.
+  * Automação sided aprimorada com 3 slots dedicados: topo (semente / matriz de diamante), base (saída automatizada de carvão ou diamante), laterais (baterias e redstone).
+  * Renderizador procedural 3D com feixe laser/plasma de deposição CVD ciano de alta voltagem e partículas de faíscas elétricas e brilho de diamante.
+  * Integração ao catálogo visual de receitas in-game com preview animado da nucleação de cristais na GUI.
+
 ## [1.19.31] - 2026-10-28
 
 ### ⚡ Fornalha Elétrica de Indução & Captura Atmosférica de Carbono

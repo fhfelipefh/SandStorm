@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.gui;
 
+import com.fhfelipefh.sandstorm.content.block.entity.BaseMachineBlockEntity;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -10,13 +11,14 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class AtmosphericCarbonExtractorMenu extends AbstractContainerMenu implements MachineMenu {
     private final Container container;
     private final ContainerData data;
 
     public AtmosphericCarbonExtractorMenu(int syncId, Inventory playerInventory) {
-        this(SandStormMenus.ATMOSPHERIC_CARBON_EXTRACTOR_MENU, syncId, playerInventory, new SimpleContainer(2), new SimpleContainerData(6));
+        this(SandStormMenus.ATMOSPHERIC_CARBON_EXTRACTOR_MENU, syncId, playerInventory, new SimpleContainer(3), new SimpleContainerData(6));
     }
 
     public AtmosphericCarbonExtractorMenu(int syncId, Inventory playerInventory, Container container, ContainerData data) {
@@ -25,18 +27,24 @@ public class AtmosphericCarbonExtractorMenu extends AbstractContainerMenu implem
 
     public AtmosphericCarbonExtractorMenu(MenuType<?> menuType, int syncId, Inventory playerInventory, Container container, ContainerData data) {
         super(menuType, syncId);
-        checkContainerSize(container, 2);
+        checkContainerSize(container, 3);
         checkContainerDataCount(data, 6);
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, 0, 80, 35) {
+        this.addSlot(new Slot(container, 0, 48, 35) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.is(Items.DIAMOND);
+            }
+        });
+        this.addSlot(new Slot(container, 1, 116, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
             }
         });
-        this.addSlot(new Slot(container, 1, 16, 53));
+        this.addSlot(new Slot(container, 2, 16, 53));
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
@@ -49,6 +57,10 @@ public class AtmosphericCarbonExtractorMenu extends AbstractContainerMenu implem
         }
 
         this.addDataSlots(data);
+    }
+
+    public boolean isDiamondMode() {
+        return (this.slots.get(0).hasItem() && this.slots.get(0).getItem().is(Items.DIAMOND)) || getMaxProgress() > 2000;
     }
 
     @Override
@@ -106,24 +118,40 @@ public class AtmosphericCarbonExtractorMenu extends AbstractContainerMenu implem
             ItemStack stackInSlot = slot.getItem();
             itemStack = stackInSlot.copy();
 
-            if (index == 0) {
-                if (!this.moveItemStackTo(stackInSlot, 2, 38, true)) {
+            if (index == 0 || index == 1 || index == 2) {
+                if (!this.moveItemStackTo(stackInSlot, 3, 39, true)) {
                     return ItemStack.EMPTY;
                 }
-                slot.onQuickCraft(stackInSlot, itemStack);
-            } else if (index == 1) {
-                if (!this.moveItemStackTo(stackInSlot, 2, 38, false)) {
-                    return ItemStack.EMPTY;
+                if (index == 1) {
+                    slot.onQuickCraft(stackInSlot, itemStack);
                 }
             } else {
-                if (!this.moveItemStackTo(stackInSlot, 1, 2, false)) {
-                    if (index < 29) {
-                        if (!this.moveItemStackTo(stackInSlot, 29, 38, false)) {
+                if (stackInSlot.is(Items.DIAMOND)) {
+                    if (!this.moveItemStackTo(stackInSlot, 0, 1, false)) {
+                        if (index < 30) {
+                            if (!this.moveItemStackTo(stackInSlot, 30, 39, false)) {
+                                return ItemStack.EMPTY;
+                            }
+                        } else if (!this.moveItemStackTo(stackInSlot, 3, 30, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (!this.moveItemStackTo(stackInSlot, 2, 29, false)) {
+                    }
+                } else if (BaseMachineBlockEntity.getFuelEnergy(stackInSlot) > 0) {
+                    if (!this.moveItemStackTo(stackInSlot, 2, 3, false)) {
+                        if (index < 30) {
+                            if (!this.moveItemStackTo(stackInSlot, 30, 39, false)) {
+                                return ItemStack.EMPTY;
+                            }
+                        } else if (!this.moveItemStackTo(stackInSlot, 3, 30, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    }
+                } else if (index < 30) {
+                    if (!this.moveItemStackTo(stackInSlot, 30, 39, false)) {
                         return ItemStack.EMPTY;
                     }
+                } else if (!this.moveItemStackTo(stackInSlot, 3, 30, false)) {
+                    return ItemStack.EMPTY;
                 }
             }
 
@@ -142,4 +170,3 @@ public class AtmosphericCarbonExtractorMenu extends AbstractContainerMenu implem
         return itemStack;
     }
 }
-
