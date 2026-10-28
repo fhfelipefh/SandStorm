@@ -98,3 +98,4 @@ public class SynapticRepairerBlockEntityRenderer implements BlockEntityRenderer<
         }
     }
 }
+

@@ -67,3 +67,4 @@ public class DeepCoreDrillBlockEntityRenderer implements BlockEntityRenderer<Dee
         });
     }
 }
+

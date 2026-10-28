@@ -8,3 +8,4 @@ public class DeepCoreDrillRenderState extends BlockEntityRenderState {
     public boolean isDrilling = false;
     public float animationTicks = 0.0f;
 }
+

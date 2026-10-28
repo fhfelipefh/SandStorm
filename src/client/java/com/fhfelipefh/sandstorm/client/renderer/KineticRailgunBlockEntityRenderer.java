@@ -76,3 +76,4 @@ public class KineticRailgunBlockEntityRenderer implements BlockEntityRenderer<Ki
         });
     }
 }
+

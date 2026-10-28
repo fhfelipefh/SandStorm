@@ -7,3 +7,4 @@ public class XpVacuumRenderState extends BlockEntityRenderState {
     public int fluidAmount = 0;
     public int maxCapacity = 16000;
 }
+

@@ -12,3 +12,4 @@ public class SynapticRepairerRenderState extends BlockEntityRenderState {
     public int damageValue = 0;
     public int maxDamage = 0;
 }
+

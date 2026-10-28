@@ -60,3 +60,4 @@ public class XpVacuumBlockEntityRenderer implements BlockEntityRenderer<XpVacuum
         });
     }
 }
+

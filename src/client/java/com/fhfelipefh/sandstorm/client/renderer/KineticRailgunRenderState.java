@@ -8,3 +8,4 @@ public class KineticRailgunRenderState extends BlockEntityRenderState {
     public boolean readyToFire = false;
     public int storedEnergy = 0;
 }
+

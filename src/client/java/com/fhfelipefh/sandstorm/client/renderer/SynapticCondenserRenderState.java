@@ -7,3 +7,4 @@ public class SynapticCondenserRenderState extends BlockEntityRenderState {
     public int fluidAmount = 0;
     public int maxCapacity = 64000;
 }
+
