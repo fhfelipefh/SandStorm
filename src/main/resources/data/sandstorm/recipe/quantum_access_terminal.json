@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "E": "sandstorm:electric_component",
+    "G": "minecraft:glass",
+    "I": "minecraft:iron_ingot",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "IGI",
+    "BWB",
+    "IEI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:quantum_access_terminal"
+  }
+}
+

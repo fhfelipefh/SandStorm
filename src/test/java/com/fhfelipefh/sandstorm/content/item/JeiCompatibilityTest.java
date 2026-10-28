@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class JeiCompatibilityTest {
 
     private static final Path RECIPES_DIR = Path.of("src", "main", "resources", "data", "sandstorm", "recipe");
-    private static final Pattern IDENTIFIER_PATTERN = Pattern.compile("^[a-z0-9_.-]+:[a-z0-9_.-]+$");
+    private static final Pattern IDENTIFIER_PATTERN = Pattern.compile("^#?[a-z0-9_.-]+:[a-z0-9_.-]+$");
 
     @Test
     void shouldHaveRecipeDirectory() {
@@ -116,6 +116,9 @@ class JeiCompatibilityTest {
     }
 
     private void assertValidSandStormItem(String itemId, Path path) {
+        if (itemId.startsWith("#")) {
+            return;
+        }
         if (itemId.startsWith("sandstorm:")) {
             String name = itemId.substring("sandstorm:".length());
             Path itemDef = Path.of("src", "main", "resources", "assets", "sandstorm", "items", name + ".json");

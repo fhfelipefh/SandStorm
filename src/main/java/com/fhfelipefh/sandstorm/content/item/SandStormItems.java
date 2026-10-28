@@ -198,6 +198,7 @@ public class SandStormItems {
     public static final SubdermalTremorSensorItem SUBDERMAL_TREMOR_SENSOR = register("subdermal_tremor_sensor", new SubdermalTremorSensorItem(properties("subdermal_tremor_sensor")));
     public static final GeologicalSurveyorDroneItem GEOLOGICAL_SURVEYOR_DRONE = register("geological_surveyor_drone", new GeologicalSurveyorDroneItem(properties("geological_surveyor_drone")));
     public static final Item SUBSPACE_WARP_CORE = register("subspace_warp_core", new Item(properties("subspace_warp_core").stacksTo(16).rarity(Rarity.EPIC)));
+    public static final MolecularCargoCapsuleItem MOLECULAR_CARGO_CAPSULE = register("molecular_cargo_capsule", new MolecularCargoCapsuleItem(properties("molecular_cargo_capsule").rarity(Rarity.RARE).stacksTo(1)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -256,7 +257,11 @@ public class SandStormItems {
                         entries.accept(VIBRO_CRYSKNIFE);
                         entries.accept(ATMOSPHERIC_ANALYZER);
                         entries.accept(SandStormBlocks.SANDSTONE_WORKBENCH);
+                        entries.accept(SandStormBlocks.SANDSTONE_CRATE);
+                        entries.accept(MOLECULAR_CARGO_CAPSULE);
                         entries.accept(SandStormBlocks.SANDSTONE_FURNACE);
+                        entries.accept(SandStormBlocks.INSULATED_FURNACE);
+                        entries.accept(SandStormBlocks.STEEL_FURNACE);
                         entries.accept(SandStormBlocks.BRACKISH_AQUIFER);
                         entries.accept(SandStormBlocks.THUMPER);
                         entries.accept(SandStormBlocks.PRINTER_3D);

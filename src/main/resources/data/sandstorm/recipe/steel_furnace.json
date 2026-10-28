@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "sandstorm:fiberglass",
+    "I": "sandstorm:insulated_furnace",
+    "R": "sandstorm:steel_rebar"
+  },
+  "pattern": [
+    "RFR",
+    "FIF",
+    "RFR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:steel_furnace"
+  }
+}
+

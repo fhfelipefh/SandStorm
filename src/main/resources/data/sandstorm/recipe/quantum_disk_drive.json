@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "E": "sandstorm:electric_component",
+    "H": "sandstorm:storage_housing",
+    "I": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    "IHI",
+    "BEB",
+    "IHI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:quantum_disk_drive"
+  }
+}
+

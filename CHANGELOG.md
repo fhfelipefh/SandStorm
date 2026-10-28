@@ -2,6 +2,31 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.28] - 2026-10-28
+
+### 🚀 Cápsula de Carga Molecular & Logística Portátil Anti-Nesting
+* **Cápsula de Carga Molecular (`molecular_cargo_capsule`)**:
+  * Alternativa avançada ao Shulker Box, permitindo carregar um inventário portátil de 27 slots no deserto sem depender de acesso ao End.
+  * Abertura direta pela mão com clique direito integrando menu persistente via `DataComponents.CONTAINER`.
+  * Regra inviolável de segurança anti-nesting: impede a inserção da cápsula dentro de Shulkers, Bundles ou de outras Cápsulas de Carga Molecular (`canFitInsideContainerItems() == false`), além de travar o slot ativo durante o uso.
+  * Receita desafiadora combinando ligas de titânio-quitina, biopolímero flexível, caixote de arenito, carcaça de armazenamento, placa de circuito e vedação de pressão.
+
+## [1.19.27] - 2026-10-28
+
+### 📦 Armazenamento Early-Game, Tiers de Fornalha & Refinamento de Sobrevivência
+* **Caixote de Arenito (`sandstone_crate`)**:
+  * Recipiente de armazenamento acessível para early-game no ermo desértico (sem necessidade de madeira), com capacidade de 54 slots (3.456 itens) e drop seguro de conteúdo.
+  * Texturas redesenhadas com cantoneiras de sucata metálica, tampa articulada e alças reforçadas de transporte.
+* **Tiers Avançados de Fornalha**:
+  * `insulated_furnace` (**Fornalha Isolada**): estrutura refratária envolta em manta acolchoada de lã de vidro (*fiberglass*) com cintas de bronze, queimando 2x mais itens por unidade de combustível; frente equipada com termômetro analógico e visor de inspeção.
+  * `steel_furnace` (**Fornalha de Aço**): forno industrial blindado com parafusos estruturais, escotilha de detonação, trava mecânica de latão e manômetro; velocidade de fundição 2x mais rápida (100 ticks), 2x mais eficiência de combustível, resistência a explosões (1200) e partículas de chamas azuladas de plasma (`SOUL_FIRE_FLAME`) com estalos de alto-forno (`BLASTFURNACE_FIRE_CRACKLE`).
+* **Qualidade de Vida no Early Game**:
+  * Filtro dessalinizador (`desalination_filter`): receita flexibilizada para aceitar balde comum (`minecraft:bucket`) e qualquer arenito via tag `#c:sandstones`.
+  * Aqüífero salobro (`brackish_aquifer`): mineração passa a dropar sal mineral (`mineral_salt`) com suporte a Fortuna.
+  * Frascos de água: texturas de `brackish_water_bottle` e `potable_water_bottle` alinhadas à silhueta icônica vanilla com rolha e reflexos de vidro.
+* **Rede Quântica de Armazenamento**:
+  * Receitas data-driven integradas para cartuchos quânticos (1k a 64k), cabos, controlador e terminal de acesso.
+
 ## [1.19.26] - 2026-10-26
 
 ### 📡 Utilitários Táticos, Armadilhas de Teto & Emboscadas Holográficas

@@ -18,6 +18,9 @@
     "minecraft:diorite",
     "minecraft:andesite",
     "sandstorm:sandstone_workbench",
-    "sandstorm:sandstone_furnace"
+    "sandstorm:sandstone_furnace",
+    "sandstorm:sandstone_crate",
+    "sandstorm:insulated_furnace",
+    "sandstorm:steel_furnace"
   ]
 }

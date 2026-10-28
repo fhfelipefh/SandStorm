@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "B": "sandstorm:silicon_wafer",
-    "C": "minecraft:cauldron",
+    "C": "minecraft:bucket",
     "G": "minecraft:glass",
     "I": "minecraft:copper_ingot",
-    "S": "minecraft:smooth_sandstone"
+    "S": "#c:sandstones"
   },
   "pattern": [
     "IGI",

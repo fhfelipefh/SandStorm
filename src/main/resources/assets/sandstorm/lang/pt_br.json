@@ -1338,5 +1338,19 @@
   "message.sandstorm.detonator_fired": "Sinal de detonação enviado!",
   "message.sandstorm.detonator_empty": "Nenhuma armadilha vinculada.",
   "message.sandstorm.detonator_out_of_range": "Fora de alcance (64 blocos).",
-  "message.sandstorm.trap_disarmed": "Armadilha desarmada com sucesso."
+  "message.sandstorm.trap_disarmed": "Armadilha desarmada com sucesso.",
+  "block.sandstorm.sandstone_crate": "Caixote de Arenito",
+  "item.sandstorm.sandstone_crate": "Caixote de Arenito",
+  "container.sandstorm.sandstone_crate": "Caixote de Arenito",
+  "block.sandstorm.insulated_furnace": "Fornalha Isolada",
+  "item.sandstorm.insulated_furnace": "Fornalha Isolada",
+  "container.sandstorm.insulated_furnace": "Fornalha Isolada",
+  "block.sandstorm.steel_furnace": "Fornalha de Aço",
+  "item.sandstorm.steel_furnace": "Fornalha de Aço",
+  "container.sandstorm.steel_furnace": "Fornalha de Aço",
+  "item.sandstorm.molecular_cargo_capsule": "Cápsula de Carga Molecular",
+  "container.sandstorm.molecular_cargo_capsule": "Cápsula de Carga Molecular",
+  "tooltip.sandstorm.molecular_cargo_capsule.desc": "Armazenamento hermético de 27 slots.",
+  "tooltip.sandstorm.molecular_cargo_capsule.use": "Botão direito na mão para abrir a carga.",
+  "tooltip.sandstorm.molecular_cargo_capsule.anti_nesting": "Campo anti-distorção molecular (Não aninhável)."
 }

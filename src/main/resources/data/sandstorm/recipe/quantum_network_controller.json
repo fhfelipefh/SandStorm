@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "E": "sandstorm:electric_component",
+    "I": "minecraft:iron_ingot",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "IBI",
+    "WEW",
+    "IBI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:quantum_network_controller"
+  }
+}
+

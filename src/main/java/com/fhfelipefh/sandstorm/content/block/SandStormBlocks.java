@@ -24,6 +24,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.FiberglassChemicalPipeBlock
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.InsulatedFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.IrrigationPumpBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.IrrigationSprinklerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.StormWindTurbineBlockEntity;
@@ -44,7 +45,9 @@ import com.fhfelipefh.sandstorm.content.block.entity.RadioactiveWasteBarrelBlock
 import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.VaultDoorControllerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SpectralSurveyTelescopeBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SandstoneCrateBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SteelFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.fluid.RadioactiveSludgeBlock;
 import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
 import com.fhfelipefh.sandstorm.content.block.entity.SmartFluidPipeBlockEntity;
@@ -105,6 +108,29 @@ public class SandStormBlocks {
                     .strength(1.5f)
                     .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0)
                     .sound(SoundType.STONE)));
+    public static final SandstoneCrateBlock SANDSTONE_CRATE = register("sandstone_crate",
+            new SandstoneCrateBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("sandstone_crate")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(2.0f, 6.0f)
+                    .sound(SoundType.STONE)
+                    .requiresCorrectToolForDrops()));
+    public static final InsulatedFurnaceBlock INSULATED_FURNACE = register("insulated_furnace",
+            new InsulatedFurnaceBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("insulated_furnace")))
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(3.5f)
+                    .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0)
+                    .sound(SoundType.STONE)
+                    .requiresCorrectToolForDrops()));
+    public static final SteelFurnaceBlock STEEL_FURNACE = register("steel_furnace",
+            new SteelFurnaceBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("steel_furnace")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(5.0f, 1200.0f)
+                    .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 14 : 0)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
     public static final BrackishWaterBlock BRACKISH_AQUIFER = register("brackish_aquifer",
             new BrackishWaterBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("brackish_aquifer")))
@@ -1214,6 +1240,21 @@ public class SandStormBlocks {
             SandStormMod.id("sandstone_furnace"),
             new BlockEntityType<>(SandstoneFurnaceBlockEntity::new, Set.of(SANDSTONE_FURNACE))
     );
+    public static final BlockEntityType<SandstoneCrateBlockEntity> SANDSTONE_CRATE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("sandstone_crate"),
+            new BlockEntityType<>(SandstoneCrateBlockEntity::new, Set.of(SANDSTONE_CRATE))
+    );
+    public static final BlockEntityType<InsulatedFurnaceBlockEntity> INSULATED_FURNACE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("insulated_furnace"),
+            new BlockEntityType<>(InsulatedFurnaceBlockEntity::new, Set.of(INSULATED_FURNACE))
+    );
+    public static final BlockEntityType<SteelFurnaceBlockEntity> STEEL_FURNACE_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("steel_furnace"),
+            new BlockEntityType<>(SteelFurnaceBlockEntity::new, Set.of(STEEL_FURNACE))
+    );
     public static final BlockEntityType<HydroponicChamberBlockEntity> HYDROPONIC_CHAMBER_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("hydroponic_chamber"),
@@ -1467,6 +1508,9 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, DESALINATION_FILTER_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, CHEMICAL_REFINERY_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SANDSTONE_FURNACE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SANDSTONE_CRATE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, INSULATED_FURNACE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, STEEL_FURNACE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, THERMAL_GENERATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, HYDROPONIC_CHAMBER_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, AUTONOMOUS_SONIC_TURRET_BE);

@@ -1338,5 +1338,19 @@
   "message.sandstorm.detonator_fired": "Detonation signal sent!",
   "message.sandstorm.detonator_empty": "No traps linked.",
   "message.sandstorm.detonator_out_of_range": "Traps out of range (64b).",
-  "message.sandstorm.trap_disarmed": "Trap safely disarmed."
+  "message.sandstorm.trap_disarmed": "Trap safely disarmed.",
+  "block.sandstorm.sandstone_crate": "Sandstone Crate",
+  "item.sandstorm.sandstone_crate": "Sandstone Crate",
+  "container.sandstorm.sandstone_crate": "Sandstone Crate",
+  "block.sandstorm.insulated_furnace": "Insulated Furnace",
+  "item.sandstorm.insulated_furnace": "Insulated Furnace",
+  "container.sandstorm.insulated_furnace": "Insulated Furnace",
+  "block.sandstorm.steel_furnace": "Steel Furnace",
+  "item.sandstorm.steel_furnace": "Steel Furnace",
+  "container.sandstorm.steel_furnace": "Steel Furnace",
+  "item.sandstorm.molecular_cargo_capsule": "Molecular Cargo Capsule",
+  "container.sandstorm.molecular_cargo_capsule": "Molecular Cargo Capsule",
+  "tooltip.sandstorm.molecular_cargo_capsule.desc": "Hermetic 27-slot molecular compression storage.",
+  "tooltip.sandstorm.molecular_cargo_capsule.use": "Right-click in hand to access field cargo.",
+  "tooltip.sandstorm.molecular_cargo_capsule.anti_nesting": "Molecular anti-distortion field (Non-nestable)."
 }

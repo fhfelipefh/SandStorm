@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": "sandstorm:storage_housing",
+    "R": "minecraft:redstone",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "RWR",
+    "WHW",
+    "RWR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:quantum_storage_cartridge_1k"
+  }
+}
+

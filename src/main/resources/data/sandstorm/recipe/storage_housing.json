@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "minecraft:glass_pane",
+    "I": "sandstorm:scrap_metal",
+    "S": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "IGI",
+    "I I",
+    "ISI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:storage_housing"
+  }
+}
+

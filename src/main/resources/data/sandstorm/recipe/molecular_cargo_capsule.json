@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "C": "sandstorm:sandstone_crate",
+    "F": "sandstorm:flexible_biopolymer",
+    "H": "sandstorm:storage_housing",
+    "P": "sandstorm:pressure_seal",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "TFT",
+    "HCB",
+    "TPT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:molecular_cargo_capsule"
+  }
+}
+

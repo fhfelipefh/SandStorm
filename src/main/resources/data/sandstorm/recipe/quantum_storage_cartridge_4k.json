@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "sandstorm:quantum_storage_cartridge_1k",
+    "E": "sandstorm:electric_component",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "EWE",
+    "WCW",
+    "EWE"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:quantum_storage_cartridge_4k"
+  }
+}
+

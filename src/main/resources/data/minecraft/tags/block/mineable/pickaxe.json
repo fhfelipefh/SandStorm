@@ -2,7 +2,10 @@
   "replace": false,
   "values": [
     "sandstorm:sandstone_workbench",
+    "sandstorm:sandstone_crate",
     "sandstorm:sandstone_furnace",
+    "sandstorm:insulated_furnace",
+    "sandstorm:steel_furnace",
     "sandstorm:thumper",
     "sandstorm:printer_3d",
     "sandstorm:desalination_filter",

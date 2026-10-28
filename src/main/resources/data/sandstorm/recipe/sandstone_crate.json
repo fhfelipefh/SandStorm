@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": "sandstorm:scrap_metal",
+    "S": "#c:sandstones"
+  },
+  "pattern": [
+    "SSS",
+    "SMS",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:sandstone_crate"
+  }
+}
+

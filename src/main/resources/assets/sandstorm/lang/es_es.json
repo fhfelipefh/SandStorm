@@ -1338,5 +1338,19 @@
   "message.sandstorm.detonator_fired": "¡Señal de detonación enviada!",
   "message.sandstorm.detonator_empty": "No hay trampas vinculadas.",
   "message.sandstorm.detonator_out_of_range": "Fuera de alcance (64 bloques).",
-  "message.sandstorm.trap_disarmed": "Trampa desarmada con éxito."
+  "message.sandstorm.trap_disarmed": "Trampa desarmada con éxito.",
+  "block.sandstorm.sandstone_crate": "Cajón de Arenisca",
+  "item.sandstorm.sandstone_crate": "Cajón de Arenisca",
+  "container.sandstorm.sandstone_crate": "Cajón de Arenisca",
+  "block.sandstorm.insulated_furnace": "Horno Aislado",
+  "item.sandstorm.insulated_furnace": "Horno Aislado",
+  "container.sandstorm.insulated_furnace": "Horno Aislado",
+  "block.sandstorm.steel_furnace": "Horno de Acero",
+  "item.sandstorm.steel_furnace": "Horno de Acero",
+  "container.sandstorm.steel_furnace": "Horno de Acero",
+  "item.sandstorm.molecular_cargo_capsule": "Cápsula de Carga Molecular",
+  "container.sandstorm.molecular_cargo_capsule": "Cápsula de Carga Molecular",
+  "tooltip.sandstorm.molecular_cargo_capsule.desc": "Almacenamiento hermético de 27 ranuras.",
+  "tooltip.sandstorm.molecular_cargo_capsule.use": "Clic derecho en mano para abrir la carga.",
+  "tooltip.sandstorm.molecular_cargo_capsule.anti_nesting": "Campo anti-distorsión molecular (No anidable)."
 }

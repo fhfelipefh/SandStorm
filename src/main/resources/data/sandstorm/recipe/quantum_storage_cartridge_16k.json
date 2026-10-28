@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:circuit_board",
+    "C": "sandstorm:quantum_storage_cartridge_4k",
+    "E": "sandstorm:electric_component"
+  },
+  "pattern": [
+    "EBE",
+    "BCB",
+    "EBE"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:quantum_storage_cartridge_16k"
+  }
+}
+
