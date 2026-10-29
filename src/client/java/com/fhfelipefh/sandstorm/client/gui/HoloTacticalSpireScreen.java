@@ -190,7 +190,8 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
 
         int activeOrder = this.menu.getActiveTacticalOrder();
 
-        for (int i = 0; i < 4; i++) {
+        int count = Math.min(orderNames.length, borderColors.length);
+        for (int i = 0; i < count; i++) {
             int bx = x + 68;
             int by = y + 26 + i * 14;
             int bw = 78;
@@ -199,8 +200,8 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
             boolean hovered = mouseX >= bx && mouseX <= bx + bw && mouseY >= by && mouseY <= by + bh;
             boolean selected = (i == activeOrder);
 
+            int border = selected ? (i < borderColors.length ? borderColors[i] : 0xFF00E5FF) : (hovered ? 0xFFAAAAAA : 0xFF37474F);
             int bg = selected ? 0xDD1E293B : (hovered ? 0x991E293B : 0x55080C14);
-            int border = selected ? borderColors[i] : (hovered ? 0xFFAAAAAA : 0xFF37474F);
 
             extractor.fill(bx, by, bx + bw, by + bh, bg);
             extractor.fill(bx, by, bx + bw, by + 1, border);
@@ -208,8 +209,9 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
             extractor.fill(bx, by, bx + 1, by + bh, border);
             extractor.fill(bx + bw - 1, by, bx + bw, by + bh, border);
 
-            String text = (selected ? "▶ " : "") + orderNames[i];
-            int textColor = selected ? borderColors[i] : (hovered ? 0xFFFFFFFF : 0xFF90A4AE);
+            String orderName = (i < orderNames.length) ? orderNames[i] : "ORDEM";
+            String text = (selected ? "▶ " : "") + orderName;
+            int textColor = selected ? border : (hovered ? 0xFFFFFFFF : 0xFF90A4AE);
             drawAdaptiveText(extractor, Component.literal(text), bx + 4, by + 2, bw - 8, textColor);
         }
 
@@ -260,7 +262,9 @@ public class HoloTacticalSpireScreen extends AbstractContainerScreen<HoloTactica
                                     Component.literal("§7e economia de energia WPT.")
                             )
                     );
-                    extractor.setComponentTooltipForNextFrame(this.font, descs.get(i), mouseX, mouseY);
+                    if (i < descs.size()) {
+                        extractor.setComponentTooltipForNextFrame(this.font, descs.get(i), mouseX, mouseY);
+                    }
                     break;
                 }
             }

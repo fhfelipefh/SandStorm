@@ -39,7 +39,8 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         int x = this.leftPos;
         int y = this.topPos;
 
-        for (int i = 0; i < 5; i++) {
+        int routineCount = Math.min(CyborgRoutine.values().length, 5);
+        for (int i = 0; i < routineCount; i++) {
             int bx = x + 9 + i * 42;
             int bw = 39;
             int by = y + 38;
@@ -212,7 +213,8 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         CyborgRoutine currentRoutine = this.menu.getRoutine();
 
         String[] labels = new String[]{"AUTO", "SEGUIR", "PATRUL", "DOCA", "ESPERA"};
-        for (int i = 0; i < 5; i++) {
+        int routineCount = Math.min(CyborgRoutine.values().length, labels.length);
+        for (int i = 0; i < routineCount; i++) {
             int bx = x + 9 + i * 42;
             int bw = 39;
             int by = y + 38;
@@ -231,10 +233,11 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
             extractor.fill(bx, by, bx + 1, by + bh, border);
             extractor.fill(bx + bw - 1, by, bx + bw, by + bh, border);
 
-            int textW = this.font.width(labels[i]);
+            String label = (i < labels.length) ? labels[i] : "ORDEM";
+            int textW = this.font.width(label);
             int tx = bx + (bw - textW) / 2;
             int ty = by + 4;
-            extractor.text(this.font, Component.literal(labels[i]), tx, ty, textCol, false);
+            extractor.text(this.font, Component.literal(label), tx, ty, textCol, false);
         }
     }
 
@@ -330,7 +333,8 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
             Component tip = Component.literal("Especialidade: " + specName);
             extractor.setTooltipForNextFrame(this.font, tip, mouseX, mouseY);
         } else {
-            for (int i = 0; i < 5; i++) {
+            int routineCount = Math.min(CyborgRoutine.values().length, 5);
+            for (int i = 0; i < routineCount; i++) {
                 int bx = x + 9 + i * 42;
                 int bw = 39;
                 int by = y + 38;
@@ -367,7 +371,9 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
                                     Component.literal("§7aguardando ordens remotas.")
                             )
                     );
-                    extractor.setComponentTooltipForNextFrame(this.font, routineTooltips.get(i), mouseX, mouseY);
+                    if (i < routineTooltips.size()) {
+                        extractor.setComponentTooltipForNextFrame(this.font, routineTooltips.get(i), mouseX, mouseY);
+                    }
                     return;
                 }
             }
