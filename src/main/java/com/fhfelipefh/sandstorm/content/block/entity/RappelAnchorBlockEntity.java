@@ -194,8 +194,8 @@ public class RappelAnchorBlockEntity extends BlockEntity {
         );
         List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, catchBox);
         for (Player player : nearbyPlayers) {
-            player.resetFallDistance();
             if (canAutoCatch(player, pos)) {
+                player.resetFallDistance();
                 attachPlayer(player, player.blockPosition());
             }
         }
@@ -208,13 +208,10 @@ public class RappelAnchorBlockEntity extends BlockEntity {
         if (RappelHarnessEntity.isOnDismountCooldown(player.getUUID(), player.level().getGameTime())) {
             return false;
         }
-        if (player.isShiftKeyDown() && player.onGround()) {
+        if (player.onGround()) {
             return false;
         }
-        if (player.getY() >= anchorPos.getY() - 0.1 && player.onGround() && player.fallDistance <= 0.0f) {
-            return false;
-        }
-        return true;
+        return player.fallDistance > 0.5f || player.getDeltaMovement().y < -0.15;
     }
 
     public void cleanupRope() {

@@ -141,8 +141,10 @@ public class RappelHarnessEntity extends PathfinderMob {
         double targetZ = anchor.equals(BlockPos.ZERO) ? this.getZ() : anchor.getZ() + 0.5;
 
         boolean suitBoost = player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof SpaceSuitItem;
-        double climbSpeed = suitBoost ? 0.45 : 0.30;
-        double descendSpeed = suitBoost ? 0.50 : 0.35;
+        boolean sprintBoost = player.isSprinting();
+        double speedMult = sprintBoost ? 1.75 : 1.0;
+        double climbSpeed = (suitBoost ? 0.45 : 0.30) * speedMult;
+        double descendSpeed = (suitBoost ? 0.50 : 0.35) * speedMult;
 
         boolean movingUp = player.zza > 0 || player.isJumping();
         boolean movingDown = player.zza < 0;
@@ -159,7 +161,7 @@ public class RappelHarnessEntity extends PathfinderMob {
             if (this.tickCount % 6 == 0) {
                 this.level().playSound(null, this.blockPosition(), SoundEvents.CHAIN_STEP, SoundSource.PLAYERS, 0.7f, 1.4f);
             }
-            if (suitBoost && this.level() instanceof ServerLevel serverLevel && this.tickCount % 2 == 0) {
+            if ((suitBoost || sprintBoost) && this.level() instanceof ServerLevel serverLevel && this.tickCount % 2 == 0) {
                 serverLevel.sendParticles(ParticleTypes.CRIT, targetX, newY, targetZ, 2, 0.1, 0.1, 0.1, 0.05);
             }
         } else if (movingDown) {
@@ -168,8 +170,12 @@ public class RappelHarnessEntity extends PathfinderMob {
             if (this.tickCount % 6 == 0) {
                 this.level().playSound(null, this.blockPosition(), SoundEvents.CHAIN_STEP, SoundSource.PLAYERS, 0.6f, 1.1f);
             }
-            if (suitBoost && this.level() instanceof ServerLevel serverLevel && this.tickCount % 2 == 0) {
+            if ((suitBoost || sprintBoost) && this.level() instanceof ServerLevel serverLevel && this.tickCount % 2 == 0) {
                 serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, targetX, newY, targetZ, 1, 0.1, 0.1, 0.1, 0.02);
+            }
+            if (newY <= getMinY() + 0.05 || (player.onGround() && this.tickCount > 10)) {
+                player.stopRiding();
+                return;
             }
         } else {
             this.setDeltaMovement(0.0, 0.0, 0.0);

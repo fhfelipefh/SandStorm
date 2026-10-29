@@ -2,6 +2,24 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.35] - 2026-10-29
+
+### 🧗 Refinamento do Sistema de Rapel, Modelo 3D da Turbina do Capturador & Correção de Z-Fighting no Caixote
+* **Correção de Z-Fighting / Cintilação no Caixote de Arenito (`SandstoneCrateBlock`)**:
+  * Substituído o render type em `SandstoneCrateBlockEntityRenderer` de `RenderTypes.entityCutout` para `RenderTypes.entityCutoutCull` com descarte de faces posteriores (*backface culling*).
+  * Afastado o fecho/trinco frontal da tampa (`lock`) em `0.01f` em `SandstoneCrateModel`, eliminando sobreposição coplanar exata com a parede frontal do baú e erradicando qualquer *flickering* visual em qualquer ângulo de câmera.
+* **Redesign Completo do Duto e Ventilador 3D do Capturador de Carbono Atmosférico**:
+  * Textura superior (`atmospheric_carbon_extractor_top.png`) totalmente redesenhada: removida a hélice 2D pintada e substituída por uma abertura cilíndrica de sucção ("buraco") com chanfro metálico de admissão, gradiente radial escurecido e grade/malha metálica protetora no fundo da cavidade.
+  * Criado o modelo 3D dedicado `AtmosphericCarbonExtractorFanModel`: rotor industrial com 6 pás aerodinâmicas inclinadas (*pitched blades*), cubo central e ogiva de rotação girando no interior do duto superior.
+  * Renderizado em `AtmosphericCarbonExtractorBlockEntityRenderer` com velocidade de rotação dinâmica (suave em repouso e hiper-acelerada quando em processamento ou com tiragem por combustão).
+* **Aprimoramento da Mecânica de Rapel & Correção Estrutural no Showcase**:
+  * **Correção do Abismo e Passarela no Showcase**: corrigida a geração da passarela em `ShowcaseAutomation.java` que pavimentava pedras sobre o poço de descida; alinhados os guinchos e o poço de 128 blocos em queda livre para que as cordas desçam sem obstrução até o piso de amortecimento sísmico.
+  * **Auto-Captura Inteligente e Não-Invasiva**: restrita a captura automática exclusivamente a jogadores em queda livre (`!player.onGround() && player.fallDistance > 0.5f`), impedindo que o arnês capture jogadores caminhando normalmente no chão da plataforma.
+  * **Propulsão Motorizada com Sprint**: segurar `Ctrl` (corrida) durante a subida ou descida aciona o impulso de alta rotação (+75% de velocidade).
+  * **Desengate Suave no Solo**: ao atingir o fundo do abismo ou tocar o chão com `S`, o jogador desce suavemente do arnês.
+  * **Recolhimento à Distância na Base**: Shift + Botão Direito em qualquer bloco da corda inicia o recolhimento automático do guincho até a base.
+  * **Hologramas de Orientação Atualizados**: comandos de operação exibidos com precisão na estação de testes.
+
 ## [1.19.34] - 2026-10-29
 
 ### ⚡ Complexo de Carbono & Indução Térmica no Showcase & Comandos Dedicados

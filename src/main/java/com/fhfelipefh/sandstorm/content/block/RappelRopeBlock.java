@@ -124,7 +124,11 @@ public class RappelRopeBlock extends Block {
             if (anchorPos != null) {
                 BlockEntity be = level.getBlockEntity(anchorPos);
                 if (be instanceof RappelAnchorBlockEntity anchor) {
-                    anchor.attachPlayer(player, pos);
+                    if (player.isShiftKeyDown()) {
+                        anchor.startRetraction(player);
+                    } else {
+                        anchor.attachPlayer(player, pos);
+                    }
                 }
             }
         }

@@ -33,7 +33,7 @@ public class SandstoneCrateModel {
 
         root.addOrReplaceChild("lock", CubeListBuilder.create()
                 .texOffs(0, 0)
-                .addBox(7.0f, -2.0f, 14.0f, 2.0f, 4.0f, 1.0f), PartPose.offset(0.0f, 9.0f, 1.0f));
+                .addBox(7.0f, -2.0f, 14.01f, 2.0f, 4.0f, 1.0f), PartPose.offset(0.0f, 9.0f, 1.0f));
 
         return LayerDefinition.create(mesh, 64, 64);
     }

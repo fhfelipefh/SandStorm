@@ -51,7 +51,7 @@ public class SandstoneCrateBlockEntityRenderer implements BlockEntityRenderer<Sa
         f = 1.0f - f * f * f;
         this.model.setupAnim(f);
 
-        collector.submitModelPart(this.model.getRoot(), poseStack, RenderTypes.entityCutout(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, null);
+        collector.submitModelPart(this.model.getRoot(), poseStack, RenderTypes.entityCutoutCull(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, null);
         poseStack.popPose();
     }
 }

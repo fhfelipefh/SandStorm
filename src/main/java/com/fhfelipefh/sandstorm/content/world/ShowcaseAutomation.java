@@ -2573,36 +2573,38 @@ public class ShowcaseAutomation {
         for (int dx = -4; dx <= 4; dx++) {
             for (int dz = -4; dz <= 4; dz++) {
                 BlockPos p = stationCenter.offset(dx, 0, dz);
-                boolean isDropHole = (dx >= -1 && dx <= 3 && dz >= 1 && dz <= 3);
+                boolean isDropHole = (dx >= -2 && dx <= 1 && dz >= 0 && dz <= 3);
                 if (isDropHole) {
                     level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
                     continue;
                 }
                 boolean edge = Math.abs(dx) == 4 || Math.abs(dz) == 4;
                 boolean corner = Math.abs(dx) == 4 && Math.abs(dz) == 4;
+                boolean isEntrance = (dx == 4 && dz == 0);
                 Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : SandStormBlocks.REINFORCED_CONCRETE);
                 level.setBlock(p, b.defaultBlockState(), 3);
-                if (edge && !corner) {
+                if (edge && !corner && !isEntrance) {
                     level.setBlock(p.above(), Blocks.IRON_BARS.defaultBlockState(), 3);
                 }
             }
         }
 
-        BlockPos anchorPos1 = stationCenter.offset(0, 1, 0);
+        for (int dx = -2; dx <= 1; dx++) {
+            level.setBlock(stationCenter.offset(dx, 1, -1), SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState(), 3);
+        }
+
+        BlockPos anchorPos1 = stationCenter.offset(-1, 1, 0);
         level.setBlock(anchorPos1, SandStormBlocks.RAPPEL_ANCHOR.defaultBlockState().setValue(RappelAnchorBlock.FACING, Direction.SOUTH), 3);
 
-        BlockPos anchorPos2 = stationCenter.offset(2, 1, 0);
+        BlockPos anchorPos2 = stationCenter.offset(1, 1, 0);
         level.setBlock(anchorPos2, SandStormBlocks.GLOWING_RAPPEL_ANCHOR.defaultBlockState().setValue(RappelAnchorBlock.FACING, Direction.SOUTH), 3);
-
-        BlockPos testPadPos = stationCenter.offset(-2, 1, 0);
-        level.setBlock(testPadPos, SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState(), 3);
 
         int maxDepth = RappelAnchorBlockEntity.MAX_DEPTH;
         for (int y = 1; y <= maxDepth; y++) {
-            for (int dx = -2; dx <= 4; dx++) {
-                for (int dz = 0; dz <= 4; dz++) {
+            for (int dx = -3; dx <= 2; dx++) {
+                for (int dz = -1; dz <= 4; dz++) {
                     BlockPos airPos = stationCenter.offset(dx, 1 - y, dz);
-                    if (y < maxDepth || (dx != 0 && dx != 2) || dz != 1) {
+                    if (y < maxDepth || (dx != -1 && dx != 1) || dz != 0) {
                         level.setBlock(airPos, Blocks.AIR.defaultBlockState(), 2);
                     }
                 }
@@ -2622,11 +2624,11 @@ public class ShowcaseAutomation {
 
         int bottomY = baseY - maxDepth;
         for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -1; dz <= 5; dz++) {
+            for (int dz = -2; dz <= 5; dz++) {
                 BlockPos floorPos = new BlockPos(stationCenter.getX() + dx, bottomY, stationCenter.getZ() + dz);
-                boolean isUnderRope = (dx == 0 || dx == 2) && dz == 1;
+                boolean isUnderRope = (dx == -1 || dx == 1) && dz == 0;
                 Block b = isUnderRope ? SandStormBlocks.SEISMIC_DAMPENER_PAVING : Blocks.POLISHED_DEEPSLATE;
-                if (Math.abs(dx) == 4 || dz == -1 || dz == 5) {
+                if (Math.abs(dx) == 4 || dz == -2 || dz == 5) {
                     b = Blocks.OCHRE_FROGLIGHT;
                 }
                 level.setBlock(floorPos, b.defaultBlockState(), 3);
@@ -2645,10 +2647,10 @@ public class ShowcaseAutomation {
         BlockPos bottomReturnPos = new BlockPos(stationCenter.getX() + 3, bottomY + 1, stationCenter.getZ() + 1);
         setupReturnPad(level, bottomReturnPos);
 
-        spawnHologram(level, stationCenter.getX() + 1.0, bottomY + 3.0, stationCenter.getZ() + 1.0, "§a§l[Fundo do Abismo - 128 Blocos]");
-        spawnHologram(level, stationCenter.getX() + 1.0, bottomY + 2.7, stationCenter.getZ() + 1.0, "§7Escale com a corda ou pise na placa para subir");
+        spawnHologram(level, stationCenter.getX() + 0.0, bottomY + 3.0, stationCenter.getZ() + 1.0, "§a§l[Fundo do Abismo - 128 Blocos]");
+        spawnHologram(level, stationCenter.getX() + 0.0, bottomY + 2.7, stationCenter.getZ() + 1.0, "§7Escale com a corda ou pise na placa para subir");
 
-        BlockPos topChestPos = stationCenter.offset(-3, 1, -2);
+        BlockPos topChestPos = stationCenter.offset(3, 1, -2);
         setChestSafe(level, topChestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(topChestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.RAPPEL_WINCH, 8));
@@ -2658,11 +2660,11 @@ public class ShowcaseAutomation {
             chest.setItem(4, new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE, 32));
         }
 
-        spawnHologram(level, stationCenter.getX() + 1.0, baseY + 4.2, stationCenter.getZ() + 0.5, "§e§l[Zona de Testes: Rapel (128 Blocos)]");
-        spawnHologram(level, stationCenter.getX() + 1.0, baseY + 3.85, stationCenter.getZ() + 0.5, "§bComprimento Máximo: 128 Blocos Verticais");
-        spawnHologram(level, stationCenter.getX() + 1.0, baseY + 3.5, stationCenter.getZ() + 0.5, "§fClique com botão direito ou pule na corda");
-        spawnHologram(level, stationCenter.getX() + 1.0, baseY + 3.15, stationCenter.getZ() + 0.5, "§a[W/Pulo] Subir | [S/Agachar] Descer");
-        spawnHologram(level, stationCenter.getX() + 1.0, baseY + 2.8, stationCenter.getZ() + 0.5, "§6[Anti-Queda]: Pule no vão e seja capturado!");
+        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 4.2, stationCenter.getZ() - 1.5, "§6§l[Zona de Testes: Rapel (128 Blocos)]");
+        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 3.85, stationCenter.getZ() - 1.5, "§bComprimento Máximo: 128 Blocos Verticais");
+        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 3.5, stationCenter.getZ() - 1.5, "§eClique com botão direito na corda ou no guincho");
+        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 3.15, stationCenter.getZ() - 1.5, "§f[W/Espaço] Subir | [S] Descer | [Ctrl] Acelerar | [Shift] Descer no Chão");
+        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 2.8, stationCenter.getZ() - 1.5, "§a[Anti-Queda] Pule no abismo e seja capturado automaticamente!");
 
         setupReturnPad(level, stationCenter.offset(-3, 1, -3));
     }
@@ -2684,16 +2686,6 @@ public class ShowcaseAutomation {
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                 boolean edge = (dx != 0);
                 boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
-                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
-                level.setBlock(p, b.defaultBlockState(), 2);
-            }
-        }
-        for (int x = -32; x >= -36; x--) {
-            for (int dz = -1; dz <= 1; dz++) {
-                BlockPos p = center.offset(x, 0, -16 + dz);
-                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
-                boolean edge = (dz != 0);
-                boolean light = (Math.abs(x) % 3 == 0 && dz == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
