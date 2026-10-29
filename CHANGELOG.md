@@ -2,6 +2,23 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.36] - 2026-10-29
+
+### 🌐 Reestruturação Espacial das 4 Grandes Avenidas do Showcase, Terminal de Trânsito Rápido & Renderização Sólida do Caixote
+* **Expansão Espacial & Fim da Superlotação no Proving Ground (`SandStorm_Showcase`)**:
+  * **Grandes Avenidas Cardeais Dedicadas**:
+    * **Avenida Oeste (Indústria & Mobilidade)**: Complexo de Carbono e Forjas expandido para 25x25 em `(-50, 160, 0)`, totalmente isolado da praça central e do tabuleiro de blocos; Circuito de testes Maglev expandido para 30x30 em `(-90, 160, 0)`, interligado por via expressa de 5 blocos de largura.
+    * **Avenida Leste (Computação Quântica, Cofres & Órbita)**: Computador Quântico movido para `(50, 160, 0)` em plataforma 15x15; Câmara de Cofre Blindada isolada em `(50, 160, -45)`; Portal Subespacial em `(80, 160, -45)`; Base Espacial Orbital com canhão de massa em `(80, 160, 25)`.
+    * **Avenida Norte (Defesa, Balística, Rapel & Ciborgues)**: Perímetro de Defesa e Balística com railgun em `(-45, 160, -50)`; Estação de Rapel e Abismo de 128 blocos ampliada para plataforma 15x15 em `(45, 160, -50)`; Complexo de Ciborgues e Doca de Drones movidos para o extremo norte em `z = -80..-115`.
+    * **Avenida Sul (Galeria de Tecnologias, Domo & Biosferas)**: Tabuleiro de blocos do mod com espaçamento aumentado para 5 blocos (`spacing = 5`), corredores de circulação amplos e desimpedidos que desembocam no Domo de Megaestruturas e nas 7 Biosferas Planetárias Gigantes.
+* **Isolamento Total do Sistema de Teleporte ("Afastar Tapetes")**:
+  * **Terminal de Trânsito Rápido Noroeste**: todas as 16 placas de teleporte do showcase (8 setores cardeais/instalações de superfície e 6 megadungeons subterrâneas) foram reunidas em um pavilhão elevado de transporte rápido em `x = -15..-33, z = -14..-29`.
+  * **Eliminação de Minas de Teleporte**: removidas todas as placas de pressão do piso que interceptavam o fluxo de caminhada e exploração do jogador pela praça central e corredores.
+  * **Sensibilidade de Gatilho Aperfeiçoada**: raio horizontal de ativação reduzido para `<= 0.35` blocos (`distX`, `distZ`), exigindo pisada deliberada sobre o pedestal para evitar qualquer ativação acidental durante a caminhada.
+* **Fim do Flickering e Limpeza Visual na Galeria de Blocos**:
+  * **Renderização Opaque-Solid do Caixote de Arenito (`SandstoneCrateBlockEntityRenderer`)**: migrado o render type de `RenderTypes.entityCutoutCull` para `RenderTypes.entitySolid(TEXTURE)`, garantindo escrita estrita no buffer de profundidade (*depth buffer*) e teste Z opaco correto contra vidros e blocos translúcidos adjacentes.
+  * **Remoção de Placas de Carvalho Conflitantes**: eliminadas placas de sinalização de carvalho na parede que causavam *z-fighting* e *clipping* através de modelos de blocos; toda identificação passa a ser realizada exclusivamente por hologramas tridimensionais nítidos.
+
 ## [1.19.35] - 2026-10-29
 
 ### 🧗 Refinamento do Sistema de Rapel, Modelo 3D da Turbina do Capturador & Correção de Z-Fighting no Caixote

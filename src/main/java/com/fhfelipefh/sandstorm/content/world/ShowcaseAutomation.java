@@ -111,15 +111,11 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
-import net.minecraft.world.level.block.entity.SignText;
-import net.minecraft.world.level.block.entity.SignTextSlot;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.gamerules.GameRules;
@@ -243,14 +239,14 @@ public class ShowcaseAutomation {
             if (tick % 30 == 0 && ACTIVE_DRONES.isEmpty()) {
                 ServerLevel overworld = server.overworld();
                 if (overworld != null) {
-                    AABB colonyBox = new AABB(-30.0, 158.0, -75.0, 30.0, 172.0, -35.0);
+                    AABB colonyBox = new AABB(-30.0, 158.0, -120.0, 30.0, 172.0, -78.0);
                     List<CargoDroneEntity> existing = overworld.getEntitiesOfClass(CargoDroneEntity.class, colonyBox);
                     if (!existing.isEmpty()) {
                         for (int i = 0; i < existing.size(); i++) {
                             CargoDroneEntity d = existing.get(i);
                             List<BlockPos> wps = (i % 2 == 0)
-                                    ? List.of(new BlockPos(10, 163, -45), new BlockPos(0, 164, -58), new BlockPos(0, 163, -64), new BlockPos(0, 164, -46))
-                                    : List.of(new BlockPos(-10, 163, -45), new BlockPos(0, 164, -52), new BlockPos(10, 163, -45), new BlockPos(0, 163, -64));
+                                    ? List.of(new BlockPos(10, 163, -92), new BlockPos(0, 164, -104), new BlockPos(0, 163, -110), new BlockPos(0, 164, -88))
+                                    : List.of(new BlockPos(-10, 163, -92), new BlockPos(0, 164, -98), new BlockPos(10, 163, -92), new BlockPos(0, 163, -110));
                             ACTIVE_DRONES.add(new ShowcasePatrolDrone(d, wps, new int[]{0}));
                         }
                     }
@@ -321,7 +317,7 @@ public class ShowcaseAutomation {
                         double distX = Math.abs(player.getX() - (pad.triggerPos().getX() + 0.5));
                         double distZ = Math.abs(player.getZ() - (pad.triggerPos().getZ() + 0.5));
                         double distY = Math.abs(player.getY() - pad.triggerPos().getY());
-                        if (distX <= 1.0 && distZ <= 1.0 && distY <= 1.5) {
+                        if (distX <= 0.35 && distZ <= 0.35 && distY <= 0.8) {
                             TELEPORT_COOLDOWNS.put(player.getUUID(), tick);
                             BlockPos dest = pad.destination();
                             player.teleportTo(level, dest.getX() + 0.5, dest.getY() + 0.1, dest.getZ() + 0.5, Set.of(), player.getYRot(), player.getXRot(), true);
@@ -622,9 +618,16 @@ public class ShowcaseAutomation {
     public static int executeComputerCommand(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
         if (source.getEntity() instanceof ServerPlayer player) {
-            BlockPos targetPos = BlockPos.containing(player.position());
-            buildQuantumComputerStation(source.getLevel(), targetPos);
-            source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Computador Quântico completo e energizado montado com sucesso!"), true);
+            ServerLevel level = source.getLevel();
+            if (showcaseActive) {
+                BlockPos targetPos = new BlockPos(50, 161, 0);
+                player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), -90.0f, 0.0f, true);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Computador Quântico!"), true);
+            } else {
+                BlockPos targetPos = BlockPos.containing(player.position());
+                buildQuantumComputerStation(source.getLevel(), targetPos);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Computador Quântico completo e energizado montado com sucesso!"), true);
+            }
             return 1;
         }
         source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
@@ -648,8 +651,8 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(32, 160, -16);
-                player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 8.0, Set.of(), 180.0f, 0.0f, true);
+                BlockPos targetPos = new BlockPos(50, 161, -40);
+                player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY() + 1.0, targetPos.getZ() + 5.0, Set.of(), 180.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para a Vitrine de Cofres Blindados!"), true);
             } else {
                 BlockPos targetPos = BlockPos.containing(player.position()).relative(player.getDirection(), 4);
@@ -680,7 +683,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(36, 161, -30);
+                BlockPos targetPos = new BlockPos(80, 161, -45);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 0.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para a Estação do Portal do Subespaço!"), true);
             } else {
@@ -699,7 +702,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(-36, 161, -14);
+                BlockPos targetPos = new BlockPos(45, 161, -48);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Abismo e Torre de Rapel (128 Blocos)!"), true);
             } else {
@@ -718,7 +721,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(-36, 161, -34);
+                BlockPos targetPos = new BlockPos(-45, 161, -48);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Perímetro de Defesa & Balística!"), true);
             } else {
@@ -737,7 +740,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(52, 161, -14);
+                BlockPos targetPos = new BlockPos(80, 161, 25);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para a Estação de Lançamento Orbital!"), true);
             } else {
@@ -756,7 +759,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(-18, 161, 0);
+                BlockPos targetPos = new BlockPos(-50, 161, 0);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 90.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Complexo de Carbono & Indução Térmica!"), true);
             } else {
@@ -786,25 +789,26 @@ public class ShowcaseAutomation {
 
         clearUnderneath(level, center, maxZ);
         buildCentralPlaza(level, center);
+        buildTransitTerminal(level, center);
         buildBlockCheckerboard(level, center);
         buildItemWing(level, center);
         buildEntityWing(level, center);
         buildMegastructureDomeShowcase(level, center);
         buildMaglevTestTrack(level, center);
         buildAutonomousCyborgFacility(level, center, player);
-        buildQuantumComputerStation(level, center.offset(18, 0, 0));
+        buildQuantumComputerStation(level, center.offset(50, 0, 0));
         buildQuantumComputerWalkway(level, center);
-        buildCarbonAndInductionStation(level, center.offset(-18, 0, 0));
+        buildCarbonAndInductionStation(level, center.offset(-50, 0, 0));
         buildCarbonAndInductionWalkway(level, center);
-        buildVaultShowcase(level, center.offset(32, 0, -16));
+        buildVaultShowcase(level, center.offset(50, 0, -45));
         buildVaultWalkway(level, center);
-        buildSubspaceGatewayStation(level, center.offset(36, 0, -32));
+        buildSubspaceGatewayStation(level, center.offset(80, 0, -45));
         buildSubspaceGatewayWalkway(level, center);
-        buildRappelTestTowerAndChasm(level, center.offset(-36, 0, -16));
+        buildRappelTestTowerAndChasm(level, center.offset(45, 0, -50));
         buildRappelWalkway(level, center);
-        buildDefenseAndBallisticsRange(level, center.offset(-36, 0, -36));
+        buildDefenseAndBallisticsRange(level, center.offset(-45, 0, -50));
         buildDefenseWalkway(level, center);
-        buildOrbitalLaunchStation(level, center.offset(52, 0, -16));
+        buildOrbitalLaunchStation(level, center.offset(80, 0, 25));
         buildOrbitalWalkway(level, center);
         buildBiospheresShowcase(level, center);
         buildUndergroundDungeonNetwork(level, center);
@@ -813,7 +817,7 @@ public class ShowcaseAutomation {
         player.getAbilities().mayfly = true;
         player.getAbilities().flying = true;
         player.onUpdateAbilities();
-        player.teleportTo(level, 0.5, 162.0, 0.5, Set.of(), 0.0f, 0.0f, true);
+        player.teleportTo(level, 0.5, 161.0, 0.5, Set.of(), 0.0f, 0.0f, true);
 
         level.getServer().getGameRules().set(GameRules.ADVANCE_WEATHER, false, level.getServer());
         level.getServer().getGameRules().set(GameRules.ADVANCE_TIME, false, level.getServer());
@@ -854,8 +858,8 @@ public class ShowcaseAutomation {
     }
 
     private static void clearUnderneath(ServerLevel level, BlockPos center, int maxZ) {
-        for (int x = -100; x <= 100; x++) {
-            for (int z = -110; z <= maxZ; z++) {
+        for (int x = -120; x <= 120; x++) {
+            for (int z = -120; z <= maxZ; z++) {
                 for (int y = -64; y < center.getY(); y++) {
                     BlockPos p = new BlockPos(x, y, z);
                     if (!level.getBlockState(p).isAir()) {
@@ -867,17 +871,24 @@ public class ShowcaseAutomation {
     }
 
     private static void buildCentralPlaza(ServerLevel level, BlockPos center) {
-        for (int x = -4; x <= 4; x++) {
-            for (int z = -4; z <= 4; z++) {
+        for (int x = -10; x <= 10; x++) {
+            for (int z = -10; z <= 10; z++) {
                 BlockPos pos = center.offset(x, 0, z);
-                boolean edge = Math.abs(x) == 4 || Math.abs(z) == 4;
-                boolean corner = Math.abs(x) == 4 && Math.abs(z) == 4;
-                Block floorBlock = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_SANDSTONE);
+                boolean edge = Math.abs(x) == 10 || Math.abs(z) == 10;
+                boolean corner = Math.abs(x) == 10 && Math.abs(z) == 10;
+                boolean innerAccent = (Math.abs(x) == 5 && Math.abs(z) == 5);
+                Block floorBlock = corner ? Blocks.OCHRE_FROGLIGHT : (innerAccent ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_SANDSTONE));
                 level.setBlock(pos, floorBlock.defaultBlockState(), 3);
             }
         }
 
-        BlockPos chestPos = center.above();
+        BlockPos centerMonument = center.offset(0, 1, 0);
+        level.setBlock(centerMonument, Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+        spawnHologram(level, center.getX() + 0.5, center.getY() + 3.2, center.getZ() + 0.5, "§6§l✦ COMPLEXO CENTRAL SANDSTORM ✦");
+        spawnHologram(level, center.getX() + 0.5, center.getY() + 2.85, center.getZ() + 0.5, "§bExplore as 4 Grandes Avenidas ou o Terminal Noroeste");
+
+        BlockPos chestPos = center.offset(0, 1, 3);
+        level.setBlock(chestPos.below(), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
         setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.SURVIVAL_DATAPAD));
@@ -908,8 +919,10 @@ public class ShowcaseAutomation {
             chest.setItem(25, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_64K, 2));
             chest.setItem(26, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL, 2));
         }
+        spawnHologram(level, center.getX() + 0.5, center.getY() + 2.5, center.getZ() + 3.5, "§6[Baú de Sobrevivência & Órbita]");
 
-        BlockPos chestPos2 = center.offset(0, 1, -1);
+        BlockPos chestPos2 = center.offset(0, 1, -3);
+        level.setBlock(chestPos2.below(), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
         setChestSafe(level, chestPos2, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(chestPos2) instanceof ChestBlockEntity chest2) {
             chest2.setItem(0, new ItemStack(SandStormItems.RAPPEL_WINCH));
@@ -940,8 +953,10 @@ public class ShowcaseAutomation {
             chest2.setItem(25, new ItemStack(SandStormItems.SUBDERMAL_TREMOR_SENSOR));
             chest2.setItem(26, new ItemStack(SandStormItems.GEOLOGICAL_SURVEYOR_DRONE));
         }
+        spawnHologram(level, center.getX() + 0.5, center.getY() + 2.5, center.getZ() - 2.5, "§b[Baú de Rapel, Dobra & Defesa]");
 
-        BlockPos chestPos3 = center.offset(0, 1, 1);
+        BlockPos chestPos3 = center.offset(-3, 1, 0);
+        level.setBlock(chestPos3.below(), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
         setChestSafe(level, chestPos3, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(chestPos3) instanceof ChestBlockEntity chest3) {
             chest3.setItem(0, new ItemStack(SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR, 4));
@@ -961,60 +976,120 @@ public class ShowcaseAutomation {
             chest3.setItem(14, new ItemStack(Items.NETHERRACK, 16));
             chest3.setItem(15, new ItemStack(Items.FLINT_AND_STEEL, 1));
         }
+        spawnHologram(level, center.getX() - 2.5, center.getY() + 2.5, center.getZ() + 0.5, "§a[Baú de Indução, Carbono & Logística]");
 
-        AABB clearBox = new AABB(center).inflate(8.0);
+        spawnHologram(level, center.getX() + 0.5, center.getY() + 3.0, center.getZ() - 10.0, "§6§l▲ AVENIDA NORTE: Defesa, Balística, Rapel & Ciborgues ▲");
+        spawnHologram(level, center.getX() + 10.0, center.getY() + 3.0, center.getZ() + 0.5, "§b§l▶ AVENIDA LESTE: Computador Quântico, Cofre, Portal & Órbita ▶");
+        spawnHologram(level, center.getX() - 10.0, center.getY() + 3.0, center.getZ() + 0.5, "§a§l◀ AVENIDA OESTE: Indústria de Carbono, Forjas & Maglev ◀");
+        spawnHologram(level, center.getX() + 0.5, center.getY() + 3.0, center.getZ() + 10.0, "§e§l▼ AVENIDA SUL: Galeria de Tecnologias, Domo & Biosferas ▼");
+
+        AABB clearBox = new AABB(center).inflate(14.0);
         List<ArmorStand> existingStands = level.getEntitiesOfClass(ArmorStand.class, clearBox);
         for (ArmorStand stand : existingStands) {
             stand.discard();
         }
 
-        spawnHologram(level, center.getX() + 0.5, center.getY() + 2.4, center.getZ() + 0.5, "§6[Baú de Sobrevivência & Órbita]");
-        spawnHologram(level, center.getX() + 0.5, center.getY() + 2.4, center.getZ() - 0.5, "§b[Baú de Rapel, Dobra & Defesa]");
-        spawnHologram(level, center.getX() + 0.5, center.getY() + 2.4, center.getZ() + 1.5, "§a[Baú de Indução, Carbono & Logística]");
-
-        setupTerminalTrigger(level, center.offset(-8, 0, 3), new BlockPos(-18, 161, 0), "Complexo de Carbono & Indução Térmica", "Capturador CO2 | Fornalha a Arco | Síntese CVD");
-
-        spawnMannequin(level, center.offset(-2, 1, 0), "§bTraje Espacial Completo",
+        spawnMannequin(level, center.offset(-6, 1, -6), "§bTraje Espacial Completo",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
                 new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS), new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
                 new ItemStack(SandStormItems.VIBRO_CRYSKNIFE), new ItemStack(SandStormItems.SURVIVAL_DATAPAD));
 
-        spawnMannequin(level, center.offset(2, 1, 0), "§dArsenal de Plasma & Som",
+        spawnMannequin(level, center.offset(6, 1, -6), "§dArsenal de Plasma & Som",
                 ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY,
                 new ItemStack(SandStormItems.PLASMA_RIFLE), new ItemStack(SandStormItems.SONIC_CANNON));
 
-        spawnMannequin(level, center.offset(0, 1, -2), "§6Canhão Pesado & Radar",
+        spawnMannequin(level, center.offset(-6, 1, 6), "§6Canhão Pesado & Radar",
                 ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY,
                 new ItemStack(SandStormItems.HEAVY_PLASMA_CANNON), new ItemStack(SandStormItems.ANOMALY_RADAR));
 
-        spawnMannequin(level, center.offset(0, 1, 2), "§aKit de Voo & Propulsão",
+        spawnMannequin(level, center.offset(6, 1, 6), "§aKit de Voo & Propulsão",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(Items.ELYTRA),
                 ItemStack.EMPTY, ItemStack.EMPTY,
                 new ItemStack(SandStormItems.SUIT_UPGRADE_JETPACK), new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE));
 
-        spawnMannequin(level, center.offset(-2, 1, -2), "§eExplorador de Abismos",
+        spawnMannequin(level, center.offset(-7, 1, -4), "§eExplorador de Abismos",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
                 new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS), new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
                 new ItemStack(SandStormItems.RAPPEL_WINCH), new ItemStack(SandStormItems.GLOWING_RAPPEL_WINCH));
 
-        spawnMannequin(level, center.offset(2, 1, -2), "§3Especialista Dimensional",
+        spawnMannequin(level, center.offset(7, 1, -4), "§3Especialista Dimensional",
                 ItemStack.EMPTY, new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
                 ItemStack.EMPTY, ItemStack.EMPTY,
                 new ItemStack(SandStormItems.SUBSPACE_WARP_CORE), new ItemStack(SandStormItems.VIBRO_CRYSKNIFE));
 
-        spawnMannequin(level, center.offset(-2, 1, 2), "§cArtilheiro Balístico",
+        spawnMannequin(level, center.offset(-7, 1, 4), "§cArtilheiro Balístico",
                 ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY,
                 new ItemStack(SandStormBlocks.KINETIC_RAILGUN), new ItemStack(SandStormItems.KINETIC_SLUG));
 
-        spawnMannequin(level, center.offset(2, 1, 2), "§9Engenheiro Orbital",
+        spawnMannequin(level, center.offset(7, 1, 4), "§9Engenheiro Orbital",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), ItemStack.EMPTY,
                 ItemStack.EMPTY, ItemStack.EMPTY,
                 new ItemStack(SandStormItems.ORBITAL_KINETIC_LANCE_SATELLITE), new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE));
 
-        spawnMannequin(level, center.offset(-4, 1, -1), "§4Especialista em Armadilhas",
+        spawnMannequin(level, center.offset(-4, 1, -8), "§4Especialista em Armadilhas",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
                 ItemStack.EMPTY, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
                 new ItemStack(SandStormItems.STUN_GRENADE), new ItemStack(SandStormItems.SMOKE_GRENADE));
+    }
+
+    private static void buildTransitTerminal(ServerLevel level, BlockPos center) {
+        int baseY = center.getY();
+        for (int x = -10; x >= -14; x--) {
+            for (int z = -8; z >= -10; z--) {
+                BlockPos p = center.offset(x, 0, z);
+                level.setBlock(p, Blocks.CUT_SANDSTONE.defaultBlockState(), 2);
+            }
+        }
+
+        for (int x = -15; x >= -33; x--) {
+            for (int z = -14; z >= -29; z--) {
+                for (int dy = 1; dy <= 5; dy++) {
+                    BlockPos p = center.offset(x, dy, z);
+                    if (!level.getBlockState(p).isAir()) {
+                        setAirSafe(level, p);
+                    }
+                }
+                BlockPos p = center.offset(x, 0, z);
+                boolean edge = (x == -15 || x == -33 || z == -14 || z == -29);
+                boolean corner = (x == -15 || x == -33) && (z == -14 || z == -29);
+                Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+                if (edge && !corner && !(x >= -18 && x <= -15 && z == -14)) {
+                    level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                }
+            }
+        }
+
+        spawnHologram(level, center.getX() - 24.0, baseY + 4.2, center.getZ() - 14.5, "§d§l[TERMINAL DE TRÂNSITO RÁPIDO & TELEPORTE]");
+        spawnHologram(level, center.getX() - 24.0, baseY + 3.85, center.getZ() - 14.5, "§7Pise no pedestal correspondente para viagem instantânea");
+
+        setupPedestal(level, center.offset(-18, 0, -17), center.offset(-50, 1, 0), "Setor Oeste: Carbono & Forjas", "CO2 | Síntese CVD | Arco Elétrico");
+        setupPedestal(level, center.offset(-22, 0, -17), center.offset(-75, 1, 0), "Setor Oeste: Circuito Maglev", "Trilhos Magnéticos de Alta Velocidade");
+        setupPedestal(level, center.offset(-26, 0, -17), center.offset(50, 1, 0), "Setor Leste: Computador Quântico", "Rede Quântica & Discos de Armazenamento");
+        setupPedestal(level, center.offset(-30, 0, -17), center.offset(50, 1, -40), "Setor Leste: Câmara de Cofre", "Porta Mecânica 3x3 Multi-Bloco");
+
+        setupPedestal(level, center.offset(-18, 0, -20), center.offset(80, 1, -45), "Setor Leste: Portal Subespacial", "Viagem Dimensional Subespacial");
+        setupPedestal(level, center.offset(-22, 0, -20), center.offset(80, 1, 25), "Setor Leste: Base Espacial Orbital", "Canhão de Massa 500 kJ & Satélites");
+        setupPedestal(level, center.offset(-26, 0, -20), center.offset(-45, 1, -48), "Setor Norte: Defesa & Balística", "Railgun 250 kJ | Torretas & Escudos");
+        setupPedestal(level, center.offset(-30, 0, -20), center.offset(45, 1, -48), "Setor Norte: Abismo & Rapel (128m)", "Guincho de Rapel & Salto Vertical");
+
+        setupPedestal(level, center.offset(-18, 0, -23), center.offset(0, 1, -85), "Setor Norte: Complexo de Ciborgues", "Androides, Mineração & Doca de Drones");
+        setupPedestal(level, center.offset(-22, 0, -23), center.offset(0, 1, getBiosphereFrontZ()), "Setor Sul: Complexo de Biosferas", "7 Biosferas Planetárias Gigantes");
+        setupPedestal(level, center.offset(-26, 0, -23), center.offset(-68 + 4 * 7 + 3, -39, 12 + 3), "Dungeon: Megadungeon Oeste", "6 Andares | Grade 8x8 | 384 Salas");
+        setupPedestal(level, center.offset(-30, 0, -23), center.offset(14 + 4 * 7 + 3, -39, 12 + 3), "Dungeon: Bunker Leste", "1 Andar Colossal | Grade 8x8 | 64 Salas");
+
+        setupPedestal(level, center.offset(-18, 0, -26), center.offset(-24 + 3 * 7 + 3, -44, -70 + 3), "Dungeon: Depósito Geológico Sul", "4 Andares | Grade 7x7 | 196 Salas");
+        setupPedestal(level, center.offset(-22, 0, -26), center.offset(-24 + 3 * 7 + 3, -44, 84 + 3), "Dungeon: Lab Militar Norte", "4 Andares | Black Site | 196 Salas");
+        setupPedestal(level, center.offset(-26, 0, -26), center.offset(-96 + 2 * 7 + 3, -44, -70 + 3), "Dungeon: Mineração Infestada", "3 Andares | Mega-Broca | Sandworms");
+        setupPedestal(level, center.offset(-30, 0, -26), center.offset(48 + 2 * 7 + 3, -44, -70 + 3), "Dungeon: Cofre Criogênico", "3 Andares | Câmaras Criogênicas Sub-Zero");
+    }
+
+    private static void setupPedestal(ServerLevel level, BlockPos floorPos, BlockPos destination, String title, String subtitle) {
+        level.setBlock(floorPos, Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(floorPos.above(), Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.defaultBlockState(), 3);
+        spawnHologram(level, floorPos.getX() + 0.5, floorPos.getY() + 2.2, floorPos.getZ() + 0.5, "§6§l" + title);
+        spawnHologram(level, floorPos.getX() + 0.5, floorPos.getY() + 1.85, floorPos.getZ() + 0.5, "§7" + subtitle);
+        TELEPORT_PADS.add(new ShowcaseTeleportPad(floorPos.above(), destination, title));
     }
 
     private static void buildBlockCheckerboard(ServerLevel level, BlockPos center) {
@@ -1025,7 +1100,7 @@ public class ShowcaseAutomation {
                 .toList();
 
         int cols = 8;
-        int spacing = 4;
+        int spacing = 5;
         int startZ = 8;
         int totalRows = (blocks.size() + cols - 1) / cols;
 
@@ -1146,7 +1221,6 @@ public class ShowcaseAutomation {
             }
 
             spawnBlockHologram(level, targetPos, targetBlock);
-            placeIdentificationSign(level, pedestalCenter.offset(0, 0, -2), targetBlock);
         }
 
         int maxBlockZ = startZ + (totalRows * spacing) + 4;
@@ -1181,25 +1255,6 @@ public class ShowcaseAutomation {
 
     private static int getCheckerboardX(int col) {
         return (col < 4) ? (-18 + col * 4) : (6 + (col - 4) * 4);
-    }
-
-    private static void placeIdentificationSign(ServerLevel level, BlockPos signPos, Block block) {
-        level.setBlock(signPos, Blocks.OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, Direction.NORTH), 3);
-        if (level.getBlockEntity(signPos) instanceof SignBlockEntity signBe) {
-            String name = block.getName().getString();
-            String role = getBlockExplanation(block);
-            String l0 = name.length() > 15 ? name.substring(0, 15) : name;
-            String l1 = role.length() > 15 ? role.substring(0, 15) : role;
-            String l2 = role.length() > 15 ? (role.length() > 30 ? role.substring(15, 30) : role.substring(15)) : "";
-            SignText text = signBe.getText(SignTextSlot.FRONT).asMutable()
-                    .setLine(0, Component.literal("§6§l" + l0))
-                    .setLine(1, Component.literal("§f" + l1))
-                    .setLine(2, Component.literal("§7" + l2))
-                    .setLine(3, Component.literal("§b[SandStorm]"))
-                    .asImmutable();
-            signBe.setText(text, SignTextSlot.FRONT);
-            signBe.setChanged();
-        }
     }
 
     private static void spawnBlockHologram(ServerLevel level, BlockPos blockPos, Block block) {
@@ -1309,18 +1364,18 @@ public class ShowcaseAutomation {
     private static void buildMaglevTestTrack(ServerLevel level, BlockPos center) {
         int baseY = center.getY();
 
-        for (int x = -5; x >= -38; x--) {
-            for (int z = 9; z <= 11; z++) {
-                BlockPos bp = new BlockPos(x, baseY, z);
-                Block b = (z != 10) ? Blocks.CUT_SANDSTONE : (Math.abs(x) % 6 == 0 ? Blocks.SEA_LANTERN : Blocks.SMOOTH_SANDSTONE);
+        for (int x = -63; x >= -75; x--) {
+            for (int z = -2; z <= 2; z++) {
+                BlockPos bp = center.offset(x, 0, z);
+                Block b = (Math.abs(z) == 2) ? Blocks.CUT_SANDSTONE : (Math.abs(x) % 4 == 0 ? Blocks.SEA_LANTERN : Blocks.SMOOTH_STONE);
                 level.setBlock(bp, b.defaultBlockState(), 2);
             }
         }
 
-        int xMin = -58;
-        int xMax = -38;
-        int zMin = -2;
-        int zMax = 22;
+        int xMin = -105;
+        int xMax = -75;
+        int zMin = -15;
+        int zMax = 15;
 
         for (int x = xMin - 1; x <= xMax + 1; x++) {
             for (int z = zMin - 1; z <= zMax + 1; z++) {
@@ -1356,7 +1411,7 @@ public class ShowcaseAutomation {
         level.setBlock(cSW, SandStormBlocks.SAND_MAGLEV_RAIL.defaultBlockState().setValue(SandMaglevRailBlock.SHAPE, RailShape.NORTH_EAST), 3);
         level.setBlock(cSE, SandStormBlocks.SAND_MAGLEV_RAIL.defaultBlockState().setValue(SandMaglevRailBlock.SHAPE, RailShape.NORTH_WEST), 3);
 
-        BlockPos chestPos = new BlockPos(xMax + 1, baseY + 1, 10);
+        BlockPos chestPos = new BlockPos(xMax + 1, baseY + 1, 0);
         setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.SANDBOARD, 1));
@@ -1373,7 +1428,7 @@ public class ShowcaseAutomation {
             level.addFreshEntity(cart);
         }
 
-        BlockPos trackHolo = new BlockPos((xMin + xMax) / 2, baseY + 1, 10);
+        BlockPos trackHolo = new BlockPos((xMin + xMax) / 2, baseY + 1, 0);
         spawnHologram(level, trackHolo.getX() + 0.5, baseY + 3.0, trackHolo.getZ() + 0.5, "§b[Circuito de Testes: Trilhos Maglev]");
         spawnHologram(level, trackHolo.getX() + 0.5, baseY + 2.7, trackHolo.getZ() + 0.5, "§7Curvas dinâmicas e propulsão magnética de 1.8x");
     }
@@ -1381,18 +1436,20 @@ public class ShowcaseAutomation {
     private static void buildAutonomousCyborgFacility(ServerLevel level, BlockPos center, ServerPlayer player) {
         int baseY = center.getY();
 
-        for (int z = -25; z >= -36; z--) {
-            for (int x = -1; x <= 1; x++) {
-                BlockPos bp = new BlockPos(x, baseY, z);
-                Block b = (x != 0) ? Blocks.CUT_SANDSTONE : (Math.abs(z) % 4 == 0 ? Blocks.SEA_LANTERN : Blocks.SMOOTH_SANDSTONE);
+        for (int z = -11; z >= -80; z--) {
+            for (int x = -2; x <= 2; x++) {
+                BlockPos bp = center.offset(x, 0, z);
+                boolean edge = Math.abs(x) == 2;
+                boolean light = (Math.abs(z) % 4 == 0 && x == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(bp, b.defaultBlockState(), 2);
             }
         }
 
         int xMin = -20;
         int xMax = 20;
-        int zMin = -72;
-        int zMax = -36;
+        int zMin = -115;
+        int zMax = -80;
 
         for (int x = xMin; x <= xMax; x++) {
             for (int z = zMin; z <= zMax; z++) {
@@ -1409,11 +1466,11 @@ public class ShowcaseAutomation {
             }
         }
 
-        BlockPos entranceHolo = new BlockPos(0, baseY + 1, -38);
+        BlockPos entranceHolo = new BlockPos(0, baseY + 1, -82);
         spawnHologram(level, entranceHolo.getX() + 0.5, entranceHolo.getY() + 1.2, entranceHolo.getZ() + 0.5, "§6[Complexo Industrial de Ciborgues]");
         spawnHologram(level, entranceHolo.getX() + 0.5, entranceHolo.getY() + 0.9, entranceHolo.getZ() + 0.5, "§bDemonstração de Operações Autônomas");
 
-        BlockPos quarryCenter = new BlockPos(-10, baseY, -52);
+        BlockPos quarryCenter = new BlockPos(-10, baseY, -92);
         for (int dx = -4; dx <= 4; dx++) {
             for (int dz = -4; dz <= 4; dz++) {
                 BlockPos p = quarryCenter.offset(dx, 0, dz);
@@ -1448,7 +1505,7 @@ public class ShowcaseAutomation {
         spawnHologram(level, quarryCenter.getX() + 0.5, baseY + 3.2, quarryCenter.getZ() + 0.5, "§6[Zona 1: Mineração em Loop]");
         spawnHologram(level, quarryCenter.getX() + 0.5, baseY + 2.9, quarryCenter.getZ() + 0.5, "§7Extração e regeneração contínua de minerais");
 
-        BlockPos farmCenter = new BlockPos(10, baseY, -52);
+        BlockPos farmCenter = new BlockPos(10, baseY, -92);
         FARM_CROP_POSITIONS.clear();
         for (int dx = -4; dx <= 4; dx++) {
             for (int dz = -4; dz <= 4; dz++) {
@@ -1517,7 +1574,7 @@ public class ShowcaseAutomation {
         spawnHologram(level, farmCenter.getX() + 0.5, baseY + 3.2, farmCenter.getZ() + 0.5, "§a[Zona 2: Agricultura Autônoma]");
         spawnHologram(level, farmCenter.getX() + 0.5, baseY + 2.9, farmCenter.getZ() + 0.5, "§7Colheita contínua e replantio em tempo real");
 
-        BlockPos builderCenter = new BlockPos(0, baseY, -64);
+        BlockPos builderCenter = new BlockPos(0, baseY, -104);
         for (int dx = -4; dx <= 4; dx++) {
             for (int dz = -3; dz <= 3; dz++) {
                 BlockPos p = builderCenter.offset(dx, 0, dz);
@@ -1560,9 +1617,9 @@ public class ShowcaseAutomation {
         level.addFreshEntity(droneLogistics1);
         List<BlockPos> waypoints1 = List.of(
                 farmCenter.offset(0, 3, 0),
-                new BlockPos(0, baseY + 4, -58),
+                new BlockPos(0, baseY + 4, -98),
                 builderCenter.offset(0, 3, 0),
-                new BlockPos(0, baseY + 4, -46)
+                new BlockPos(0, baseY + 4, -86)
         );
         ACTIVE_DRONES.add(new ShowcasePatrolDrone(droneLogistics1, waypoints1, new int[]{0}));
 
@@ -1577,7 +1634,7 @@ public class ShowcaseAutomation {
         level.addFreshEntity(droneLogistics2);
         List<BlockPos> waypoints2 = List.of(
                 quarryCenter.offset(0, 3, 0),
-                new BlockPos(0, baseY + 4, -52),
+                new BlockPos(0, baseY + 4, -92),
                 farmCenter.offset(0, 3, 0),
                 builderCenter.offset(0, 3, 0)
         );
@@ -1970,9 +2027,9 @@ public class ShowcaseAutomation {
     public static void buildQuantumComputerStation(ServerLevel level, BlockPos stationCenter) {
         int baseY = stationCenter.getY();
 
-        for (int dx = -3; dx <= 3; dx++) {
-            for (int dz = -3; dz <= 3; dz++) {
-                for (int dy = 1; dy <= 5; dy++) {
+        for (int dx = -7; dx <= 7; dx++) {
+            for (int dz = -7; dz <= 7; dz++) {
+                for (int dy = 1; dy <= 6; dy++) {
                     BlockPos p = stationCenter.offset(dx, dy, dz);
                     if (!level.getBlockState(p).isAir()) {
                         setAirSafe(level, p);
@@ -1981,14 +2038,14 @@ public class ShowcaseAutomation {
             }
         }
 
-        for (int dx = -3; dx <= 3; dx++) {
-            for (int dz = -3; dz <= 3; dz++) {
+        for (int dx = -7; dx <= 7; dx++) {
+            for (int dz = -7; dz <= 7; dz++) {
                 BlockPos p = stationCenter.offset(dx, 0, dz);
-                boolean edge = Math.abs(dx) == 3 || Math.abs(dz) == 3;
-                boolean corner = Math.abs(dx) == 3 && Math.abs(dz) == 3;
+                boolean edge = Math.abs(dx) == 7 || Math.abs(dz) == 7;
+                boolean corner = Math.abs(dx) == 7 && Math.abs(dz) == 7;
                 Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 3);
-                if (edge && !corner) {
+                if (edge && !corner && !(dx == -7 && Math.abs(dz) <= 2)) {
                     level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
                 }
             }
@@ -2005,8 +2062,8 @@ public class ShowcaseAutomation {
         level.setBlock(cable2, SandStormBlocks.QUANTUM_NETWORK_CABLE.defaultBlockState(), 3);
         level.setBlock(cable3, SandStormBlocks.QUANTUM_NETWORK_CABLE.defaultBlockState(), 3);
 
-        BlockPos accumulatorPos = stationCenter.offset(-2, 1, 0);
-        BlockPos solarPos = stationCenter.offset(-2, 1, -1);
+        BlockPos accumulatorPos = stationCenter.offset(-3, 1, 0);
+        BlockPos solarPos = stationCenter.offset(-3, 1, -1);
         level.setBlock(accumulatorPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
         level.setBlock(solarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
         if (level.getBlockEntity(accumulatorPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
@@ -2091,7 +2148,7 @@ public class ShowcaseAutomation {
 
         level.setBlock(terminalPos, SandStormBlocks.QUANTUM_ACCESS_TERMINAL.defaultBlockState().setValue(QuantumAccessTerminalBlock.FACING, Direction.SOUTH), 3);
 
-        BlockPos chestPos = stationCenter.offset(2, 1, 0);
+        BlockPos chestPos = stationCenter.offset(3, 1, 0);
         setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_1K, 4));
@@ -2108,14 +2165,16 @@ public class ShowcaseAutomation {
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.2, stationCenter.getZ() + 0.5, "§b§l[Computador Quântico SandStorm]");
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.85, stationCenter.getZ() + 0.5, "§aOnline | 100.000 J | Rede WPT Ativa");
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.5, stationCenter.getZ() + 0.5, "§e8/8 Discos Carregados | Clique no Terminal!");
+
+        setupReturnPad(level, stationCenter.offset(-6, 1, -4));
     }
 
     private static void buildQuantumComputerWalkway(ServerLevel level, BlockPos center) {
-        for (int x = 5; x <= 14; x++) {
-            for (int z = -1; z <= 1; z++) {
+        for (int x = 11; x <= 42; x++) {
+            for (int z = -2; z <= 2; z++) {
                 BlockPos p = center.offset(x, 0, z);
-                boolean edge = (z != 0);
-                boolean light = (x % 3 == 0 && z == 0);
+                boolean edge = Math.abs(z) == 2;
+                boolean light = (x % 4 == 0 && z == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
@@ -2125,9 +2184,9 @@ public class ShowcaseAutomation {
     public static void buildCarbonAndInductionStation(ServerLevel level, BlockPos stationCenter) {
         int baseY = stationCenter.getY();
 
-        for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -4; dz <= 4; dz++) {
-                for (int dy = 1; dy <= 5; dy++) {
+        for (int dx = -12; dx <= 12; dx++) {
+            for (int dz = -12; dz <= 12; dz++) {
+                for (int dy = 1; dy <= 7; dy++) {
                     BlockPos p = stationCenter.offset(dx, dy, dz);
                     if (!level.getBlockState(p).isAir()) {
                         setAirSafe(level, p);
@@ -2136,20 +2195,21 @@ public class ShowcaseAutomation {
             }
         }
 
-        for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -4; dz <= 4; dz++) {
+        for (int dx = -12; dx <= 12; dx++) {
+            for (int dz = -12; dz <= 12; dz++) {
                 BlockPos p = stationCenter.offset(dx, 0, dz);
-                boolean edge = Math.abs(dx) == 4 || Math.abs(dz) == 4;
-                boolean corner = Math.abs(dx) == 4 && Math.abs(dz) == 4;
+                boolean edge = Math.abs(dx) == 12 || Math.abs(dz) == 12;
+                boolean corner = Math.abs(dx) == 12 && Math.abs(dz) == 12;
                 Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 3);
-                if (edge && !corner && !(dx == 4 && dz == 0)) {
+                boolean isDoor = (Math.abs(dx) == 12 && Math.abs(dz) <= 2);
+                if (edge && !corner && !isDoor) {
                     level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
                 }
             }
         }
 
-        BlockPos eafPos = stationCenter.offset(-2, 1, -2);
+        BlockPos eafPos = stationCenter.offset(-7, 1, -6);
         level.setBlock(eafPos, SandStormBlocks.ELECTRIC_ARC_FURNACE.defaultBlockState().setValue(ElectricArcFurnaceBlock.FACING, Direction.SOUTH).setValue(ElectricArcFurnaceBlock.LIT, true), 3);
         if (level.getBlockEntity(eafPos) instanceof ElectricArcFurnaceBlockEntity eafBe) {
             eafBe.setEnergy(10000);
@@ -2158,19 +2218,19 @@ public class ShowcaseAutomation {
             eafBe.setChanged();
         }
 
-        BlockPos eafAccPos = stationCenter.offset(-3, 1, -2);
+        BlockPos eafAccPos = stationCenter.offset(-8, 1, -6);
         level.setBlock(eafAccPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
         if (level.getBlockEntity(eafAccPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
             accBe.setStoredEnergy(500000);
         }
-        BlockPos eafSolarPos = stationCenter.offset(-3, 2, -2);
+        BlockPos eafSolarPos = stationCenter.offset(-8, 2, -6);
         level.setBlock(eafSolarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
 
         spawnHologram(level, eafPos.getX() + 0.5, baseY + 3.2, eafPos.getZ() + 0.5, "§6§l[Fornalha a Arco Elétrico]");
         spawnHologram(level, eafPos.getX() + 0.5, baseY + 2.85, eafPos.getZ() + 0.5, "§eIndução Térmica | 40 J/t | Rede WPT");
         spawnHologram(level, eafPos.getX() + 0.5, baseY + 2.5, eafPos.getZ() + 0.5, "§aFundição de Silício Puro & Wafers");
 
-        BlockPos carbCoalPos = stationCenter.offset(-2, 1, 2);
+        BlockPos carbCoalPos = stationCenter.offset(-7, 1, 6);
         level.setBlock(carbCoalPos, SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR.defaultBlockState().setValue(AtmosphericCarbonExtractorBlock.FACING, Direction.NORTH).setValue(AtmosphericCarbonExtractorBlock.LIT, true), 3);
         if (level.getBlockEntity(carbCoalPos) instanceof AtmosphericCarbonExtractorBlockEntity carbBe) {
             carbBe.setEnergy(10000);
@@ -2178,19 +2238,19 @@ public class ShowcaseAutomation {
             carbBe.setChanged();
         }
 
-        BlockPos carbAccPos = stationCenter.offset(-3, 1, 2);
+        BlockPos carbAccPos = stationCenter.offset(-8, 1, 6);
         level.setBlock(carbAccPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
         if (level.getBlockEntity(carbAccPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
             accBe.setStoredEnergy(500000);
         }
-        BlockPos carbSolarPos = stationCenter.offset(-3, 2, 2);
+        BlockPos carbSolarPos = stationCenter.offset(-8, 2, 6);
         level.setBlock(carbSolarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
 
         spawnHologram(level, carbCoalPos.getX() + 0.5, baseY + 3.2, carbCoalPos.getZ() + 0.5, "§b§l[Captura de Carbono Atmosférico]");
         spawnHologram(level, carbCoalPos.getX() + 0.5, baseY + 2.85, carbCoalPos.getZ() + 0.5, "§7Modo Carvão Sólido | 20 J/t");
         spawnHologram(level, carbCoalPos.getX() + 0.5, baseY + 2.5, carbCoalPos.getZ() + 0.5, "§aExtrai CO₂ Livre da Atmosfera");
 
-        BlockPos cvdPos = stationCenter.offset(2, 1, 2);
+        BlockPos cvdPos = stationCenter.offset(7, 1, 6);
         level.setBlock(cvdPos, SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR.defaultBlockState().setValue(AtmosphericCarbonExtractorBlock.FACING, Direction.NORTH).setValue(AtmosphericCarbonExtractorBlock.LIT, true), 3);
         if (level.getBlockEntity(cvdPos) instanceof AtmosphericCarbonExtractorBlockEntity cvdBe) {
             cvdBe.setEnergy(10000);
@@ -2199,21 +2259,21 @@ public class ShowcaseAutomation {
             cvdBe.setChanged();
         }
 
-        BlockPos cvdAccPos = stationCenter.offset(3, 1, 2);
+        BlockPos cvdAccPos = stationCenter.offset(8, 1, 6);
         level.setBlock(cvdAccPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
         if (level.getBlockEntity(cvdAccPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
             accBe.setStoredEnergy(500000);
         }
-        BlockPos cvdSolarPos = stationCenter.offset(3, 2, 2);
+        BlockPos cvdSolarPos = stationCenter.offset(8, 2, 6);
         level.setBlock(cvdSolarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
 
         spawnHologram(level, cvdPos.getX() + 0.5, baseY + 3.2, cvdPos.getZ() + 0.5, "§d§l[Síntese CVD de Diamantes]");
         spawnHologram(level, cvdPos.getX() + 0.5, baseY + 2.85, cvdPos.getZ() + 0.5, "§bFeixe de Plasma | Semente Natural");
         spawnHologram(level, cvdPos.getX() + 0.5, baseY + 2.5, cvdPos.getZ() + 0.5, "§eCrescimento Cristalográfico Carbonífero");
 
-        BlockPos boostPos = stationCenter.offset(2, 1, -2);
-        level.setBlock(stationCenter.offset(3, 0, -2), Blocks.NETHERRACK.defaultBlockState(), 3);
-        level.setBlock(stationCenter.offset(3, 1, -2), Blocks.FIRE.defaultBlockState(), 3);
+        BlockPos boostPos = stationCenter.offset(7, 1, -6);
+        level.setBlock(stationCenter.offset(8, 0, -6), Blocks.NETHERRACK.defaultBlockState(), 3);
+        level.setBlock(stationCenter.offset(8, 1, -6), Blocks.FIRE.defaultBlockState(), 3);
         level.setBlock(boostPos, SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR.defaultBlockState().setValue(AtmosphericCarbonExtractorBlock.FACING, Direction.SOUTH).setValue(AtmosphericCarbonExtractorBlock.LIT, true), 3);
         if (level.getBlockEntity(boostPos) instanceof AtmosphericCarbonExtractorBlockEntity boostBe) {
             boostBe.setEnergy(10000);
@@ -2221,28 +2281,28 @@ public class ShowcaseAutomation {
             boostBe.setChanged();
         }
 
-        BlockPos boostAccPos = stationCenter.offset(2, 1, -3);
+        BlockPos boostAccPos = stationCenter.offset(7, 1, -7);
         level.setBlock(boostAccPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
         if (level.getBlockEntity(boostAccPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
             accBe.setStoredEnergy(500000);
         }
-        BlockPos boostSolarPos = stationCenter.offset(2, 2, -3);
+        BlockPos boostSolarPos = stationCenter.offset(7, 2, -7);
         level.setBlock(boostSolarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
 
         spawnHologram(level, boostPos.getX() + 0.5, baseY + 3.2, boostPos.getZ() + 0.5, "§c§l[Arrasto Térmico de Combustão]");
         spawnHologram(level, boostPos.getX() + 0.5, baseY + 2.85, boostPos.getZ() + 0.5, "§6Fogo Adjacente: Velocidade +200%");
         spawnHologram(level, boostPos.getX() + 0.5, baseY + 2.5, boostPos.getZ() + 0.5, "§aConvecção de CO₂ Hiper-Eficiente");
 
-        BlockPos furnacePos = stationCenter.offset(0, 1, -3);
+        BlockPos furnacePos = stationCenter.offset(0, 1, -8);
         level.setBlock(furnacePos, SandStormBlocks.SANDSTONE_FURNACE.defaultBlockState(), 3);
         if (level.getBlockEntity(furnacePos) instanceof SandstoneFurnaceBlockEntity furnaceBe) {
             furnaceBe.setItem(0, new ItemStack(Blocks.SAND, 32));
             furnaceBe.setItem(1, new ItemStack(Items.COAL, 16));
         }
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.0, stationCenter.getZ() - 2.5, "§e§l[Fornalha Solar de Arenito]");
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.65, stationCenter.getZ() - 2.5, "§7Fornalha Primária do Deserto");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.0, stationCenter.getZ() - 8.0, "§e§l[Fornalha Solar de Arenito]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.65, stationCenter.getZ() - 8.0, "§7Fornalha Primária do Deserto");
 
-        BlockPos cratePos = stationCenter.offset(0, 1, 3);
+        BlockPos cratePos = stationCenter.offset(0, 1, 8);
         level.setBlock(cratePos, SandStormBlocks.SANDSTONE_CRATE.defaultBlockState(), 3);
         if (level.getBlockEntity(cratePos) instanceof SandstoneCrateBlockEntity crateBe) {
             crateBe.setItem(0, new ItemStack(SandStormItems.RAW_SILICON, 64));
@@ -2253,10 +2313,10 @@ public class ShowcaseAutomation {
             crateBe.setItem(5, new ItemStack(SandStormItems.SIGNAL_TRACKER, 1));
             crateBe.setItem(6, new ItemStack(SandStormItems.MOLECULAR_CARGO_CAPSULE, 4));
         }
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.0, stationCenter.getZ() + 2.5, "§6§l[Caixote de Arenito 3D]");
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.65, stationCenter.getZ() + 2.5, "§7Armazenamento com Tampa 3D Animada");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.0, stationCenter.getZ() + 8.0, "§6§l[Caixote de Arenito 3D]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.65, stationCenter.getZ() + 8.0, "§7Armazenamento com Tampa 3D Animada");
 
-        BlockPos chestPos = stationCenter.offset(-1, 1, 0);
+        BlockPos chestPos = stationCenter.offset(-2, 1, 0);
         setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR, 4));
@@ -2276,17 +2336,17 @@ public class ShowcaseAutomation {
             chest.setItem(14, new ItemStack(Items.NETHERRACK, 16));
             chest.setItem(15, new ItemStack(Items.FLINT_AND_STEEL, 1));
         }
-        spawnHologram(level, stationCenter.getX() - 0.5, baseY + 2.5, stationCenter.getZ() + 0.5, "§6[Baú de Fornos, Carbono & Síntese]");
+        spawnHologram(level, stationCenter.getX() - 2.0, baseY + 2.5, stationCenter.getZ() + 0.5, "§6[Baú de Fornos, Carbono & Síntese]");
 
-        setupReturnPad(level, stationCenter.offset(1, 1, 0));
+        setupReturnPad(level, stationCenter.offset(11, 1, -3));
     }
 
     private static void buildCarbonAndInductionWalkway(ServerLevel level, BlockPos center) {
-        for (int x = -5; x >= -14; x--) {
-            for (int z = -1; z <= 1; z++) {
+        for (int x = -11; x >= -37; x--) {
+            for (int z = -2; z <= 2; z++) {
                 BlockPos p = center.offset(x, 0, z);
-                boolean edge = (z != 0);
-                boolean light = (Math.abs(x) % 3 == 0 && z == 0);
+                boolean edge = Math.abs(z) == 2;
+                boolean light = (Math.abs(x) % 4 == 0 && z == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
@@ -2429,31 +2489,22 @@ public class ShowcaseAutomation {
     private static void setupVaultReturnPad(ServerLevel level, BlockPos pos) {
         level.setBlock(pos.below(), SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState(), 3);
         level.setBlock(pos, Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.defaultBlockState(), 3);
+        spawnHologram(level, pos.getX() + 0.5, pos.getY() + 1.8, pos.getZ() + 0.5, "§a§l▲ RETORNAR AO SHOWCASE ▲");
+        spawnHologram(level, pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5, "§7Pise para voltar à Praça Central");
         TELEPORT_PADS.add(new ShowcaseTeleportPad(pos, new BlockPos(0, 161, 0), "Praça Central do Showcase"));
     }
 
     private static void buildVaultWalkway(ServerLevel level, BlockPos center) {
-        for (int x = 13; x <= 32; x++) {
-            for (int z = -1; z <= 1; z++) {
-                BlockPos p = center.offset(x, 0, z);
+        for (int z = -3; z >= -39; z--) {
+            for (int dx = -2; dx <= 2; dx++) {
+                BlockPos p = center.offset(50 + dx, 0, z);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
-                boolean edge = (z != 0);
-                boolean light = (x % 3 == 0 && z == 0);
+                boolean edge = Math.abs(dx) == 2;
+                boolean light = (Math.abs(z) % 4 == 0 && dx == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        for (int z = -2; z >= -11; z--) {
-            for (int dx = -1; dx <= 1; dx++) {
-                BlockPos p = center.offset(32 + dx, 0, z);
-                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
-                boolean edge = (dx != 0);
-                boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
-                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
-                level.setBlock(p, b.defaultBlockState(), 2);
-            }
-        }
-        setupTerminalTrigger(level, center.offset(8, 0, -3), new BlockPos(32, 161, -8), "Câmara de Cofre Blindada", "Porta Mecânica 3x3 | Estrutura Blindada");
     }
 
     public static void buildSubspaceGatewayStation(ServerLevel level, BlockPos stationCenter) {
@@ -2533,34 +2584,23 @@ public class ShowcaseAutomation {
     }
 
     private static void buildSubspaceGatewayWalkway(ServerLevel level, BlockPos center) {
-        for (int z = -12; z >= -32; z--) {
-            for (int dx = -1; dx <= 1; dx++) {
-                BlockPos p = center.offset(32 + dx, 0, z);
+        for (int x = 55; x <= 75; x++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                BlockPos p = center.offset(x, 0, -45 + dz);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
-                boolean edge = (dx != 0);
-                boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
+                boolean edge = Math.abs(dz) == 2;
+                boolean light = (x % 4 == 0 && dz == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        for (int x = 32; x <= 36; x++) {
-            for (int dz = -1; dz <= 1; dz++) {
-                BlockPos p = center.offset(x, 0, -32 + dz);
-                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
-                boolean edge = (dz != 0);
-                boolean light = (x % 3 == 0 && dz == 0);
-                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
-                level.setBlock(p, b.defaultBlockState(), 2);
-            }
-        }
-        setupTerminalTrigger(level, center.offset(12, 0, 0), new BlockPos(36, 161, -30), "Portal do Subespaço Ativo", "Viagem Dimensional Imediata | 100.000 J");
     }
 
     public static void buildRappelTestTowerAndChasm(ServerLevel level, BlockPos stationCenter) {
         int baseY = stationCenter.getY();
 
-        for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -4; dz <= 4; dz++) {
+        for (int dx = -7; dx <= 7; dx++) {
+            for (int dz = -7; dz <= 7; dz++) {
                 for (int dy = 1; dy <= 6; dy++) {
                     BlockPos p = stationCenter.offset(dx, dy, dz);
                     if (!level.getBlockState(p).isAir()) {
@@ -2570,17 +2610,17 @@ public class ShowcaseAutomation {
             }
         }
 
-        for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -4; dz <= 4; dz++) {
+        for (int dx = -7; dx <= 7; dx++) {
+            for (int dz = -7; dz <= 7; dz++) {
                 BlockPos p = stationCenter.offset(dx, 0, dz);
-                boolean isDropHole = (dx >= -2 && dx <= 1 && dz >= 0 && dz <= 3);
+                boolean isDropHole = (dx >= -2 && dx <= 2 && dz >= -2 && dz <= 2);
                 if (isDropHole) {
                     level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
                     continue;
                 }
-                boolean edge = Math.abs(dx) == 4 || Math.abs(dz) == 4;
-                boolean corner = Math.abs(dx) == 4 && Math.abs(dz) == 4;
-                boolean isEntrance = (dx == 4 && dz == 0);
+                boolean edge = Math.abs(dx) == 7 || Math.abs(dz) == 7;
+                boolean corner = Math.abs(dx) == 7 && Math.abs(dz) == 7;
+                boolean isEntrance = (dx <= -5 && Math.abs(dz) <= 1);
                 Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : SandStormBlocks.REINFORCED_CONCRETE);
                 level.setBlock(p, b.defaultBlockState(), 3);
                 if (edge && !corner && !isEntrance) {
@@ -2589,22 +2629,22 @@ public class ShowcaseAutomation {
             }
         }
 
-        for (int dx = -2; dx <= 1; dx++) {
-            level.setBlock(stationCenter.offset(dx, 1, -1), SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState(), 3);
+        for (int dx = -2; dx <= 2; dx++) {
+            level.setBlock(stationCenter.offset(dx, 1, -3), SandStormBlocks.REINFORCED_CONCRETE.defaultBlockState(), 3);
         }
 
-        BlockPos anchorPos1 = stationCenter.offset(-1, 1, 0);
+        BlockPos anchorPos1 = stationCenter.offset(-1, 1, -2);
         level.setBlock(anchorPos1, SandStormBlocks.RAPPEL_ANCHOR.defaultBlockState().setValue(RappelAnchorBlock.FACING, Direction.SOUTH), 3);
 
-        BlockPos anchorPos2 = stationCenter.offset(1, 1, 0);
+        BlockPos anchorPos2 = stationCenter.offset(1, 1, -2);
         level.setBlock(anchorPos2, SandStormBlocks.GLOWING_RAPPEL_ANCHOR.defaultBlockState().setValue(RappelAnchorBlock.FACING, Direction.SOUTH), 3);
 
         int maxDepth = RappelAnchorBlockEntity.MAX_DEPTH;
         for (int y = 1; y <= maxDepth; y++) {
-            for (int dx = -3; dx <= 2; dx++) {
-                for (int dz = -1; dz <= 4; dz++) {
+            for (int dx = -2; dx <= 2; dx++) {
+                for (int dz = -2; dz <= 2; dz++) {
                     BlockPos airPos = stationCenter.offset(dx, 1 - y, dz);
-                    if (y < maxDepth || (dx != -1 && dx != 1) || dz != 0) {
+                    if (y < maxDepth || (dx != -1 && dx != 1) || dz != -2) {
                         level.setBlock(airPos, Blocks.AIR.defaultBlockState(), 2);
                     }
                 }
@@ -2623,19 +2663,19 @@ public class ShowcaseAutomation {
         }
 
         int bottomY = baseY - maxDepth;
-        for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -2; dz <= 5; dz++) {
+        for (int dx = -5; dx <= 5; dx++) {
+            for (int dz = -5; dz <= 5; dz++) {
                 BlockPos floorPos = new BlockPos(stationCenter.getX() + dx, bottomY, stationCenter.getZ() + dz);
-                boolean isUnderRope = (dx == -1 || dx == 1) && dz == 0;
+                boolean isUnderRope = (dx == -1 || dx == 1) && dz == -2;
                 Block b = isUnderRope ? SandStormBlocks.SEISMIC_DAMPENER_PAVING : Blocks.POLISHED_DEEPSLATE;
-                if (Math.abs(dx) == 4 || dz == -2 || dz == 5) {
+                if (Math.abs(dx) == 5 || Math.abs(dz) == 5) {
                     b = Blocks.OCHRE_FROGLIGHT;
                 }
                 level.setBlock(floorPos, b.defaultBlockState(), 3);
             }
         }
 
-        BlockPos bottomChestPos = new BlockPos(stationCenter.getX() - 3, bottomY + 1, stationCenter.getZ() + 1);
+        BlockPos bottomChestPos = new BlockPos(stationCenter.getX() - 3, bottomY + 1, stationCenter.getZ());
         setChestSafe(level, bottomChestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(bottomChestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.RAPPEL_WINCH, 4));
@@ -2644,13 +2684,13 @@ public class ShowcaseAutomation {
             chest.setItem(3, new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE, 16));
         }
 
-        BlockPos bottomReturnPos = new BlockPos(stationCenter.getX() + 3, bottomY + 1, stationCenter.getZ() + 1);
+        BlockPos bottomReturnPos = new BlockPos(stationCenter.getX() + 3, bottomY + 1, stationCenter.getZ());
         setupReturnPad(level, bottomReturnPos);
 
         spawnHologram(level, stationCenter.getX() + 0.0, bottomY + 3.0, stationCenter.getZ() + 1.0, "§a§l[Fundo do Abismo - 128 Blocos]");
         spawnHologram(level, stationCenter.getX() + 0.0, bottomY + 2.7, stationCenter.getZ() + 1.0, "§7Escale com a corda ou pise na placa para subir");
 
-        BlockPos topChestPos = stationCenter.offset(3, 1, -2);
+        BlockPos topChestPos = stationCenter.offset(5, 1, -5);
         setChestSafe(level, topChestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(topChestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.RAPPEL_WINCH, 8));
@@ -2660,37 +2700,26 @@ public class ShowcaseAutomation {
             chest.setItem(4, new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE, 32));
         }
 
-        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 4.2, stationCenter.getZ() - 1.5, "§6§l[Zona de Testes: Rapel (128 Blocos)]");
-        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 3.85, stationCenter.getZ() - 1.5, "§bComprimento Máximo: 128 Blocos Verticais");
-        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 3.5, stationCenter.getZ() - 1.5, "§eClique com botão direito na corda ou no guincho");
-        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 3.15, stationCenter.getZ() - 1.5, "§f[W/Espaço] Subir | [S] Descer | [Ctrl] Acelerar | [Shift] Descer no Chão");
-        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 2.8, stationCenter.getZ() - 1.5, "§a[Anti-Queda] Pule no abismo e seja capturado automaticamente!");
+        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 4.2, stationCenter.getZ() - 4.0, "§6§l[Zona de Testes: Rapel (128 Blocos)]");
+        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 3.85, stationCenter.getZ() - 4.0, "§bComprimento Máximo: 128 Blocos Verticais");
+        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 3.5, stationCenter.getZ() - 4.0, "§eClique com botão direito na corda ou no guincho");
+        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 3.15, stationCenter.getZ() - 4.0, "§f[W/Espaço] Subir | [S] Descer | [Ctrl] Acelerar | [Shift] Descer no Chão");
+        spawnHologram(level, stationCenter.getX() + 0.0, baseY + 2.8, stationCenter.getZ() - 4.0, "§a[Anti-Queda] Pule no abismo e seja capturado automaticamente!");
 
-        setupReturnPad(level, stationCenter.offset(-3, 1, -3));
+        setupReturnPad(level, stationCenter.offset(5, 1, 5));
     }
 
     private static void buildRappelWalkway(ServerLevel level, BlockPos center) {
-        for (int x = -5; x >= -32; x--) {
-            for (int z = -1; z <= 1; z++) {
-                BlockPos p = center.offset(x, 0, z);
+        for (int x = 3; x <= 37; x++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                BlockPos p = center.offset(x, 0, -50 + dz);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
-                boolean edge = (z != 0);
-                boolean light = (Math.abs(x) % 3 == 0 && z == 0);
+                boolean edge = Math.abs(dz) == 2;
+                boolean light = (x % 4 == 0 && dz == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        for (int z = -2; z >= -16; z--) {
-            for (int dx = -1; dx <= 1; dx++) {
-                BlockPos p = center.offset(-32 + dx, 0, z);
-                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
-                boolean edge = (dx != 0);
-                boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
-                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
-                level.setBlock(p, b.defaultBlockState(), 2);
-            }
-        }
-        setupTerminalTrigger(level, center.offset(-12, 0, 0), new BlockPos(-36, 161, -14), "Torre e Abismo de Rapel (128 Blocos)", "Comprimento Máximo | Queda Livre e Subida");
     }
 
     private static void buildIsolatedTestingChamber(ServerLevel level, int minX, int maxX, int minZ, int maxZ, int baseY, int windowX, String title, String subtitle) {
@@ -3044,35 +3073,24 @@ public class ShowcaseAutomation {
     }
 
     private static void buildDefenseWalkway(ServerLevel level, BlockPos center) {
-        for (int z = -17; z >= -36; z--) {
-            for (int dx = -1; dx <= 1; dx++) {
-                BlockPos p = center.offset(-32 + dx, 0, z);
+        for (int x = -3; x >= -37; x--) {
+            for (int dz = -2; dz <= 2; dz++) {
+                BlockPos p = center.offset(x, 0, -50 + dz);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
-                boolean edge = (dx != 0);
-                boolean light = (Math.abs(z) % 3 == 0 && dx == 0);
+                boolean edge = Math.abs(dz) == 2;
+                boolean light = (Math.abs(x) % 4 == 0 && dz == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        for (int x = -32; x >= -36; x--) {
-            for (int dz = -1; dz <= 1; dz++) {
-                BlockPos p = center.offset(x, 0, -36 + dz);
-                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
-                boolean edge = (dz != 0);
-                boolean light = (Math.abs(x) % 3 == 0 && dz == 0);
-                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
-                level.setBlock(p, b.defaultBlockState(), 2);
-            }
-        }
-        setupTerminalTrigger(level, center.offset(-8, 0, -3), new BlockPos(-36, 161, -34), "Perímetro de Defesa & Balística", "Railgun 250 kJ | Torreta Sônica | Escudos");
     }
 
     public static void buildOrbitalLaunchStation(ServerLevel level, BlockPos stationCenter) {
         int baseY = stationCenter.getY();
 
-        for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -4; dz <= 4; dz++) {
-                for (int dy = 1; dy <= 5; dy++) {
+        for (int dx = -7; dx <= 7; dx++) {
+            for (int dz = -7; dz <= 7; dz++) {
+                for (int dy = 1; dy <= 6; dy++) {
                     BlockPos p = stationCenter.offset(dx, dy, dz);
                     if (!level.getBlockState(p).isAir()) {
                         setAirSafe(level, p);
@@ -3081,11 +3099,11 @@ public class ShowcaseAutomation {
             }
         }
 
-        for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -4; dz <= 4; dz++) {
+        for (int dx = -7; dx <= 7; dx++) {
+            for (int dz = -7; dz <= 7; dz++) {
                 BlockPos p = stationCenter.offset(dx, 0, dz);
-                boolean edge = Math.abs(dx) == 4 || Math.abs(dz) == 4;
-                boolean corner = Math.abs(dx) == 4 && Math.abs(dz) == 4;
+                boolean edge = Math.abs(dx) == 7 || Math.abs(dz) == 7;
+                boolean corner = Math.abs(dx) == 7 && Math.abs(dz) == 7;
                 Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : SandStormBlocks.MORPHING_ALLOY_BLOCK);
                 level.setBlock(p, b.defaultBlockState(), 3);
                 if (edge && !corner) {
@@ -3100,31 +3118,31 @@ public class ShowcaseAutomation {
             driverBe.setEnergy(OrbitalMassDriverBlockEntity.MAX_ENERGY);
         }
 
-        BlockPos groundStationPos = stationCenter.offset(-2, 1, 0);
+        BlockPos groundStationPos = stationCenter.offset(-4, 1, 0);
         level.setBlock(groundStationPos, SandStormBlocks.ORBITAL_GROUND_STATION.defaultBlockState(), 3);
         if (level.getBlockEntity(groundStationPos) instanceof OrbitalGroundStationBlockEntity stationBe) {
             stationBe.setEnergy(100000);
         }
 
-        BlockPos telescopePos = stationCenter.offset(2, 1, 0);
+        BlockPos telescopePos = stationCenter.offset(4, 1, 0);
         level.setBlock(telescopePos, SandStormBlocks.SPECTRAL_SURVEY_TELESCOPE.defaultBlockState(), 3);
 
-        BlockPos spirePos = stationCenter.offset(0, 1, 2);
+        BlockPos spirePos = stationCenter.offset(0, 1, 4);
         level.setBlock(spirePos, SandStormBlocks.HOLO_TACTICAL_SPIRE.defaultBlockState(), 3);
 
-        BlockPos accumulatorPos = stationCenter.offset(-2, 1, -2);
+        BlockPos accumulatorPos = stationCenter.offset(-4, 1, -4);
         level.setBlock(accumulatorPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
         if (level.getBlockEntity(accumulatorPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
             accBe.setStoredEnergy(500000);
         }
 
-        BlockPos solarPos = stationCenter.offset(-2, 1, -3);
+        BlockPos solarPos = stationCenter.offset(-4, 1, -5);
         level.setBlock(solarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
 
-        BlockPos cable = stationCenter.offset(-1, 1, 0);
+        BlockPos cable = stationCenter.offset(-2, 1, 0);
         level.setBlock(cable, SandStormBlocks.QUANTUM_NETWORK_CABLE.defaultBlockState(), 3);
 
-        BlockPos chestPos = stationCenter.offset(2, 1, -2);
+        BlockPos chestPos = stationCenter.offset(4, 1, -4);
         setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
         if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
             chest.setItem(0, new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE, 4));
@@ -3140,33 +3158,35 @@ public class ShowcaseAutomation {
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.5, stationCenter.getZ() + 0.5, "§eInsira um Satélite no Canhão para lançar");
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.15, stationCenter.getZ() + 0.5, "§7Use o Uplink Cibernético para comandar a órbita");
 
-        setupReturnPad(level, stationCenter.offset(3, 1, 3));
+        setupReturnPad(level, stationCenter.offset(5, 1, 5));
     }
 
     private static void buildOrbitalWalkway(ServerLevel level, BlockPos center) {
-        for (int x = 32; x <= 52; x++) {
-            for (int dz = -1; dz <= 1; dz++) {
-                BlockPos p = center.offset(x, 0, -16 + dz);
+        for (int z = 3; z <= 25; z++) {
+            for (int dx = -2; dx <= 2; dx++) {
+                BlockPos p = center.offset(50 + dx, 0, z);
                 level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
-                boolean edge = (dz != 0);
-                boolean light = (x % 3 == 0 && dz == 0);
+                boolean edge = Math.abs(dx) == 2;
+                boolean light = (z % 4 == 0 && dx == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
-        setupTerminalTrigger(level, center.offset(8, 0, 3), new BlockPos(52, 161, -14), "Estação Espacial Orbital", "Canhão de Massa 500 kJ | Satélites e Uplink");
+        for (int x = 53; x <= 72; x++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                BlockPos p = center.offset(x, 0, 25 + dz);
+                level.setBlock(p.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = Math.abs(dz) == 2;
+                boolean light = (x % 4 == 0 && dz == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
     }
 
     public static int getBiosphereFrontZ() {
-        List<Block> blocks = BuiltInRegistries.BLOCK.stream()
-                .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
-                .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR) && !b.equals(SandStormBlocks.VAULT_DOOR_DUMMY))
-                .toList();
-        int cols = 8;
-        int spacing = 4;
+        int maxBlockZ = getCheckerboardMaxZ();
         int startZ = 8;
-        int totalRows = (blocks.size() + cols - 1) / cols;
-        int maxBlockZ = startZ + (totalRows * spacing) + 4;
 
         List<Item> items = BuiltInRegistries.ITEM.stream()
                 .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(SandStormMod.MOD_ID))
@@ -4065,16 +4085,6 @@ public class ShowcaseAutomation {
         level.setBlock(eastEntry.north().above(), Blocks.AIR.defaultBlockState(), 2);
         setupShaftTrigger(level, eastShaftTop, eastEntry, "Complexo Bunker Leste (8x8)", "1 Andar Colossal | Grade 8x8 | 64 Salas");
 
-        BlockPos southTerminal = center.offset(0, 0, -8);
-        setupTerminalTrigger(level, southTerminal, southEntry, "Depósito Geológico Sul (4 Andares)", "4 Andares | Grade 7x7 | 196 Salas");
-
-        int maxBlockZ = getCheckerboardMaxZ();
-        BlockPos northTerminal = center.offset(0, 0, maxBlockZ);
-        setupTerminalTrigger(level, northTerminal, northEntry, "Laboratório Militar Abandonado Norte", "4 Andares | Grade 7x7 | 196 Salas | Black Site");
-
-        BlockPos hiveTerminal = center.offset(-5, 0, -8);
-        setupTerminalTrigger(level, hiveTerminal, hiveEntry, "Complexo de Mineração Infestado", "3 Andares | Mega-Broca 14x14 | Ninho dos Sandworms");
-
         BlockPos cryoOrigin = center.offset(48, -45, -70);
         buildFoundationPlate(level, cryoOrigin.getX() - 2, cryoOrigin.getX() + 38, cryoOrigin.getZ() - 2, cryoOrigin.getZ() + 38, cryoOrigin.getY() - 24, 3);
         SubglacialCryoVaultDungeon.generate(level, cryoOrigin, 3, 5, 5);
@@ -4082,9 +4092,6 @@ public class ShowcaseAutomation {
         BlockPos cryoEntry = cryoOrigin.offset(2 * 7 + 3, 1, 3);
         BlockPos cryoReturn = cryoOrigin.offset(2 * 7 + 3, 1, 1);
         setupReturnPad(level, cryoReturn);
-
-        BlockPos cryoTerminal = center.offset(5, 0, -8);
-        setupTerminalTrigger(level, cryoTerminal, cryoEntry, "Cofre Criogênico Subglacial", "3 Andares | Câmaras Criogênicas | Cofre Sub-Zero");
     }
 
     private static void setupReturnPad(ServerLevel level, BlockPos pos) {
@@ -4102,15 +4109,6 @@ public class ShowcaseAutomation {
         spawnHologram(level, top.getX() + 0.5, top.getY() + 2.2, top.getZ() + 0.5, "§7" + subtitle);
         spawnHologram(level, top.getX() + 0.5, top.getY() + 1.9, top.getZ() + 0.5, "§ePise para teleporte ou use o tubo");
         TELEPORT_PADS.add(new ShowcaseTeleportPad(top.above(), destination, title));
-    }
-
-    private static void setupTerminalTrigger(ServerLevel level, BlockPos floorPos, BlockPos destination, String title, String subtitle) {
-        level.setBlock(floorPos, SandStormBlocks.MORPHING_ALLOY_BLOCK.defaultBlockState(), 3);
-        level.setBlock(floorPos.above(), Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.defaultBlockState(), 3);
-        spawnHologram(level, floorPos.getX() + 0.5, floorPos.getY() + 2.5, floorPos.getZ() + 0.5, "§d§l▼ " + title + " ▼");
-        spawnHologram(level, floorPos.getX() + 0.5, floorPos.getY() + 2.2, floorPos.getZ() + 0.5, "§7" + subtitle);
-        spawnHologram(level, floorPos.getX() + 0.5, floorPos.getY() + 1.9, floorPos.getZ() + 0.5, "§ePise para teleporte rápido");
-        TELEPORT_PADS.add(new ShowcaseTeleportPad(floorPos.above(), destination, title));
     }
 
     private static void buildGlassObservationTube(ServerLevel level, BlockPos top, int bottomY) {
@@ -4183,13 +4181,13 @@ public class ShowcaseAutomation {
         }
     }
 
-    private static int getCheckerboardMaxZ() {
+    public static int getCheckerboardMaxZ() {
         List<Block> blocks = BuiltInRegistries.BLOCK.stream()
                 .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
                 .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR) && !b.equals(SandStormBlocks.VAULT_DOOR_DUMMY))
                 .toList();
         int cols = 8;
-        int spacing = 4;
+        int spacing = 5;
         int startZ = 8;
         int totalRows = (blocks.size() + cols - 1) / cols;
         return startZ + (totalRows * spacing) + 4;

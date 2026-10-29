@@ -249,10 +249,11 @@ class ShowcaseComputerAndBlocksTest {
                 .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR) && !b.equals(SandStormBlocks.VAULT_DOOR_DUMMY))
                 .toList();
         int cols = 8;
-        int spacing = 4;
+        int spacing = 5;
         int startZ = 8;
         int totalRows = (blocks.size() + cols - 1) / cols;
         int maxBlockZ = startZ + (totalRows * spacing) + 4;
+        assertEquals(maxBlockZ, ShowcaseAutomation.getCheckerboardMaxZ());
 
         int frontZ = ShowcaseAutomation.getBiosphereFrontZ();
         int domeRadius = 24;
