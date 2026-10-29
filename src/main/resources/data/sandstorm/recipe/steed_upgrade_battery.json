@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " G ",
+    "SBR",
+    " T "
+  ],
+  "key": {
+    "G": "sandstorm:gallium_ingot",
+    "S": "sandstorm:suit_upgrade_battery",
+    "B": "sandstorm:circuit_board",
+    "R": "sandstorm:electric_component",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "result": {
+    "id": "sandstorm:steed_upgrade_battery",
+    "count": 1
+  }
+}
+

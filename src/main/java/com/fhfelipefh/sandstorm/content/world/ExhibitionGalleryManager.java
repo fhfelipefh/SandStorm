@@ -6,6 +6,7 @@ import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
@@ -303,6 +304,10 @@ public class ExhibitionGalleryManager {
 
         list.add(new RawDisplayEntry("Mob: Cão Cibernético", 3, (level, x, groundY, z) -> {
             spawnFrozenEntity(level, new CyberHoundEntity(SandStormEntities.CYBER_HOUND, level), x, groundY, z, "Cão Cibernético");
+        }));
+
+        list.add(new RawDisplayEntry("Mob: Galope Cibernético", 4, (level, x, groundY, z) -> {
+            spawnFrozenEntity(level, new CyberSteedEntity(SandStormEntities.CYBER_STEED, level), x, groundY, z, "Galope Cibernético");
         }));
 
         list.add(new RawDisplayEntry("Mob: Unidade Operária", 3, (level, x, groundY, z) -> {

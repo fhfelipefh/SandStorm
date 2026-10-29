@@ -16,7 +16,8 @@ class DesertMobEcosystemArchitectureTest {
             "LaborerUnitEntity.java",
             "ScoutDroneEntity.java",
             "CrawlerDroneEntity.java",
-            "CyberHoundEntity.java"
+            "CyberHoundEntity.java",
+            "CyberSteedEntity.java"
     );
 
     @Test
@@ -59,7 +60,7 @@ class DesertMobEcosystemArchitectureTest {
     void versionMustBeOnePointNineteenThirtyOne() throws IOException {
         Path gradleProps = Path.of("gradle.properties");
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.19.36"), "gradle.properties must be 1.19.36");
+        assertTrue(content.contains("version=1.19.37"), "gradle.properties must be 1.19.37");
     }
 
     @Test
@@ -72,6 +73,7 @@ class DesertMobEcosystemArchitectureTest {
                 "ScoutDroneEntity.java",
                 "CrawlerDroneEntity.java",
                 "CyberHoundEntity.java",
+                "CyberSteedEntity.java",
                 "ScrapSentinelEntity.java"
         );
         for (String filename : deactivatableEntities) {
@@ -90,6 +92,7 @@ class DesertMobEcosystemArchitectureTest {
                 "laborer_unit/laborer_unit_deactivated.png",
                 "scout_drone/scout_drone_deactivated.png",
                 "cyber_hound/cyber_hound_deactivated.png",
+                "cyber_steed/cyber_steed_deactivated.png",
                 "scrap_sentinel/scrap_sentinel_deactivated.png"
         );
         for (String relTexture : textureFiles) {

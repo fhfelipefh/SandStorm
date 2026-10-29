@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberneticGolemEntity;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
 import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
@@ -46,6 +47,7 @@ public class EmpParalysisHandler {
                 || entity instanceof ScoutDroneEntity
                 || entity instanceof CrawlerDroneEntity
                 || entity instanceof CyberHoundEntity
+                || entity instanceof CyberSteedEntity
                 || entity instanceof CyberneticGolemEntity
                 || entity instanceof ScrapSentinelEntity
                 || entity instanceof BuilderDroneEntity

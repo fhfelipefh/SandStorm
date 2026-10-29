@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "PSP",
+    "TRT",
+    " C "
+  ],
+  "key": {
+    "P": "sandstorm:piezo_quartz_shard",
+    "S": "sandstorm:piezo_resonator",
+    "T": "sandstorm:titanium_chitin_composite",
+    "R": "sandstorm:circuit_board",
+    "C": "sandstorm:nano_actuator"
+  },
+  "result": {
+    "id": "sandstorm:steed_upgrade_sonic_turret",
+    "count": 1
+  }
+}
+

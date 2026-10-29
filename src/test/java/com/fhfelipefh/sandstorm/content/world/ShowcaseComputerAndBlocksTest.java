@@ -89,6 +89,10 @@ class ShowcaseComputerAndBlocksTest {
         assertNotNull(sandstorm.getChild("extractor"));
         assertNotNull(sandstorm.getChild("furnace"));
         assertNotNull(sandstorm.getChild("induction"));
+        assertNotNull(sandstorm.getChild("steed"));
+        assertNotNull(sandstorm.getChild("horse"));
+        assertNotNull(sandstorm.getChild("sandworm"));
+        assertNotNull(sandstorm.getChild("worm"));
 
         CommandNode<CommandSourceStack> sandstormDebug = dispatcher.getRoot().getChild("sandstorm_debug");
         assertNotNull(sandstormDebug);
@@ -99,6 +103,10 @@ class ShowcaseComputerAndBlocksTest {
         assertNotNull(sandstormDebug.getChild("extractor"));
         assertNotNull(sandstormDebug.getChild("furnace"));
         assertNotNull(sandstormDebug.getChild("induction"));
+        assertNotNull(sandstormDebug.getChild("steed"));
+        assertNotNull(sandstormDebug.getChild("horse"));
+        assertNotNull(sandstormDebug.getChild("sandworm"));
+        assertNotNull(sandstormDebug.getChild("worm"));
 
         CommandNode<CommandSourceStack> sandstormComputer = dispatcher.getRoot().getChild("sandstorm_computer");
         assertNotNull(sandstormComputer);
@@ -114,6 +122,18 @@ class ShowcaseComputerAndBlocksTest {
 
         CommandNode<CommandSourceStack> sandstormFurnace = dispatcher.getRoot().getChild("sandstorm_furnace");
         assertNotNull(sandstormFurnace);
+
+        CommandNode<CommandSourceStack> sandstormSteed = dispatcher.getRoot().getChild("sandstorm_steed");
+        assertNotNull(sandstormSteed);
+
+        CommandNode<CommandSourceStack> sandstormHorse = dispatcher.getRoot().getChild("sandstorm_horse");
+        assertNotNull(sandstormHorse);
+
+        CommandNode<CommandSourceStack> sandstormSandworm = dispatcher.getRoot().getChild("sandstorm_sandworm");
+        assertNotNull(sandstormSandworm);
+
+        CommandNode<CommandSourceStack> sandstormWorm = dispatcher.getRoot().getChild("sandstorm_worm");
+        assertNotNull(sandstormWorm);
     }
 
     @Test

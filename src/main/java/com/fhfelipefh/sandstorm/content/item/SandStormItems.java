@@ -133,6 +133,11 @@ public class SandStormItems {
     public static final SpawnEggItem NOMAD_SCAVENGER_SPAWN_EGG = register("nomad_scavenger_spawn_egg", new SpawnEggItem(properties("nomad_scavenger_spawn_egg").spawnEgg(SandStormEntities.NOMAD_SCAVENGER)));
     public static final SpawnEggItem DERELICT_AUTOMATON_SPAWN_EGG = register("derelict_automaton_spawn_egg", new SpawnEggItem(properties("derelict_automaton_spawn_egg").spawnEgg(SandStormEntities.DERELICT_AUTOMATON)));
     public static final SpawnEggItem CYBER_HOUND_SPAWN_EGG = register("cyber_hound_spawn_egg", new SpawnEggItem(properties("cyber_hound_spawn_egg").spawnEgg(SandStormEntities.CYBER_HOUND)));
+    public static final SpawnEggItem CYBER_STEED_SPAWN_EGG = register("cyber_steed_spawn_egg", new SpawnEggItem(properties("cyber_steed_spawn_egg").spawnEgg(SandStormEntities.CYBER_STEED)));
+    public static final CyberSteedUpgradeItem STEED_UPGRADE_SONIC_TURRET = register("steed_upgrade_sonic_turret", new CyberSteedUpgradeItem(CyberSteedUpgradeItem.UpgradeType.SONIC_TURRET, properties("steed_upgrade_sonic_turret").rarity(Rarity.RARE).stacksTo(1)));
+    public static final CyberSteedUpgradeItem STEED_UPGRADE_BATTERY = register("steed_upgrade_battery", new CyberSteedUpgradeItem(CyberSteedUpgradeItem.UpgradeType.BATTERY, properties("steed_upgrade_battery").rarity(Rarity.RARE).stacksTo(1)));
+    public static final CyberSteedUpgradeItem STEED_UPGRADE_SPEED = register("steed_upgrade_speed", new CyberSteedUpgradeItem(CyberSteedUpgradeItem.UpgradeType.SPEED, properties("steed_upgrade_speed").rarity(Rarity.RARE).stacksTo(1)));
+    public static final CyberSteedUpgradeItem STEED_UPGRADE_CARGO = register("steed_upgrade_cargo", new CyberSteedUpgradeItem(CyberSteedUpgradeItem.UpgradeType.CARGO, properties("steed_upgrade_cargo").rarity(Rarity.RARE).stacksTo(1)));
     public static final SpawnEggItem LABORER_UNIT_SPAWN_EGG = register("laborer_unit_spawn_egg", new SpawnEggItem(properties("laborer_unit_spawn_egg").spawnEgg(SandStormEntities.LABORER_UNIT)));
     public static final SpawnEggItem SCOUT_DRONE_SPAWN_EGG = register("scout_drone_spawn_egg", new SpawnEggItem(properties("scout_drone_spawn_egg").spawnEgg(SandStormEntities.SCOUT_DRONE)));
     public static final SpawnEggItem CRAWLER_DRONE_SPAWN_EGG = register("crawler_drone_spawn_egg", new SpawnEggItem(properties("crawler_drone_spawn_egg").spawnEgg(SandStormEntities.CRAWLER_DRONE)));
@@ -414,6 +419,11 @@ public class SandStormItems {
                         entries.accept(NOMAD_SCAVENGER_SPAWN_EGG);
                         entries.accept(DERELICT_AUTOMATON_SPAWN_EGG);
                         entries.accept(CYBER_HOUND_SPAWN_EGG);
+                        entries.accept(CYBER_STEED_SPAWN_EGG);
+                        entries.accept(STEED_UPGRADE_SONIC_TURRET);
+                        entries.accept(STEED_UPGRADE_BATTERY);
+                        entries.accept(STEED_UPGRADE_SPEED);
+                        entries.accept(STEED_UPGRADE_CARGO);
                         entries.accept(LABORER_UNIT_SPAWN_EGG);
                         entries.accept(SCOUT_DRONE_SPAWN_EGG);
                         entries.accept(CRAWLER_DRONE_SPAWN_EGG);

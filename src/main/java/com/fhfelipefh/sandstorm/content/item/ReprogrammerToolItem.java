@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.item;
 
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -53,6 +54,37 @@ public class ReprogrammerToolItem extends Item {
                 serverLevel.playSound(null, hound.getX(), hound.getY(), hound.getZ(),
                         SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 1.5f);
                 serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_hound_reprogrammed"), true);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        if (interactionTarget instanceof CyberSteedEntity steed) {
+            Level level = player.level();
+            if (steed.isTame()) {
+                if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_steed_already_tamed"), true);
+                }
+                return InteractionResult.SUCCESS;
+            }
+
+            if (!level.isClientSide() && level instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer) {
+                if (!serverPlayer.isCreative()) {
+                    SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(serverPlayer);
+                    if (suit.getStoredEnergy() < REPROGRAM_POWER_COST) {
+                        serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.reprogrammer_insufficient_power"), true);
+                        return InteractionResult.FAIL;
+                    }
+                    suit.consumeEnergy(REPROGRAM_POWER_COST);
+                }
+
+                steed.tame(player);
+                steed.setOrderedToSit(false);
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                        steed.getX(), steed.getY() + 0.8, steed.getZ(),
+                        45, 0.4, 0.5, 0.4, 0.1);
+                serverLevel.playSound(null, steed.getX(), steed.getY(), steed.getZ(),
+                        SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 1.5f);
+                serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_steed_reprogrammed"), true);
             }
             return InteractionResult.SUCCESS;
         }

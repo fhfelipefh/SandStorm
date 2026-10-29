@@ -273,17 +273,17 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
         int x = this.leftPos + CHASSIS_WIDTH + 3;
         int y = this.topPos + 21;
         int width = 24;
-        int height = 88;
+
+        CyborgUpgradeItem.CyborgUpgradeType[] types = CyborgUpgradeItem.CyborgUpgradeType.values();
+        String[] badgeLabels = new String[]{"AC", "CR", "LR", "PZ", "SS"};
+        int[] activeColors = new int[]{0xFF76FF03, 0xFF00E5FF, 0xFFFFD600, 0xFFD500F9, 0xFFFF5722};
+        int[] activeBgs = new int[]{0x33103810, 0x3300384D, 0x334D3C00, 0x333D004D, 0x334D1400};
+        int height = 6 + types.length * 21;
 
         extractor.fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xFF1E293B);
         extractor.fill(x, y, x + width, y + height, 0xFA0A0E17);
         extractor.fill(x, y, x + width, y + 1, 0xFF00E5FF);
         extractor.fill(x, y + height - 1, x + width, y + height, 0xFF00E5FF);
-
-        CyborgUpgradeItem.CyborgUpgradeType[] types = CyborgUpgradeItem.CyborgUpgradeType.values();
-        String[] badgeLabels = new String[]{"AC", "CR", "LR", "PZ"};
-        int[] activeColors = new int[]{0xFF76FF03, 0xFF00E5FF, 0xFFFFD600, 0xFFD500F9};
-        int[] activeBgs = new int[]{0x33103810, 0x3300384D, 0x334D3C00, 0x333D004D};
 
         for (int i = 0; i < types.length; i++) {
             boolean installed = this.menu.hasUpgrade(types[i]);
@@ -292,17 +292,18 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
             int bw = 18;
             int bh = 18;
 
-            int border = installed ? activeColors[i] : 0xFF1E293B;
-            int bg = installed ? activeBgs[i] : 0xFF080C14;
-            int textCol = installed ? activeColors[i] : 0xFF475569;
+            int border = installed ? (i < activeColors.length ? activeColors[i] : 0xFF00E5FF) : 0xFF1E293B;
+            int bg = installed ? (i < activeBgs.length ? activeBgs[i] : 0x3300384D) : 0xFF080C14;
+            int textCol = installed ? (i < activeColors.length ? activeColors[i] : 0xFF00E5FF) : 0xFF475569;
 
             extractor.fill(bx - 1, by - 1, bx + bw + 1, by + bh + 1, border);
             extractor.fill(bx, by, bx + bw, by + bh, bg);
 
-            int textW = this.font.width(badgeLabels[i]);
+            String label = (i < badgeLabels.length) ? badgeLabels[i] : "UP";
+            int textW = this.font.width(label);
             int tx = bx + (bw - textW) / 2;
             int ty = by + 5;
-            extractor.text(this.font, Component.literal(badgeLabels[i]), tx, ty, textCol, false);
+            extractor.text(this.font, Component.literal(label), tx, ty, textCol, false);
         }
     }
 
@@ -404,13 +405,15 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
                     "Blindagem de Quitina Ácida",
                     "Célula Crio-Trealose",
                     "Lente LiDAR Longo Alcance",
-                    "Propulsor Hover Piezoelétrico"
+                    "Propulsor Hover Piezoelétrico",
+                    "Sensor Sísmico Subdérmico"
             };
             String[] upgradeEffects = new String[]{
                     "+50% Resistência Dano/Ácido & Imunidade Veneno",
                     "Energia Expandida: 150.000 J (3x Buffer)",
                     "Radar Operacional Expandido: 96m (3x Alcance)",
-                    "Supressão Total Dano de Queda & Levitação"
+                    "Supressão Total Dano de Queda & Levitação",
+                    "Detecção Sísmica de Sandworms e Tremores (64m)"
             };
 
             for (int i = 0; i < types.length; i++) {
@@ -420,15 +423,17 @@ public class CyborgTelemetryScreen extends AbstractContainerScreen<CyborgTelemet
                 int bh = 18;
                 if (mouseX >= bx && mouseX <= bx + bw && mouseY >= by && mouseY <= by + bh) {
                     boolean installed = this.menu.hasUpgrade(types[i]);
+                    String name = (i < upgradeNames.length) ? upgradeNames[i] : types[i].getId();
+                    String effect = (i < upgradeEffects.length) ? upgradeEffects[i] : "Módulo avançado de ciborgue.";
                     if (installed) {
                         extractor.setComponentTooltipForNextFrame(this.font, List.of(
-                                Component.literal("§a[INSTALADO] §b" + upgradeNames[i]),
-                                Component.literal("§7" + upgradeEffects[i])
+                                Component.literal("§a[INSTALADO] §b" + name),
+                                Component.literal("§7" + effect)
                         ), mouseX, mouseY);
                     } else {
                         extractor.setComponentTooltipForNextFrame(this.font, List.of(
                                 Component.literal("§8[VAZIO] §7Slot de Módulo:"),
-                                Component.literal("§f" + upgradeNames[i]),
+                                Component.literal("§f" + name),
                                 Component.literal("§8Clique com o item no ciborgue.")
                         ), mouseX, mouseY);
                     }

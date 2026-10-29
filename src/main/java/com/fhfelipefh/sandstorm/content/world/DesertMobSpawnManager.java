@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.defense.AcousticDefenseTracker;
 import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.DeactivatableAndroid;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
 import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
@@ -222,10 +223,12 @@ public class DesertMobSpawnManager {
 
     public static EntityType<? extends Mob> selectArtificialMobType(RandomSource random) {
         int roll = random.nextInt(100);
-        if (roll < 25) {
+        if (roll < 20) {
             return SandStormEntities.DERELICT_AUTOMATON;
-        } else if (roll < 45) {
+        } else if (roll < 35) {
             return SandStormEntities.CYBER_HOUND;
+        } else if (roll < 48) {
+            return SandStormEntities.CYBER_STEED;
         } else if (roll < 65) {
             return SandStormEntities.LABORER_UNIT;
         } else if (roll < 80) {
@@ -240,6 +243,7 @@ public class DesertMobSpawnManager {
     public static boolean isArtificialMob(Entity entity) {
         return entity instanceof DerelictAutomatonEntity
                 || entity instanceof CyberHoundEntity
+                || entity instanceof CyberSteedEntity
                 || entity instanceof LaborerUnitEntity
                 || entity instanceof ScoutDroneEntity
                 || entity instanceof CrawlerDroneEntity
@@ -260,6 +264,9 @@ public class DesertMobSpawnManager {
                     continue;
                 }
                 if (mob instanceof CyberHoundEntity hound && hound.isTame()) {
+                    continue;
+                }
+                if (mob instanceof CyberSteedEntity steed && steed.isTame()) {
                     continue;
                 }
                 boolean nearAnyPlayer = false;

@@ -26,6 +26,7 @@ import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberneticGolemEntity;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
 import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
@@ -107,6 +108,7 @@ public class SandstormDebugCommand {
             "aquifer_beetle_hibernating",
             "derelict_automaton",
             "cyber_hound",
+            "cyber_steed",
             "laborer_unit",
             "scout_drone",
             "crawler_drone",
@@ -952,6 +954,15 @@ public class SandstormDebugCommand {
                     hound.setPos(pos.x, pos.y, pos.z);
                     level.addFreshEntity(hound);
                     source.sendSuccess(() -> Component.literal("§a[SandStorm] Cão Cibernético instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "cyber_steed" -> {
+                CyberSteedEntity steed = SandStormEntities.CYBER_STEED.create(level, EntitySpawnReason.COMMAND);
+                if (steed != null) {
+                    steed.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(steed);
+                    source.sendSuccess(() -> Component.literal("§a[SandStorm] Galope Cibernético instanciado com sucesso!"), true);
                     return 1;
                 }
             }

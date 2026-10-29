@@ -267,6 +267,20 @@ public class SandStormEntities {
                     .build(CYBER_HOUND_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> CYBER_STEED_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("cyber_steed")
+    );
+
+    public static final EntityType<CyberSteedEntity> CYBER_STEED = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("cyber_steed"),
+            EntityType.Builder.of(CyberSteedEntity::new, MobCategory.CREATURE)
+                    .sized(1.4f, 1.6f)
+                    .eyeHeight(1.5f)
+                    .build(CYBER_STEED_KEY)
+    );
+
     public static final ResourceKey<EntityType<?>> LABORER_UNIT_KEY = ResourceKey.create(
             Registries.ENTITY_TYPE,
             SandStormMod.id("laborer_unit")
@@ -361,6 +375,7 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(NOMAD_SCAVENGER, NomadScavengerEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(DERELICT_AUTOMATON, DerelictAutomatonEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CYBER_HOUND, CyberHoundEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(CYBER_STEED, CyberSteedEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(LABORER_UNIT, LaborerUnitEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SCOUT_DRONE, ScoutDroneEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CRAWLER_DRONE, CrawlerDroneEntity.createAttributes());
