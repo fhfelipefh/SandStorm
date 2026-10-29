@@ -57,6 +57,7 @@ import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgBuilderEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgExcavatorEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgHarvesterEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgRoutine;
+import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgSwarmManager;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.storage.QuantumAccessTerminalBlock;
 import com.fhfelipefh.sandstorm.content.storage.QuantumDiskDriveBlock;
@@ -102,6 +103,7 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.vehicle.minecart.Minecart;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -142,6 +144,9 @@ public class ShowcaseAutomation {
     private static CyborgExcavatorEntity loopMiner = null;
     private static final List<BlockPos> FARM_CROP_POSITIONS = new ArrayList<>();
     private static final List<CyborgHarvesterEntity> ACTIVE_FARMERS = new ArrayList<>();
+    private static CyborgBuilderEntity loopBuilder = null;
+    private static final List<BlockPos> BUILDER_CONSTRUCTION_POSITIONS = new ArrayList<>();
+    private static int builderResetCooldown = 0;
     private static final List<ShowcasePatrolDrone> ACTIVE_DRONES = new ArrayList<>();
     private static boolean showcaseActive = false;
     private static BlockPos defenseKineticShieldPos = null;
@@ -178,6 +183,7 @@ public class ShowcaseAutomation {
                     showcaseActive = true;
                     TELEPORT_PADS.clear();
                     buildTransitTerminal(level, new BlockPos(0, 160, 0));
+                    buildAutonomousCyborgFacility(level, new BlockPos(0, 160, 0), player);
                     preparePlayerForShowcase(level, player);
                 } else if (!GENERATED_PLAYERS.contains(player.getUUID())) {
                     GENERATED_PLAYERS.add(player.getUUID());
@@ -238,6 +244,75 @@ public class ShowcaseAutomation {
                             if (farmer.getInventory().getItem(i).getCount() >= 32) {
                                 farmer.getInventory().setItem(i, ItemStack.EMPTY);
                             }
+                        }
+                    }
+                }
+            }
+
+            if (tick % 20 == 0) {
+                ServerLevel overworld = server.overworld();
+                if (overworld != null) {
+                    if (BUILDER_CONSTRUCTION_POSITIONS.isEmpty()) {
+                        BlockPos bCenter = new BlockPos(0, 160, -104);
+                        for (int y = 1; y <= 2; y++) {
+                            for (int x = 0; x <= 3; x++) {
+                                BUILDER_CONSTRUCTION_POSITIONS.add(bCenter.offset(x, y, -1));
+                            }
+                        }
+                    }
+
+                    if (loopBuilder == null || !loopBuilder.isAlive()) {
+                        AABB builderBox = new AABB(-10.0, 159.0, -112.0, 10.0, 166.0, -96.0);
+                        List<CyborgBuilderEntity> existing = overworld.getEntitiesOfClass(CyborgBuilderEntity.class, builderBox);
+                        if (!existing.isEmpty()) {
+                            loopBuilder = existing.get(0);
+                            loopBuilder.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
+                            BlockPos bCenter = new BlockPos(0, 160, -104);
+                            loopBuilder.setZoneMin(bCenter.offset(0, 1, -1));
+                            loopBuilder.setZoneMax(bCenter.offset(3, 2, -1));
+                        }
+                    }
+
+                    if (loopBuilder != null && loopBuilder.isAlive()) {
+                        loopBuilder.setEnergy(50000);
+                        boolean hasBlocks = false;
+                        for (int i = 0; i < loopBuilder.getInventory().getContainerSize(); i++) {
+                            ItemStack st = loopBuilder.getInventory().getItem(i);
+                            if (!st.isEmpty() && st.getItem() instanceof BlockItem) {
+                                hasBlocks = true;
+                                break;
+                            }
+                        }
+                        if (!hasBlocks) {
+                            loopBuilder.getInventory().addItem(new ItemStack(Blocks.CUT_SANDSTONE, 32));
+                        }
+
+                        boolean allBuilt = true;
+                        for (BlockPos pos : BUILDER_CONSTRUCTION_POSITIONS) {
+                            if (overworld.isLoaded(pos) && overworld.isEmptyBlock(pos)) {
+                                allBuilt = false;
+                                break;
+                            }
+                        }
+
+                        if (allBuilt) {
+                            builderResetCooldown++;
+                            if (builderResetCooldown >= 5) {
+                                builderResetCooldown = 0;
+                                for (BlockPos pos : BUILDER_CONSTRUCTION_POSITIONS) {
+                                    if (overworld.isLoaded(pos)) {
+                                        overworld.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                                        overworld.sendParticles(ParticleTypes.ELECTRIC_SPARK, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 6, 0.25, 0.25, 0.25, 0.05);
+                                        overworld.sendParticles(ParticleTypes.SCRAPE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 4, 0.25, 0.25, 0.25, 0.05);
+                                    }
+                                }
+                                CyborgSwarmManager.getInstance().releaseAll(loopBuilder.getUUID());
+                                if (!BUILDER_CONSTRUCTION_POSITIONS.isEmpty()) {
+                                    overworld.playSound(null, BUILDER_CONSTRUCTION_POSITIONS.get(0), SoundEvents.IRON_GOLEM_REPAIR, SoundSource.BLOCKS, 1.0f, 1.2f);
+                                }
+                            }
+                        } else {
+                            builderResetCooldown = 0;
                         }
                     }
                 }
@@ -1705,10 +1780,15 @@ public class ShowcaseAutomation {
         spawnHologram(level, farmCenter.getX() + 0.5, baseY + 2.9, farmCenter.getZ() + 0.5, "§7Colheita contínua e replantio em tempo real");
 
         BlockPos builderCenter = new BlockPos(0, baseY, -104);
-        for (int dx = -4; dx <= 4; dx++) {
-            for (int dz = -3; dz <= 3; dz++) {
+
+        AABB builderArea = new AABB(builderCenter.getX() - 7, baseY, builderCenter.getZ() - 6, builderCenter.getX() + 7, baseY + 6, builderCenter.getZ() + 6);
+        level.getEntitiesOfClass(ArmorStand.class, builderArea).forEach(Entity::discard);
+        level.getEntitiesOfClass(CyborgBuilderEntity.class, builderArea).forEach(Entity::discard);
+
+        for (int dx = -5; dx <= 5; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
                 BlockPos p = builderCenter.offset(dx, 0, dz);
-                boolean edge = (Math.abs(dx) == 4 || Math.abs(dz) == 3);
+                boolean edge = (Math.abs(dx) == 5 || Math.abs(dz) == 4);
                 level.setBlock(p, edge ? Blocks.CUT_SANDSTONE.defaultBlockState() : Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
                 if (edge) {
                     level.setBlock(p.above(), Blocks.IRON_BARS.defaultBlockState(), 2);
@@ -1716,23 +1796,47 @@ public class ShowcaseAutomation {
             }
         }
 
-        BlockPos dockPos = builderCenter.offset(-2, 1, 0);
+        BlockPos dockPos = builderCenter.offset(-3, 1, 1);
         level.setBlock(dockPos, SandStormBlocks.CYBORG_DOCKING_STATION.defaultBlockState(), 3);
 
-        BlockPos incubatorPos = builderCenter.offset(2, 1, 0);
+        BlockPos incubatorPos = builderCenter.offset(-3, 1, 3);
         level.setBlock(incubatorPos, SandStormBlocks.CYBORG_INCUBATOR_VAT.defaultBlockState(), 3);
 
+        BlockPos cratePos = builderCenter.offset(-3, 1, -1);
+        level.setBlock(cratePos, Blocks.CHEST.defaultBlockState(), 3);
+        BlockEntity chestBe = level.getBlockEntity(cratePos);
+        if (chestBe instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(Blocks.CUT_SANDSTONE, 64));
+            chest.setItem(1, new ItemStack(Blocks.CHISELED_SANDSTONE, 64));
+            chest.setItem(2, new ItemStack(Blocks.SMOOTH_SANDSTONE, 64));
+        }
+
+        for (int x = 0; x <= 3; x++) {
+            level.setBlock(builderCenter.offset(x, 0, -1), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+        }
+
+        BUILDER_CONSTRUCTION_POSITIONS.clear();
+        for (int y = 1; y <= 2; y++) {
+            for (int x = 0; x <= 3; x++) {
+                BlockPos bPos = builderCenter.offset(x, y, -1);
+                level.setBlock(bPos, Blocks.AIR.defaultBlockState(), 3);
+                BUILDER_CONSTRUCTION_POSITIONS.add(bPos);
+            }
+        }
+
         CyborgBuilderEntity cyborgBld = new CyborgBuilderEntity(SandStormEntities.CYBORG_BUILDER, level);
-        cyborgBld.setPos(builderCenter.getX() + 0.5, baseY + 1.0, builderCenter.getZ() + 1.5);
+        cyborgBld.setPos(builderCenter.getX() - 1.5, baseY + 1.0, builderCenter.getZ() + 1.0);
         cyborgBld.setOwnerUUID(player.getUUID());
         cyborgBld.setEnergy(50000);
-        cyborgBld.setRoutine(CyborgRoutine.PATROL_PERIMETER);
-        cyborgBld.setZoneMin(builderCenter.offset(-3, 0, -3));
-        cyborgBld.setZoneMax(builderCenter.offset(3, 2, 3));
-        cyborgBld.setCustomName(Component.literal("§bAndroide Construtor Supervisor"));
+        cyborgBld.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
+        cyborgBld.setZoneMin(builderCenter.offset(0, 1, -1));
+        cyborgBld.setZoneMax(builderCenter.offset(3, 2, -1));
+        cyborgBld.setCustomName(Component.literal("§bAndroide Construtor Autônomo"));
         cyborgBld.setCustomNameVisible(true);
         cyborgBld.setPersistenceRequired();
+        cyborgBld.getInventory().addItem(new ItemStack(Blocks.CUT_SANDSTONE, 64));
         level.addFreshEntity(cyborgBld);
+        loopBuilder = cyborgBld;
 
         ACTIVE_DRONES.clear();
 
@@ -1770,8 +1874,9 @@ public class ShowcaseAutomation {
         );
         ACTIVE_DRONES.add(new ShowcasePatrolDrone(droneLogistics2, waypoints2, new int[]{0}));
 
-        spawnHologram(level, builderCenter.getX() + 0.5, baseY + 3.2, builderCenter.getZ() + 0.5, "§b[Zona 3: Manutenção & Doca WPT]");
-        spawnHologram(level, builderCenter.getX() + 0.5, baseY + 2.9, builderCenter.getZ() + 0.5, "§7Recarga, reparos e patrulha logística");
+        spawnHologram(level, builderCenter.getX() + 0.5, baseY + 3.4, builderCenter.getZ() + 0.5, "§b[Zona 3: Engenharia & Construção Autônoma]");
+        spawnHologram(level, builderCenter.getX() + 0.5, baseY + 3.1, builderCenter.getZ() + 0.5, "§7Montagem contínua de fortificações modulares");
+        spawnHologram(level, builderCenter.getX() + 2.0, baseY + 2.6, builderCenter.getZ() - 1.0, "§e[Gabarito de Obra: Barricada Defensiva]");
     }
 
     private static void buildMegastructureDomeShowcase(ServerLevel level, BlockPos center) {
@@ -2100,6 +2205,8 @@ public class ShowcaseAutomation {
 
     @SuppressWarnings("unchecked")
     private static void spawnHologram(ServerLevel level, double x, double y, double z, String text) {
+        AABB box = new AABB(x - 0.25, y - 0.25, z - 0.25, x + 0.25, y + 0.25, z + 0.25);
+        level.getEntitiesOfClass(ArmorStand.class, box).forEach(Entity::discard);
         EntityType<ArmorStand> armorStandType = (EntityType<ArmorStand>) (EntityType<?>) BuiltInRegistries.ENTITY_TYPE.getValue(SandStormMod.mcId("armor_stand"));
         ArmorStand stand = new ArmorStand(armorStandType, level);
         stand.setPos(x, y, z);

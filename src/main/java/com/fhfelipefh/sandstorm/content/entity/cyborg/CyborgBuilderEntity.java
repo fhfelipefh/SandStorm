@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -79,16 +80,16 @@ public class CyborgBuilderEntity extends CyborgEntity {
         } else {
             this.getNavigation().stop();
             this.getLookControl().setLookAt(currentTargetPos.getX() + 0.5, currentTargetPos.getY() + 0.5, currentTargetPos.getZ() + 0.5);
-            setVisorState(0);
+            setVisorState(1);
             buildTicks++;
 
-            if (this.random.nextFloat() < 0.35f) {
+            if (this.random.nextFloat() < 0.45f) {
                 level.sendParticles(ParticleTypes.ELECTRIC_SPARK,
                         currentTargetPos.getX() + 0.5, currentTargetPos.getY() + 0.5, currentTargetPos.getZ() + 0.5,
-                        3, 0.2, 0.2, 0.2, 0.05);
+                        4, 0.25, 0.25, 0.25, 0.05);
             }
 
-            if (buildTicks >= 30) {
+            if (buildTicks >= 25) {
                 buildTicks = 0;
                 placeBlockFromInventory(level, currentTargetPos);
                 CyborgSwarmManager.getInstance().releaseBlock(this.getUUID(), currentTargetPos);
@@ -141,6 +142,8 @@ public class CyborgBuilderEntity extends CyborgEntity {
             if (!stack.isEmpty() && stack.getItem() instanceof BlockItem blockItem) {
                 BlockState stateToPlace = blockItem.getBlock().defaultBlockState();
                 level.setBlock(pos, stateToPlace, 3);
+                level.playSound(null, pos, stateToPlace.getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0f, 1.0f);
+                level.sendParticles(ParticleTypes.ELECTRIC_SPARK, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 8, 0.3, 0.3, 0.3, 0.05);
                 stack.shrink(1);
                 consumeEnergy(20);
                 break;
