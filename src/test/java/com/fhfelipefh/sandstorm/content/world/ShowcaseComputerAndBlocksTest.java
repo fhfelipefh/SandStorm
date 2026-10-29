@@ -85,18 +85,35 @@ class ShowcaseComputerAndBlocksTest {
         assertNotNull(sandstorm.getChild("showcase"));
         assertNotNull(sandstorm.getChild("computer"));
         assertNotNull(sandstorm.getChild("vault"));
+        assertNotNull(sandstorm.getChild("carbon"));
+        assertNotNull(sandstorm.getChild("extractor"));
+        assertNotNull(sandstorm.getChild("furnace"));
+        assertNotNull(sandstorm.getChild("induction"));
 
         CommandNode<CommandSourceStack> sandstormDebug = dispatcher.getRoot().getChild("sandstorm_debug");
         assertNotNull(sandstormDebug);
         assertNotNull(sandstormDebug.getChild("showcase"));
         assertNotNull(sandstormDebug.getChild("computer"));
         assertNotNull(sandstormDebug.getChild("vault"));
+        assertNotNull(sandstormDebug.getChild("carbon"));
+        assertNotNull(sandstormDebug.getChild("extractor"));
+        assertNotNull(sandstormDebug.getChild("furnace"));
+        assertNotNull(sandstormDebug.getChild("induction"));
 
         CommandNode<CommandSourceStack> sandstormComputer = dispatcher.getRoot().getChild("sandstorm_computer");
         assertNotNull(sandstormComputer);
 
         CommandNode<CommandSourceStack> sandstormVault = dispatcher.getRoot().getChild("sandstorm_vault");
         assertNotNull(sandstormVault);
+
+        CommandNode<CommandSourceStack> sandstormCarbon = dispatcher.getRoot().getChild("sandstorm_carbon");
+        assertNotNull(sandstormCarbon);
+
+        CommandNode<CommandSourceStack> sandstormExtractor = dispatcher.getRoot().getChild("sandstorm_extractor");
+        assertNotNull(sandstormExtractor);
+
+        CommandNode<CommandSourceStack> sandstormFurnace = dispatcher.getRoot().getChild("sandstorm_furnace");
+        assertNotNull(sandstormFurnace);
     }
 
     @Test
@@ -104,6 +121,10 @@ class ShowcaseComputerAndBlocksTest {
         List<String> facilities = SandstormDebugCommand.getSupportedFacilities();
         assertTrue(facilities.contains("computer"));
         assertTrue(facilities.contains("vault"));
+        assertTrue(facilities.contains("carbon_foundry"));
+        assertTrue(facilities.contains("carbon"));
+        assertTrue(facilities.contains("extractor"));
+        assertTrue(facilities.contains("furnace"));
     }
 
     @Test
@@ -118,6 +139,11 @@ class ShowcaseComputerAndBlocksTest {
         String vaultControllerExp = (String) explanationMethod.invoke(null, SandStormBlocks.VAULT_DOOR_CONTROLLER);
         String vaultWallPanelExp = (String) explanationMethod.invoke(null, SandStormBlocks.VAULT_WALL_PANEL);
         String vaultWallSeamExp = (String) explanationMethod.invoke(null, SandStormBlocks.VAULT_WALL_SEAM);
+        String carbonExtractorExp = (String) explanationMethod.invoke(null, SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR);
+        String electricFurnaceExp = (String) explanationMethod.invoke(null, SandStormBlocks.ELECTRIC_ARC_FURNACE);
+        String sandstoneCrateExp = (String) explanationMethod.invoke(null, SandStormBlocks.SANDSTONE_CRATE);
+        String synapticCondenserExp = (String) explanationMethod.invoke(null, SandStormBlocks.SYNAPTIC_CONDENSER);
+        String synapticRepairerExp = (String) explanationMethod.invoke(null, SandStormBlocks.SYNAPTIC_REPAIRER);
 
         assertNotNull(controllerExp);
         assertFalse(controllerExp.equals("Tecnologia Estrutural SandStorm"));
@@ -146,6 +172,26 @@ class ShowcaseComputerAndBlocksTest {
         assertNotNull(vaultWallSeamExp);
         assertFalse(vaultWallSeamExp.equals("Tecnologia Estrutural SandStorm"));
         assertTrue(vaultWallSeamExp.length() <= 45);
+
+        assertNotNull(carbonExtractorExp);
+        assertFalse(carbonExtractorExp.equals("Tecnologia Estrutural SandStorm"));
+        assertTrue(carbonExtractorExp.length() <= 45);
+
+        assertNotNull(electricFurnaceExp);
+        assertFalse(electricFurnaceExp.equals("Tecnologia Estrutural SandStorm"));
+        assertTrue(electricFurnaceExp.length() <= 45);
+
+        assertNotNull(sandstoneCrateExp);
+        assertFalse(sandstoneCrateExp.equals("Tecnologia Estrutural SandStorm"));
+        assertTrue(sandstoneCrateExp.length() <= 45);
+
+        assertNotNull(synapticCondenserExp);
+        assertFalse(synapticCondenserExp.equals("Tecnologia Estrutural SandStorm"));
+        assertTrue(synapticCondenserExp.length() <= 45);
+
+        assertNotNull(synapticRepairerExp);
+        assertFalse(synapticRepairerExp.equals("Tecnologia Estrutural SandStorm"));
+        assertTrue(synapticRepairerExp.length() <= 45);
     }
 
     @Test
@@ -189,6 +235,11 @@ class ShowcaseComputerAndBlocksTest {
         assertTrue(blocks.contains(SandStormBlocks.SUBSPACE_GATEWAY));
         assertTrue(blocks.contains(SandStormBlocks.SEISMIC_DAMPENER_PAVING));
         assertTrue(blocks.contains(SandStormBlocks.SALT_BRICKS));
+        assertTrue(blocks.contains(SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR));
+        assertTrue(blocks.contains(SandStormBlocks.ELECTRIC_ARC_FURNACE));
+        assertTrue(blocks.contains(SandStormBlocks.SANDSTONE_CRATE));
+        assertTrue(blocks.contains(SandStormBlocks.SYNAPTIC_CONDENSER));
+        assertTrue(blocks.contains(SandStormBlocks.SYNAPTIC_REPAIRER));
     }
 
     @Test

@@ -136,7 +136,11 @@ public class SandstormDebugCommand {
             "colossal_castle",
             "computer",
             "biospheres_all",
-            "vault"
+            "vault",
+            "carbon_foundry",
+            "carbon",
+            "extractor",
+            "furnace"
     );
 
     public static void initialize() {
@@ -1653,6 +1657,11 @@ public class SandstormDebugCommand {
             case "vault", "armored_vault", "cofre" -> {
                 ShowcaseAutomation.buildVaultShowcase(level, center);
                 source.sendSuccess(() -> Component.literal("§a[SandStorm] Câmara de Cofre Blindada 3x3 montada com sucesso!"), true);
+                return 1;
+            }
+            case "carbon_foundry", "carbon", "extractor", "furnace" -> {
+                ShowcaseAutomation.buildCarbonAndInductionStation(level, center);
+                source.sendSuccess(() -> Component.literal("§a[SandStorm] Complexo de Carbono & Indução Térmica montado com sucesso!"), true);
                 return 1;
             }
             default -> {

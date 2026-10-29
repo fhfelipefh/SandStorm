@@ -2,6 +2,28 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.34] - 2026-10-29
+
+### ⚡ Complexo de Carbono & Indução Térmica no Showcase & Comandos Dedicados
+* **Estação Interativa Completa no Proving Ground (`SandStorm_Showcase`)**:
+  * Adicionado o **Complexo de Carbono & Indução Térmica** em `center.offset(-18, 0, 0)` com 5 setups funcionais demonstrando todas as novas tecnologias:
+    * **Setup 1 (Fornalha a Arco Elétrico)**: energizada via Acumulador de Estado Sólido e WPT, fundindo silício bruto em wafers de silício com efeito de indução térmica.
+    * **Setup 2 (Capturador de Carbono em Modo Carvão)**: operando sob céu aberto, demonstrando a conversão de $CO_2$ atmosférico em carbono sólido/carvão.
+    * **Setup 3 (Síntese Epitaxial CVD de Diamante)**: com semente natural de diamante no substrato e feixe de plasma ativo gerando novos diamantes.
+    * **Setup 4 (Tiragem Térmica por Combustão)**: Capturador de Carbono adjacente a chamas de Netherrack com boost de velocidade (+200%) demonstrado na prática.
+    * **Setup 5 (Logística & Deserto Primário)**: Fornalha Solar de Arenito e Caixote de Arenito com tampa procedural 3D articulada e 54 slots de inventário.
+  * **Passarela e Acesso**: passarela envidraçada ligando a Praça Central ao Complexo Oeste, com placas de teleporte bidirecionais e holográficas.
+  * **Baús de Suprimento Atualizados**:
+    * Novo Baú na Praça Central (`chestPos3`) abastecido com todos os itens, máquinas e materiais recentes (`ATMOSPHERIC_CARBON_EXTRACTOR`, `ELECTRIC_ARC_FURNACE`, `SANDSTONE_CRATE`, `SANDSTONE_FURNACE`, `SYNAPTIC_CARTRIDGE`, `SIGNAL_TRACKER`, `MOLECULAR_CARGO_CAPSULE`, silício, carvão e diamantes).
+    * Baú de Suprimento dedicado instalado no próprio Complexo.
+* **Comandos Dedicados de Demonstração e Debug**:
+  * Comandos de rota: `/sandstorm carbon`, `/sandstorm extractor`, `/sandstorm furnace`, `/sandstorm induction`.
+  * Comandos de debug: `/sandstorm_debug carbon`, `/sandstorm_debug extractor`, `/sandstorm_debug furnace`, `/sandstorm_debug induction`.
+  * Comandos diretos na raiz: `/sandstorm_carbon`, `/sandstorm_extractor`, `/sandstorm_furnace`.
+  * Integração de autocompletação em `SandstormDebugCommand.FACILITIES` com `carbon_foundry`, `carbon`, `extractor` e `furnace`.
+* **Auditoria de Arquitetura & Testes de Unidade**:
+  * `ShowcaseComputerAndBlocksTest`: validação de nós de comando, explicações de blocos no showcase e cobertura total dos novos blocos no tabuleiro de exibição.
+
 ## [1.19.33] - 2026-10-28
 
 ### 🔥 Efeito Termodinâmico de Tiragem por Combustão no Capturador de Carbono

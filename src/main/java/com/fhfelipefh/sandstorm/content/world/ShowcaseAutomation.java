@@ -1,11 +1,13 @@
 package com.fhfelipefh.sandstorm.content.world;
 
 import com.fhfelipefh.sandstorm.content.block.AcousticDefensePylonBlock;
+import com.fhfelipefh.sandstorm.content.block.AtmosphericCarbonExtractorBlock;
 import com.fhfelipefh.sandstorm.content.block.AutonomousSonicTurretBlock;
 import com.fhfelipefh.sandstorm.content.block.BiosphereDoorBlock;
 import com.fhfelipefh.sandstorm.content.block.CorrosiveChitinSpikeWallBlock;
 import com.fhfelipefh.sandstorm.content.block.CryoFreezeMineBlock;
 import com.fhfelipefh.sandstorm.content.block.CryoReactorCoreBlock;
+import com.fhfelipefh.sandstorm.content.block.ElectricArcFurnaceBlock;
 import com.fhfelipefh.sandstorm.content.block.HoloLaserTripwireBlock;
 import com.fhfelipefh.sandstorm.content.block.KineticEjectorTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.KineticRailgunBlock;
@@ -26,9 +28,11 @@ import com.fhfelipefh.sandstorm.content.block.VerticalConnection;
 import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.block.entity.AcousticDefensePylonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AmnioticIncubatorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericCarbonExtractorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericTerraformerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CryogenicAtmosphericChillerBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.ElectricArcFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticRailgunBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
@@ -36,6 +40,8 @@ import com.fhfelipefh.sandstorm.content.block.entity.OrbitalGroundStationBlockEn
 import com.fhfelipefh.sandstorm.content.block.entity.OrbitalMassDriverBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SandstoneCrateBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SubspaceGatewayBlockEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
@@ -370,6 +376,22 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeOrbitalCommand)
                 )
+                .then(Commands.literal("carbon")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCarbonCommand)
+                )
+                .then(Commands.literal("extractor")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCarbonCommand)
+                )
+                .then(Commands.literal("furnace")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCarbonCommand)
+                )
+                .then(Commands.literal("induction")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCarbonCommand)
+                )
                 .then(Commands.literal("military_lab")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
@@ -438,6 +460,22 @@ public class ShowcaseAutomation {
                 .then(Commands.literal("orbital")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeOrbitalCommand)
+                )
+                .then(Commands.literal("carbon")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCarbonCommand)
+                )
+                .then(Commands.literal("extractor")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCarbonCommand)
+                )
+                .then(Commands.literal("furnace")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCarbonCommand)
+                )
+                .then(Commands.literal("induction")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCarbonCommand)
                 )
                 .then(Commands.literal("military_lab")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
@@ -552,6 +590,21 @@ public class ShowcaseAutomation {
                         .suggests((c, b) -> suggestCinematicRoutes(b))
                         .executes(ctx -> ShowcaseCinematicManager.startCinematic(ctx.getSource(), StringArgumentType.getString(ctx, "route")))
                 )
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_carbon")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeCarbonCommand)
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_extractor")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeCarbonCommand)
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_furnace")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeCarbonCommand)
         );
     }
 
@@ -698,6 +751,25 @@ public class ShowcaseAutomation {
         return 0;
     }
 
+    public static int executeCarbonCommand(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
+        if (source.getEntity() instanceof ServerPlayer player) {
+            ServerLevel level = source.getLevel();
+            if (showcaseActive) {
+                BlockPos targetPos = new BlockPos(-18, 161, 0);
+                player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 90.0f, 0.0f, true);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Complexo de Carbono & Indução Térmica!"), true);
+            } else {
+                BlockPos targetPos = BlockPos.containing(player.position()).relative(player.getDirection(), 4);
+                buildCarbonAndInductionStation(level, targetPos);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Complexo de Carbono & Indução Térmica montado com sucesso!"), true);
+            }
+            return 1;
+        }
+        source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
+        return 0;
+    }
+
     public static void buildShowcase(ServerLevel level, ServerPlayer player) {
         showcaseActive = true;
         TELEPORT_PADS.clear();
@@ -722,6 +794,8 @@ public class ShowcaseAutomation {
         buildAutonomousCyborgFacility(level, center, player);
         buildQuantumComputerStation(level, center.offset(18, 0, 0));
         buildQuantumComputerWalkway(level, center);
+        buildCarbonAndInductionStation(level, center.offset(-18, 0, 0));
+        buildCarbonAndInductionWalkway(level, center);
         buildVaultShowcase(level, center.offset(32, 0, -16));
         buildVaultWalkway(level, center);
         buildSubspaceGatewayStation(level, center.offset(36, 0, -32));
@@ -867,6 +941,27 @@ public class ShowcaseAutomation {
             chest2.setItem(26, new ItemStack(SandStormItems.GEOLOGICAL_SURVEYOR_DRONE));
         }
 
+        BlockPos chestPos3 = center.offset(0, 1, 1);
+        setChestSafe(level, chestPos3, Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(chestPos3) instanceof ChestBlockEntity chest3) {
+            chest3.setItem(0, new ItemStack(SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR, 4));
+            chest3.setItem(1, new ItemStack(SandStormBlocks.ELECTRIC_ARC_FURNACE, 4));
+            chest3.setItem(2, new ItemStack(SandStormBlocks.SANDSTONE_CRATE, 8));
+            chest3.setItem(3, new ItemStack(SandStormBlocks.SANDSTONE_FURNACE, 4));
+            chest3.setItem(4, new ItemStack(SandStormItems.SYNAPTIC_CARTRIDGE, 4));
+            chest3.setItem(5, new ItemStack(SandStormItems.SIGNAL_TRACKER, 1));
+            chest3.setItem(6, new ItemStack(SandStormItems.MOLECULAR_CARGO_CAPSULE, 4));
+            chest3.setItem(7, new ItemStack(SandStormItems.RAW_SILICON, 64));
+            chest3.setItem(8, new ItemStack(SandStormItems.SILICON_WAFER, 64));
+            chest3.setItem(9, new ItemStack(Items.COAL, 64));
+            chest3.setItem(10, new ItemStack(Items.DIAMOND, 16));
+            chest3.setItem(11, new ItemStack(SandStormBlocks.SOLID_STATE_ACCUMULATOR, 4));
+            chest3.setItem(12, new ItemStack(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2, 4));
+            chest3.setItem(13, new ItemStack(SandStormBlocks.WPT_RELAY_TOWER, 8));
+            chest3.setItem(14, new ItemStack(Items.NETHERRACK, 16));
+            chest3.setItem(15, new ItemStack(Items.FLINT_AND_STEEL, 1));
+        }
+
         AABB clearBox = new AABB(center).inflate(8.0);
         List<ArmorStand> existingStands = level.getEntitiesOfClass(ArmorStand.class, clearBox);
         for (ArmorStand stand : existingStands) {
@@ -875,6 +970,9 @@ public class ShowcaseAutomation {
 
         spawnHologram(level, center.getX() + 0.5, center.getY() + 2.4, center.getZ() + 0.5, "§6[Baú de Sobrevivência & Órbita]");
         spawnHologram(level, center.getX() + 0.5, center.getY() + 2.4, center.getZ() - 0.5, "§b[Baú de Rapel, Dobra & Defesa]");
+        spawnHologram(level, center.getX() + 0.5, center.getY() + 2.4, center.getZ() + 1.5, "§a[Baú de Indução, Carbono & Logística]");
+
+        setupTerminalTrigger(level, center.offset(-8, 0, 3), new BlockPos(-18, 161, 0), "Complexo de Carbono & Indução Térmica", "Capturador CO2 | Fornalha a Arco | Síntese CVD");
 
         spawnMannequin(level, center.offset(-2, 1, 0), "§bTraje Espacial Completo",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
@@ -913,7 +1011,7 @@ public class ShowcaseAutomation {
                 ItemStack.EMPTY, ItemStack.EMPTY,
                 new ItemStack(SandStormItems.ORBITAL_KINETIC_LANCE_SATELLITE), new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE));
 
-        spawnMannequin(level, center.offset(-4, 1, 0), "§4Especialista em Armadilhas",
+        spawnMannequin(level, center.offset(-4, 1, -1), "§4Especialista em Armadilhas",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
                 ItemStack.EMPTY, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
                 new ItemStack(SandStormItems.STUN_GRENADE), new ItemStack(SandStormItems.SMOKE_GRENADE));
@@ -1200,6 +1298,11 @@ public class ShowcaseAutomation {
         if (block == SandStormBlocks.HOLO_LASER_TRIPWIRE) return "Sensor Laser de Intrusão";
         if (block == SandStormBlocks.NANITE_QUICKSAND) return "Areia Movediça de Nanites";
         if (block == SandStormBlocks.SMART_FLUID_PIPE) return "Duto Inteligente de Fluidos e Gases";
+        if (block == SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR) return "Capturador de Carbono e Síntese CVD";
+        if (block == SandStormBlocks.ELECTRIC_ARC_FURNACE) return "Fornalha a Arco Elétrico de Indução";
+        if (block == SandStormBlocks.SANDSTONE_CRATE) return "Caixote de Arenito com Tampa 3D";
+        if (block == SandStormBlocks.SYNAPTIC_CONDENSER) return "Condensador Sináptico de XP";
+        if (block == SandStormBlocks.SYNAPTIC_REPAIRER) return "Reparador Nanítico Sináptico";
         return "Tecnologia Estrutural SandStorm";
     }
 
@@ -2013,6 +2116,177 @@ public class ShowcaseAutomation {
                 BlockPos p = center.offset(x, 0, z);
                 boolean edge = (z != 0);
                 boolean light = (x % 3 == 0 && z == 0);
+                Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+    }
+
+    public static void buildCarbonAndInductionStation(ServerLevel level, BlockPos stationCenter) {
+        int baseY = stationCenter.getY();
+
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                for (int dy = 1; dy <= 5; dy++) {
+                    BlockPos p = stationCenter.offset(dx, dy, dz);
+                    if (!level.getBlockState(p).isAir()) {
+                        setAirSafe(level, p);
+                    }
+                }
+            }
+        }
+
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                BlockPos p = stationCenter.offset(dx, 0, dz);
+                boolean edge = Math.abs(dx) == 4 || Math.abs(dz) == 4;
+                boolean corner = Math.abs(dx) == 4 && Math.abs(dz) == 4;
+                Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 3);
+                if (edge && !corner && !(dx == 4 && dz == 0)) {
+                    level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
+                }
+            }
+        }
+
+        BlockPos eafPos = stationCenter.offset(-2, 1, -2);
+        level.setBlock(eafPos, SandStormBlocks.ELECTRIC_ARC_FURNACE.defaultBlockState().setValue(ElectricArcFurnaceBlock.FACING, Direction.SOUTH).setValue(ElectricArcFurnaceBlock.LIT, true), 3);
+        if (level.getBlockEntity(eafPos) instanceof ElectricArcFurnaceBlockEntity eafBe) {
+            eafBe.setEnergy(10000);
+            eafBe.setItem(0, new ItemStack(SandStormItems.RAW_SILICON, 32));
+            eafBe.setItem(1, new ItemStack(SandStormItems.SILICON_WAFER, 8));
+            eafBe.setChanged();
+        }
+
+        BlockPos eafAccPos = stationCenter.offset(-3, 1, -2);
+        level.setBlock(eafAccPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        if (level.getBlockEntity(eafAccPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
+            accBe.setStoredEnergy(500000);
+        }
+        BlockPos eafSolarPos = stationCenter.offset(-3, 2, -2);
+        level.setBlock(eafSolarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+
+        spawnHologram(level, eafPos.getX() + 0.5, baseY + 3.2, eafPos.getZ() + 0.5, "§6§l[Fornalha a Arco Elétrico]");
+        spawnHologram(level, eafPos.getX() + 0.5, baseY + 2.85, eafPos.getZ() + 0.5, "§eIndução Térmica | 40 J/t | Rede WPT");
+        spawnHologram(level, eafPos.getX() + 0.5, baseY + 2.5, eafPos.getZ() + 0.5, "§aFundição de Silício Puro & Wafers");
+
+        BlockPos carbCoalPos = stationCenter.offset(-2, 1, 2);
+        level.setBlock(carbCoalPos, SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR.defaultBlockState().setValue(AtmosphericCarbonExtractorBlock.FACING, Direction.NORTH).setValue(AtmosphericCarbonExtractorBlock.LIT, true), 3);
+        if (level.getBlockEntity(carbCoalPos) instanceof AtmosphericCarbonExtractorBlockEntity carbBe) {
+            carbBe.setEnergy(10000);
+            carbBe.setItem(1, new ItemStack(Items.COAL, 16));
+            carbBe.setChanged();
+        }
+
+        BlockPos carbAccPos = stationCenter.offset(-3, 1, 2);
+        level.setBlock(carbAccPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        if (level.getBlockEntity(carbAccPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
+            accBe.setStoredEnergy(500000);
+        }
+        BlockPos carbSolarPos = stationCenter.offset(-3, 2, 2);
+        level.setBlock(carbSolarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+
+        spawnHologram(level, carbCoalPos.getX() + 0.5, baseY + 3.2, carbCoalPos.getZ() + 0.5, "§b§l[Captura de Carbono Atmosférico]");
+        spawnHologram(level, carbCoalPos.getX() + 0.5, baseY + 2.85, carbCoalPos.getZ() + 0.5, "§7Modo Carvão Sólido | 20 J/t");
+        spawnHologram(level, carbCoalPos.getX() + 0.5, baseY + 2.5, carbCoalPos.getZ() + 0.5, "§aExtrai CO₂ Livre da Atmosfera");
+
+        BlockPos cvdPos = stationCenter.offset(2, 1, 2);
+        level.setBlock(cvdPos, SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR.defaultBlockState().setValue(AtmosphericCarbonExtractorBlock.FACING, Direction.NORTH).setValue(AtmosphericCarbonExtractorBlock.LIT, true), 3);
+        if (level.getBlockEntity(cvdPos) instanceof AtmosphericCarbonExtractorBlockEntity cvdBe) {
+            cvdBe.setEnergy(10000);
+            cvdBe.setItem(0, new ItemStack(Items.DIAMOND, 1));
+            cvdBe.setItem(1, new ItemStack(Items.DIAMOND, 4));
+            cvdBe.setChanged();
+        }
+
+        BlockPos cvdAccPos = stationCenter.offset(3, 1, 2);
+        level.setBlock(cvdAccPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        if (level.getBlockEntity(cvdAccPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
+            accBe.setStoredEnergy(500000);
+        }
+        BlockPos cvdSolarPos = stationCenter.offset(3, 2, 2);
+        level.setBlock(cvdSolarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+
+        spawnHologram(level, cvdPos.getX() + 0.5, baseY + 3.2, cvdPos.getZ() + 0.5, "§d§l[Síntese CVD de Diamantes]");
+        spawnHologram(level, cvdPos.getX() + 0.5, baseY + 2.85, cvdPos.getZ() + 0.5, "§bFeixe de Plasma | Semente Natural");
+        spawnHologram(level, cvdPos.getX() + 0.5, baseY + 2.5, cvdPos.getZ() + 0.5, "§eCrescimento Cristalográfico Carbonífero");
+
+        BlockPos boostPos = stationCenter.offset(2, 1, -2);
+        level.setBlock(stationCenter.offset(3, 0, -2), Blocks.NETHERRACK.defaultBlockState(), 3);
+        level.setBlock(stationCenter.offset(3, 1, -2), Blocks.FIRE.defaultBlockState(), 3);
+        level.setBlock(boostPos, SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR.defaultBlockState().setValue(AtmosphericCarbonExtractorBlock.FACING, Direction.SOUTH).setValue(AtmosphericCarbonExtractorBlock.LIT, true), 3);
+        if (level.getBlockEntity(boostPos) instanceof AtmosphericCarbonExtractorBlockEntity boostBe) {
+            boostBe.setEnergy(10000);
+            boostBe.setItem(1, new ItemStack(Items.COAL, 32));
+            boostBe.setChanged();
+        }
+
+        BlockPos boostAccPos = stationCenter.offset(2, 1, -3);
+        level.setBlock(boostAccPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        if (level.getBlockEntity(boostAccPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
+            accBe.setStoredEnergy(500000);
+        }
+        BlockPos boostSolarPos = stationCenter.offset(2, 2, -3);
+        level.setBlock(boostSolarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+
+        spawnHologram(level, boostPos.getX() + 0.5, baseY + 3.2, boostPos.getZ() + 0.5, "§c§l[Arrasto Térmico de Combustão]");
+        spawnHologram(level, boostPos.getX() + 0.5, baseY + 2.85, boostPos.getZ() + 0.5, "§6Fogo Adjacente: Velocidade +200%");
+        spawnHologram(level, boostPos.getX() + 0.5, baseY + 2.5, boostPos.getZ() + 0.5, "§aConvecção de CO₂ Hiper-Eficiente");
+
+        BlockPos furnacePos = stationCenter.offset(0, 1, -3);
+        level.setBlock(furnacePos, SandStormBlocks.SANDSTONE_FURNACE.defaultBlockState(), 3);
+        if (level.getBlockEntity(furnacePos) instanceof SandstoneFurnaceBlockEntity furnaceBe) {
+            furnaceBe.setItem(0, new ItemStack(Blocks.SAND, 32));
+            furnaceBe.setItem(1, new ItemStack(Items.COAL, 16));
+        }
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.0, stationCenter.getZ() - 2.5, "§e§l[Fornalha Solar de Arenito]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.65, stationCenter.getZ() - 2.5, "§7Fornalha Primária do Deserto");
+
+        BlockPos cratePos = stationCenter.offset(0, 1, 3);
+        level.setBlock(cratePos, SandStormBlocks.SANDSTONE_CRATE.defaultBlockState(), 3);
+        if (level.getBlockEntity(cratePos) instanceof SandstoneCrateBlockEntity crateBe) {
+            crateBe.setItem(0, new ItemStack(SandStormItems.RAW_SILICON, 64));
+            crateBe.setItem(1, new ItemStack(SandStormItems.SILICON_WAFER, 64));
+            crateBe.setItem(2, new ItemStack(Items.COAL, 64));
+            crateBe.setItem(3, new ItemStack(Items.DIAMOND, 16));
+            crateBe.setItem(4, new ItemStack(SandStormItems.SYNAPTIC_CARTRIDGE, 4));
+            crateBe.setItem(5, new ItemStack(SandStormItems.SIGNAL_TRACKER, 1));
+            crateBe.setItem(6, new ItemStack(SandStormItems.MOLECULAR_CARGO_CAPSULE, 4));
+        }
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.0, stationCenter.getZ() + 2.5, "§6§l[Caixote de Arenito 3D]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 2.65, stationCenter.getZ() + 2.5, "§7Armazenamento com Tampa 3D Animada");
+
+        BlockPos chestPos = stationCenter.offset(-1, 1, 0);
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR, 4));
+            chest.setItem(1, new ItemStack(SandStormBlocks.ELECTRIC_ARC_FURNACE, 4));
+            chest.setItem(2, new ItemStack(SandStormBlocks.SANDSTONE_CRATE, 8));
+            chest.setItem(3, new ItemStack(SandStormBlocks.SANDSTONE_FURNACE, 4));
+            chest.setItem(4, new ItemStack(SandStormItems.SYNAPTIC_CARTRIDGE, 4));
+            chest.setItem(5, new ItemStack(SandStormItems.SIGNAL_TRACKER, 1));
+            chest.setItem(6, new ItemStack(SandStormItems.MOLECULAR_CARGO_CAPSULE, 4));
+            chest.setItem(7, new ItemStack(SandStormItems.RAW_SILICON, 64));
+            chest.setItem(8, new ItemStack(SandStormItems.SILICON_WAFER, 64));
+            chest.setItem(9, new ItemStack(Items.COAL, 64));
+            chest.setItem(10, new ItemStack(Items.DIAMOND, 16));
+            chest.setItem(11, new ItemStack(SandStormBlocks.SOLID_STATE_ACCUMULATOR, 4));
+            chest.setItem(12, new ItemStack(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2, 4));
+            chest.setItem(13, new ItemStack(SandStormBlocks.WPT_RELAY_TOWER, 8));
+            chest.setItem(14, new ItemStack(Items.NETHERRACK, 16));
+            chest.setItem(15, new ItemStack(Items.FLINT_AND_STEEL, 1));
+        }
+        spawnHologram(level, stationCenter.getX() - 0.5, baseY + 2.5, stationCenter.getZ() + 0.5, "§6[Baú de Fornos, Carbono & Síntese]");
+
+        setupReturnPad(level, stationCenter.offset(1, 1, 0));
+    }
+
+    private static void buildCarbonAndInductionWalkway(ServerLevel level, BlockPos center) {
+        for (int x = -5; x >= -14; x--) {
+            for (int z = -1; z <= 1; z++) {
+                BlockPos p = center.offset(x, 0, z);
+                boolean edge = (z != 0);
+                boolean light = (Math.abs(x) % 3 == 0 && z == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
