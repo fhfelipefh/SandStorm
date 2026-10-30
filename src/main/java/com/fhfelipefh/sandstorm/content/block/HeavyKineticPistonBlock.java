@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -189,12 +188,8 @@ public class HeavyKineticPistonBlock extends BaseEntityBlock {
         if (hasSignal && !isExtended) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof HeavyKineticPistonBlockEntity pistonBe) {
-                if (pistonBe.getEnergy() < ENERGY_PER_PUSH) {
-                    level.playSound(null, pos, SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 0.6f, 1.8f);
-                    if (level instanceof ServerLevel serverLevel) {
-                        serverLevel.sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, 4, 0.2, 0.2, 0.2, 0.02);
-                    }
-                    return;
+                if (pistonBe.getEnergy() >= ENERGY_PER_PUSH) {
+                    pistonBe.consumeEnergy(ENERGY_PER_PUSH);
                 }
             }
             if (new HeavyPistonStructureResolver(level, pos, facing, true).resolve()) {
@@ -219,14 +214,6 @@ public class HeavyKineticPistonBlock extends BaseEntityBlock {
             }
         }
         if (id == TRIGGER_EXTEND) {
-            if (!level.isClientSide()) {
-                BlockEntity be = level.getBlockEntity(pos);
-                if (be instanceof HeavyKineticPistonBlockEntity pistonBe) {
-                    if (!pistonBe.consumeEnergy(ENERGY_PER_PUSH)) {
-                        return false;
-                    }
-                }
-            }
             if (!this.moveBlocks(level, pos, direction, true)) {
                 return false;
             }

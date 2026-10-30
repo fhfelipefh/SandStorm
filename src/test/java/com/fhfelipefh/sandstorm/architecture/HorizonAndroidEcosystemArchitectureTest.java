@@ -189,5 +189,15 @@ class HorizonAndroidEcosystemArchitectureTest {
             }
         }
     }
+
+    @Test
+    void allHorizonAndroidsMustBeDeactivatableByEmp() throws IOException {
+        Path empHandlerFile = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "EmpParalysisHandler.java");
+        assertTrue(Files.exists(empHandlerFile), "EmpParalysisHandler.java must exist");
+        String content = Files.readString(empHandlerFile);
+        assertTrue(content.contains("entity instanceof DeactivatableAndroid"), "EMP handler must target DeactivatableAndroid");
+        assertTrue(content.contains("android.setDeactivated(true)"), "EMP paralysis must deactivate androids");
+        assertTrue(content.contains("android.setDeactivated(false)"), "EMP recovery must reactivate androids");
+    }
 }
 

@@ -6,10 +6,16 @@ import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberneticGolemEntity;
+import com.fhfelipefh.sandstorm.content.entity.DeactivatableAndroid;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
+import com.fhfelipefh.sandstorm.content.entity.FanghornEntity;
+import com.fhfelipefh.sandstorm.content.entity.FrostclawEntity;
+import com.fhfelipefh.sandstorm.content.entity.GlinthawkEntity;
+import com.fhfelipefh.sandstorm.content.entity.GrazerEntity;
 import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
+import com.fhfelipefh.sandstorm.content.entity.WaterwingEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgEntity;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -28,11 +34,13 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EmpParalysisHandler {
     private static final Map<UUID, Integer> PARALYZED_TICKS = new ConcurrentHashMap<>();
+    private static final Set<UUID> DEACTIVATED_BY_EMP = ConcurrentHashMap.newKeySet();
 
     public static void initialize() {
         ServerTickEvents.END_SERVER_TICK.register(EmpParalysisHandler::handleServerTick);
@@ -42,7 +50,8 @@ public class EmpParalysisHandler {
         if (entity == null || entity instanceof Player) {
             return false;
         }
-        if (entity instanceof DerelictAutomatonEntity
+        if (entity instanceof DeactivatableAndroid
+                || entity instanceof DerelictAutomatonEntity
                 || entity instanceof LaborerUnitEntity
                 || entity instanceof ScoutDroneEntity
                 || entity instanceof CrawlerDroneEntity
@@ -52,7 +61,12 @@ public class EmpParalysisHandler {
                 || entity instanceof ScrapSentinelEntity
                 || entity instanceof BuilderDroneEntity
                 || entity instanceof CargoDroneEntity
-                || entity instanceof CyborgEntity) {
+                || entity instanceof CyborgEntity
+                || entity instanceof GrazerEntity
+                || entity instanceof FanghornEntity
+                || entity instanceof FrostclawEntity
+                || entity instanceof GlinthawkEntity
+                || entity instanceof WaterwingEntity) {
             return true;
         }
         Identifier id = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
@@ -65,7 +79,14 @@ public class EmpParalysisHandler {
                     || path.contains("cyborg")
                     || path.contains("golem")
                     || path.contains("sentinel")
-                    || path.contains("robot");
+                    || path.contains("robot")
+                    || path.contains("grazer")
+                    || path.contains("fanghorn")
+                    || path.contains("frostclaw")
+                    || path.contains("glinthawk")
+                    || path.contains("waterwing")
+                    || path.contains("steed")
+                    || path.contains("android");
         }
         return false;
     }
@@ -86,6 +107,12 @@ public class EmpParalysisHandler {
         }
         if (entity instanceof CyberneticGolemEntity golem) {
             golem.setOverdrive(false);
+        }
+        if (entity instanceof DeactivatableAndroid android) {
+            if (!android.isDeactivated()) {
+                DEACTIVATED_BY_EMP.add(entity.getUUID());
+                android.setDeactivated(true);
+            }
         }
         entity.setDeltaMovement(0.0, Math.min(0.0, entity.getDeltaMovement().y), 0.0);
     }
@@ -114,6 +141,7 @@ public class EmpParalysisHandler {
                 }
                 if (!entity.isAlive() || !(entity instanceof LivingEntity living)) {
                     iterator.remove();
+                    DEACTIVATED_BY_EMP.remove(uuid);
                     continue;
                 }
 
@@ -127,6 +155,9 @@ public class EmpParalysisHandler {
                             SoundEvents.BEACON_ACTIVATE, SoundSource.NEUTRAL, 0.6f, 1.8f);
                     living.removeEffect(MobEffects.SLOWNESS);
                     living.removeEffect(MobEffects.WEAKNESS);
+                    if (DEACTIVATED_BY_EMP.remove(uuid) && living instanceof DeactivatableAndroid android) {
+                        android.setDeactivated(false);
+                    }
                     continue;
                 }
 

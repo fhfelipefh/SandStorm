@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -154,13 +153,12 @@ public class TectonicKineticPistonBlock extends BaseEntityBlock {
         if (hasSignal && !isExtended) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof TectonicKineticPistonBlockEntity pistonBe) {
-                if (pistonBe.consumeEnergy(ENERGY_PER_PUSH)) {
-                    level.blockEvent(pos, this, 0, direction.get3DDataValue());
-                } else {
-                    if (level instanceof ServerLevel serverLevel) {
-                        serverLevel.sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, 4, 0.1, 0.1, 0.1, 0.02);
-                    }
+                if (pistonBe.getEnergy() >= ENERGY_PER_PUSH) {
+                    pistonBe.consumeEnergy(ENERGY_PER_PUSH);
                 }
+            }
+            if (new HeavyPistonStructureResolver(level, pos, direction, true, MAX_PUSH_DEPTH, true).resolve()) {
+                level.blockEvent(pos, this, 0, direction.get3DDataValue());
             }
         } else if (!hasSignal && isExtended) {
             level.blockEvent(pos, this, 1, direction.get3DDataValue());

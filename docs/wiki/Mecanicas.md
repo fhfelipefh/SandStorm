@@ -98,6 +98,7 @@ O planeta desértico abriga uma biosfera de máquinas ancestrais autônomas, con
 * **Frostclaw (`frostclaw`):** Androides bípedes massivos com garras criogênicas colossais. Capazes de disparar rajadas congelantes e esmagar o solo, criando terreno gelado que dissipa o calor extremo do deserto.
 * **Glinthawk (`glinthawk`):** Drones voadores carniceiros que sobrevoam os céus à procura de sucatas e ligas metálicas, lançando ataques aéreos coordenados.
 * **Waterwing (`waterwing`):** Criaturas aladas anfíbias capazes de mergulhar em aquíferos profundos e navegar correntes subterrâneas, coletando água e depósitos minerais intactos.
+* **Vulnerabilidade Universal a PEM (`emp_rifle`):** Todas as entidades robóticas e androides (`Grazer`, `Fanghorn`, `Frostclaw`, `Glinthawk`, `Waterwing`, `CyberSteed` e ciborgues) são suscetíveis à interferência eletromagnética. Ao serem atingidas por pulsos do Rifle PEM, têm seus subsistemas paralisados por 10 segundos, desativando inteligência artificial, rotinas e módulos de propulsão.
 
 
 ---

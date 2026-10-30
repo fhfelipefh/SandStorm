@@ -47,6 +47,9 @@ import com.fhfelipefh.sandstorm.content.block.entity.SandstoneCrateBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SubspaceGatewayBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.CompactSlabPistonBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.HeavyKineticPistonBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.TectonicKineticPistonBlockEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
@@ -236,11 +239,11 @@ public class ShowcaseAutomation {
                     showcaseActive = true;
                     TELEPORT_PADS.clear();
                     CyborgSwarmManager.getInstance().releaseAll();
-                    buildTransitTerminal(level, new BlockPos(0, 160, 0));
+                    buildTransitTerminal(level, new BlockPos(-20, 160, 12));
                     buildBlockCheckerboard(level, new BlockPos(0, 160, 0));
+                    buildEntityWing(level, new BlockPos(0, 160, 0));
                     buildAutonomousCyborgFacility(level, new BlockPos(0, 160, 0), player);
-                    buildPistonTestingRange(level, new BlockPos(-50, 160, -65));
-                    buildPistonWalkway(level, new BlockPos(0, 160, 0));
+                    buildPistonTestingRange(level, new BlockPos(50, 160, -125));
                     preparePlayerForShowcase(level, player);
                 } else if (!GENERATED_PLAYERS.contains(player.getUUID())) {
                     GENERATED_PLAYERS.add(player.getUUID());
@@ -2760,6 +2763,7 @@ public class ShowcaseAutomation {
         GrazerEntity grazer = new GrazerEntity(SandStormEntities.GRAZER, level);
         grazer.setPos(-16.0, entityY, -30.0);
         grazer.setPersistenceRequired();
+        grazer.setNoAi(true);
         grazer.setCustomName(Component.literal("Pastador (Grazer)"));
         grazer.setCustomNameVisible(true);
         level.addFreshEntity(grazer);
@@ -2768,6 +2772,7 @@ public class ShowcaseAutomation {
         FanghornEntity fanghorn = new FanghornEntity(SandStormEntities.FANGHORN, level);
         fanghorn.setPos(-8.0, entityY, -30.0);
         fanghorn.setPersistenceRequired();
+        fanghorn.setNoAi(true);
         fanghorn.setCustomName(Component.literal("Presalonga (Fanghorn)"));
         fanghorn.setCustomNameVisible(true);
         level.addFreshEntity(fanghorn);
@@ -2776,15 +2781,16 @@ public class ShowcaseAutomation {
         FrostclawEntity frostclaw = new FrostclawEntity(SandStormEntities.FROSTCLAW, level);
         frostclaw.setPos(0.0, entityY, -30.0);
         frostclaw.setPersistenceRequired();
+        frostclaw.setNoAi(true);
         frostclaw.setCustomName(Component.literal("Garra-Gelida (Frostclaw)"));
         frostclaw.setCustomNameVisible(true);
         level.addFreshEntity(frostclaw);
 
         placeEntityPedestal(level, new BlockPos(8, baseY, -30));
         GlinthawkEntity glinthawk = new GlinthawkEntity(SandStormEntities.GLINTHAWK, level);
-        glinthawk.setPos(8.0, entityY + 1.0, -30.0);
-        glinthawk.setNoGravity(true);
+        glinthawk.setPos(8.0, entityY, -30.0);
         glinthawk.setPersistenceRequired();
+        glinthawk.setNoAi(true);
         glinthawk.setCustomName(Component.literal("Gaviao-Reluzente (Glinthawk)"));
         glinthawk.setCustomNameVisible(true);
         level.addFreshEntity(glinthawk);
@@ -2793,6 +2799,7 @@ public class ShowcaseAutomation {
         WaterwingEntity waterwing = new WaterwingEntity(SandStormEntities.WATERWING, level);
         waterwing.setPos(16.0, entityY, -30.0);
         waterwing.setPersistenceRequired();
+        waterwing.setNoAi(true);
         waterwing.setTame(true, false);
         waterwing.setOrderedToSit(false);
         waterwing.setCustomName(Component.literal("Asad'agua (Waterwing)"));
@@ -2960,9 +2967,17 @@ public class ShowcaseAutomation {
     private static void installPistonPowerControl(ServerLevel level, BlockPos pistonPos) {
         BlockPos controlBlock = pistonPos.north(3);
         level.setBlock(controlBlock, Blocks.POLISHED_DEEPSLATE.defaultBlockState(), 3);
-        level.setBlock(controlBlock.above(), Blocks.LEVER.defaultBlockState(), 3);
+        level.setBlock(controlBlock.above(), Blocks.LEVER.defaultBlockState().setValue(LeverBlock.FACE, AttachFace.FLOOR).setValue(LeverBlock.FACING, Direction.SOUTH), 3);
         level.setBlock(pistonPos.north(2), Blocks.REDSTONE_WIRE.defaultBlockState(), 3);
         level.setBlock(pistonPos.north(), Blocks.REDSTONE_WIRE.defaultBlockState(), 3);
+        BlockEntity be = level.getBlockEntity(pistonPos);
+        if (be instanceof CompactSlabPistonBlockEntity cbe) {
+            cbe.setEnergy(cbe.getMaxEnergy());
+        } else if (be instanceof HeavyKineticPistonBlockEntity hbe) {
+            hbe.setEnergy(hbe.getMaxEnergy());
+        } else if (be instanceof TectonicKineticPistonBlockEntity tbe) {
+            tbe.setEnergy(tbe.getMaxEnergy());
+        }
     }
 
     private static void buildPistonWalkway(ServerLevel level, BlockPos center) {
@@ -3488,12 +3503,13 @@ public class ShowcaseAutomation {
             }
         }
 
-        BlockPos leverWallPos = stationCenter.offset(2, 2, 5);
-        level.setBlock(stationCenter.offset(2, 1, 5), Blocks.AIR.defaultBlockState(), 3);
+        BlockPos leverPedestal = stationCenter.offset(2, 1, 5);
+        level.setBlock(leverPedestal, SandStormBlocks.VAULT_WALL_SEAM.defaultBlockState(), 3);
+        BlockPos leverPos = stationCenter.offset(2, 2, 5);
         BlockState leverState = Blocks.LEVER.defaultBlockState()
-                .setValue(LeverBlock.FACE, AttachFace.WALL)
+                .setValue(LeverBlock.FACE, AttachFace.FLOOR)
                 .setValue(LeverBlock.FACING, Direction.SOUTH);
-        level.setBlock(leverWallPos, leverState, 3);
+        level.setBlock(leverPos, leverState, 3);
 
         BlockPos chestPos = stationCenter.offset(0, 1, 0);
         setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH));

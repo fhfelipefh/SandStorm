@@ -17,7 +17,7 @@ class ShowcasePistonPowerArchitectureTest {
 
         assertEquals(6, countOccurrences(source, "installPistonPowerControl(level, p"));
         assertTrue(source.contains("Blocks.REDSTONE_WIRE.defaultBlockState()"));
-        assertTrue(source.contains("controlBlock.above(), Blocks.LEVER.defaultBlockState()"));
+        assertTrue(source.contains("controlBlock.above(), Blocks.LEVER.defaultBlockState().setValue(LeverBlock.FACE, AttachFace.FLOOR)"));
         assertTrue(source.contains("pistonPos.north(), Blocks.REDSTONE_WIRE.defaultBlockState()"));
     }
 

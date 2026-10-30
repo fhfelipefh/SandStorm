@@ -2,6 +2,19 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.52] - 2026-10-30
+
+### 🦌 Blindagem Horizon de Alta Fidelidade, Eliminação de Z-Fighting & PEM Universal
+* **Reformulação Visual dos 5 Androides Horizon**:
+  * Redesenhadas as texturas de `Grazer`, `Fanghorn`, `Frostclaw`, `Glinthawk` e `Waterwing` adotando a paleta de 15 tons de titânio e aço ardósia, chanfros metálicos realistas, juntas de cobre e cilindros de combustível com emissão de luz.
+  * Geometria dos chifres do Fanghorn desacoplada em planos distintos, eliminando totalmente o *flickering* (Z-fighting) entre base e riser.
+  * O Glinthawk agora posiciona-se e persiste perfeitamente sobre o pedestal de exibição do Showcase sem risco de despawn por dificuldade ou distância.
+* **Física Eletromagnética Universal (PEM)**:
+  * Todos os robôs e androides (`DeactivatableAndroid`), incluindo espécimes pacíficos e montarias, são paralisados por disparos do Rifle PEM, desligando temporariamente sua IA e sistemas de navegação por 10 segundos.
+* **Empuxo Confiável dos Super Pistões**:
+  * Pistões cinéticos de meia-laje, pesados e tectônicos acionam empuxo e retração com sinal de redstone direto sem exigir pré-carga elétrica.
+  * Ancorado suporte estrutural sob a alavanca de controle no cofre do Showcase, eliminando alavancas suspensas no ar.
+
 ## [1.19.51] - 2026-10-30
 
 ### 🧱 Inventário 3D e Campo de Pistões Energizado

@@ -13,8 +13,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
 
@@ -58,7 +60,7 @@ public class SandstormMorphingCastleCommand {
         }
 
         level.setBlock(corePos, SandStormBlocks.MORPHING_MATRIX_CORE.defaultBlockState(), 3);
-        level.setBlock(corePos.above(), Blocks.LEVER.defaultBlockState(), 3);
+        level.setBlock(corePos.above(), Blocks.LEVER.defaultBlockState().setValue(LeverBlock.FACE, AttachFace.FLOOR).setValue(LeverBlock.FACING, Direction.NORTH), 3);
 
         level.getServer().execute(() -> {
             BlockEntity be = level.getBlockEntity(corePos);

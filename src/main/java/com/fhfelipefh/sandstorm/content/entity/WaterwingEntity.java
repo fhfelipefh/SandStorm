@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.entity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -79,6 +80,30 @@ public class WaterwingEntity extends TamableAnimal implements DeactivatableAndro
     @Override
     public void setDeactivated(boolean deactivated) {
         this.entityData.set(DATA_DEACTIVATED, deactivated);
+        this.setNoAi(deactivated);
+        if (deactivated) {
+            this.setTarget(null);
+            this.getNavigation().stop();
+            this.ejectPassengers();
+        }
+    }
+
+    @Override
+    public Component getName() {
+        if (this.isDeactivated()) {
+            return Component.translatable(this.getType().getDescriptionId() + ".deactivated");
+        }
+        return super.getName();
+    }
+
+    @Override
+    public void tick() {
+        if (this.isDeactivated()) {
+            this.setDeltaMovement(0, Math.min(0, this.getDeltaMovement().y), 0);
+            super.tick();
+            return;
+        }
+        super.tick();
     }
 
     @Override

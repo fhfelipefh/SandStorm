@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.entity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -78,6 +79,15 @@ public class GlinthawkEntity extends PathfinderMob implements Enemy, Deactivatab
     }
 
     @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
+    public void checkDespawn() {
+    }
+
+    @Override
     public boolean isDeactivated() {
         return this.entityData.get(DATA_DEACTIVATED);
     }
@@ -85,6 +95,20 @@ public class GlinthawkEntity extends PathfinderMob implements Enemy, Deactivatab
     @Override
     public void setDeactivated(boolean deactivated) {
         this.entityData.set(DATA_DEACTIVATED, deactivated);
+        this.setNoAi(deactivated);
+        if (deactivated) {
+            this.setTarget(null);
+            this.getNavigation().stop();
+            this.ejectPassengers();
+        }
+    }
+
+    @Override
+    public Component getName() {
+        if (this.isDeactivated()) {
+            return Component.translatable(this.getType().getDescriptionId() + ".deactivated");
+        }
+        return super.getName();
     }
 
     @Override
