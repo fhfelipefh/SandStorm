@@ -1,3 +1,9 @@
 {
   "parent": "sandstorm:block/serrated_jaw_trap_open"
+  ,"display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "scale": [0.625, 0.625, 0.625]
+    }
+  }
 }

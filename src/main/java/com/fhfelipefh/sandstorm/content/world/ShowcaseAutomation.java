@@ -2865,7 +2865,7 @@ public class ShowcaseAutomation {
         level.setBlock(p1, SandStormBlocks.COMPACT_SLAB_PISTON.defaultBlockState()
                 .setValue(CompactSlabPistonBlock.FACING, Direction.SOUTH)
                 .setValue(CompactSlabPistonBlock.TOP_SLAB, true), 3);
-        level.setBlock(p1.north(), Blocks.LEVER.defaultBlockState(), 3);
+        installPistonPowerControl(level, p1);
         for (int i = 1; i <= 7; i++) {
             level.setBlock(p1.south(i), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
             level.setBlock(p1.south(i).below(), Blocks.OCHRE_FROGLIGHT.defaultBlockState(), 2);
@@ -2878,7 +2878,7 @@ public class ShowcaseAutomation {
         level.setBlock(p2, SandStormBlocks.COMPACT_STICKY_SLAB_PISTON.defaultBlockState()
                 .setValue(CompactSlabPistonBlock.FACING, Direction.SOUTH)
                 .setValue(CompactSlabPistonBlock.TOP_SLAB, true), 3);
-        level.setBlock(p2.north(), Blocks.LEVER.defaultBlockState(), 3);
+        installPistonPowerControl(level, p2);
         for (int i = 1; i <= 7; i++) {
             level.setBlock(p2.south(i), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
             level.setBlock(p2.south(i).below(), Blocks.SEA_LANTERN.defaultBlockState(), 2);
@@ -2890,7 +2890,7 @@ public class ShowcaseAutomation {
         BlockPos p3 = center.offset(-2, 1, 0);
         level.setBlock(p3, SandStormBlocks.HEAVY_KINETIC_PISTON.defaultBlockState()
                 .setValue(HeavyKineticPistonBlock.FACING, Direction.SOUTH), 3);
-        level.setBlock(p3.north(), Blocks.LEVER.defaultBlockState(), 3);
+        installPistonPowerControl(level, p3);
         for (int i = 1; i <= 24; i++) {
             level.setBlock(p3.south(i), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
             if (i % 4 == 0) {
@@ -2904,7 +2904,7 @@ public class ShowcaseAutomation {
         BlockPos p4 = center.offset(2, 1, 0);
         level.setBlock(p4, SandStormBlocks.HEAVY_STICKY_KINETIC_PISTON.defaultBlockState()
                 .setValue(HeavyKineticPistonBlock.FACING, Direction.SOUTH), 3);
-        level.setBlock(p4.north(), Blocks.LEVER.defaultBlockState(), 3);
+        installPistonPowerControl(level, p4);
         for (int i = 1; i <= 24; i++) {
             level.setBlock(p4.south(i), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 3);
             if (i % 4 == 0) {
@@ -2918,7 +2918,7 @@ public class ShowcaseAutomation {
         BlockPos p5 = center.offset(6, 1, 0);
         level.setBlock(p5, SandStormBlocks.TECTONIC_KINETIC_PISTON.defaultBlockState()
                 .setValue(TectonicKineticPistonBlock.FACING, Direction.SOUTH), 3);
-        level.setBlock(p5.north(), Blocks.LEVER.defaultBlockState(), 3);
+        installPistonPowerControl(level, p5);
         level.setBlock(p5.south(1), Blocks.OBSIDIAN.defaultBlockState(), 3);
         level.setBlock(p5.south(2), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
         level.setBlock(p5.south(3), Blocks.OBSIDIAN.defaultBlockState(), 3);
@@ -2939,7 +2939,7 @@ public class ShowcaseAutomation {
         BlockPos p6 = center.offset(10, 1, 0);
         level.setBlock(p6, SandStormBlocks.TECTONIC_STICKY_KINETIC_PISTON.defaultBlockState()
                 .setValue(TectonicKineticPistonBlock.FACING, Direction.SOUTH), 3);
-        level.setBlock(p6.north(), Blocks.LEVER.defaultBlockState(), 3);
+        installPistonPowerControl(level, p6);
         level.setBlock(p6.south(1), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
         level.setBlock(p6.south(2), Blocks.OBSIDIAN.defaultBlockState(), 3);
         for (int i = 3; i <= 16; i++) {
@@ -2955,6 +2955,14 @@ public class ShowcaseAutomation {
         spawnHologram(level, p6.getX() + 0.5, baseY + 2.6, p6.getZ() - 0.5, "§d§l[Tectônico Grudento]");
         spawnHologram(level, p6.getX() + 0.5, baseY + 2.25, p6.getZ() - 0.5, "§c★ PUXA OBSIDIANA! ★");
         spawnHologram(level, p6.getX() + 0.5, baseY + 1.9, p6.getZ() - 0.5, "§7Força de 48 blocos");
+    }
+
+    private static void installPistonPowerControl(ServerLevel level, BlockPos pistonPos) {
+        BlockPos controlBlock = pistonPos.north(3);
+        level.setBlock(controlBlock, Blocks.POLISHED_DEEPSLATE.defaultBlockState(), 3);
+        level.setBlock(controlBlock.above(), Blocks.LEVER.defaultBlockState(), 3);
+        level.setBlock(pistonPos.north(2), Blocks.REDSTONE_WIRE.defaultBlockState(), 3);
+        level.setBlock(pistonPos.north(), Blocks.REDSTONE_WIRE.defaultBlockState(), 3);
     }
 
     private static void buildPistonWalkway(ServerLevel level, BlockPos center) {

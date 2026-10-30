@@ -1,3 +1,9 @@
 {
   "parent": "sandstorm:block/wireless_solar_receiver_tier2"
+  ,"display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "scale": [0.625, 0.625, 0.625]
+    }
+  }
 }

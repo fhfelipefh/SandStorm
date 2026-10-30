@@ -23,6 +23,14 @@ class ItemGuiExhibitionArchitectureTest {
     private static final Path ASSETS_ITEMS_DIR = Path.of("src", "main", "resources", "assets", "sandstorm", "items");
     private static final Path ASSETS_MODELS_ITEM_DIR = Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item");
     private static final Path ASSETS_MODELS_BLOCK_DIR = Path.of("src", "main", "resources", "assets", "sandstorm", "models", "block");
+    private static final String[] PISTON_ITEM_MODELS = {
+            "compact_slab_piston",
+            "compact_sticky_slab_piston",
+            "heavy_kinetic_piston",
+            "heavy_sticky_kinetic_piston",
+            "tectonic_kinetic_piston",
+            "tectonic_sticky_kinetic_piston"
+    };
 
     private static final Pattern REGISTER_PATTERN = Pattern.compile("public\\s+static\\s+final\\s+\\w+\\s+(\\w+)\\s*=\\s*register\\(\"([^\"]+)\"");
     private static final Pattern TAB_DISPLAY_PATTERN = Pattern.compile("\\.displayItems\\(\\s*\\(context,\\s*entries\\)\\s*->\\s*\\{(.*?)\\}\\s*\\)", Pattern.DOTALL);
@@ -122,6 +130,46 @@ class ItemGuiExhibitionArchitectureTest {
         }
 
         assertTrue(violations.isEmpty(), "Found rail item models inheriting from flat block models:\n" + String.join("\n", violations));
+    }
+
+    @Test
+    void pistonItemModelsMustUseFullBlockGuiTransforms() throws IOException {
+        for (String piston : PISTON_ITEM_MODELS) {
+            Path modelPath = ASSETS_MODELS_ITEM_DIR.resolve(piston + ".json");
+            assertTrue(Files.exists(modelPath), "Missing piston item model: " + modelPath);
+
+            try (FileReader reader = new FileReader(modelPath.toFile())) {
+                JsonObject model = JsonParser.parseReader(reader).getAsJsonObject();
+                assertTrue(model.get("parent").getAsString().startsWith("sandstorm:block/"),
+                        "Piston item must retain its complete block model: " + piston);
+                assertTrue(model.has("display"), "Piston item needs a GUI transform: " + piston);
+                JsonObject gui = model.getAsJsonObject("display").getAsJsonObject("gui");
+                assertTrue(gui.has("rotation"), "Piston item GUI needs a block rotation: " + piston);
+                assertTrue(gui.has("scale"), "Piston item GUI needs a block scale: " + piston);
+            }
+        }
+    }
+
+    @Test
+    void everySandStormBlockItemModelMustUseFullBlockGuiTransforms() throws IOException {
+        try (var models = Files.list(ASSETS_MODELS_ITEM_DIR)) {
+            models.filter(path -> path.toString().endsWith(".json")).forEach(modelPath -> {
+                try (FileReader reader = new FileReader(modelPath.toFile())) {
+                    JsonObject model = JsonParser.parseReader(reader).getAsJsonObject();
+                    String parent = model.has("parent") ? model.get("parent").getAsString() : "";
+                    if (!parent.startsWith("sandstorm:block/")) {
+                        return;
+                    }
+
+                    assertTrue(model.has("display"), "Block item needs a GUI transform: " + modelPath.getFileName());
+                    JsonObject gui = model.getAsJsonObject("display").getAsJsonObject("gui");
+                    assertTrue(gui.has("rotation"), "Block item GUI needs a rotation: " + modelPath.getFileName());
+                    assertTrue(gui.has("scale"), "Block item GUI needs a scale: " + modelPath.getFileName());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
     }
 
     @Test

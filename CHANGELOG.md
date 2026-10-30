@@ -2,6 +2,13 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.51] - 2026-10-30
+
+### 🧱 Inventário 3D e Campo de Pistões Energizado
+* Aplicada transformação 3D de GUI a todos os 154 modelos de item que representam blocos, evitando ícones parciais no inventário.
+* Adicionada validação automática para impedir que novos blocos sejam exibidos sem rotação e escala de GUI.
+* As seis pistas de super pistões agora usam alavancas com linha de redstone conectada para testes de extensão e retração.
+
 ## [1.19.50] - 2026-10-30
 
 ### ❄️ Correção de Geometria dos Androides Apex

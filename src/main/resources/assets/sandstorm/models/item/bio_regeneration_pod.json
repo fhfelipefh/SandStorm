@@ -1,3 +1,9 @@
 {
   "parent": "sandstorm:block/bio_regeneration_pod"
+  ,"display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "scale": [0.625, 0.625, 0.625]
+    }
+  }
 }

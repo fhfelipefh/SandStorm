@@ -1,4 +1,10 @@
 {
   "parent": "sandstorm:block/synaptic_repairer"
+  ,"display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "scale": [0.625, 0.625, 0.625]
+    }
+  }
 }
 
