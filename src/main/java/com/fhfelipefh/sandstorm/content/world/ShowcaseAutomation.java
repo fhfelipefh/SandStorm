@@ -2112,40 +2112,433 @@ public class ShowcaseAutomation {
     }
 
     private static void buildItemWing(ServerLevel level, BlockPos center) {
-        List<Item> items = BuiltInRegistries.ITEM.stream()
-                .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(SandStormMod.MOD_ID))
-                .sorted(Comparator.comparing(item -> BuiltInRegistries.ITEM.getKey(item).toString()))
-                .toList();
+        int baseY = center.getY();
 
-        int itemsPerChest = 27;
-        int chestCount = (items.size() + itemsPerChest - 1) / itemsPerChest;
+        AABB westWingArea = new AABB(center.getX() - 32, baseY - 2, center.getZ() + 2, center.getX() - 16, baseY + 10, center.getZ() + 65);
+        level.getEntitiesOfClass(ArmorStand.class, westWingArea).forEach(Entity::discard);
+        AABB eastWingArea = new AABB(center.getX() + 16, baseY - 2, center.getZ() + 2, center.getX() + 32, baseY + 10, center.getZ() + 65);
+        level.getEntitiesOfClass(ArmorStand.class, eastWingArea).forEach(Entity::discard);
 
-        for (int c = 0; c < chestCount; c++) {
-            int side = (c % 2 == 0) ? -24 : 24;
-            int row = c / 2;
-            int pz = 8 + (row * 6);
-
-            BlockPos pedestalCenter = center.offset(side, 0, pz);
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dz = -1; dz <= 1; dz++) {
-                    BlockPos p = pedestalCenter.offset(dx, 0, dz);
-                    Block b = (dx == 0 && dz == 0) ? Blocks.OCHRE_FROGLIGHT : Blocks.CUT_SANDSTONE;
-                    level.setBlock(p, b.defaultBlockState(), 3);
+        for (int z = 4; z <= 56; z++) {
+            for (int dx = -2; dx <= 2; dx++) {
+                BlockPos pWest = center.offset(-24 + dx, 0, z);
+                boolean edgeWest = Math.abs(dx) == 2;
+                boolean lightWest = (dx == 0 && z % 7 == 0);
+                Block bWest = lightWest ? Blocks.OCHRE_FROGLIGHT : (edgeWest ? Blocks.CUT_SANDSTONE : SandStormBlocks.SEISMIC_DAMPENER_PAVING);
+                level.setBlock(pWest, bWest.defaultBlockState(), 2);
+                if (edgeWest && (z == 4 || z == 56 || Math.abs(dx) == 2)) {
+                    if (z != 8 && z != 15 && z != 22 && z != 29 && z != 36 && z != 43 && z != 50) {
+                        level.setBlock(pWest.above(), Blocks.SANDSTONE_WALL.defaultBlockState(), 2);
+                    }
                 }
-            }
 
-            BlockPos chestPos = pedestalCenter.above();
-            setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
-            if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
-                int startIdx = c * itemsPerChest;
-                int endIdx = Math.min(startIdx + itemsPerChest, items.size());
-                for (int i = startIdx; i < endIdx; i++) {
-                    int slot = i - startIdx;
-                    chest.setItem(slot, new ItemStack(items.get(i), 64));
+                BlockPos pEast = center.offset(24 + dx, 0, z);
+                boolean edgeEast = Math.abs(dx) == 2;
+                boolean lightEast = (dx == 0 && z % 7 == 0);
+                Block bEast = lightEast ? Blocks.SEA_LANTERN : (edgeEast ? Blocks.CUT_SANDSTONE : SandStormBlocks.SEISMIC_DAMPENER_PAVING);
+                level.setBlock(pEast, bEast.defaultBlockState(), 2);
+                if (edgeEast && (z == 4 || z == 56 || Math.abs(dx) == 2)) {
+                    if (z != 8 && z != 15 && z != 22 && z != 29 && z != 36 && z != 43 && z != 50) {
+                        level.setBlock(pEast.above(), Blocks.SANDSTONE_WALL.defaultBlockState(), 2);
+                    }
                 }
             }
         }
+
+        int[] transverseZ = new int[]{8, 15, 22, 29, 36, 43, 50};
+        for (int tz : transverseZ) {
+            for (int x = -21; x <= -6; x++) {
+                BlockPos p = center.offset(x, 0, tz);
+                Block b = (x % 5 == 0) ? Blocks.OCHRE_FROGLIGHT : Blocks.CUT_SANDSTONE;
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+            for (int x = 6; x <= 21; x++) {
+                BlockPos p = center.offset(x, 0, tz);
+                Block b = (x % 5 == 0) ? Blocks.SEA_LANTERN : Blocks.CUT_SANDSTONE;
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+
+        BlockPos westPortal = center.offset(-24, 0, 5);
+        level.setBlock(westPortal.offset(-2, 1, 0), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(westPortal.offset(-2, 2, 0), Blocks.OCHRE_FROGLIGHT.defaultBlockState(), 3);
+        level.setBlock(westPortal.offset(2, 1, 0), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(westPortal.offset(2, 2, 0), Blocks.OCHRE_FROGLIGHT.defaultBlockState(), 3);
+        spawnHologram(level, westPortal.getX() + 0.5, baseY + 3.2, westPortal.getZ() + 0.5, "§6§l✦ ALA OESTE: ARSENAL & EQUIPAMENTOS ✦");
+        spawnHologram(level, westPortal.getX() + 0.5, baseY + 2.85, westPortal.getZ() + 0.5, "§eTrajes Espaciais, Armas, Megazord & Sensores");
+
+        BlockPos eastPortal = center.offset(24, 0, 5);
+        level.setBlock(eastPortal.offset(-2, 1, 0), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(eastPortal.offset(-2, 2, 0), Blocks.SEA_LANTERN.defaultBlockState(), 3);
+        level.setBlock(eastPortal.offset(2, 1, 0), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(eastPortal.offset(2, 2, 0), Blocks.SEA_LANTERN.defaultBlockState(), 3);
+        spawnHologram(level, eastPortal.getX() + 0.5, baseY + 3.2, eastPortal.getZ() + 0.5, "§b§l✦ ALA LESTE: QUÂNTICA & ROBÓTICA ✦");
+        spawnHologram(level, eastPortal.getX() + 0.5, baseY + 2.85, eastPortal.getZ() + 0.5, "§3Discos Quânticos, Satélites, Androides & Ligas");
+
+        setupItemStation(level, center.offset(-24, 0, 8),
+                "§6§l[TRAJES ESPACIAIS & VIDA]",
+                "§eArmadura de Vácuo, Upgrades & Suporte Vital",
+                List.of(
+                        new ItemStack(SandStormItems.SPACE_SUIT_HELMET, 64),
+                        new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE, 64),
+                        new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS, 64),
+                        new ItemStack(SandStormItems.SPACE_SUIT_BOOTS, 64),
+                        new ItemStack(SandStormItems.SPACE_RATION, 64),
+                        new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE, 64),
+                        new ItemStack(SandStormItems.BRACKISH_WATER_BOTTLE, 64),
+                        new ItemStack(SandStormItems.FILTER_CARTRIDGE, 64),
+                        new ItemStack(SandStormItems.SUIT_UPGRADE_BATTERY, 64),
+                        new ItemStack(SandStormItems.SUIT_UPGRADE_THERMAL, 64),
+                        new ItemStack(SandStormItems.SUIT_UPGRADE_SEISMIC, 64),
+                        new ItemStack(SandStormItems.SUIT_UPGRADE_VISOR, 64),
+                        new ItemStack(SandStormItems.SUIT_UPGRADE_JETPACK, 64)
+                ),
+                true,
+                new ItemStack(SandStormItems.SPACE_SUIT_HELMET),
+                new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
+                new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS),
+                new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
+                new ItemStack(SandStormItems.SURVIVAL_DATAPAD),
+                ItemStack.EMPTY
+        );
+
+        setupItemStation(level, center.offset(-24, 0, 15),
+                "§c§l[ARSENAL TÁTICO & ARMAS]",
+                "§4Vibro-Lâminas, Rifles, Canhões & Granadas",
+                List.of(
+                        new ItemStack(SandStormItems.VIBRO_CRYSKNIFE, 64),
+                        new ItemStack(SandStormItems.PLASMA_RIFLE, 64),
+                        new ItemStack(SandStormItems.SONIC_CANNON, 64),
+                        new ItemStack(SandStormItems.EMP_BLASTER, 64),
+                        new ItemStack(SandStormItems.COMPOSITE_RECURVE_BOW, 64),
+                        new ItemStack(SandStormItems.CRYO_LANCE, 64),
+                        new ItemStack(SandStormItems.STUN_GRENADE, 64),
+                        new ItemStack(SandStormItems.SMOKE_GRENADE, 64),
+                        new ItemStack(SandStormItems.NUTRIENT_BOMB, 64),
+                        new ItemStack(SandStormItems.TACTICAL_DETONATOR, 64),
+                        new ItemStack(SandStormItems.KINETIC_SLUG, 64)
+                ),
+                true,
+                ItemStack.EMPTY,
+                new ItemStack(Items.NETHERITE_CHESTPLATE),
+                new ItemStack(Items.NETHERITE_LEGGINGS),
+                new ItemStack(Items.NETHERITE_BOOTS),
+                new ItemStack(SandStormItems.VIBRO_CRYSKNIFE),
+                new ItemStack(SandStormItems.PLASMA_RIFLE)
+        );
+
+        setupItemStation(level, center.offset(-24, 0, 22),
+                "§b§l[MEGAZORD & MOBILIDADE]",
+                "§3Módulos de Voo, Submersão & Sandboard",
+                List.of(
+                        new ItemStack(SandStormItems.MEGAZORD_FLIGHT_MODULE, 64),
+                        new ItemStack(SandStormItems.MEGAZORD_SUBMERSIBLE_HULL, 64),
+                        new ItemStack(SandStormItems.MEGAZORD_TACTICAL_OVERDRIVE, 64),
+                        new ItemStack(SandStormItems.SANDBOARD, 64),
+                        new ItemStack(SandStormItems.VECTORED_THRUSTER, 64),
+                        new ItemStack(SandStormItems.HYDRO_BALLAST_PUMP, 64),
+                        new ItemStack(SandStormItems.RAPPEL_WINCH, 64),
+                        new ItemStack(SandStormItems.GLOWING_RAPPEL_WINCH, 64)
+                ),
+                true,
+                ItemStack.EMPTY,
+                new ItemStack(Items.IRON_CHESTPLATE),
+                ItemStack.EMPTY,
+                new ItemStack(Items.IRON_BOOTS),
+                new ItemStack(SandStormItems.SANDBOARD),
+                new ItemStack(SandStormItems.MEGAZORD_FLIGHT_MODULE)
+        );
+
+        setupItemStation(level, center.offset(-24, 0, 29),
+                "§e§l[SENSORES & FERRAMENTAS]",
+                "§6Datapad, Radar de Anomalias & Analisador",
+                List.of(
+                        new ItemStack(SandStormItems.SURVIVAL_DATAPAD, 64),
+                        new ItemStack(SandStormItems.ANOMALY_RADAR, 64),
+                        new ItemStack(SandStormItems.GEOLOGICAL_SCANNER, 64),
+                        new ItemStack(SandStormItems.FIELD_PROBE, 64),
+                        new ItemStack(SandStormItems.ATMOSPHERIC_ANALYZER, 64),
+                        new ItemStack(SandStormItems.SAND_DEPTH_PROBE, 64),
+                        new ItemStack(SandStormItems.SUBDERMAL_TREMOR_SENSOR, 64),
+                        new ItemStack(SandStormItems.SIGNAL_TRACKER, 64),
+                        new ItemStack(SandStormItems.TRANSPONDER_TAG, 64),
+                        new ItemStack(SandStormItems.REPAIR_TOOL, 64),
+                        new ItemStack(SandStormItems.TRAP_DISARMER_KIT, 64),
+                        new ItemStack(SandStormItems.SILICON_PICKAXE, 64)
+                ),
+                true,
+                ItemStack.EMPTY,
+                new ItemStack(Items.GOLDEN_CHESTPLATE),
+                ItemStack.EMPTY,
+                ItemStack.EMPTY,
+                new ItemStack(SandStormItems.SURVIVAL_DATAPAD),
+                new ItemStack(SandStormItems.ANOMALY_RADAR)
+        );
+
+        setupItemStation(level, center.offset(-24, 0, 36),
+                "§d§l[CHAVES, UPLINKS & RELÍQUIAS]",
+                "§5Chaves de Bunkers, Uplink & Núcleos",
+                List.of(
+                        new ItemStack(SandStormItems.CYBERNETIC_COMMAND_UPLINK, 64),
+                        new ItemStack(SandStormItems.TECH_DISC, 64),
+                        new ItemStack(SandStormItems.EMPTY_CARTRIDGE, 64),
+                        new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE, 64),
+                        new ItemStack(SandStormItems.BIOFOAM_CARTRIDGE, 64),
+                        new ItemStack(SandStormItems.SUBSPACE_WARP_CORE, 64),
+                        new ItemStack(SandStormItems.MOLECULAR_CARGO_CAPSULE, 64),
+                        new ItemStack(SandStormItems.BIO_NEURAL_CORE, 64),
+                        new ItemStack(SandStormItems.NEURAL_SYNAPSE_LINK, 64)
+                ),
+                true,
+                ItemStack.EMPTY,
+                new ItemStack(Items.DIAMOND_CHESTPLATE),
+                ItemStack.EMPTY,
+                ItemStack.EMPTY,
+                new ItemStack(SandStormItems.CYBERNETIC_COMMAND_UPLINK),
+                new ItemStack(SandStormItems.SUBSPACE_WARP_CORE)
+        );
+
+        setupItemStation(level, center.offset(-24, 0, 43),
+                "§a§l[BIOLOGIA DO DESERTO & FIBRAS]",
+                "§2Quitina de Verme, Dente & Bio-Compostos",
+                List.of(
+                        new ItemStack(SandStormItems.SANDWORM_CHITIN, 64),
+                        new ItemStack(SandStormItems.SANDWORM_TOOTH, 64),
+                        new ItemStack(SandStormItems.THERMAL_CARAPACE, 64),
+                        new ItemStack(SandStormItems.SALT_GLAND, 64),
+                        new ItemStack(SandStormItems.FLEXIBLE_BIOPOLYMER, 64),
+                        new ItemStack(SandStormItems.ANCIENT_REED, 64),
+                        new ItemStack(SandStormItems.ANCIENT_SEED, 64),
+                        new ItemStack(SandStormItems.SYNTHETIC_FIBER, 64),
+                        new ItemStack(SandStormItems.FIBERGLASS, 64),
+                        new ItemStack(SandStormItems.CHITOSAN_EXTRACT, 64),
+                        new ItemStack(SandStormItems.TREHALOSE_SUGAR, 64),
+                        new ItemStack(SandStormItems.OSMOLYTE_GLYCEROL, 64),
+                        new ItemStack(SandStormItems.NEUROACTIVE_ALKALOIDS, 64),
+                        new ItemStack(SandStormItems.RADIOPROTECTIVE_MELANIN, 64)
+                ),
+                true,
+                ItemStack.EMPTY,
+                new ItemStack(Items.LEATHER_CHESTPLATE),
+                ItemStack.EMPTY,
+                ItemStack.EMPTY,
+                new ItemStack(SandStormItems.SANDWORM_TOOTH),
+                new ItemStack(SandStormItems.SANDWORM_CHITIN)
+        );
+
+        List<Item> allModItems = BuiltInRegistries.ITEM.stream()
+                .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(SandStormMod.MOD_ID))
+                .sorted(Comparator.comparing(item -> BuiltInRegistries.ITEM.getKey(item).toString()))
+                .toList();
+        int halfCount = allModItems.size() / 2;
+        List<ItemStack> part1Stacks = new ArrayList<>();
+        for (int i = 0; i < halfCount && i < 27; i++) {
+            part1Stacks.add(new ItemStack(allModItems.get(i), 64));
+        }
+        setupItemStation(level, center.offset(-24, 0, 50),
+                "§f§l[CATÁLOGO COMPLETO - PARTE 1]",
+                "§7Todos os Itens do SandStorm (A a M)",
+                part1Stacks,
+                false,
+                ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY
+        );
+
+        setupItemStation(level, center.offset(24, 0, 8),
+                "§d§l[REDE & DISCOS QUÂNTICOS]",
+                "§5Armazenamento 1K a Dimensional & Matrizes",
+                List.of(
+                        new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_1K, 64),
+                        new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_4K, 64),
+                        new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_16K, 64),
+                        new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_64K, 64),
+                        new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_DIMENSIONAL, 64),
+                        new ItemStack(SandStormItems.STORAGE_HOUSING, 64),
+                        new ItemStack(SandStormItems.QUANTUM_PROCESSOR, 64),
+                        new ItemStack(SandStormItems.QUANTUM_MIND_MATRIX, 64),
+                        new ItemStack(SandStormItems.SYNAPTIC_CARTRIDGE, 64)
+                ),
+                true,
+                ItemStack.EMPTY,
+                new ItemStack(Items.DIAMOND_CHESTPLATE),
+                ItemStack.EMPTY,
+                ItemStack.EMPTY,
+                new ItemStack(SandStormItems.QUANTUM_STORAGE_CARTRIDGE_64K),
+                new ItemStack(SandStormItems.QUANTUM_PROCESSOR)
+        );
+
+        setupItemStation(level, center.offset(24, 0, 15),
+                "§9§l[SATÉLITES & CARGAS ORBITAIS]",
+                "§1Reconhecimento, Refletor Solar & Lança",
+                List.of(
+                        new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE, 64),
+                        new ItemStack(SandStormItems.ORBITAL_SOLAR_REFLECTOR_SATELLITE, 64),
+                        new ItemStack(SandStormItems.SAR_GEOLOGICAL_SATELLITE, 64),
+                        new ItemStack(SandStormItems.ORBITAL_KINETIC_LANCE_SATELLITE, 64),
+                        new ItemStack(SandStormItems.ORBITAL_RECON_PROBE, 64),
+                        new ItemStack(SandStormItems.GEOLOGICAL_SURVEYOR_DRONE, 64)
+                ),
+                true,
+                ItemStack.EMPTY,
+                new ItemStack(Items.IRON_CHESTPLATE),
+                ItemStack.EMPTY,
+                ItemStack.EMPTY,
+                new ItemStack(SandStormItems.WEATHER_RECON_SATELLITE),
+                new ItemStack(SandStormItems.ORBITAL_KINETIC_LANCE_SATELLITE)
+        );
+
+        setupItemStation(level, center.offset(24, 0, 22),
+                "§3§l[ELETRÔNICA & NANOTECNOLOGIA]",
+                "§bChips, Circuitos, Turbinas & Nanites",
+                List.of(
+                        new ItemStack(SandStormItems.CIRCUIT_BOARD, 64),
+                        new ItemStack(SandStormItems.ELECTRIC_COMPONENT, 64),
+                        new ItemStack(SandStormItems.SILICON_WAFER, 64),
+                        new ItemStack(SandStormItems.RAW_SILICON, 64),
+                        new ItemStack(SandStormItems.NANO_ACTUATOR, 64),
+                        new ItemStack(SandStormItems.SUPERCONDUCTOR_TOROID, 64),
+                        new ItemStack(SandStormItems.PLASMA_FOCUS_CRYSTAL, 64),
+                        new ItemStack(SandStormItems.NANITE_GALLIUM_COMPOSITE, 64),
+                        new ItemStack(SandStormItems.FIBERGLASS_TURBINE_BLADE, 64),
+                        new ItemStack(SandStormItems.CIRCUIT_MOUNT, 64),
+                        new ItemStack(SandStormItems.PRESSURE_SEAL, 64),
+                        new ItemStack(SandStormItems.STRUCTURAL_PLATE, 64)
+                ),
+                true,
+                ItemStack.EMPTY,
+                new ItemStack(Items.GOLDEN_CHESTPLATE),
+                ItemStack.EMPTY,
+                ItemStack.EMPTY,
+                new ItemStack(SandStormItems.CIRCUIT_BOARD),
+                new ItemStack(SandStormItems.SUPERCONDUCTOR_TOROID)
+        );
+
+        setupItemStation(level, center.offset(24, 0, 29),
+                "§a§l[OVOS DE ANDROIDES & MÁQUINAS]",
+                "§2Grazer, Frostclaw, Glinthawk & Ciborgues",
+                List.of(
+                        new ItemStack(SandStormItems.GRAZER_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.FANGHORN_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.FROSTCLAW_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.GLINTHAWK_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.WATERWING_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.CYBORG_EXCAVATOR_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.CYBORG_BUILDER_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.CYBORG_HARVESTER_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.SCRAP_SENTINEL_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.DEFECTIVE_SENTINEL_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.AQUIFER_BEETLE_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.NOMAD_SCAVENGER_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.DERELICT_AUTOMATON_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.CYBER_HOUND_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.CYBER_STEED_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.LABORER_UNIT_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.SCOUT_DRONE_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.CRAWLER_DRONE_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.SANDWORM_SPAWN_EGG, 64)
+                ),
+                true,
+                ItemStack.EMPTY,
+                new ItemStack(Items.CHAINMAIL_CHESTPLATE),
+                ItemStack.EMPTY,
+                ItemStack.EMPTY,
+                new ItemStack(SandStormItems.GRAZER_SPAWN_EGG),
+                new ItemStack(SandStormItems.FROSTCLAW_SPAWN_EGG)
+        );
+
+        setupItemStation(level, center.offset(24, 0, 36),
+                "§2§l[CARTUCHOS DE TERRAFORMAÇÃO]",
+                "§aCápsulas de Biomas para o Terraformer",
+                List.of(
+                        new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_PLAINS, 64),
+                        new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_FOREST, 64),
+                        new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_JUNGLE, 64),
+                        new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_CRYO, 64),
+                        new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_FUNGAL, 64),
+                        new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_MAGNETIC, 64),
+                        new ItemStack(SandStormItems.BIOSPHERE_CARTRIDGE_OASIS, 64)
+                ),
+                false,
+                ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY
+        );
+
+        setupItemStation(level, center.offset(24, 0, 43),
+                "§e§l[LIGAS, MINERAIS & FLUIDOS]",
+                "§6Titânio-Quitina, Gálio, Chumbo & Fluidos",
+                List.of(
+                        new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 64),
+                        new ItemStack(SandStormItems.MANTLE_ALLOY_INGOT, 64),
+                        new ItemStack(SandStormItems.GALLIUM_INGOT, 64),
+                        new ItemStack(SandStormItems.RAW_GALLIUM, 64),
+                        new ItemStack(SandStormItems.LEAD_INGOT, 64),
+                        new ItemStack(SandStormItems.RAW_LEAD, 64),
+                        new ItemStack(SandStormItems.STEEL_REBAR, 64),
+                        new ItemStack(SandStormItems.MINERAL_SALT, 64),
+                        new ItemStack(SandStormItems.PIEZO_QUARTZ_SHARD, 64),
+                        new ItemStack(SandStormItems.PIEZO_RESONATOR, 64),
+                        new ItemStack(SandStormItems.TECH_BUCKET, 64),
+                        new ItemStack(SandStormItems.SYNAPTIC_FLUID_BUCKET, 64),
+                        new ItemStack(SandStormItems.PRESSURIZED_FOSSIL_FLUID_BUCKET, 64),
+                        new ItemStack(SandStormItems.SUPERHEATED_LITHIUM_CAPSULE, 64),
+                        new ItemStack(SandStormItems.CRYO_CELL_COOLER, 64)
+                ),
+                true,
+                ItemStack.EMPTY,
+                new ItemStack(Items.NETHERITE_CHESTPLATE),
+                ItemStack.EMPTY,
+                ItemStack.EMPTY,
+                new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE),
+                new ItemStack(SandStormItems.MANTLE_ALLOY_INGOT)
+        );
+
+        List<ItemStack> part2Stacks = new ArrayList<>();
+        for (int i = halfCount; i < allModItems.size() && (i - halfCount) < 27; i++) {
+            part2Stacks.add(new ItemStack(allModItems.get(i), 64));
+        }
+        setupItemStation(level, center.offset(24, 0, 50),
+                "§f§l[CATÁLOGO COMPLETO - PARTE 2]",
+                "§7Todos os Itens do SandStorm (N a Z)",
+                part2Stacks,
+                false,
+                ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY
+        );
     }
+
+    private static void setupItemStation(ServerLevel level, BlockPos stationPos, String title, String subtitle, List<ItemStack> items, boolean isMannequin, ItemStack head, ItemStack chest, ItemStack legs, ItemStack boots, ItemStack mainHand, ItemStack offHand) {
+        boolean isWest = stationPos.getX() < 0;
+        Block lightBlock = isWest ? Blocks.OCHRE_FROGLIGHT : Blocks.SEA_LANTERN;
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                BlockPos p = stationPos.offset(dx, 0, dz);
+                Block b = (dx == 0 && dz == 0) ? lightBlock : Blocks.CUT_SANDSTONE;
+                level.setBlock(p, b.defaultBlockState(), 3);
+            }
+        }
+
+        BlockPos chestPos = stationPos.above();
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chestBe) {
+            for (int i = 0; i < items.size() && i < 27; i++) {
+                chestBe.setItem(i, items.get(i));
+            }
+        }
+
+        BlockPos showcasePos = stationPos.north(2);
+        level.setBlock(showcasePos, Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+        level.setBlock(showcasePos.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
+
+        if (isMannequin) {
+            spawnMannequin(level, showcasePos.above(), title, head, chest, legs, boots, mainHand, offHand);
+        }
+
+        double hX = stationPos.getX() + 0.5;
+        double hY = stationPos.getY() + 1.0;
+        double hZ = stationPos.getZ() + 0.5;
+        spawnHologram(level, hX, hY + 2.35, hZ, title);
+        spawnHologram(level, hX, hY + 2.05, hZ, subtitle);
+        spawnHologram(level, hX, hY + 1.75, hZ, "§7Abra o baú para suprimentos (64x cada)");
+    }
+
 
     private static void buildEntityWing(ServerLevel level, BlockPos center) {
         int baseY = center.getY();
