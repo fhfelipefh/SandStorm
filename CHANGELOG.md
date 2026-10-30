@@ -2,6 +2,12 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.49] - 2026-10-30
+
+### 🧭 Reconstrução do Showcase com Isolamento Espacial
+* Realocadas as atrações que compartilhavam blocos e adicionada validação geométrica contra sobreposições.
+* Recriado o mundo `SandStorm_Showcase` a partir de chunks limpos.
+
 ## [1.19.36] - 2026-10-29
 
 ### 🌐 Reestruturação Espacial das 4 Grandes Avenidas do Showcase, Terminal de Trânsito Rápido & Renderização Sólida do Caixote

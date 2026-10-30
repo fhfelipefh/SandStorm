@@ -270,7 +270,7 @@ class ShowcaseComputerAndBlocksTest {
                 .toList();
         int cols = 8;
         int spacing = 5;
-        int startZ = 8;
+        int startZ = 20;
         int totalRows = (blocks.size() + cols - 1) / cols;
         int maxBlockZ = startZ + (totalRows * spacing) + 4;
         assertEquals(maxBlockZ, ShowcaseAutomation.getCheckerboardMaxZ());

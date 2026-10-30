@@ -146,6 +146,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShowcaseAutomation {
 
+    private static final int CHECKERBOARD_START_Z = 20;
     private static final Set<UUID> GENERATED_PLAYERS = new HashSet<>();
     private static final List<ShowcaseTeleportPad> TELEPORT_PADS = new ArrayList<>();
     private static final Map<UUID, Long> TELEPORT_COOLDOWNS = new HashMap<>();
@@ -173,6 +174,49 @@ public class ShowcaseAutomation {
     private record ShowcaseTeleportPad(BlockPos triggerPos, BlockPos destination, String label) {}
 
     private record ShowcasePatrolDrone(CargoDroneEntity drone, List<BlockPos> waypoints, int[] targetIndex) {}
+
+    public record ShowcaseFootprint(String name, int minX, int maxX, int minZ, int maxZ) {
+        public boolean intersects(ShowcaseFootprint other) {
+            return minX <= other.maxX && maxX >= other.minX && minZ <= other.maxZ && maxZ >= other.minZ;
+        }
+    }
+
+    public static List<ShowcaseFootprint> getShowcaseAttractionFootprints() {
+        int biosphereRadius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
+        int biosphereFrontZ = getBiosphereFrontZ();
+        return List.of(
+                new ShowcaseFootprint("Praça Central", -10, 10, -10, 10),
+                new ShowcaseFootprint("Terminal de Trânsito", -53, -30, -21, 4),
+                new ShowcaseFootprint("Circuito Maglev", -106, -62, -16, 16),
+                new ShowcaseFootprint("Indústria de Carbono", 23, 47, -37, -13),
+                new ShowcaseFootprint("Computador Quântico", 78, 92, -12, 2),
+                new ShowcaseFootprint("Domo de Megaestruturas", 39, 71, 2, 34),
+                new ShowcaseFootprint("Cofre Blindado", 81, 89, -49, -40),
+                new ShowcaseFootprint("Portal Subespacial", 106, 114, -49, -41),
+                new ShowcaseFootprint("Estação de Rapel", 38, 52, -72, -58),
+                new ShowcaseFootprint("Campo de Pistões", 36, 64, -118, -82),
+                new ShowcaseFootprint("Polígono de Defesa", -90, -44, -118, -34),
+                new ShowcaseFootprint("Complexo de Ciborgues", -20, 20, -115, -80),
+                new ShowcaseFootprint("Arena do Sandworm", -26, 26, -196, -144),
+                new ShowcaseFootprint("Base Orbital", 108, 122, 13, 27),
+                new ShowcaseFootprint("Hipódromo Cibernético", -100, -50, 25, 58),
+                new ShowcaseFootprint("Biosferas", -130, 130, biosphereFrontZ - biosphereRadius - 8,
+                        biosphereFrontZ + 60 + biosphereRadius + 10)
+        );
+    }
+
+    public static void validateShowcaseLayout() {
+        List<ShowcaseFootprint> footprints = getShowcaseAttractionFootprints();
+        for (int index = 0; index < footprints.size(); index++) {
+            for (int otherIndex = index + 1; otherIndex < footprints.size(); otherIndex++) {
+                ShowcaseFootprint first = footprints.get(index);
+                ShowcaseFootprint second = footprints.get(otherIndex);
+                if (first.intersects(second)) {
+                    throw new IllegalStateException("Showcase attractions overlap: " + first.name() + " and " + second.name());
+                }
+            }
+        }
+    }
 
     public static boolean isShowcaseActive() {
         return showcaseActive;
@@ -1011,6 +1055,7 @@ public class ShowcaseAutomation {
     }
 
     public static void buildShowcase(ServerLevel level, ServerPlayer player) {
+        validateShowcaseLayout();
         showcaseActive = true;
         TELEPORT_PADS.clear();
         CyborgSwarmManager.getInstance().releaseAll();
@@ -1027,30 +1072,33 @@ public class ShowcaseAutomation {
 
         clearUnderneath(level, center, maxZ);
         buildCentralPlaza(level, center);
-        buildTransitTerminal(level, center);
+        buildTransitTerminal(level, center.offset(-20, 0, 12));
         buildBlockCheckerboard(level, center);
         buildItemWing(level, center);
         buildEntityWing(level, center);
         buildMegastructureDomeShowcase(level, center);
         buildMaglevTestTrack(level, center);
         buildAutonomousCyborgFacility(level, center, player);
-        buildPistonTestingRange(level, center.offset(-50, 0, -65));
-        buildPistonWalkway(level, center);
+        buildPistonTestingRange(level, center.offset(50, 0, -100));
+        buildShowcaseWalkway(level, center.offset(11, 0, -10), center.offset(65, 0, -10));
+        buildShowcaseWalkway(level, center.offset(65, 0, -10), center.offset(65, 0, -100));
         buildSandwormColosseum(level, center);
-        buildQuantumComputerStation(level, center.offset(50, 0, 0));
-        buildQuantumComputerWalkway(level, center);
-        buildCarbonAndInductionStation(level, center.offset(-50, 0, 0));
-        buildCarbonAndInductionWalkway(level, center);
-        buildVaultShowcase(level, center.offset(50, 0, -45));
-        buildVaultWalkway(level, center);
-        buildSubspaceGatewayStation(level, center.offset(80, 0, -45));
-        buildSubspaceGatewayWalkway(level, center);
-        buildRappelTestTowerAndChasm(level, center.offset(45, 0, -50));
-        buildRappelWalkway(level, center);
+        buildQuantumComputerStation(level, center.offset(85, 0, -5));
+        buildShowcaseWalkway(level, center.offset(11, 0, -5), center.offset(78, 0, -5));
+        buildCarbonAndInductionStation(level, center.offset(35, 0, -25));
+        buildShowcaseWalkway(level, center.offset(20, 0, -25), center.offset(22, 0, -25));
+        buildVaultShowcase(level, center.offset(85, 0, -45));
+        buildShowcaseWalkway(level, center.offset(85, 0, -13), center.offset(85, 0, -39));
+        buildSubspaceGatewayStation(level, center.offset(110, 0, -45));
+        buildShowcaseWalkway(level, center.offset(91, 0, -45), center.offset(105, 0, -45));
+        buildRappelTestTowerAndChasm(level, center.offset(45, 0, -65));
+        buildShowcaseWalkway(level, center.offset(20, 0, -10), center.offset(20, 0, -65));
+        buildShowcaseWalkway(level, center.offset(20, 0, -65), center.offset(37, 0, -65));
         buildDefenseAndBallisticsRange(level, center.offset(-65, 0, -50));
         buildDefenseWalkway(level, center);
-        buildOrbitalLaunchStation(level, center.offset(80, 0, 25));
-        buildOrbitalWalkway(level, center);
+        buildOrbitalLaunchStation(level, center.offset(115, 0, 20));
+        buildShowcaseWalkway(level, center.offset(95, 0, -5), center.offset(95, 0, 20));
+        buildShowcaseWalkway(level, center.offset(95, 0, 20), center.offset(107, 0, 20));
         buildCyberSteedShowcase(level, center.offset(-75, 0, 40), player);
         buildCyberSteedWalkway(level, center);
         buildBiospheresShowcase(level, center);
@@ -1310,6 +1358,7 @@ public class ShowcaseAutomation {
 
     private static void buildTransitTerminal(ServerLevel level, BlockPos center) {
         int baseY = center.getY();
+        BlockPos showcaseCenter = new BlockPos(0, baseY, 0);
 
         AABB terminalBox = new AABB(center.getX() - 36, baseY, center.getZ() - 36, center.getX() - 12, baseY + 8, center.getZ() - 12);
         level.getEntitiesOfClass(ArmorStand.class, terminalBox).forEach(Entity::discard);
@@ -1343,29 +1392,29 @@ public class ShowcaseAutomation {
         spawnHologram(level, center.getX() - 24.0, baseY + 4.2, center.getZ() - 14.5, "§d§l[TERMINAL DE TRÂNSITO RÁPIDO & TELEPORTE]");
         spawnHologram(level, center.getX() - 24.0, baseY + 3.85, center.getZ() - 14.5, "§7Pise no pedestal correspondente para viagem instantânea");
 
-        setupPedestal(level, center.offset(-18, 0, -17), center.offset(-50, 1, 0), "Setor Oeste: Carbono & Forjas", "CO2 | Síntese CVD | Arco Elétrico", Blocks.COAL_BLOCK);
-        setupPedestal(level, center.offset(-22, 0, -17), center.offset(-75, 1, 0), "Setor Oeste: Circuito Maglev", "Trilhos Magnéticos de Alta Velocidade", Blocks.IRON_BLOCK);
-        setupPedestal(level, center.offset(-26, 0, -17), center.offset(50, 1, 0), "Setor Leste: Computador Quântico", "Rede Quântica & Discos de Armazenamento", Blocks.DIAMOND_BLOCK);
-        setupPedestal(level, center.offset(-30, 0, -17), center.offset(50, 1, -40), "Setor Leste: Câmara de Cofre", "Porta Mecânica 3x3 Multi-Bloco", Blocks.GOLD_BLOCK);
+        setupPedestal(level, center.offset(-18, 0, -17), showcaseCenter.offset(35, 1, -25), "Setor Leste: Carbono & Forjas", "CO2 | Síntese CVD | Arco Elétrico", Blocks.COAL_BLOCK);
+        setupPedestal(level, center.offset(-22, 0, -17), showcaseCenter.offset(-75, 1, 0), "Setor Oeste: Circuito Maglev", "Trilhos Magnéticos de Alta Velocidade", Blocks.IRON_BLOCK);
+        setupPedestal(level, center.offset(-26, 0, -17), showcaseCenter.offset(85, 1, -5), "Setor Leste: Computador Quântico", "Rede Quântica & Discos de Armazenamento", Blocks.DIAMOND_BLOCK);
+        setupPedestal(level, center.offset(-30, 0, -17), showcaseCenter.offset(85, 1, -45), "Setor Leste: Câmara de Cofre", "Porta Mecânica 3x3 Multi-Bloco", Blocks.GOLD_BLOCK);
 
-        setupPedestal(level, center.offset(-18, 0, -20), center.offset(80, 1, -45), "Setor Leste: Portal Subespacial", "Viagem Dimensional Subespacial", Blocks.CRYING_OBSIDIAN);
-        setupPedestal(level, center.offset(-22, 0, -20), center.offset(80, 1, 25), "Setor Leste: Base Espacial Orbital", "Canhão de Massa 500 kJ & Satélites", Blocks.RAW_COPPER_BLOCK);
-        setupPedestal(level, center.offset(-26, 0, -20), center.offset(-65, 1, -38), "Setor Norte: Defesa & Balística", "Railgun 250 kJ | Torretas & Escudos", Blocks.NETHERITE_BLOCK);
-        setupPedestal(level, center.offset(-30, 0, -20), center.offset(45, 1, -48), "Setor Norte: Abismo & Rapel (128m)", "Guincho de Rapel & Salto Vertical", Blocks.SMOOTH_BASALT);
+        setupPedestal(level, center.offset(-18, 0, -20), showcaseCenter.offset(110, 1, -45), "Setor Leste: Portal Subespacial", "Viagem Dimensional Subespacial", Blocks.CRYING_OBSIDIAN);
+        setupPedestal(level, center.offset(-22, 0, -20), showcaseCenter.offset(115, 1, 20), "Setor Leste: Base Espacial Orbital", "Canhão de Massa 500 kJ & Satélites", Blocks.RAW_COPPER_BLOCK);
+        setupPedestal(level, center.offset(-26, 0, -20), showcaseCenter.offset(-65, 1, -38), "Setor Norte: Defesa & Balística", "Railgun 250 kJ | Torretas & Escudos", Blocks.NETHERITE_BLOCK);
+        setupPedestal(level, center.offset(-30, 0, -20), showcaseCenter.offset(45, 1, -65), "Setor Norte: Abismo & Rapel (128m)", "Guincho de Rapel & Salto Vertical", Blocks.SMOOTH_BASALT);
 
-        setupPedestal(level, center.offset(-18, 0, -23), center.offset(0, 1, -85), "Setor Norte: Complexo de Ciborgues", "Androides, Mineração & Construção em Loop", Blocks.EMERALD_BLOCK);
-        setupPedestal(level, center.offset(-22, 0, -23), center.offset(0, 1, getBiosphereFrontZ()), "Setor Sul: Complexo de Biosferas", "7 Biosferas Planetárias Gigantes", Blocks.VERDANT_FROGLIGHT);
-        setupPedestal(level, center.offset(-26, 0, -23), center.offset(-68 + 4 * 7 + 3, -39, 12 + 3), "Dungeon: Megadungeon Oeste", "6 Andares | Grade 8x8 | 384 Salas", Blocks.POLISHED_DEEPSLATE);
-        setupPedestal(level, center.offset(-30, 0, -23), center.offset(14 + 4 * 7 + 3, -39, 12 + 3), "Dungeon: Bunker Leste", "1 Andar Colossal | Grade 8x8 | 64 Salas", Blocks.DEEPSLATE_BRICKS);
+        setupPedestal(level, center.offset(-18, 0, -23), showcaseCenter.offset(0, 1, -85), "Setor Norte: Complexo de Ciborgues", "Androides, Mineração & Construção em Loop", Blocks.EMERALD_BLOCK);
+        setupPedestal(level, center.offset(-22, 0, -23), showcaseCenter.offset(0, 1, getBiosphereFrontZ()), "Setor Sul: Complexo de Biosferas", "7 Biosferas Planetárias Gigantes", Blocks.VERDANT_FROGLIGHT);
+        setupPedestal(level, center.offset(-26, 0, -23), showcaseCenter.offset(-68 + 4 * 7 + 3, -39, 12 + 3), "Dungeon: Megadungeon Oeste", "6 Andares | Grade 8x8 | 384 Salas", Blocks.POLISHED_DEEPSLATE);
+        setupPedestal(level, center.offset(-30, 0, -23), showcaseCenter.offset(14 + 4 * 7 + 3, -39, 12 + 3), "Dungeon: Bunker Leste", "1 Andar Colossal | Grade 8x8 | 64 Salas", Blocks.DEEPSLATE_BRICKS);
 
-        setupPedestal(level, center.offset(-18, 0, -26), center.offset(-24 + 3 * 7 + 3, -44, -70 + 3), "Dungeon: Depósito Geológico Sul", "4 Andares | Grade 7x7 | 196 Salas", Blocks.TERRACOTTA);
-        setupPedestal(level, center.offset(-22, 0, -26), center.offset(-24 + 3 * 7 + 3, -44, 84 + 3), "Dungeon: Lab Militar Norte", "4 Andares | Black Site | 196 Salas", Blocks.REDSTONE_LAMP);
-        setupPedestal(level, center.offset(-26, 0, -26), center.offset(-96 + 2 * 7 + 3, -44, -70 + 3), "Dungeon: Mineração Infestada", "3 Andares | Mega-Broca | Sandworms", Blocks.PACKED_MUD);
-        setupPedestal(level, center.offset(-30, 0, -26), center.offset(48 + 2 * 7 + 3, -44, -70 + 3), "Dungeon: Cofre Criogênico", "3 Andares | Câmaras Criogênicas Sub-Zero", Blocks.BLUE_ICE);
+        setupPedestal(level, center.offset(-18, 0, -26), showcaseCenter.offset(-24 + 3 * 7 + 3, -44, -70 + 3), "Dungeon: Depósito Geológico Sul", "4 Andares | Grade 7x7 | 196 Salas", Blocks.TERRACOTTA);
+        setupPedestal(level, center.offset(-22, 0, -26), showcaseCenter.offset(-24 + 3 * 7 + 3, -44, 84 + 3), "Dungeon: Lab Militar Norte", "4 Andares | Black Site | 196 Salas", Blocks.REDSTONE_LAMP);
+        setupPedestal(level, center.offset(-26, 0, -26), showcaseCenter.offset(-96 + 2 * 7 + 3, -44, -70 + 3), "Dungeon: Mineração Infestada", "3 Andares | Mega-Broca | Sandworms", Blocks.PACKED_MUD);
+        setupPedestal(level, center.offset(-30, 0, -26), showcaseCenter.offset(48 + 2 * 7 + 3, -44, -70 + 3), "Dungeon: Cofre Criogênico", "3 Andares | Câmaras Criogênicas Sub-Zero", Blocks.BLUE_ICE);
 
-        setupPedestal(level, center.offset(-18, 0, -29), center.offset(-75, 1, 40), "Setor Sudoeste: Hipódromo Cibernético", "Pista de Galope, Saltos & Sobrescrita", Blocks.HAY_BLOCK);
-        setupPedestal(level, center.offset(-22, 0, -29), center.offset(0, 1, -149), "Setor Norte: Arena do Colosso (Sandworm)", "Verme de Areia Adulto | Arena de Dunas & Fosso", Blocks.RED_SANDSTONE);
-        setupPedestal(level, center.offset(-26, 0, -29), center.offset(-50, 1, -65), "Setor Mecânica: Super Pistões", "Meia-Laje (7) | Cinético (24) | Tectônico (48 + Obsidiana)", Blocks.REDSTONE_BLOCK);
+        setupPedestal(level, center.offset(-18, 0, -29), showcaseCenter.offset(-75, 1, 40), "Setor Sudoeste: Hipódromo Cibernético", "Pista de Galope, Saltos & Sobrescrita", Blocks.HAY_BLOCK);
+        setupPedestal(level, center.offset(-22, 0, -29), showcaseCenter.offset(0, 1, -149), "Setor Norte: Arena do Colosso (Sandworm)", "Verme de Areia Adulto | Arena de Dunas & Fosso", Blocks.RED_SANDSTONE);
+        setupPedestal(level, center.offset(-26, 0, -29), showcaseCenter.offset(50, 1, -100), "Setor Mecânica: Super Pistões", "Meia-Laje (7) | Cinético (24) | Tectônico (48 + Obsidiana)", Blocks.REDSTONE_BLOCK);
     }
 
     private static void setupPedestal(ServerLevel level, BlockPos floorPos, BlockPos destination, String title, String subtitle, Block baseBlock) {
@@ -1390,7 +1439,7 @@ public class ShowcaseAutomation {
 
         int cols = 8;
         int spacing = 5;
-        int startZ = 8;
+        int startZ = CHECKERBOARD_START_Z;
         int totalRows = (blocks.size() + cols - 1) / cols;
 
         for (int x = -26; x <= 26; x++) {
@@ -2926,6 +2975,26 @@ public class ShowcaseAutomation {
         BlockPos portalArch = center.offset(-2, 0, -65);
         spawnHologram(level, portalArch.getX() - 1.5, baseY + 3.2, portalArch.getZ() + 0.5, "§e§l◀ SUPER PISTÕES SANDSTORM");
         spawnHologram(level, portalArch.getX() - 1.5, baseY + 2.85, portalArch.getZ() + 0.5, "§7Pistas de Teste: Meia-Laje, 24 Blocos & Obsidiana");
+    }
+
+    private static void buildShowcaseWalkway(ServerLevel level, BlockPos start, BlockPos end) {
+        if (start.getX() != end.getX() && start.getZ() != end.getZ()) {
+            throw new IllegalArgumentException("Showcase walkway must be straight");
+        }
+        int stepX = Integer.compare(end.getX(), start.getX());
+        int stepZ = Integer.compare(end.getZ(), start.getZ());
+        int length = Math.max(Math.abs(end.getX() - start.getX()), Math.abs(end.getZ() - start.getZ()));
+        for (int index = 0; index <= length; index++) {
+            BlockPos pathCenter = start.offset(stepX * index, 0, stepZ * index);
+            for (int width = -2; width <= 2; width++) {
+                BlockPos pathPos = stepX == 0 ? pathCenter.offset(width, 0, 0) : pathCenter.offset(0, 0, width);
+                boolean edge = Math.abs(width) == 2;
+                boolean light = index % 4 == 0 && width == 0;
+                Block block = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(pathPos.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                level.setBlock(pathPos, block.defaultBlockState(), 2);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -4530,7 +4599,7 @@ public class ShowcaseAutomation {
 
     public static int getBiosphereFrontZ() {
         int maxBlockZ = getCheckerboardMaxZ();
-        int startZ = 8;
+        int startZ = CHECKERBOARD_START_Z;
 
         List<Item> items = BuiltInRegistries.ITEM.stream()
                 .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(SandStormMod.MOD_ID))
@@ -5542,7 +5611,7 @@ public class ShowcaseAutomation {
                 .toList();
         int cols = 8;
         int spacing = 5;
-        int startZ = 8;
+        int startZ = CHECKERBOARD_START_Z;
         int totalRows = (blocks.size() + cols - 1) / cols;
         return startZ + (totalRows * spacing) + 4;
     }
