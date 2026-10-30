@@ -322,3 +322,33 @@ graph TD;
     end
 ```
 </details>
+
+
+<details>
+<summary><b>13. Portal Subespacial, Dobra Quântica & Termo-Recarga Geotérmica no Nether</b></summary>
+
+```mermaid
+graph TD;
+    subgraph "Dobra Quântica & Desembarque"
+        CORE["Núcleo de Dobra Subespacial (subspace_warp_core)"] --> GATE["Portal Subespacial (subspace_gateway)"]
+        GATE -->|20.000 J por Salto| JUMP["Trânsito Interdimensional Instantâneo"]
+        JUMP --> ARRIVAL["Chegada no Destino (Overworld / Nether)"]
+        ARRIVAL --> PRIME["Cevamento Automático: Destino Energizado em >= 20.000 J"]
+    end
+
+    subgraph "Mecanismo de Emergência Anti Soft-Lock"
+        NETHER["Ambiente Térmico Extremo do Nether"] --> ABSORB["Absorção Geotérmica Passiva (+20 J/tick)"]
+        LAVA["Lava Adjacente ou Subjacente (+5 J/tick)"] --> ABSORB
+        MAGMA["Blocos de Magma & Fogo (+2 J/tick)"] --> ABSORB
+        ABSORB --> RECHARGE["Recarga Completa de 20.000 J em 40-50 Segundos"]
+        RECHARGE --> READY["Portal Sempre Operacional para Retorno Seguro"]
+    end
+
+    subgraph "Combustíveis Térmicos Diretos"
+        LAVA_B["Balde de Lava (+20.000 J + Retorna Balde Vazio)"] --> GATE
+        BLAZE["Vara de Blaze (+5.000 J) / Pó (+2.500 J)"] --> GATE
+        MAGMA_B["Bloco de Magma / Glowstone (+4.000 J)"] --> GATE
+        COAL["Bloco de Carvão (+16.000 J) / Carvão (+1.600 J)"] --> GATE
+    end
+```
+</details>

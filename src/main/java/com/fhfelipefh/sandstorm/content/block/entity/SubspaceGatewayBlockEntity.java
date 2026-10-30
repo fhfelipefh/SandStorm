@@ -31,6 +31,7 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
     private int energy = 0;
     private int cooldown = 0;
     private long lastJumpGameTime = 0L;
+    private int cachedThermalRate = -1;
 
     public SubspaceGatewayBlockEntity(BlockPos pos, BlockState state) {
         this(SandStormBlocks.SUBSPACE_GATEWAY_BE, pos, state);
@@ -53,13 +54,38 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
         return this.energy >= JUMP_COST;
     }
 
+    public int getCachedThermalRate() {
+        return this.cachedThermalRate;
+    }
+
+    public static int getThermalRechargeRate(Level level, BlockPos pos) {
+        int rate = 0;
+        if (level.dimension() == Level.NETHER) {
+            rate += 20;
+        }
+        for (Direction dir : Direction.values()) {
+            BlockState neighbor = level.getBlockState(pos.relative(dir));
+            if (neighbor.is(Blocks.LAVA)) {
+                rate += 5;
+            } else if (neighbor.is(Blocks.MAGMA_BLOCK) || neighbor.is(Blocks.FIRE) || neighbor.is(Blocks.SOUL_FIRE)) {
+                rate += 2;
+            }
+        }
+        BlockState below2 = level.getBlockState(pos.below(2));
+        if (below2.is(Blocks.LAVA)) {
+            rate += 5;
+        }
+        return rate;
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, SubspaceGatewayBlockEntity be) {
         if (be.cooldown > 0) {
             be.cooldown--;
         }
 
         long gameTime = level.getGameTime();
-        if ((gameTime + pos.hashCode()) % 20 == 0) {
+        if ((gameTime + pos.hashCode()) % 20 == 0 || be.cachedThermalRate < 0) {
+            be.cachedThermalRate = getThermalRechargeRate(level, pos);
             float wptSolar = WirelessSolarReceiverManager.getWptChargeAt(level, pos);
             long wptAccumulator = SolidStateAccumulatorManager.getWptChargeAt(level, pos);
             long totalIncome = Math.round(wptSolar * 15.0f) + wptAccumulator;
@@ -67,6 +93,11 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
                 be.energy = Math.min(MAX_ENERGY, be.energy + (int) Math.min(MAX_ENERGY - be.energy, totalIncome));
                 be.setChanged();
             }
+        }
+
+        if (be.cachedThermalRate > 0 && be.energy < MAX_ENERGY) {
+            be.energy = Math.min(MAX_ENERGY, be.energy + be.cachedThermalRate);
+            be.setChanged();
         }
 
         boolean shouldBeLit = be.energy >= JUMP_COST;
@@ -93,7 +124,9 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
 
         if (this.energy < JUMP_COST) {
             player.sendSystemMessage(
-                    Component.translatable("telemetry.sandstorm.subspace_gateway_insufficient_energy", this.energy, JUMP_COST)
+                    Component.translatable(this.cachedThermalRate > 0
+                            ? "telemetry.sandstorm.subspace_gateway_geothermal_charging"
+                            : "telemetry.sandstorm.subspace_gateway_insufficient_energy", this.energy, JUMP_COST)
             );
             this.cooldown = 20;
             return false;
@@ -198,8 +231,10 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
                     BlockState existingState = destLevel.getBlockState(floorPos);
                     if (!existingState.is(SandStormBlocks.SUBSPACE_GATEWAY)) {
                         destLevel.setBlock(floorPos, SandStormBlocks.SUBSPACE_GATEWAY.defaultBlockState().setValue(BlockStateProperties.LIT, true), 3);
-                        BlockEntity destBe = destLevel.getBlockEntity(floorPos);
-                        if (destBe instanceof SubspaceGatewayBlockEntity gatewayBe) {
+                    }
+                    BlockEntity destBe = destLevel.getBlockEntity(floorPos);
+                    if (destBe instanceof SubspaceGatewayBlockEntity gatewayBe) {
+                        if (gatewayBe.getEnergy() < JUMP_COST) {
                             gatewayBe.setEnergy(JUMP_COST);
                         }
                     }

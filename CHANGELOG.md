@@ -2,6 +2,20 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.54] - 2026-10-30
+
+### 🌋 Absorção Geotérmica Ambiental no Nether & Prevenção de Soft-Lock Subespacial
+* **Termo-Recarga Ambiental no Nether (Geothermal Trickle Charge)**:
+  * O Portal Subespacial (`SubspaceGatewayBlockEntity`) agora absorve passivamente a radiação geotérmica extrema do Nether (+20 J/tick base), ampliada por proximidade a lagos de lava (+5 J/tick adicionais) e blocos de magma/fogo (+2 J/tick adicionais).
+  * Um portal descarregado a 0 J atinge os 20.000 J necessários para o salto quântico de retorno em ~40 a 50 segundos sem necessidade de geradores ou rede WPT no Nether.
+* **Cevamento Confiável da Plataforma de Destino**:
+  * Ao cruzar as dimensões, o portal de desembarque (`ensureDestinationLandingGate`) agora é energizado automaticamente para no mínimo 20.000 J (`JUMP_COST`), garantindo que o explorador sempre tenha um retorno imediato disponível.
+* **Combustíveis Térmicos & Nether de Emergência**:
+  * O bloco aceita balde de lava via botão direito (concede 20.000 J instantâneos e devolve o balde vazio ao jogador), além de varas de blaze (5.000 J), blocos de magma/glowstone (4.000 J), cargas de fogo (3.000 J), pó de blaze (2.500 J), creme de magma (2.000 J) e carvão.
+* **Telemetria e Partículas Procedurais**:
+  * Adicionada animação cliente de chamas ambientais sendo absorvidas pela base do portal no Nether e telemetria clara no chat indicando a termo-carga ativa.
+  * Implementado teste arquitetural `SubspacePortalGeothermalSafetyArchitectureTest` para blindar a regra de recarga geotérmica.
+
 ## [1.19.53] - 2026-10-30
 
 ### ⚙️ Correção Crítica de Retração dos Super Pistões Cinéticos

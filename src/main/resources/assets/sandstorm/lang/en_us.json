@@ -912,6 +912,8 @@
   "item.sandstorm.subspace_gateway": "Subspace Gateway",
   "telemetry.sandstorm.subspace_gateway_fueled": "Subspace Gateway: Energy buffered (%d / %d J)",
   "telemetry.sandstorm.subspace_gateway_status": "Subspace Gateway: Energy status (%d / %d J)",
+  "telemetry.sandstorm.subspace_gateway_geothermal_status": "Subspace Gateway: Thermal recharge (%d / %d J)",
+  "telemetry.sandstorm.subspace_gateway_geothermal_charging": "Subspace Gateway: Thermal charging (%d / %d J)",
   "telemetry.sandstorm.subspace_gateway_insufficient_energy": "Subspace Gateway: Insufficient charge (%d / %d J)",
   "telemetry.sandstorm.subspace_transit_nether": "Subspace jump: Quantum transit to Nether.",
   "telemetry.sandstorm.subspace_transit_overworld": "Subspace jump: Returning to Overworld.",

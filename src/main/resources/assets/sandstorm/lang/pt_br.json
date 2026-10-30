@@ -912,6 +912,8 @@
   "item.sandstorm.subspace_gateway": "Portal Subespacial",
   "telemetry.sandstorm.subspace_gateway_fueled": "Portal Subespacial: Energia (%d / %d J)",
   "telemetry.sandstorm.subspace_gateway_status": "Portal Subespacial: Nível (%d / %d J)",
+  "telemetry.sandstorm.subspace_gateway_geothermal_status": "Portal Subespacial: Termo-recarga (%d / %d J)",
+  "telemetry.sandstorm.subspace_gateway_geothermal_charging": "Portal Subespacial: Termo-carga (%d / %d J)",
   "telemetry.sandstorm.subspace_gateway_insufficient_energy": "Portal Subespacial: Carga baixa (%d / %d J)",
   "telemetry.sandstorm.subspace_transit_nether": "Salto subespacial: Trânsito ao Nether.",
   "telemetry.sandstorm.subspace_transit_overworld": "Salto subespacial: Retorno ao Overworld.",

@@ -101,5 +101,16 @@ class SubspaceGatewayTest {
         assertEquals(3600, BaseMachineBlockEntity.getFuelEnergy(new ItemStack(Items.REDSTONE_BLOCK)));
         assertEquals(0, BaseMachineBlockEntity.getFuelEnergy(new ItemStack(Items.DIRT)));
         assertEquals(0, BaseMachineBlockEntity.getFuelEnergy(ItemStack.EMPTY));
+        assertEquals(5000, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.BLAZE_ROD)));
+        assertEquals(4000, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.MAGMA_BLOCK)));
+        assertEquals(3000, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.FIRE_CHARGE)));
+        assertEquals(2500, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.BLAZE_POWDER)));
+        assertEquals(2000, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.MAGMA_CREAM)));
+        assertEquals(1600, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.COAL)));
+        assertEquals(16000, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.COAL_BLOCK)));
+        assertEquals(1000, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.GLOWSTONE_DUST)));
+        assertEquals(4000, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.GLOWSTONE)));
+        assertEquals(400, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.REDSTONE)));
+        assertEquals(3600, SubspaceGatewayBlock.getSubspaceFuelEnergy(new ItemStack(Items.REDSTONE_BLOCK)));
     }
 }
