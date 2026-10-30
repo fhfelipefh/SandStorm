@@ -60,7 +60,7 @@ class DesertMobEcosystemArchitectureTest {
     void versionMustMatchCurrentRelease() throws IOException {
         Path gradleProps = Path.of("gradle.properties");
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.19.54"), "gradle.properties must be 1.19.54");
+        assertTrue(content.contains("version=1.19.55"), "gradle.properties must be 1.19.55");
     }
 
     @Test
