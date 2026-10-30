@@ -1423,5 +1423,20 @@
   "block.sandstorm.tectonic_kinetic_piston_head": "Cabeza de Pistón Tectónico",
   "tooltip.sandstorm.heavy_kinetic_piston.thrust": "Empuje: 24 bloques (2x vanilla)",
   "tooltip.sandstorm.heavy_kinetic_piston.energy": "Requiere: Redstone + 100 FE por pulso",
-  "tooltip.sandstorm.heavy_kinetic_piston.recharge": "Recarga: WPT, Acumuladores o Redstone"
+  "tooltip.sandstorm.heavy_kinetic_piston.recharge": "Recarga: WPT, Acumuladores o Redstone",
+  "entity.sandstorm.grazer": "Pacedor",
+  "entity.sandstorm.grazer.deactivated": "Pacedor Desactivado",
+  "item.sandstorm.grazer_spawn_egg": "Huevo Generador de Pacedor",
+  "entity.sandstorm.fanghorn": "Colmilargo",
+  "entity.sandstorm.fanghorn.deactivated": "Colmilargo Desactivado",
+  "item.sandstorm.fanghorn_spawn_egg": "Huevo Generador de Colmilargo",
+  "entity.sandstorm.frostclaw": "Garrahelada",
+  "entity.sandstorm.frostclaw.deactivated": "Garrahelada Desactivado",
+  "item.sandstorm.frostclaw_spawn_egg": "Huevo Generador de Garrahelada",
+  "entity.sandstorm.glinthawk": "Rapaz",
+  "entity.sandstorm.glinthawk.deactivated": "Rapaz Desactivado",
+  "item.sandstorm.glinthawk_spawn_egg": "Huevo Generador de Rapaz",
+  "entity.sandstorm.waterwing": "Alasol Acuático",
+  "entity.sandstorm.waterwing.deactivated": "Alasol Acuático Desactivado",
+  "item.sandstorm.waterwing_spawn_egg": "Huevo Generador de Alasol Acuático"
 }

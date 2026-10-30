@@ -141,6 +141,11 @@ public class SandStormItems {
     public static final SpawnEggItem LABORER_UNIT_SPAWN_EGG = register("laborer_unit_spawn_egg", new SpawnEggItem(properties("laborer_unit_spawn_egg").spawnEgg(SandStormEntities.LABORER_UNIT)));
     public static final SpawnEggItem SCOUT_DRONE_SPAWN_EGG = register("scout_drone_spawn_egg", new SpawnEggItem(properties("scout_drone_spawn_egg").spawnEgg(SandStormEntities.SCOUT_DRONE)));
     public static final SpawnEggItem CRAWLER_DRONE_SPAWN_EGG = register("crawler_drone_spawn_egg", new SpawnEggItem(properties("crawler_drone_spawn_egg").spawnEgg(SandStormEntities.CRAWLER_DRONE)));
+    public static final SpawnEggItem GRAZER_SPAWN_EGG = register("grazer_spawn_egg", new SpawnEggItem(properties("grazer_spawn_egg").spawnEgg(SandStormEntities.GRAZER)));
+    public static final SpawnEggItem FANGHORN_SPAWN_EGG = register("fanghorn_spawn_egg", new SpawnEggItem(properties("fanghorn_spawn_egg").spawnEgg(SandStormEntities.FANGHORN)));
+    public static final SpawnEggItem FROSTCLAW_SPAWN_EGG = register("frostclaw_spawn_egg", new SpawnEggItem(properties("frostclaw_spawn_egg").spawnEgg(SandStormEntities.FROSTCLAW)));
+    public static final SpawnEggItem GLINTHAWK_SPAWN_EGG = register("glinthawk_spawn_egg", new SpawnEggItem(properties("glinthawk_spawn_egg").spawnEgg(SandStormEntities.GLINTHAWK)));
+    public static final SpawnEggItem WATERWING_SPAWN_EGG = register("waterwing_spawn_egg", new SpawnEggItem(properties("waterwing_spawn_egg").spawnEgg(SandStormEntities.WATERWING)));
     public static final ReprogrammerToolItem REPROGRAMMER_TOOL = register("reprogrammer_tool", new ReprogrammerToolItem(properties("reprogrammer_tool").rarity(Rarity.RARE).stacksTo(1)));
     public static final Item LOOSE_WIRES = register("loose_wires", new Item(properties("loose_wires").rarity(Rarity.COMMON)));
     public static final Item WORTHLESS_SCRAP = register("worthless_scrap", new Item(properties("worthless_scrap").rarity(Rarity.COMMON)));
@@ -427,6 +432,11 @@ public class SandStormItems {
                         entries.accept(LABORER_UNIT_SPAWN_EGG);
                         entries.accept(SCOUT_DRONE_SPAWN_EGG);
                         entries.accept(CRAWLER_DRONE_SPAWN_EGG);
+                        entries.accept(GRAZER_SPAWN_EGG);
+                        entries.accept(FANGHORN_SPAWN_EGG);
+                        entries.accept(FROSTCLAW_SPAWN_EGG);
+                        entries.accept(GLINTHAWK_SPAWN_EGG);
+                        entries.accept(WATERWING_SPAWN_EGG);
                         entries.accept(REPROGRAMMER_TOOL);
                         entries.accept(LOOSE_WIRES);
                         entries.accept(WORTHLESS_SCRAP);

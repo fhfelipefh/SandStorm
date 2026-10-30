@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "sandstorm:circuit_board",
+    "sandstorm:titanium_chitin_composite",
+    "minecraft:egg",
+    "minecraft:prismarine_shard"
+  ],
+  "result": {
+    "id": "sandstorm:waterwing_spawn_egg",
+    "count": 1
+  }
+}

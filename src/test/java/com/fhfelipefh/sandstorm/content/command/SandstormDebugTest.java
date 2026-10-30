@@ -109,7 +109,12 @@ class SandstormDebugTest {
         assertTrue(spawnables.contains("scout_drone"));
         assertTrue(spawnables.contains("crawler_drone"));
         assertTrue(spawnables.contains("cybernetic_golem"));
-        assertEquals(23, spawnables.size());
+        assertTrue(spawnables.contains("grazer"));
+        assertTrue(spawnables.contains("fanghorn"));
+        assertTrue(spawnables.contains("frostclaw"));
+        assertTrue(spawnables.contains("glinthawk"));
+        assertTrue(spawnables.contains("waterwing"));
+        assertEquals(28, spawnables.size());
     }
 
     @Test

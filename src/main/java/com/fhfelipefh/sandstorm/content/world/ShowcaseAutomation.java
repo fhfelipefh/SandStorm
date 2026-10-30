@@ -51,11 +51,16 @@ import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
+import com.fhfelipefh.sandstorm.content.entity.FanghornEntity;
+import com.fhfelipefh.sandstorm.content.entity.FrostclawEntity;
+import com.fhfelipefh.sandstorm.content.entity.GlinthawkEntity;
+import com.fhfelipefh.sandstorm.content.entity.GrazerEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.content.entity.MirageDecoyEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandboardEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
+import com.fhfelipefh.sandstorm.content.entity.WaterwingEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgBuilderEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgExcavatorEntity;
@@ -1241,6 +1246,11 @@ public class ShowcaseAutomation {
             chest4.setItem(9, new ItemStack(Items.LEAD, 4));
             chest4.setItem(10, new ItemStack(Items.IRON_INGOT, 32));
             chest4.setItem(11, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 16));
+            chest4.setItem(12, new ItemStack(SandStormItems.GRAZER_SPAWN_EGG, 16));
+            chest4.setItem(13, new ItemStack(SandStormItems.FANGHORN_SPAWN_EGG, 16));
+            chest4.setItem(14, new ItemStack(SandStormItems.FROSTCLAW_SPAWN_EGG, 16));
+            chest4.setItem(15, new ItemStack(SandStormItems.GLINTHAWK_SPAWN_EGG, 16));
+            chest4.setItem(16, new ItemStack(SandStormItems.WATERWING_SPAWN_EGG, 16));
         }
         spawnHologram(level, center.getX() + 2.5, center.getY() + 2.5, center.getZ() + 0.5, "§e[Baú de Montarias & Sobrescrita]");
 
@@ -2267,6 +2277,64 @@ public class ShowcaseAutomation {
         spawnHologram(level, 12.0, entityY + 2.2, -22.0, "§b[Drone Construtor Autônomo]");
         spawnHologram(level, 12.0, entityY + 1.9, -22.0, "§7Montagem Autônoma de Blocos");
 
+
+        placeEntityPedestal(level, new BlockPos(-16, baseY, -30));
+        GrazerEntity grazer = new GrazerEntity(SandStormEntities.GRAZER, level);
+        grazer.setPos(-16.0, entityY, -30.0);
+        grazer.setPersistenceRequired();
+        grazer.setCustomName(Component.literal("Pastador (Grazer)"));
+        grazer.setCustomNameVisible(true);
+        level.addFreshEntity(grazer);
+
+        placeEntityPedestal(level, new BlockPos(-8, baseY, -30));
+        FanghornEntity fanghorn = new FanghornEntity(SandStormEntities.FANGHORN, level);
+        fanghorn.setPos(-8.0, entityY, -30.0);
+        fanghorn.setPersistenceRequired();
+        fanghorn.setCustomName(Component.literal("Presalonga (Fanghorn)"));
+        fanghorn.setCustomNameVisible(true);
+        level.addFreshEntity(fanghorn);
+
+        placeEntityPedestal(level, new BlockPos(0, baseY, -30));
+        FrostclawEntity frostclaw = new FrostclawEntity(SandStormEntities.FROSTCLAW, level);
+        frostclaw.setPos(0.0, entityY, -30.0);
+        frostclaw.setPersistenceRequired();
+        frostclaw.setCustomName(Component.literal("Garra-Gelida (Frostclaw)"));
+        frostclaw.setCustomNameVisible(true);
+        level.addFreshEntity(frostclaw);
+
+        placeEntityPedestal(level, new BlockPos(8, baseY, -30));
+        GlinthawkEntity glinthawk = new GlinthawkEntity(SandStormEntities.GLINTHAWK, level);
+        glinthawk.setPos(8.0, entityY + 1.0, -30.0);
+        glinthawk.setNoGravity(true);
+        glinthawk.setPersistenceRequired();
+        glinthawk.setCustomName(Component.literal("Gaviao-Reluzente (Glinthawk)"));
+        glinthawk.setCustomNameVisible(true);
+        level.addFreshEntity(glinthawk);
+
+        placeEntityPedestal(level, new BlockPos(16, baseY, -30));
+        WaterwingEntity waterwing = new WaterwingEntity(SandStormEntities.WATERWING, level);
+        waterwing.setPos(16.0, entityY, -30.0);
+        waterwing.setPersistenceRequired();
+        waterwing.setTame(true, false);
+        waterwing.setOrderedToSit(false);
+        waterwing.setCustomName(Component.literal("Asad'agua (Waterwing)"));
+        waterwing.setCustomNameVisible(true);
+        level.addFreshEntity(waterwing);
+
+        spawnHologram(level, -16.0, entityY + 2.5, -30.0, "[Pastador (Grazer)]");
+        spawnHologram(level, -16.0, entityY + 2.15, -30.0, "Coleta de Blaze e Terraformacao");
+
+        spawnHologram(level, -8.0, entityY + 2.5, -30.0, "[Presalonga (Fanghorn)]");
+        spawnHologram(level, -8.0, entityY + 2.15, -30.0, "Escolta Termica e Disparos de Fogo");
+
+        spawnHologram(level, 0.0, entityY + 3.2, -30.0, "[Garra-Gelida (Frostclaw)]");
+        spawnHologram(level, 0.0, entityY + 2.85, -30.0, "Guardiao Criogenico Apex");
+
+        spawnHologram(level, 8.0, entityY + 2.5, -30.0, "[Gaviao-Reluzente (Glinthawk)]");
+        spawnHologram(level, 8.0, entityY + 2.15, -30.0, "Predador Aereo Catador de Sucata");
+
+        spawnHologram(level, 16.0, entityY + 2.5, -30.0, "[Asad'agua (Waterwing)]");
+        spawnHologram(level, 16.0, entityY + 2.15, -30.0, "Montaria Anfibio: Voo e Mergulho");
     }
 
     private static void placeEntityPedestal(ServerLevel level, BlockPos baseCenter) {

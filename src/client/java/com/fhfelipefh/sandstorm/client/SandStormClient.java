@@ -78,6 +78,11 @@ import com.fhfelipefh.sandstorm.client.renderer.SynapticRepairerBlockEntityRende
 import com.fhfelipefh.sandstorm.client.renderer.VaultDoorControllerBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.XpVacuumBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ExcavatorVehicleRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.FanghornRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.FrostclawRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.GlinthawkRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.GrazerRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.WaterwingRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MegazordRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MirageDecoyRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandboardRenderer;
@@ -233,6 +238,11 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.CYBERNETIC_GOLEM, CyberneticGolemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.RAPPEL_HARNESS, RappelHarnessRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.MIRAGE_DECOY, MirageDecoyRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.GRAZER, GrazerRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.FANGHORN, FanghornRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.FROSTCLAW, FrostclawRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.GLINTHAWK, GlinthawkRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.WATERWING, WaterwingRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

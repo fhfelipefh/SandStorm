@@ -29,7 +29,12 @@ import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberneticGolemEntity;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
+import com.fhfelipefh.sandstorm.content.entity.FanghornEntity;
+import com.fhfelipefh.sandstorm.content.entity.FrostclawEntity;
+import com.fhfelipefh.sandstorm.content.entity.GlinthawkEntity;
+import com.fhfelipefh.sandstorm.content.entity.GrazerEntity;
 import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
+import com.fhfelipefh.sandstorm.content.entity.WaterwingEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.GolemMetalTier;
@@ -112,7 +117,12 @@ public class SandstormDebugCommand {
             "laborer_unit",
             "scout_drone",
             "crawler_drone",
-            "cybernetic_golem"
+            "cybernetic_golem",
+            "grazer",
+            "fanghorn",
+            "frostclaw",
+            "glinthawk",
+            "waterwing"
     );
 
     private static final List<String> FACILITIES = List.of(
@@ -1026,7 +1036,52 @@ public class SandstormDebugCommand {
                     return 1;
                 }
             }
-            default -> {
+                        case "grazer" -> {
+                GrazerEntity mob = SandStormEntities.GRAZER.create(level, EntitySpawnReason.COMMAND);
+                if (mob != null) {
+                    mob.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(mob);
+                    source.sendSuccess(() -> Component.literal("[SandStorm] Pastador instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "fanghorn" -> {
+                FanghornEntity mob = SandStormEntities.FANGHORN.create(level, EntitySpawnReason.COMMAND);
+                if (mob != null) {
+                    mob.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(mob);
+                    source.sendSuccess(() -> Component.literal("[SandStorm] Presalonga instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "frostclaw" -> {
+                FrostclawEntity mob = SandStormEntities.FROSTCLAW.create(level, EntitySpawnReason.COMMAND);
+                if (mob != null) {
+                    mob.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(mob);
+                    source.sendSuccess(() -> Component.literal("[SandStorm] Garra-Gelida instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "glinthawk" -> {
+                GlinthawkEntity mob = SandStormEntities.GLINTHAWK.create(level, EntitySpawnReason.COMMAND);
+                if (mob != null) {
+                    mob.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(mob);
+                    source.sendSuccess(() -> Component.literal("[SandStorm] Gaviao-Reluzente instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+            case "waterwing" -> {
+                WaterwingEntity mob = SandStormEntities.WATERWING.create(level, EntitySpawnReason.COMMAND);
+                if (mob != null) {
+                    mob.setPos(pos.x, pos.y, pos.z);
+                    level.addFreshEntity(mob);
+                    source.sendSuccess(() -> Component.literal("[SandStorm] Asad'agua instanciado com sucesso!"), true);
+                    return 1;
+                }
+            }
+default -> {
                 source.sendFailure(Component.literal("§c[SandStorm] Entidade desconhecida. Opções: " + String.join(", ", SPAWNABLES)));
                 return 0;
             }

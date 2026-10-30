@@ -1423,5 +1423,20 @@
   "block.sandstorm.tectonic_kinetic_piston_head": "Tectonic Kinetic Piston Head",
   "tooltip.sandstorm.heavy_kinetic_piston.thrust": "Thrust: 24 blocks (2x vanilla)",
   "tooltip.sandstorm.heavy_kinetic_piston.energy": "Requires: Redstone + 100 FE per pulse",
-  "tooltip.sandstorm.heavy_kinetic_piston.recharge": "Recharge: WPT, Accumulators or Redstone"
+  "tooltip.sandstorm.heavy_kinetic_piston.recharge": "Recharge: WPT, Accumulators or Redstone",
+  "entity.sandstorm.grazer": "Grazer",
+  "entity.sandstorm.grazer.deactivated": "Deactivated Grazer",
+  "item.sandstorm.grazer_spawn_egg": "Grazer Spawn Egg",
+  "entity.sandstorm.fanghorn": "Fanghorn",
+  "entity.sandstorm.fanghorn.deactivated": "Deactivated Fanghorn",
+  "item.sandstorm.fanghorn_spawn_egg": "Fanghorn Spawn Egg",
+  "entity.sandstorm.frostclaw": "Frostclaw",
+  "entity.sandstorm.frostclaw.deactivated": "Deactivated Frostclaw",
+  "item.sandstorm.frostclaw_spawn_egg": "Frostclaw Spawn Egg",
+  "entity.sandstorm.glinthawk": "Glinthawk",
+  "entity.sandstorm.glinthawk.deactivated": "Deactivated Glinthawk",
+  "item.sandstorm.glinthawk_spawn_egg": "Glinthawk Spawn Egg",
+  "entity.sandstorm.waterwing": "Waterwing",
+  "entity.sandstorm.waterwing.deactivated": "Deactivated Waterwing",
+  "item.sandstorm.waterwing_spawn_egg": "Waterwing Spawn Egg"
 }

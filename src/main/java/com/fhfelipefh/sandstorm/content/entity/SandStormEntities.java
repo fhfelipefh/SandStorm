@@ -359,6 +359,71 @@ public class SandStormEntities {
                     .build(MIRAGE_DECOY_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> GRAZER_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("grazer")
+    );
+
+    public static final EntityType<GrazerEntity> GRAZER = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("grazer"),
+            EntityType.Builder.of(GrazerEntity::new, MobCategory.CREATURE)
+                    .sized(1.4f, 1.6f)
+                    .build(GRAZER_KEY)
+    );
+
+    public static final ResourceKey<EntityType<?>> FANGHORN_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("fanghorn")
+    );
+
+    public static final EntityType<FanghornEntity> FANGHORN = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("fanghorn"),
+            EntityType.Builder.of(FanghornEntity::new, MobCategory.MONSTER)
+                    .sized(1.4f, 1.7f)
+                    .build(FANGHORN_KEY)
+    );
+
+    public static final ResourceKey<EntityType<?>> FROSTCLAW_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("frostclaw")
+    );
+
+    public static final EntityType<FrostclawEntity> FROSTCLAW = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("frostclaw"),
+            EntityType.Builder.of(FrostclawEntity::new, MobCategory.MONSTER)
+                    .sized(2.2f, 2.6f)
+                    .build(FROSTCLAW_KEY)
+    );
+
+    public static final ResourceKey<EntityType<?>> GLINTHAWK_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("glinthawk")
+    );
+
+    public static final EntityType<GlinthawkEntity> GLINTHAWK = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("glinthawk"),
+            EntityType.Builder.of(GlinthawkEntity::new, MobCategory.MONSTER)
+                    .sized(1.5f, 1.2f)
+                    .build(GLINTHAWK_KEY)
+    );
+
+    public static final ResourceKey<EntityType<?>> WATERWING_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("waterwing")
+    );
+
+    public static final EntityType<WaterwingEntity> WATERWING = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("waterwing"),
+            EntityType.Builder.of(WaterwingEntity::new, MobCategory.CREATURE)
+                    .sized(2.0f, 1.8f)
+                    .build(WATERWING_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
@@ -382,5 +447,10 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(CYBERNETIC_GOLEM, CyberneticGolemEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(RAPPEL_HARNESS, RappelHarnessEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(MIRAGE_DECOY, MirageDecoyEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(GRAZER, GrazerEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(FANGHORN, FanghornEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(FROSTCLAW, FrostclawEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(GLINTHAWK, GlinthawkEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(WATERWING, WaterwingEntity.createAttributes());
     }
 }

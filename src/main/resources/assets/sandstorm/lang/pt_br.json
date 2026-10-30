@@ -1423,5 +1423,20 @@
   "block.sandstorm.tectonic_kinetic_piston_head": "Cabeça do Pistão Tectônico",
   "tooltip.sandstorm.heavy_kinetic_piston.thrust": "Empuxo: 24 blocos (2x vanilla)",
   "tooltip.sandstorm.heavy_kinetic_piston.energy": "Requer: Redstone + 100 FE por pulso",
-  "tooltip.sandstorm.heavy_kinetic_piston.recharge": "Recarga: WPT, Acumuladores ou Redstone"
+  "tooltip.sandstorm.heavy_kinetic_piston.recharge": "Recarga: WPT, Acumuladores ou Redstone",
+  "entity.sandstorm.grazer": "Pastador",
+  "entity.sandstorm.grazer.deactivated": "Pastador Desativado",
+  "item.sandstorm.grazer_spawn_egg": "Ovo Gerador de Pastador",
+  "entity.sandstorm.fanghorn": "Presalonga",
+  "entity.sandstorm.fanghorn.deactivated": "Presalonga Desativado",
+  "item.sandstorm.fanghorn_spawn_egg": "Ovo Gerador de Presalonga",
+  "entity.sandstorm.frostclaw": "Garra-Gélida",
+  "entity.sandstorm.frostclaw.deactivated": "Garra-Gélida Desativado",
+  "item.sandstorm.frostclaw_spawn_egg": "Ovo Gerador de Garra-Gélida",
+  "entity.sandstorm.glinthawk": "Gavião-Reluzente",
+  "entity.sandstorm.glinthawk.deactivated": "Gavião-Reluzente Desativado",
+  "item.sandstorm.glinthawk_spawn_egg": "Ovo Gerador de Gavião-Reluzente",
+  "entity.sandstorm.waterwing": "Asad'água",
+  "entity.sandstorm.waterwing.deactivated": "Asad'água Desativado",
+  "item.sandstorm.waterwing_spawn_egg": "Ovo Gerador de Asad'água"
 }
