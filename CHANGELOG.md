@@ -2,6 +2,17 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.57] - 2026-10-30
+
+### 👾 Galeria Isométrica 3D Dinâmica de Entidades & Auditoria Completa de Texturas
+* **Galeria Isométrica 3D Retrátil no `README.md`**:
+  * Adicionada a seção retrátil `<details>` com grade responsiva contendo fotos em alta resolução de todas as 26 entidades do mod (Titã Megazord, Presalonga, Garragélida, Falcão Cintilante, Pastador, Asa d'Água, Corcel Cibernético, Cão Cibernético, Drones, Ciborgues, etc.).
+  * Pipeline automatizado em Python (`tools/generate_entity_gallery.py`) que analisa os modelos Java (`*Model.java`), computa as matrizes de transformação 3D ($4 \times 4$), projeta em perspectiva isométrica exata a $30^\circ$ com descarte Z-buffer e iluminação direcional idêntica à do Minecraft, exportando com canal alfa transparente nativo.
+  * Atualização dinâmica e incremental do README a cada nova entidade adicionada ao mod.
+* **Auditoria Abrangente de Texturas & Conformidade de Assets**:
+  * Validação física e estrutural de 100% dos arquivos PNG de entidades, blocos, itens e armaduras com conformidade estrita de cabeçalho (`89 50 4E 47 0D 0A 1A 0A`).
+  * Cobertura completa de testes de integridade (`AssetIntegrityTest`, `EntityTextureIntegrityArchitectureTest`, `TextureFlickeringPreventionArchitectureTest`, `JeiCompatibilityTest`).
+
 ## [1.19.56] - 2026-10-30
 
 ### 🛡️ Teste de Arquitetura de Integridade de Texturas de Entidades & Sincronização de Assets
