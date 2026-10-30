@@ -296,19 +296,28 @@ graph TD;
 </details>
 
 <details>
-<summary><b>12. Matriz de Automação Cinética & Super Pistões Industriais</b></summary>
+<summary><b>12. Matriz de Automação Cinética, Super Pistões Industriais & Segurança Mecânica</b></summary>
 
 ```mermaid
 graph TD;
-    subgraph "Alimentação Cinética"
-        PWR["Rede WPT ou Sinal de Redstone de Alta Tensão"] --> PISTON["Super Pistão Cinético Tectônico"]
+    subgraph "Alimentação Cinética & Controle"
+        PWR["Rede WPT ou Sinal de Redstone Direto"] --> PISTON["Super Pistão Cinético (Pesado / Tectônico / Meia-Laje)"]
         PISTON --> MASS{"Massa de Blocos a Mover"}
-        MASS --> STD["Deslocamento Linear de Alta Carga (Até 64 Blocos)"]
-        MASS --> TECTONIC["Quebra & Britagem de Formações Rochosas Duras"]
+        MASS --> STD["Deslocamento Linear de Alta Carga (Pesado: 24b / Tectônico: 48b)"]
+        MASS --> TECTONIC["Quebra & Britagem de Obsidiana e Rochas Duras"]
+        MASS --> SLAB["Automação Compacta em Meia-Laje (12 Blocos em Espaços Confinados)"]
+    end
+
+    subgraph "Ciclo Mecânico Seguro de Retração"
+        PWR -->|Desligamento de Sinal / Alavanca OFF| CONTRACT["Rotina Segura de Contração"]
+        CONTRACT --> UNEXTEND["Desativação Atômica da Base: EXTENDED = false"]
+        UNEXTEND --> PULL["Retração ou Remoção Suave da Cabeça do Pistão"]
+        PULL --> GUARD["Trava movedByPiston: Proteção Absoluta contra Quebra Acidental da Base"]
+        GUARD --> STABLE["Sem Drops Indesejados ou Duplicações de Blocos"]
     end
 
     subgraph "Integração com Fábricas e Automação"
-        STD --> FEED["Alimentação Contínua de Fornos e Trituradores"]
+        STD & SLAB --> FEED["Alimentação Contínua de Fornos e Trituradores"]
         FEED --> LOOP["Ciclo de Reconstrução / Mineração em Loop Infinito com Ciborgues"]
     end
 ```

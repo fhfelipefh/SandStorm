@@ -69,9 +69,11 @@ public class HeavyKineticPistonHeadBlock extends DirectionalBlock {
 
     @Override
     protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        BlockPos basePos = pos.relative(state.getValue(FACING).getOpposite());
-        if (this.isFittingBase(state, level.getBlockState(basePos))) {
-            level.destroyBlock(basePos, true);
+        if (!movedByPiston) {
+            BlockPos basePos = pos.relative(state.getValue(FACING).getOpposite());
+            if (this.isFittingBase(state, level.getBlockState(basePos))) {
+                level.destroyBlock(basePos, true);
+            }
         }
     }
 

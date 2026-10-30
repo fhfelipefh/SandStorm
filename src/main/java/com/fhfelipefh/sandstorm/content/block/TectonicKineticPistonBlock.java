@@ -204,21 +204,19 @@ public class TectonicKineticPistonBlock extends BaseEntityBlock {
             level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.8f, 0.5f);
             level.gameEvent(GameEvent.BLOCK_ACTIVATE, pos, GameEvent.Context.of(state));
         } else if (id == 1) {
+            level.setBlock(pos, state.setValue(EXTENDED, false), 67);
             BlockPos headPos = pos.relative(direction);
-            BlockState checkState = level.getBlockState(headPos);
-            if (checkState.is(SandStormBlocks.TECTONIC_KINETIC_PISTON_HEAD)) {
-                level.setBlock(headPos, Blocks.AIR.defaultBlockState(), 18);
-            }
             if (this.isSticky) {
                 BlockPos pullPos = pos.relative(direction, 2);
                 BlockState pullState = level.getBlockState(pullPos);
                 if (!pullState.isAir() && HeavyKineticPistonBlock.isPushable(pullState, level, pullPos, direction.getOpposite(), false, direction, true)) {
                     this.moveBlocks(level, pos, direction, false);
+                } else {
+                    level.removeBlock(headPos, false);
                 }
             } else {
                 level.removeBlock(headPos, false);
             }
-            level.setBlock(pos, state.setValue(EXTENDED, false), 67);
             level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.8f, 0.5f);
             level.gameEvent(GameEvent.BLOCK_DEACTIVATE, pos, GameEvent.Context.of(state));
         }

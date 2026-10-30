@@ -2,6 +2,15 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.53] - 2026-10-30
+
+### ⚙️ Correção Crítica de Retração dos Super Pistões Cinéticos
+* **Prevenção de Destruição e Duplicação do Bloco Base**:
+  * Ao desativar o sinal de redstone ou recolher a alavanca em pistões pesados (`HeavyKineticPistonBlock`), de meia-laje (`CompactSlabPistonBlock`) e tectônicos (`TectonicKineticPistonBlock`), a propriedade `EXTENDED` do bloco base agora é redefinida para `false` antes da remoção ou retração da cabeça (`PistonHead`).
+  * Adicionada trava de segurança `!movedByPiston` em `affectNeighborsAfterRemoval` nas classes de cabeça de pistão (`HeavyKineticPistonHeadBlock`, `CompactSlabPistonHeadBlock`, `TectonicKineticPistonHeadBlock`), impedindo que a remoção procedimental da cabeça invoque destruição indevida da base com drop de itens duplicados.
+* **Teste de Arquitetura de Integridade Cinética**:
+  * Implementado `PistonRetractionSafetyArchitectureTest` para auditar estaticamente o fluxo de retração e a proteção contra duplicações em todas as variantes de pistão.
+
 ## [1.19.52] - 2026-10-30
 
 ### 🦌 Blindagem Horizon de Alta Fidelidade, Eliminação de Z-Fighting & PEM Universal

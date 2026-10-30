@@ -221,13 +221,13 @@ public class HeavyKineticPistonBlock extends BaseEntityBlock {
             level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.6f, 0.7f);
             level.gameEvent(GameEvent.BLOCK_ACTIVATE, pos, GameEvent.Context.of(state));
         } else if (id == TRIGGER_CONTRACT || id == TRIGGER_DROP) {
+            level.setBlock(pos, state.setValue(EXTENDED, false), 67);
             BlockPos headPos = pos.relative(direction);
             if (this.isSticky) {
                 this.moveBlocks(level, pos, direction, false);
             } else {
                 level.removeBlock(headPos, false);
             }
-            level.setBlock(pos, state.setValue(EXTENDED, false), 67);
             level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.6f, 0.7f);
             level.gameEvent(GameEvent.BLOCK_DEACTIVATE, pos, GameEvent.Context.of(state));
         }
