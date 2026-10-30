@@ -4,7 +4,10 @@ import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.SolidStateAccumulatorManager;
 import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
 import com.fhfelipefh.sandstorm.content.world.DimensionPortalRestrictionHandler;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -27,11 +30,15 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
     public static final int MAX_ENERGY = 100000;
     public static final int JUMP_COST = 20000;
     public static final int IDLE_CONSUMPTION = 5;
+    public static final long TRANSIT_COOLDOWN_TICKS = 100L;
+
+    private static final Map<UUID, Long> PLAYER_COOLDOWNS = new ConcurrentHashMap<>();
 
     private int energy = 0;
     private int cooldown = 0;
     private long lastJumpGameTime = 0L;
     private int cachedThermalRate = -1;
+    private BlockPos linkedGatewayPos = null;
 
     public SubspaceGatewayBlockEntity(BlockPos pos, BlockState state) {
         this(SandStormBlocks.SUBSPACE_GATEWAY_BE, pos, state);
@@ -56,6 +63,15 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
 
     public int getCachedThermalRate() {
         return this.cachedThermalRate;
+    }
+
+    public BlockPos getLinkedGatewayPos() {
+        return this.linkedGatewayPos;
+    }
+
+    public void setLinkedGatewayPos(BlockPos pos) {
+        this.linkedGatewayPos = pos;
+        setChanged();
     }
 
     public static int getThermalRechargeRate(Level level, BlockPos pos) {
@@ -118,7 +134,12 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
         }
 
         long currentTime = currentLevel.getGameTime();
-        if (currentTime - this.lastJumpGameTime < 60L || this.cooldown > 0) {
+        Long playerLastJump = PLAYER_COOLDOWNS.get(player.getUUID());
+        if (playerLastJump != null && (currentTime - playerLastJump < TRANSIT_COOLDOWN_TICKS)) {
+            return false;
+        }
+
+        if (currentTime - this.lastJumpGameTime < TRANSIT_COOLDOWN_TICKS || this.cooldown > 0) {
             return false;
         }
 
@@ -163,33 +184,55 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
         int destY;
 
         if (goingToNether) {
-            destX = player.getX() / 8.0;
-            destZ = player.getZ() / 8.0;
+            destX = this.worldPosition.getX() / 8.0;
+            destZ = this.worldPosition.getZ() / 8.0;
             destY = findSafeNetherAltitude(destLevel, (int) Math.floor(destX), (int) Math.floor(destZ));
         } else {
-            destX = player.getX() * 8.0;
-            destZ = player.getZ() * 8.0;
+            destX = this.worldPosition.getX() * 8.0;
+            destZ = this.worldPosition.getZ() * 8.0;
             destY = findSafeOverworldAltitude(destLevel, (int) Math.floor(destX), (int) Math.floor(destZ));
         }
 
-        BlockPos landingPos = new BlockPos((int) Math.floor(destX), destY, (int) Math.floor(destZ));
-        ensureDestinationLandingGate(destLevel, landingPos);
+        BlockPos landingPos = null;
+        if (this.linkedGatewayPos != null && destLevel.getBlockState(this.linkedGatewayPos).is(SandStormBlocks.SUBSPACE_GATEWAY)) {
+            landingPos = this.linkedGatewayPos;
+        } else {
+            landingPos = findSubspaceGatewayNear(destLevel, (int) Math.floor(destX), (int) Math.floor(destZ), destY, 12);
+        }
 
+        if (landingPos == null) {
+            landingPos = new BlockPos((int) Math.floor(destX), destY, (int) Math.floor(destZ));
+            ensureDestinationLandingGate(destLevel, landingPos);
+        }
+
+        this.linkedGatewayPos = landingPos;
         this.energy -= JUMP_COST;
-        this.cooldown = 80;
+        this.cooldown = (int) TRANSIT_COOLDOWN_TICKS;
         this.lastJumpGameTime = currentTime;
         setChanged();
 
+        BlockEntity destBe = destLevel.getBlockEntity(landingPos);
+        if (destBe instanceof SubspaceGatewayBlockEntity gatewayBe) {
+            gatewayBe.linkedGatewayPos = this.worldPosition;
+            if (gatewayBe.getEnergy() < JUMP_COST) {
+                gatewayBe.setEnergy(JUMP_COST);
+            }
+            gatewayBe.cooldown = (int) TRANSIT_COOLDOWN_TICKS;
+            gatewayBe.lastJumpGameTime = destLevel.getGameTime();
+            gatewayBe.setChanged();
+        }
+
+        PLAYER_COOLDOWNS.put(player.getUUID(), currentTime);
         DimensionPortalRestrictionHandler.authorizeSubspaceTransit(player.getUUID());
 
         player.teleportTo(
                 destLevel,
                 landingPos.getX() + 0.5,
                 landingPos.getY() + 1.0,
-                landingPos.getZ() + 0.5,
+                landingPos.getZ() + 1.5,
                 Set.of(),
-                player.getYRot(),
-                player.getXRot(),
+                180.0f,
+                0.0f,
                 false
         );
 
@@ -203,6 +246,37 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
         }
 
         return true;
+    }
+
+    public static BlockPos findSubspaceGatewayNear(ServerLevel level, int centerX, int centerZ, int centerY, int radius) {
+        int minChunkX = (centerX - radius) >> 4;
+        int maxChunkX = (centerX + radius) >> 4;
+        int minChunkZ = (centerZ - radius) >> 4;
+        int maxChunkZ = (centerZ + radius) >> 4;
+        for (int cx = minChunkX; cx <= maxChunkX; cx++) {
+            for (int cz = minChunkZ; cz <= maxChunkZ; cz++) {
+                level.getChunk(cx, cz);
+            }
+        }
+        BlockPos bestPos = null;
+        double bestDistSq = Double.MAX_VALUE;
+        int minY = Math.max(level.getMinY(), centerY - 24);
+        int maxY = Math.min(level.getMaxY() - 1, centerY + 24);
+        for (int x = centerX - radius; x <= centerX + radius; x++) {
+            for (int z = centerZ - radius; z <= centerZ + radius; z++) {
+                for (int y = minY; y <= maxY; y++) {
+                    BlockPos pos = new BlockPos(x, y, z);
+                    if (level.getBlockState(pos).is(SandStormBlocks.SUBSPACE_GATEWAY)) {
+                        double dsq = pos.distToCenterSqr(centerX, centerY, centerZ);
+                        if (dsq < bestDistSq) {
+                            bestDistSq = dsq;
+                            bestPos = pos;
+                        }
+                    }
+                }
+            }
+        }
+        return bestPos;
     }
 
     private static int findSafeNetherAltitude(ServerLevel level, int x, int z) {
@@ -232,12 +306,6 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
                     if (!existingState.is(SandStormBlocks.SUBSPACE_GATEWAY)) {
                         destLevel.setBlock(floorPos, SandStormBlocks.SUBSPACE_GATEWAY.defaultBlockState().setValue(BlockStateProperties.LIT, true), 3);
                     }
-                    BlockEntity destBe = destLevel.getBlockEntity(floorPos);
-                    if (destBe instanceof SubspaceGatewayBlockEntity gatewayBe) {
-                        if (gatewayBe.getEnergy() < JUMP_COST) {
-                            gatewayBe.setEnergy(JUMP_COST);
-                        }
-                    }
                 } else {
                     BlockState floorState = destLevel.getBlockState(floorPos);
                     if (floorState.isAir() || !floorState.isFaceSturdy(destLevel, floorPos, Direction.UP)) {
@@ -257,6 +325,9 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
         super.saveAdditional(output);
         output.putInt("energy", this.energy);
         output.putInt("cooldown", this.cooldown);
+        if (this.linkedGatewayPos != null) {
+            output.putLong("linkedPos", this.linkedGatewayPos.asLong());
+        }
     }
 
     @Override
@@ -264,5 +335,11 @@ public class SubspaceGatewayBlockEntity extends BlockEntity {
         super.loadAdditional(input);
         this.energy = input.getIntOr("energy", 0);
         this.cooldown = input.getIntOr("cooldown", 0);
+        long linkedLong = input.getLongOr("linkedPos", 0L);
+        if (linkedLong != 0L) {
+            this.linkedGatewayPos = BlockPos.of(linkedLong);
+        } else {
+            this.linkedGatewayPos = null;
+        }
     }
 }

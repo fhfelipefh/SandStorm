@@ -4,7 +4,13 @@ Todas as alterações notáveis no projeto **SandStorm** serão documentadas nes
 
 ## [1.19.54] - 2026-10-30
 
-### 🌋 Absorção Geotérmica Ambiental no Nether & Prevenção de Soft-Lock Subespacial
+### 🌋 Absorção Geotérmica Ambiental no Nether & Eliminação de Bouncing Loop Subespacial
+* **Eliminação de Loop Infinito de Teletransporte (Bouncing Loop)**:
+  * Ao aterrissar em outra dimensão, o jogador agora desembarca de forma segura sobre a soleira de obsidiana da plataforma (`z + 1.5`), voltado para o portal, em vez de cair diretamente sobre a hitbox de acionamento do bloco.
+  * Implementado cooldown interdimensional de trânsito de 5 segundos (`TRANSIT_COOLDOWN_TICKS = 100L`) tanto para o jogador (`PLAYER_COOLDOWNS`) quanto para o bloco de chegada (`destBe.cooldown`), evitando ricochete imediato de volta à dimensão de origem.
+* **Pareamento 1:1 Determinístico e Busca de Proximidade**:
+  * O Portal Subespacial agora armazena e persiste em NBT a coordenada exata do portal pareado (`linkedGatewayPos`).
+  * Na ausência de link prévio, realiza varredura volumétrica tridimensional por portais existentes nas proximidades antes de gerar novas plataformas, eliminando duplicatas e desvios de coordenadas decorrentes da conversão 8:1 do Nether.
 * **Termo-Recarga Ambiental no Nether (Geothermal Trickle Charge)**:
   * O Portal Subespacial (`SubspaceGatewayBlockEntity`) agora absorve passivamente a radiação geotérmica extrema do Nether (+20 J/tick base), ampliada por proximidade a lagos de lava (+5 J/tick adicionais) e blocos de magma/fogo (+2 J/tick adicionais).
   * Um portal descarregado a 0 J atinge os 20.000 J necessários para o salto quântico de retorno em ~40 a 50 segundos sem necessidade de geradores ou rede WPT no Nether.

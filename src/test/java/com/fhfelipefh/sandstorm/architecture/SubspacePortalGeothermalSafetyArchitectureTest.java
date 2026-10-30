@@ -29,4 +29,14 @@ class SubspacePortalGeothermalSafetyArchitectureTest {
         assertTrue(content.contains("Items.MAGMA_BLOCK"), "Must accept magma blocks as fuel");
         assertTrue(content.contains("animateTick"), "Must provide visual particle feedback for active or charging states");
     }
+
+    @Test
+    void gatewayMustPreventInfiniteBounceLoopsAndDrift() throws IOException {
+        String content = Files.readString(GATEWAY_BE);
+        assertTrue(content.contains("TRANSIT_COOLDOWN_TICKS"), "Must define transit cooldown to prevent bounce loops");
+        assertTrue(content.contains("PLAYER_COOLDOWNS"), "Must track player cooldowns across dimensions");
+        assertTrue(content.contains("landingPos.getZ() + 1.5"), "Player must arrive offset onto solid platform floor");
+        assertTrue(content.contains("findSubspaceGatewayNear"), "Must search nearby for existing paired gateways to prevent drift");
+        assertTrue(content.contains("linkedGatewayPos"), "Must store deterministic 1:1 linked gateway coordinates");
+    }
 }
