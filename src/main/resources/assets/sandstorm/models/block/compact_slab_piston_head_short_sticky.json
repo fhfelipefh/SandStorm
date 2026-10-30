@@ -1,0 +1,196 @@
+{
+  "textures": {
+    "particle": "sandstorm:block/compact_slab_piston_side",
+    "platform": "sandstorm:block/compact_slab_piston_top_sticky",
+    "side": "sandstorm:block/compact_slab_piston_side",
+    "inside": "sandstorm:block/compact_slab_piston_inner"
+  },
+  "elements": [
+    {
+      "display": {
+        "gui": {
+          "rotation": [
+            30,
+            225,
+            0
+          ],
+          "translation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            0.625,
+            0.625,
+            0.625
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        8,
+        4
+      ],
+      "faces": {
+        "display": {
+          "gui": {
+            "rotation": [
+              30,
+              225,
+              0
+            ],
+            "translation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              0.625,
+              0.625,
+              0.625
+            ]
+          }
+        },
+        "north": {
+          "texture": "#platform"
+        },
+        "south": {
+          "texture": "#side",
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            0,
+            8,
+            4,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            12,
+            8,
+            16,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#side",
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ]
+        },
+        "up": {
+          "texture": "#side",
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "display": {
+        "gui": {
+          "rotation": [
+            30,
+            225,
+            0
+          ],
+          "translation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            0.625,
+            0.625,
+            0.625
+          ]
+        }
+      },
+      "from": [
+        4,
+        2,
+        4
+      ],
+      "to": [
+        12,
+        6,
+        16
+      ],
+      "faces": {
+        "display": {
+          "gui": {
+            "rotation": [
+              30,
+              225,
+              0
+            ],
+            "translation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              0.625,
+              0.625,
+              0.625
+            ]
+          }
+        },
+        "west": {
+          "texture": "#inside"
+        },
+        "east": {
+          "texture": "#inside"
+        },
+        "down": {
+          "texture": "#inside"
+        },
+        "up": {
+          "texture": "#inside"
+        },
+        "south": {
+          "texture": "#inside"
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ]
+    }
+  }
+}

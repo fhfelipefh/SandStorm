@@ -1,0 +1,201 @@
+{
+  "textures": {
+    "particle": "sandstorm:block/compact_slab_piston_side",
+    "bottom": "sandstorm:block/compact_slab_piston_bottom",
+    "side": "sandstorm:block/compact_slab_piston_side",
+    "inside": "sandstorm:block/compact_slab_piston_inner",
+    "slab_top": "minecraft:block/smooth_stone",
+    "slab_side": "minecraft:block/smooth_stone_slab_side"
+  },
+  "elements": [
+    {
+      "display": {
+        "gui": {
+          "rotation": [
+            30,
+            225,
+            0
+          ],
+          "translation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            0.625,
+            0.625,
+            0.625
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        8,
+        4
+      ],
+      "faces": {
+        "display": {
+          "gui": {
+            "rotation": [
+              30,
+              225,
+              0
+            ],
+            "translation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              0.625,
+              0.625,
+              0.625
+            ]
+          }
+        },
+        "down": {
+          "texture": "#bottom",
+          "cullface": "down"
+        },
+        "north": {
+          "texture": "#side",
+          "uv": [
+            0,
+            8,
+            16,
+            16
+          ],
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#inside"
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            0,
+            8,
+            4,
+            16
+          ],
+          "cullface": "west"
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            12,
+            8,
+            16,
+            16
+          ],
+          "cullface": "east"
+        },
+        "up": {
+          "texture": "#side",
+          "uv": [
+            0,
+            0,
+            16,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "display": {
+        "gui": {
+          "rotation": [
+            30,
+            225,
+            0
+          ],
+          "translation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            0.625,
+            0.625,
+            0.625
+          ]
+        }
+      },
+      "from": [
+        0,
+        8,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "display": {
+          "gui": {
+            "rotation": [
+              30,
+              225,
+              0
+            ],
+            "translation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              0.625,
+              0.625,
+              0.625
+            ]
+          }
+        },
+        "up": {
+          "texture": "#slab_top",
+          "cullface": "up"
+        },
+        "north": {
+          "texture": "#slab_side",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#slab_side",
+          "cullface": "south"
+        },
+        "west": {
+          "texture": "#slab_side",
+          "cullface": "west"
+        },
+        "east": {
+          "texture": "#slab_side",
+          "cullface": "east"
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ]
+    }
+  }
+}

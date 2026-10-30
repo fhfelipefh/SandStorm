@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "P": "minecraft:piston",
+    "R": "minecraft:redstone",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    " T ",
+    "TPT",
+    "CRC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:heavy_kinetic_piston"
+  }
+}

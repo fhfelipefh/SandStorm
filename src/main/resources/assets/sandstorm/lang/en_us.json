@@ -1411,5 +1411,17 @@
   "gui.sandstorm.extractor.coal": "Atmospheric Carbon Capture",
   "gui.sandstorm.extractor.diamond": "CVD Diamond Synthesis",
   "tooltip.sandstorm.extractor.thermal_draft": "Thermal Combustion Draft Active",
-  "tooltip.sandstorm.extractor.thermal_speed": "Thermal Reaction Speed"
+  "tooltip.sandstorm.extractor.thermal_speed": "Thermal Reaction Speed",
+  "block.sandstorm.heavy_kinetic_piston": "Heavy Kinetic Piston",
+  "block.sandstorm.heavy_sticky_kinetic_piston": "Heavy Sticky Kinetic Piston",
+  "block.sandstorm.heavy_kinetic_piston_head": "Heavy Kinetic Piston Head",
+  "block.sandstorm.compact_slab_piston": "Compact Slab Piston",
+  "block.sandstorm.compact_sticky_slab_piston": "Compact Sticky Slab Piston",
+  "block.sandstorm.compact_slab_piston_head": "Compact Slab Piston Head",
+  "block.sandstorm.tectonic_kinetic_piston": "Tectonic Kinetic Piston",
+  "block.sandstorm.tectonic_sticky_kinetic_piston": "Tectonic Sticky Kinetic Piston",
+  "block.sandstorm.tectonic_kinetic_piston_head": "Tectonic Kinetic Piston Head",
+  "tooltip.sandstorm.heavy_kinetic_piston.thrust": "Thrust: 24 blocks (2x vanilla)",
+  "tooltip.sandstorm.heavy_kinetic_piston.energy": "Requires: Redstone + 100 FE per pulse",
+  "tooltip.sandstorm.heavy_kinetic_piston.recharge": "Recharge: WPT, Accumulators or Redstone"
 }

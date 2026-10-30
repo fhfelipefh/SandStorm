@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/piston_extended",
+  "textures": {
+    "bottom": "sandstorm:block/heavy_kinetic_piston_bottom",
+    "side": "sandstorm:block/heavy_kinetic_piston_side",
+    "inside": "sandstorm:block/heavy_kinetic_piston_inner"
+  }
+}

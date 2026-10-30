@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "extended=false,facing=down,top_slab=false": { "model": "sandstorm:block/compact_slab_piston", "x": 90 },
+    "extended=false,facing=east,top_slab=false": { "model": "sandstorm:block/compact_slab_piston", "y": 90 },
+    "extended=false,facing=north,top_slab=false": { "model": "sandstorm:block/compact_slab_piston" },
+    "extended=false,facing=south,top_slab=false": { "model": "sandstorm:block/compact_slab_piston", "y": 180 },
+    "extended=false,facing=up,top_slab=false": { "model": "sandstorm:block/compact_slab_piston", "x": 270 },
+    "extended=false,facing=west,top_slab=false": { "model": "sandstorm:block/compact_slab_piston", "y": 270 },
+    "extended=false,facing=down,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_with_slab", "x": 90 },
+    "extended=false,facing=east,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_with_slab", "y": 90 },
+    "extended=false,facing=north,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_with_slab" },
+    "extended=false,facing=south,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_with_slab", "y": 180 },
+    "extended=false,facing=up,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_with_slab", "x": 270 },
+    "extended=false,facing=west,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_with_slab", "y": 270 },
+    "extended=true,facing=down,top_slab=false": { "model": "sandstorm:block/compact_slab_piston_base", "x": 90 },
+    "extended=true,facing=east,top_slab=false": { "model": "sandstorm:block/compact_slab_piston_base", "y": 90 },
+    "extended=true,facing=north,top_slab=false": { "model": "sandstorm:block/compact_slab_piston_base" },
+    "extended=true,facing=south,top_slab=false": { "model": "sandstorm:block/compact_slab_piston_base", "y": 180 },
+    "extended=true,facing=up,top_slab=false": { "model": "sandstorm:block/compact_slab_piston_base", "x": 270 },
+    "extended=true,facing=west,top_slab=false": { "model": "sandstorm:block/compact_slab_piston_base", "y": 270 },
+    "extended=true,facing=down,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_base_with_slab", "x": 90 },
+    "extended=true,facing=east,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_base_with_slab", "y": 90 },
+    "extended=true,facing=north,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_base_with_slab" },
+    "extended=true,facing=south,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_base_with_slab", "y": 180 },
+    "extended=true,facing=up,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_base_with_slab", "x": 270 },
+    "extended=true,facing=west,top_slab=true": { "model": "sandstorm:block/compact_slab_piston_base_with_slab", "y": 270 }
+  }
+}
+

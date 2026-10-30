@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": "sandstorm:circuit_mount",
+    "P": "minecraft:piston",
+    "R": "minecraft:redstone",
+    "S": "minecraft:smooth_stone_slab"
+  },
+  "pattern": [
+    " S ",
+    "RPR",
+    " C "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:compact_slab_piston"
+  }
+}

@@ -552,6 +552,12 @@ public class SandStormItems {
                         entries.accept(SUBDERMAL_TREMOR_SENSOR);
                         entries.accept(GEOLOGICAL_SURVEYOR_DRONE);
                         entries.accept(SandStormBlocks.MAGLEV_CONVEYOR);
+                        entries.accept(SandStormBlocks.HEAVY_KINETIC_PISTON);
+                        entries.accept(SandStormBlocks.HEAVY_STICKY_KINETIC_PISTON);
+                        entries.accept(SandStormBlocks.TECTONIC_KINETIC_PISTON);
+                        entries.accept(SandStormBlocks.TECTONIC_STICKY_KINETIC_PISTON);
+                        entries.accept(SandStormBlocks.COMPACT_SLAB_PISTON);
+                        entries.accept(SandStormBlocks.COMPACT_STICKY_SLAB_PISTON);
                     })
                     .build()
     );

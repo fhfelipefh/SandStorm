@@ -12,6 +12,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEnti
 import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BiosphereDoorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.ChemicalRefineryBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.CompactSlabPistonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CrushingSpikeGateBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CyborgDockingStationBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CyborgIncubatorVatBlockEntity;
@@ -24,6 +25,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.AtmosphericCarbonExtractorB
 import com.fhfelipefh.sandstorm.content.block.entity.ElectricFencePylonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.FiberglassChemicalPipeBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.GridMonitorConsoleBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.HeavyKineticPistonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HoloTacticalSpireBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HydroponicChamberBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.InsulatedFurnaceBlockEntity;
@@ -53,6 +55,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.SteelFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SynapticCondenserBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.XpVacuumBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SynapticRepairerBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.TectonicKineticPistonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.NeuralOverdriveModuleBlockEntity;
 import com.fhfelipefh.sandstorm.content.fluid.RadioactiveSludgeBlock;
 import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
@@ -1254,6 +1257,81 @@ public class SandStormBlocks {
                     .strength(3.0f, 10.0f)
                     .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()));
+    public static final HeavyKineticPistonBlock HEAVY_KINETIC_PISTON = register("heavy_kinetic_piston",
+            new HeavyKineticPistonBlock(false, BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("heavy_kinetic_piston")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.5f, 15.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
+    public static final HeavyKineticPistonBlock HEAVY_STICKY_KINETIC_PISTON = register("heavy_sticky_kinetic_piston",
+            new HeavyKineticPistonBlock(true, BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("heavy_sticky_kinetic_piston")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.5f, 15.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
+    public static final HeavyKineticPistonHeadBlock HEAVY_KINETIC_PISTON_HEAD = Registry.register(
+            BuiltInRegistries.BLOCK,
+            SandStormMod.id("heavy_kinetic_piston_head"),
+            new HeavyKineticPistonHeadBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("heavy_kinetic_piston_head")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.5f, 15.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final TectonicKineticPistonBlock TECTONIC_KINETIC_PISTON = register("tectonic_kinetic_piston",
+            new TectonicKineticPistonBlock(false, BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("tectonic_kinetic_piston")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(50.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
+    public static final TectonicKineticPistonBlock TECTONIC_STICKY_KINETIC_PISTON = register("tectonic_sticky_kinetic_piston",
+            new TectonicKineticPistonBlock(true, BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("tectonic_sticky_kinetic_piston")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(50.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
+    public static final TectonicKineticPistonHeadBlock TECTONIC_KINETIC_PISTON_HEAD = Registry.register(
+            BuiltInRegistries.BLOCK,
+            SandStormMod.id("tectonic_kinetic_piston_head"),
+            new TectonicKineticPistonHeadBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("tectonic_kinetic_piston_head")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(50.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .noOcclusion()));
+    public static final CompactSlabPistonBlock COMPACT_SLAB_PISTON = register("compact_slab_piston",
+            new CompactSlabPistonBlock(false, BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("compact_slab_piston")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(2.0f, 10.0f)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
+    public static final CompactSlabPistonBlock COMPACT_STICKY_SLAB_PISTON = register("compact_sticky_slab_piston",
+            new CompactSlabPistonBlock(true, BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("compact_sticky_slab_piston")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(2.0f, 10.0f)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
+    public static final CompactSlabPistonHeadBlock COMPACT_SLAB_PISTON_HEAD = Registry.register(
+            BuiltInRegistries.BLOCK,
+            SandStormMod.id("compact_slab_piston_head"),
+            new CompactSlabPistonHeadBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("compact_slab_piston_head")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(2.0f, 10.0f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
 
     public static final BlockEntityType<BiosphereDoorBlockEntity> BIOSPHERE_DOOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -1574,6 +1652,21 @@ public class SandStormBlocks {
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("cryo_revival_vat"),
             new BlockEntityType<>(CryoRevivalVatBlockEntity::new, Set.of(CRYO_REVIVAL_VAT))
+    );
+    public static final BlockEntityType<HeavyKineticPistonBlockEntity> HEAVY_KINETIC_PISTON_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("heavy_kinetic_piston"),
+            new BlockEntityType<>(HeavyKineticPistonBlockEntity::new, Set.of(HEAVY_KINETIC_PISTON, HEAVY_STICKY_KINETIC_PISTON))
+    );
+    public static final BlockEntityType<TectonicKineticPistonBlockEntity> TECTONIC_KINETIC_PISTON_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("tectonic_kinetic_piston"),
+            new BlockEntityType<>(TectonicKineticPistonBlockEntity::new, Set.of(TECTONIC_KINETIC_PISTON, TECTONIC_STICKY_KINETIC_PISTON))
+    );
+    public static final BlockEntityType<CompactSlabPistonBlockEntity> COMPACT_SLAB_PISTON_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("compact_slab_piston"),
+            new BlockEntityType<>(CompactSlabPistonBlockEntity::new, Set.of(COMPACT_SLAB_PISTON, COMPACT_STICKY_SLAB_PISTON))
     );
 
     public static <T extends Block> T register(String path, T block) {

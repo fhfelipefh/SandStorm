@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "M": "sandstorm:mantle_alloy_ingot",
+    "P": "sandstorm:heavy_kinetic_piston",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    " T ",
+    "MPM",
+    " C "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:tectonic_kinetic_piston"
+  }
+}

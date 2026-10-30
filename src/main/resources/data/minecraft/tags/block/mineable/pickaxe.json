@@ -143,6 +143,12 @@
     "sandstorm:synaptic_condenser",
     "sandstorm:xp_vacuum",
     "sandstorm:synaptic_repairer",
-    "sandstorm:neural_overdrive_module"
+    "sandstorm:neural_overdrive_module",
+    "sandstorm:heavy_kinetic_piston",
+    "sandstorm:heavy_sticky_kinetic_piston",
+    "sandstorm:tectonic_kinetic_piston",
+    "sandstorm:tectonic_sticky_kinetic_piston",
+    "sandstorm:compact_slab_piston",
+    "sandstorm:compact_sticky_slab_piston"
   ]
 }

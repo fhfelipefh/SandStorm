@@ -1411,5 +1411,17 @@
   "gui.sandstorm.extractor.coal": "Captura de Carbono Atmosférico",
   "gui.sandstorm.extractor.diamond": "Síntese CVD de Diamante",
   "tooltip.sandstorm.extractor.thermal_draft": "Tiragem Térmica por Combustão Ativa",
-  "tooltip.sandstorm.extractor.thermal_speed": "Velocidade de Reação Térmica"
+  "tooltip.sandstorm.extractor.thermal_speed": "Velocidade de Reação Térmica",
+  "block.sandstorm.heavy_kinetic_piston": "Pistão Cinético Reforçado",
+  "block.sandstorm.heavy_sticky_kinetic_piston": "Pistão Cinético Reforçado Aderente",
+  "block.sandstorm.heavy_kinetic_piston_head": "Cabeça do Pistão Cinético",
+  "block.sandstorm.compact_slab_piston": "Pistão Meia-Laje Compacto",
+  "block.sandstorm.compact_sticky_slab_piston": "Pistão Meia-Laje Compacto Aderente",
+  "block.sandstorm.compact_slab_piston_head": "Cabeça do Pistão Meia-Laje",
+  "block.sandstorm.tectonic_kinetic_piston": "Pistão Cinético Tectônico",
+  "block.sandstorm.tectonic_sticky_kinetic_piston": "Pistão Cinético Tectônico Aderente",
+  "block.sandstorm.tectonic_kinetic_piston_head": "Cabeça do Pistão Tectônico",
+  "tooltip.sandstorm.heavy_kinetic_piston.thrust": "Empuxo: 24 blocos (2x vanilla)",
+  "tooltip.sandstorm.heavy_kinetic_piston.energy": "Requer: Redstone + 100 FE por pulso",
+  "tooltip.sandstorm.heavy_kinetic_piston.recharge": "Recarga: WPT, Acumuladores ou Redstone"
 }
