@@ -74,7 +74,7 @@ public class CyborgBuilderEntity extends CyborgEntity {
         }
 
         double distSq = this.distanceToSqr(currentTargetPos.getX() + 0.5, currentTargetPos.getY() + 0.5, currentTargetPos.getZ() + 0.5);
-        if (distSq > 12.0) {
+        if (distSq > 36.0) {
             this.getNavigation().moveTo(currentTargetPos.getX() + 0.5, currentTargetPos.getY() + 0.5, currentTargetPos.getZ() + 0.5, 1.0);
             setVisorState(1);
         } else {
@@ -163,7 +163,7 @@ public class CyborgBuilderEntity extends CyborgEntity {
             for (int x = min.getX(); x <= max.getX(); ++x) {
                 for (int z = min.getZ(); z <= max.getZ(); ++z) {
                     BlockPos pos = new BlockPos(x, y, z);
-                    if (level.isEmptyBlock(pos) && level.getBlockState(pos.below()).isSolid()) {
+                    if (level.isEmptyBlock(pos) && !level.isEmptyBlock(pos.below())) {
                         if (CyborgSwarmManager.getInstance().tryReserveBlock(this.getUUID(), pos)) {
                             return pos;
                         }

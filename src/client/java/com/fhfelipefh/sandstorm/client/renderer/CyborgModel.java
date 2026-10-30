@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.client.renderer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
@@ -40,22 +41,23 @@ public class CyborgModel extends EntityModel<CyborgRenderState> {
                 PartPose.offset(0.0f, 0.0f, 0.0f));
 
         head.addOrReplaceChild("visor", CubeListBuilder.create()
-                .texOffs(0, 48).addBox(-4.0f, -6.0f, -4.6f, 8.0f, 3.0f, 1.0f),
+                .texOffs(32, 0).addBox(-4.0f, -6.0f, -4.2f, 8.0f, 3.0f, 1.0f),
                 PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("body", CubeListBuilder.create()
                 .texOffs(16, 16).addBox(-4.0f, 0.0f, -2.0f, 8.0f, 12.0f, 4.0f)
-                .texOffs(16, 32).addBox(-4.5f, 1.0f, -2.5f, 9.0f, 6.0f, 5.0f)
-                .texOffs(0, 32).addBox(-1.5f, 2.0f, 2.0f, 3.0f, 9.0f, 2.0f),
+                .texOffs(16, 32).addBox(-4.0f, 0.0f, -2.0f, 8.0f, 12.0f, 4.0f, new CubeDeformation(0.25f))
+                .texOffs(0, 32).addBox(-2.0f, 2.0f, 2.0f, 4.0f, 8.0f, 2.0f),
                 PartPose.offset(0.0f, 0.0f, 0.0f));
 
         root.addOrReplaceChild("right_arm", CubeListBuilder.create()
                 .texOffs(40, 16).addBox(-3.0f, -2.0f, -2.0f, 4.0f, 12.0f, 4.0f)
-                .texOffs(40, 32).addBox(-3.5f, 5.0f, -2.5f, 5.0f, 7.0f, 5.0f),
+                .texOffs(40, 32).addBox(-3.0f, -2.0f, -2.0f, 4.0f, 12.0f, 4.0f, new CubeDeformation(0.25f)),
                 PartPose.offset(-5.0f, 2.0f, 0.0f));
 
         root.addOrReplaceChild("left_arm", CubeListBuilder.create()
-                .texOffs(32, 48).addBox(-1.0f, -2.0f, -2.0f, 4.0f, 12.0f, 4.0f),
+                .texOffs(32, 48).addBox(-1.0f, -2.0f, -2.0f, 4.0f, 12.0f, 4.0f)
+                .texOffs(48, 48).addBox(-1.0f, -2.0f, -2.0f, 4.0f, 12.0f, 4.0f, new CubeDeformation(0.25f)),
                 PartPose.offset(5.0f, 2.0f, 0.0f));
 
         root.addOrReplaceChild("right_leg", CubeListBuilder.create()
