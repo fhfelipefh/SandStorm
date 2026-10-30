@@ -60,3 +60,17 @@
 | **Entidade** | `cyborg_excavator`     | Ciborgue Minerador | Robô bípede autônomo especialista em escavação |
 | **Entidade** | `cyborg_builder`       | Ciborgue Construtor | Robô bípede autônomo especialista em edificação |
 | **Entidade** | `cyborg_harvester`     | Ciborgue Coletor | Robô bípede autônomo especialista em biomassa |
+| **Item**     | `survival_datapad`     | Datapad de Sobrevivência | Interface digital de missões, telemetria, lore e projeção holográfica de multiblocos |
+| **Item**     | `sandboard`            | Prancha de Areia (Sandboard) | Prancha de deslizamento veloz sobre as dunas sem atrair vermes |
+| **Item**     | `megazord_flight_module`| Módulo de Voo do Megazord | Propulsores de plasma verticais para o mecha de combate |
+| **Item**     | `grazer_spawn_egg`     | Ovo Gerador de Grazer | Invoca um Grazer mecânico herbívoro |
+| **Item**     | `fanghorn_spawn_egg`   | Ovo Gerador de Fanghorn | Invoca um Fanghorn mecânico escavador |
+| **Item**     | `frostclaw_spawn_egg`  | Ovo Gerador de Frostclaw | Invoca um Frostclaw mecânico criogênico |
+| **Item**     | `glinthawk_spawn_egg`  | Ovo Gerador de Glinthawk | Invoca um Glinthawk mecânico voador |
+| **Item**     | `waterwing_spawn_egg`  | Ovo Gerador de Waterwing | Invoca um Waterwing anfíbio aquático/aéreo |
+| **Bloco**    | `super_piston`         | Super Pistão Cinético | Pistão industrial de alta capacidade de empuxo linear |
+| **Entidade** | `grazer`               | Grazer | Máquina herbívora quadrúpede de colheita rápida |
+| **Entidade** | `fanghorn`             | Fanghorn | Máquina escavadora defensiva com chifres condutivos |
+| **Entidade** | `frostclaw`            | Frostclaw | Titã mecânico bípede de combate criogênico e gelo |
+| **Entidade** | `glinthawk`            | Glinthawk | Pássaro drone mecânico de patrulha e mergulho |
+| **Entidade** | `waterwing`            | Waterwing | Máquina anfíbia alada capaz de voo e mergulho |

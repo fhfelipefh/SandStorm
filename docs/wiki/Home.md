@@ -26,3 +26,7 @@ Aqui você encontra toda a documentação técnica avançada, lore detalhada, gu
 |:---:|:---:|
 | ![Ciborgues Autônomos](../screenshots/autonomous-cyborgs.png) | ![Rede Ferroviária Maglev](../screenshots/maglev-transport.png) |
 | *Unidades robóticas inteligentes gerenciando agricultura e recarga WPT* | *Linhas férreas magnéticas de alta velocidade para tráfego seguro* |
+
+| Projeção Holográfica Multibloco | Fauna Robótica Horizon |
+|:---:|:---:|
+| Projeção 3D estilo Botania com validação voxel a voxel e progresso | Ecossistema completo: Grazer, Fanghorn, Frostclaw, Glinthawk e Waterwing |

@@ -84,3 +84,31 @@ Para criadores de conteúdo, desenvolvedores e administradores, o mod inclui com
 | **Base Inicial de Sobrevivência** | `/sandstorm debug setup starter_base` | Posto balanceado com filtro de dessalinização, água e energia solar |
 
 > **Kits de Demonstração e Equipamentos:** Obtenha conjuntos completos de equipamentos de desenvolvimento com o comando `/sandstorm debug phase all` ou gere instalações prontas para testes com `/sandstorm debug setup <instalação>`.
+
+
+---
+
+## 🏛️ Matrizes e Estruturas Multibloco de Alta Engenharia
+
+O SandStorm introduz instalações de grande porte que exigem arranjos tridimensionais exatos de múltiplos blocos tecnológicos. Todas as estruturas suportam **projeção holográfica no mundo** através do **Survival Datapad**.
+
+| Estrutura Multibloco | Dimensões & Orientação | Componentes Exigidos | Aplicação & Benefícios |
+|---|:---:|---|---|
+| **Torre Solar & Relé WPT**<br>*(WPT Relay Tower)* | 3x4x3<br>Vertical | Base de Concreto Reforçado, 4 Relés WPT perimétricos, Eixo de Bobinas Piezoelétricas e Painel Solar no topo | Transmissão de energia sem fio de altíssima fidelidade e alcance ampliado para bases remotas |
+| **Câmara de Cofre Blindada**<br>*(Vault Door Chamber)* | 3x3x3<br>Cúbica | Paredes de Chapa de Aço Escovado, Blocos de Junção Blindados e Porta de Cofre Automatizada de 3x3 | Armazenamento de altíssima segurança resistente a tempestades de areia e impactos sísmicos |
+| **Portal Subespacial**<br>*(Subspace Gateway)* | 5x4x3<br>Pórtico | Almofadas de Teletransporte Quântico, Bobinas Piezoelétricas de Condensação e Lentes de Foco Gravitacional | Enlace quântico para teletransporte instantâneo de exploradores e frotas de veículos |
+| **Cluster de Computação Quântica**<br>*(Quantum Computer Cluster)* | 3x3x3<br>Gabinete | Processadores Quânticos Centrais, Gabinetes de Discos Ópticos, Painéis de Servidor e Terminal Holográfico | Descriptografia acelerada de núcleos de dados ancestrais e cálculo de rotas orbitais |
+| **Complexo de Lançamento Orbital**<br>*(Orbital Launch Complex)* | 5x5x5<br>Plataforma | Estação Terrestre de Controle, Antena Parabólica de Satélite, Acumuladores de Carga e Canhão de Massa | Injeção de sondas meteorológicas, satélites de GPS e reabastecimento de estações espaciais |
+| **Matriz de Super Pistões**<br>*(Super Piston Array)* | 3x2x3<br>Horizontal | 3 Super Pistões Cinéticos, Pistão Tectônico de Britagem e Meia-Lajes Reforçadas | Movimentação massiva de até 64 blocos em linha e trituração contínua de minérios brutos |
+
+---
+
+## 🦾 Androides de Automação & Fauna Mecânica
+
+| Máquina / Entidade | Função Primária | Armamento / Habilidade | Recursos Obtidos |
+|---|---|---|---|
+| **Grazer** | Coleta autônoma de gramíneas e biomassa | Fuga em alta velocidade, detecção de ameaças | Fibras de carbono, bio-óleo, sucata metálica |
+| **Fanghorn** | Escavação e aeração de solos desérticos | Investida de chifres ramificados (dano concussivo) | Ligas de titânio, chifres condutivos, circuitos |
+| **Frostclaw** | Regulação térmica e refrigeração de zonas de calor | Golpes criogênicos, tempestade de gelo localizada | Cápsulas de líquido criogênico, liga de blindagem |
+| **Glinthawk** | Patrulha aérea e reciclagem de detritos | Rasantes de alta precisão, bicadas penetrantes | Lentes ópticas, sensores de voo, pastilhas de silício |
+| **Waterwing** | Exploração de aquíferos e navegação submersa | Nado de alta propulsão e voo anfíbio | Filtros de membrana osmótica, reservas de água potável |

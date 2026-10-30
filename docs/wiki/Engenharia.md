@@ -259,3 +259,57 @@ graph TD;
     end
 ```
 </details>
+
+
+<details>
+<summary><b>11. Fluxo de Projeção Holográfica Multibloco & Validação Estrutural em Tempo Real</b></summary>
+
+```mermaid
+graph TD;
+    subgraph "Interface & Seleção no Survival Datapad"
+        PAD["Survival Datapad (Aba VI ou Botão [HOLO] em Quests)"] --> SEL{"Estrutura Selecionada"}
+        SEL --> S1["Torre Solar & Relé WPT"]
+        SEL --> S2["Câmara de Cofre Blindada 3x3"]
+        SEL --> S3["Portal Subespacial"]
+        SEL --> S4["Cluster de Computação Quântica"]
+        SEL --> S5["Complexo de Lançamento Orbital"]
+        SEL --> S6["Matriz de Super Pistões"]
+        SEL -->|Orientação Relativa| ROT["Cálculo de Rotação Horizontal (N/S/L/O baseado no Jogador)"]
+    end
+
+    subgraph "Motor de Renderização Holográfica 3D"
+        ROT --> PROJ["Projeção Ancorada no Solo (MultiblockHologramRenderer)"]
+        PROJ --> SCAN["Varredura Client-Side de Cada Voxel no Mundo"]
+        SCAN --> COND{"Bloco Presente e Correto?"}
+        COND -- Sim --> GREEN["Wireframe Verde Vibrante (#00E676) + Cantoneiras Ativas"]
+        COND -- Não --> ACCENT["Wireframe na Cor do Bloco / Ciano Pulsante + Linhas Cruzadas [X]"]
+        GREEN & ACCENT --> COUNTER["Cálculo de Progresso Instantâneo (Montados / Total)"]
+        COUNTER --> HUD3D["Texto Flutuante 3D Rotativo: Nome da Estrutura + % Concluída"]
+    end
+
+    subgraph "Conclusão & Operação"
+        COUNTER --> DONE{"100% dos Blocos Posicionados?"}
+        DONE -- Sim --> READY["Estrutura Operacional Pronta para Ativação"]
+        READY --> DISMISS["Pressionar 'H' no Datapad ou Mundo para Dispensar Holograma"]
+    end
+```
+</details>
+
+<details>
+<summary><b>12. Matriz de Automação Cinética & Super Pistões Industriais</b></summary>
+
+```mermaid
+graph TD;
+    subgraph "Alimentação Cinética"
+        PWR["Rede WPT ou Sinal de Redstone de Alta Tensão"] --> PISTON["Super Pistão Cinético Tectônico"]
+        PISTON --> MASS{"Massa de Blocos a Mover"}
+        MASS --> STD["Deslocamento Linear de Alta Carga (Até 64 Blocos)"]
+        MASS --> TECTONIC["Quebra & Britagem de Formações Rochosas Duras"]
+    end
+
+    subgraph "Integração com Fábricas e Automação"
+        STD --> FEED["Alimentação Contínua de Fornos e Trituradores"]
+        FEED --> LOOP["Ciclo de Reconstrução / Mineração em Loop Infinito com Ciborgues"]
+    end
+```
+</details>

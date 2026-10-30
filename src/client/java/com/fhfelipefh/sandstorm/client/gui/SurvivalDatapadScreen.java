@@ -1,25 +1,33 @@
 package com.fhfelipefh.sandstorm.client.gui;
 
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
+import com.fhfelipefh.sandstorm.client.renderer.MultiblockHologramRenderer;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
+import com.fhfelipefh.sandstorm.content.multiblock.MultiblockRegistry;
+import com.fhfelipefh.sandstorm.content.multiblock.MultiblockStructure;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
 import com.fhfelipefh.sandstorm.content.quest.QuestData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRegistry;
+import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,7 +101,7 @@ public class SurvivalDatapadScreen extends Screen {
 
         extractor.fill(left + 6, top + 32, right - 6, top + 33, 0x5500E5FF);
 
-        int tabCount = 5;
+        int tabCount = 6;
         int tabWidth = (right - left - 20) / tabCount;
         for (int ch = 1; ch <= tabCount; ch++) {
             int tx = left + 10 + (ch - 1) * tabWidth;
@@ -109,16 +117,38 @@ public class SurvivalDatapadScreen extends Screen {
         int questAreaBottom = bottom - 10;
         int cardHeight = 46;
         int cardSpacing = 6;
-
-        List<QuestData> quests = QuestRegistry.getQuestsForChapter(currentChapter);
-        int totalContentHeight = quests.size() * (cardHeight + cardSpacing);
         int visibleHeight = questAreaBottom - questAreaTop;
-        maxScroll = Math.max(0, totalContentHeight - visibleHeight);
-        scrollOffset = Math.clamp(scrollOffset, 0, maxScroll);
 
         Player player = minecraft != null ? minecraft.player : null;
-
         long currentTimeMs = System.currentTimeMillis();
+
+        if (currentChapter == 6) {
+            renderMultiblockTab(extractor, left, right, questAreaTop, questAreaBottom, cardHeight, cardSpacing, visibleHeight, mouseX, mouseY);
+        } else {
+            renderQuestsTab(extractor, left, right, questAreaTop, questAreaBottom, cardHeight, cardSpacing, visibleHeight, player, currentTimeMs, mouseX, mouseY);
+        }
+
+        if (statusTooltip != null && currentTimeMs < statusTooltipExpiry) {
+            int maxTooltipWidth = Math.max(80, width - 24);
+            int rawTooltipWidth = font.width(statusTooltip) + 12;
+            int tooltipWidth = Math.min(rawTooltipWidth, maxTooltipWidth);
+            int tooltipX = (width - tooltipWidth) / 2;
+            int tooltipY = bottom - 28;
+            extractor.fill(tooltipX, tooltipY, tooltipX + tooltipWidth, tooltipY + 14, 0xEE1A237E);
+            extractor.fill(tooltipX, tooltipY, tooltipX + tooltipWidth, tooltipY + 1, 0xFFFF6D00);
+            drawScaledCenteredText(extractor, statusTooltip, width / 2f, tooltipY + 3, tooltipWidth - 8, 0xFFFFAB40);
+        } else {
+            statusTooltip = null;
+        }
+    }
+
+    private void renderQuestsTab(GuiGraphicsExtractor extractor, int left, int right,
+                                 int questAreaTop, int questAreaBottom, int cardHeight, int cardSpacing,
+                                 int visibleHeight, Player player, long currentTimeMs, int mouseX, int mouseY) {
+        List<QuestData> quests = QuestRegistry.getQuestsForChapter(currentChapter);
+        int totalContentHeight = quests.size() * (cardHeight + cardSpacing);
+        maxScroll = Math.max(0, totalContentHeight - visibleHeight);
+        scrollOffset = Math.clamp(scrollOffset, 0, maxScroll);
 
         for (int i = 0; i < quests.size(); i++) {
             QuestData quest = quests.get(i);
@@ -170,9 +200,30 @@ public class SurvivalDatapadScreen extends Screen {
             float maxTitleWidth = Math.max(0, badgeX - (cardLeft + 30) - 8);
             drawScaledText(extractor, Component.translatable(quest.titleKey()), cardLeft + 30, cy + 5, maxTitleWidth, titleColor);
 
-            float maxLineWidth = Math.max(0, (cardRight - 94) - (cardLeft + 30) - 4);
+            MultiblockStructure associatedStructure = MultiblockRegistry.getStructureForQuest(quest.id());
+            int holoOffset = (associatedStructure != null) ? 44 : 0;
+
+            float maxLineWidth = Math.max(0, (cardRight - 94 - holoOffset) - (cardLeft + 30) - 4);
             drawScaledText(extractor, Component.translatable(quest.taskKey()), cardLeft + 30, cy + 17, maxLineWidth, 0xFFCFD8DC);
             drawScaledText(extractor, Component.translatable(quest.noteKey()), cardLeft + 30, cy + 29, maxLineWidth, 0xFF80DEEA);
+
+            if (associatedStructure != null) {
+                int holoW = 38;
+                int holoH = 18;
+                int holoX = cardRight - 60 - holoW - 4;
+                int holoY = cy + 17;
+
+                boolean holoHovered = mouseX >= holoX && mouseX <= holoX + holoW && mouseY >= holoY && mouseY <= holoY + holoH;
+                int holoBg = holoHovered ? 0xFF00E5FF : 0xAA005B66;
+                extractor.fill(holoX, holoY, holoX + holoW, holoY + holoH, holoBg);
+                extractor.fill(holoX, holoY, holoX + holoW, holoY + 1, 0xFF00E5FF);
+                extractor.fill(holoX, holoY + holoH - 1, holoX + holoW, holoY + holoH, 0xFF00E5FF);
+                extractor.fill(holoX, holoY, holoX + 1, holoY + holoH, 0xFF00E5FF);
+                extractor.fill(holoX + holoW - 1, holoY, holoX + holoW, holoY + holoH, 0xFF00E5FF);
+
+                Component holoText = Component.translatable("gui.sandstorm.datapad.multiblock.holo_btn");
+                drawScaledCenteredText(extractor, holoText, holoX + holoW / 2f, holoY + 5, holoW - 2, holoHovered ? 0xFF0A0E17 : 0xFFFFFFFF);
+            }
 
             if (quest.getRewardItem() != null) {
                 extractor.item(quest.getRewardItem().getDefaultInstance(), cardRight - 94, cy + 18);
@@ -206,19 +257,85 @@ public class SurvivalDatapadScreen extends Screen {
                 drawScaledCenteredText(extractor, claimedText, btnX + btnW / 2f, btnY + 6, btnW - 2, 0xFF69F0AE);
             }
         }
+    }
 
-        if (statusTooltip != null && currentTimeMs < statusTooltipExpiry) {
-            int maxTooltipWidth = Math.max(80, width - 24);
-            int rawTooltipWidth = font.width(statusTooltip) + 12;
-            int tooltipWidth = Math.min(rawTooltipWidth, maxTooltipWidth);
-            int tooltipX = (width - tooltipWidth) / 2;
-            int tooltipY = bottom - 28;
-            extractor.fill(tooltipX, tooltipY, tooltipX + tooltipWidth, tooltipY + 14, 0xEE1A237E);
-            extractor.fill(tooltipX, tooltipY, tooltipX + tooltipWidth, tooltipY + 1, 0xFFFF6D00);
-            drawScaledCenteredText(extractor, statusTooltip, width / 2f, tooltipY + 3, tooltipWidth - 8, 0xFFFFAB40);
-        } else {
-            statusTooltip = null;
+    private void renderMultiblockTab(GuiGraphicsExtractor extractor, int left, int right,
+                                     int questAreaTop, int questAreaBottom, int cardHeight, int cardSpacing,
+                                     int visibleHeight, int mouseX, int mouseY) {
+        List<MultiblockStructure> structures = new ArrayList<>(MultiblockRegistry.getAllStructures().values());
+        int totalContentHeight = structures.size() * (cardHeight + cardSpacing);
+        maxScroll = Math.max(0, totalContentHeight - visibleHeight);
+        scrollOffset = Math.clamp(scrollOffset, 0, maxScroll);
+
+        for (int i = 0; i < structures.size(); i++) {
+            MultiblockStructure structure = structures.get(i);
+            int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
+            if (cy + cardHeight < questAreaTop || cy > questAreaBottom) {
+                continue;
+            }
+
+            int cardLeft = left + 10;
+            int cardRight = right - 10;
+
+            boolean isActive = MultiblockHologramRenderer.isStructureActive()
+                    && structure.getId().equals(MultiblockHologramRenderer.getActiveStructure().getId());
+
+            int cardBg = isActive ? 0xDD0D2619 : 0xDD121F2D;
+            extractor.fill(cardLeft, cy, cardRight, cy + cardHeight, cardBg);
+
+            int borderColor = isActive ? 0xFF00E676 : 0xFF00E5FF;
+            extractor.fill(cardLeft, cy, cardLeft + 2, cy + cardHeight, borderColor);
+
+            if (!structure.getRequirements().isEmpty()) {
+                Block firstBlock = structure.getRequirements().getFirst().expectedBlock();
+                extractor.item(firstBlock.asItem().getDefaultInstance(), cardLeft + 8, cy + 15);
+            }
+
+            int btnW = 68;
+            int btnH = 20;
+            int btnX = cardRight - 74;
+            int btnY = cy + 13;
+
+            float maxTitleWidth = Math.max(0, btnX - (cardLeft + 30) - 8);
+            drawScaledText(extractor, Component.translatable(structure.getTitleKey()), cardLeft + 30, cy + 5, maxTitleWidth, isActive ? 0xFF69F0AE : 0xFFFFF176);
+
+            float maxDescWidth = Math.max(0, btnX - (cardLeft + 30) - 8);
+            drawScaledText(extractor, Component.translatable(structure.getDescKey()), cardLeft + 30, cy + 17, maxDescWidth, 0xFFCFD8DC);
+
+            String summary = formatMaterialSummary(structure);
+            drawScaledText(extractor, Component.literal(summary), cardLeft + 30, cy + 29, maxDescWidth, 0xFF80DEEA);
+
+            boolean btnHovered = mouseX >= btnX && mouseX <= btnX + btnW && mouseY >= btnY && mouseY <= btnY + btnH;
+            int btnBg = isActive ? (btnHovered ? 0xFFD32F2F : 0xFFC2185B) : (btnHovered ? 0xFF00E5FF : 0xFF0091EA);
+            extractor.fill(btnX, btnY, btnX + btnW, btnY + btnH, btnBg);
+            extractor.fill(btnX, btnY, btnX + btnW, btnY + 1, 0xFFFFFFFF);
+            extractor.fill(btnX, btnY + btnH - 1, btnX + btnW, btnY + btnH, 0xFFFFFFFF);
+            extractor.fill(btnX, btnY, btnX + 1, btnY + btnH, 0xFFFFFFFF);
+            extractor.fill(btnX + btnW - 1, btnY, btnX + btnW, btnY + btnH, 0xFFFFFFFF);
+
+            Component btnText = isActive
+                    ? Component.translatable("gui.sandstorm.datapad.multiblock.clear_btn")
+                    : Component.translatable("gui.sandstorm.datapad.multiblock.project_btn");
+            drawScaledCenteredText(extractor, btnText, btnX + btnW / 2f, btnY + 6, btnW - 4, btnHovered ? 0xFF0A0E17 : 0xFFFFFFFF);
         }
+    }
+
+    private String formatMaterialSummary(MultiblockStructure structure) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(structure.getTotalBlocks()).append(" blocos: ");
+        int count = 0;
+        for (Map.Entry<Block, Integer> entry : structure.getMaterialCounts().entrySet()) {
+            if (count > 0) {
+                sb.append(", ");
+            }
+            if (count >= 3) {
+                sb.append("...");
+                break;
+            }
+            sb.append(entry.getKey().getName().getString()).append(" x").append(entry.getValue());
+            count++;
+        }
+        return sb.toString();
     }
 
     @Override
@@ -256,12 +373,23 @@ public class SurvivalDatapadScreen extends Screen {
                 return true;
             }
         }
+        if (event.key() == 72 || event.keycode() == 72) {
+            if (MultiblockHologramRenderer.isStructureActive()) {
+                MultiblockHologramRenderer.clearActiveStructure();
+                if (minecraft != null) {
+                    minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BEACON_DEACTIVATE, 1.0f));
+                }
+                statusTooltip = Component.translatable("gui.sandstorm.datapad.multiblock_cleared");
+                statusTooltipExpiry = System.currentTimeMillis() + 3000;
+                return true;
+            }
+        }
         if (event.isConfirmation() || event.key() == 257 || event.key() == 32) {
             if (claimAvailableQuest()) {
                 return true;
             }
         }
-        if (event.key() >= 49 && event.key() <= 53) {
+        if (event.key() >= 49 && event.key() <= 54) {
             currentChapter = event.key() - 48;
             scrollOffset = 0;
             return true;
@@ -274,7 +402,7 @@ public class SurvivalDatapadScreen extends Screen {
         int top = 12;
         int right = width - 16;
         int bottom = height - 12;
-        int tabCount = 5;
+        int tabCount = 6;
         int tabWidth = (right - left - 20) / tabCount;
         int ty = top + 36;
 
@@ -294,6 +422,10 @@ public class SurvivalDatapadScreen extends Screen {
         int cardHeight = 46;
         int cardSpacing = 6;
 
+        if (currentChapter == 6) {
+            return handleMultiblockClick(mx, my, left, right, questAreaTop, questAreaBottom, cardHeight, cardSpacing);
+        }
+
         List<QuestData> quests = QuestRegistry.getQuestsForChapter(currentChapter);
         Player player = minecraft != null ? minecraft.player : null;
 
@@ -306,6 +438,19 @@ public class SurvivalDatapadScreen extends Screen {
 
             int cardLeft = left + 10;
             int cardRight = right - 10;
+
+            MultiblockStructure associatedStructure = MultiblockRegistry.getStructureForQuest(quest.id());
+            if (associatedStructure != null) {
+                int holoW = 38;
+                int holoH = 18;
+                int holoX = cardRight - 60 - holoW - 4;
+                int holoY = cy + 17;
+                if (mx >= holoX && mx <= holoX + holoW && my >= holoY && my <= holoY + holoH) {
+                    projectMultiblock(associatedStructure);
+                    return true;
+                }
+            }
+
             int btnW = 56;
             int btnH = 20;
             int btnX = cardRight - 60;
@@ -323,6 +468,68 @@ public class SurvivalDatapadScreen extends Screen {
             }
         }
         return false;
+    }
+
+    private boolean handleMultiblockClick(double mx, double my, int left, int right,
+                                          int questAreaTop, int questAreaBottom, int cardHeight, int cardSpacing) {
+        List<MultiblockStructure> structures = new ArrayList<>(MultiblockRegistry.getAllStructures().values());
+        for (int i = 0; i < structures.size(); i++) {
+            MultiblockStructure structure = structures.get(i);
+            int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
+            if (cy + cardHeight < questAreaTop || cy > questAreaBottom) {
+                continue;
+            }
+
+            int cardLeft = left + 10;
+            int cardRight = right - 10;
+            int btnW = 68;
+            int btnH = 20;
+            int btnX = cardRight - 74;
+            int btnY = cy + 13;
+
+            boolean onButton = mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH;
+            boolean insideCard = mx >= cardLeft && mx <= cardRight && my >= cy && my <= cy + cardHeight;
+
+            if (onButton || insideCard) {
+                boolean isActive = MultiblockHologramRenderer.isStructureActive()
+                        && structure.getId().equals(MultiblockHologramRenderer.getActiveStructure().getId());
+                if (isActive) {
+                    MultiblockHologramRenderer.clearActiveStructure();
+                    if (minecraft != null) {
+                        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BEACON_DEACTIVATE, 1.0f));
+                    }
+                    statusTooltip = Component.translatable("gui.sandstorm.datapad.multiblock_cleared");
+                    statusTooltipExpiry = System.currentTimeMillis() + 3000;
+                } else {
+                    projectMultiblock(structure);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void projectMultiblock(MultiblockStructure structure) {
+        if (minecraft == null || minecraft.player == null) {
+            return;
+        }
+        LocalPlayer player = minecraft.player;
+        BlockPos anchorPos;
+        Direction facing = player.getDirection();
+
+        if (minecraft.hitResult instanceof BlockHitResult bhr && bhr.getType() == HitResult.Type.BLOCK) {
+            anchorPos = bhr.getBlockPos().above();
+        } else {
+            anchorPos = player.blockPosition().relative(facing, 3);
+        }
+
+        MultiblockHologramRenderer.setActiveStructure(structure, anchorPos, facing);
+        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BEACON_ACTIVATE, 1.0f));
+
+        Component nameComp = Component.translatable(structure.getTitleKey());
+        player.sendSystemMessage(Component.translatable("gui.sandstorm.datapad.multiblock_projected", nameComp));
+
+        this.onClose();
     }
 
     private boolean executeClaim(Player player, QuestData quest) {
@@ -429,45 +636,8 @@ public class SurvivalDatapadScreen extends Screen {
     }
 
     public static boolean matchesQuestItem(QuestData quest, ItemStack stack, Item req) {
-        if (req != null && stack.is(req)) {
-            return true;
-        }
-        Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        if (id != null && id.equals(quest.requiredItemId())) {
-            return true;
-        }
-        if ("compact_sandstone".equals(quest.id())) {
-            return id != null && (id.equals(SandStormMod.mcId("sandstone"))
-                    || id.equals(SandStormMod.mcId("red_sandstone"))
-                    || id.equals(SandStormMod.mcId("smooth_sandstone"))
-                    || id.equals(SandStormMod.mcId("cut_sandstone"))
-                    || id.equals(SandStormMod.mcId("chiseled_sandstone"))
-                    || id.equals(SandStormMod.id("sandstone_workbench"))
-                    || id.equals(SandStormMod.id("sandstone_furnace")));
-        }
-        if ("emergency_workbench".equals(quest.id())) {
-            return id != null && (id.equals(SandStormMod.id("sandstone_workbench"))
-                    || id.equals(SandStormMod.mcId("crafting_table")));
-        }
-        if ("sandstone_furnace".equals(quest.id())) {
-            return id != null && (id.equals(SandStormMod.id("sandstone_furnace"))
-                    || id.equals(SandStormMod.mcId("furnace")));
-        }
-        if ("glass_canister".equals(quest.id())) {
-            return id != null && (id.equals(SandStormMod.mcId("glass_bottle"))
-                    || id.equals(SandStormMod.id("brackish_water_bottle"))
-                    || id.equals(SandStormMod.id("potable_water_bottle"))
-                    || id.equals(SandStormMod.mcId("potion")));
-        }
-        if ("planetary_genesis".equals(quest.id())) {
-            return id != null && (id.equals(SandStormMod.mcId("grass_block"))
-                    || id.equals(SandStormMod.mcId("dirt"))
-                    || id.equals(SandStormMod.id("xeno_grass_block"))
-                    || id.equals(SandStormMod.id("xeno_grass_seeds")));
-        }
-        return false;
+        return QuestRewardHandler.matchesQuestItem(quest, stack, req);
     }
-
 
     private boolean arePrerequisitesClaimed(QuestData quest) {
         if (quest.prerequisiteIds().isEmpty()) {

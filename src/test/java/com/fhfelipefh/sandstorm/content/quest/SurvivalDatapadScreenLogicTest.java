@@ -201,9 +201,9 @@ class SurvivalDatapadScreenLogicTest {
         assertTrue(keyR == 82);
         assertTrue(keyEnter == 257 || keySpace == 32);
 
-        for (int chKey = 49; chKey <= 53; chKey++) {
+        for (int chKey = 49; chKey <= 54; chKey++) {
             int chapter = chKey - 48;
-            assertTrue(chapter >= 1 && chapter <= 5);
+            assertTrue(chapter >= 1 && chapter <= 6);
         }
     }
 
@@ -213,7 +213,7 @@ class SurvivalDatapadScreenLogicTest {
         int left = 16;
         int right = screenWidth - 16;
         int top = 12;
-        int tabCount = 5;
+        int tabCount = 6;
         int tabWidth = (right - left - 20) / tabCount;
         int ty = top + 36;
 

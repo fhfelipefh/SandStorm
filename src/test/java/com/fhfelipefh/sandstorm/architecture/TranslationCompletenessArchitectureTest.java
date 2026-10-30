@@ -143,7 +143,7 @@ class TranslationCompletenessArchitectureTest {
             checkKeyAcrossLanguages("tooltip.sandstorm.cyborg_incubator.stage_" + i, langFiles, violations);
         }
 
-        for (int chapter = 1; chapter <= 5; chapter++) {
+        for (int chapter = 1; chapter <= 6; chapter++) {
             checkKeyAcrossLanguages("gui.sandstorm.datapad.chapter." + chapter, langFiles, violations);
             checkKeyAcrossLanguages("gui.sandstorm.datapad.tab." + chapter, langFiles, violations);
         }

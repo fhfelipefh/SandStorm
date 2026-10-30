@@ -56,6 +56,7 @@ import com.fhfelipefh.sandstorm.client.renderer.AutonomousSonicTurretRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CargoDroneRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.ClientUplinkRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.MultiblockHologramRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CrushingSpikeGateRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyberneticGolemRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyborgRenderer;
@@ -336,6 +337,7 @@ public class SandStormClient implements ClientModInitializer {
             });
         });
         LevelRenderEvents.COLLECT_SUBMITS.register(ClientUplinkRenderer::render);
+        LevelRenderEvents.COLLECT_SUBMITS.register(MultiblockHologramRenderer::render);
         FluidRenderingRegistry.register(
                 SandStormFluids.RADIOACTIVE_SLUDGE,
                 SandStormFluids.FLOWING_RADIOACTIVE_SLUDGE,
