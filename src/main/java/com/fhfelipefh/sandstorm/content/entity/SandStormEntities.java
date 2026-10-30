@@ -368,7 +368,7 @@ public class SandStormEntities {
             BuiltInRegistries.ENTITY_TYPE,
             SandStormMod.id("grazer"),
             EntityType.Builder.of(GrazerEntity::new, MobCategory.CREATURE)
-                    .sized(1.4f, 1.6f)
+                    .sized(1.9f, 1.75f)
                     .build(GRAZER_KEY)
     );
 
@@ -381,7 +381,7 @@ public class SandStormEntities {
             BuiltInRegistries.ENTITY_TYPE,
             SandStormMod.id("fanghorn"),
             EntityType.Builder.of(FanghornEntity::new, MobCategory.MONSTER)
-                    .sized(1.4f, 1.7f)
+                    .sized(1.9f, 1.9f)
                     .build(FANGHORN_KEY)
     );
 
@@ -394,7 +394,7 @@ public class SandStormEntities {
             BuiltInRegistries.ENTITY_TYPE,
             SandStormMod.id("frostclaw"),
             EntityType.Builder.of(FrostclawEntity::new, MobCategory.MONSTER)
-                    .sized(2.2f, 2.6f)
+                    .sized(1.75f, 1.75f)
                     .build(FROSTCLAW_KEY)
     );
 
@@ -407,7 +407,7 @@ public class SandStormEntities {
             BuiltInRegistries.ENTITY_TYPE,
             SandStormMod.id("glinthawk"),
             EntityType.Builder.of(GlinthawkEntity::new, MobCategory.MONSTER)
-                    .sized(1.5f, 1.2f)
+                    .sized(2.3f, 0.85f)
                     .build(GLINTHAWK_KEY)
     );
 
@@ -420,7 +420,7 @@ public class SandStormEntities {
             BuiltInRegistries.ENTITY_TYPE,
             SandStormMod.id("waterwing"),
             EntityType.Builder.of(WaterwingEntity::new, MobCategory.CREATURE)
-                    .sized(2.0f, 1.8f)
+                    .sized(2.9f, 1.65f)
                     .build(WATERWING_KEY)
     );
 

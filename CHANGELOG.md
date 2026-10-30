@@ -2,6 +2,13 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.50] - 2026-10-30
+
+### ❄️ Correção de Geometria dos Androides Apex
+* Corrigidas as caixas físicas do Guardião Criogênico, Grazer, Fanghorn, Glinthawk e Waterwing para coincidirem com a geometria renderizada.
+* O Guardião Criogênico deixou de ocupar uma colisão invisível muito acima do seu corpo, restaurando seleção, combate e navegação coerentes.
+* Adicionada regressão automatizada para manter as dimensões físicas sincronizadas com os cinco modelos.
+
 ## [1.19.49] - 2026-10-30
 
 ### 🧭 Reconstrução do Showcase com Isolamento Espacial

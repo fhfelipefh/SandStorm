@@ -194,7 +194,7 @@ public class ShowcaseAutomation {
                 new ShowcaseFootprint("Cofre Blindado", 81, 89, -49, -40),
                 new ShowcaseFootprint("Portal Subespacial", 106, 114, -49, -41),
                 new ShowcaseFootprint("Estação de Rapel", 38, 52, -72, -58),
-                new ShowcaseFootprint("Campo de Pistões", 36, 64, -118, -82),
+                new ShowcaseFootprint("Campo de Pistões", 36, 64, -133, -97),
                 new ShowcaseFootprint("Polígono de Defesa", -90, -44, -118, -34),
                 new ShowcaseFootprint("Complexo de Ciborgues", -20, 20, -115, -80),
                 new ShowcaseFootprint("Arena do Sandworm", -26, 26, -196, -144),
@@ -1079,9 +1079,9 @@ public class ShowcaseAutomation {
         buildMegastructureDomeShowcase(level, center);
         buildMaglevTestTrack(level, center);
         buildAutonomousCyborgFacility(level, center, player);
-        buildPistonTestingRange(level, center.offset(50, 0, -100));
+        buildPistonTestingRange(level, center.offset(50, 0, -125));
         buildShowcaseWalkway(level, center.offset(11, 0, -10), center.offset(65, 0, -10));
-        buildShowcaseWalkway(level, center.offset(65, 0, -10), center.offset(65, 0, -100));
+        buildShowcaseWalkway(level, center.offset(65, 0, -10), center.offset(65, 0, -125));
         buildSandwormColosseum(level, center);
         buildQuantumComputerStation(level, center.offset(85, 0, -5));
         buildShowcaseWalkway(level, center.offset(11, 0, -5), center.offset(78, 0, -5));
@@ -1414,7 +1414,7 @@ public class ShowcaseAutomation {
 
         setupPedestal(level, center.offset(-18, 0, -29), showcaseCenter.offset(-75, 1, 40), "Setor Sudoeste: Hipódromo Cibernético", "Pista de Galope, Saltos & Sobrescrita", Blocks.HAY_BLOCK);
         setupPedestal(level, center.offset(-22, 0, -29), showcaseCenter.offset(0, 1, -149), "Setor Norte: Arena do Colosso (Sandworm)", "Verme de Areia Adulto | Arena de Dunas & Fosso", Blocks.RED_SANDSTONE);
-        setupPedestal(level, center.offset(-26, 0, -29), showcaseCenter.offset(50, 1, -100), "Setor Mecânica: Super Pistões", "Meia-Laje (7) | Cinético (24) | Tectônico (48 + Obsidiana)", Blocks.REDSTONE_BLOCK);
+        setupPedestal(level, center.offset(-26, 0, -29), showcaseCenter.offset(50, 1, -125), "Setor Mecânica: Super Pistões", "Meia-Laje (7) | Cinético (24) | Tectônico (48 + Obsidiana)", Blocks.REDSTONE_BLOCK);
     }
 
     private static void setupPedestal(ServerLevel level, BlockPos floorPos, BlockPos destination, String title, String subtitle, Block baseBlock) {
@@ -4610,7 +4610,7 @@ public class ShowcaseAutomation {
 
         int exhibitionMaxZ = Math.max(maxBlockZ, maxItemZ);
         int domeRadius = AtmosphericTerraformerBlockEntity.TIER1_RADIUS;
-        return exhibitionMaxZ + domeRadius + 16;
+        return Math.max(exhibitionMaxZ + domeRadius + 16, 96);
     }
 
     public static void buildBiospheresShowcase(ServerLevel level, BlockPos center) {
