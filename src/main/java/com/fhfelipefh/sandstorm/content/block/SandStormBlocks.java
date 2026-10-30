@@ -1669,6 +1669,32 @@ public class SandStormBlocks {
             new BlockEntityType<>(CompactSlabPistonBlockEntity::new, Set.of(COMPACT_SLAB_PISTON, COMPACT_STICKY_SLAB_PISTON))
     );
 
+    public static final HydroponicTrayBlock HYDROPONIC_TRAY = register("hydroponic_tray",
+            new HydroponicTrayBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("hydroponic_tray")))
+                    .strength(2.5f)
+                    .sound(SoundType.METAL)
+                    .randomTicks())
+    );
+    public static final SeismicResonanceCatalystBlock SEISMIC_RESONANCE_CATALYST = register("seismic_resonance_catalyst",
+            new SeismicResonanceCatalystBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("seismic_resonance_catalyst")))
+                    .strength(5.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK))
+    );
+    public static final XenoWheatCropBlock XENO_WHEAT_CROP = registerWithoutItem("xeno_wheat_crop",
+            new XenoWheatCropBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("xeno_wheat_crop")))
+                    .noCollision()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.CROP))
+    );
+
+    public static <T extends Block> T registerWithoutItem(String path, T block) {
+        return Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
+    }
+
     public static <T extends Block> T register(String path, T block) {
         T registeredBlock = Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
         Item item = (registeredBlock instanceof DoorBlock)

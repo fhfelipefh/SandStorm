@@ -34,9 +34,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import com.fhfelipefh.sandstorm.component.ExoSuitChipComponent;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.phys.AABB;
 
 public class SuitSurvivalHandler {
     private record LastSyncState(long energy, long capacity, double temperature, int armorCount, int tick) {}
@@ -148,6 +154,7 @@ public class SuitSurvivalHandler {
         }
 
         suit.tick(exposedToSunlight, ambientTemperature, underground, solarMultiplier);
+        handleExoSuitChips(player, suit);
         if (insideSaltRoom && player.tickCount % 10 == 0 && suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity()) {
             suit.getEnergyStorage().receiveEnergy(1L);
         }
@@ -497,6 +504,62 @@ public class SuitSurvivalHandler {
             if (currentFuel <= 0 && !hasCartridge && player.getAbilities().mayfly) {
                 player.getAbilities().mayfly = false;
                 player.onUpdateAbilities();
+            }
+        }
+    }
+
+    private static void handleExoSuitChips(ServerPlayer player, SuitPowerComponent suit) {
+        if (!suit.isFullSuitEquipped() && suit.getInstalledChips().isEmpty()) {
+            return;
+        }
+        ServerLevel level = (ServerLevel) player.level();
+        long energy = suit.getStoredEnergy();
+
+        if (suit.hasChip(ExoSuitChipComponent.GRAVITATIONAL_MAGNET) && energy >= 5L) {
+            if (player.tickCount % 10 == 0) {
+                AABB magnetBox = player.getBoundingBox().inflate(8.0);
+                List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, magnetBox);
+                for (ItemEntity item : items) {
+                    if (item.isAlive() && !item.hasPickUpDelay()) {
+                        Vec3 dir = player.position().add(0, 0.8, 0).subtract(item.position()).normalize().scale(0.35);
+                        item.setDeltaMovement(item.getDeltaMovement().add(dir));
+                    }
+                }
+                List<ExperienceOrb> orbs = level.getEntitiesOfClass(ExperienceOrb.class, magnetBox);
+                for (ExperienceOrb orb : orbs) {
+                    if (orb.isAlive()) {
+                        Vec3 dir = player.position().add(0, 0.5, 0).subtract(orb.position()).normalize().scale(0.3);
+                        orb.setDeltaMovement(orb.getDeltaMovement().add(dir));
+                    }
+                }
+                suit.consumeEnergy(1L);
+            }
+        }
+
+        if (suit.hasChip(ExoSuitChipComponent.OSMOTIC_RECYCLER) && energy >= 20L) {
+            if (player.tickCount % 60 == 0) {
+                if (player.getFoodData().needsFood()) {
+                    player.getFoodData().eat(1, 1.0f);
+                    suit.consumeEnergy(10L);
+                }
+            }
+        }
+
+        if (suit.hasChip(ExoSuitChipComponent.SEISMIC_SONAR) && energy >= 10L) {
+            if (player.tickCount % 40 == 0 && (player.isCrouching() || player.getY() < 50)) {
+                AABB sonarBox = player.getBoundingBox().inflate(16.0);
+                List<LivingEntity> nearby = level.getEntitiesOfClass(LivingEntity.class, sonarBox, e -> e != player && e.isAlive());
+                for (LivingEntity e : nearby) {
+                    e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 35, 0, false, false));
+                }
+                suit.consumeEnergy(5L);
+            }
+        }
+
+        if (suit.hasChip(ExoSuitChipComponent.KINETIC_DEFLECTOR) && energy >= 15L) {
+            if (player.fallDistance > 3.0f) {
+                player.fallDistance = Math.max(0.0f, player.fallDistance - 2.5f);
+                suit.consumeEnergy(15L);
             }
         }
     }

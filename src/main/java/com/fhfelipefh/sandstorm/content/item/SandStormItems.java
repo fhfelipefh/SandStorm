@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.item;
 
+import com.fhfelipefh.sandstorm.component.ExoSuitChipComponent;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
@@ -12,6 +13,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -213,6 +215,24 @@ public class SandStormItems {
     public static final SignalTrackerItem SIGNAL_TRACKER = register("signal_tracker", new SignalTrackerItem(properties("signal_tracker").stacksTo(1).rarity(Rarity.RARE)));
     public static final BucketItem SYNAPTIC_FLUID_BUCKET = register("synaptic_fluid_bucket", new BucketItem(SandStormFluids.SYNAPTIC_FLUID, properties("synaptic_fluid_bucket").craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final SynapticCartridgeItem SYNAPTIC_CARTRIDGE = register("synaptic_cartridge", new SynapticCartridgeItem(properties("synaptic_cartridge").stacksTo(1).rarity(Rarity.EPIC)));
+    public static final NeuralOverrideLanceItem NEURAL_OVERRIDE_LANCE = register("neural_override_lance", new NeuralOverrideLanceItem(properties("neural_override_lance").durability(64).rarity(Rarity.RARE)));
+    public static final ExoSuitChipItem SEISMIC_SONAR_CHIP = register("seismic_sonar_chip", new ExoSuitChipItem(ExoSuitChipComponent.SEISMIC_SONAR, properties("seismic_sonar_chip").rarity(Rarity.RARE)));
+    public static final ExoSuitChipItem JETBOOT_MODULE = register("jetboot_module", new ExoSuitChipItem(ExoSuitChipComponent.JETBOOT_THRUSTER, properties("jetboot_module").rarity(Rarity.RARE)));
+    public static final ExoSuitChipItem GRAVITATIONAL_MAGNET_CHIP = register("gravitational_magnet_chip", new ExoSuitChipItem(ExoSuitChipComponent.GRAVITATIONAL_MAGNET, properties("gravitational_magnet_chip").rarity(Rarity.UNCOMMON)));
+    public static final ExoSuitChipItem OSMOTIC_RECYCLER_MODULE = register("osmotic_recycler_module", new ExoSuitChipItem(ExoSuitChipComponent.OSMOTIC_RECYCLER, properties("osmotic_recycler_module").rarity(Rarity.UNCOMMON)));
+    public static final ExoSuitChipItem KINETIC_DEFLECTOR_CHIP = register("kinetic_deflector_chip", new ExoSuitChipItem(ExoSuitChipComponent.KINETIC_DEFLECTOR, properties("kinetic_deflector_chip").rarity(Rarity.RARE)));
+    public static final Item APEX_HEART_MATRIX = register("apex_heart_matrix", new Item(properties("apex_heart_matrix").rarity(Rarity.EPIC)));
+    public static final ApexRailgunHarpoonItem APEX_RAILGUN_HARPOON = register("apex_railgun_harpoon", new ApexRailgunHarpoonItem(properties("apex_railgun_harpoon").durability(256).rarity(Rarity.EPIC)));
+    public static final SpawnEggItem APEX_SANDWORM_SPAWN_EGG = register("apex_sandworm_spawn_egg", new SpawnEggItem(properties("apex_sandworm_spawn_egg").spawnEgg(SandStormEntities.APEX_SANDWORM)));
+    public static final BlockItem XENO_WHEAT_SEEDS = register("xeno_wheat_seeds", new BlockItem(SandStormBlocks.XENO_WHEAT_CROP, properties("xeno_wheat_seeds")));
+    public static final Item XENO_WHEAT = register("xeno_wheat", new Item(properties("xeno_wheat")));
+    public static final Item DUNE_MELON_SEEDS = register("dune_melon_seeds", new Item(properties("dune_melon_seeds")));
+    public static final SpaceFoodItem DUNE_MELON_SLICE = register("dune_melon_slice", new SpaceFoodItem(SpaceFoodItem.FoodType.GENERIC, properties("dune_melon_slice").food(new FoodProperties(3, 0.3f, false))));
+    public static final SpaceFoodItem CRYO_BERRIES = register("cryo_berries", new SpaceFoodItem(SpaceFoodItem.FoodType.GENERIC, properties("cryo_berries").food(new FoodProperties(2, 0.2f, false))));
+    public static final SpaceFoodItem THERMAL_NUTRIENT_PASTE = register("thermal_nutrient_paste", new SpaceFoodItem(SpaceFoodItem.FoodType.THERMAL_PASTE, properties("thermal_nutrient_paste").food(new FoodProperties(5, 0.8f, true))));
+    public static final SpaceFoodItem ELECTROLYTE_JUICE = register("electrolyte_juice", new SpaceFoodItem(SpaceFoodItem.FoodType.ELECTROLYTE_JUICE, properties("electrolyte_juice").food(new FoodProperties(4, 0.6f, true)).stacksTo(16)));
+    public static final SpaceFoodItem CRYO_GLAZED_RATION = register("cryo_glazed_ration", new SpaceFoodItem(SpaceFoodItem.FoodType.CRYO_RATION, properties("cryo_glazed_ration").food(new FoodProperties(8, 1.0f, true))));
+    public static final SpaceFoodItem HYDROPONIC_FEAST = register("hydroponic_feast", new SpaceFoodItem(SpaceFoodItem.FoodType.FEAST, properties("hydroponic_feast").food(new FoodProperties(14, 1.2f, true)).stacksTo(16)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -568,6 +588,26 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.TECTONIC_STICKY_KINETIC_PISTON);
                         entries.accept(SandStormBlocks.COMPACT_SLAB_PISTON);
                         entries.accept(SandStormBlocks.COMPACT_STICKY_SLAB_PISTON);
+                        entries.accept(NEURAL_OVERRIDE_LANCE);
+                        entries.accept(SEISMIC_SONAR_CHIP);
+                        entries.accept(JETBOOT_MODULE);
+                        entries.accept(GRAVITATIONAL_MAGNET_CHIP);
+                        entries.accept(OSMOTIC_RECYCLER_MODULE);
+                        entries.accept(KINETIC_DEFLECTOR_CHIP);
+                        entries.accept(APEX_HEART_MATRIX);
+                        entries.accept(APEX_RAILGUN_HARPOON);
+                        entries.accept(APEX_SANDWORM_SPAWN_EGG);
+                        entries.accept(SandStormBlocks.SEISMIC_RESONANCE_CATALYST);
+                        entries.accept(SandStormBlocks.HYDROPONIC_TRAY);
+                        entries.accept(XENO_WHEAT_SEEDS);
+                        entries.accept(XENO_WHEAT);
+                        entries.accept(DUNE_MELON_SEEDS);
+                        entries.accept(DUNE_MELON_SLICE);
+                        entries.accept(CRYO_BERRIES);
+                        entries.accept(THERMAL_NUTRIENT_PASTE);
+                        entries.accept(ELECTROLYTE_JUICE);
+                        entries.accept(CRYO_GLAZED_RATION);
+                        entries.accept(HYDROPONIC_FEAST);
                     })
                     .build()
     );

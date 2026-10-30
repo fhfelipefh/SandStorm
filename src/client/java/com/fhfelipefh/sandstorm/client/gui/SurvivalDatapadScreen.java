@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.client.gui;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.client.renderer.MultiblockHologramRenderer;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
+import com.fhfelipefh.sandstorm.content.multiblock.MultiblockBlockRequirement;
 import com.fhfelipefh.sandstorm.content.multiblock.MultiblockRegistry;
 import com.fhfelipefh.sandstorm.content.multiblock.MultiblockStructure;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
@@ -43,6 +44,8 @@ public class SurvivalDatapadScreen extends Screen {
     private long statusTooltipExpiry;
     private String lastHoveredClaimableQuestId;
     private boolean clickHandledOnPress = false;
+    private MultiblockStructure ponderStructure;
+    private int ponderStep = 1;
 
     public SurvivalDatapadScreen() {
         super(Component.translatable("gui.sandstorm.datapad.title"));
@@ -69,6 +72,11 @@ public class SurvivalDatapadScreen extends Screen {
         int top = 12;
         int right = width - 16;
         int bottom = height - 12;
+
+        if (ponderStructure != null) {
+            renderPonderView(extractor, left, top, right, bottom, mouseX, mouseY);
+            return;
+        }
 
         extractor.fill(left, top, right, bottom, 0xEE101824);
         extractor.fill(left, top, right, top + 1, 0xFF00E5FF);
@@ -201,17 +209,30 @@ public class SurvivalDatapadScreen extends Screen {
             drawScaledText(extractor, Component.translatable(quest.titleKey()), cardLeft + 30, cy + 5, maxTitleWidth, titleColor);
 
             MultiblockStructure associatedStructure = MultiblockRegistry.getStructureForQuest(quest.id());
-            int holoOffset = (associatedStructure != null) ? 44 : 0;
+            int holoOffset = (associatedStructure != null) ? 80 : 0;
 
             float maxLineWidth = Math.max(0, (cardRight - 94 - holoOffset) - (cardLeft + 30) - 4);
             drawScaledText(extractor, Component.translatable(quest.taskKey()), cardLeft + 30, cy + 17, maxLineWidth, 0xFFCFD8DC);
             drawScaledText(extractor, Component.translatable(quest.noteKey()), cardLeft + 30, cy + 29, maxLineWidth, 0xFF80DEEA);
 
             if (associatedStructure != null) {
-                int holoW = 38;
+                int holoW = 34;
                 int holoH = 18;
                 int holoX = cardRight - 60 - holoW - 4;
+                int pdrW = 34;
+                int pdrX = holoX - pdrW - 4;
                 int holoY = cy + 17;
+
+                boolean pdrHovered = mouseX >= pdrX && mouseX <= pdrX + pdrW && mouseY >= holoY && mouseY <= holoY + holoH;
+                int pdrBg = pdrHovered ? 0xFF00E5FF : 0xAA005B66;
+                extractor.fill(pdrX, holoY, pdrX + pdrW, holoY + holoH, pdrBg);
+                extractor.fill(pdrX, holoY, pdrX + pdrW, holoY + 1, 0xFF00E5FF);
+                extractor.fill(pdrX, holoY + holoH - 1, pdrX + pdrW, holoY + holoH, 0xFF00E5FF);
+                extractor.fill(pdrX, holoY, pdrX + 1, holoY + holoH, 0xFF00E5FF);
+                extractor.fill(pdrX + pdrW - 1, holoY, pdrX + pdrW, holoY + holoH, 0xFF00E5FF);
+
+                Component pdrText = Component.translatable("gui.sandstorm.datapad.multiblock.ponder_btn");
+                drawScaledCenteredText(extractor, pdrText, pdrX + pdrW / 2f, holoY + 5, pdrW - 2, pdrHovered ? 0xFF0A0E17 : 0xFFFFFFFF);
 
                 boolean holoHovered = mouseX >= holoX && mouseX <= holoX + holoW && mouseY >= holoY && mouseY <= holoY + holoH;
                 int holoBg = holoHovered ? 0xFF00E5FF : 0xAA005B66;
@@ -291,19 +312,33 @@ public class SurvivalDatapadScreen extends Screen {
                 extractor.item(firstBlock.asItem().getDefaultInstance(), cardLeft + 8, cy + 15);
             }
 
-            int btnW = 68;
+            int btnW = 60;
             int btnH = 20;
-            int btnX = cardRight - 74;
+            int btnX = cardRight - 66;
             int btnY = cy + 13;
 
-            float maxTitleWidth = Math.max(0, btnX - (cardLeft + 30) - 8);
+            int pdrW = 48;
+            int pdrX = btnX - pdrW - 4;
+
+            float maxTitleWidth = Math.max(0, pdrX - (cardLeft + 30) - 8);
             drawScaledText(extractor, Component.translatable(structure.getTitleKey()), cardLeft + 30, cy + 5, maxTitleWidth, isActive ? 0xFF69F0AE : 0xFFFFF176);
 
-            float maxDescWidth = Math.max(0, btnX - (cardLeft + 30) - 8);
+            float maxDescWidth = Math.max(0, pdrX - (cardLeft + 30) - 8);
             drawScaledText(extractor, Component.translatable(structure.getDescKey()), cardLeft + 30, cy + 17, maxDescWidth, 0xFFCFD8DC);
 
             String summary = formatMaterialSummary(structure);
             drawScaledText(extractor, Component.literal(summary), cardLeft + 30, cy + 29, maxDescWidth, 0xFF80DEEA);
+
+            boolean pdrHovered = mouseX >= pdrX && mouseX <= pdrX + pdrW && mouseY >= btnY && mouseY <= btnY + btnH;
+            int pdrBg = pdrHovered ? 0xFF00E5FF : 0xFF005B66;
+            extractor.fill(pdrX, btnY, pdrX + pdrW, btnY + btnH, pdrBg);
+            extractor.fill(pdrX, btnY, pdrX + pdrW, btnY + 1, 0xFF00E5FF);
+            extractor.fill(pdrX, btnY + btnH - 1, pdrX + pdrW, btnY + btnH, 0xFF00E5FF);
+            extractor.fill(pdrX, btnY, pdrX + 1, btnY + btnH, 0xFF00E5FF);
+            extractor.fill(pdrX + pdrW - 1, btnY, pdrX + pdrW, btnY + btnH, 0xFF00E5FF);
+
+            Component pdrText = Component.translatable("gui.sandstorm.datapad.multiblock.ponder_btn");
+            drawScaledCenteredText(extractor, pdrText, pdrX + pdrW / 2f, btnY + 6, pdrW - 4, pdrHovered ? 0xFF0A0E17 : 0xFFFFFFFF);
 
             boolean btnHovered = mouseX >= btnX && mouseX <= btnX + btnW && mouseY >= btnY && mouseY <= btnY + btnH;
             int btnBg = isActive ? (btnHovered ? 0xFFD32F2F : 0xFFC2185B) : (btnHovered ? 0xFF00E5FF : 0xFF0091EA);
@@ -368,6 +403,25 @@ public class SurvivalDatapadScreen extends Screen {
     public boolean keyPressed(KeyEvent event) {
         SandStormMod.LOGGER.info("Datapad keyPressed: key={}, keycode={}, isConfirmation={}",
                 event.key(), event.keycode(), event.isConfirmation());
+        if (event.key() == 256) {
+            if (ponderStructure != null) {
+                ponderStructure = null;
+                return true;
+            }
+        }
+        if (ponderStructure != null) {
+            if (event.key() == 263) {
+                ponderStep = Math.max(1, ponderStep - 1);
+                return true;
+            }
+            if (event.key() == 262) {
+                int minY = ponderStructure.getRequirements().stream().mapToInt(r -> r.offset().getY()).min().orElse(0);
+                int maxY = ponderStructure.getRequirements().stream().mapToInt(r -> r.offset().getY()).max().orElse(0);
+                int totalLayers = Math.max(1, maxY - minY + 1);
+                ponderStep = Math.min(totalLayers, ponderStep + 1);
+                return true;
+            }
+        }
         if (event.key() == 82 || event.keycode() == 82) {
             if (claimAvailableQuest()) {
                 return true;
@@ -402,6 +456,10 @@ public class SurvivalDatapadScreen extends Screen {
         int top = 12;
         int right = width - 16;
         int bottom = height - 12;
+
+        if (ponderStructure != null) {
+            return handlePonderClick(mx, my, left, top, right, bottom);
+        }
         int tabCount = 6;
         int tabWidth = (right - left - 20) / tabCount;
         int ty = top + 36;
@@ -441,10 +499,20 @@ public class SurvivalDatapadScreen extends Screen {
 
             MultiblockStructure associatedStructure = MultiblockRegistry.getStructureForQuest(quest.id());
             if (associatedStructure != null) {
-                int holoW = 38;
+                int holoW = 34;
                 int holoH = 18;
                 int holoX = cardRight - 60 - holoW - 4;
+                int pdrW = 34;
+                int pdrX = holoX - pdrW - 4;
                 int holoY = cy + 17;
+                if (mx >= pdrX && mx <= pdrX + pdrW && my >= holoY && my <= holoY + holoH) {
+                    ponderStructure = associatedStructure;
+                    ponderStep = 1;
+                    if (minecraft != null) {
+                        minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+                    }
+                    return true;
+                }
                 if (mx >= holoX && mx <= holoX + holoW && my >= holoY && my <= holoY + holoH) {
                     projectMultiblock(associatedStructure);
                     return true;
@@ -482,10 +550,22 @@ public class SurvivalDatapadScreen extends Screen {
 
             int cardLeft = left + 10;
             int cardRight = right - 10;
-            int btnW = 68;
+            int btnW = 60;
             int btnH = 20;
-            int btnX = cardRight - 74;
+            int btnX = cardRight - 66;
             int btnY = cy + 13;
+            int pdrW = 48;
+            int pdrX = btnX - pdrW - 4;
+
+            boolean onPonder = mx >= pdrX && mx <= pdrX + pdrW && my >= btnY && my <= btnY + btnH;
+            if (onPonder) {
+                ponderStructure = structure;
+                ponderStep = 1;
+                if (minecraft != null) {
+                    minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+                }
+                return true;
+            }
 
             boolean onButton = mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH;
             boolean insideCard = mx >= cardLeft && mx <= cardRight && my >= cy && my <= cy + cardHeight;
@@ -685,6 +765,161 @@ public class SurvivalDatapadScreen extends Screen {
         }
     }
 
+    private void renderPonderView(GuiGraphicsExtractor extractor, int left, int top, int right, int bottom, int mouseX, int mouseY) {
+        if (ponderStructure == null) {
+            return;
+        }
+        int minY = ponderStructure.getRequirements().stream().mapToInt(r -> r.offset().getY()).min().orElse(0);
+        int maxY = ponderStructure.getRequirements().stream().mapToInt(r -> r.offset().getY()).max().orElse(0);
+        int totalLayers = Math.max(1, maxY - minY + 1);
+        ponderStep = Math.clamp(ponderStep, 1, totalLayers);
+        int currentY = minY + ponderStep - 1;
+
+        extractor.fill(left, top, right, bottom, 0xF5081018);
+        extractor.fill(left, top, right, top + 1, 0xFF00E5FF);
+        extractor.fill(left, bottom - 1, right, bottom, 0xFF00E5FF);
+        extractor.fill(left, top, left + 1, bottom, 0xFF00E5FF);
+        extractor.fill(right - 1, top, right, bottom, 0xFF00E5FF);
+
+        drawScaledText(extractor, Component.translatable(ponderStructure.getTitleKey()), left + 16, top + 12, right - left - 120, 0xFF00E5FF);
+        String stepInfo = "Camada Y = " + currentY + " (" + ponderStep + " / " + totalLayers + ")";
+        drawScaledText(extractor, Component.literal(stepInfo), left + 16, top + 26, right - left - 120, 0xFFFFD54F);
+
+        int closeBtnW = 50;
+        int closeBtnH = 18;
+        int closeBtnX = right - closeBtnW - 14;
+        int closeBtnY = top + 12;
+        boolean closeHover = mouseX >= closeBtnX && mouseX <= closeBtnX + closeBtnW && mouseY >= closeBtnY && mouseY <= closeBtnY + closeBtnH;
+        extractor.fill(closeBtnX, closeBtnY, closeBtnX + closeBtnW, closeBtnY + closeBtnH, closeHover ? 0xFFD32F2F : 0xAA212121);
+        extractor.fill(closeBtnX, closeBtnY, closeBtnX + closeBtnW, closeBtnY + 1, 0xFFFFFFFF);
+        extractor.fill(closeBtnX, closeBtnY + closeBtnH - 1, closeBtnX + closeBtnW, closeBtnY + closeBtnH, 0xFFFFFFFF);
+        extractor.fill(closeBtnX, closeBtnY, closeBtnX + 1, closeBtnY + closeBtnH, 0xFFFFFFFF);
+        extractor.fill(closeBtnX + closeBtnW - 1, closeBtnY, closeBtnX + closeBtnW, closeBtnY + closeBtnH, 0xFFFFFFFF);
+        drawScaledCenteredText(extractor, Component.translatable("gui.sandstorm.datapad.multiblock.ponder_close"), closeBtnX + closeBtnW / 2f, closeBtnY + 5, closeBtnW - 4, 0xFFFFFFFF);
+
+        int navY = bottom - 32;
+        int prevBtnW = 70;
+        int prevBtnH = 20;
+        int prevBtnX = left + 16;
+        boolean prevHover = mouseX >= prevBtnX && mouseX <= prevBtnX + prevBtnW && mouseY >= navY && mouseY <= navY + prevBtnH;
+        extractor.fill(prevBtnX, navY, prevBtnX + prevBtnW, navY + prevBtnH, prevHover ? 0xFF00B0FF : 0xAA102030);
+        extractor.fill(prevBtnX, navY, prevBtnX + prevBtnW, navY + 1, 0xFF00E5FF);
+        extractor.fill(prevBtnX, navY + prevBtnH - 1, prevBtnX + prevBtnW, navY + prevBtnH, 0xFF00E5FF);
+        extractor.fill(prevBtnX, navY, prevBtnX + 1, navY + prevBtnH, 0xFF00E5FF);
+        extractor.fill(prevBtnX + prevBtnW - 1, navY, prevBtnX + prevBtnW, navY + prevBtnH, 0xFF00E5FF);
+        drawScaledCenteredText(extractor, Component.translatable("gui.sandstorm.datapad.multiblock.ponder_prev"), prevBtnX + prevBtnW / 2f, navY + 6, prevBtnW - 4, 0xFFFFFFFF);
+
+        int nextBtnW = 70;
+        int nextBtnH = 20;
+        int nextBtnX = prevBtnX + prevBtnW + 8;
+        boolean nextHover = mouseX >= nextBtnX && mouseX <= nextBtnX + nextBtnW && mouseY >= navY && mouseY <= navY + nextBtnH;
+        extractor.fill(nextBtnX, navY, nextBtnX + nextBtnW, navY + nextBtnH, nextHover ? 0xFF00B0FF : 0xAA102030);
+        extractor.fill(nextBtnX, navY, nextBtnX + nextBtnW, navY + 1, 0xFF00E5FF);
+        extractor.fill(nextBtnX, navY + nextBtnH - 1, nextBtnX + nextBtnW, navY + nextBtnH, 0xFF00E5FF);
+        extractor.fill(nextBtnX, navY, nextBtnX + 1, navY + nextBtnH, 0xFF00E5FF);
+        extractor.fill(nextBtnX + nextBtnW - 1, navY, nextBtnX + nextBtnW, navY + nextBtnH, 0xFF00E5FF);
+        drawScaledCenteredText(extractor, Component.translatable("gui.sandstorm.datapad.multiblock.ponder_next"), nextBtnX + nextBtnW / 2f, navY + 6, nextBtnW - 4, 0xFFFFFFFF);
+
+        int projBtnW = 86;
+        int projBtnH = 20;
+        int projBtnX = right - projBtnW - 16;
+        boolean projHover = mouseX >= projBtnX && mouseX <= projBtnX + projBtnW && mouseY >= navY && mouseY <= navY + projBtnH;
+        extractor.fill(projBtnX, navY, projBtnX + projBtnW, navY + projBtnH, projHover ? 0xFF00E676 : 0xAA005B66);
+        extractor.fill(projBtnX, navY, projBtnX + projBtnW, navY + 1, 0xFF00E676);
+        extractor.fill(projBtnX, navY + projBtnH - 1, projBtnX + projBtnW, navY + projBtnH, 0xFF00E676);
+        extractor.fill(projBtnX, navY, projBtnX + 1, navY + projBtnH, 0xFF00E676);
+        extractor.fill(projBtnX + projBtnW - 1, navY, projBtnX + projBtnW, navY + projBtnH, 0xFF00E676);
+        drawScaledCenteredText(extractor, Component.translatable("gui.sandstorm.datapad.multiblock.ponder_project"), projBtnX + projBtnW / 2f, navY + 6, projBtnW - 4, 0xFFFFFFFF);
+
+        int gridCenterX = (left + right) / 2;
+        int gridCenterY = (top + bottom) / 2 - 10;
+        MultiblockBlockRequirement hoveredReq = null;
+
+        for (MultiblockBlockRequirement req : ponderStructure.getRequirements()) {
+            if (req.offset().getY() == currentY) {
+                int cellX = gridCenterX + req.offset().getX() * 30;
+                int cellY = gridCenterY + req.offset().getZ() * 30;
+                boolean cellHover = mouseX >= cellX - 13 && mouseX <= cellX + 13 && mouseY >= cellY - 13 && mouseY <= cellY + 13;
+                extractor.fill(cellX - 13, cellY - 13, cellX + 13, cellY + 13, cellHover ? 0xEE1E3A5F : 0x880D1B2A);
+                int borderColor = cellHover ? 0xFF00E5FF : (0xFF000000 | req.colorRgb());
+                extractor.fill(cellX - 13, cellY - 13, cellX + 13, cellY - 12, borderColor);
+                extractor.fill(cellX - 13, cellY + 12, cellX + 13, cellY + 13, borderColor);
+                extractor.fill(cellX - 13, cellY - 13, cellX - 12, cellY + 13, borderColor);
+                extractor.fill(cellX + 12, cellY - 13, cellX + 13, cellY + 13, borderColor);
+                extractor.item(req.expectedBlock().asItem().getDefaultInstance(), cellX - 8, cellY - 8);
+                if (cellHover) {
+                    hoveredReq = req;
+                }
+            }
+        }
+
+        if (hoveredReq != null) {
+            String blockName = hoveredReq.expectedBlock().getName().getString();
+            String role = hoveredReq.roleLabel();
+            String coord = "(" + hoveredReq.offset().getX() + ", " + hoveredReq.offset().getY() + ", " + hoveredReq.offset().getZ() + ")";
+            String tip = blockName + " [" + role + "] " + coord;
+            drawScaledCenteredText(extractor, Component.literal(tip), gridCenterX, bottom - 46, right - left - 40, 0xFF80DEEA);
+        } else {
+            drawScaledCenteredText(extractor, Component.translatable("gui.sandstorm.datapad.multiblock.ponder_hint"), gridCenterX, bottom - 46, right - left - 40, 0xFF90A4AE);
+        }
+    }
+
+    private boolean handlePonderClick(double mx, double my, int left, int top, int right, int bottom) {
+        if (ponderStructure == null) {
+            return false;
+        }
+        int minY = ponderStructure.getRequirements().stream().mapToInt(r -> r.offset().getY()).min().orElse(0);
+        int maxY = ponderStructure.getRequirements().stream().mapToInt(r -> r.offset().getY()).max().orElse(0);
+        int totalLayers = Math.max(1, maxY - minY + 1);
+
+        int closeBtnW = 50;
+        int closeBtnH = 18;
+        int closeBtnX = right - closeBtnW - 14;
+        int closeBtnY = top + 12;
+        if (mx >= closeBtnX && mx <= closeBtnX + closeBtnW && my >= closeBtnY && my <= closeBtnY + closeBtnH) {
+            ponderStructure = null;
+            if (minecraft != null) {
+                minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.8f));
+            }
+            return true;
+        }
+
+        int navY = bottom - 32;
+        int prevBtnW = 70;
+        int prevBtnH = 20;
+        int prevBtnX = left + 16;
+        if (mx >= prevBtnX && mx <= prevBtnX + prevBtnW && my >= navY && my <= navY + prevBtnH) {
+            ponderStep = Math.max(1, ponderStep - 1);
+            if (minecraft != null) {
+                minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+            }
+            return true;
+        }
+
+        int nextBtnW = 70;
+        int nextBtnH = 20;
+        int nextBtnX = prevBtnX + prevBtnW + 8;
+        if (mx >= nextBtnX && mx <= nextBtnX + nextBtnW && my >= navY && my <= navY + nextBtnH) {
+            ponderStep = Math.min(totalLayers, ponderStep + 1);
+            if (minecraft != null) {
+                minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+            }
+            return true;
+        }
+
+        int projBtnW = 86;
+        int projBtnH = 20;
+        int projBtnX = right - projBtnW - 16;
+        if (mx >= projBtnX && mx <= projBtnX + projBtnW && my >= navY && my <= navY + projBtnH) {
+            MultiblockStructure toProject = ponderStructure;
+            ponderStructure = null;
+            projectMultiblock(toProject);
+            return true;
+        }
+
+        return true;
+    }
+
     private void drawScaledCenteredText(GuiGraphicsExtractor extractor, Component text, float centerX, float y, float maxPixelWidth, int color) {
         if (maxPixelWidth <= 0) {
             return;
@@ -702,4 +937,5 @@ public class SurvivalDatapadScreen extends Screen {
             extractor.pose().popMatrix();
         }
     }
+
 }

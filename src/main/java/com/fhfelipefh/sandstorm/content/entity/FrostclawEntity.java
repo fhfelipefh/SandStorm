@@ -25,6 +25,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -34,12 +35,16 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
+import java.util.UUID;
 
-public class FrostclawEntity extends PathfinderMob implements Enemy, DeactivatableAndroid {
+public class FrostclawEntity extends PathfinderMob implements Enemy, DeactivatableAndroid, OverridableMachine {
     private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(FrostclawEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_CHEST_SAC_INTACT = SynchedEntityData.defineId(FrostclawEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_SLAM_ATTACKING = SynchedEntityData.defineId(FrostclawEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_OVERRIDDEN = SynchedEntityData.defineId(FrostclawEntity.class, EntityDataSerializers.BOOLEAN);
+
     private int slamCooldown = 0;
+    private UUID overrideOwner;
 
     public FrostclawEntity(EntityType<? extends FrostclawEntity> entityType, Level level) {
         super(entityType, level);
@@ -61,6 +66,7 @@ public class FrostclawEntity extends PathfinderMob implements Enemy, Deactivatab
         builder.define(DATA_DEACTIVATED, false);
         builder.define(DATA_CHEST_SAC_INTACT, true);
         builder.define(DATA_SLAM_ATTACKING, false);
+        builder.define(DATA_OVERRIDDEN, false);
     }
 
     @Override
@@ -72,7 +78,8 @@ public class FrostclawEntity extends PathfinderMob implements Enemy, Deactivatab
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new FrostclawAttackPlayerGoal(this));
+        this.targetSelector.addGoal(3, new FrostclawDefendGoal(this));
     }
 
     @Override
@@ -83,6 +90,31 @@ public class FrostclawEntity extends PathfinderMob implements Enemy, Deactivatab
     @Override
     public void setDeactivated(boolean deactivated) {
         this.entityData.set(DATA_DEACTIVATED, deactivated);
+    }
+
+    @Override
+    public boolean isOverridden() {
+        return this.entityData.get(DATA_OVERRIDDEN);
+    }
+
+    @Override
+    public void setOverridden(boolean overridden) {
+        this.entityData.set(DATA_OVERRIDDEN, overridden);
+    }
+
+    @Override
+    public UUID getOverrideOwner() {
+        return this.overrideOwner;
+    }
+
+    @Override
+    public void setOverrideOwner(UUID owner) {
+        this.overrideOwner = owner;
+    }
+
+    @Override
+    public boolean canBeRiddenBy(Player player) {
+        return false;
     }
 
     public boolean isChestSacIntact() {
@@ -111,70 +143,69 @@ public class FrostclawEntity extends PathfinderMob implements Enemy, Deactivatab
 
         super.tick();
 
-        Level currentLevel = this.level();
-        if (!currentLevel.isClientSide() && currentLevel instanceof ServerLevel serverLevel) {
-            if (this.slamCooldown > 0) {
-                this.slamCooldown--;
+        if (this.slamCooldown > 0) {
+            this.slamCooldown--;
+        }
+
+        if (this.isOverridden()) {
+            tickCryoAura();
+        }
+
+        LivingEntity target = this.getTarget();
+        if (target != null && target.isAlive() && this.slamCooldown == 0 && this.distanceToSqr(target) < 16.0) {
+            triggerGroundSlam(target);
+        }
+    }
+
+    private void tickCryoAura() {
+        if (this.tickCount % 20 == 0) {
+            AABB auraBox = this.getBoundingBox().inflate(8.0);
+            List<Player> nearbyPlayers = this.level().getEntitiesOfClass(Player.class, auraBox, p -> p.isAlive() && (this.overrideOwner == null || p.getUUID().equals(this.overrideOwner)));
+            for (Player player : nearbyPlayers) {
+                player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 60, 0, false, false, true));
             }
 
-            LivingEntity target = this.getTarget();
-            if (target != null && target.isAlive() && this.slamCooldown == 0 && this.distanceToSqr(target) <= 36.0) {
-                performGroundSlam(serverLevel);
-                this.slamCooldown = 100;
+            if (this.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, this.getX(), this.getY() + 1.5, this.getZ(), 8, 2.0, 0.5, 2.0, 0.02);
             }
         }
     }
 
-    private void performGroundSlam(ServerLevel serverLevel) {
+    private void triggerGroundSlam(LivingEntity target) {
         this.setSlamAttacking(true);
-        this.playSound(SoundEvents.GENERIC_EXPLODE.value(), 1.4f, 0.7f);
-        this.playSound(SoundEvents.POLAR_BEAR_WARNING, 1.6f, 0.8f);
+        this.slamCooldown = 120;
 
-        double cx = this.getX();
-        double cy = this.getY();
-        double cz = this.getZ();
-
-        for (int i = 0; i < 32; i++) {
-            double angle = (2.0 * Math.PI * i) / 32.0;
-            double rx = Math.cos(angle) * 4.5;
-            double rz = Math.sin(angle) * 4.5;
-            serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, cx + rx, cy + 0.2, cz + rz, 4, 0.2, 0.3, 0.2, 0.08);
-            serverLevel.sendParticles(ParticleTypes.CLOUD, cx + rx * 0.5, cy + 0.3, cz + rz * 0.5, 2, 0.1, 0.2, 0.1, 0.03);
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, this.getX(), this.getY() + 0.2, this.getZ(), 40, 2.0, 0.2, 2.0, 0.15);
+            serverLevel.sendParticles(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY() + 0.2, this.getZ(), 20, 1.5, 0.3, 1.5, 0.1);
         }
 
-        AABB shockBox = this.getBoundingBox().inflate(6.0, 2.0, 6.0);
-        List<LivingEntity> enemies = serverLevel.getEntitiesOfClass(LivingEntity.class, shockBox, e -> e != this && e.isAlive());
-        for (LivingEntity enemy : enemies) {
-            enemy.hurtServer(serverLevel, serverLevel.damageSources().mobAttack(this), 14.0f);
-            enemy.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 120, 2));
-            enemy.setTicksFrozen(200);
-            enemy.push((enemy.getX() - cx) * 0.3, 0.35, (enemy.getZ() - cz) * 0.3);
-        }
-    }
+        this.playSound(SoundEvents.POLAR_BEAR_WARNING, 1.4f, 0.7f);
 
-    @Override
-    public boolean doHurtTarget(ServerLevel level, Entity target) {
-        boolean hurt = super.doHurtTarget(level, target);
-        if (hurt && target instanceof LivingEntity living) {
-            living.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 80, 1));
-            living.setTicksFrozen(140);
+        AABB damageArea = this.getBoundingBox().inflate(4.0, 1.0, 4.0);
+        List<LivingEntity> victims = this.level().getEntitiesOfClass(LivingEntity.class, damageArea, e -> e != this && (!this.isOverridden() || !e.isAlliedTo(this)));
+        for (LivingEntity victim : victims) {
+            victim.hurtServer((ServerLevel) this.level(), this.damageSources().mobAttack(this), 14.0f);
+            victim.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 100, 2));
+            victim.push(0.0, 0.45, 0.0);
         }
-        return hurt;
+
+        this.setSlamAttacking(false);
     }
 
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
-        if (this.isChestSacIntact() && (this.getHealth() - amount < 60.0f || this.random.nextFloat() < 0.12f)) {
-            this.setChestSacIntact(false);
-            level.playSound(null, this.blockPosition(), SoundEvents.GLASS_BREAK, this.getSoundSource(), 1.5f, 0.6f);
-            level.sendParticles(ParticleTypes.SNOWFLAKE, this.getX(), this.getY() + 1.5, this.getZ(), 40, 1.0, 1.0, 1.0, 0.15);
-            level.sendParticles(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY() + 1.5, this.getZ(), 20, 0.5, 0.5, 0.5, 0.1);
-
-            AABB blastBox = this.getBoundingBox().inflate(8.0, 3.0, 8.0);
-            List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, blastBox, LivingEntity::isAlive);
-            for (LivingEntity e : entities) {
-                e.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 160, 3));
-                e.setTicksFrozen(300);
+        Entity attacker = damageSource.getEntity();
+        if (this.isChestSacIntact() && attacker instanceof LivingEntity livingAttacker) {
+            if (this.distanceToSqr(livingAttacker) > 16.0 && this.random.nextFloat() < 0.25f) {
+                this.setChestSacIntact(false);
+                level.explode(this, this.getX(), this.getY() + 2.0, this.getZ(), 3.5f, Level.ExplosionInteraction.NONE);
+                level.sendParticles(ParticleTypes.SNOWFLAKE, this.getX(), this.getY() + 2.0, this.getZ(), 60, 1.5, 1.5, 1.5, 0.25);
+                AABB freezeArea = this.getBoundingBox().inflate(6.0);
+                List<LivingEntity> frozen = level.getEntitiesOfClass(LivingEntity.class, freezeArea, e -> e != this);
+                for (LivingEntity victim : frozen) {
+                    victim.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 200, 4));
+                }
             }
         }
         return super.hurtServer(level, damageSource, amount);
@@ -183,11 +214,12 @@ public class FrostclawEntity extends PathfinderMob implements Enemy, Deactivatab
     @Override
     protected void dropCustomDeathLoot(ServerLevel level, DamageSource damageSource, boolean recentlyHit) {
         super.dropCustomDeathLoot(level, damageSource, recentlyHit);
-        this.spawnAtLocation(level, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 3 + this.random.nextInt(3)));
-        this.spawnAtLocation(level, new ItemStack(SandStormItems.RAW_SILICON, 4 + this.random.nextInt(4)));
-        this.spawnAtLocation(level, new ItemStack(SandStormItems.ELECTRIC_COMPONENT, 2 + this.random.nextInt(2)));
-        this.spawnAtLocation(level, new ItemStack(Items.PACKED_ICE, 4 + this.random.nextInt(4)));
-        this.spawnAtLocation(level, new ItemStack(Items.PRISMARINE_CRYSTALS, 2 + this.random.nextInt(3)));
+        this.spawnAtLocation(level, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 4 + this.random.nextInt(3)));
+        this.spawnAtLocation(level, new ItemStack(Items.BLUE_ICE, 2 + this.random.nextInt(3)));
+        this.spawnAtLocation(level, new ItemStack(SandStormItems.CRYO_CELL_COOLER, 1));
+        if (this.random.nextFloat() < 0.5f) {
+            this.spawnAtLocation(level, new ItemStack(SandStormItems.ELECTRIC_COMPONENT, 2));
+        }
     }
 
     @Override
@@ -210,6 +242,10 @@ public class FrostclawEntity extends PathfinderMob implements Enemy, Deactivatab
         super.addAdditionalSaveData(output);
         output.putBoolean("Deactivated", this.isDeactivated());
         output.putBoolean("ChestSacIntact", this.isChestSacIntact());
+        output.putBoolean("Overridden", this.isOverridden());
+        if (this.overrideOwner != null) {
+            output.putString("OverrideOwner", this.overrideOwner.toString());
+        }
     }
 
     @Override
@@ -217,5 +253,48 @@ public class FrostclawEntity extends PathfinderMob implements Enemy, Deactivatab
         super.readAdditionalSaveData(input);
         this.setDeactivated(input.getBooleanOr("Deactivated", false));
         this.setChestSacIntact(input.getBooleanOr("ChestSacIntact", true));
+        this.setOverridden(input.getBooleanOr("Overridden", false));
+        String ownerStr = input.getStringOr("OverrideOwner", "");
+        if (!ownerStr.isEmpty()) {
+            this.overrideOwner = UUID.fromString(ownerStr);
+        }
+    }
+
+    private static class FrostclawAttackPlayerGoal extends NearestAttackableTargetGoal<Player> {
+        private final FrostclawEntity machine;
+
+        public FrostclawAttackPlayerGoal(FrostclawEntity machine) {
+            super(machine, Player.class, true);
+            this.machine = machine;
+        }
+
+        @Override
+        public boolean canUse() {
+            return !this.machine.isOverridden() && !this.machine.isDeactivated() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return !this.machine.isOverridden() && !this.machine.isDeactivated() && super.canContinueToUse();
+        }
+    }
+
+    private static class FrostclawDefendGoal extends NearestAttackableTargetGoal<Monster> {
+        private final FrostclawEntity machine;
+
+        public FrostclawDefendGoal(FrostclawEntity machine) {
+            super(machine, Monster.class, true);
+            this.machine = machine;
+        }
+
+        @Override
+        public boolean canUse() {
+            return this.machine.isOverridden() && !this.machine.isDeactivated() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.machine.isOverridden() && !this.machine.isDeactivated() && super.canContinueToUse();
+        }
     }
 }

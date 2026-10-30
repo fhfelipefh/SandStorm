@@ -13,6 +13,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
@@ -33,9 +35,12 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
-public class WaterwingEntity extends TamableAnimal implements DeactivatableAndroid {
+import java.util.UUID;
+
+public class WaterwingEntity extends TamableAnimal implements DeactivatableAndroid, OverridableMachine {
     private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(WaterwingEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_DIVING = SynchedEntityData.defineId(WaterwingEntity.class, EntityDataSerializers.BOOLEAN);
+    private UUID overrideOwner;
 
     public WaterwingEntity(EntityType<? extends WaterwingEntity> entityType, Level level) {
         super(entityType, level);
@@ -74,6 +79,31 @@ public class WaterwingEntity extends TamableAnimal implements DeactivatableAndro
     @Override
     public void setDeactivated(boolean deactivated) {
         this.entityData.set(DATA_DEACTIVATED, deactivated);
+    }
+
+    @Override
+    public boolean isOverridden() {
+        return this.isTame();
+    }
+
+    @Override
+    public void setOverridden(boolean overridden) {
+        this.setTame(overridden, false);
+    }
+
+    @Override
+    public UUID getOverrideOwner() {
+        return this.overrideOwner;
+    }
+
+    @Override
+    public void setOverrideOwner(UUID owner) {
+        this.overrideOwner = owner;
+    }
+
+    @Override
+    public boolean canBeRiddenBy(Player player) {
+        return this.isTame() && !this.isDeactivated();
     }
 
     public boolean isDiving() {
@@ -139,6 +169,11 @@ public class WaterwingEntity extends TamableAnimal implements DeactivatableAndro
     }
 
     @Override
+    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale) {
+        return new Vec3(0.0, dimensions.height() * 0.65, -0.15 * scale);
+    }
+
+    @Override
     protected Vec3 getRiddenInput(Player player, Vec3 travelVector) {
         float f = player.xxa * 0.5f;
         float f1 = player.zza;
@@ -157,11 +192,12 @@ public class WaterwingEntity extends TamableAnimal implements DeactivatableAndro
 
         if (this.isInWater()) {
             this.setDiving(true);
+            player.setAirSupply(player.getMaxAirSupply());
             Vec3 motion = this.getDeltaMovement();
             if (player.isJumping()) {
-                this.setDeltaMovement(motion.x, 0.2, motion.z);
+                this.setDeltaMovement(motion.x, 0.35, motion.z);
             } else if (player.isDescending()) {
-                this.setDeltaMovement(motion.x, -0.2, motion.z);
+                this.setDeltaMovement(motion.x, -0.35, motion.z);
             }
         } else {
             this.setDiving(false);
@@ -174,9 +210,9 @@ public class WaterwingEntity extends TamableAnimal implements DeactivatableAndro
     @Override
     protected float getRiddenSpeed(Player player) {
         if (this.isInWater()) {
-            return 0.42f;
+            return 0.55f;
         }
-        return 0.32f;
+        return 0.35f;
     }
 
     @Override
@@ -211,11 +247,18 @@ public class WaterwingEntity extends TamableAnimal implements DeactivatableAndro
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.putBoolean("Deactivated", this.isDeactivated());
+        if (this.overrideOwner != null) {
+            output.putString("OverrideOwner", this.overrideOwner.toString());
+        }
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         this.setDeactivated(input.getBooleanOr("Deactivated", false));
+        String ownerStr = input.getStringOr("OverrideOwner", "");
+        if (!ownerStr.isEmpty()) {
+            this.overrideOwner = UUID.fromString(ownerStr);
+        }
     }
 }

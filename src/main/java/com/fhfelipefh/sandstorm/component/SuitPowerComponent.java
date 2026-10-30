@@ -1,8 +1,13 @@
 package com.fhfelipefh.sandstorm.component;
 
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
+
 public class SuitPowerComponent {
     private final EnergyStorageComponent energyStorage;
     private final ThermalComponent thermal;
+    private final Set<ExoSuitChipComponent> installedChips = EnumSet.noneOf(ExoSuitChipComponent.class);
     private final long idleConsumptionPerTick;
     private final long thermalRegulationCostPerTick;
     private final long solarRechargePerTick;
@@ -106,5 +111,28 @@ public class SuitPowerComponent {
 
     public int getEquippedArmorCount() {
         return equippedArmorCount;
+    }
+
+    public boolean hasChip(ExoSuitChipComponent type) {
+        return installedChips.contains(type);
+    }
+
+    public boolean installChip(ExoSuitChipComponent type) {
+        if (installedChips.size() >= 4) {
+            return false;
+        }
+        return installedChips.add(type);
+    }
+
+    public boolean removeChip(ExoSuitChipComponent type) {
+        return installedChips.remove(type);
+    }
+
+    public Set<ExoSuitChipComponent> getInstalledChips() {
+        return Collections.unmodifiableSet(installedChips);
+    }
+
+    public void clearChips() {
+        installedChips.clear();
     }
 }

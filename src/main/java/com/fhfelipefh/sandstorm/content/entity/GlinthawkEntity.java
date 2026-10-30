@@ -10,9 +10,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -33,10 +37,14 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
+import java.util.UUID;
 
-public class GlinthawkEntity extends PathfinderMob implements Enemy, DeactivatableAndroid {
+public class GlinthawkEntity extends PathfinderMob implements Enemy, DeactivatableAndroid, OverridableMachine {
     private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(GlinthawkEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_OVERRIDDEN = SynchedEntityData.defineId(GlinthawkEntity.class, EntityDataSerializers.BOOLEAN);
+
     private int attackCooldown = 0;
+    private UUID overrideOwner;
 
     public GlinthawkEntity(EntityType<? extends GlinthawkEntity> entityType, Level level) {
         super(entityType, level);
@@ -50,22 +58,23 @@ public class GlinthawkEntity extends PathfinderMob implements Enemy, Deactivatab
                 .add(Attributes.FLYING_SPEED, 0.45)
                 .add(Attributes.ARMOR, 4.0)
                 .add(Attributes.ATTACK_DAMAGE, 6.0)
-                .add(Attributes.FOLLOW_RANGE, 48.0);
+                .add(Attributes.FOLLOW_RANGE, 40.0);
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_DEACTIVATED, false);
+        builder.define(DATA_OVERRIDDEN, false);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new GlinthawkCircleGoal(this));
-        this.goalSelector.addGoal(2, new GlinthawkSwoopAttackGoal(this));
+        this.goalSelector.addGoal(1, new GlinthawkDiveAttackGoal(this));
+        this.goalSelector.addGoal(2, new GlinthawkWanderGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new GlinthawkAttackPlayerGoal(this));
     }
 
     @Override
@@ -79,18 +88,89 @@ public class GlinthawkEntity extends PathfinderMob implements Enemy, Deactivatab
     }
 
     @Override
-    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
+    public boolean isOverridden() {
+        return this.entityData.get(DATA_OVERRIDDEN);
     }
 
     @Override
-    public boolean isNoGravity() {
-        return !this.isDeactivated();
+    public void setOverridden(boolean overridden) {
+        this.entityData.set(DATA_OVERRIDDEN, overridden);
+    }
+
+    @Override
+    public UUID getOverrideOwner() {
+        return this.overrideOwner;
+    }
+
+    @Override
+    public void setOverrideOwner(UUID owner) {
+        this.overrideOwner = owner;
+    }
+
+    @Override
+    public boolean canBeRiddenBy(Player player) {
+        return this.isOverridden() && !this.isDeactivated();
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (this.canBeRiddenBy(player) && hand == InteractionHand.MAIN_HAND && !player.isShiftKeyDown()) {
+            if (!this.level().isClientSide()) {
+                player.startRiding(this);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public LivingEntity getControllingPassenger() {
+        return this.getFirstPassenger() instanceof LivingEntity living ? living : null;
+    }
+
+    @Override
+    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale) {
+        return new Vec3(0.0, dimensions.height() * 0.55, -0.15 * scale);
+    }
+
+    @Override
+    protected void tickRidden(Player player, Vec3 travelVector) {
+        super.tickRidden(player, travelVector);
+        this.setRot(player.getYRot(), player.getXRot() * 0.5f);
+        this.yRotO = this.getYRot();
+        this.yBodyRot = this.getYRot();
+        this.yHeadRot = this.yBodyRot;
+
+        Vec3 look = player.getLookAngle();
+        double forward = player.zza;
+        double strafe = player.xxa;
+
+        double vx = (look.x * forward + Math.cos(Math.toRadians(player.getYRot())) * strafe) * 0.45;
+        double vz = (look.z * forward + Math.sin(Math.toRadians(player.getYRot())) * strafe) * 0.45;
+        double vy = this.getDeltaMovement().y * 0.8;
+
+        if (player.isJumping()) {
+            vy = 0.35;
+        } else if (forward > 0) {
+            vy = look.y * 0.35;
+        }
+
+        this.setDeltaMovement(vx, vy, vz);
+    }
+
+    @Override
+    public boolean causeFallDamage(double fallDistance, float multiplier, DamageSource source) {
+        return false;
+    }
+
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
     }
 
     @Override
     public void tick() {
         if (this.isDeactivated()) {
-            this.setNoGravity(false);
+            this.setDeltaMovement(0, -0.2, 0);
             super.tick();
             return;
         }
@@ -100,42 +180,17 @@ public class GlinthawkEntity extends PathfinderMob implements Enemy, Deactivatab
         if (this.attackCooldown > 0) {
             this.attackCooldown--;
         }
-
-        LivingEntity target = this.getTarget();
-        if (target != null && target.isAlive() && this.attackCooldown == 0 && this.level() instanceof ServerLevel serverLevel) {
-            double distSq = this.distanceToSqr(target);
-            if (distSq <= 256.0) {
-                performCryoSpit(serverLevel, target);
-                this.attackCooldown = 50;
-            }
-        }
-    }
-
-    private void performCryoSpit(ServerLevel serverLevel, LivingEntity target) {
-        Vec3 start = this.getEyePosition();
-        Vec3 targetPos = target.getEyePosition();
-        serverLevel.playSound(null, this.blockPosition(), SoundEvents.PHANTOM_BITE, this.getSoundSource(), 1.0f, 1.4f);
-
-        int steps = 16;
-        for (int i = 0; i <= steps; i++) {
-            double frac = (double) i / (double) steps;
-            Vec3 p = start.lerp(targetPos, frac);
-            serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, p.x, p.y, p.z, 2, 0.1, 0.1, 0.1, 0.02);
-            serverLevel.sendParticles(ParticleTypes.ITEM_SNOWBALL, p.x, p.y, p.z, 1, 0.05, 0.05, 0.05, 0.01);
-        }
-
-        target.hurtServer(serverLevel, serverLevel.damageSources().mobAttack(this), 5.0f);
-        target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 80, 1));
-        target.setTicksFrozen(120);
     }
 
     @Override
     protected void dropCustomDeathLoot(ServerLevel level, DamageSource damageSource, boolean recentlyHit) {
         super.dropCustomDeathLoot(level, damageSource, recentlyHit);
         this.spawnAtLocation(level, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 1 + this.random.nextInt(2)));
-        this.spawnAtLocation(level, new ItemStack(SandStormItems.ELECTRIC_COMPONENT, 1));
-        this.spawnAtLocation(level, new ItemStack(Items.COPPER_INGOT, 2 + this.random.nextInt(3)));
-        this.spawnAtLocation(level, new ItemStack(Items.PRISMARINE_CRYSTALS, 1 + this.random.nextInt(2)));
+        this.spawnAtLocation(level, new ItemStack(Items.FEATHER, 3 + this.random.nextInt(3)));
+        this.spawnAtLocation(level, new ItemStack(SandStormItems.ADVANCED_REFRACTION_LENS, 1));
+        if (this.random.nextFloat() < 0.35f) {
+            this.spawnAtLocation(level, new ItemStack(SandStormItems.ELECTRIC_COMPONENT, 1));
+        }
     }
 
     @Override
@@ -157,87 +212,124 @@ public class GlinthawkEntity extends PathfinderMob implements Enemy, Deactivatab
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.putBoolean("Deactivated", this.isDeactivated());
+        output.putBoolean("Overridden", this.isOverridden());
+        if (this.overrideOwner != null) {
+            output.putString("OverrideOwner", this.overrideOwner.toString());
+        }
     }
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         this.setDeactivated(input.getBooleanOr("Deactivated", false));
+        this.setOverridden(input.getBooleanOr("Overridden", false));
+        String ownerStr = input.getStringOr("OverrideOwner", "");
+        if (!ownerStr.isEmpty()) {
+            this.overrideOwner = UUID.fromString(ownerStr);
+        }
     }
 
-    private static class GlinthawkMoveControl extends MoveControl {
-        private final GlinthawkEntity glinthawk;
+    private static class GlinthawkAttackPlayerGoal extends NearestAttackableTargetGoal<Player> {
+        private final GlinthawkEntity machine;
 
-        public GlinthawkMoveControl(GlinthawkEntity glinthawk) {
-            super(glinthawk);
-            this.glinthawk = glinthawk;
+        public GlinthawkAttackPlayerGoal(GlinthawkEntity machine) {
+            super(machine, Player.class, true);
+            this.machine = machine;
+        }
+
+        @Override
+        public boolean canUse() {
+            return !this.machine.isOverridden() && !this.machine.isDeactivated() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return !this.machine.isOverridden() && !this.machine.isDeactivated() && super.canContinueToUse();
+        }
+    }
+
+    static class GlinthawkMoveControl extends MoveControl {
+        private final GlinthawkEntity hawk;
+
+        public GlinthawkMoveControl(GlinthawkEntity hawk) {
+            super(hawk);
+            this.hawk = hawk;
         }
 
         @Override
         public void tick() {
-            if (this.glinthawk.isDeactivated()) {
+            if (this.hawk.isVehicle()) {
                 return;
             }
             if (this.operation == Operation.MOVE_TO) {
-                Vec3 delta = new Vec3(this.wantedX - this.glinthawk.getX(), this.wantedY - this.glinthawk.getY(), this.wantedZ - this.glinthawk.getZ());
-                double dist = delta.length();
-                if (dist < this.glinthawk.getBoundingBox().getSize()) {
+                Vec3 dir = new Vec3(this.wantedX - this.hawk.getX(), this.wantedY - this.hawk.getY(), this.wantedZ - this.hawk.getZ());
+                double dist = dir.length();
+                if (dist < this.hawk.getBoundingBox().getSize()) {
                     this.operation = Operation.WAIT;
-                    this.glinthawk.setDeltaMovement(this.glinthawk.getDeltaMovement().scale(0.5));
+                    this.hawk.setDeltaMovement(this.hawk.getDeltaMovement().scale(0.5));
                 } else {
-                    this.glinthawk.setDeltaMovement(this.glinthawk.getDeltaMovement().add(delta.scale(this.speedModifier * 0.05 / dist)));
-                    Vec3 move = this.glinthawk.getDeltaMovement();
-                    this.glinthawk.setYRot(-((float) Mth.atan2(move.x, move.z)) * (180.0f / (float) Math.PI));
-                    this.glinthawk.yBodyRot = this.glinthawk.getYRot();
+                    this.hawk.setDeltaMovement(this.hawk.getDeltaMovement().add(dir.scale(this.speedModifier * 0.05 / dist)));
+                    Vec3 motion = this.hawk.getDeltaMovement();
+                    this.hawk.setYRot(-((float) Mth.atan2(motion.x, motion.z)) * (180.0f / (float) Math.PI));
+                    this.hawk.yBodyRot = this.hawk.getYRot();
                 }
             }
         }
     }
 
-    private static class GlinthawkCircleGoal extends Goal {
-        private final GlinthawkEntity glinthawk;
-        private float angle = 0.0f;
+    static class GlinthawkWanderGoal extends Goal {
+        private final GlinthawkEntity hawk;
 
-        public GlinthawkCircleGoal(GlinthawkEntity glinthawk) {
-            this.glinthawk = glinthawk;
+        public GlinthawkWanderGoal(GlinthawkEntity hawk) {
+            this.hawk = hawk;
             this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
         @Override
         public boolean canUse() {
-            return !this.glinthawk.isDeactivated() && this.glinthawk.getTarget() == null;
+            return !this.hawk.getMoveControl().hasWanted() && this.hawk.getRandom().nextInt(30) == 0 && !this.hawk.isVehicle();
         }
 
         @Override
-        public void tick() {
-            this.angle += 0.05f;
-            double radius = 12.0;
-            double cx = this.glinthawk.getX() + Math.cos(this.angle) * radius;
-            double cz = this.glinthawk.getZ() + Math.sin(this.angle) * radius;
-            double cy = Math.max(165.0, this.glinthawk.getY() + (this.glinthawk.getRandom().nextDouble() - 0.5) * 2.0);
-            this.glinthawk.getMoveControl().setWantedPosition(cx, cy, cz, 0.8);
+        public void start() {
+            BlockPos targetPos = this.hawk.blockPosition().offset(
+                    this.hawk.getRandom().nextInt(24) - 12,
+                    this.hawk.getRandom().nextInt(10) - 3,
+                    this.hawk.getRandom().nextInt(24) - 12
+            );
+            this.hawk.getMoveControl().setWantedPosition(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 0.8);
         }
     }
 
-    private static class GlinthawkSwoopAttackGoal extends Goal {
-        private final GlinthawkEntity glinthawk;
+    static class GlinthawkDiveAttackGoal extends Goal {
+        private final GlinthawkEntity hawk;
 
-        public GlinthawkSwoopAttackGoal(GlinthawkEntity glinthawk) {
-            this.glinthawk = glinthawk;
+        public GlinthawkDiveAttackGoal(GlinthawkEntity hawk) {
+            this.hawk = hawk;
             this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
         @Override
         public boolean canUse() {
-            return !this.glinthawk.isDeactivated() && this.glinthawk.getTarget() != null && this.glinthawk.getTarget().isAlive();
+            LivingEntity target = this.hawk.getTarget();
+            return target != null && target.isAlive() && this.hawk.attackCooldown == 0 && !this.hawk.isVehicle();
         }
 
         @Override
         public void tick() {
-            LivingEntity target = this.glinthawk.getTarget();
-            if (target != null) {
-                double targetY = target.getEyeY() + 4.0;
-                this.glinthawk.getMoveControl().setWantedPosition(target.getX(), targetY, target.getZ(), 1.2);
+            LivingEntity target = this.hawk.getTarget();
+            if (target == null) {
+                return;
+            }
+            this.hawk.getMoveControl().setWantedPosition(target.getX(), target.getY() + 1.2, target.getZ(), 1.4);
+            if (this.hawk.distanceToSqr(target) < 4.0) {
+                this.hawk.doHurtTarget((ServerLevel) this.hawk.level(), target);
+                target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
+                this.hawk.attackCooldown = 80;
+                this.hawk.setDeltaMovement(this.hawk.getDeltaMovement().add(0, 0.45, 0));
+                if (this.hawk.level() instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.CRIT, this.hawk.getX(), this.hawk.getY(), this.hawk.getZ(), 10, 0.3, 0.3, 0.3, 0.1);
+                }
             }
         }
     }

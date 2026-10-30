@@ -9,8 +9,13 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -22,16 +27,24 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 
-public class GrazerEntity extends PathfinderMob implements DeactivatableAndroid {
+import java.util.UUID;
+
+public class GrazerEntity extends PathfinderMob implements DeactivatableAndroid, OverridableMachine {
     private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(GrazerEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_CANISTERS_INTACT = SynchedEntityData.defineId(GrazerEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_OVERRIDDEN = SynchedEntityData.defineId(GrazerEntity.class, EntityDataSerializers.BOOLEAN);
+
     private int rotaryTicks = 0;
+    private UUID overrideOwner;
 
     public GrazerEntity(EntityType<? extends GrazerEntity> entityType, Level level) {
         super(entityType, level);
@@ -51,6 +64,7 @@ public class GrazerEntity extends PathfinderMob implements DeactivatableAndroid 
         super.defineSynchedData(builder);
         builder.define(DATA_DEACTIVATED, false);
         builder.define(DATA_CANISTERS_INTACT, true);
+        builder.define(DATA_OVERRIDDEN, false);
     }
 
     @Override
@@ -75,6 +89,31 @@ public class GrazerEntity extends PathfinderMob implements DeactivatableAndroid 
         this.entityData.set(DATA_DEACTIVATED, deactivated);
     }
 
+    @Override
+    public boolean isOverridden() {
+        return this.entityData.get(DATA_OVERRIDDEN);
+    }
+
+    @Override
+    public void setOverridden(boolean overridden) {
+        this.entityData.set(DATA_OVERRIDDEN, overridden);
+    }
+
+    @Override
+    public UUID getOverrideOwner() {
+        return this.overrideOwner;
+    }
+
+    @Override
+    public void setOverrideOwner(UUID owner) {
+        this.overrideOwner = owner;
+    }
+
+    @Override
+    public boolean canBeRiddenBy(Player player) {
+        return this.isOverridden() && !this.isDeactivated();
+    }
+
     public boolean areCanistersIntact() {
         return this.entityData.get(DATA_CANISTERS_INTACT);
     }
@@ -85,6 +124,56 @@ public class GrazerEntity extends PathfinderMob implements DeactivatableAndroid 
 
     public int getRotaryTicks() {
         return this.rotaryTicks;
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (this.canBeRiddenBy(player) && hand == InteractionHand.MAIN_HAND && !player.isShiftKeyDown()) {
+            if (!this.level().isClientSide()) {
+                player.startRiding(this);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    @Override
+    public LivingEntity getControllingPassenger() {
+        return this.getFirstPassenger() instanceof LivingEntity living ? living : null;
+    }
+
+    @Override
+    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float scale) {
+        return new Vec3(0.0, dimensions.height() * 0.75, -0.15 * scale);
+    }
+
+    @Override
+    protected void tickRidden(Player player, Vec3 travelVector) {
+        super.tickRidden(player, travelVector);
+        this.setRot(player.getYRot(), player.getXRot() * 0.5f);
+        this.yRotO = this.getYRot();
+        this.yBodyRot = this.getYRot();
+        this.yHeadRot = this.yBodyRot;
+
+        if (player.isJumping() && this.onGround()) {
+            Vec3 delta = this.getDeltaMovement();
+            this.setDeltaMovement(delta.x, 0.55, delta.z);
+        }
+    }
+
+    @Override
+    protected Vec3 getRiddenInput(Player player, Vec3 travelVector) {
+        return new Vec3(player.xxa * 0.5f, 0.0, player.zza > 0 ? player.zza : player.zza * 0.35f);
+    }
+
+    @Override
+    protected float getRiddenSpeed(Player player) {
+        float speed = (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
+        BlockState groundState = this.getBlockStateOn();
+        if (groundState.is(BlockTags.SAND)) {
+            return speed * 1.35f;
+        }
+        return speed * 1.15f;
     }
 
     @Override
@@ -148,6 +237,10 @@ public class GrazerEntity extends PathfinderMob implements DeactivatableAndroid 
         super.addAdditionalSaveData(output);
         output.putBoolean("Deactivated", this.isDeactivated());
         output.putBoolean("CanistersIntact", this.areCanistersIntact());
+        output.putBoolean("Overridden", this.isOverridden());
+        if (this.overrideOwner != null) {
+            output.putString("OverrideOwner", this.overrideOwner.toString());
+        }
     }
 
     @Override
@@ -155,5 +248,10 @@ public class GrazerEntity extends PathfinderMob implements DeactivatableAndroid 
         super.readAdditionalSaveData(input);
         this.setDeactivated(input.getBooleanOr("Deactivated", false));
         this.setCanistersIntact(input.getBooleanOr("CanistersIntact", true));
+        this.setOverridden(input.getBooleanOr("Overridden", false));
+        String ownerStr = input.getStringOr("OverrideOwner", "");
+        if (!ownerStr.isEmpty()) {
+            this.overrideOwner = UUID.fromString(ownerStr);
+        }
     }
 }

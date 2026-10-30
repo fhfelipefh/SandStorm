@@ -149,6 +149,8 @@
     "sandstorm:tectonic_kinetic_piston",
     "sandstorm:tectonic_sticky_kinetic_piston",
     "sandstorm:compact_slab_piston",
-    "sandstorm:compact_sticky_slab_piston"
+    "sandstorm:compact_sticky_slab_piston",
+    "sandstorm:hydroponic_tray",
+    "sandstorm:seismic_resonance_catalyst"
   ]
 }

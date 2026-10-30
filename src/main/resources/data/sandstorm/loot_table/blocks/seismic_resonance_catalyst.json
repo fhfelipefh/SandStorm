@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "sandstorm:seismic_resonance_catalyst"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "sandstorm:blocks/seismic_resonance_catalyst"
+}
+

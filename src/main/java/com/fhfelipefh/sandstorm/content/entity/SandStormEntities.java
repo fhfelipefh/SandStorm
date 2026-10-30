@@ -424,6 +424,19 @@ public class SandStormEntities {
                     .build(WATERWING_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> APEX_SANDWORM_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("apex_sandworm")
+    );
+
+    public static final EntityType<ApexSandwormEntity> APEX_SANDWORM = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("apex_sandworm"),
+            EntityType.Builder.of(ApexSandwormEntity::new, MobCategory.MONSTER)
+                    .sized(4.5f, 12.0f)
+                    .build(APEX_SANDWORM_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
@@ -452,5 +465,6 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(FROSTCLAW, FrostclawEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(GLINTHAWK, GlinthawkEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(WATERWING, WaterwingEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(APEX_SANDWORM, ApexSandwormEntity.createAttributes());
     }
 }

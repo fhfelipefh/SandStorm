@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "sandstorm:block/seismic_resonance_catalyst_top",
+    "side": "sandstorm:block/seismic_resonance_catalyst"
+  }
+}

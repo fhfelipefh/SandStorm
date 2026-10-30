@@ -74,3 +74,25 @@
 | **Entidade** | `frostclaw`            | Frostclaw | Titã mecânico bípede de combate criogênico e gelo |
 | **Entidade** | `glinthawk`            | Glinthawk | Pássaro drone mecânico de patrulha e mergulho |
 | **Entidade** | `waterwing`            | Waterwing | Máquina anfíbia alada capaz de voo e mergulho |
+| **Item**     | `neural_override_lance`| Lanca de Sobrescrita Neural | Ferramenta de invasao neural e montaria de androides |
+| **Item**     | `seismic_sonar_chip`   | Chip de Sonar Sismico | Modulo de exoesqueleto para radar de entidades |
+| **Item**     | `jetboot_module`       | Modulo de Botas a Jato | Modulo de exoesqueleto para impulso de salto |
+| **Item**     | `gravitational_magnet_chip` | Chip Magnetico Gravitacional | Modulo de exoesqueleto para atracao de itens |
+| **Item**     | `osmotic_recycler_module` | Modulo Reciclador Osmotico | Modulo de exoesqueleto para reciclagem de saciedade |
+| **Item**     | `kinetic_deflector_chip` | Chip Defletor Cinetico | Modulo de exoesqueleto para amortecimento de quedas |
+| **Item**     | `apex_heart_matrix`    | Matriz do Coracao Apice | Nucleo ultradenso dropado pelo Sandworm Soberano |
+| **Item**     | `apex_railgun_harpoon` | Arpao Railgun Apice | Canhao perfurante colossual (32 dano de perfuracao) |
+| **Item**     | `apex_sandworm_spawn_egg` | Ovo do Sandworm Soberano | Invoca o chefe Apex Sandworm Sovereign |
+| **Bloco**    | `seismic_resonance_catalyst` | Catalisador de Ressonancia | Bloco invocador do chefe em profundidades abaixo de Y=0 |
+| **Bloco**    | `hydroponic_tray`      | Bandeja Hidroponica UV | Estufa de cultivo acelerado com luz ultravioleta |
+| **Bloco**    | `xeno_wheat_crop`      | Cultivo de Trigo Xeno | Lavoura resistente a seca em 8 estagios fenotipicos |
+| **Item**     | `xeno_wheat_seeds`     | Sementes de Trigo Xeno | Sementes geneticamente adaptadas para a hidroponia |
+| **Item**     | `xeno_wheat`           | Trigo Xeno | Graos ultranutritivos para culinaria espacial |
+| **Item**     | `dune_melon_seeds`     | Sementes de Melao das Dunas | Sementes de melao xerofilico de polpa refrescante |
+| **Item**     | `dune_melon_slice`     | Fatia de Melao das Dunas | Alimento refrescante in natura |
+| **Item**     | `cryo_berries`         | Bagas Criogenicas | Frutas silvestres enriquecidas com arrefecimento termico |
+| **Item**     | `thermal_nutrient_paste` | Pasta Nutritiva Termica | Racao densa com protecao contra hipotermia noturna |
+| **Item**     | `electrolyte_juice`    | Suco Eletrolitico Xeno | Bebida isotopica para conservacao de fluidos vitais |
+| **Item**     | `cryo_glazed_ration`   | Racao Glaciada Criogenica | Alimento criopreservado com resistencia ao calor extremo |
+| **Item**     | `hydroponic_feast`     | Banquete Hidroponico | Prato gastrononico de explorador interplanetario supremo |
+| **Entidade** | `apex_sandworm`        | Apex Sandworm Sovereign | Chefe monumental do manto planetario (600 HP, 3 fases) |
