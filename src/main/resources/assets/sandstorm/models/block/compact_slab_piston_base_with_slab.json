@@ -9,25 +9,6 @@
   },
   "elements": [
     {
-      "display": {
-        "gui": {
-          "rotation": [
-            30,
-            225,
-            0
-          ],
-          "translation": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            0.625,
-            0.625,
-            0.625
-          ]
-        }
-      },
       "from": [
         0,
         0,
@@ -39,25 +20,6 @@
         4
       ],
       "faces": {
-        "display": {
-          "gui": {
-            "rotation": [
-              30,
-              225,
-              0
-            ],
-            "translation": [
-              0,
-              0,
-              0
-            ],
-            "scale": [
-              0.625,
-              0.625,
-              0.625
-            ]
-          }
-        },
         "down": {
           "texture": "#bottom",
           "cullface": "down"
@@ -107,25 +69,6 @@
       }
     },
     {
-      "display": {
-        "gui": {
-          "rotation": [
-            30,
-            225,
-            0
-          ],
-          "translation": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            0.625,
-            0.625,
-            0.625
-          ]
-        }
-      },
       "from": [
         0,
         8,
@@ -137,25 +80,6 @@
         16
       ],
       "faces": {
-        "display": {
-          "gui": {
-            "rotation": [
-              30,
-              225,
-              0
-            ],
-            "translation": [
-              0,
-              0,
-              0
-            ],
-            "scale": [
-              0.625,
-              0.625,
-              0.625
-            ]
-          }
-        },
         "up": {
           "texture": "#slab_top",
           "cullface": "up"

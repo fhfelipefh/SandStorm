@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.item;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -12,11 +13,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -330,6 +335,116 @@ class AssetIntegrityTest {
                         }
                         assertTrue(transparent >= total * 0.10,
                                 "Generated 2D item model '" + modelPath.getFileName() + "' points to texture with no transparent sections: " + texRef);
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+
+    @Test
+    void shouldHaveBlockstateForEveryRegisteredBlockInSandStormBlocks() throws IOException {
+        Path sandStormBlocksFile = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "block", "SandStormBlocks.java");
+        assertTrue(Files.exists(sandStormBlocksFile));
+
+        String content = Files.readString(sandStormBlocksFile);
+        Pattern pattern = Pattern.compile("register\\(\\s*\"([^\"]+)\"");
+        Matcher matcher = pattern.matcher(content);
+
+        int count = 0;
+        while (matcher.find()) {
+            String blockName = matcher.group(1);
+            Path blockstateFile = BLOCKSTATES_DIR.resolve(blockName + ".json");
+            assertTrue(Files.exists(blockstateFile), "Blockstate JSON missing for registered block: " + blockName);
+            count++;
+        }
+        assertTrue(count >= 160);
+    }
+
+    @Test
+    void shouldHaveValidModelsAndNoDefaultPistonHeadVariantsInAllBlockstates() throws IOException {
+        assertTrue(Files.exists(BLOCKSTATES_DIR));
+
+        try (Stream<Path> blockstateFiles = Files.list(BLOCKSTATES_DIR)) {
+            blockstateFiles.filter(p -> p.toString().endsWith(".json")).forEach(bsPath -> {
+                try (FileReader reader = new FileReader(bsPath.toFile())) {
+                    JsonElement parsed = JsonParser.parseReader(reader);
+                    assertTrue(parsed.isJsonObject(), "Blockstate must be json object: " + bsPath);
+                    JsonObject jsonObject = parsed.getAsJsonObject();
+
+                    if (jsonObject.has("variants")) {
+                        JsonObject variants = jsonObject.getAsJsonObject("variants");
+                        for (Map.Entry<String, JsonElement> entry : variants.entrySet()) {
+                            String variantKey = entry.getKey();
+                            assertFalse(variantKey.contains("type=default"), "Piston head variant must use type=normal, not type=default: " + bsPath);
+                            assertBlockstateModelReference(entry.getValue(), bsPath);
+                        }
+                    }
+                    if (jsonObject.has("multipart")) {
+                        JsonArray multipart = jsonObject.getAsJsonArray("multipart");
+                        for (JsonElement part : multipart) {
+                            if (part.isJsonObject() && part.getAsJsonObject().has("apply")) {
+                                assertBlockstateModelReference(part.getAsJsonObject().get("apply"), bsPath);
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+
+    private void assertBlockstateModelReference(JsonElement modelElement, Path bsPath) {
+        if (modelElement.isJsonObject()) {
+            JsonObject obj = modelElement.getAsJsonObject();
+            if (obj.has("model")) {
+                validateModelPath(obj.get("model").getAsString(), bsPath);
+            }
+        } else if (modelElement.isJsonArray()) {
+            for (JsonElement item : modelElement.getAsJsonArray()) {
+                if (item.isJsonObject() && item.getAsJsonObject().has("model")) {
+                    validateModelPath(item.getAsJsonObject().get("model").getAsString(), bsPath);
+                }
+            }
+        }
+    }
+
+    private void validateModelPath(String modelRef, Path bsPath) {
+        if (modelRef.startsWith("sandstorm:block/")) {
+            String modelFile = modelRef.substring("sandstorm:block/".length()) + ".json";
+            Path resolved = MODELS_BLOCK_DIR.resolve(modelFile);
+            assertTrue(Files.exists(resolved), "Referenced block model does not exist: " + resolved + " (from " + bsPath + ")");
+        }
+    }
+
+    @Test
+    void shouldHaveNoMisplacedDisplayOrInvalidFacesInBlockModels() throws IOException {
+        assertTrue(Files.exists(MODELS_BLOCK_DIR));
+        Set<String> validFaces = Set.of("down", "up", "north", "south", "west", "east");
+
+        try (Stream<Path> modelFiles = Files.list(MODELS_BLOCK_DIR)) {
+            modelFiles.filter(p -> p.toString().endsWith(".json")).forEach(modelPath -> {
+                try (FileReader reader = new FileReader(modelPath.toFile())) {
+                    JsonElement parsed = JsonParser.parseReader(reader);
+                    assertTrue(parsed.isJsonObject(), "Block model must be json object: " + modelPath);
+                    JsonObject jsonObject = parsed.getAsJsonObject();
+
+                    if (jsonObject.has("elements")) {
+                        JsonArray elements = jsonObject.getAsJsonArray("elements");
+                        for (JsonElement elemElement : elements) {
+                            if (elemElement.isJsonObject()) {
+                                JsonObject elem = elemElement.getAsJsonObject();
+                                assertFalse(elem.has("display"), "Block model element must not contain display block (causes Gson Unknown facing): " + modelPath);
+                                if (elem.has("faces")) {
+                                    JsonObject faces = elem.getAsJsonObject("faces");
+                                    for (String faceKey : faces.keySet()) {
+                                        assertTrue(validFaces.contains(faceKey), "Invalid face key '" + faceKey + "' in model: " + modelPath);
+                                    }
+                                }
+                            }
+                        }
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);

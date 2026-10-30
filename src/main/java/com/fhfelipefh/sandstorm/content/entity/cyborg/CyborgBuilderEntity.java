@@ -89,7 +89,7 @@ public class CyborgBuilderEntity extends CyborgEntity {
                         4, 0.25, 0.25, 0.25, 0.05);
             }
 
-            if (buildTicks >= 25) {
+            if (buildTicks >= 12) {
                 buildTicks = 0;
                 placeBlockFromInventory(level, currentTargetPos);
                 CyborgSwarmManager.getInstance().releaseBlock(this.getUUID(), currentTargetPos);

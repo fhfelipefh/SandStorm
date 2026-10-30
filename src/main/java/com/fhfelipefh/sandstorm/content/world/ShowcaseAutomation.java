@@ -186,9 +186,12 @@ public class ShowcaseAutomation {
                 if (isShowcaseAlreadyBuilt(level)) {
                     showcaseActive = true;
                     TELEPORT_PADS.clear();
+                    CyborgSwarmManager.getInstance().releaseAll();
                     buildTransitTerminal(level, new BlockPos(0, 160, 0));
+                    buildBlockCheckerboard(level, new BlockPos(0, 160, 0));
                     buildAutonomousCyborgFacility(level, new BlockPos(0, 160, 0), player);
                     buildPistonTestingRange(level, new BlockPos(-50, 160, -65));
+                    buildPistonWalkway(level, new BlockPos(0, 160, 0));
                     preparePlayerForShowcase(level, player);
                 } else if (!GENERATED_PLAYERS.contains(player.getUUID())) {
                     GENERATED_PLAYERS.add(player.getUUID());
@@ -269,13 +272,22 @@ public class ShowcaseAutomation {
                     if (loopBuilder == null || !loopBuilder.isAlive()) {
                         AABB builderBox = new AABB(-10.0, 159.0, -112.0, 10.0, 166.0, -96.0);
                         List<CyborgBuilderEntity> existing = overworld.getEntitiesOfClass(CyborgBuilderEntity.class, builderBox);
+                        BlockPos bCenter = new BlockPos(0, 160, -104);
                         if (!existing.isEmpty()) {
                             loopBuilder = existing.get(0);
-                            loopBuilder.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
-                            BlockPos bCenter = new BlockPos(0, 160, -104);
-                            loopBuilder.setZoneMin(bCenter.offset(0, 1, -1));
-                            loopBuilder.setZoneMax(bCenter.offset(3, 2, -1));
+                        } else {
+                            CyborgBuilderEntity newBuilder = new CyborgBuilderEntity(SandStormEntities.CYBORG_BUILDER, overworld);
+                            newBuilder.setPos(bCenter.getX() + 0.5, 161.0, bCenter.getZ() + 1.5);
+                            newBuilder.setPersistenceRequired();
+                            newBuilder.setCustomName(Component.literal("§bAndroide Construtor Autônomo"));
+                            newBuilder.setCustomNameVisible(true);
+                            overworld.addFreshEntity(newBuilder);
+                            loopBuilder = newBuilder;
                         }
+                        loopBuilder.setEnergy(50000);
+                        loopBuilder.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
+                        loopBuilder.setZoneMin(bCenter.offset(0, 1, -1));
+                        loopBuilder.setZoneMax(bCenter.offset(3, 2, -1));
                     }
 
                     if (loopBuilder != null && loopBuilder.isAlive()) {
@@ -324,7 +336,7 @@ public class ShowcaseAutomation {
                                         overworld.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.05);
                                     }
                                 }
-                                CyborgSwarmManager.getInstance().releaseAll(loopBuilder.getUUID());
+                                CyborgSwarmManager.getInstance().releaseAll();
                                 loopBuilder.getInventory().clearContent();
                                 loopBuilder.getInventory().addItem(new ItemStack(Blocks.CUT_SANDSTONE, 64));
                                 if (!BUILDER_CONSTRUCTION_POSITIONS.isEmpty()) {
@@ -996,6 +1008,7 @@ public class ShowcaseAutomation {
     public static void buildShowcase(ServerLevel level, ServerPlayer player) {
         showcaseActive = true;
         TELEPORT_PADS.clear();
+        CyborgSwarmManager.getInstance().releaseAll();
         BlockPos center = new BlockPos(0, 160, 0);
         int frontZ = getBiosphereFrontZ();
         int backZ = frontZ + 60;
@@ -1017,6 +1030,7 @@ public class ShowcaseAutomation {
         buildMaglevTestTrack(level, center);
         buildAutonomousCyborgFacility(level, center, player);
         buildPistonTestingRange(level, center.offset(-50, 0, -65));
+        buildPistonWalkway(level, center);
         buildSandwormColosseum(level, center);
         buildQuantumComputerStation(level, center.offset(50, 0, 0));
         buildQuantumComputerWalkway(level, center);
@@ -1735,6 +1749,7 @@ public class ShowcaseAutomation {
         level.getEntitiesOfClass(ArmorStand.class, facilityBox).forEach(Entity::discard);
         level.getEntitiesOfClass(CyborgEntity.class, facilityBox).forEach(Entity::discard);
         level.getEntitiesOfClass(CargoDroneEntity.class, facilityBox).forEach(Entity::discard);
+        CyborgSwarmManager.getInstance().releaseAll();
 
         BlockPos entranceHolo = new BlockPos(0, baseY + 1, -82);
         spawnHologram(level, entranceHolo.getX() + 0.5, entranceHolo.getY() + 1.2, entranceHolo.getZ() + 0.5, "§6[Complexo Industrial de Ciborgues]");
@@ -1886,7 +1901,7 @@ public class ShowcaseAutomation {
         }
 
         CyborgBuilderEntity cyborgBld = new CyborgBuilderEntity(SandStormEntities.CYBORG_BUILDER, level);
-        cyborgBld.setPos(builderCenter.getX() - 1.5, baseY + 1.0, builderCenter.getZ() + 1.0);
+        cyborgBld.setPos(builderCenter.getX() + 1.5, baseY + 1.0, builderCenter.getZ() + 1.5);
         cyborgBld.setOwnerUUID(player.getUUID());
         cyborgBld.setEnergy(50000);
         cyborgBld.setRoutine(CyborgRoutine.AUTONOMOUS_WORK);
@@ -2267,10 +2282,10 @@ public class ShowcaseAutomation {
     private static void buildPistonTestingRange(ServerLevel level, BlockPos center) {
         int baseY = center.getY();
 
-        AABB arenaBox = new AABB(center.getX() - 12, baseY - 2, center.getZ() - 10, center.getX() + 12, baseY + 12, center.getZ() + 32);
+        AABB arenaBox = new AABB(center.getX() - 16, baseY - 2, center.getZ() - 10, center.getX() + 16, baseY + 12, center.getZ() + 32);
         level.getEntitiesOfClass(ArmorStand.class, arenaBox).forEach(Entity::discard);
 
-        for (int dx = -10; dx <= 10; dx++) {
+        for (int dx = -14; dx <= 14; dx++) {
             for (int dz = -8; dz <= 28; dz++) {
                 for (int dy = 1; dy <= 6; dy++) {
                     BlockPos p = center.offset(dx, dy, dz);
@@ -2279,10 +2294,10 @@ public class ShowcaseAutomation {
                     }
                 }
                 BlockPos floor = center.offset(dx, 0, dz);
-                boolean border = (Math.abs(dx) == 10 || dz == -8 || dz == 28);
+                boolean border = (Math.abs(dx) == 14 || dz == -8 || dz == 28);
                 Block b = border ? Blocks.POLISHED_DEEPSLATE : Blocks.SMOOTH_SANDSTONE;
                 level.setBlock(floor, b.defaultBlockState(), 2);
-                if (border && !(dx >= -2 && dx <= 2 && dz == -8)) {
+                if (border && !(dx >= 10 && dx <= 14 && dz >= -1 && dz <= 1)) {
                     level.setBlock(floor.above(), Blocks.POLISHED_DEEPSLATE_WALL.defaultBlockState(), 2);
                 }
             }
@@ -2291,9 +2306,9 @@ public class ShowcaseAutomation {
         spawnHologram(level, center.getX() + 0.5, baseY + 4.2, center.getZ() - 6.0, "§e§l[CAMPO DE PROVAS: SUPER PISTÕES SANDSTORM]");
         spawnHologram(level, center.getX() + 0.5, baseY + 3.85, center.getZ() - 6.0, "§7Pistões de Alta Força, Meia-Laje e Empuxo Tectônico de Obsidiana");
 
-        setupReturnPad(level, center.offset(-7, 1, -5));
+        setupReturnPad(level, center.offset(11, 1, 0));
 
-        BlockPos p1 = center.offset(-5, 1, 0);
+        BlockPos p1 = center.offset(-10, 1, 0);
         level.setBlock(p1, SandStormBlocks.COMPACT_SLAB_PISTON.defaultBlockState()
                 .setValue(CompactSlabPistonBlock.FACING, Direction.SOUTH)
                 .setValue(CompactSlabPistonBlock.TOP_SLAB, true), 3);
@@ -2302,44 +2317,111 @@ public class ShowcaseAutomation {
             level.setBlock(p1.south(i), Blocks.CUT_SANDSTONE.defaultBlockState(), 3);
             level.setBlock(p1.south(i).below(), Blocks.OCHRE_FROGLIGHT.defaultBlockState(), 2);
         }
-        spawnHologram(level, p1.getX() + 0.5, baseY + 2.5, p1.getZ() - 0.5, "§e§l[Pistão Meia-Laje]");
-        spawnHologram(level, p1.getX() + 0.5, baseY + 2.15, p1.getZ() - 0.5, "§70.5 blocos | Laje acoplada no topo");
-        spawnHologram(level, p1.getX() + 0.5, baseY + 1.8, p1.getZ() - 0.5, "§aEmpuxo: 7 blocos | Acione a alavanca");
+        spawnHologram(level, p1.getX() + 0.5, baseY + 2.5, p1.getZ() - 0.5, "§e§l[Meia-Laje]");
+        spawnHologram(level, p1.getX() + 0.5, baseY + 2.15, p1.getZ() - 0.5, "§70.5b | Laje topo");
+        spawnHologram(level, p1.getX() + 0.5, baseY + 1.8, p1.getZ() - 0.5, "§a7 blocos");
 
-        BlockPos p2 = center.offset(0, 1, 0);
-        level.setBlock(p2, SandStormBlocks.HEAVY_KINETIC_PISTON.defaultBlockState()
-                .setValue(HeavyKineticPistonBlock.FACING, Direction.SOUTH), 3);
+        BlockPos p2 = center.offset(-6, 1, 0);
+        level.setBlock(p2, SandStormBlocks.COMPACT_STICKY_SLAB_PISTON.defaultBlockState()
+                .setValue(CompactSlabPistonBlock.FACING, Direction.SOUTH)
+                .setValue(CompactSlabPistonBlock.TOP_SLAB, true), 3);
         level.setBlock(p2.north(), Blocks.LEVER.defaultBlockState(), 3);
+        for (int i = 1; i <= 7; i++) {
+            level.setBlock(p2.south(i), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+            level.setBlock(p2.south(i).below(), Blocks.SEA_LANTERN.defaultBlockState(), 2);
+        }
+        spawnHologram(level, p2.getX() + 0.5, baseY + 2.5, p2.getZ() - 0.5, "§a§l[Meia-Laje Grudento]");
+        spawnHologram(level, p2.getX() + 0.5, baseY + 2.15, p2.getZ() - 0.5, "§7Empurra & Puxa");
+        spawnHologram(level, p2.getX() + 0.5, baseY + 1.8, p2.getZ() - 0.5, "§a7 blocos");
+
+        BlockPos p3 = center.offset(-2, 1, 0);
+        level.setBlock(p3, SandStormBlocks.HEAVY_KINETIC_PISTON.defaultBlockState()
+                .setValue(HeavyKineticPistonBlock.FACING, Direction.SOUTH), 3);
+        level.setBlock(p3.north(), Blocks.LEVER.defaultBlockState(), 3);
         for (int i = 1; i <= 24; i++) {
-            level.setBlock(p2.south(i), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
+            level.setBlock(p3.south(i), Blocks.SMOOTH_STONE.defaultBlockState(), 3);
             if (i % 4 == 0) {
-                level.setBlock(p2.south(i).below(), Blocks.SEA_LANTERN.defaultBlockState(), 2);
+                level.setBlock(p3.south(i).below(), Blocks.SEA_LANTERN.defaultBlockState(), 2);
             }
         }
-        spawnHologram(level, p2.getX() + 0.5, baseY + 2.5, p2.getZ() - 0.5, "§6§l[Pistão Cinético Reforçado]");
-        spawnHologram(level, p2.getX() + 0.5, baseY + 2.15, p2.getZ() - 0.5, "§7Potência industrial dobrada");
-        spawnHologram(level, p2.getX() + 0.5, baseY + 1.8, p2.getZ() - 0.5, "§aEmpuxo: 24 blocos contínuos");
+        spawnHologram(level, p3.getX() + 0.5, baseY + 2.5, p3.getZ() - 0.5, "§6§l[Cinético]");
+        spawnHologram(level, p3.getX() + 0.5, baseY + 2.15, p3.getZ() - 0.5, "§7Potência 2x");
+        spawnHologram(level, p3.getX() + 0.5, baseY + 1.8, p3.getZ() - 0.5, "§a24 blocos");
 
-        BlockPos p3 = center.offset(5, 1, 0);
-        level.setBlock(p3, SandStormBlocks.TECTONIC_KINETIC_PISTON.defaultBlockState()
+        BlockPos p4 = center.offset(2, 1, 0);
+        level.setBlock(p4, SandStormBlocks.HEAVY_STICKY_KINETIC_PISTON.defaultBlockState()
+                .setValue(HeavyKineticPistonBlock.FACING, Direction.SOUTH), 3);
+        level.setBlock(p4.north(), Blocks.LEVER.defaultBlockState(), 3);
+        for (int i = 1; i <= 24; i++) {
+            level.setBlock(p4.south(i), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 3);
+            if (i % 4 == 0) {
+                level.setBlock(p4.south(i).below(), Blocks.OCHRE_FROGLIGHT.defaultBlockState(), 2);
+            }
+        }
+        spawnHologram(level, p4.getX() + 0.5, baseY + 2.5, p4.getZ() - 0.5, "§6§l[Cinético Grudento]");
+        spawnHologram(level, p4.getX() + 0.5, baseY + 2.15, p4.getZ() - 0.5, "§7Empurra & Retrai");
+        spawnHologram(level, p4.getX() + 0.5, baseY + 1.8, p4.getZ() - 0.5, "§a24 blocos");
+
+        BlockPos p5 = center.offset(6, 1, 0);
+        level.setBlock(p5, SandStormBlocks.TECTONIC_KINETIC_PISTON.defaultBlockState()
                 .setValue(TectonicKineticPistonBlock.FACING, Direction.SOUTH), 3);
-        level.setBlock(p3.north(), Blocks.LEVER.defaultBlockState(), 3);
-        level.setBlock(p3.south(1), Blocks.OBSIDIAN.defaultBlockState(), 3);
-        level.setBlock(p3.south(2), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
-        level.setBlock(p3.south(3), Blocks.OBSIDIAN.defaultBlockState(), 3);
+        level.setBlock(p5.north(), Blocks.LEVER.defaultBlockState(), 3);
+        level.setBlock(p5.south(1), Blocks.OBSIDIAN.defaultBlockState(), 3);
+        level.setBlock(p5.south(2), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
+        level.setBlock(p5.south(3), Blocks.OBSIDIAN.defaultBlockState(), 3);
         for (int i = 4; i <= 16; i++) {
-            level.setBlock(p3.south(i), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+            level.setBlock(p5.south(i), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
         }
         for (int i = 1; i <= 16; i++) {
             if (i <= 3) {
-                level.setBlock(p3.south(i).below(), Blocks.MAGMA_BLOCK.defaultBlockState(), 2);
+                level.setBlock(p5.south(i).below(), Blocks.MAGMA_BLOCK.defaultBlockState(), 2);
             } else if (i % 4 == 0) {
-                level.setBlock(p3.south(i).below(), Blocks.OCHRE_FROGLIGHT.defaultBlockState(), 2);
+                level.setBlock(p5.south(i).below(), Blocks.OCHRE_FROGLIGHT.defaultBlockState(), 2);
             }
         }
-        spawnHologram(level, p3.getX() + 0.5, baseY + 2.6, p3.getZ() - 0.5, "§d§l[Pistão Cinético Tectônico]");
-        spawnHologram(level, p3.getX() + 0.5, baseY + 2.25, p3.getZ() - 0.5, "§c★ EMPURRA OBSIDIANA PURA! ★");
-        spawnHologram(level, p3.getX() + 0.5, baseY + 1.9, p3.getZ() - 0.5, "§7Força geológica de até 48 blocos");
+        spawnHologram(level, p5.getX() + 0.5, baseY + 2.6, p5.getZ() - 0.5, "§d§l[Tectônico]");
+        spawnHologram(level, p5.getX() + 0.5, baseY + 2.25, p5.getZ() - 0.5, "§c★ EMPURRA OBSIDIANA! ★");
+        spawnHologram(level, p5.getX() + 0.5, baseY + 1.9, p5.getZ() - 0.5, "§7Até 48 blocos");
+
+        BlockPos p6 = center.offset(10, 1, 0);
+        level.setBlock(p6, SandStormBlocks.TECTONIC_STICKY_KINETIC_PISTON.defaultBlockState()
+                .setValue(TectonicKineticPistonBlock.FACING, Direction.SOUTH), 3);
+        level.setBlock(p6.north(), Blocks.LEVER.defaultBlockState(), 3);
+        level.setBlock(p6.south(1), Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
+        level.setBlock(p6.south(2), Blocks.OBSIDIAN.defaultBlockState(), 3);
+        for (int i = 3; i <= 16; i++) {
+            level.setBlock(p6.south(i), Blocks.POLISHED_DEEPSLATE.defaultBlockState(), 3);
+        }
+        for (int i = 1; i <= 16; i++) {
+            if (i <= 2) {
+                level.setBlock(p6.south(i).below(), Blocks.MAGMA_BLOCK.defaultBlockState(), 2);
+            } else if (i % 4 == 0) {
+                level.setBlock(p6.south(i).below(), Blocks.SEA_LANTERN.defaultBlockState(), 2);
+            }
+        }
+        spawnHologram(level, p6.getX() + 0.5, baseY + 2.6, p6.getZ() - 0.5, "§d§l[Tectônico Grudento]");
+        spawnHologram(level, p6.getX() + 0.5, baseY + 2.25, p6.getZ() - 0.5, "§c★ PUXA OBSIDIANA! ★");
+        spawnHologram(level, p6.getX() + 0.5, baseY + 1.9, p6.getZ() - 0.5, "§7Força de 48 blocos");
+    }
+
+    private static void buildPistonWalkway(ServerLevel level, BlockPos center) {
+        int baseY = center.getY();
+        for (int x = -2; x >= -36; x--) {
+            for (int dz = -2; dz <= 2; dz++) {
+                BlockPos p = center.offset(x, 0, -65 + dz);
+                boolean edge = Math.abs(dz) == 2;
+                boolean light = (Math.abs(x) % 4 == 0 && dz == 0);
+                Block b = light ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(p, b.defaultBlockState(), 2);
+                if (edge && Math.abs(x) % 6 == 0) {
+                    level.setBlock(p.above(), Blocks.SANDSTONE_WALL.defaultBlockState(), 2);
+                    level.setBlock(p.above(2), Blocks.SEA_LANTERN.defaultBlockState(), 2);
+                }
+            }
+        }
+        BlockPos portalArch = center.offset(-2, 0, -65);
+        spawnHologram(level, portalArch.getX() - 1.5, baseY + 3.2, portalArch.getZ() + 0.5, "§e§l◀ SUPER PISTÕES SANDSTORM");
+        spawnHologram(level, portalArch.getX() - 1.5, baseY + 2.85, portalArch.getZ() + 0.5, "§7Pistas de Teste: Meia-Laje, 24 Blocos & Obsidiana");
     }
 
     @SuppressWarnings("unchecked")
