@@ -1498,6 +1498,14 @@ public class ShowcaseAutomation {
                     ssaBe.setStoredEnergy(500000);
                 }
                 SolidStateAccumulatorManager.registerAccumulator(level.dimension(), targetPos, 500000, 500000, true, 1);
+            } else if (targetBlock == SandStormBlocks.XENO_WHEAT_CROP) {
+                level.setBlock(pedestalCenter, SandStormBlocks.HYDROPONIC_TRAY.defaultBlockState(), 3);
+                CropBlock cropBlock = (CropBlock) targetBlock;
+                level.setBlock(targetPos, cropBlock.getStateForAge(cropBlock.getMaxAge()), 3);
+            } else if (targetBlock == SandStormBlocks.HYDROPONIC_TRAY) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
+                CropBlock cropBlock = (CropBlock) SandStormBlocks.XENO_WHEAT_CROP;
+                level.setBlock(targetPos.above(), cropBlock.getStateForAge(cropBlock.getMaxAge()), 3);
             } else {
                 level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
             }
@@ -1647,6 +1655,9 @@ public class ShowcaseAutomation {
         if (block == SandStormBlocks.SANDSTONE_CRATE) return "Caixote de Arenito com Tampa 3D";
         if (block == SandStormBlocks.SYNAPTIC_CONDENSER) return "Condensador Sináptico de XP";
         if (block == SandStormBlocks.SYNAPTIC_REPAIRER) return "Reparador Nanítico Sináptico";
+        if (block == SandStormBlocks.HYDROPONIC_TRAY) return "Bandeja Hidropônica UV Estéril";
+        if (block == SandStormBlocks.SEISMIC_RESONANCE_CATALYST) return "Catalisador de Invocação do Apex";
+        if (block == SandStormBlocks.XENO_WHEAT_CROP) return "Cultivo Hidropônico de Xeno-Trigo";
         return "Tecnologia Estrutural SandStorm";
     }
 
@@ -1813,13 +1824,18 @@ public class ShowcaseAutomation {
                     level.setBlock(p.below(), Blocks.SEA_LANTERN.defaultBlockState(), 2);
                     level.setBlock(p, Blocks.WATER.defaultBlockState(), 2);
                 } else {
-                    level.setBlock(p, Blocks.FARMLAND.defaultBlockState(), 2);
-                    Block crop = switch (Math.abs(dx + dz) % 4) {
+                    Block crop = switch (Math.abs(dx + dz) % 5) {
                         case 0 -> Blocks.CARROTS;
                         case 1 -> Blocks.POTATOES;
                         case 2 -> Blocks.BEETROOTS;
+                        case 3 -> SandStormBlocks.XENO_WHEAT_CROP;
                         default -> Blocks.WHEAT;
                     };
+                    if (crop == SandStormBlocks.XENO_WHEAT_CROP) {
+                        level.setBlock(p, SandStormBlocks.HYDROPONIC_TRAY.defaultBlockState(), 2);
+                    } else {
+                        level.setBlock(p, Blocks.FARMLAND.defaultBlockState(), 2);
+                    }
                     if (crop instanceof CropBlock cropBlock) {
                         level.setBlock(p.above(), cropBlock.getStateForAge(cropBlock.getMaxAge()), 2);
                     } else {
@@ -1837,6 +1853,8 @@ public class ShowcaseAutomation {
             chest.setItem(1, new ItemStack(Items.CARROT, 64));
             chest.setItem(2, new ItemStack(Items.POTATO, 64));
             chest.setItem(3, new ItemStack(Items.BEETROOT, 64));
+            chest.setItem(4, new ItemStack(SandStormItems.XENO_WHEAT, 64));
+            chest.setItem(5, new ItemStack(SandStormItems.XENO_WHEAT_SEEDS, 64));
         }
 
         ACTIVE_FARMERS.clear();
@@ -2191,7 +2209,12 @@ public class ShowcaseAutomation {
                         new ItemStack(SandStormItems.SUIT_UPGRADE_THERMAL, 64),
                         new ItemStack(SandStormItems.SUIT_UPGRADE_SEISMIC, 64),
                         new ItemStack(SandStormItems.SUIT_UPGRADE_VISOR, 64),
-                        new ItemStack(SandStormItems.SUIT_UPGRADE_JETPACK, 64)
+                        new ItemStack(SandStormItems.SUIT_UPGRADE_JETPACK, 64),
+                        new ItemStack(SandStormItems.SEISMIC_SONAR_CHIP, 64),
+                        new ItemStack(SandStormItems.JETBOOT_MODULE, 64),
+                        new ItemStack(SandStormItems.GRAVITATIONAL_MAGNET_CHIP, 64),
+                        new ItemStack(SandStormItems.OSMOTIC_RECYCLER_MODULE, 64),
+                        new ItemStack(SandStormItems.KINETIC_DEFLECTOR_CHIP, 64)
                 ),
                 true,
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET),
@@ -2216,7 +2239,9 @@ public class ShowcaseAutomation {
                         new ItemStack(SandStormItems.SMOKE_GRENADE, 64),
                         new ItemStack(SandStormItems.NUTRIENT_BOMB, 64),
                         new ItemStack(SandStormItems.TACTICAL_DETONATOR, 64),
-                        new ItemStack(SandStormItems.KINETIC_SLUG, 64)
+                        new ItemStack(SandStormItems.KINETIC_SLUG, 64),
+                        new ItemStack(SandStormItems.NEURAL_OVERRIDE_LANCE, 64),
+                        new ItemStack(SandStormItems.APEX_RAILGUN_HARPOON, 64)
                 ),
                 true,
                 ItemStack.EMPTY,
@@ -2315,7 +2340,17 @@ public class ShowcaseAutomation {
                         new ItemStack(SandStormItems.TREHALOSE_SUGAR, 64),
                         new ItemStack(SandStormItems.OSMOLYTE_GLYCEROL, 64),
                         new ItemStack(SandStormItems.NEUROACTIVE_ALKALOIDS, 64),
-                        new ItemStack(SandStormItems.RADIOPROTECTIVE_MELANIN, 64)
+                        new ItemStack(SandStormItems.RADIOPROTECTIVE_MELANIN, 64),
+                        new ItemStack(SandStormItems.XENO_WHEAT_SEEDS, 64),
+                        new ItemStack(SandStormItems.XENO_WHEAT, 64),
+                        new ItemStack(SandStormItems.DUNE_MELON_SEEDS, 64),
+                        new ItemStack(SandStormItems.DUNE_MELON_SLICE, 64),
+                        new ItemStack(SandStormItems.CRYO_BERRIES, 64),
+                        new ItemStack(SandStormItems.THERMAL_NUTRIENT_PASTE, 64),
+                        new ItemStack(SandStormItems.ELECTROLYTE_JUICE, 64),
+                        new ItemStack(SandStormItems.CRYO_GLAZED_RATION, 64),
+                        new ItemStack(SandStormItems.HYDROPONIC_FEAST, 64),
+                        new ItemStack(SandStormItems.APEX_HEART_MATRIX, 64)
                 ),
                 true,
                 ItemStack.EMPTY,
@@ -2434,7 +2469,8 @@ public class ShowcaseAutomation {
                         new ItemStack(SandStormItems.LABORER_UNIT_SPAWN_EGG, 64),
                         new ItemStack(SandStormItems.SCOUT_DRONE_SPAWN_EGG, 64),
                         new ItemStack(SandStormItems.CRAWLER_DRONE_SPAWN_EGG, 64),
-                        new ItemStack(SandStormItems.SANDWORM_SPAWN_EGG, 64)
+                        new ItemStack(SandStormItems.SANDWORM_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.APEX_SANDWORM_SPAWN_EGG, 64)
                 ),
                 true,
                 ItemStack.EMPTY,
@@ -2728,6 +2764,13 @@ public class ShowcaseAutomation {
 
         spawnHologram(level, 16.0, entityY + 2.5, -30.0, "[Asad'agua (Waterwing)]");
         spawnHologram(level, 16.0, entityY + 2.15, -30.0, "Montaria Anfibio: Voo e Mergulho");
+
+        placeEntityPedestal(level, new BlockPos(0, baseY, -38));
+        spawnMannequin(level, new BlockPos(0, baseY + 1, -38), "§5Apex Sandworm Sovereign",
+                new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(Items.NETHERITE_CHESTPLATE), new ItemStack(Items.NETHERITE_LEGGINGS), new ItemStack(Items.NETHERITE_BOOTS),
+                new ItemStack(SandStormItems.APEX_RAILGUN_HARPOON), new ItemStack(SandStormItems.APEX_HEART_MATRIX));
+        spawnHologram(level, 0.0, entityY + 3.2, -38.0, "§5[Apex Sandworm Sovereign]");
+        spawnHologram(level, 0.0, entityY + 2.85, -38.0, "§dInvocação Sísmica no Manto (Y < 0)");
     }
 
     private static void placeEntityPedestal(ServerLevel level, BlockPos baseCenter) {
