@@ -36,8 +36,7 @@ public class CyborgModel extends EntityModel<CyborgRenderState> {
         PartDefinition root = mesh.getRoot();
 
         PartDefinition head = root.addOrReplaceChild("head", CubeListBuilder.create()
-                .texOffs(0, 0).addBox(-4.0f, -8.0f, -4.0f, 8.0f, 8.0f, 8.0f)
-                .texOffs(32, 0).addBox(-4.5f, -8.5f, -4.5f, 9.0f, 9.0f, 9.0f),
+                .texOffs(0, 0).addBox(-4.0f, -8.0f, -4.0f, 8.0f, 8.0f, 8.0f),
                 PartPose.offset(0.0f, 0.0f, 0.0f));
 
         head.addOrReplaceChild("visor", CubeListBuilder.create()
