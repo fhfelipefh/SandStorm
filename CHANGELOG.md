@@ -2,6 +2,15 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.56] - 2026-10-30
+
+### 🛡️ Teste de Arquitetura de Integridade de Texturas de Entidades & Sincronização de Assets
+* **Auditoria de Texturas de Entidades (`EntityTextureIntegrityArchitectureTest`)**:
+  * Implementada suíte de testes de arquitetura que varre todos os renderizadores de clientes (`*Renderer.java`) e valida a existência física, legibilidade e formato dos arquivos PNG no disco e na saída de build.
+  * Verificação estrita de assinatura de cabeçalho (`89 50 4E 47 0D 0A 1A 0A`), dimensões em potências de dois ($64\times 64$, $128\times 128$, $256\times 256$), paletas ricas com cores válidas (prevenção de texturas lisas/chapadas) e conformidade de variantes desativadas por PEM (`_deactivated.png`).
+* **Sincronização de Recursos de Build**:
+  * Garantia de sincronização completa de assets entre `src/main/resources` e `build/resources/main`, impedindo bloqueios de concorrência e falhas de carregamento em tempo de execução.
+
 ## [1.19.55] - 2026-10-30
 
 ### 🌀 Desembarque Seguro, Cooldown Anti-Bounce & Pareamento 1:1 de Portais
