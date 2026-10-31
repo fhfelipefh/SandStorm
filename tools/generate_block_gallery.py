@@ -240,7 +240,7 @@ def render_block_isometric(model_json_path, out_path, size=300):
         return loaded_textures[tf]
 
     # True isometric projection angle: 30° on both left and right edges, 90° center vertical
-    yaw = math.radians(-45)
+    yaw = math.radians(-135)
     pitch = math.atan(1.0 / math.sqrt(2.0))
 
     cos_y, sin_y = math.cos(yaw), math.sin(yaw)
@@ -255,6 +255,24 @@ def render_block_isometric(model_json_path, out_path, size=300):
         y2 = y1 * cos_p - z1 * sin_p
         z2 = y1 * sin_p + z1 * cos_p
         return x2, y2, z2
+
+    def norm_to_cam(nx, ny, nz):
+        x1 = nx * cos_y + nz * sin_y
+        y1 = ny
+        z1 = -nx * sin_y + nz * cos_y
+        x2 = x1
+        y2 = y1 * cos_p - z1 * sin_p
+        z2 = y1 * sin_p + z1 * cos_p
+        return x2, y2, z2
+
+    normals = {
+        'up': (0, 1, 0),
+        'down': (0, -1, 0),
+        'north': (0, 0, -1),
+        'south': (0, 0, 1),
+        'west': (-1, 0, 0),
+        'east': (1, 0, 0),
+    }
 
     triangles = []
     all_pts_cam = []
@@ -276,6 +294,12 @@ def render_block_isometric(model_json_path, out_path, size=300):
         for fname, pts, light, def_uv in spec:
             if fname not in efaces:
                 continue
+
+            nx, ny, nz = normals[fname]
+            _, _, cz = norm_to_cam(nx, ny, nz)
+            if cz <= 1e-4:
+                continue
+
             fdata = efaces[fname]
             tex_ref = fdata.get('texture', '')
             tex_arr = get_texture_arr(tex_ref)
@@ -285,12 +309,6 @@ def render_block_isometric(model_json_path, out_path, size=300):
             uvs = [(u0, v0), (u1, v0), (u1, v1), (u0, v1)]
 
             pts_cam = [world_to_cam(*p) for p in pts]
-
-            v01 = (pts_cam[1][0] - pts_cam[0][0], pts_cam[1][1] - pts_cam[0][1])
-            v02 = (pts_cam[2][0] - pts_cam[0][0], pts_cam[2][1] - pts_cam[0][1])
-            cross_z = v01[0] * v02[1] - v01[1] * v02[0]
-            if cross_z <= 1e-4:
-                continue
 
             for pc in pts_cam:
                 all_pts_cam.append(pc)
