@@ -52,6 +52,9 @@ import com.fhfelipefh.sandstorm.content.block.entity.HeavyKineticPistonBlockEnti
 import com.fhfelipefh.sandstorm.content.block.entity.TectonicKineticPistonBlockEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
+import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
+import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
+import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.FanghornEntity;
@@ -90,7 +93,9 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -105,6 +110,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -228,12 +234,27 @@ public class ShowcaseAutomation {
     public static void initialize() {
         ShowcaseCinematicManager.initialize();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> registerCommands(dispatcher));
+        ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> freezeShowcaseSteed(entity, level));
+        UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
+            if (level instanceof ServerLevel serverLevel && isShowcaseWorld(serverLevel)
+                    && entity instanceof CyberSteedEntity steed && steed.entityTags().contains("sandstorm_showcase_waiting")) {
+                steed.removeTag("sandstorm_showcase_waiting");
+                steed.addTag("sandstorm_showcase_interacted");
+                if (!steed.isDeactivated()) {
+                    steed.setNoAi(false);
+                }
+            }
+            return InteractionResult.PASS;
+        });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             ServerPlayer player = handler.getPlayer();
             String levelName = player.level().getServer().getWorldData().getLevelName();
             if (levelName != null && levelName.toLowerCase().contains("showcase")) {
                 ServerLevel level = (ServerLevel) player.level();
+                for (Entity entity : level.getAllEntities()) {
+                    freezeShowcaseSteed(entity, level);
+                }
                 cleanupShowcaseDroppedItems(level);
                 if (isShowcaseAlreadyBuilt(level)) {
                     showcaseActive = true;
@@ -496,6 +517,20 @@ public class ShowcaseAutomation {
                 }
             }
         });
+    }
+
+    private static boolean isShowcaseWorld(ServerLevel level) {
+        String name = level.getServer().getWorldData().getLevelName();
+        return name != null && name.toLowerCase(Locale.ROOT).contains("showcase");
+    }
+
+    private static void freezeShowcaseSteed(Entity entity, ServerLevel level) {
+        if (isShowcaseWorld(level) && entity instanceof CyberSteedEntity steed
+                && !steed.entityTags().contains("sandstorm_showcase_interacted")) {
+            steed.addTag("sandstorm_showcase_waiting");
+            steed.setNoAi(true);
+            steed.getNavigation().stop();
+        }
     }
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -2820,6 +2855,37 @@ public class ShowcaseAutomation {
 
         spawnHologram(level, 16.0, entityY + 2.5, -30.0, "[Asad'agua (Waterwing)]");
         spawnHologram(level, 16.0, entityY + 2.15, -30.0, "Montaria Anfibio: Voo e Mergulho");
+
+        placeEntityPedestal(level, new BlockPos(-16, baseY, -38));
+        DerelictAutomatonEntity automaton = new DerelictAutomatonEntity(SandStormEntities.DERELICT_AUTOMATON, level);
+        automaton.setPos(-16.0, entityY, -38.0);
+        automaton.setNoAi(true);
+        automaton.setPersistenceRequired();
+        level.addFreshEntity(automaton);
+        spawnHologram(level, -16.0, entityY + 2.7, -38.0, "Autômato Abandonado");
+
+        placeEntityPedestal(level, new BlockPos(-8, baseY, -38));
+        ScoutDroneEntity scout = new ScoutDroneEntity(SandStormEntities.SCOUT_DRONE, level);
+        scout.setPos(-8.0, entityY, -38.0);
+        scout.setNoAi(true);
+        scout.setPersistenceRequired();
+        level.addFreshEntity(scout);
+        spawnHologram(level, -8.0, entityY + 2.7, -38.0, "Drone Explorador");
+
+        placeEntityPedestal(level, new BlockPos(8, baseY, -38));
+        CrawlerDroneEntity crawler = new CrawlerDroneEntity(SandStormEntities.CRAWLER_DRONE, level);
+        crawler.setPos(8.0, entityY, -38.0);
+        crawler.setNoAi(true);
+        crawler.setPersistenceRequired();
+        level.addFreshEntity(crawler);
+        spawnHologram(level, 8.0, entityY + 2.7, -38.0, "Drone Rastreador");
+
+        placeEntityPedestal(level, new BlockPos(16, baseY, -38));
+        spawnMannequin(level, new BlockPos(16, baseY + 1, -38), "Drone de Sondagem Geológica",
+                ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY,
+                new ItemStack(SandStormItems.GEOLOGICAL_SURVEYOR_DRONE), ItemStack.EMPTY);
+        spawnHologram(level, 16.0, entityY + 2.7, -38.0, "Drone de Sondagem Geológica");
+        spawnHologram(level, 16.0, entityY + 2.4, -38.0, "Use o item para sondar o solo");
 
         placeEntityPedestal(level, new BlockPos(0, baseY, -38));
         spawnMannequin(level, new BlockPos(0, baseY + 1, -38), "§5Apex Sandworm Sovereign",

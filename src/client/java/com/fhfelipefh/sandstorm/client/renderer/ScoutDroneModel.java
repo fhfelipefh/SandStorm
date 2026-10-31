@@ -44,7 +44,9 @@ public class ScoutDroneModel extends EntityModel<ScoutDroneRenderState> {
 
         body.addOrReplaceChild("right_arm", CubeListBuilder.create()
                 .texOffs(40, 16).addBox(-1.0f, -2.0f, -1.0f, 2.0f, 12.0f, 2.0f)
-                .texOffs(0, 32).addBox(-1.5f, 6.0f, -8.0f, 3.0f, 3.0f, 8.0f),
+                .texOffs(0, 32).addBox(-1.5f, 6.0f, -2.0f, 3.0f, 8.0f, 3.0f)
+                .texOffs(24, 32).addBox(-0.5f, 14.0f, -1.0f, 1.0f, 4.0f, 1.0f)
+                .texOffs(30, 32).addBox(-0.5f, 8.0f, -3.0f, 1.0f, 3.0f, 2.0f),
                 PartPose.offset(-5.0f, 2.0f, 0.0f));
 
         body.addOrReplaceChild("left_arm", CubeListBuilder.create()
