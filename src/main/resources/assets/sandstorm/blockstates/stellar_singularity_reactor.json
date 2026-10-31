@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "facing=north,lit=false": { "model": "sandstorm:block/stellar_singularity_reactor" },
+    "facing=south,lit=false": { "model": "sandstorm:block/stellar_singularity_reactor", "y": 180 },
+    "facing=west,lit=false": { "model": "sandstorm:block/stellar_singularity_reactor", "y": 270 },
+    "facing=east,lit=false": { "model": "sandstorm:block/stellar_singularity_reactor", "y": 90 },
+    "facing=north,lit=true": { "model": "sandstorm:block/stellar_singularity_reactor_lit" },
+    "facing=south,lit=true": { "model": "sandstorm:block/stellar_singularity_reactor_lit", "y": 180 },
+    "facing=west,lit=true": { "model": "sandstorm:block/stellar_singularity_reactor_lit", "y": 270 },
+    "facing=east,lit=true": { "model": "sandstorm:block/stellar_singularity_reactor_lit", "y": 90 }
+  }
+}
+

@@ -151,6 +151,7 @@
     "sandstorm:compact_slab_piston",
     "sandstorm:compact_sticky_slab_piston",
     "sandstorm:hydroponic_tray",
-    "sandstorm:seismic_resonance_catalyst"
+    "sandstorm:seismic_resonance_catalyst",
+    "sandstorm:stellar_singularity_reactor"
   ]
 }

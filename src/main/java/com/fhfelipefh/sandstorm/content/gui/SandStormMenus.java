@@ -217,6 +217,11 @@ public class SandStormMenus {
         new MenuType<>(AtmosphericCarbonExtractorMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<StellarSingularityReactorMenu> STELLAR_SINGULARITY_REACTOR_MENU = register(
+        "stellar_singularity_reactor",
+        new MenuType<>(StellarSingularityReactorMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

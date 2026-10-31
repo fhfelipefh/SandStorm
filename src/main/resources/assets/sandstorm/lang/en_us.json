@@ -1506,5 +1506,13 @@
   "message.sandstorm.override_already_overridden": "This machine has already been overridden",
   "message.sandstorm.override_success": "Neural override of %s established",
   "tooltip.sandstorm.neural_override_lance.desc": "Overrides neural circuit of machines",
-  "tooltip.sandstorm.neural_override_lance.info": "Hold aiming at machines to hack"
+  "tooltip.sandstorm.neural_override_lance.info": "Hold aiming at machines to hack",
+  "entity.sandstorm.warden_android": "Warden Android",
+  "entity.sandstorm.warden_android.deactivated": "Deactivated Warden Android",
+  "item.sandstorm.warden_singularity_core": "Warden Singularity Core",
+  "item.sandstorm.warden_singularity_core.desc": "High-density collapsed singularity core.",
+  "item.sandstorm.warden_android_spawn_egg": "Warden Android Spawn Egg",
+  "block.sandstorm.stellar_singularity_reactor": "Stellar Singularity Reactor",
+  "container.sandstorm.stellar_singularity_reactor": "Stellar Singularity Reactor",
+  "item.sandstorm.stellar_singularity_reactor": "Stellar Singularity Reactor"
 }

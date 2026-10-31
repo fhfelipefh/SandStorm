@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "S": "sandstorm:warden_singularity_core",
+    "C": "sandstorm:circuit_board",
+    "N": "sandstorm:nano_actuator",
+    "A": "sandstorm:solid_state_accumulator"
+  },
+  "pattern": [
+    "TNT",
+    "CSC",
+    "TAT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:stellar_singularity_reactor"
+  }
+}
+

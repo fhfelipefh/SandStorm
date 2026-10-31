@@ -49,6 +49,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.RadioactiveWasteBarrelBlock
 import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.VaultDoorControllerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SpectralSurveyTelescopeBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.StellarSingularityReactorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneCrateBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SteelFurnaceBlockEntity;
@@ -1668,6 +1669,20 @@ public class SandStormBlocks {
             SandStormMod.id("compact_slab_piston"),
             new BlockEntityType<>(CompactSlabPistonBlockEntity::new, Set.of(COMPACT_SLAB_PISTON, COMPACT_STICKY_SLAB_PISTON))
     );
+    public static final StellarSingularityReactorBlock STELLAR_SINGULARITY_REACTOR = register("stellar_singularity_reactor",
+            new StellarSingularityReactorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("stellar_singularity_reactor")))
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(8.0f, 1200.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .lightLevel(state -> state.getValue(StellarSingularityReactorBlock.LIT) ? 15 : 0)
+                    .requiresCorrectToolForDrops())
+    );
+    public static final BlockEntityType<StellarSingularityReactorBlockEntity> STELLAR_SINGULARITY_REACTOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("stellar_singularity_reactor"),
+            new BlockEntityType<>(StellarSingularityReactorBlockEntity::new, Set.of(STELLAR_SINGULARITY_REACTOR))
+    );
 
     public static final HydroponicTrayBlock HYDROPONIC_TRAY = register("hydroponic_tray",
             new HydroponicTrayBlock(BlockBehaviour.Properties.of()
@@ -1765,5 +1780,6 @@ public class SandStormBlocks {
         FluidStorage.SIDED.registerForBlockEntity(XpVacuumBlockEntity::getFluidStorage, XP_VACUUM_BE);
         FluidStorage.SIDED.registerForBlockEntity(SynapticRepairerBlockEntity::getFluidStorage, SYNAPTIC_REPAIRER_BE);
         FluidStorage.SIDED.registerForBlockEntity(NeuralOverdriveModuleBlockEntity::getFluidStorage, NEURAL_OVERDRIVE_MODULE_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, STELLAR_SINGULARITY_REACTOR_BE);
     }
 }

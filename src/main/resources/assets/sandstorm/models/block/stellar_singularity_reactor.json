@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "sandstorm:block/stellar_singularity_reactor_top",
+    "bottom": "sandstorm:block/stellar_singularity_reactor_bottom",
+    "side": "sandstorm:block/stellar_singularity_reactor_side",
+    "front": "sandstorm:block/stellar_singularity_reactor_front"
+  }
+}
+

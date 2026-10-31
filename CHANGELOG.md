@@ -2,6 +2,21 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.59] - 2026-10-30
+
+### 👑 Androide Guardião & Reator de Singularidade Estelar
+* **Androide Guardião (warden_android)**:
+  * Adicionado chefe androide de alta complexidade com 500 HP, 20 de armadura, 12 de tenacidade e inteligência de combate avançada.
+  * Habilidades de combate: Feixe Sônico perfurante (20 de dano com repulsão cinemática), Pisotão Sísmico em área (16 de dano, lançamento aéreo, Lentidão III e Fraqueza II), Pulso EMP drenador de exoesqueletos e modo Fúria dinâmico abaixo de 35% de vida com partículas de fogo das almas.
+  * Recompensas únicas ao derrotar: 1 a 3 Estrelas do Nether garantidas, 1x Núcleo de Singularidade Guardiã (warden_singularity_core), 6 a 12 Compósitos de Titânio-Quitina, atuadores nano e placas de circuito.
+* **Reator de Singularidade Estelar (stellar_singularity_reactor)**:
+  * Gerador de energia de hiper-escala forjado com o Núcleo de Singularidade Guardiã do chefe.
+  * Alimentado por Estrelas do Nether: consome 1 Estrela do Nether para produzir massivos 25.000 J/tick continuamente por 72.000 ticks (1 hora real de queima = 1,8 Bilhões de Joules por estrela!).
+  * Capacidade interna de 100.000.000 Joules, transferência direta de 100.000 J/tick para máquinas adjacentes e transmissão global WPT de 10.000 J/tick cobrindo bases e trajes sem fio.
+  * Interface gráfica procedimental com câmara de contenção estelar, indicador de queima e sincronização bitwise de 32 bits livre de overflow.
+* **Galerias Dinâmicas Atualizadas**:
+  * Adicionado o Androide Guardião na galeria isométrica 3D de entidades e o Reator de Singularidade Estelar na galeria de blocos do README.md.
+
 ## [1.19.58] - 2026-10-30
 
 ### 🧱 Galerias Isométricas 3D de Blocos, Armas & Correção do Verme da Areia

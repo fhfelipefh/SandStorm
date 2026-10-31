@@ -21,6 +21,12 @@ BLOCKS = [
         "model": "acoustic_defense_pylon.json"
     },
     {
+        "id": "stellar_singularity_reactor",
+        "name": "Reator de Singularidade Estelar",
+        "role": "Geração Hiper-Energética & WPT Global",
+        "model": "stellar_singularity_reactor.json"
+    },
+    {
         "id": "bioreactor_vat",
         "name": "Vat Biorreator",
         "role": "Cultura de Biomassa & Enzimas",

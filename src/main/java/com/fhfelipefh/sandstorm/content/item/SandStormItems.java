@@ -224,6 +224,8 @@ public class SandStormItems {
     public static final Item APEX_HEART_MATRIX = register("apex_heart_matrix", new Item(properties("apex_heart_matrix").rarity(Rarity.EPIC)));
     public static final ApexRailgunHarpoonItem APEX_RAILGUN_HARPOON = register("apex_railgun_harpoon", new ApexRailgunHarpoonItem(properties("apex_railgun_harpoon").durability(256).rarity(Rarity.EPIC)));
     public static final SpawnEggItem APEX_SANDWORM_SPAWN_EGG = register("apex_sandworm_spawn_egg", new SpawnEggItem(properties("apex_sandworm_spawn_egg").spawnEgg(SandStormEntities.APEX_SANDWORM)));
+    public static final Item WARDEN_SINGULARITY_CORE = register("warden_singularity_core", new Item(properties("warden_singularity_core").rarity(Rarity.EPIC)));
+    public static final SpawnEggItem WARDEN_ANDROID_SPAWN_EGG = register("warden_android_spawn_egg", new SpawnEggItem(properties("warden_android_spawn_egg").spawnEgg(SandStormEntities.WARDEN_ANDROID)));
     public static final BlockItem XENO_WHEAT_SEEDS = register("xeno_wheat_seeds", new BlockItem(SandStormBlocks.XENO_WHEAT_CROP, properties("xeno_wheat_seeds")));
     public static final Item XENO_WHEAT = register("xeno_wheat", new Item(properties("xeno_wheat")));
     public static final Item DUNE_MELON_SEEDS = register("dune_melon_seeds", new Item(properties("dune_melon_seeds")));
@@ -597,6 +599,9 @@ public class SandStormItems {
                         entries.accept(APEX_HEART_MATRIX);
                         entries.accept(APEX_RAILGUN_HARPOON);
                         entries.accept(APEX_SANDWORM_SPAWN_EGG);
+                        entries.accept(WARDEN_SINGULARITY_CORE);
+                        entries.accept(WARDEN_ANDROID_SPAWN_EGG);
+                        entries.accept(SandStormBlocks.STELLAR_SINGULARITY_REACTOR);
                         entries.accept(SandStormBlocks.SEISMIC_RESONANCE_CATALYST);
                         entries.accept(SandStormBlocks.HYDROPONIC_TRAY);
                         entries.accept(XENO_WHEAT_SEEDS);

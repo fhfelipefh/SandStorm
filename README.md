@@ -30,7 +30,7 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
 ## 👾 Entidades & Mobs Cibernéticos
 
 <details>
-<summary><b>Clique para expandir a galeria isométrica de entidades (26 modelos)</b></summary>
+<summary><b>Clique para expandir a galeria isométrica de entidades (27 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -39,6 +39,11 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <img src="docs/images/entities/megazord.png" width="140" alt="Titã Megazord"><br>
       <b>Titã Megazord</b><br>
       <sub>Veículo Mecatrônico Pesado</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/entities/warden_android.png" width="140" alt="Androide Guardião"><br>
+      <b>Androide Guardião</b><br>
+      <sub>Androide Alfa Gravimétrico & Acústico</sub>
     </td>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/fanghorn.png" width="140" alt="Presalonga (Fanghorn)"><br>
@@ -50,13 +55,13 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Garragélida (Frostclaw)</b><br>
       <sub>Predador Criogênico Articular</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/glinthawk.png" width="140" alt="Falcão Cintilante (Glinthawk)"><br>
       <b>Falcão Cintilante (Glinthawk)</b><br>
       <sub>Drone Predador Aéreo</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/grazer.png" width="140" alt="Pastador (Grazer)"><br>
       <b>Pastador (Grazer)</b><br>
@@ -72,13 +77,13 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Corcel Cibernético</b><br>
       <sub>Montaria Rápida & Bateria Móvel</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/cyber_hound.png" width="140" alt="Cão Cibernético"><br>
       <b>Cão Cibernético</b><br>
       <sub>Guardião Autônomo & Rastreador</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/cybernetic_golem.png" width="140" alt="Golem Cibernético"><br>
       <b>Golem Cibernético</b><br>
@@ -94,13 +99,13 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Sentinela de Sucata</b><br>
       <sub>Patrulheiro Autônomo de Ruínas</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/defective_sentinel.png" width="140" alt="Sentinela Defeituosa"><br>
       <b>Sentinela Defeituosa</b><br>
       <sub>Unidade Hostil Corrompida</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/derelict_automaton.png" width="140" alt="Autômato Abandonado"><br>
       <b>Autômato Abandonado</b><br>
@@ -116,13 +121,13 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Sucateiro Nômade</b><br>
       <sub>Comerciante do Deserto Profundo</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/aquifer_beetle.png" width="140" alt="Besouro Aquífero"><br>
       <b>Besouro Aquífero</b><br>
       <sub>Bio-Reservatório de Água</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/cyborg_excavator.png" width="140" alt="Ciborgue Escavador"><br>
       <b>Ciborgue Escavador</b><br>
@@ -138,13 +143,13 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Ciborgue Colhedor</b><br>
       <sub>Especialista em Agricultura</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/scout_drone.png" width="140" alt="Drone Explorador"><br>
       <b>Drone Explorador</b><br>
       <sub>Reconhecimento & Vigilância Aérea</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/crawler_drone.png" width="140" alt="Drone Rastejador"><br>
       <b>Drone Rastejador</b><br>
@@ -160,13 +165,13 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Drone Construtor</b><br>
       <sub>Fabricação Remota de Estruturas</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/excavator_vehicle.png" width="140" alt="Veículo Escavador"><br>
       <b>Veículo Escavador</b><br>
       <sub>Maquinário Pesado Tripulado</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/autonomous_sonic_turret.png" width="140" alt="Torreta Sônica Autônoma"><br>
       <b>Torreta Sônica Autônoma</b><br>
@@ -177,7 +182,6 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Prancha de Areia (Sandboard)</b><br>
       <sub>Locomoção Veloz nas Dunas</sub>
     </td>
-    <td width="25%"></td>
     <td width="25%"></td>
   </tr>
 </table>
@@ -191,7 +195,7 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
 ## 🧱 Novos Blocos, Maquinários & Automação
 
 <details>
-<summary><b>Clique para expandir o catálogo de maquinários e blocos (24 modelos)</b></summary>
+<summary><b>Clique para expandir o catálogo de maquinários e blocos (25 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -207,17 +211,22 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <sub>Repulsor Sísmico Anti-Verme</sub>
     </td>
     <td align="center" width="25%" valign="top">
+      <img src="docs/images/blocks/stellar_singularity_reactor.png" width="140" alt="Reator de Singularidade Estelar"><br>
+      <b>Reator de Singularidade Estelar</b><br>
+      <sub>Geração Hiper-Energética & WPT Global</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/bioreactor_vat.png" width="140" alt="Vat Biorreator"><br>
       <b>Vat Biorreator</b><br>
       <sub>Cultura de Biomassa & Enzimas</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/bio_regeneration_pod.png" width="140" alt="Cápsula de Biorregeneração"><br>
       <b>Cápsula de Biorregeneração</b><br>
       <sub>Cura Celular Rápida de Operadores</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/auto_assembly_line.png" width="140" alt="Linha de Montagem Robótica"><br>
       <b>Linha de Montagem Robótica</b><br>
@@ -233,13 +242,13 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Unidade de Discos Quânticos</b><br>
       <sub>Armazenamento Holográfico Massivo</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/quantum_access_terminal.png" width="140" alt="Terminal de Acesso Quântico"><br>
       <b>Terminal de Acesso Quântico</b><br>
       <sub>Interface Gráfica de Logística ME</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/desalination_filter.png" width="140" alt="Filtro Dessalinizador"><br>
       <b>Filtro Dessalinizador</b><br>
@@ -255,13 +264,13 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Impressora 3D de Precisão</b><br>
       <sub>Prototipagem Rápida de Peças</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/storm_wind_turbine.png" width="140" alt="Turbina Eólica de Tempestade"><br>
       <b>Turbina Eólica de Tempestade</b><br>
       <sub>Geração Elétrica Cinética Eólica</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/compact_slab_piston.png" width="140" alt="Pistão Compacto de Lajes"><br>
       <b>Pistão Compacto de Lajes</b><br>
@@ -277,13 +286,13 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Controlador de Porta de Cofre</b><br>
       <sub>Acesso Hermético de Alta Segurança</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/deep_core_drill.png" width="140" alt="Perfuratriz de Núcleo Profundo"><br>
       <b>Perfuratriz de Núcleo Profundo</b><br>
       <sub>Mineração Subterrânea Automatizada</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/electric_arc_furnace.png" width="140" alt="Fornalha de Arco Elétrico"><br>
       <b>Fornalha de Arco Elétrico</b><br>
@@ -299,13 +308,13 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Refinaria Química</b><br>
       <sub>Fracionamento de Fluidos Fósseis</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/dew_condenser.png" width="140" alt="Condensador de Orvalho"><br>
       <b>Condensador de Orvalho</b><br>
       <sub>Captação Passiva de Umidade do Ar</sub>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/atmospheric_carbon_extractor.png" width="140" alt="Extrator de Carbono"><br>
       <b>Extrator de Carbono</b><br>
@@ -321,11 +330,16 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <b>Acumulador de Estado Sólido</b><br>
       <sub>Armazenamento de Alta Tensão</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/blocks/hydroponic_chamber.png" width="140" alt="Câmara Hidropônica"><br>
       <b>Câmara Hidropônica</b><br>
       <sub>Cultivo Subterrâneo Otimizado</sub>
     </td>
+    <td width="25%"></td>
+    <td width="25%"></td>
+    <td width="25%"></td>
   </tr>
 </table>
 

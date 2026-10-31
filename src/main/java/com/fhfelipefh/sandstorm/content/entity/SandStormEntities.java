@@ -437,6 +437,19 @@ public class SandStormEntities {
                     .build(APEX_SANDWORM_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> WARDEN_ANDROID_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("warden_android")
+    );
+
+    public static final EntityType<WardenAndroidEntity> WARDEN_ANDROID = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("warden_android"),
+            EntityType.Builder.of(WardenAndroidEntity::new, MobCategory.MONSTER)
+                    .sized(1.4f, 2.9f)
+                    .build(WARDEN_ANDROID_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
@@ -466,5 +479,6 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(GLINTHAWK, GlinthawkEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(WATERWING, WaterwingEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(APEX_SANDWORM, ApexSandwormEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(WARDEN_ANDROID, WardenAndroidEntity.createAttributes());
     }
 }

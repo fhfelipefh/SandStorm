@@ -41,6 +41,7 @@ import com.fhfelipefh.sandstorm.client.gui.QuantumSleeperScreen;
 import com.fhfelipefh.sandstorm.client.gui.QuantumTerminalScreen;
 import com.fhfelipefh.sandstorm.client.gui.SolidStateAccumulatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.SpectralSurveyTelescopeScreen;
+import com.fhfelipefh.sandstorm.client.gui.StellarSingularityReactorScreen;
 import com.fhfelipefh.sandstorm.content.gui.QuantumTerminalMenu;
 import com.fhfelipefh.sandstorm.content.network.SyncTerminalGridPayload;
 import com.fhfelipefh.sandstorm.client.gui.SupercriticalHeatExchangerScreen;
@@ -98,6 +99,7 @@ import com.fhfelipefh.sandstorm.client.renderer.ScrapSentinelRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DefectiveSentinelRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.NomadScavengerRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SpaceSuitArmorRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.WardenAndroidRenderer;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
@@ -186,6 +188,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.SPECTRAL_SURVEY_TELESCOPE_MENU, SpectralSurveyTelescopeScreen::new);
         MenuScreens.register(SandStormMenus.ELECTRIC_ARC_FURNACE_MENU, ElectricArcFurnaceScreen::new);
         MenuScreens.register(SandStormMenus.ATMOSPHERIC_CARBON_EXTRACTOR_MENU, AtmosphericCarbonExtractorScreen::new);
+        MenuScreens.register(SandStormMenus.STELLAR_SINGULARITY_REACTOR_MENU, StellarSingularityReactorScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);
@@ -244,6 +247,8 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.FROSTCLAW, FrostclawRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.GLINTHAWK, GlinthawkRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.WATERWING, WaterwingRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.APEX_SANDWORM, SandwormRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.WARDEN_ANDROID, WardenAndroidRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

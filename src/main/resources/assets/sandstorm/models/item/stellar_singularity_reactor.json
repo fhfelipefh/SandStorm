@@ -1,0 +1,9 @@
+{
+  "parent": "sandstorm:block/stellar_singularity_reactor",
+  "display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "scale": [0.625, 0.625, 0.625]
+    }
+  }
+}

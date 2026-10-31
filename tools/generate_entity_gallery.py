@@ -15,6 +15,13 @@ ENTITIES = [
         "texture": "textures/entity/megazord/megazord.png"
     },
     {
+        "id": "warden_android",
+        "name": "Androide Guardião",
+        "role": "Androide Alfa Gravimétrico & Acústico",
+        "model": "WardenAndroidModel.java",
+        "texture": "textures/entity/warden_android/warden_android.png"
+    },
+    {
         "id": "fanghorn",
         "name": "Presalonga (Fanghorn)",
         "role": "Escolta Térmica & Combate",

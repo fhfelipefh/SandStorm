@@ -1506,5 +1506,13 @@
   "message.sandstorm.override_already_overridden": "Esta máquina já foi sobrescrita",
   "message.sandstorm.override_success": "Controle neural de %s estabelecido",
   "tooltip.sandstorm.neural_override_lance.desc": "Sobrescreve o circuito neural de máquinas",
-  "tooltip.sandstorm.neural_override_lance.info": "Segure mirando em androides para hackear"
+  "tooltip.sandstorm.neural_override_lance.info": "Segure mirando em androides para hackear",
+  "entity.sandstorm.warden_android": "Androide Guardião",
+  "entity.sandstorm.warden_android.deactivated": "Androide Guardião Desativado",
+  "item.sandstorm.warden_singularity_core": "Núcleo de Singularidade Guardiã",
+  "item.sandstorm.warden_singularity_core.desc": "Núcleo colapsado de alta densidade.",
+  "item.sandstorm.warden_android_spawn_egg": "Ovo Gerador de Androide Guardião",
+  "block.sandstorm.stellar_singularity_reactor": "Reator de Singularidade Estelar",
+  "container.sandstorm.stellar_singularity_reactor": "Reator de Singularidade Estelar",
+  "item.sandstorm.stellar_singularity_reactor": "Reator de Singularidade Estelar"
 }
