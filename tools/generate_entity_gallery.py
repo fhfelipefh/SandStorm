@@ -241,6 +241,13 @@ def parse_model_hierarchy(file_path):
         content = f.read()
 
     content_clean = re.sub(r'//.*', '', content)
+
+    # Pre-scan variable assignments to child part names (e.g. PartDefinition seg1 = root.addOrReplaceChild("segment_1", ...))
+    var_to_name = {'root': 'root'}
+    for m in re.finditer(r'(?:PartDefinition\s+)?(\w+)\s*=\s*(\w+)\.addOrReplaceChild\s*\(\s*["\']([^"\']+)["\']', content_clean):
+        var_to_name[m.group(1)] = m.group(3)
+
+    is_sandworm = 'SandwormModel' in file_path
     part_nodes = {}
 
     pattern = re.compile(
@@ -289,6 +296,24 @@ def parse_model_hierarchy(file_path):
                 oy = float(args_m.group(2))
                 oz = float(args_m.group(3))
 
+        # Dynamic breach pose for Sandworm so it emerges majestically from the sand
+        if is_sandworm:
+            if name.startswith('sub_ring'):
+                continue
+            if name.startswith('segment_'):
+                seg_idx = int(name.split('_')[1])
+                rx = 0.14 * (1.1 - seg_idx * 0.04)
+                ry = -0.08 * (1.0 + seg_idx * 0.05)
+                rz = 0.03 * seg_idx
+            elif name == 'neck':
+                rx = 0.14 * 0.6
+                ry = -0.08 * 1.5
+                rz = 0.03 * 10
+            elif name == 'head':
+                rx = 0.14 * 0.4
+                ry = -0.08 * 1.8
+                rz = 0.0
+
         boxes = []
         box_pattern = re.compile(
             r'texOffs\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)\s*\.addBox\s*\(\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*\)'
@@ -299,20 +324,16 @@ def parse_model_hierarchy(file_path):
             dx, dy, dz = float(bm.group(6)), float(bm.group(7)), float(bm.group(8))
             boxes.append({'u': u, 'v': v, 'x': x, 'y': y, 'z': z, 'dx': dx, 'dy': dy, 'dz': dz})
 
+        actual_parent = var_to_name.get(parent_var, parent_var)
         part_nodes[name] = {
-            'parent_var': parent_var,
+            'parent_name': actual_parent if actual_parent != 'root' else None,
             'ox': ox, 'oy': oy, 'oz': oz,
             'rx': rx, 'ry': ry, 'rz': rz,
             'boxes': boxes
         }
 
     local_matrices = {}
-    parent_map = {}
     for name, node in part_nodes.items():
-        p_var = node['parent_var']
-        parent_name = p_var if p_var != 'root' else None
-        parent_map[name] = parent_name
-
         T = translate(node['ox'], node['oy'], node['oz'])
         R = rot_z(node['rz']) @ rot_y(node['ry']) @ rot_x(node['rx'])
         local_matrices[name] = T @ R
@@ -321,7 +342,7 @@ def parse_model_hierarchy(file_path):
     def get_world_matrix(name):
         if name in world_matrices:
             return world_matrices[name]
-        p_name = parent_map.get(name)
+        p_name = part_nodes[name]['parent_name']
         if p_name and p_name in part_nodes:
             p_mat = get_world_matrix(p_name)
         else:

@@ -2,6 +2,21 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.58] - 2026-10-30
+
+### 🧱 Galerias Isométricas 3D de Blocos, Armas & Correção do Verme da Areia
+* **Correção Anatômica do Verme da Areia (`sandworm.png`)**:
+  * Resolvido o colapso hierárquico de variáveis (`seg1`, `seg2`...) no parser do modelo (`SandwormModel.java`), restaurando a cadeia cinemática completa de 104 cubóides.
+  * Aplicada postura de erupção sísmica em curva S inspirada em *Duna*, com o verme emergindo das areias com anéis de dentes e fauce circular abertos para a câmera, preenchendo o enquadramento isométrico.
+* **Galeria Isométrica 3D de Novos Blocos & Maquinários (`tools/generate_block_gallery.py`)**:
+  * Adicionada seção retrátil no `README.md` com 24 blocos e maquinários tecnológicos (Terraformador, Pilone de Defesa Acústica, Biorreator, Linha de Montagem, Controlador ME, Terminais Quânticos, Fabricador de Nanitas, etc.).
+  * Renderização em projeção isométrica verdadeira com ângulo canônico de $30^\circ$ (topo em losango, faces laterais em paralelogramos e aresta vertical central), iluminação direcional e transparência alfa nativa.
+* **Galeria Isométrica 3D de Arsenal Tático & Equipamentos (`tools/generate_weapon_gallery.py`)**:
+  * Adicionada seção retrátil no `README.md` com 16 armas táticas, fuzis de plasma, canhões sônicos, facas vibro, granadas, radar de anomalias, traje espacial e munições.
+  * Suporte híbrido a modelos geométricos 3D com elementos e texturas pixel-art de alta definição.
+* **Orquestrador Unificado (`tools/generate_all_galleries.py`)**:
+  * Script central que executa e sincroniza todas as galerias de entidades, blocos e armas de forma dinâmica e automatizada.
+
 ## [1.19.57] - 2026-10-30
 
 ### 👾 Galeria Isométrica 3D Dinâmica de Entidades & Auditoria Completa de Texturas
