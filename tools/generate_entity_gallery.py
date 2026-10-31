@@ -198,6 +198,21 @@ ENTITIES = [
     }
 ]
 
+ANIMATED_ENTITIES = {
+    "builder_drone",
+    "cargo_drone",
+    "scout_drone",
+    "crawler_drone",
+    "glinthawk",
+    "waterwing",
+    "autonomous_sonic_turret",
+    "warden_android",
+    "sandworm",
+    "megazord",
+    "cyber_steed",
+    "cyber_hound"
+}
+
 def rot_x(rad):
     c, s = math.cos(rad), math.sin(rad)
     return np.array([
@@ -243,30 +258,220 @@ def eval_java_expr(expr):
     except Exception:
         return 0.0
 
-def parse_model_hierarchy(file_path):
+def apply_entity_pose(part_nodes, entity_id, t):
+    if entity_id == 'builder_drone':
+        if 'body' in part_nodes: part_nodes['body']['oy'] += math.sin(t) * 1.5
+        spin = t * 2.0
+        if 'rotor1' in part_nodes: part_nodes['rotor1']['ry'] = spin
+        if 'rotor2' in part_nodes: part_nodes['rotor2']['ry'] = -spin
+        if 'rotor3' in part_nodes: part_nodes['rotor3']['ry'] = -spin
+        if 'rotor4' in part_nodes: part_nodes['rotor4']['ry'] = spin
+
+    elif entity_id == 'cargo_drone':
+        if 'body' in part_nodes: part_nodes['body']['oy'] += math.sin(t) * 1.5
+        spin = t * 2.0
+        if 'rotor1' in part_nodes: part_nodes['rotor1']['ry'] = spin
+        if 'rotor2' in part_nodes: part_nodes['rotor2']['ry'] = -spin
+        if 'rotor3' in part_nodes: part_nodes['rotor3']['ry'] = -spin
+        if 'rotor4' in part_nodes: part_nodes['rotor4']['ry'] = spin
+        if 'cargoClaw' in part_nodes:
+            part_nodes['cargoClaw']['rz'] = math.sin(t) * 0.1
+            part_nodes['cargoClaw']['rx'] = math.cos(t) * 0.08
+
+    elif entity_id == 'scout_drone':
+        if 'right_leg' in part_nodes: part_nodes['right_leg']['rx'] = math.cos(t) * 0.65
+        if 'left_leg' in part_nodes: part_nodes['left_leg']['rx'] = math.cos(t + math.pi) * 0.65
+        if 'left_arm' in part_nodes: part_nodes['left_arm']['rx'] = math.cos(t) * 0.45
+        if 'right_arm' in part_nodes:
+            part_nodes['right_arm']['rx'] = -math.pi / 2.0 + math.sin(t * 2.0) * 0.06
+            part_nodes['right_arm']['ry'] = math.sin(t) * 0.15
+        if 'head' in part_nodes:
+            part_nodes['head']['ry'] = math.sin(t) * 0.35
+            part_nodes['head']['rx'] = math.sin(t * 2.0) * 0.08
+
+    elif entity_id == 'crawler_drone':
+        legSpreadZ = math.pi / 4.0
+        base_poses = {
+            'right_hind_leg': (-legSpreadZ * 0.74, math.pi / 4.0),
+            'left_hind_leg': (legSpreadZ * 0.74, -math.pi / 4.0),
+            'right_middle_hind_leg': (-legSpreadZ * 0.58, math.pi / 8.0),
+            'left_middle_hind_leg': (legSpreadZ * 0.58, -math.pi / 8.0),
+            'right_middle_front_leg': (-legSpreadZ * 0.58, -math.pi / 8.0),
+            'left_middle_front_leg': (legSpreadZ * 0.58, math.pi / 8.0),
+            'right_front_leg': (-legSpreadZ * 0.74, -math.pi / 4.0),
+            'left_front_leg': (legSpreadZ * 0.74, math.pi / 4.0),
+        }
+        for leg, (bz, by) in base_poses.items():
+            if leg in part_nodes:
+                part_nodes[leg]['rz'] = bz
+                part_nodes[leg]['ry'] = by
+
+        swing1 = -(math.cos(t * 2.0) * 0.35)
+        swing2 = -(math.cos(t * 2.0 + math.pi) * 0.35)
+        lift1 = max(0.0, math.sin(t * 2.0)) * 0.3
+        lift2 = max(0.0, math.sin(t * 2.0 + math.pi)) * 0.3
+
+        if 'right_hind_leg' in part_nodes:
+            part_nodes['right_hind_leg']['ry'] += swing1
+            part_nodes['right_hind_leg']['rz'] += lift1
+        if 'left_hind_leg' in part_nodes:
+            part_nodes['left_hind_leg']['ry'] -= swing1
+            part_nodes['left_hind_leg']['rz'] -= lift2
+        if 'right_middle_hind_leg' in part_nodes:
+            part_nodes['right_middle_hind_leg']['ry'] += swing2
+            part_nodes['right_middle_hind_leg']['rz'] += lift2
+        if 'left_middle_hind_leg' in part_nodes:
+            part_nodes['left_middle_hind_leg']['ry'] -= swing2
+            part_nodes['left_middle_hind_leg']['rz'] -= lift1
+        if 'right_middle_front_leg' in part_nodes:
+            part_nodes['right_middle_front_leg']['ry'] += swing1
+            part_nodes['right_middle_front_leg']['rz'] += lift1
+        if 'left_middle_front_leg' in part_nodes:
+            part_nodes['left_middle_front_leg']['ry'] -= swing1
+            part_nodes['left_middle_front_leg']['rz'] -= lift2
+        if 'right_front_leg' in part_nodes:
+            part_nodes['right_front_leg']['ry'] += swing2
+            part_nodes['right_front_leg']['rz'] += lift2
+        if 'left_front_leg' in part_nodes:
+            part_nodes['left_front_leg']['ry'] -= swing2
+            part_nodes['left_front_leg']['rz'] -= lift1
+        if 'head' in part_nodes:
+            part_nodes['head']['ry'] = math.sin(t) * 0.2
+
+    elif entity_id == 'glinthawk':
+        flap = math.sin(t) * 0.45
+        if 'right_wing' in part_nodes:
+            part_nodes['right_wing']['rz'] = flap
+            part_nodes['right_wing']['rx'] = math.cos(t) * 0.1
+        if 'left_wing' in part_nodes:
+            part_nodes['left_wing']['rz'] = -flap
+            part_nodes['left_wing']['rx'] = math.cos(t) * 0.1
+        if 'tail' in part_nodes:
+            part_nodes['tail']['rx'] = -0.1 + math.cos(t * 0.5) * 0.08
+        if 'body' in part_nodes:
+            part_nodes['body']['oy'] += math.sin(t) * 1.5
+        if 'head' in part_nodes:
+            part_nodes['head']['rx'] = -math.sin(t) * 0.08
+
+    elif entity_id == 'waterwing':
+        flap = math.sin(t) * 0.42
+        if 'right_wing' in part_nodes:
+            part_nodes['right_wing']['rz'] = flap
+            part_nodes['right_wing']['rx'] = math.cos(t) * 0.08
+        if 'left_wing' in part_nodes:
+            part_nodes['left_wing']['rz'] = -flap
+            part_nodes['left_wing']['rx'] = math.cos(t) * 0.08
+        if 'tail' in part_nodes:
+            part_nodes['tail']['rx'] = -0.1 + math.cos(t * 0.5) * 0.06
+        if 'body' in part_nodes:
+            part_nodes['body']['oy'] += math.sin(t) * 1.5
+
+    elif entity_id == 'autonomous_sonic_turret':
+        if 'head' in part_nodes:
+            part_nodes['head']['ry'] = t
+        if 'sensor_dome' in part_nodes:
+            part_nodes['sensor_dome']['ry'] = -t * 0.5
+        if 'barrel_left' in part_nodes:
+            part_nodes['barrel_left']['rx'] = math.sin(t * 2.0) * 0.05
+        if 'barrel_right' in part_nodes:
+            part_nodes['barrel_right']['rx'] = -math.sin(t * 2.0) * 0.05
+
+    elif entity_id == 'warden_android':
+        twitch = math.sin(t) * 0.2
+        if 'left_antenna' in part_nodes: part_nodes['left_antenna']['rz'] = twitch
+        if 'right_antenna' in part_nodes: part_nodes['right_antenna']['rz'] = -twitch
+        if 'body' in part_nodes: part_nodes['body']['oy'] += math.sin(t) * 0.8
+        if 'left_arm' in part_nodes: part_nodes['left_arm']['rx'] = math.cos(t) * 0.18
+        if 'right_arm' in part_nodes: part_nodes['right_arm']['rx'] = -math.cos(t) * 0.18
+        if 'head' in part_nodes:
+            part_nodes['head']['rx'] = math.cos(t) * 0.08
+            part_nodes['head']['ry'] = math.sin(t) * 0.12
+
+    elif entity_id == 'sandworm':
+        if 'base' in part_nodes:
+            part_nodes['base']['rx'] = 0.35 + math.sin(t) * 0.04
+            part_nodes['base']['ry'] = -0.5
+            part_nodes['base']['rz'] = 0.25
+        for idx in range(1, 11):
+            name = f'segment_{idx}'
+            if name in part_nodes:
+                part_nodes[name]['rx'] = 0.08 + math.sin(t - idx * 0.3) * 0.03
+                part_nodes[name]['ry'] = 0.10 + math.cos(t - idx * 0.3) * 0.02
+                part_nodes[name]['rz'] = -0.06
+        if 'neck' in part_nodes:
+            part_nodes['neck']['rx'] = -0.15 + math.sin(t - 3.2) * 0.04
+            part_nodes['neck']['ry'] = 0.2
+            part_nodes['neck']['rz'] = -0.1
+        if 'head' in part_nodes:
+            part_nodes['head']['rx'] = -0.25 + math.sin(t - 3.5) * 0.05
+            part_nodes['head']['ry'] = 0.3
+            part_nodes['head']['rz'] = 0.0
+        if 'teeth_outer' in part_nodes: part_nodes['teeth_outer']['rz'] = t
+        if 'teeth_middle' in part_nodes: part_nodes['teeth_middle']['rz'] = -t * 1.5
+        if 'teeth_inner' in part_nodes: part_nodes['teeth_inner']['rz'] = t * 2.0
+
+    elif entity_id == 'megazord':
+        legSwing = math.cos(t) * 0.5
+        if 'left_leg' in part_nodes: part_nodes['left_leg']['rx'] = legSwing
+        if 'right_leg' in part_nodes: part_nodes['right_leg']['rx'] = -legSwing
+        if 'left_arm' in part_nodes: part_nodes['left_arm']['rx'] = -legSwing * 0.7
+        if 'right_arm' in part_nodes: part_nodes['right_arm']['rx'] = legSwing * 0.7
+        if 'body' in part_nodes: part_nodes['body']['oy'] += abs(math.sin(t)) * 1.0
+
+    elif entity_id == 'cyber_steed':
+        limb = math.cos(t) * 0.65
+        if 'rightFrontLeg' in part_nodes: part_nodes['rightFrontLeg']['rx'] = -limb
+        if 'leftFrontLeg' in part_nodes: part_nodes['leftFrontLeg']['rx'] = limb
+        if 'rightHindLeg' in part_nodes: part_nodes['rightHindLeg']['rx'] = limb
+        if 'leftHindLeg' in part_nodes: part_nodes['leftHindLeg']['rx'] = -limb
+        if 'tail' in part_nodes:
+            part_nodes['tail']['rz'] = math.sin(t) * 0.15
+            part_nodes['tail']['rx'] = 0.35 + math.sin(t * 2.0) * 0.06
+        if 'head' in part_nodes:
+            part_nodes['head']['rx'] = 0.1 + math.sin(t) * 0.08
+
+    elif entity_id == 'cyber_hound':
+        limb = math.cos(t) * 0.75
+        if 'rightFrontLeg' in part_nodes: part_nodes['rightFrontLeg']['rx'] = -limb
+        if 'leftFrontLeg' in part_nodes: part_nodes['leftFrontLeg']['rx'] = limb
+        if 'rightHindLeg' in part_nodes: part_nodes['rightHindLeg']['rx'] = limb
+        if 'leftHindLeg' in part_nodes: part_nodes['leftHindLeg']['rx'] = -limb
+        if 'tail' in part_nodes:
+            part_nodes['tail']['ry'] = math.sin(t * 2.0) * 0.4
+        if 'head' in part_nodes:
+            part_nodes['head']['rx'] = math.sin(t) * 0.1
+
+def parse_model_hierarchy(file_path, entity_id=None, t=0.0):
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
 
     content_clean = re.sub(r'//.*', '', content)
 
-    # Pre-scan variable assignments to child part names (e.g. PartDefinition seg1 = root.addOrReplaceChild("segment_1", ...))
+    builder_vars = {}
+    for m in re.finditer(r'CubeListBuilder\s+(\w+)\s*=\s*CubeListBuilder\.create\(\)(.*?);', content_clean, re.DOTALL):
+        builder_vars[m.group(1)] = m.group(2)
+
     var_to_name = {'root': 'root'}
     for m in re.finditer(r'(?:PartDefinition\s+)?(\w+)\s*=\s*(\w+)\.addOrReplaceChild\s*\(\s*["\']([^"\']+)["\']', content_clean):
         var_to_name[m.group(1)] = m.group(3)
 
-    is_sandworm = 'SandwormModel' in file_path
+    is_sandworm = (entity_id == 'sandworm' or 'SandwormModel' in file_path)
     part_nodes = {}
 
     pattern = re.compile(
-        r'(\w+)\.addOrReplaceChild\s*\(\s*["\']([^"\']+)["\']\s*,\s*CubeListBuilder\.create\(\)(.*?)(PartPose\.ZERO|PartPose\.offsetAndRotation\s*\(.*?\)\s*\)|PartPose\.offset\s*\(.*?\))',
+        r'(\w+)\.addOrReplaceChild\s*\(\s*["\']([^"\']+)["\']\s*,\s*(?:CubeListBuilder\.create\(\)|(\w+))(.*?)(PartPose\.ZERO|PartPose\.offsetAndRotation\s*\(.*?\)\s*\)|PartPose\.offset\s*\(.*?\))',
         re.DOTALL
     )
 
     for m in pattern.finditer(content_clean):
         parent_var = m.group(1)
         name = m.group(2)
-        chunk = m.group(3)
-        pose_str = m.group(4)
+        bvar = m.group(3)
+        chunk = m.group(4)
+        pose_str = m.group(5)
+
+        if bvar and bvar in builder_vars:
+            chunk = builder_vars[bvar] + chunk
 
         ox, oy, oz = 0.0, 0.0, 0.0
         rx, ry, rz = 0.0, 0.0, 0.0
@@ -303,27 +508,12 @@ def parse_model_hierarchy(file_path):
                 oy = float(args_m.group(2))
                 oz = float(args_m.group(3))
 
-        # Dynamic breach pose for Sandworm so it emerges majestically from the sand
-        if is_sandworm:
-            if name.startswith('sub_ring'):
-                continue
-            if name.startswith('segment_'):
-                seg_idx = int(name.split('_')[1])
-                rx = 0.14 * (1.1 - seg_idx * 0.04)
-                ry = -0.08 * (1.0 + seg_idx * 0.05)
-                rz = 0.03 * seg_idx
-            elif name == 'neck':
-                rx = 0.14 * 0.6
-                ry = -0.08 * 1.5
-                rz = 0.03 * 10
-            elif name == 'head':
-                rx = 0.14 * 0.4
-                ry = -0.08 * 1.8
-                rz = 0.0
+        if is_sandworm and name.startswith('sub_ring'):
+            continue
 
         boxes = []
         box_pattern = re.compile(
-            r'texOffs\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)\s*\.addBox\s*\(\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*\)'
+            r'texOffs\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)\s*(?:\.mirror\(\)\s*)?\.addBox\s*\(\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*,\s*(-?[\d\.]+)f?\s*\)'
         )
         for bm in box_pattern.finditer(chunk):
             u, v = int(bm.group(1)), int(bm.group(2))
@@ -338,6 +528,8 @@ def parse_model_hierarchy(file_path):
             'rx': rx, 'ry': ry, 'rz': rz,
             'boxes': boxes
         }
+
+    apply_entity_pose(part_nodes, entity_id, t)
 
     local_matrices = {}
     for name, node in part_nodes.items():
@@ -372,7 +564,7 @@ def parse_model_hierarchy(file_path):
 
     return all_boxes
 
-def render_isometric(boxes, texture_path, output_path, img_size=(400, 400), yaw_deg=-135, pitch_deg=30):
+def render_model_frames(frame_boxes_list, texture_path, output_png_path=None, output_gif_path=None, img_size=(400, 400), yaw_deg=-135, pitch_deg=30):
     tex_img = Image.open(texture_path).convert('RGBA')
     tex_arr = np.array(tex_img)
     tex_h, tex_w, _ = tex_arr.shape
@@ -393,108 +585,24 @@ def render_isometric(boxes, texture_path, output_path, img_size=(400, 400), yaw_
         z2 = y1 * sin_p + z1 * cos_p
         return x2, y2, z2
 
-    triangles = []
-    all_pts_cam = []
+    all_global_pts = []
+    for boxes in frame_boxes_list:
+        for box in boxes:
+            w_mat = box['matrix']
+            x0, y0, z0 = box['x'], box['y'], box['z']
+            dx, dy, dz = box['dx'], box['dy'], box['dz']
+            for px in (x0, x0 + dx):
+                for py in (y0, y0 + dy):
+                    for pz in (z0, z0 + dz):
+                        pw = w_mat @ np.array([px, py, pz, 1.0], dtype=np.float32)
+                        pc = world_to_cam(pw[0], pw[1], pw[2])
+                        all_global_pts.append(pc)
 
-    for box in boxes:
-        w_mat = box['matrix']
-        x0, y0, z0 = box['x'], box['y'], box['z']
-        dx, dy, dz = box['dx'], box['dy'], box['dz']
-        x1, y1, z1 = x0 + dx, y0 + dy, z0 + dz
-        u, v = box['u'], box['v']
-
-        u0 = u
-        u1 = u + dz
-        u2 = u + dz + dx
-        u3 = u + 2 * dz + dx
-        u4 = u + 2 * (dz + dx)
-
-        v0 = v
-        v1 = v + dz
-        v2 = v + dz + dy
-
-        faces = [
-            # Top face (Y = y0, normal (0, -1, 0))
-            {
-                'pts': [(x1, y0, z0), (x0, y0, z0), (x0, y0, z1), (x1, y0, z1)],
-                'uv': [(u2, v1), (u1, v1), (u1, v0), (u2, v0)],
-                'norm': (0, -1, 0)
-            },
-            # Bottom face (Y = y1, normal (0, 1, 0))
-            {
-                'pts': [(x1, y1, z1), (x0, y1, z1), (x0, y1, z0), (x1, y1, z0)],
-                'uv': [(u2, v0), (u3, v0), (u3, v1), (u2, v1)],
-                'norm': (0, 1, 0)
-            },
-            # North / Front face (Z = z0, normal (0, 0, -1))
-            {
-                'pts': [(x0, y0, z0), (x1, y0, z0), (x1, y1, z0), (x0, y1, z0)],
-                'uv': [(u1, v1), (u2, v1), (u2, v2), (u1, v2)],
-                'norm': (0, 0, -1)
-            },
-            # South / Back face (Z = z1, normal (0, 0, 1))
-            {
-                'pts': [(x1, y0, z1), (x0, y0, z1), (x0, y1, z1), (x1, y1, z1)],
-                'uv': [(u3, v1), (u4, v1), (u4, v2), (u3, v2)],
-                'norm': (0, 0, 1)
-            },
-            # West / Mob Right face (X = x0, normal (-1, 0, 0))
-            {
-                'pts': [(x0, y0, z1), (x0, y0, z0), (x0, y1, z0), (x0, y1, z1)],
-                'uv': [(u0, v1), (u1, v1), (u1, v2), (u0, v2)],
-                'norm': (-1, 0, 0)
-            },
-            # East / Mob Left face (X = x1, normal (1, 0, 0))
-            {
-                'pts': [(x1, y0, z0), (x1, y0, z1), (x1, y1, z1), (x1, y1, z0)],
-                'uv': [(u2, v1), (u3, v1), (u3, v2), (u2, v2)],
-                'norm': (1, 0, 0)
-            }
-        ]
-
-        for face in faces:
-            pts_world = []
-            for p in face['pts']:
-                v4 = np.array([p[0], p[1], p[2], 1.0], dtype=np.float32)
-                pw4 = w_mat @ v4
-                pts_world.append((pw4[0], pw4[1], pw4[2]))
-
-            n4 = np.array([face['norm'][0], face['norm'][1], face['norm'][2], 0.0], dtype=np.float32)
-            nw4 = w_mat @ n4
-            nx, ny, nz = nw4[0], nw4[1], nw4[2]
-            n_len = math.sqrt(nx*nx + ny*ny + nz*nz)
-            if n_len > 1e-5:
-                nx, ny, nz = nx/n_len, ny/n_len, nz/n_len
-
-            if ny < -0.5:
-                light = 1.0
-            elif ny > 0.5:
-                light = 0.52
-            elif abs(nz) > abs(nx):
-                light = 0.82
-            else:
-                light = 0.68
-
-            pts_cam = [world_to_cam(*pw) for pw in pts_world]
-            for pc in pts_cam:
-                all_pts_cam.append(pc)
-
-            triangles.append({
-                'pts': [pts_cam[0], pts_cam[1], pts_cam[2]],
-                'uv': [face['uv'][0], face['uv'][1], face['uv'][2]],
-                'light': light
-            })
-            triangles.append({
-                'pts': [pts_cam[0], pts_cam[2], pts_cam[3]],
-                'uv': [face['uv'][0], face['uv'][2], face['uv'][3]],
-                'light': light
-            })
-
-    if not all_pts_cam:
+    if not all_global_pts:
         return
 
-    xs = [p[0] for p in all_pts_cam]
-    ys = [p[1] for p in all_pts_cam]
+    xs = [p[0] for p in all_global_pts]
+    ys = [p[1] for p in all_global_pts]
     min_x, max_x = min(xs), max(xs)
     min_y, max_y = min(ys), max(ys)
 
@@ -510,62 +618,154 @@ def render_isometric(boxes, texture_path, output_path, img_size=(400, 400), yaw_
     canvas_cx = target_w / 2.0
     canvas_cy = target_h / 2.0
 
-    canvas = np.zeros((target_h, target_w, 4), dtype=np.uint8)
-    z_buffer = np.full((target_h, target_w), -1e9, dtype=np.float32)
+    frames_rgba = []
 
-    for tri in triangles:
-        p0, p1, p2 = tri['pts']
-        u0, u1, u2 = tri['uv']
-        light = tri['light']
+    for boxes in frame_boxes_list:
+        canvas = np.zeros((target_h, target_w, 4), dtype=np.uint8)
+        z_buffer = np.full((target_h, target_w), -1e9, dtype=np.float32)
 
-        sx0 = (p0[0] - center_cam_x) * scale + canvas_cx
-        sy0 = canvas_cy - (p0[1] - center_cam_y) * scale
-        z0 = p0[2]
+        for box in boxes:
+            w_mat = box['matrix']
+            x0, y0, z0 = box['x'], box['y'], box['z']
+            dx, dy, dz = box['dx'], box['dy'], box['dz']
+            x1, y1, z1 = x0 + dx, y0 + dy, z0 + dz
+            u, v = box['u'], box['v']
 
-        sx1 = (p1[0] - center_cam_x) * scale + canvas_cx
-        sy1 = canvas_cy - (p1[1] - center_cam_y) * scale
-        z1 = p1[2]
+            u0 = u
+            u1 = u + dz
+            u2 = u + dz + dx
+            u3 = u + 2 * dz + dx
+            u4 = u + 2 * (dz + dx)
 
-        sx2 = (p2[0] - center_cam_x) * scale + canvas_cx
-        sy2 = canvas_cy - (p2[1] - center_cam_y) * scale
-        z2 = p2[2]
+            v0 = v
+            v1 = v + dz
+            v2 = v + dz + dy
 
-        min_px = max(0, int(math.floor(min(sx0, sx1, sx2))))
-        max_px = min(target_w - 1, int(math.ceil(max(sx0, sx1, sx2))))
-        min_py = max(0, int(math.floor(min(sy0, sy1, sy2))))
-        max_py = min(target_h - 1, int(math.ceil(max(sy0, sy1, sy2))))
+            faces = [
+                {'pts': [(x1, y0, z0), (x0, y0, z0), (x0, y0, z1), (x1, y0, z1)], 'uv': [(u2, v1), (u1, v1), (u1, v0), (u2, v0)], 'norm': (0, -1, 0)},
+                {'pts': [(x1, y1, z1), (x0, y1, z1), (x0, y1, z0), (x1, y1, z0)], 'uv': [(u2, v0), (u3, v0), (u3, v1), (u2, v1)], 'norm': (0, 1, 0)},
+                {'pts': [(x0, y0, z0), (x1, y0, z0), (x1, y1, z0), (x0, y1, z0)], 'uv': [(u1, v1), (u2, v1), (u2, v2), (u1, v2)], 'norm': (0, 0, -1)},
+                {'pts': [(x1, y0, z1), (x0, y0, z1), (x0, y1, z1), (x1, y1, z1)], 'uv': [(u3, v1), (u4, v1), (u4, v2), (u3, v2)], 'norm': (0, 0, 1)},
+                {'pts': [(x0, y0, z1), (x0, y0, z0), (x0, y1, z0), (x0, y1, z1)], 'uv': [(u0, v1), (u1, v1), (u1, v2), (u0, v2)], 'norm': (-1, 0, 0)},
+                {'pts': [(x1, y0, z0), (x1, y0, z1), (x1, y1, z1), (x1, y1, z0)], 'uv': [(u2, v1), (u3, v1), (u3, v2), (u2, v2)], 'norm': (1, 0, 0)}
+            ]
 
-        denom = (sy1 - sy2) * (sx0 - sx2) + (sx2 - sx1) * (sy0 - sy2)
-        if abs(denom) < 1e-6:
-            continue
+            for face in faces:
+                pts_world = []
+                for p in face['pts']:
+                    pw4 = w_mat @ np.array([p[0], p[1], p[2], 1.0], dtype=np.float32)
+                    pts_world.append((pw4[0], pw4[1], pw4[2]))
 
-        for py in range(min_py, max_py + 1):
-            for px in range(min_px, max_px + 1):
-                w0 = ((sy1 - sy2) * (px - sx2) + (sx2 - sx1) * (py - sy2)) / denom
-                w1 = ((sy2 - sy0) * (px - sx2) + (sx0 - sx2) * (py - sy2)) / denom
-                w2 = 1.0 - w0 - w1
+                nw4 = w_mat @ np.array([face['norm'][0], face['norm'][1], face['norm'][2], 0.0], dtype=np.float32)
+                nx, ny, nz = nw4[0], nw4[1], nw4[2]
+                n_len = math.sqrt(nx*nx + ny*ny + nz*nz)
+                if n_len > 1e-5:
+                    nx, ny, nz = nx/n_len, ny/n_len, nz/n_len
 
-                if w0 >= -0.01 and w1 >= -0.01 and w2 >= -0.01:
+                if ny < -0.5: light = 1.0
+                elif ny > 0.5: light = 0.52
+                elif abs(nz) > abs(nx): light = 0.82
+                else: light = 0.68
+
+                pts_cam = [world_to_cam(*pw) for pw in pts_world]
+
+                tris = [
+                    ([pts_cam[0], pts_cam[1], pts_cam[2]], [face['uv'][0], face['uv'][1], face['uv'][2]]),
+                    ([pts_cam[0], pts_cam[2], pts_cam[3]], [face['uv'][0], face['uv'][2], face['uv'][3]])
+                ]
+
+                for tri_pts, tri_uvs in tris:
+                    p0, p1, p2 = tri_pts
+                    u0, u1, u2 = tri_uvs
+
+                    sx0 = (p0[0] - center_cam_x) * scale + canvas_cx
+                    sy0 = canvas_cy - (p0[1] - center_cam_y) * scale
+                    z0 = p0[2]
+
+                    sx1 = (p1[0] - center_cam_x) * scale + canvas_cx
+                    sy1 = canvas_cy - (p1[1] - center_cam_y) * scale
+                    z1 = p1[2]
+
+                    sx2 = (p2[0] - center_cam_x) * scale + canvas_cx
+                    sy2 = canvas_cy - (p2[1] - center_cam_y) * scale
+                    z2 = p2[2]
+
+                    min_px = max(0, int(math.floor(min(sx0, sx1, sx2))))
+                    max_px = min(target_w - 1, int(math.ceil(max(sx0, sx1, sx2))))
+                    min_py = max(0, int(math.floor(min(sy0, sy1, sy2))))
+                    max_py = min(target_h - 1, int(math.ceil(max(sy0, sy1, sy2))))
+
+                    denom = (sy1 - sy2) * (sx0 - sx2) + (sx2 - sx1) * (sy0 - sy2)
+                    if abs(denom) < 1e-6:
+                        continue
+
+                    px_vals = np.arange(min_px, max_px + 1)
+                    py_vals = np.arange(min_py, max_py + 1)
+                    if len(px_vals) == 0 or len(py_vals) == 0:
+                        continue
+
+                    PX, PY = np.meshgrid(px_vals, py_vals)
+                    w0 = ((sy1 - sy2) * (PX - sx2) + (sx2 - sx1) * (PY - sy2)) / denom
+                    w1 = ((sy2 - sy0) * (PX - sx2) + (sx0 - sx2) * (PY - sy2)) / denom
+                    w2 = 1.0 - w0 - w1
+
+                    mask = (w0 >= -0.01) & (w1 >= -0.01) & (w2 >= -0.01)
+                    if not np.any(mask):
+                        continue
+
                     depth = w0 * z0 + w1 * z1 + w2 * z2
-                    if depth > z_buffer[py, px]:
-                        tu = w0 * u0[0] + w1 * u1[0] + w2 * u2[0]
-                        tv = w0 * u0[1] + w1 * u1[1] + w2 * u2[1]
+                    sub_z = z_buffer[min_py:max_py+1, min_px:max_px+1]
+                    valid = mask & (depth > sub_z)
+                    if not np.any(valid):
+                        continue
 
-                        tex_x = int(math.floor(tu)) % tex_w
-                        tex_y = int(math.floor(tv)) % tex_h
+                    tu = (w0 * u0[0] + w1 * u1[0] + w2 * u2[0])[valid]
+                    tv = (w0 * u0[1] + w1 * u1[1] + w2 * u2[1])[valid]
 
-                        rgba = tex_arr[tex_y, tex_x]
-                        if rgba[3] > 20:
-                            r = int(min(255, max(0, rgba[0] * light)))
-                            g = int(min(255, max(0, rgba[1] * light)))
-                            b = int(min(255, max(0, rgba[2] * light)))
-                            canvas[py, px] = [r, g, b, rgba[3]]
-                            z_buffer[py, px] = depth
+                    tx = (np.floor(tu).astype(np.int32)) % tex_w
+                    ty = (np.floor(tv).astype(np.int32)) % tex_h
 
-    os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
-    out_img = Image.fromarray(canvas, mode='RGBA')
-    out_img.save(output_path)
-    print(f"Rendered: {output_path}")
+                    colors = tex_arr[ty, tx]
+                    vis_mask = colors[:, 3] > 20
+                    if not np.any(vis_mask):
+                        continue
+
+                    sub_z[valid] = np.where(vis_mask, depth[valid], sub_z[valid])
+                    rgb = (colors[:, :3].astype(np.float32) * light).clip(0, 255).astype(np.uint8)
+                    rgba = np.column_stack([rgb, colors[:, 3]])
+
+                    sub_canvas = canvas[min_py:max_py+1, min_px:max_px+1]
+                    sub_canvas[valid] = np.where(vis_mask[:, None], rgba, sub_canvas[valid])
+
+        frames_rgba.append(Image.fromarray(canvas, mode='RGBA'))
+
+    if output_png_path and frames_rgba:
+        os.makedirs(os.path.dirname(os.path.abspath(output_png_path)), exist_ok=True)
+        frames_rgba[0].save(output_png_path)
+        print(f"Rendered PNG: {output_png_path}")
+
+    if output_gif_path and len(frames_rgba) > 1:
+        os.makedirs(os.path.dirname(os.path.abspath(output_gif_path)), exist_ok=True)
+        gif_frames = []
+        for im in frames_rgba:
+            alpha = im.getchannel('A')
+            mask = Image.eval(alpha, lambda a: 255 if a < 64 else 0)
+            p_img = im.convert('RGB').quantize(colors=255)
+            p_img.paste(255, mask)
+            p_img.info['transparency'] = 255
+            p_img.info['disposal'] = 2
+            gif_frames.append(p_img)
+
+        gif_frames[0].save(
+            output_gif_path,
+            save_all=True,
+            append_images=gif_frames[1:],
+            duration=60,
+            loop=0,
+            transparency=255,
+            disposal=2
+        )
+        print(f"Rendered animated GIF ({len(frames_rgba)} frames): {output_gif_path}")
 
 def build_markdown_grid(columns=4):
     lines = []
@@ -583,13 +783,17 @@ def build_markdown_grid(columns=4):
         row_entities = ENTITIES[i:i + columns]
         lines.append("  <tr>")
         for ent in row_entities:
-            rel_img_path = f"docs/images/entities/{ent['id']}.png"
+            rel_gif_path = f"docs/images/entities/{ent['id']}.gif"
+            rel_png_path = f"docs/images/entities/{ent['id']}.png"
+            if os.path.exists(rel_gif_path):
+                img_src = rel_gif_path
+            else:
+                img_src = rel_png_path
             lines.append(f'    <td align="center" width="{col_pct}" valign="top">')
-            lines.append(f'      <img src="{rel_img_path}" width="140" alt="{ent["name"]}"><br>')
+            lines.append(f'      <img src="{img_src}" width="140" alt="{ent["name"]}"><br>')
             lines.append(f'      <b>{ent["name"]}</b><br>')
             lines.append(f'      <sub>{ent["role"]}</sub>')
             lines.append('    </td>')
-        # Fill empty cells if row not full
         if len(row_entities) < columns:
             for _ in range(columns - len(row_entities)):
                 lines.append(f'    <td width="{col_pct}"></td>')
@@ -615,7 +819,6 @@ def update_readme():
         pattern = re.compile(rf"{re.escape(start_tag)}.*?{re.escape(end_tag)}", re.DOTALL)
         new_content = pattern.sub(gallery_block, content)
     else:
-        # Insert before '## 📖 Como Jogar (Wiki)' or near the end of Demonstração em Jogo
         anchor = "## 📖 Como Jogar (Wiki)"
         if anchor in content:
             new_content = content.replace(anchor, f"{gallery_block}\n\n---\n\n{anchor}")
@@ -627,9 +830,12 @@ def update_readme():
     print("README.md updated successfully with dynamic entity gallery!")
 
 def main():
-    parser = argparse.ArgumentParser(description="Render entity gallery images and update README.md")
-    parser.add_argument("--force", action="store_true", help="Force re-rendering of all images")
+    parser = argparse.ArgumentParser(description="Render entity gallery images/GIFs and update README.md")
+    parser.add_argument("--force", action="store_true", help="Force re-rendering of all images and GIFs")
+    parser.add_argument("--entities", type=str, default=None, help="Comma-separated list of entity IDs to render")
     args = parser.parse_args()
+
+    filter_ids = set(args.entities.split(',')) if args.entities else None
 
     model_dir = "src/client/java/com/fhfelipefh/sandstorm/client/renderer"
     tex_dir = "src/main/resources/assets/sandstorm"
@@ -638,9 +844,19 @@ def main():
 
     print(f"Processing {len(ENTITIES)} entities...")
     for ent in ENTITIES:
-        out_path = os.path.join(out_dir, f"{ent['id']}.png")
-        if not args.force and os.path.exists(out_path):
-            print(f"Skipping {ent['id']} (already rendered)")
+        ent_id = ent['id']
+        if filter_ids and ent_id not in filter_ids:
+            continue
+
+        is_animated = ent_id in ANIMATED_ENTITIES
+        out_png = os.path.join(out_dir, f"{ent_id}.png")
+        out_gif = os.path.join(out_dir, f"{ent_id}.gif") if is_animated else None
+
+        png_exists = os.path.exists(out_png)
+        gif_exists = (out_gif and os.path.exists(out_gif))
+
+        if not args.force and png_exists and (not is_animated or gif_exists):
+            print(f"Skipping {ent_id} (already rendered)")
             continue
 
         mf = os.path.join(model_dir, ent["model"])
@@ -653,11 +869,22 @@ def main():
             print(f"ERROR: Texture file not found: {tf}")
             continue
 
-        boxes = parse_model_hierarchy(mf)
-        render_isometric(boxes, tf, out_path)
+        num_frames = 16 if is_animated else 1
+        frame_boxes_list = []
+        for f in range(num_frames):
+            t = 2.0 * math.pi * f / num_frames if is_animated else 0.0
+            boxes = parse_model_hierarchy(mf, entity_id=ent_id, t=t)
+            frame_boxes_list.append(boxes)
+
+        render_model_frames(
+            frame_boxes_list,
+            tf,
+            output_png_path=out_png,
+            output_gif_path=out_gif,
+            img_size=(400, 400)
+        )
 
     update_readme()
 
 if __name__ == "__main__":
     main()
-

@@ -36,12 +36,12 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
 <table width="100%">
   <tr>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/megazord.png" width="140" alt="Titã Megazord"><br>
+      <img src="docs/images/entities/megazord.gif" width="140" alt="Titã Megazord"><br>
       <b>Titã Megazord</b><br>
       <sub>Veículo Mecatrônico Pesado</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/warden_android.png" width="140" alt="Androide Guardião"><br>
+      <img src="docs/images/entities/warden_android.gif" width="140" alt="Androide Guardião"><br>
       <b>Androide Guardião</b><br>
       <sub>Androide Alfa Gravimétrico & Acústico</sub>
     </td>
@@ -58,7 +58,7 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
   </tr>
   <tr>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/glinthawk.png" width="140" alt="Falcão Cintilante (Glinthawk)"><br>
+      <img src="docs/images/entities/glinthawk.gif" width="140" alt="Falcão Cintilante (Glinthawk)"><br>
       <b>Falcão Cintilante (Glinthawk)</b><br>
       <sub>Drone Predador Aéreo</sub>
     </td>
@@ -68,19 +68,19 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <sub>Coleta Térmica & Terraformação</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/waterwing.png" width="140" alt="Asa d'Água (Waterwing)"><br>
+      <img src="docs/images/entities/waterwing.gif" width="140" alt="Asa d'Água (Waterwing)"><br>
       <b>Asa d'Água (Waterwing)</b><br>
       <sub>Anfíbio Aquático & Aéreo</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cyber_steed.png" width="140" alt="Corcel Cibernético"><br>
+      <img src="docs/images/entities/cyber_steed.gif" width="140" alt="Corcel Cibernético"><br>
       <b>Corcel Cibernético</b><br>
       <sub>Montaria Rápida & Bateria Móvel</sub>
     </td>
   </tr>
   <tr>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cyber_hound.png" width="140" alt="Cão Cibernético"><br>
+      <img src="docs/images/entities/cyber_hound.gif" width="140" alt="Cão Cibernético"><br>
       <b>Cão Cibernético</b><br>
       <sub>Guardião Autônomo & Rastreador</sub>
     </td>
@@ -90,7 +90,7 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <sub>Defesa Pesada de Instalações</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/sandworm.png" width="140" alt="Verme da Areia (Sandworm)"><br>
+      <img src="docs/images/entities/sandworm.gif" width="140" alt="Verme da Areia (Sandworm)"><br>
       <b>Verme da Areia (Sandworm)</b><br>
       <sub>Superpredador Sísmico Titânico</sub>
     </td>
@@ -146,22 +146,22 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
   </tr>
   <tr>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/scout_drone.png" width="140" alt="Drone Explorador"><br>
+      <img src="docs/images/entities/scout_drone.gif" width="140" alt="Drone Explorador"><br>
       <b>Drone Explorador</b><br>
       <sub>Reconhecimento & Vigilância Aérea</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/crawler_drone.png" width="140" alt="Drone Rastejador"><br>
+      <img src="docs/images/entities/crawler_drone.gif" width="140" alt="Drone Rastejador"><br>
       <b>Drone Rastejador</b><br>
       <sub>Inspeção & Manutenção Interna</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cargo_drone.png" width="140" alt="Drone de Carga"><br>
+      <img src="docs/images/entities/cargo_drone.gif" width="140" alt="Drone de Carga"><br>
       <b>Drone de Carga</b><br>
       <sub>Logística Autônoma de Itens</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/builder_drone.png" width="140" alt="Drone Construtor"><br>
+      <img src="docs/images/entities/builder_drone.gif" width="140" alt="Drone Construtor"><br>
       <b>Drone Construtor</b><br>
       <sub>Fabricação Remota de Estruturas</sub>
     </td>
@@ -173,7 +173,7 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
       <sub>Maquinário Pesado Tripulado</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/autonomous_sonic_turret.png" width="140" alt="Torreta Sônica Autônoma"><br>
+      <img src="docs/images/entities/autonomous_sonic_turret.gif" width="140" alt="Torreta Sônica Autônoma"><br>
       <b>Torreta Sônica Autônoma</b><br>
       <sub>Defesa Perimetral Anti-Verme</sub>
     </td>

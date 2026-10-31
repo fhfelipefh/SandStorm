@@ -82,6 +82,8 @@ gradle-local.properties
 *.local
 
 # Temporary, Scratch & Internal Files
+__pycache__/
+*.pyc
 scratch/
 .tmp/
 tmp/
