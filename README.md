@@ -26,6 +26,8 @@ Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. 
 
 ---
 
+As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas do mod.
+
 <!-- ENTITY_GALLERY_START -->
 ## 👾 Entidades & Mobs Cibernéticos
 
