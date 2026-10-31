@@ -388,23 +388,38 @@ def apply_entity_pose(part_nodes, entity_id, t):
             part_nodes['head']['ry'] = math.sin(t) * 0.12
 
     elif entity_id == 'sandworm':
+        sway = math.sin(t) * 0.03
+        sway_y = math.cos(t) * 0.02
         if 'base' in part_nodes:
-            part_nodes['base']['rx'] = 0.35 + math.sin(t) * 0.04
-            part_nodes['base']['ry'] = -0.5
-            part_nodes['base']['rz'] = 0.25
+            part_nodes['base']['rx'] = 0.15 + sway * 0.5
+            part_nodes['base']['ry'] = 0.20 + sway_y
+            part_nodes['base']['rz'] = 0.10
         for idx in range(1, 11):
             name = f'segment_{idx}'
             if name in part_nodes:
-                part_nodes[name]['rx'] = 0.08 + math.sin(t - idx * 0.3) * 0.03
-                part_nodes[name]['ry'] = 0.10 + math.cos(t - idx * 0.3) * 0.02
-                part_nodes[name]['rz'] = -0.06
+                undulate = math.sin(t - idx * 0.3) * 0.02
+                if idx <= 4:
+                    rx = 0.04 + undulate
+                    ry = 0.03 + math.cos(t - idx * 0.3) * 0.015
+                    rz = 0.02
+                elif idx <= 7:
+                    rx = -0.12 + undulate * 1.2
+                    ry = -0.02 + math.cos(t - idx * 0.3) * 0.015
+                    rz = -0.02
+                else:
+                    rx = -0.18 + undulate * 1.5
+                    ry = -0.04 + math.cos(t - idx * 0.3) * 0.02
+                    rz = -0.01
+                part_nodes[name]['rx'] = rx
+                part_nodes[name]['ry'] = ry
+                part_nodes[name]['rz'] = rz
         if 'neck' in part_nodes:
-            part_nodes['neck']['rx'] = -0.15 + math.sin(t - 3.2) * 0.04
-            part_nodes['neck']['ry'] = 0.2
-            part_nodes['neck']['rz'] = -0.1
+            part_nodes['neck']['rx'] = -0.05 + math.sin(t - 3.2) * 0.02
+            part_nodes['neck']['ry'] = 0.0 + math.cos(t - 3.2) * 0.02
+            part_nodes['neck']['rz'] = 0.0
         if 'head' in part_nodes:
-            part_nodes['head']['rx'] = -0.25 + math.sin(t - 3.5) * 0.05
-            part_nodes['head']['ry'] = 0.3
+            part_nodes['head']['rx'] = -0.16 + math.sin(t - 3.5) * 0.02
+            part_nodes['head']['ry'] = -0.68 + math.cos(t - 3.5) * 0.02
             part_nodes['head']['rz'] = 0.0
         if 'teeth_outer' in part_nodes: part_nodes['teeth_outer']['rz'] = t
         if 'teeth_middle' in part_nodes: part_nodes['teeth_middle']['rz'] = -t * 1.5
