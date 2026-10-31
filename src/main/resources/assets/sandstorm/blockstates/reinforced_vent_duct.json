@@ -1,6 +1,12 @@
 {
   "variants": {
-    "": {
+    "rust=1": {
+      "model": "sandstorm:block/rusted_vent_duct"
+    },
+    "rust=2": {
+      "model": "sandstorm:block/damaged_vent_duct"
+    },
+    "rust=0": {
       "model": "sandstorm:block/reinforced_vent_duct"
     }
   }

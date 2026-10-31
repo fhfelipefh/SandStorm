@@ -345,6 +345,21 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
   </tr>
 </table>
 
+### Desgaste progressivo
+
+Cada família usa um bloco com três estados de ferrugem.
+
+| Bloco | Novo | Desgastado | Enferrujado |
+|:---|:---:|:---:|:---:|
+| Placa militar | <img src="docs/images/blocks/military_armor_plate.png" width="100" alt="Placa militar: estágio 0"> | <img src="docs/images/blocks/weathered_military_plate.png" width="100" alt="Placa militar: estágio 1"> | <img src="docs/images/blocks/rusted_military_plate.png" width="100" alt="Placa militar: estágio 2"> |
+| Faixas de perigo | <img src="docs/images/blocks/hazard_stripe_block.png" width="100" alt="Faixas de perigo: estágio 0"> | <img src="docs/images/blocks/weathered_hazard_stripe.png" width="100" alt="Faixas de perigo: estágio 1"> | <img src="docs/images/blocks/corroded_hazard_stripe.png" width="100" alt="Faixas de perigo: estágio 2"> |
+| Duto reforçado | <img src="docs/images/blocks/reinforced_vent_duct.png" width="100" alt="Duto reforçado: estágio 0"> | <img src="docs/images/blocks/rusted_vent_duct.png" width="100" alt="Duto reforçado: estágio 1"> | <img src="docs/images/blocks/damaged_vent_duct.png" width="100" alt="Duto reforçado: estágio 2"> |
+| Grelha de aço | <img src="docs/images/blocks/steel_vent_grate.png" width="100" alt="Grelha de aço: estágio 0"> | <img src="docs/images/blocks/rusted_steel_vent_grate.png" width="100" alt="Grelha de aço: estágio 1"> | <img src="docs/images/blocks/broken_steel_vent_grate.png" width="100" alt="Grelha de aço: estágio 2"> |
+
+A placa militar no estágio final também pode apresentar uma aparência fraturada:
+
+<img src="docs/images/blocks/fractured_military_plate.png" width="100" alt="Placa militar fraturada">
+
 </details>
 <!-- BLOCK_GALLERY_END -->
 

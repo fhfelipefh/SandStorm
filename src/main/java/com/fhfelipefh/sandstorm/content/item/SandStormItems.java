@@ -557,15 +557,6 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.TACTICAL_RADAR_CONSOLE);
                         entries.accept(SandStormBlocks.MILITARY_MUNITIONS_CRATE);
                         entries.accept(SandStormBlocks.REINFORCED_VENT_DUCT);
-                        entries.accept(SandStormBlocks.RUSTED_MILITARY_PLATE);
-                        entries.accept(SandStormBlocks.WEATHERED_HAZARD_STRIPE);
-                        entries.accept(SandStormBlocks.WEATHERED_MILITARY_PLATE);
-                        entries.accept(SandStormBlocks.FRACTURED_MILITARY_PLATE);
-                        entries.accept(SandStormBlocks.CORRODED_HAZARD_STRIPE);
-                        entries.accept(SandStormBlocks.RUSTED_VENT_DUCT);
-                        entries.accept(SandStormBlocks.DAMAGED_VENT_DUCT);
-                        entries.accept(SandStormBlocks.RUSTED_STEEL_VENT_GRATE);
-                        entries.accept(SandStormBlocks.BROKEN_STEEL_VENT_GRATE);
                         entries.accept(SandStormBlocks.DAMAGED_MUNITIONS_CRATE);
                         entries.accept(SandStormBlocks.BROKEN_RADAR_CONSOLE);
                         entries.accept(SandStormBlocks.VAULT_DOOR_CONTROLLER);

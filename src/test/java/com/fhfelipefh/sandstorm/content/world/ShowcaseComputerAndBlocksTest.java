@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.world;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.LegacyRustBlock;
 import com.fhfelipefh.sandstorm.content.command.SandstormDebugCommand;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.storage.QuantumDiskStorage;
@@ -266,6 +267,7 @@ class ShowcaseComputerAndBlocksTest {
     void shouldEnsureBiospheresShowcaseDoesNotOverlapBlocks() {
         List<Block> blocks = BuiltInRegistries.BLOCK.stream()
                 .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
+                .filter(b -> !(b instanceof LegacyRustBlock))
                 .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR) && !b.equals(SandStormBlocks.VAULT_DOOR_DUMMY))
                 .toList();
         int cols = 8;

@@ -1,6 +1,12 @@
 {
   "variants": {
-    "": {
+    "rust=1": {
+      "model": "sandstorm:block/rusted_steel_vent_grate"
+    },
+    "rust=2": {
+      "model": "sandstorm:block/broken_steel_vent_grate"
+    },
+    "rust=0": {
       "model": "sandstorm:block/steel_vent_grate"
     }
   }

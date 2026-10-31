@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world.dungeon;
 
+import com.fhfelipefh.sandstorm.content.block.RustingBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
@@ -786,7 +787,7 @@ public class ExcavationHiveCatalog {
 
             for (int lx = 2; lx <= 6; lx++) {
                 for (int ly = 1; ly <= 4; ly++) {
-                    setLocalBlock(level, origin, rotation, lx, ly, 1, size, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState());
+                    setLocalBlock(level, origin, rotation, lx, ly, 1, size, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState().setValue(RustingBlock.RUST, RustingBlock.selectRuinRust(random)));
                 }
             }
 
@@ -832,7 +833,7 @@ public class ExcavationHiveCatalog {
 
             for (int lx = 0; lx <= 4; lx++) {
                 for (int ly = 1; ly <= 4; ly++) {
-                    setLocalBlock(level, origin, rotation, lx, ly, 1, size, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState());
+                    setLocalBlock(level, origin, rotation, lx, ly, 1, size, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState().setValue(RustingBlock.RUST, RustingBlock.selectRuinRust(random)));
                 }
             }
 

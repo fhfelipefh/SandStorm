@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world.dungeon;
 
+import com.fhfelipefh.sandstorm.content.block.RustingBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -153,7 +154,7 @@ public class AbandonedMilitaryLabDungeon {
 
             for (int ly = -floorHeight; ly <= 5; ly++) {
                 BlockPos pillarPos = roomOrigin.offset(2, ly, 2);
-                level.setBlock(pillarPos, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState(), 2);
+                level.setBlock(pillarPos, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState().setValue(RustingBlock.RUST, RustingBlock.selectRuinRust(level.getRandom())), 2);
             }
 
             for (int ly = -floorHeight + 1; ly <= 2; ly++) {

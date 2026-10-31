@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.block.LegacyRustBlock;
 import com.fhfelipefh.sandstorm.content.command.SandstormBuildCommand;
 import com.fhfelipefh.sandstorm.content.entity.AquiferBeetleEntity;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
@@ -247,6 +248,7 @@ public class ExhibitionGalleryManager {
     private static void gatherBlocks(List<RawDisplayEntry> list) {
         List<Block> blocks = BuiltInRegistries.BLOCK.stream()
                 .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
+                .filter(b -> !(b instanceof LegacyRustBlock))
                 .sorted(Comparator.comparing(b -> BuiltInRegistries.BLOCK.getKey(b).toString()))
                 .toList();
 

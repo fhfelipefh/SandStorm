@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class MineableTagCompletenessArchitectureTest {
 
     private static final Pattern REGISTER_PATTERN = Pattern.compile(
-            "register\\(\"([a-z0-9_]+)\","
+            "register(?:Legacy)?\\(\"([a-z0-9_]+)\","
     );
 
     private static final Set<String> EXEMPT_BLOCKS = Set.of(

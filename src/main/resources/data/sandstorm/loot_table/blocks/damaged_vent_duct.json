@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "sandstorm:damaged_vent_duct"
+          "name": "sandstorm:reinforced_vent_duct"
         }
       ],
       "rolls": 1.0

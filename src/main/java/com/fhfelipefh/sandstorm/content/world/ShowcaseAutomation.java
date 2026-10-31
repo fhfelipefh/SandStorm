@@ -13,6 +13,7 @@ import com.fhfelipefh.sandstorm.content.block.HeavyKineticPistonBlock;
 import com.fhfelipefh.sandstorm.content.block.HoloLaserTripwireBlock;
 import com.fhfelipefh.sandstorm.content.block.KineticEjectorTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.KineticRailgunBlock;
+import com.fhfelipefh.sandstorm.content.block.LegacyRustBlock;
 import com.fhfelipefh.sandstorm.content.block.MicroSingularityTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.PiezoShockTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.PlasmaShieldGeneratorBlock;
@@ -1471,6 +1472,7 @@ public class ShowcaseAutomation {
     private static void buildBlockCheckerboard(ServerLevel level, BlockPos center) {
         List<Block> blocks = BuiltInRegistries.BLOCK.stream()
                 .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
+                .filter(b -> !(b instanceof LegacyRustBlock))
                 .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR) && !b.equals(SandStormBlocks.VAULT_DOOR_DUMMY))
                 .sorted(Comparator.comparing(b -> BuiltInRegistries.BLOCK.getKey(b).toString()))
                 .toList();
@@ -2450,6 +2452,7 @@ public class ShowcaseAutomation {
 
         List<Item> allModItems = BuiltInRegistries.ITEM.stream()
                 .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(SandStormMod.MOD_ID))
+                .filter(item -> !(item instanceof BlockItem blockItem) || !(blockItem.getBlock() instanceof LegacyRustBlock))
                 .sorted(Comparator.comparing(item -> BuiltInRegistries.ITEM.getKey(item).toString()))
                 .toList();
         int halfCount = allModItems.size() / 2;
@@ -4693,6 +4696,7 @@ public class ShowcaseAutomation {
 
         List<Item> items = BuiltInRegistries.ITEM.stream()
                 .filter(item -> BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(SandStormMod.MOD_ID))
+                .filter(item -> !(item instanceof BlockItem blockItem) || !(blockItem.getBlock() instanceof LegacyRustBlock))
                 .toList();
         int itemsPerChest = 27;
         int chestCount = (items.size() + itemsPerChest - 1) / itemsPerChest;
@@ -5697,6 +5701,7 @@ public class ShowcaseAutomation {
     public static int getCheckerboardMaxZ() {
         List<Block> blocks = BuiltInRegistries.BLOCK.stream()
                 .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
+                .filter(b -> !(b instanceof LegacyRustBlock))
                 .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR) && !b.equals(SandStormBlocks.VAULT_DOOR_DUMMY))
                 .toList();
         int cols = 8;

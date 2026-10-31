@@ -400,6 +400,14 @@ def render_block_isometric(model_json_path, out_path, size=300):
     out_img.save(out_path)
     print(f"Rendered block: {out_path}")
 
+RUST_GALLERY = [
+    ("Placa militar", ["military_armor_plate", "weathered_military_plate", "rusted_military_plate"]),
+    ("Faixas de perigo", ["hazard_stripe_block", "weathered_hazard_stripe", "corroded_hazard_stripe"]),
+    ("Duto reforçado", ["reinforced_vent_duct", "rusted_vent_duct", "damaged_vent_duct"]),
+    ("Grelha de aço", ["steel_vent_grate", "rusted_steel_vent_grate", "broken_steel_vent_grate"]),
+]
+
+
 def build_block_markdown_grid(columns=4):
     lines = []
     lines.append("<!-- BLOCK_GALLERY_START -->")
@@ -428,6 +436,21 @@ def build_block_markdown_grid(columns=4):
         lines.append("  </tr>")
 
     lines.append("</table>")
+    lines.append("")
+    lines.append("### Desgaste progressivo")
+    lines.append("")
+    lines.append("Cada família usa um bloco com três estados de ferrugem.")
+    lines.append("")
+    lines.append("| Bloco | Novo | Desgastado | Enferrujado |")
+    lines.append("|:---|:---:|:---:|:---:|")
+    for name, stages in RUST_GALLERY:
+        images = [f'<img src="docs/images/blocks/{stage}.png" width="100" alt="{name}: estágio {index}">'
+                  for index, stage in enumerate(stages)]
+        lines.append(f"| {name} | " + " | ".join(images) + " |")
+    lines.append("")
+    lines.append('A placa militar no estágio final também pode apresentar uma aparência fraturada:')
+    lines.append('')
+    lines.append('<img src="docs/images/blocks/fractured_military_plate.png" width="100" alt="Placa militar fraturada">')
     lines.append("")
     lines.append("</details>")
     lines.append("<!-- BLOCK_GALLERY_END -->")
@@ -483,6 +506,16 @@ def main():
             continue
 
         render_block_isometric(mf, out_path, size=300)
+
+    for _, stages in RUST_GALLERY:
+        for stage in stages:
+            out_path = os.path.join(out_dir, f"{stage}.png")
+            if args.force or not os.path.exists(out_path):
+                render_block_isometric(os.path.join(model_dir, f"{stage}.json"), out_path, size=300)
+
+    fractured = os.path.join(out_dir, "fractured_military_plate.png")
+    if args.force or not os.path.exists(fractured):
+        render_block_isometric(os.path.join(model_dir, "fractured_military_plate.json"), fractured, size=300)
 
     update_readme_block_gallery()
 

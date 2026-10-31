@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "sandstorm:corroded_hazard_stripe"
+          "name": "sandstorm:hazard_stripe_block"
         }
       ],
       "rolls": 1.0

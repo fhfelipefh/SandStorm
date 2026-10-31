@@ -1046,21 +1046,21 @@ public class SandStormBlocks {
                     .sound(SoundType.HEAVY_CORE)
                     .requiresCorrectToolForDrops()));
     public static final Block MILITARY_ARMOR_PLATE = register("military_armor_plate",
-            new Block(BlockBehaviour.Properties.of()
+            new RustingBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("military_armor_plate")))
                     .mapColor(MapColor.COLOR_BLACK)
                     .strength(60.0f, 1800.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .requiresCorrectToolForDrops()));
     public static final Block HAZARD_STRIPE_BLOCK = register("hazard_stripe_block",
-            new Block(BlockBehaviour.Properties.of()
+            new RustingBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("hazard_stripe_block")))
                     .mapColor(MapColor.COLOR_YELLOW)
                     .strength(30.0f, 600.0f)
                     .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()));
     public static final Block STEEL_VENT_GRATE = register("steel_vent_grate",
-            new Block(BlockBehaviour.Properties.of()
+            new RustingBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("steel_vent_grate")))
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(15.0f, 100.0f)
@@ -1082,70 +1082,70 @@ public class SandStormBlocks {
                     .sound(SoundType.WOOD)
                     .requiresCorrectToolForDrops()));
     public static final Block REINFORCED_VENT_DUCT = register("reinforced_vent_duct",
-            new Block(BlockBehaviour.Properties.of()
+            new RustingBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("reinforced_vent_duct")))
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(25.0f, 300.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .requiresCorrectToolForDrops()));
-    public static final Block RUSTED_MILITARY_PLATE = register("rusted_military_plate",
-            new Block(BlockBehaviour.Properties.of()
+    public static final Block RUSTED_MILITARY_PLATE = registerLegacy("rusted_military_plate",
+            new LegacyRustBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("rusted_military_plate")))
                     .mapColor(MapColor.COLOR_BROWN)
                     .strength(50.0f, 1500.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .requiresCorrectToolForDrops()));
-    public static final Block WEATHERED_HAZARD_STRIPE = register("weathered_hazard_stripe",
-            new Block(BlockBehaviour.Properties.of()
+    public static final Block WEATHERED_HAZARD_STRIPE = registerLegacy("weathered_hazard_stripe",
+            new LegacyRustBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("weathered_hazard_stripe")))
                     .mapColor(MapColor.COLOR_YELLOW)
                     .strength(25.0f, 500.0f)
                     .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()));
-    public static final Block WEATHERED_MILITARY_PLATE = register("weathered_military_plate",
-            new Block(BlockBehaviour.Properties.of()
+    public static final Block WEATHERED_MILITARY_PLATE = registerLegacy("weathered_military_plate",
+            new LegacyRustBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("weathered_military_plate")))
                     .mapColor(MapColor.COLOR_BLACK)
                     .strength(55.0f, 1600.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .requiresCorrectToolForDrops()));
-    public static final Block FRACTURED_MILITARY_PLATE = register("fractured_military_plate",
-            new Block(BlockBehaviour.Properties.of()
+    public static final Block FRACTURED_MILITARY_PLATE = registerLegacy("fractured_military_plate",
+            new LegacyRustBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fractured_military_plate")))
                     .mapColor(MapColor.COLOR_BROWN)
                     .strength(40.0f, 1200.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .requiresCorrectToolForDrops()));
-    public static final Block CORRODED_HAZARD_STRIPE = register("corroded_hazard_stripe",
-            new Block(BlockBehaviour.Properties.of()
+    public static final Block CORRODED_HAZARD_STRIPE = registerLegacy("corroded_hazard_stripe",
+            new LegacyRustBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("corroded_hazard_stripe")))
                     .mapColor(MapColor.COLOR_ORANGE)
                     .strength(20.0f, 400.0f)
                     .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()));
-    public static final Block RUSTED_VENT_DUCT = register("rusted_vent_duct",
-            new Block(BlockBehaviour.Properties.of()
+    public static final Block RUSTED_VENT_DUCT = registerLegacy("rusted_vent_duct",
+            new LegacyRustBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("rusted_vent_duct")))
                     .mapColor(MapColor.COLOR_BROWN)
                     .strength(20.0f, 250.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .requiresCorrectToolForDrops()));
-    public static final Block DAMAGED_VENT_DUCT = register("damaged_vent_duct",
-            new Block(BlockBehaviour.Properties.of()
+    public static final Block DAMAGED_VENT_DUCT = registerLegacy("damaged_vent_duct",
+            new LegacyRustBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("damaged_vent_duct")))
                     .mapColor(MapColor.COLOR_BROWN)
                     .strength(15.0f, 180.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .requiresCorrectToolForDrops()));
-    public static final Block RUSTED_STEEL_VENT_GRATE = register("rusted_steel_vent_grate",
-            new Block(BlockBehaviour.Properties.of()
+    public static final Block RUSTED_STEEL_VENT_GRATE = registerLegacy("rusted_steel_vent_grate",
+            new LegacyRustBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("rusted_steel_vent_grate")))
                     .mapColor(MapColor.COLOR_BROWN)
                     .strength(12.0f, 80.0f)
                     .sound(SoundType.COPPER_GRATE)
                     .requiresCorrectToolForDrops()));
-    public static final Block BROKEN_STEEL_VENT_GRATE = register("broken_steel_vent_grate",
-            new Block(BlockBehaviour.Properties.of()
+    public static final Block BROKEN_STEEL_VENT_GRATE = registerLegacy("broken_steel_vent_grate",
+            new LegacyRustBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("broken_steel_vent_grate")))
                     .mapColor(MapColor.COLOR_BROWN)
                     .strength(8.0f, 50.0f)
@@ -1706,6 +1706,10 @@ public class SandStormBlocks {
                     .sound(SoundType.CROP))
     );
 
+    public static <T extends Block> T registerLegacy(String path, T block) {
+        return register(path, block);
+    }
+
     public static <T extends Block> T registerWithoutItem(String path, T block) {
         return Registry.register(BuiltInRegistries.BLOCK, SandStormMod.id(path), block);
     }
@@ -1720,6 +1724,7 @@ public class SandStormBlocks {
     }
 
     public static void initialize() {
+        RustMigrationManager.initialize();
         WirelessSolarReceiverManager.initialize();
         ThermalGeneratorManager.initialize();
         SupercriticalHeatExchangerManager.initialize();

@@ -1,6 +1,19 @@
 {
   "variants": {
-    "": {
+    "rust=1": {
+      "model": "sandstorm:block/weathered_military_plate"
+    },
+    "rust=2": [
+      {
+        "weight": 4,
+        "model": "sandstorm:block/rusted_military_plate"
+      },
+      {
+        "weight": 1,
+        "model": "sandstorm:block/fractured_military_plate"
+      }
+    ],
+    "rust=0": {
       "model": "sandstorm:block/military_armor_plate"
     }
   }

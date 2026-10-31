@@ -133,12 +133,12 @@ class AssetIntegrityTest {
                     if (root.has("variants")) {
                         JsonObject variants = root.getAsJsonObject("variants");
                         for (Map.Entry<String, JsonElement> variant : variants.entrySet()) {
-                            assertReferencedBlockModel(variant.getValue().getAsJsonObject(), variant.getKey());
+                            assertReferencedBlockModels(variant.getValue(), variant.getKey());
                         }
                     } else {
                         assertTrue(root.has("multipart"), "Blockstate must have variants or multipart: " + statePath);
                         for (JsonElement part : root.getAsJsonArray("multipart")) {
-                            assertReferencedBlockModel(part.getAsJsonObject().getAsJsonObject("apply"), "multipart");
+                            assertReferencedBlockModels(part.getAsJsonObject().get("apply"), "multipart");
                         }
                     }
                 } catch (IOException e) {
@@ -148,7 +148,15 @@ class AssetIntegrityTest {
         }
     }
 
-    private void assertReferencedBlockModel(JsonObject modelObject, String variantName) {
+    private void assertReferencedBlockModels(JsonElement element, String variantName) {
+        if (element.isJsonArray()) {
+            assertTrue(!element.getAsJsonArray().isEmpty(), "Model choices must not be empty: " + variantName);
+            for (JsonElement choice : element.getAsJsonArray()) {
+                assertReferencedBlockModels(choice, variantName);
+            }
+            return;
+        }
+        JsonObject modelObject = element.getAsJsonObject();
         assertTrue(modelObject.has("model"), "Variant must specify model: " + variantName);
         String modelRef = modelObject.get("model").getAsString();
         assertTrue(modelRef.startsWith("sandstorm:block/"), "Model must reference sandstorm:block/: " + modelRef);

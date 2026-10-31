@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "sandstorm:fractured_military_plate"
+          "name": "sandstorm:military_armor_plate"
         }
       ],
       "rolls": 1.0

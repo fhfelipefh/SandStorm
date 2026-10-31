@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "sandstorm:broken_steel_vent_grate"
+          "name": "sandstorm:steel_vent_grate"
         }
       ],
       "rolls": 1.0
