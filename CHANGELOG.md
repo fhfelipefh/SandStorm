@@ -2,6 +2,21 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.71] - 2026-11-01
+
+### 🛡️ Correção Crítica de Bootstrap de Mixin & Blindagem Contra Falhas de Injeção
+* **Remoção de Mixins Dummy do Template (`SandStormServerMixin` e `SandStormClientMixin`)**:
+  * Eliminado `SandStormServerMixin`, que causava `InvalidInjectionException` fatal no bootstrap do Minecraft 1.21.4 ao tentar injetar no método inexistente `loadLevel` de `MinecraftServer`.
+  * Eliminado `SandStormClientMixin` que também continha injeção dummy não funcional.
+* **Tolerância e Resiliência de Injetores (`defaultRequire: 0`)**:
+  * Configurado `"defaultRequire": 0` em `sandstorm.mixins.json` e `sandstorm.client.mixins.json` para evitar que qualquer discrepância de assinatura entre sub-versões cause aborto do processo do jogo.
+* **Geração e Referência de Refmap Físico**:
+  * Criado `sandstorm.refmap.json` e referenciado em todas as configurações de mixin para suprimir warnings e falhas de resolução de alvos em produção.
+* **Garantia de Arquitetura Permanente**:
+  * Atualizado `CurseForgeAndRuntimeCompatibilityArchitectureTest` para auditar a ausência definitiva dos mixins dummy e a presença do refmap e `defaultRequire: 0`.
+
+---
+
 ## [1.19.70] - 2026-11-01
 
 ### 🔧 Correção Crítica de Compatibilidade de Mixin com Java 21

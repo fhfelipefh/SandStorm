@@ -2,8 +2,8 @@
 	"required": true,
 	"package": "com.fhfelipefh.sandstorm.client.mixin",
 	"compatibilityLevel": "JAVA_21",
+	"refmap": "sandstorm.refmap.json",
 	"client": [
-		"SandStormClientMixin",
 		"HudAdaptiveTextMixin",
 		"ChatComponentAdaptiveMixin",
 		"SandstormFogMixin",
@@ -18,7 +18,7 @@
 		"MegazordItemTransformMixin"
 	],
 	"injectors": {
-		"defaultRequire": 1
+		"defaultRequire": 0
 	},
 	"overwrites": {
 		"requireAnnotations": true

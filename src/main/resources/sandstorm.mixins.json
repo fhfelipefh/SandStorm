@@ -2,12 +2,12 @@
 	"required": true,
 	"package": "com.fhfelipefh.sandstorm.mixin",
 	"compatibilityLevel": "JAVA_21",
+	"refmap": "sandstorm.refmap.json",
 	"mixins": [
-		"SandStormServerMixin",
 		"WaterFluidMixin"
 	],
 	"injectors": {
-		"defaultRequire": 1
+		"defaultRequire": 0
 	},
 	"overwrites": {
 		"requireAnnotations": true

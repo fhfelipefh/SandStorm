@@ -89,8 +89,13 @@ Ao alterar configurações de build, mixins ou metadados de mod:
    - O campo `depends.java` DEVE ser `">=21"`. É proibido exigir `">=25"`.
    - O campo `depends.fabricloader` DEVE manter compatibilidade com versões amplamente distribuídas (`>=0.16.0`).
 
-4. **Auditoria Permanente por Teste de Arquitetura**:
-   - Qualquer regressão nessas 4 configurações quebra imediatamente o teste `CurseForgeAndRuntimeCompatibilityArchitectureTest`.
+4. **Mixins Seguros, Refmap e Prevenção de Falhas de Injeção**:
+   - `sandstorm.mixins.json` e `sandstorm.client.mixins.json` DEVEM declarar `"defaultRequire": 0` e `"refmap": "sandstorm.refmap.json"`.
+   - É terminantemente proibido manter mixins vazios/dummy gerados por template (como `SandStormServerMixin` e `SandStormClientMixin`) ou métodos com alvos inexistentes (`loadLevel`), que causam `InvalidInjectionException` fatal no bootstrap do jogo.
+   - O arquivo `src/main/resources/sandstorm.refmap.json` deve existir fisicamente para evitar avisos e inconsistências de mapeamento.
+
+5. **Auditoria Permanente por Teste de Arquitetura**:
+   - Qualquer regressão nessas configurações quebra imediatamente o teste `CurseForgeAndRuntimeCompatibilityArchitectureTest`.
    - É proibido publicar releases ou comitar sem que esse teste passe com 100% de sucesso.
 
 ## 🚀 Validação Obrigatória Antes de Envio Remoto

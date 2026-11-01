@@ -65,4 +65,41 @@ class CurseForgeAndRuntimeCompatibilityArchitectureTest {
         assertTrue(content.contains("minecraft_target_version=1.21.4"), "gradle.properties must target 1.21.4 for CurseForge");
         assertFalse(content.contains("java_version=25"), "gradle.properties must not specify java_version=25");
     }
+
+    @Test
+    void mixinConfigsMustDeclareRefmapAndSafeDefaultRequire() throws IOException {
+        Path serverMixin = Path.of("src", "main", "resources", "sandstorm.mixins.json");
+        Path clientMixin = Path.of("src", "client", "resources", "sandstorm.client.mixins.json");
+        Path refmap = Path.of("src", "main", "resources", "sandstorm.refmap.json");
+
+        assertTrue(Files.exists(refmap), "sandstorm.refmap.json must physically exist");
+
+        String serverContent = Files.readString(serverMixin);
+        String clientContent = Files.readString(clientMixin);
+
+        assertTrue(serverContent.contains("\"defaultRequire\": 0"), "Server mixin must use defaultRequire 0 to prevent fatal crashes");
+        assertTrue(clientContent.contains("\"defaultRequire\": 0"), "Client mixin must use defaultRequire 0 to prevent fatal crashes");
+
+        assertTrue(serverContent.contains("\"refmap\": \"sandstorm.refmap.json\""), "Server mixin must specify refmap");
+        assertTrue(clientContent.contains("\"refmap\": \"sandstorm.refmap.json\""), "Client mixin must specify refmap");
+    }
+
+    @Test
+    void dummyLegacyMixinsMustNeverExist() throws IOException {
+        Path serverMixinJava = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "mixin", "SandStormServerMixin.java");
+        Path clientMixinJava = Path.of("src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "mixin", "SandStormClientMixin.java");
+
+        assertFalse(Files.exists(serverMixinJava), "SandStormServerMixin.java must not exist");
+        assertFalse(Files.exists(clientMixinJava), "SandStormClientMixin.java must not exist");
+
+        Path serverMixin = Path.of("src", "main", "resources", "sandstorm.mixins.json");
+        Path clientMixin = Path.of("src", "client", "resources", "sandstorm.client.mixins.json");
+
+        String serverContent = Files.readString(serverMixin);
+        String clientContent = Files.readString(clientMixin);
+
+        assertFalse(serverContent.contains("SandStormServerMixin"), "Server mixin config must not reference SandStormServerMixin");
+        assertFalse(clientContent.contains("SandStormClientMixin"), "Client mixin config must not reference SandStormClientMixin");
+    }
 }
+
