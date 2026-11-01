@@ -2,6 +2,19 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.72] - 2026-11-01
+
+### 📡 Correção Crítica de Networking & Ponte de Compatibilidade Dupla (1.21.4 e 26.3)
+* **Ponte Dinâmica de Registro de Payloads (`PayloadRegistryHelper`)**:
+  * Resolvido crash de inicialização `NoSuchMethodError: PayloadTypeRegistry.clientboundPlay()` na abertura do jogo em clientes Minecraft 1.21.4 (onde o Fabric Networking API v1 4.x utiliza os métodos `playS2C` e `playC2S`).
+  * Implementado `PayloadRegistryHelper` com resolução reflexiva resiliente que detecta e invoca dinamicamente `playS2C`/`playC2S` em ambientes 1.21.4 ou `clientboundPlay`/`serverboundPlay` em versões futuras (26.3).
+* **Migração de Pacotes de Rede no `SandStormMod`**:
+  * Migrados todos os 12 canais de pacotes (trajes, clima de tempestade de areia, missões, interferência magnética, pulso EMP, terminal e uplink) para o `PayloadRegistryHelper`.
+* **Auditoria de Arquitetura**:
+  * Adicionado teste em `CurseForgeAndRuntimeCompatibilityArchitectureTest` para prevenir chamadas diretas que quebrem a compatibilidade com a Fabric Networking API 1.21.4.
+
+---
+
 ## [1.19.71] - 2026-11-01
 
 ### 🛡️ Correção Crítica de Bootstrap de Mixin & Blindagem Contra Falhas de Injeção

@@ -58,7 +58,6 @@ import com.fhfelipefh.sandstorm.content.world.VanillaMonsterSuppressionHandler;
 import com.fhfelipefh.sandstorm.content.recipe.RecipeUnlockHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -76,51 +75,51 @@ public class SandStormMod implements ModInitializer {
     @Override
     public void onInitialize() {
         SandStormConfig.load();
-        PayloadTypeRegistry.clientboundPlay().register(
+        PayloadRegistryHelper.registerClientbound(
                 SuitSyncPayload.TYPE,
                 SuitSyncPayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.clientboundPlay().register(
+        PayloadRegistryHelper.registerClientbound(
                 SandstormWeatherPayload.TYPE,
                 SandstormWeatherPayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.clientboundPlay().register(
+        PayloadRegistryHelper.registerClientbound(
                 SyncPlayerQuestsPayload.TYPE,
                 SyncPlayerQuestsPayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.clientboundPlay().register(
+        PayloadRegistryHelper.registerClientbound(
                 MagneticInterferencePayload.TYPE,
                 MagneticInterferencePayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.clientboundPlay().register(
+        PayloadRegistryHelper.registerClientbound(
                 EmpDeafenPayload.TYPE,
                 EmpDeafenPayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.serverboundPlay().register(
+        PayloadRegistryHelper.registerServerbound(
                 ClaimQuestRewardPayload.TYPE,
                 ClaimQuestRewardPayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.serverboundPlay().register(
+        PayloadRegistryHelper.registerServerbound(
                 FlashlightTogglePayload.TYPE,
                 FlashlightTogglePayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.serverboundPlay().register(
+        PayloadRegistryHelper.registerServerbound(
                 CallGolemPayload.TYPE,
                 CallGolemPayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.serverboundPlay().register(
+        PayloadRegistryHelper.registerServerbound(
                 ConfigureTurretPayload.TYPE,
                 ConfigureTurretPayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.clientboundPlay().register(
+        PayloadRegistryHelper.registerClientbound(
                 SyncTerminalGridPayload.TYPE,
                 SyncTerminalGridPayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.clientboundPlay().register(
+        PayloadRegistryHelper.registerClientbound(
                 SyncUplinkZonePayload.TYPE,
                 SyncUplinkZonePayload.STREAM_CODEC
         );
-        PayloadTypeRegistry.serverboundPlay().register(
+        PayloadRegistryHelper.registerServerbound(
                 TerminalActionPayload.TYPE,
                 TerminalActionPayload.STREAM_CODEC
         );

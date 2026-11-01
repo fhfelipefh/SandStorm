@@ -101,5 +101,19 @@ class CurseForgeAndRuntimeCompatibilityArchitectureTest {
         assertFalse(serverContent.contains("SandStormServerMixin"), "Server mixin config must not reference SandStormServerMixin");
         assertFalse(clientContent.contains("SandStormClientMixin"), "Client mixin config must not reference SandStormClientMixin");
     }
-}
 
+    @Test
+    void sandStormModMustUsePayloadRegistryHelperToAvoidNetworkingApiNoSuchMethodError() throws IOException {
+        Path modJava = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "core", "SandStormMod.java");
+        Path helperJava = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "core", "PayloadRegistryHelper.java");
+
+        assertTrue(Files.exists(modJava), "SandStormMod.java must exist");
+        assertTrue(Files.exists(helperJava), "PayloadRegistryHelper.java must exist");
+
+        String content = Files.readString(modJava);
+        assertFalse(content.contains("PayloadTypeRegistry.clientboundPlay()"), "SandStormMod must not invoke clientboundPlay() directly");
+        assertFalse(content.contains("PayloadTypeRegistry.serverboundPlay()"), "SandStormMod must not invoke serverboundPlay() directly");
+        assertTrue(content.contains("PayloadRegistryHelper.registerClientbound("), "SandStormMod must register clientbound packets via PayloadRegistryHelper");
+        assertTrue(content.contains("PayloadRegistryHelper.registerServerbound("), "SandStormMod must register serverbound packets via PayloadRegistryHelper");
+    }
+}
