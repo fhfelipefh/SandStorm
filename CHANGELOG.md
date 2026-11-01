@@ -2,6 +2,15 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.70] - 2026-11-01
+
+### 🔧 Correção Crítica de Compatibilidade de Mixin com Java 21
+* **Ajuste de CompatibilityLevel do SpongePowered Mixin**:
+  * Atualizado `compatibilityLevel` de `JAVA_25` para `JAVA_21` em `sandstorm.mixins.json` e `sandstorm.client.mixins.json`.
+  * Elimina o erro de inicialização `IllegalArgumentException: The requested compatibility level JAVA_25 could not be set` no bootstrap do Fabric Loader em clientes com Java 21.
+
+---
+
 ## [1.19.69] - 2026-11-01
 
 ### ☢️ Lançador de Mini Bombas Nucleares & Cadeia de Refino Radioativo

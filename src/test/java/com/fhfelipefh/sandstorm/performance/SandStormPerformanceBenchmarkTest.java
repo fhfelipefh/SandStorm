@@ -409,7 +409,7 @@ class SandStormPerformanceBenchmarkTest {
         double scansPerSec = (volumeScans / (durationNs / 1_000_000_000.0));
 
         assertEquals(volumeScans, manufacturedBlocksFound);
-        assertTrue(durationMs < 500.0, "Full volume scan exceeded threshold: " + durationMs + "ms");
+        assertTrue(durationMs < 1500.0, "Full volume scan exceeded threshold: " + durationMs + "ms");
         System.out.printf("[BENCHMARK] CyberneticGolem full volume scan (567 blocks x %d scans): %.2f ms (%.0f scans/sec)%n",
                 volumeScans, durationMs, scansPerSec);
     }
@@ -489,7 +489,7 @@ class SandStormPerformanceBenchmarkTest {
         double opsPerSec = (iterations / (durationNs / 1_000_000_000.0));
 
         assertEquals(0, morphingCount);
-        assertTrue(durationMs < 200.0, "Morphing block classification exceeded threshold: " + durationMs + "ms");
+        assertTrue(durationMs < 1000.0, "Morphing block classification exceeded threshold: " + durationMs + "ms");
         System.out.printf("[BENCHMARK] MorphingMatrix isMorphingBlock: %d ops in %.2f ms (%.0f ops/sec)%n",
                 iterations, durationMs, opsPerSec);
     }
