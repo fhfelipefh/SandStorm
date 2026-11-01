@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "C": "sandstorm:heavy_plasma_cannon",
+    "N": "sandstorm:circuit_board",
+    "T": "sandstorm:titanium_chitin_composite",
+    "W": "sandstorm:warden_singularity_core"
+  },
+  "pattern": [
+    "TAT",
+    "NCN",
+    "TWT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:mini_nuke_launcher"
+  }
+}

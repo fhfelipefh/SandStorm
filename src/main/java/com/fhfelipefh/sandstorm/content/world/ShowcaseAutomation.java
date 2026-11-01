@@ -6,9 +6,11 @@ import com.fhfelipefh.sandstorm.content.block.AutonomousSonicTurretBlock;
 import com.fhfelipefh.sandstorm.content.block.BiosphereDoorBlock;
 import com.fhfelipefh.sandstorm.content.block.CompactSlabPistonBlock;
 import com.fhfelipefh.sandstorm.content.block.CorrosiveChitinSpikeWallBlock;
+import com.fhfelipefh.sandstorm.content.block.CrushingSpikeGateBlock;
 import com.fhfelipefh.sandstorm.content.block.CryoFreezeMineBlock;
 import com.fhfelipefh.sandstorm.content.block.CryoReactorCoreBlock;
 import com.fhfelipefh.sandstorm.content.block.ElectricArcFurnaceBlock;
+import com.fhfelipefh.sandstorm.content.block.ElectrifiedSpikeBarrierBlock;
 import com.fhfelipefh.sandstorm.content.block.HeavyKineticPistonBlock;
 import com.fhfelipefh.sandstorm.content.block.HoloLaserTripwireBlock;
 import com.fhfelipefh.sandstorm.content.block.KineticEjectorTrapBlock;
@@ -18,6 +20,7 @@ import com.fhfelipefh.sandstorm.content.block.MicroSingularityTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.PiezoShockTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.PlasmaShieldGeneratorBlock;
 import com.fhfelipefh.sandstorm.content.block.RappelAnchorBlock;
+import com.fhfelipefh.sandstorm.content.block.RetractableSpikeWallBlock;
 import com.fhfelipefh.sandstorm.content.block.SandMaglevRailBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.block.SerratedJawTrapBlock;
@@ -25,6 +28,7 @@ import com.fhfelipefh.sandstorm.content.block.SolidStateAccumulatorBlock;
 import com.fhfelipefh.sandstorm.content.block.SolidStateAccumulatorManager;
 import com.fhfelipefh.sandstorm.content.block.TectonicKineticPistonBlock;
 import com.fhfelipefh.sandstorm.content.block.ThermalVentTrapBlock;
+import com.fhfelipefh.sandstorm.content.block.TitaniumSpikeWallBlock;
 import com.fhfelipefh.sandstorm.content.block.VaultDoorControllerBlock;
 import com.fhfelipefh.sandstorm.content.block.VaultDoorDummyBlock;
 import com.fhfelipefh.sandstorm.content.block.VaultWallPanelBlock;
@@ -54,6 +58,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.TectonicKineticPistonBlockE
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberneticGolemEntity;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
@@ -67,6 +72,7 @@ import com.fhfelipefh.sandstorm.content.entity.MirageDecoyEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandboardEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
+import com.fhfelipefh.sandstorm.content.entity.SeismicScorpionEntity;
 import com.fhfelipefh.sandstorm.content.entity.WaterwingEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgBuilderEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgEntity;
@@ -132,12 +138,16 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignText;
+import net.minecraft.world.level.block.entity.SignTextSlot;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.gamerules.GameRules;
@@ -203,7 +213,7 @@ public class ShowcaseAutomation {
                 new ShowcaseFootprint("Domo de Megaestruturas", 39, 71, 2, 34),
                 new ShowcaseFootprint("Cofre Blindado", 81, 89, -49, -40),
                 new ShowcaseFootprint("Portal Subespacial", 106, 114, -49, -41),
-                new ShowcaseFootprint("Estação de Rapel", 38, 52, -72, -58),
+                new ShowcaseFootprint("Estação de Rapel", 138, 152, -72, -58),
                 new ShowcaseFootprint("Campo de Pistões", 36, 64, -133, -97),
                 new ShowcaseFootprint("Polígono de Defesa", -90, -44, -118, -34),
                 new ShowcaseFootprint("Complexo de Ciborgues", -20, 20, -115, -80),
@@ -965,7 +975,7 @@ public class ShowcaseAutomation {
         if (source.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = source.getLevel();
             if (showcaseActive) {
-                BlockPos targetPos = new BlockPos(45, 161, -48);
+                BlockPos targetPos = new BlockPos(138, 161, -65);
                 player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Abismo e Torre de Rapel (128 Blocos)!"), true);
             } else {
@@ -1112,8 +1122,8 @@ public class ShowcaseAutomation {
         clearUnderneath(level, center, maxZ);
         buildCentralPlaza(level, center);
         buildTransitTerminal(level, center.offset(-20, 0, 12));
-        buildBlockCheckerboard(level, center);
         buildItemWing(level, center);
+        buildBlockCheckerboard(level, center);
         buildEntityWing(level, center);
         buildMegastructureDomeShowcase(level, center);
         buildMaglevTestTrack(level, center);
@@ -1130,9 +1140,9 @@ public class ShowcaseAutomation {
         buildShowcaseWalkway(level, center.offset(85, 0, -13), center.offset(85, 0, -39));
         buildSubspaceGatewayStation(level, center.offset(110, 0, -45));
         buildShowcaseWalkway(level, center.offset(91, 0, -45), center.offset(105, 0, -45));
-        buildRappelTestTowerAndChasm(level, center.offset(45, 0, -65));
-        buildShowcaseWalkway(level, center.offset(20, 0, -10), center.offset(20, 0, -65));
-        buildShowcaseWalkway(level, center.offset(20, 0, -65), center.offset(37, 0, -65));
+        buildRappelTestTowerAndChasm(level, center.offset(195, 0, -65));
+        buildShowcaseWalkway(level, center.offset(114, 0, -45), center.offset(187, 0, -45));
+        buildShowcaseWalkway(level, center.offset(187, 0, -45), center.offset(187, 0, -65));
         buildDefenseAndBallisticsRange(level, center.offset(-65, 0, -50));
         buildDefenseWalkway(level, center);
         buildOrbitalLaunchStation(level, center.offset(115, 0, 20));
@@ -1439,7 +1449,7 @@ public class ShowcaseAutomation {
         setupPedestal(level, center.offset(-18, 0, -20), showcaseCenter.offset(110, 1, -45), "Setor Leste: Portal Subespacial", "Viagem Dimensional Subespacial", Blocks.CRYING_OBSIDIAN);
         setupPedestal(level, center.offset(-22, 0, -20), showcaseCenter.offset(115, 1, 20), "Setor Leste: Base Espacial Orbital", "Canhão de Massa 500 kJ & Satélites", Blocks.RAW_COPPER_BLOCK);
         setupPedestal(level, center.offset(-26, 0, -20), showcaseCenter.offset(-65, 1, -38), "Setor Norte: Defesa & Balística", "Railgun 250 kJ | Torretas & Escudos", Blocks.NETHERITE_BLOCK);
-        setupPedestal(level, center.offset(-30, 0, -20), showcaseCenter.offset(45, 1, -65), "Setor Norte: Abismo & Rapel (128m)", "Guincho de Rapel & Salto Vertical", Blocks.SMOOTH_BASALT);
+        setupPedestal(level, center.offset(-30, 0, -20), showcaseCenter.offset(187, 1, -65), "Setor Norte: Abismo & Rapel (128m)", "Guincho de Rapel & Salto Vertical", Blocks.SMOOTH_BASALT);
 
         setupPedestal(level, center.offset(-18, 0, -23), showcaseCenter.offset(0, 1, -85), "Setor Norte: Complexo de Ciborgues", "Androides, Mineração & Construção em Loop", Blocks.EMERALD_BLOCK);
         setupPedestal(level, center.offset(-22, 0, -23), showcaseCenter.offset(0, 1, getBiosphereFrontZ()), "Setor Sul: Complexo de Biosferas", "7 Biosferas Planetárias Gigantes", Blocks.VERDANT_FROGLIGHT);
@@ -1595,6 +1605,16 @@ public class ShowcaseAutomation {
                 level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
                 CropBlock cropBlock = (CropBlock) SandStormBlocks.XENO_WHEAT_CROP;
                 level.setBlock(targetPos.above(), cropBlock.getStateForAge(cropBlock.getMaxAge()), 3);
+            } else if (targetBlock == SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(CorrosiveChitinSpikeWallBlock.FACING, Direction.SOUTH), 3);
+            } else if (targetBlock == SandStormBlocks.RETRACTABLE_SPIKE_WALL) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(RetractableSpikeWallBlock.FACING, Direction.SOUTH).setValue(RetractableSpikeWallBlock.POWERED, true), 3);
+            } else if (targetBlock == SandStormBlocks.TITANIUM_SPIKE_WALL) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(TitaniumSpikeWallBlock.FACING, Direction.SOUTH), 3);
+            } else if (targetBlock == SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(ElectrifiedSpikeBarrierBlock.FACING, Direction.SOUTH).setValue(ElectrifiedSpikeBarrierBlock.POWERED, true), 3);
+            } else if (targetBlock == SandStormBlocks.CRUSHING_SPIKE_GATE) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(CrushingSpikeGateBlock.FACING, Direction.SOUTH).setValue(CrushingSpikeGateBlock.OPEN, false), 3);
             } else {
                 level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
             }
@@ -1606,6 +1626,7 @@ public class ShowcaseAutomation {
                 level.setBlock(leverPos, Blocks.LEVER.defaultBlockState().setValue(LeverBlock.FACE, AttachFace.FLOOR).setValue(LeverBlock.FACING, Direction.WEST), 3);
             }
 
+            placePedestalIdentificationSign(level, pedestalCenter, targetBlock);
             spawnBlockHologram(level, targetPos, targetBlock);
         }
 
@@ -1641,6 +1662,47 @@ public class ShowcaseAutomation {
 
     private static int getCheckerboardX(int col) {
         return (col < 4) ? (-18 + col * 4) : (6 + (col - 4) * 4);
+    }
+
+    private static void placePedestalIdentificationSign(ServerLevel level, BlockPos pedestalCenter, Block block) {
+        BlockPos southSignPos = pedestalCenter.offset(0, 0, 2);
+        level.setBlock(southSignPos, Blocks.OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, Direction.SOUTH), 3);
+        applySignText(level, southSignPos, block);
+
+        BlockPos northSignPos = pedestalCenter.offset(0, 0, -2);
+        level.setBlock(northSignPos, Blocks.OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, Direction.NORTH), 3);
+        applySignText(level, northSignPos, block);
+    }
+
+    private static void applySignText(ServerLevel level, BlockPos signPos, Block block) {
+        if (level.getBlockEntity(signPos) instanceof SignBlockEntity signBe) {
+            String fullName = block.getName().getString();
+            String l0 = fullName;
+            String l1 = "";
+            if (fullName.length() > 15) {
+                int splitIdx = fullName.lastIndexOf(' ', 15);
+                if (splitIdx > 0) {
+                    l0 = fullName.substring(0, splitIdx);
+                    l1 = fullName.substring(splitIdx + 1);
+                    if (l1.length() > 15) {
+                        l1 = l1.substring(0, 15);
+                    }
+                } else {
+                    l0 = fullName.substring(0, 15);
+                    l1 = fullName.substring(15, Math.min(fullName.length(), 30));
+                }
+            }
+            String role = getBlockExplanation(block);
+            String l2 = role.length() > 15 ? role.substring(0, 15) : role;
+            SignText text = signBe.getText(SignTextSlot.FRONT).asMutable()
+                    .setLine(0, Component.literal("§6§l" + l0))
+                    .setLine(1, Component.literal("§f" + l1))
+                    .setLine(2, Component.literal("§7" + l2))
+                    .setLine(3, Component.literal("§b[SandStorm]"))
+                    .asImmutable();
+            signBe.setText(text, SignTextSlot.FRONT);
+            signBe.setChanged();
+        }
     }
 
     private static void spawnBlockHologram(ServerLevel level, BlockPos blockPos, Block block) {
@@ -2670,50 +2732,50 @@ public class ShowcaseAutomation {
         int baseY = center.getY();
         double entityY = baseY + 1.0;
 
-        AABB entityArea = new AABB(center.getX() - 80, center.getY() - 30, center.getZ() - 80, center.getX() + 80, center.getY() + 80, center.getZ() + 80);
+        AABB entityArea = new AABB(-45, baseY - 5, -55, 45, baseY + 15, -5);
         List<Entity> oldEntities = level.getEntitiesOfClass(Entity.class, entityArea, e -> !(e instanceof ServerPlayer));
         for (Entity old : oldEntities) {
             old.discard();
         }
 
-        placeEntityPedestal(level, new BlockPos(-12, baseY, -14));
-        spawnMannequin(level, new BlockPos(-12, baseY + 1, -14), "§b[Megazord Titan] Chassi Padrão",
+        placeEntityPedestal(level, new BlockPos(-12, baseY, -14), "Megazord Padrao", "Blindagem Pesada");
+        spawnMannequin(level, new BlockPos(-12, baseY + 1, -14), "Megazord Titan Padrao",
                 new ItemStack(Items.NETHERITE_HELMET), new ItemStack(Items.NETHERITE_CHESTPLATE), new ItemStack(Items.NETHERITE_LEGGINGS), new ItemStack(Items.NETHERITE_BOOTS),
                 new ItemStack(SandStormItems.VIBRO_CRYSKNIFE), ItemStack.EMPTY);
         MegazordEntity mechaStd = new MegazordEntity(SandStormEntities.MEGAZORD, level);
-        mechaStd.setPos(-12.0, entityY, -14.0);
+        mechaStd.setPos(-11.5, entityY, -13.5);
         mechaStd.setPersistenceRequired();
         mechaStd.getEnergyStorage().receiveEnergy(100000L);
         level.addFreshEntity(mechaStd);
 
-        placeEntityPedestal(level, new BlockPos(-4, baseY, -14));
-        spawnMannequin(level, new BlockPos(-4, baseY + 1, -14), "§e[Megazord Titan] Módulo de Voo",
+        placeEntityPedestal(level, new BlockPos(-4, baseY, -14), "Megazord Voo", "Propulsao a Jato");
+        spawnMannequin(level, new BlockPos(-4, baseY + 1, -14), "Megazord Titan Voo",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(Items.ELYTRA), new ItemStack(Items.NETHERITE_LEGGINGS), new ItemStack(Items.NETHERITE_BOOTS),
                 new ItemStack(SandStormItems.MEGAZORD_FLIGHT_MODULE), new ItemStack(SandStormItems.CYBERNETIC_COMMAND_UPLINK));
         MegazordEntity mechaFlight = new MegazordEntity(SandStormEntities.MEGAZORD, level);
-        mechaFlight.setPos(-4.0, entityY, -14.0);
+        mechaFlight.setPos(-3.5, entityY, -13.5);
         mechaFlight.setFlightModule(true);
         mechaFlight.setPersistenceRequired();
         mechaFlight.getEnergyStorage().receiveEnergy(100000L);
         level.addFreshEntity(mechaFlight);
 
-        placeEntityPedestal(level, new BlockPos(4, baseY, -14));
-        spawnMannequin(level, new BlockPos(4, baseY + 1, -14), "§9[Megazord Titan] Casco Submersível",
+        placeEntityPedestal(level, new BlockPos(4, baseY, -14), "Megazord Submers", "Navegacao Marinha");
+        spawnMannequin(level, new BlockPos(4, baseY + 1, -14), "Megazord Submersivel",
                 new ItemStack(Items.TURTLE_HELMET), new ItemStack(Items.NETHERITE_CHESTPLATE), new ItemStack(Items.NETHERITE_LEGGINGS), new ItemStack(Items.NETHERITE_BOOTS),
                 new ItemStack(SandStormItems.MEGAZORD_SUBMERSIBLE_HULL), new ItemStack(Items.TRIDENT));
         MegazordEntity mechaSub = new MegazordEntity(SandStormEntities.MEGAZORD, level);
-        mechaSub.setPos(4.0, entityY, -14.0);
+        mechaSub.setPos(4.5, entityY, -13.5);
         mechaSub.setSubmersibleModule(true);
         mechaSub.setPersistenceRequired();
         mechaSub.getEnergyStorage().receiveEnergy(100000L);
         level.addFreshEntity(mechaSub);
 
-        placeEntityPedestal(level, new BlockPos(12, baseY, -14));
-        spawnMannequin(level, new BlockPos(12, baseY + 1, -14), "§c[Megazord Titan] Sobrecarga Tática Apex",
+        placeEntityPedestal(level, new BlockPos(12, baseY, -14), "Megazord Apex", "Sobrecarga Canhao");
+        spawnMannequin(level, new BlockPos(12, baseY + 1, -14), "Megazord Titan Apex",
                 new ItemStack(Items.NETHERITE_HELMET), new ItemStack(Items.NETHERITE_CHESTPLATE), new ItemStack(Items.NETHERITE_LEGGINGS), new ItemStack(Items.NETHERITE_BOOTS),
                 new ItemStack(SandStormItems.MEGAZORD_TACTICAL_OVERDRIVE), new ItemStack(SandStormItems.HEAVY_PLASMA_CANNON));
         MegazordEntity mechaApex = new MegazordEntity(SandStormEntities.MEGAZORD, level);
-        mechaApex.setPos(12.0, entityY, -14.0);
+        mechaApex.setPos(12.5, entityY, -13.5);
         mechaApex.setFlightModule(true);
         mechaApex.setSubmersibleModule(true);
         mechaApex.setOverdriveModule(true);
@@ -2721,186 +2783,209 @@ public class ShowcaseAutomation {
         mechaApex.getEnergyStorage().receiveEnergy(MegazordEntity.OVERDRIVE_BATTERY_CAPACITY);
         level.addFreshEntity(mechaApex);
 
-        placeEntityPedestal(level, new BlockPos(-12, baseY, -22));
-        spawnMannequin(level, new BlockPos(-12, baseY + 1, -22), "§6Veículo Escavador Pesado",
+        placeEntityPedestal(level, new BlockPos(-12, baseY, -22), "Escavador Pesado", "Mineracao Massa");
+        spawnMannequin(level, new BlockPos(-12, baseY + 1, -22), "Veiculo Escavador",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(Items.GOLDEN_CHESTPLATE), new ItemStack(Items.IRON_LEGGINGS), new ItemStack(Items.IRON_BOOTS),
                 new ItemStack(SandStormItems.SILICON_PICKAXE), new ItemStack(SandStormItems.GEOLOGICAL_SCANNER));
         ExcavatorVehicleEntity rover = new ExcavatorVehicleEntity(SandStormEntities.EXCAVATOR_VEHICLE, level);
-        rover.setPos(-12.0, entityY, -22.0);
+        rover.setPos(-11.5, entityY, -21.5);
         rover.setPersistenceRequired();
         rover.getEnergyStorage().receiveEnergy(50000L);
         level.addFreshEntity(rover);
 
-        placeEntityPedestal(level, new BlockPos(-4, baseY, -22));
-        spawnMannequin(level, new BlockPos(-4, baseY + 1, -22), "§ePrancha de Areia (Sandboard)",
+        placeEntityPedestal(level, new BlockPos(-4, baseY, -22), "Prancha de Areia", "Navegacao Dunas");
+        spawnMannequin(level, new BlockPos(-4, baseY + 1, -22), "Prancha de Areia",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE), new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS), new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
                 new ItemStack(SandStormItems.SANDBOARD), ItemStack.EMPTY);
         SandboardEntity board = new SandboardEntity(SandStormEntities.SANDBOARD, level);
-        board.setPos(-4.0, entityY, -22.0);
+        board.setPos(-3.5, entityY, -21.5);
         board.setPersistenceRequired();
         level.addFreshEntity(board);
 
-        placeEntityPedestal(level, new BlockPos(0, baseY, -22));
+        placeEntityPedestal(level, new BlockPos(0, baseY, -22), "Galope Cibernet", "Montaria Desert");
         CyberSteedEntity steedExhibition = new CyberSteedEntity(SandStormEntities.CYBER_STEED, level);
-        steedExhibition.setPos(0.0, entityY, -22.0);
+        steedExhibition.setPos(0.5, entityY, -21.5);
         steedExhibition.setPersistenceRequired();
+        steedExhibition.setNoAi(true);
+        steedExhibition.setSilent(true);
         steedExhibition.setTame(true, false);
         steedExhibition.setOrderedToSit(false);
         level.addFreshEntity(steedExhibition);
 
-        placeEntityPedestal(level, new BlockPos(4, baseY, -22));
+        placeEntityPedestal(level, new BlockPos(4, baseY, -22), "Drone de Carga", "Logistica Aerea");
         CargoDroneEntity cargoDrone = new CargoDroneEntity(SandStormEntities.CARGO_DRONE, level);
-        cargoDrone.setPos(4.0, entityY + 1.0, -22.0);
+        cargoDrone.setPos(4.5, entityY, -21.5);
         cargoDrone.setNoGravity(true);
+        cargoDrone.setNoAi(true);
+        cargoDrone.setSilent(true);
         cargoDrone.setPersistenceRequired();
-        cargoDrone.setCustomName(Component.literal("§3Drone de Carga Logístico"));
-        cargoDrone.setCustomNameVisible(true);
         cargoDrone.setCargoStack(new ItemStack(SandStormItems.TECH_DISC));
         cargoDrone.getEnergyStorage().receiveEnergy(10000L);
         level.addFreshEntity(cargoDrone);
 
-        placeEntityPedestal(level, new BlockPos(12, baseY, -22));
+        placeEntityPedestal(level, new BlockPos(12, baseY, -22), "Drone Construtor", "Montagem Blocos");
         BuilderDroneEntity builderDrone = new BuilderDroneEntity(SandStormEntities.BUILDER_DRONE, level);
-        builderDrone.setPos(12.0, entityY + 1.0, -22.0);
+        builderDrone.setPos(12.5, entityY, -21.5);
         builderDrone.setNoGravity(true);
+        builderDrone.setNoAi(true);
+        builderDrone.setSilent(true);
         builderDrone.setPersistenceRequired();
-        builderDrone.setCustomName(Component.literal("§bDrone Construtor Autônomo"));
-        builderDrone.setCustomNameVisible(true);
         level.addFreshEntity(builderDrone);
 
-
-        spawnHologram(level, -12.0, entityY + 3.2, -14.0, "§b[Megazord Titan - Padrão]");
-        spawnHologram(level, -12.0, entityY + 2.9, -14.0, "§7Blindagem Pesada e Combate");
-
-        spawnHologram(level, -4.0, entityY + 3.2, -14.0, "§e[Megazord Titan - Voo]");
-        spawnHologram(level, -4.0, entityY + 2.9, -14.0, "§7Propulsão a Jato Integrada");
-
-        spawnHologram(level, 4.0, entityY + 3.2, -14.0, "§9[Megazord Titan - Submersível]");
-        spawnHologram(level, 4.0, entityY + 2.9, -14.0, "§7Navegação Aquática e Oxigênio");
-
-        spawnHologram(level, 12.0, entityY + 3.2, -14.0, "§c[Megazord Titan - Apex]");
-        spawnHologram(level, 12.0, entityY + 2.9, -14.0, "§7Sobrecarga Tática e Canhões");
-
-        spawnHologram(level, -12.0, entityY + 2.2, -22.0, "§6[Veículo Escavador Pesado]");
-        spawnHologram(level, -12.0, entityY + 1.9, -22.0, "§7Mineração e Coleta em Massa");
-
-        spawnHologram(level, -4.0, entityY + 1.8, -22.0, "§e[Prancha de Areia (Sandboard)]");
-        spawnHologram(level, -4.0, entityY + 1.5, -22.0, "§7Navegação Rápida em Dunas");
-
-        spawnHologram(level, 0.0, entityY + 2.5, -22.0, "§e[Galope Cibernético (Horizon)]");
-        spawnHologram(level, 0.0, entityY + 2.15, -22.0, "§7Montaria Robótica do Deserto");
-
-        spawnHologram(level, 4.0, entityY + 2.2, -22.0, "§3[Drone de Carga Logístico]");
-        spawnHologram(level, 4.0, entityY + 1.9, -22.0, "§7Transporte Aéreo WPT");
-
-        spawnHologram(level, 12.0, entityY + 2.2, -22.0, "§b[Drone Construtor Autônomo]");
-        spawnHologram(level, 12.0, entityY + 1.9, -22.0, "§7Montagem Autônoma de Blocos");
-
-
-        placeEntityPedestal(level, new BlockPos(-16, baseY, -30));
+        placeEntityPedestal(level, new BlockPos(-16, baseY, -30), "Pastador Grazer", "Coleta de Blaze");
         GrazerEntity grazer = new GrazerEntity(SandStormEntities.GRAZER, level);
-        grazer.setPos(-16.0, entityY, -30.0);
+        grazer.setPos(-15.5, entityY, -29.5);
         grazer.setPersistenceRequired();
         grazer.setNoAi(true);
-        grazer.setCustomName(Component.literal("Pastador (Grazer)"));
-        grazer.setCustomNameVisible(true);
+        grazer.setNoGravity(true);
+        grazer.setSilent(true);
         level.addFreshEntity(grazer);
 
-        placeEntityPedestal(level, new BlockPos(-8, baseY, -30));
+        placeEntityPedestal(level, new BlockPos(-8, baseY, -30), "Presalonga", "Escolta Termica");
         FanghornEntity fanghorn = new FanghornEntity(SandStormEntities.FANGHORN, level);
-        fanghorn.setPos(-8.0, entityY, -30.0);
+        fanghorn.setPos(-7.5, entityY, -29.5);
         fanghorn.setPersistenceRequired();
         fanghorn.setNoAi(true);
-        fanghorn.setCustomName(Component.literal("Presalonga (Fanghorn)"));
-        fanghorn.setCustomNameVisible(true);
+        fanghorn.setNoGravity(true);
+        fanghorn.setSilent(true);
         level.addFreshEntity(fanghorn);
 
-        placeEntityPedestal(level, new BlockPos(0, baseY, -30));
+        placeEntityPedestal(level, new BlockPos(0, baseY, -30), "Garra-Gelida", "Guardiao Criogen");
         FrostclawEntity frostclaw = new FrostclawEntity(SandStormEntities.FROSTCLAW, level);
-        frostclaw.setPos(0.0, entityY, -30.0);
+        frostclaw.setPos(0.5, entityY, -29.5);
         frostclaw.setPersistenceRequired();
         frostclaw.setNoAi(true);
-        frostclaw.setCustomName(Component.literal("Garra-Gelida (Frostclaw)"));
-        frostclaw.setCustomNameVisible(true);
+        frostclaw.setNoGravity(true);
+        frostclaw.setSilent(true);
         level.addFreshEntity(frostclaw);
 
-        placeEntityPedestal(level, new BlockPos(8, baseY, -30));
+        placeEntityPedestal(level, new BlockPos(8, baseY, -30), "Gaviao Reluzent", "Predador Aereo");
         GlinthawkEntity glinthawk = new GlinthawkEntity(SandStormEntities.GLINTHAWK, level);
-        glinthawk.setPos(8.0, entityY, -30.0);
+        glinthawk.setPos(8.5, entityY, -29.5);
         glinthawk.setPersistenceRequired();
         glinthawk.setNoAi(true);
-        glinthawk.setCustomName(Component.literal("Gaviao-Reluzente (Glinthawk)"));
-        glinthawk.setCustomNameVisible(true);
+        glinthawk.setNoGravity(true);
+        glinthawk.setSilent(true);
         level.addFreshEntity(glinthawk);
 
-        placeEntityPedestal(level, new BlockPos(16, baseY, -30));
+        placeEntityPedestal(level, new BlockPos(16, baseY, -30), "Asad'agua", "Montaria Anfibio");
         WaterwingEntity waterwing = new WaterwingEntity(SandStormEntities.WATERWING, level);
-        waterwing.setPos(16.0, entityY, -30.0);
+        waterwing.setPos(16.5, entityY, -29.5);
         waterwing.setPersistenceRequired();
         waterwing.setNoAi(true);
+        waterwing.setNoGravity(true);
+        waterwing.setSilent(true);
         waterwing.setTame(true, false);
         waterwing.setOrderedToSit(false);
-        waterwing.setCustomName(Component.literal("Asad'agua (Waterwing)"));
-        waterwing.setCustomNameVisible(true);
         level.addFreshEntity(waterwing);
 
-        spawnHologram(level, -16.0, entityY + 2.5, -30.0, "[Pastador (Grazer)]");
-        spawnHologram(level, -16.0, entityY + 2.15, -30.0, "Coleta de Blaze e Terraformacao");
+        placeEntityPedestal(level, new BlockPos(-24, baseY, -38), "Golem Cibernet", "Guardiao Blindad");
+        CyberneticGolemEntity golem = new CyberneticGolemEntity(SandStormEntities.CYBERNETIC_GOLEM, level);
+        golem.setPos(-23.5, entityY, -37.5);
+        golem.setNoAi(true);
+        golem.setNoGravity(true);
+        golem.setPersistenceRequired();
+        golem.setSilent(true);
+        level.addFreshEntity(golem);
 
-        spawnHologram(level, -8.0, entityY + 2.5, -30.0, "[Presalonga (Fanghorn)]");
-        spawnHologram(level, -8.0, entityY + 2.15, -30.0, "Escolta Termica e Disparos de Fogo");
-
-        spawnHologram(level, 0.0, entityY + 3.2, -30.0, "[Garra-Gelida (Frostclaw)]");
-        spawnHologram(level, 0.0, entityY + 2.85, -30.0, "Guardiao Criogenico Apex");
-
-        spawnHologram(level, 8.0, entityY + 2.5, -30.0, "[Gaviao-Reluzente (Glinthawk)]");
-        spawnHologram(level, 8.0, entityY + 2.15, -30.0, "Predador Aereo Catador de Sucata");
-
-        spawnHologram(level, 16.0, entityY + 2.5, -30.0, "[Asad'agua (Waterwing)]");
-        spawnHologram(level, 16.0, entityY + 2.15, -30.0, "Montaria Anfibio: Voo e Mergulho");
-
-        placeEntityPedestal(level, new BlockPos(-16, baseY, -38));
+        placeEntityPedestal(level, new BlockPos(-16, baseY, -38), "Automato Aband", "Andarilho Antigo");
         DerelictAutomatonEntity automaton = new DerelictAutomatonEntity(SandStormEntities.DERELICT_AUTOMATON, level);
-        automaton.setPos(-16.0, entityY, -38.0);
+        automaton.setPos(-15.5, entityY, -37.5);
         automaton.setNoAi(true);
+        automaton.setNoGravity(true);
         automaton.setPersistenceRequired();
+        automaton.setSilent(true);
         level.addFreshEntity(automaton);
-        spawnHologram(level, -16.0, entityY + 2.7, -38.0, "Autômato Abandonado");
 
-        placeEntityPedestal(level, new BlockPos(-8, baseY, -38));
+        placeEntityPedestal(level, new BlockPos(-8, baseY, -38), "Drone Explorad", "Vigilancia Aerea");
         ScoutDroneEntity scout = new ScoutDroneEntity(SandStormEntities.SCOUT_DRONE, level);
-        scout.setPos(-8.0, entityY, -38.0);
+        scout.setPos(-7.5, entityY, -37.5);
         scout.setNoAi(true);
+        scout.setNoGravity(true);
         scout.setPersistenceRequired();
+        scout.setSilent(true);
         level.addFreshEntity(scout);
-        spawnHologram(level, -8.0, entityY + 2.7, -38.0, "Drone Explorador");
 
-        placeEntityPedestal(level, new BlockPos(8, baseY, -38));
-        CrawlerDroneEntity crawler = new CrawlerDroneEntity(SandStormEntities.CRAWLER_DRONE, level);
-        crawler.setPos(8.0, entityY, -38.0);
-        crawler.setNoAi(true);
-        crawler.setPersistenceRequired();
-        level.addFreshEntity(crawler);
-        spawnHologram(level, 8.0, entityY + 2.7, -38.0, "Drone Rastreador");
-
-        placeEntityPedestal(level, new BlockPos(16, baseY, -38));
-        spawnMannequin(level, new BlockPos(16, baseY + 1, -38), "Drone de Sondagem Geológica",
-                ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY,
-                new ItemStack(SandStormItems.GEOLOGICAL_SURVEYOR_DRONE), ItemStack.EMPTY);
-        spawnHologram(level, 16.0, entityY + 2.7, -38.0, "Drone de Sondagem Geológica");
-        spawnHologram(level, 16.0, entityY + 2.4, -38.0, "Use o item para sondar o solo");
-
-        placeEntityPedestal(level, new BlockPos(0, baseY, -38));
-        spawnMannequin(level, new BlockPos(0, baseY + 1, -38), "§5Apex Sandworm Sovereign",
+        placeEntityPedestal(level, new BlockPos(0, baseY, -38), "Apex Sovereign", "Invocacao Manto");
+        spawnMannequin(level, new BlockPos(0, baseY + 1, -38), "Apex Sandworm Sovereign",
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(Items.NETHERITE_CHESTPLATE), new ItemStack(Items.NETHERITE_LEGGINGS), new ItemStack(Items.NETHERITE_BOOTS),
                 new ItemStack(SandStormItems.APEX_RAILGUN_HARPOON), new ItemStack(SandStormItems.APEX_HEART_MATRIX));
-        spawnHologram(level, 0.0, entityY + 3.2, -38.0, "§5[Apex Sandworm Sovereign]");
-        spawnHologram(level, 0.0, entityY + 2.85, -38.0, "§dInvocação Sísmica no Manto (Y < 0)");
+
+        placeEntityPedestal(level, new BlockPos(8, baseY, -38), "Drone Rastread", "Patrulha Tatica");
+        CrawlerDroneEntity crawler = new CrawlerDroneEntity(SandStormEntities.CRAWLER_DRONE, level);
+        crawler.setPos(8.5, entityY, -37.5);
+        crawler.setNoAi(true);
+        crawler.setNoGravity(true);
+        crawler.setPersistenceRequired();
+        crawler.setSilent(true);
+        level.addFreshEntity(crawler);
+
+        placeEntityPedestal(level, new BlockPos(16, baseY, -38), "Sondagem Drone", "Varredura Solo");
+        spawnMannequin(level, new BlockPos(16, baseY + 1, -38), "Drone de Sondagem Geologica",
+                ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY,
+                new ItemStack(SandStormItems.GEOLOGICAL_SURVEYOR_DRONE), ItemStack.EMPTY);
+
+        placeEntityPedestal(level, new BlockPos(24, baseY, -38), "Escorpiao Sismic", "Predador Toxico");
+        SeismicScorpionEntity scorpion = new SeismicScorpionEntity(SandStormEntities.SEISMIC_SCORPION, level);
+        scorpion.setPos(24.5, entityY, -37.5);
+        scorpion.setNoAi(true);
+        scorpion.setNoGravity(true);
+        scorpion.setPersistenceRequired();
+        scorpion.setSilent(true);
+        level.addFreshEntity(scorpion);
+    }
+
+    private static void placeEntityPedestal(ServerLevel level, BlockPos baseCenter, String title, String subtitle) {
+        placeEntityPedestal(level, baseCenter);
+        BlockPos southSignPos = baseCenter.offset(0, 0, 2);
+        level.setBlock(southSignPos, Blocks.OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, Direction.SOUTH), 3);
+        applyEntitySignText(level, southSignPos, title, subtitle);
+
+        BlockPos northSignPos = baseCenter.offset(0, 0, -2);
+        level.setBlock(northSignPos, Blocks.OAK_WALL_SIGN.defaultBlockState().setValue(WallSignBlock.FACING, Direction.NORTH), 3);
+        applyEntitySignText(level, northSignPos, title, subtitle);
+    }
+
+    private static void applyEntitySignText(ServerLevel level, BlockPos signPos, String title, String subtitle) {
+        if (level.getBlockEntity(signPos) instanceof SignBlockEntity signBe) {
+            String l0 = title.replaceAll("§[0-9a-fk-or]", "");
+            String l1 = "";
+            if (l0.length() > 15) {
+                int splitIdx = l0.lastIndexOf(' ', 15);
+                if (splitIdx > 0) {
+                    l1 = l0.substring(splitIdx + 1);
+                    l0 = l0.substring(0, splitIdx);
+                    if (l1.length() > 15) {
+                        l1 = l1.substring(0, 15);
+                    }
+                } else {
+                    l1 = l0.substring(15, Math.min(l0.length(), 30));
+                    l0 = l0.substring(0, 15);
+                }
+            }
+            String l2 = subtitle.replaceAll("§[0-9a-fk-or]", "");
+            if (l2.length() > 15) {
+                l2 = l2.substring(0, 15);
+            }
+            SignText text = signBe.getText(SignTextSlot.FRONT).asMutable()
+                    .setLine(0, Component.literal("§6§l" + l0))
+                    .setLine(1, Component.literal("§f" + l1))
+                    .setLine(2, Component.literal("§7" + l2))
+                    .asImmutable();
+            signBe.setText(text, SignTextSlot.FRONT);
+            signBe.setChanged();
+        }
     }
 
     private static void placeEntityPedestal(ServerLevel level, BlockPos baseCenter) {
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
+                for (int dy = 1; dy <= 4; dy++) {
+                    BlockPos air = baseCenter.offset(x, dy, z);
+                    if (!level.getBlockState(air).isAir()) {
+                        level.setBlock(air, Blocks.AIR.defaultBlockState(), 2);
+                    }
+                }
                 BlockPos p = baseCenter.offset(x, 0, z);
                 Block b = (x == 0 && z == 0) ? Blocks.OCHRE_FROGLIGHT : Blocks.CUT_SANDSTONE;
                 level.setBlock(p, b.defaultBlockState(), 3);
@@ -3091,7 +3176,7 @@ public class ShowcaseAutomation {
 
     @SuppressWarnings("unchecked")
     private static void spawnHologram(ServerLevel level, double x, double y, double z, String text) {
-        AABB box = new AABB(x - 0.4, y - 0.4, z - 0.4, x + 0.4, y + 0.4, z + 0.4);
+        AABB box = new AABB(x - 1.2, y - 1.2, z - 1.2, x + 1.2, y + 1.2, z + 1.2);
         level.getEntitiesOfClass(ArmorStand.class, box).forEach(Entity::discard);
         EntityType<ArmorStand> armorStandType = (EntityType<ArmorStand>) (EntityType<?>) BuiltInRegistries.ENTITY_TYPE.getValue(SandStormMod.mcId("armor_stand"));
         ArmorStand stand = new ArmorStand(armorStandType, level);
@@ -3116,7 +3201,7 @@ public class ShowcaseAutomation {
         stand.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
         stand.setShowArms(true);
         stand.setCustomName(Component.literal(name));
-        stand.setCustomNameVisible(true);
+        stand.setCustomNameVisible(false);
         if (!head.isEmpty()) {
             stand.setItemSlot(EquipmentSlot.HEAD, head);
         }
@@ -3756,8 +3841,8 @@ public class ShowcaseAutomation {
 
         int maxDepth = RappelAnchorBlockEntity.MAX_DEPTH;
         for (int y = 1; y <= maxDepth; y++) {
-            for (int dx = -2; dx <= 2; dx++) {
-                for (int dz = -2; dz <= 2; dz++) {
+            for (int dx = -4; dx <= 4; dx++) {
+                for (int dz = -4; dz <= 4; dz++) {
                     BlockPos airPos = stationCenter.offset(dx, 1 - y, dz);
                     if (y < maxDepth || (dx != -1 && dx != 1) || dz != -2) {
                         level.setBlock(airPos, Blocks.AIR.defaultBlockState(), 2);
@@ -3778,12 +3863,12 @@ public class ShowcaseAutomation {
         }
 
         int bottomY = baseY - maxDepth;
-        for (int dx = -5; dx <= 5; dx++) {
-            for (int dz = -5; dz <= 5; dz++) {
+        for (int dx = -6; dx <= 6; dx++) {
+            for (int dz = -6; dz <= 6; dz++) {
                 BlockPos floorPos = new BlockPos(stationCenter.getX() + dx, bottomY, stationCenter.getZ() + dz);
                 boolean isUnderRope = (dx == -1 || dx == 1) && dz == -2;
                 Block b = isUnderRope ? SandStormBlocks.SEISMIC_DAMPENER_PAVING : Blocks.POLISHED_DEEPSLATE;
-                if (Math.abs(dx) == 5 || Math.abs(dz) == 5) {
+                if (Math.abs(dx) == 6 || Math.abs(dz) == 6) {
                     b = Blocks.OCHRE_FROGLIGHT;
                 }
                 level.setBlock(floorPos, b.defaultBlockState(), 3);
@@ -4131,9 +4216,9 @@ public class ShowcaseAutomation {
         level.setBlock(chitinPos1, SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL.defaultBlockState().setValue(CorrosiveChitinSpikeWallBlock.FACING, Direction.UP), 3);
         level.setBlock(chitinPos2, SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL.defaultBlockState().setValue(CorrosiveChitinSpikeWallBlock.FACING, Direction.UP), 3);
         BlockPos barrierPos = new BlockPos(-57, baseY + 1, -95);
-        level.setBlock(barrierPos, SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER.defaultBlockState(), 3);
+        level.setBlock(barrierPos, SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER.defaultBlockState().setValue(ElectrifiedSpikeBarrierBlock.FACING, Direction.SOUTH).setValue(ElectrifiedSpikeBarrierBlock.POWERED, true), 3);
         BlockPos gatePos = new BlockPos(-54, baseY + 1, -91);
-        level.setBlock(gatePos, SandStormBlocks.CRUSHING_SPIKE_GATE.defaultBlockState(), 3);
+        level.setBlock(gatePos, SandStormBlocks.CRUSHING_SPIKE_GATE.defaultBlockState().setValue(CrushingSpikeGateBlock.FACING, Direction.SOUTH).setValue(CrushingSpikeGateBlock.OPEN, false), 3);
         level.setBlock(gatePos.east(), Blocks.LEVER.defaultBlockState().setValue(LeverBlock.FACE, AttachFace.FLOOR).setValue(LeverBlock.FACING, Direction.NORTH), 3);
 
         for (int x = -73; x <= -57; x++) {
@@ -4182,6 +4267,20 @@ public class ShowcaseAutomation {
             chest.setItem(24, new ItemStack(SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER, 16));
             chest.setItem(25, new ItemStack(SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL, 16));
             chest.setItem(26, new ItemStack(SandStormBlocks.CRUSHING_SPIKE_GATE, 4));
+        }
+
+        BlockPos nukeChestPos = new BlockPos(-67, baseY + 1, -110);
+        setChestSafe(level, nukeChestPos, Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
+        if (level.getBlockEntity(nukeChestPos) instanceof ChestBlockEntity nukeChest) {
+            nukeChest.setItem(0, new ItemStack(SandStormItems.MINI_NUKE_LAUNCHER, 1));
+            nukeChest.setItem(1, new ItemStack(SandStormItems.MINI_NUKE, 4));
+            nukeChest.setItem(2, new ItemStack(SandStormItems.MINI_NUKE, 4));
+            nukeChest.setItem(3, new ItemStack(SandStormItems.SUBCRITICAL_FISSION_CORE, 16));
+            nukeChest.setItem(4, new ItemStack(SandStormItems.ENRICHED_URANIUM_PELLET, 64));
+            nukeChest.setItem(5, new ItemStack(SandStormItems.RAW_URANIUM_CONCENTRATE, 64));
+            nukeChest.setItem(6, new ItemStack(SandStormItems.PARALYTIC_TOXIN_DART, 16));
+            nukeChest.setItem(7, new ItemStack(SandStormItems.SEISMIC_SCORPION_STINGER, 16));
+            nukeChest.setItem(8, new ItemStack(SandStormItems.SCORPION_CHITIN_PLATE, 16));
         }
 
         BlockPos mannequinPos = new BlockPos(-33, baseY + 1, -110);

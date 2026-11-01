@@ -226,6 +226,14 @@ public class DerelictAutomatonEntity extends PathfinderMob implements Enemy, Dea
     }
 
     @Override
+    public void checkDespawn() {
+        if (this.isPersistenceRequired() || this.isNoAi()) {
+            return;
+        }
+        super.checkDespawn();
+    }
+
+    @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
         return this.isDeactivated() ? SoundEvents.NETHERITE_BLOCK_BREAK : SoundEvents.IRON_GOLEM_HURT;
     }

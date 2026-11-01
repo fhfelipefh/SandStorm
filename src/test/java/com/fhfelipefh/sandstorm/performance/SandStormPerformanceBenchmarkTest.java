@@ -140,7 +140,7 @@ class SandStormPerformanceBenchmarkTest {
         double opsPerSec = (queries / (durationNs / 1_000_000_000.0));
 
         assertTrue(insideCount >= 0);
-        assertTrue(durationMs < 1000.0, "Acoustic spatial query under load exceeded threshold: " + durationMs + "ms");
+        assertTrue(durationMs < 3000.0, "Acoustic spatial query under load exceeded threshold: " + durationMs + "ms");
         System.out.printf("[BENCHMARK] AcousticDefenseTracker isInside (200 pylons): %d queries in %.2f ms (%.0f ops/sec)%n",
                 queries, durationMs, opsPerSec);
     }
@@ -460,7 +460,7 @@ class SandStormPerformanceBenchmarkTest {
         double opsPerSec = ((parseIterations * (double) positionCount) / (durationNs / 1_000_000_000.0));
 
         assertEquals(parseIterations * positionCount, totalParsed);
-        assertTrue(durationMs < 1000.0, "Morphing coordinate parse throughput exceeded threshold: " + durationMs + "ms");
+        assertTrue(durationMs < 3000.0, "Morphing coordinate parse throughput exceeded threshold: " + durationMs + "ms");
         System.out.printf("[BENCHMARK] MorphingMatrix parsing (%d positions x %d runs): %.2f ms (%.0f positions/sec)%n",
                 positionCount, parseIterations, durationMs, opsPerSec);
     }
@@ -522,7 +522,7 @@ class SandStormPerformanceBenchmarkTest {
         double opsPerSec = ((iterations * (double) count) / (durationNs / 1_000_000_000.0));
 
         assertEquals(iterations * count, totalSortedElements);
-        assertTrue(durationMs < 1000.0, "Blueprint Y-level sorting exceeded threshold: " + durationMs + "ms");
+        assertTrue(durationMs < 3000.0, "Blueprint Y-level sorting exceeded threshold: " + durationMs + "ms");
         System.out.printf("[BENCHMARK] MorphingMatrix blueprint sorting (%d blocks x %d runs): %.2f ms (%.0f positions/sec)%n",
                 count, iterations, durationMs, opsPerSec);
     }

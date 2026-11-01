@@ -2,6 +2,30 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.69] - 2026-11-01
+
+### ☢️ Lançador de Mini Bombas Nucleares & Cadeia de Refino Radioativo
+* **Compatibilidade Oficial com CurseForge, Minecraft 1.21.4 & Java 21**:
+  * Resolvida incompatibilidade de dependência no `fabric.mod.json`: declarada compatibilidade ampla com Minecraft (`>=1.21.4 <=26.3`) e Java (`>=21`).
+  * Bytecode do mod compilado com alvo estrito Java 21 (`it.options.release = 21`), permitindo execução transparente em clientes padrão do CurseForge sem exigir instalação manual de Java 25.
+  * Compatibilidade retroativa do Fabric Loader expandida para `>=0.16.0`.
+* **Lançador de Mini Bombas Nucleares (`mini_nuke_launcher`) & Mini Nuke (`mini_nuke`)**:
+  * Arma de calibre pesado de endgame capaz de aniquilar chefes e alvos massivos com uma detonação nuclear devastadora.
+  * Área de impacto radioativa persistente gerando radiação térmica e partículas cinemáticas de desintegração.
+* **Cadeia de Refino Radioativo (Sem Atalhos)**:
+  * Refino de lixo radioativo e tambores de resíduos das dungeons em Alto-Forno para obtenção de Concentrado de Urânio Bruto (`raw_uranium_concentrate`).
+  * Processamento avançado em Pelotas de Urânio Enriquecido (`enriched_uranium_pellet`) e Núcleo de Fissão Subcrítica (`subcritical_fission_core`).
+* **Escorpião Sísmico (`seismic_scorpion`) & Toxina Paralisante**:
+  * Predador robótico/quitínico das dunas com ferrão sônico e carapaça pesada de quitina (`scorpion_chitin_plate`).
+  * Drop do Ferrão Sísmico (`seismic_scorpion_stinger`) utilizado para sintetizar Dardos de Toxina Paralisante (`paralytic_toxin_dart`), capazes de imobilizar completamente Vermes de Areia (`sandworm`).
+* **Correção Acústica e de Partículas nos Super Pistões**:
+  * Eliminado falso positivo de destruição de bloco que gerava som e partículas de detrito no recolhimento dos pistões cinéticos e tectônicos.
+* **Showcase Proving Ground Reformulado**:
+  * Nuvens desligadas automaticamente em runtime no cliente e em `options.txt`.
+  * Torre de rapel isolada em espaço aberto com poço vertical de 128 metros totalmente desobstruído.
+  * Placas de identificação frente e verso em todos os pedestais de entidades e orientação frontal (SOUTH) das muralhas de espinhos.
+  * Prevenção de despawn vanilla para entidades biomecânicas em qualquer dificuldade.
+
 ## [1.19.59] - 2026-10-30
 
 ### 👑 Androide Guardião & Reator de Singularidade Estelar

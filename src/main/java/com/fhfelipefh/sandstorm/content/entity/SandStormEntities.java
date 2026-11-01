@@ -450,6 +450,49 @@ public class SandStormEntities {
                     .build(WARDEN_ANDROID_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> SEISMIC_SCORPION_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("seismic_scorpion")
+    );
+
+    public static final EntityType<SeismicScorpionEntity> SEISMIC_SCORPION = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("seismic_scorpion"),
+            EntityType.Builder.of(SeismicScorpionEntity::new, MobCategory.MONSTER)
+                    .sized(1.8f, 1.1f)
+                    .build(SEISMIC_SCORPION_KEY)
+    );
+
+    public static final ResourceKey<EntityType<?>> PARALYTIC_TOXIN_DART_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("paralytic_toxin_dart")
+    );
+
+    public static final EntityType<ParalyticToxinDartEntity> PARALYTIC_TOXIN_DART = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("paralytic_toxin_dart"),
+            EntityType.Builder.<ParalyticToxinDartEntity>of(ParalyticToxinDartEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(PARALYTIC_TOXIN_DART_KEY)
+    );
+
+    public static final ResourceKey<EntityType<?>> MINI_NUKE_PROJECTILE_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("mini_nuke_projectile")
+    );
+
+    public static final EntityType<MiniNukeProjectileEntity> MINI_NUKE_PROJECTILE = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("mini_nuke_projectile"),
+            EntityType.Builder.<MiniNukeProjectileEntity>of(MiniNukeProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(8)
+                    .updateInterval(5)
+                    .build(MINI_NUKE_PROJECTILE_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
@@ -480,5 +523,6 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(WATERWING, WaterwingEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(APEX_SANDWORM, ApexSandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(WARDEN_ANDROID, WardenAndroidEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(SEISMIC_SCORPION, SeismicScorpionEntity.createAttributes());
     }
 }

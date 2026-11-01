@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "sandstorm:nano_actuator",
+    "N": "sandstorm:piezo_quartz_shard",
+    "R": "sandstorm:raw_uranium_concentrate",
+    "S": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "RSR",
+    "NAN",
+    "RSR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:enriched_uranium_pellet"
+  }
+}

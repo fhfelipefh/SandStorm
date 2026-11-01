@@ -2,7 +2,7 @@
 
 ![SandStorm Showcase](https://raw.githubusercontent.com/fhfelipefh/SandStorm/main/docs/screenshots/showcase-overview.png)
 
-**SandStorm** é um mod de sobrevivência planetária, automação industrial e terraformação (Fabric 26.3).
+**SandStorm** é um mod de sobrevivência planetária, automação industrial e terraformação (Fabric 1.21.4 / 26.3).
 
 Você aterrissou em um planeta desertificado e hostil, infestado por colossais **Vermes de Areia**. Sobreviva ao calor extremo, construa fábricas automatizadas, extraia água de aquíferos subterrâneos e transforme o deserto em um oásis verdejante.
 
@@ -45,7 +45,7 @@ Recomendamos usar o **App do CurseForge** para baixar e atualizar automaticament
 2. Busque por **SandStorm** e clique em **Install**.
 
 *Instalação Manual:*
-1. Instale o **Fabric Loader 0.19.5+** para Minecraft 26.3.
+1. Instale o **Fabric Loader 0.16.0+** para Minecraft 1.21.4 / 26.3 (Java 21+).
 2. Coloque o `.jar` do **SandStorm** e a **Fabric API** na pasta `mods`.
 
 ---

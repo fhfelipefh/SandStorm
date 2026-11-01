@@ -367,11 +367,11 @@ public class HeavyKineticPistonBlock extends BaseEntityBlock {
 
     @Override
     protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        if (state.getValue(EXTENDED)) {
+        if (state.getValue(EXTENDED) && !level.getBlockState(pos).is(this)) {
             BlockPos headPos = pos.relative(state.getValue(FACING));
             BlockState headState = level.getBlockState(headPos);
             if (headState.is(SandStormBlocks.HEAVY_KINETIC_PISTON_HEAD)) {
-                level.destroyBlock(headPos, false);
+                level.removeBlock(headPos, false);
             }
         }
         super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);

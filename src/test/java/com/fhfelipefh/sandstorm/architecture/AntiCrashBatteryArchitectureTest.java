@@ -453,7 +453,8 @@ class AntiCrashBatteryArchitectureTest {
 
     private boolean isLivingEntityClass(String entityClass) {
         if ("NutrientBombEntity".equals(entityClass) || "MedBaySeatEntity".equals(entityClass)
-                || "StunGrenadeEntity".equals(entityClass) || "SmokeGrenadeEntity".equals(entityClass)) {
+                || "StunGrenadeEntity".equals(entityClass) || "SmokeGrenadeEntity".equals(entityClass)
+                || "ParalyticToxinDartEntity".equals(entityClass) || "MiniNukeProjectileEntity".equals(entityClass)) {
             return false;
         }
         return true;

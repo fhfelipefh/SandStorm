@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "sandstorm:warden_singularity_core",
+    "E": "sandstorm:enriched_uranium_pellet",
+    "P": "sandstorm:pressure_seal",
+    "S": "sandstorm:structural_plate",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "TPT",
+    "ECE",
+    "SPS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:subcritical_fission_core"
+  }
+}

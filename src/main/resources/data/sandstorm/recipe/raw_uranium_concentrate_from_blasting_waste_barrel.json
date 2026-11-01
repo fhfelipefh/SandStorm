@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 250,
+  "experience": 3.0,
+  "ingredient": "sandstorm:radioactive_waste_barrel",
+  "result": {
+    "id": "sandstorm:raw_uranium_concentrate"
+  }
+}

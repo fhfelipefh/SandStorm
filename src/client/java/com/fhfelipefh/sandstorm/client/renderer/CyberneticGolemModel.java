@@ -85,6 +85,13 @@ public class CyberneticGolemModel extends EntityModel<CyberneticGolemRenderState
         this.body.xRot = 0.0f;
         this.body.zRot = 0.0f;
 
+        float idleTicks = state.animationTicks;
+        float idleWave = Mth.sin(idleTicks * 0.05f) * 0.025f;
+        this.body.xRot += idleWave;
+        this.rightArm.xRot += idleWave * 0.5f;
+        this.leftArm.xRot += idleWave * 0.5f;
+        this.head.xRot += idleWave * 0.8f;
+
         if (state.attackAnimTicks > 0) {
             float progress = (10.0f - state.attackAnimTicks) / 10.0f;
             this.rightArm.xRot = -2.0f + Mth.sin(progress * (float) Math.PI) * 1.8f;

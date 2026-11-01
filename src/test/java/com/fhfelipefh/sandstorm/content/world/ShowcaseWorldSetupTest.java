@@ -46,6 +46,13 @@ class ShowcaseWorldSetupTest {
 
         Files.deleteIfExists(showcaseDir.resolve("session.lock"));
 
+        Path optionsPath = Path.of("run", "options.txt");
+        if (Files.exists(optionsPath)) {
+            String optionsContent = Files.readString(optionsPath);
+            optionsContent = optionsContent.replaceAll("renderClouds:\"[^\"]+\"", "renderClouds:\"false\"");
+            Files.writeString(optionsPath, optionsContent);
+        }
+
         Path levelDat = showcaseDir.resolve("level.dat");
         CompoundTag levelRoot = NbtIo.readCompressed(templateDir.resolve("level.dat"), NbtAccounter.unlimitedHeap());
         CompoundTag data = levelRoot.getCompoundOrEmpty("Data");

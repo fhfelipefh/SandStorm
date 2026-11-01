@@ -36,7 +36,7 @@ public class CorrosiveChitinSpikeWallBlock extends Block {
 
     public CorrosiveChitinSpikeWallBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP));
     }
 
     @Override

@@ -235,6 +235,15 @@ public class SandStormItems {
     public static final SpaceFoodItem ELECTROLYTE_JUICE = register("electrolyte_juice", new SpaceFoodItem(SpaceFoodItem.FoodType.ELECTROLYTE_JUICE, properties("electrolyte_juice").food(new FoodProperties(4, 0.6f, true)).stacksTo(16)));
     public static final SpaceFoodItem CRYO_GLAZED_RATION = register("cryo_glazed_ration", new SpaceFoodItem(SpaceFoodItem.FoodType.CRYO_RATION, properties("cryo_glazed_ration").food(new FoodProperties(8, 1.0f, true))));
     public static final SpaceFoodItem HYDROPONIC_FEAST = register("hydroponic_feast", new SpaceFoodItem(SpaceFoodItem.FoodType.FEAST, properties("hydroponic_feast").food(new FoodProperties(14, 1.2f, true)).stacksTo(16)));
+    public static final SpawnEggItem SEISMIC_SCORPION_SPAWN_EGG = register("seismic_scorpion_spawn_egg", new SpawnEggItem(properties("seismic_scorpion_spawn_egg").spawnEgg(SandStormEntities.SEISMIC_SCORPION)));
+    public static final Item SEISMIC_SCORPION_STINGER = register("seismic_scorpion_stinger", new Item(properties("seismic_scorpion_stinger").rarity(Rarity.RARE)));
+    public static final Item SCORPION_CHITIN_PLATE = register("scorpion_chitin_plate", new Item(properties("scorpion_chitin_plate").rarity(Rarity.UNCOMMON)));
+    public static final ParalyticToxinDartItem PARALYTIC_TOXIN_DART = register("paralytic_toxin_dart", new ParalyticToxinDartItem(properties("paralytic_toxin_dart").stacksTo(16).rarity(Rarity.RARE)));
+    public static final RawUraniumConcentrateItem RAW_URANIUM_CONCENTRATE = register("raw_uranium_concentrate", new RawUraniumConcentrateItem(properties("raw_uranium_concentrate")));
+    public static final EnrichedUraniumPelletItem ENRICHED_URANIUM_PELLET = register("enriched_uranium_pellet", new EnrichedUraniumPelletItem(properties("enriched_uranium_pellet")));
+    public static final SubcriticalFissionCoreItem SUBCRITICAL_FISSION_CORE = register("subcritical_fission_core", new SubcriticalFissionCoreItem(properties("subcritical_fission_core")));
+    public static final MiniNukeItem MINI_NUKE = register("mini_nuke", new MiniNukeItem(properties("mini_nuke")));
+    public static final MiniNukeLauncherItem MINI_NUKE_LAUNCHER = register("mini_nuke_launcher", new MiniNukeLauncherItem(properties("mini_nuke_launcher")));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -604,6 +613,15 @@ public class SandStormItems {
                         entries.accept(ELECTROLYTE_JUICE);
                         entries.accept(CRYO_GLAZED_RATION);
                         entries.accept(HYDROPONIC_FEAST);
+                        entries.accept(SEISMIC_SCORPION_SPAWN_EGG);
+                        entries.accept(SEISMIC_SCORPION_STINGER);
+                        entries.accept(SCORPION_CHITIN_PLATE);
+                        entries.accept(PARALYTIC_TOXIN_DART);
+                        entries.accept(RAW_URANIUM_CONCENTRATE);
+                        entries.accept(ENRICHED_URANIUM_PELLET);
+                        entries.accept(SUBCRITICAL_FISSION_CORE);
+                        entries.accept(MINI_NUKE);
+                        entries.accept(MINI_NUKE_LAUNCHER);
                     })
                     .build()
     );

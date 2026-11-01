@@ -335,14 +335,14 @@ public class CompactSlabPistonBlock extends BaseEntityBlock {
 
     @Override
     protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        if (state.getValue(EXTENDED)) {
+        if (state.getValue(EXTENDED) && !level.getBlockState(pos).is(this)) {
             BlockPos headPos = pos.relative(state.getValue(FACING));
             BlockState headState = level.getBlockState(headPos);
             if (headState.is(SandStormBlocks.COMPACT_SLAB_PISTON_HEAD) && headState.getValue(FACING) == state.getValue(FACING)) {
-                level.destroyBlock(headPos, false);
+                level.removeBlock(headPos, false);
             }
         }
-        if (state.getValue(TOP_SLAB)) {
+        if (state.getValue(TOP_SLAB) && !level.getBlockState(pos).is(this)) {
             popResource(level, pos, new ItemStack(Items.SMOOTH_STONE_SLAB));
         }
         super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);

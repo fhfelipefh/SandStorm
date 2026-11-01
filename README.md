@@ -2,11 +2,11 @@
 
 [![CurseForge](https://img.shields.io/badge/CurseForge-SandStorm-orange?logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/sandstorm)
 [![Modrinth](https://img.shields.io/badge/Modrinth-SandStorm-00AF5C?logo=modrinth)](https://modrinth.com/mod/sandstorm-felipehonorio55)
-[![Fabric](https://img.shields.io/badge/Minecraft-26.3%20Fabric-blue)](https://fabricmc.net/)
+[![Fabric](https://img.shields.io/badge/Minecraft-1.21.4%20%7C%2026.3%20Fabric-blue)](https://fabricmc.net/)
 
 ![SandStorm Showcase](docs/screenshots/showcase-overview.png)
 
-**SandStorm** é um mod de sobrevivência planetária, automação industrial e terraformação para Minecraft 26.3 (Fabric). 
+**SandStorm** é um mod de sobrevivência planetária, automação industrial e terraformação para Minecraft 1.21.4 e 26.3 (Fabric). 
 
 Você é um astronauta perdido em um planeta infestado por **Vermes de Areia**. Sobreviva ao calor inclemente, construa fábricas e transforme o deserto estéril em um oásis.
 

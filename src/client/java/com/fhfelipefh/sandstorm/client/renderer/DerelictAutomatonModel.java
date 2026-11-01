@@ -113,6 +113,14 @@ public class DerelictAutomatonModel extends EntityModel<DerelictAutomatonRenderS
         this.rightArm.zRot = 0.0f;
         this.body.xRot = 0.0f;
 
+        float idleBreathing = Mth.sin(state.animationTicks * 0.08f) * 0.03f;
+        float idleScan = Mth.cos(state.animationTicks * 0.04f) * 0.05f;
+        this.head.xRot += idleBreathing;
+        this.head.yRot += idleScan;
+        this.body.xRot = idleBreathing * 0.5f;
+        this.leftArm.xRot += Mth.sin(state.animationTicks * 0.06f) * 0.04f;
+        this.rightArm.xRot += Mth.cos(state.animationTicks * 0.06f) * 0.04f;
+
         if (state.isOvercharging) {
             float jitter = Mth.sin(state.animationTicks * 15.0f) * 0.12f;
             this.body.xRot = jitter;

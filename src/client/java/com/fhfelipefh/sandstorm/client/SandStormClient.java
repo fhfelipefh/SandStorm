@@ -100,6 +100,7 @@ import com.fhfelipefh.sandstorm.client.renderer.DefectiveSentinelRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.NomadScavengerRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SpaceSuitArmorRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.WardenAndroidRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.SeismicScorpionRenderer;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
@@ -115,14 +116,17 @@ import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncUplinkZonePayload;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import java.util.Locale;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.CloudStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.block.FluidModel;
@@ -219,6 +223,8 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.NUTRIENT_BOMB, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.STUN_GRENADE, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SMOKE_GRENADE, ThrownItemRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.PARALYTIC_TOXIN_DART, ThrownItemRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.MINI_NUKE_PROJECTILE, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDWORM, SandwormRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CARGO_DRONE, CargoDroneRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.EXCAVATOR_VEHICLE, ExcavatorVehicleRenderer::new);
@@ -249,6 +255,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.WATERWING, WaterwingRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.APEX_SANDWORM, SandwormRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.WARDEN_ANDROID, WardenAndroidRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.SEISMIC_SCORPION, SeismicScorpionRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {
@@ -343,6 +350,16 @@ public class SandStormClient implements ClientModInitializer {
         });
         LevelRenderEvents.COLLECT_SUBMITS.register(ClientUplinkRenderer::render);
         LevelRenderEvents.COLLECT_SUBMITS.register(MultiblockHologramRenderer::render);
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            client.execute(() -> {
+                if (client.getSingleplayerServer() != null) {
+                    String levelName = client.getSingleplayerServer().getWorldData().getLevelName();
+                    if (levelName != null && levelName.toLowerCase(Locale.ROOT).contains("showcase")) {
+                        client.options.cloudStatus().set(CloudStatus.OFF);
+                    }
+                }
+            });
+        });
         FluidRenderingRegistry.register(
                 SandStormFluids.RADIOACTIVE_SLUDGE,
                 SandStormFluids.FLOWING_RADIOACTIVE_SLUDGE,

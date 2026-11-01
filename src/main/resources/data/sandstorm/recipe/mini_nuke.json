@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": "sandstorm:subcritical_fission_core",
+    "E": "sandstorm:electric_component",
+    "P": "sandstorm:propellant_cartridge",
+    "R": "sandstorm:structural_plate",
+    "S": "sandstorm:pressure_seal",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "PSP",
+    "TCT",
+    "RER"
+  ],
+  "result": {
+    "count": 2,
+    "id": "sandstorm:mini_nuke"
+  }
+}

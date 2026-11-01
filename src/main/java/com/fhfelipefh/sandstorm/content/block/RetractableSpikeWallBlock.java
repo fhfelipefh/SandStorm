@@ -41,7 +41,7 @@ public class RetractableSpikeWallBlock extends Block {
 
     public RetractableSpikeWallBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(POWERED, false));
     }
 
     @Override
