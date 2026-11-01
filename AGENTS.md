@@ -73,6 +73,26 @@ Ao criar, modificar ou adicionar qualquer receita em `data/sandstorm/recipe/`:
 3. **Cultura de Prevenção por Testes de Arquitetura**:
    - Sempre que um comportamento globalmente indesejado for identificado no repositório, é mandatório criar um teste de arquitetura dedicado para impedir regressões futuras permanentemente.
 
+## 🛡️ Protocolo de Compatibilidade de Runtime e Plataforma (Java 21 & Minecraft 1.21.4+)
+Ao alterar configurações de build, mixins ou metadados de mod:
+
+1. **Alvo Estrito de Bytecode Java 21**:
+   - O `build.gradle` DEVE manter `it.options.release = 21`, `sourceCompatibility = JavaVersion.VERSION_21` e `targetCompatibility = JavaVersion.VERSION_21`.
+   - É terminantemente proibido compilar para `release = 25`, pois launchers como CurseForge e Prism utilizam JVM Java 21 para Minecraft 1.21.4+.
+
+2. **Nível de Compatibilidade de Mixin (`compatibilityLevel`)**:
+   - Tanto `sandstorm.mixins.json` quanto `sandstorm.client.mixins.json` DEVEM declarar rigorosamente `"compatibilityLevel": "JAVA_21"`.
+   - É terminantemente proibido declarar `"JAVA_25"`. O SpongePowered Mixin valida a JVM ativa e lança `IllegalArgumentException: The requested compatibility level JAVA_25 could not be set` no bootstrap se a JVM for Java 21, causando crash imediato na abertura.
+
+3. **Declaração de Dependências em `fabric.mod.json`**:
+   - O campo `depends.minecraft` DEVE abranger `1.21.4` (ex: `">=1.21.4 <=26.3"`). É proibido usar limites restritivos que excluam o 1.21.4 (ex: `">=26.2"`).
+   - O campo `depends.java` DEVE ser `">=21"`. É proibido exigir `">=25"`.
+   - O campo `depends.fabricloader` DEVE manter compatibilidade com versões amplamente distribuídas (`>=0.16.0`).
+
+4. **Auditoria Permanente por Teste de Arquitetura**:
+   - Qualquer regressão nessas 4 configurações quebra imediatamente o teste `CurseForgeAndRuntimeCompatibilityArchitectureTest`.
+   - É proibido publicar releases ou comitar sem que esse teste passe com 100% de sucesso.
+
 ## 🚀 Validação Obrigatória Antes de Envio Remoto
 Antes de concluir qualquer tarefa de desenvolvimento ou efetuar `git push` ao repositório remoto:
 1. Executar `./gradlew test` e garantir que todos os testes (incluindo testes de arquitetura e compatibilidade JEI) passem com 100% de sucesso.
