@@ -114,7 +114,8 @@ public class MilitaryLabCatalog {
                     for (int fy = 1; fy <= 3; fy++) {
                         BlockPos foundationPos = worldFloor.below(fy);
                         if (level.getBlockState(foundationPos).isAir()) {
-                            level.setBlock(foundationPos, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState(), 2);
+                            level.setBlock(foundationPos, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState()
+                                    .setValue(RustingBlock.RUST, RustingBlock.selectRuinRust(level.getRandom())), 2);
                         }
                     }
 
@@ -131,7 +132,8 @@ public class MilitaryLabCatalog {
                         ceilingState = SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState();
                     }
                     setLocalBlock(level, origin, rotation, lx, 5, lz, size, ceilingState);
-                    setLocalBlock(level, origin, rotation, lx, 6, lz, size, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState());
+                    setLocalBlock(level, origin, rotation, lx, 6, lz, size, SandStormBlocks.MILITARY_ARMOR_PLATE.defaultBlockState()
+                            .setValue(RustingBlock.RUST, RustingBlock.selectRuinRust(level.getRandom())));
 
                     for (int ly = 1; ly <= 4; ly++) {
                         boolean isNorthWall = (lz == 0);

@@ -40,4 +40,14 @@ class RustingBlockArchitectureTest {
             assertTrue(hidden.asList().stream().anyMatch(value -> value.getAsString().equals("sandstorm:" + id)), id);
         }
     }
+
+    @Test
+    void militaryLabIncludesRoofAndFoundationInRustDistribution() throws Exception {
+        Path dungeon = Path.of("src/main/java/com/fhfelipefh/sandstorm/content/world/dungeon");
+        String clutter = Files.readString(dungeon.resolve("MilitaryLabClutterPass.java"));
+        String catalog = Files.readString(dungeon.resolve("MilitaryLabCatalog.java"));
+        assertTrue(clutter.contains("y <= 6"), "The rust pass must cover the roof layer");
+        assertTrue(catalog.matches("(?s).*level\\.setBlock\\(foundationPos,\\s*SandStormBlocks\\.MILITARY_ARMOR_PLATE\\.defaultBlockState\\(\\)\\s*\\.setValue\\(RustingBlock\\.RUST,\\s*RustingBlock\\.selectRuinRust\\(level\\.getRandom\\(\\)\\)\\).*"),
+                "The foundation must use the same weighted rust distribution");
+    }
 }

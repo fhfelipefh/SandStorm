@@ -17,7 +17,7 @@ public class MilitaryLabClutterPass implements DungeonClutterPass {
 
         for (int x = 0; x < totalX; x++) {
             for (int z = 0; z < totalZ; z++) {
-                for (int y = 0; y <= 5; y++) {
+                for (int y = 0; y <= 6; y++) {
                     BlockPos pos = origin.offset(x, y, z);
                     BlockState state = level.getBlockState(pos);
 

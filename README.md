@@ -87,7 +87,7 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
       <sub>Guardião Autônomo & Rastreador</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cybernetic_golem.png" width="140" alt="Golem Cibernético"><br>
+      <img src="docs/images/entities/cybernetic_golem.gif" width="140" alt="Golem Cibernético"><br>
       <b>Golem Cibernético</b><br>
       <sub>Defesa Pesada de Instalações</sub>
     </td>
@@ -109,7 +109,7 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
       <sub>Unidade Hostil Corrompida</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/derelict_automaton.png" width="140" alt="Autômato Abandonado"><br>
+      <img src="docs/images/entities/derelict_automaton.gif" width="140" alt="Autômato Abandonado"><br>
       <b>Autômato Abandonado</b><br>
       <sub>Unidade Decrépita Reciclável</sub>
     </td>
@@ -369,7 +369,7 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
 ## ⚔️ Arsenal Tático, Armas & Equipamentos
 
 <details>
-<summary><b>Clique para expandir o arsenal de armas e equipamentos (16 modelos)</b></summary>
+<summary><b>Clique para expandir o arsenal de armas e equipamentos (15 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -455,11 +455,7 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
       <b>Uplink Cibernético</b><br>
       <sub>Comando Remoto de Drones & Ciborgues</sub>
     </td>
-    <td align="center" width="25%" valign="top">
-      <img src="docs/images/weapons/sandboard.png" width="140" alt="Prancha de Areia (Sandboard)"><br>
-      <b>Prancha de Areia (Sandboard)</b><br>
-      <sub>Locomoção Tática de Alta Velocidade</sub>
-    </td>
+    <td width="25%"></td>
   </tr>
 </table>
 
