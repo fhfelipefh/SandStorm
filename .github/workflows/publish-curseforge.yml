@@ -196,10 +196,11 @@ jobs:
         if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && success()
         run: |
           if git rev-parse "refs/tags/v${{ env.MOD_VERSION }}" >/dev/null 2>&1; then
-            echo "Tag v${{ env.MOD_VERSION }} já existe. Pulando criação de tag."
+            echo "Tag v${{ env.MOD_VERSION }} já existe localmente. Tentando push caso não esteja no remoto."
+            git push origin "v${{ env.MOD_VERSION }}" || true
           else
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git tag -a "v${{ env.MOD_VERSION }}" -m "Release v${{ env.MOD_VERSION }}"
-            git push origin "v${{ env.MOD_VERSION }}"
+            git push origin "v${{ env.MOD_VERSION }}" || true
           fi
