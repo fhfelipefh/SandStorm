@@ -50,6 +50,8 @@ class ShowcaseWorldSetupTest {
         if (Files.exists(optionsPath)) {
             String optionsContent = Files.readString(optionsPath);
             optionsContent = optionsContent.replaceAll("renderClouds:\"[^\"]+\"", "renderClouds:\"false\"");
+            optionsContent = optionsContent.replaceAll("tutorialStep:\"[^\"]+\"", "tutorialStep:\"none\"");
+            optionsContent = optionsContent.replaceAll("tutorialStep:[^\\r\\n]+", "tutorialStep:none");
             Files.writeString(optionsPath, optionsContent);
         }
 

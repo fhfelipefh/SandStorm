@@ -15,7 +15,9 @@
 		"MegazordPilotPoseMixin",
 		"MegazordPickabilityMixin",
 		"MegazordBlockRaycastMixin",
-		"MegazordItemTransformMixin"
+		"MegazordItemTransformMixin",
+		"TutorialMixin",
+		"ToastManagerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 0

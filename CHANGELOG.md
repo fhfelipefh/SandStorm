@@ -2,6 +2,21 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.74] - 2026-11-02
+
+### 🚫 Supressão Estrita de Notificações Vanilla & Desativação do Tutorial
+* **Bloqueio do Sistema de Tutorial Vanilla (`TutorialMixin`)**:
+  * Interrompe e impede a execução do tutorial vanilla do Minecraft (`Tutorial.start()`, `Tutorial.tick()` e `Tutorial.setStep()`) em mundos e sessões do SandStorm.
+  * Elimina definitivamente a notificação de coletar madeira ("Encontre uma árvore / Quebre para coletar madeira"), impossível de ser concluída no ecossistema desértico e que ficava presa na tela durante gravações de vídeo.
+* **Filtro de Toasts Vanilla no HUD (`ToastManagerMixin`)**:
+  * Intercepta `ToastManager.addToast()` e descarta automaticamente `TutorialToast`, `RecipeToast` (notificações de receitas desbloqueadas) e `AdvancementToast` em mundos do SandStorm.
+* **Limpeza Ativa no Login e Sincronização de Traje (`SandStormClient` & `SandStormClientWorldHelper`)**:
+  * Ao carregar ou entrar em qualquer mapa SandStorm/Showcase, limpa a fila e o cache ativo de toasts (`client.gui.toastManager().clear()`) e fixa `tutorialStep:none` nas opções do cliente.
+* **Auditoria de Arquitetura**:
+  * Adicionado teste de arquitetura dedicado `VanillaNotificationSuppressionArchitectureTest` garantindo a preservação permanente do bloqueio e ausência de regressões.
+
+---
+
 ## [1.19.73] - 2026-11-01
 
 ### 🎯 Formalização da Especificação Oficial Minecraft 26.3 & Blindagem de Runtime

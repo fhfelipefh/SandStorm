@@ -129,6 +129,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.tutorial.TutorialSteps;
 import net.minecraft.client.renderer.block.FluidModel;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -292,6 +293,13 @@ public class SandStormClient implements ClientModInitializer {
                         payload.temperature(),
                         payload.armorCount()
                 );
+                SandStormClientWorldHelper.setConnectedToSandStorm(true);
+                context.client().getTutorial().setStep(TutorialSteps.NONE);
+                context.client().getTutorial().stop();
+                if (context.client().gui != null && context.client().gui.toastManager() != null) {
+                    context.client().gui.toastManager().clear();
+                }
+                context.client().options.tutorialStep = TutorialSteps.NONE;
                 if (payload.storedEnergy() >= payload.capacity() * 0.6) {
                     DatapadClientHelper.addCondition("sandstorm.battery_60");
                 }
@@ -302,11 +310,13 @@ public class SandStormClient implements ClientModInitializer {
         });
         ClientPlayNetworking.registerGlobalReceiver(SyncPlayerQuestsPayload.TYPE, (payload, context) -> {
             context.client().execute(() -> {
+                SandStormClientWorldHelper.setConnectedToSandStorm(true);
                 DatapadClientHelper.setQuests(payload.claimedQuestIds(), payload.completedConditions());
             });
         });
         ClientPlayNetworking.registerGlobalReceiver(SandstormWeatherPayload.TYPE, (payload, context) -> {
             context.client().execute(() -> {
+                SandStormClientWorldHelper.setConnectedToSandStorm(true);
                 if (payload.active()) {
                     SandstormWeatherHandler.getWeather().startSandstorm(200, payload.intensity());
                 } else {
@@ -358,7 +368,19 @@ public class SandStormClient implements ClientModInitializer {
                         client.options.cloudStatus().set(CloudStatus.OFF);
                     }
                 }
+                if (SandStormClientWorldHelper.isSandStormWorld()) {
+                    client.getTutorial().setStep(TutorialSteps.NONE);
+                    client.getTutorial().stop();
+                    if (client.gui != null && client.gui.toastManager() != null) {
+                        client.gui.toastManager().clear();
+                    }
+                    client.options.tutorialStep = TutorialSteps.NONE;
+                    client.options.save();
+                }
             });
+        });
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            SandStormClientWorldHelper.setConnectedToSandStorm(false);
         });
         FluidRenderingRegistry.register(
                 SandStormFluids.RADIOACTIVE_SLUDGE,
