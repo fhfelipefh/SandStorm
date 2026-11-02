@@ -553,6 +553,13 @@ public class SandStormBlocks {
                     .strength(4.0f, 8.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .noOcclusion()));
+    public static final FiberglassSpikesBlock FIBERGLASS_SPIKES = register("fiberglass_spikes",
+            new FiberglassSpikesBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("fiberglass_spikes")))
+                    .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                    .strength(0.8f, 1.5f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()));
     public static final SerratedJawTrapBlock SERRATED_JAW_TRAP = register("serrated_jaw_trap",
             new SerratedJawTrapBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("serrated_jaw_trap")))

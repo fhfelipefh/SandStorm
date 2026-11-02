@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "F": "sandstorm:fiberglass",
+    "C": "minecraft:copper_ingot"
+  },
+  "pattern": [
+    "F F",
+    " F ",
+    "CCC"
+  ],
+  "result": {
+    "count": 4,
+    "id": "sandstorm:fiberglass_spikes"
+  }
+}

@@ -1380,6 +1380,8 @@
   "item.sandstorm.nanite_web_snare": "Trampa de Telaraña Nanítica",
   "block.sandstorm.neurotoxic_spikes": "Pinchos Neurotóxicos",
   "item.sandstorm.neurotoxic_spikes": "Pinchos Neurotóxicos",
+  "block.sandstorm.fiberglass_spikes": "Pinchos de Fibra de Vidrio",
+  "item.sandstorm.fiberglass_spikes": "Pinchos de Fibra de Vidrio",
   "entity.sandstorm.mirage_decoy": "Señuelo Holográfico",
   "message.sandstorm.detonator_linked": "¡Trampa sincronizada!",
   "message.sandstorm.detonator_unlinked": "Trampa desvinculada.",

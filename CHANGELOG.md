@@ -2,6 +2,26 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.81] - 2026-11-02
+
+### ⚔️ Nova Armadilha Early Game: Espinhos de Fibra de Vidro (Fiberglass Spikes)
+* **Defesa Prática e Acessível para o Início do Jogo**:
+  * Adicionado o bloco de armadilha `sandstorm:fiberglass_spikes` (**Espinhos de Fibra de Vidro**).
+  * Pode ser fabricado logo no early game utilizando fibra de vidro (`sandstorm:fiberglass`) combinada com cobre (`minecraft:copper_ingot`) ou ferro (`minecraft:iron_ingot`).
+* **Mecânica de Entrapment e Dano Moderado**:
+  * Inimigos e entidades hostis que pisam na armadilha ficam presos (`makeStuckInBlock` com fator `0.2`) e recebem lentidão (`SLOWNESS II`), sofrendo 2.0 pontos de dano perfurante por tick de impacto.
+  * Jogadores agachados (Sneak / Shift) conseguem passar com total segurança sobre os espinhos sem sofrer dano e sem desgastar a armadilha, permitindo transitar pela base com facilidade.
+* **Degradação e Durabilidade Balanceada**:
+  * O bloco possui 5 estágios de desgaste (`wear` de 0 a 4). A cada dano efetivamente causado, a armadilha se desgasta.
+  * Ao atingir o limite de dano (estágio 4), os espinhos se estilhaçam por completo (`GLASS_BREAK`) gerando partículas de quebra e liberando o espaço, impedindo armadilhas eternas ou "apelonas" no início da jornada.
+* **Receitas, Modelagem e Texturas**:
+  * Receitas formatadas para 3 fibras de vidro + 3 barras de cobre ou ferro -> 4 espinhos de fibra de vidro.
+  * Textura 16x16 dedicada com grade metálica e agulhas translúcidas de sílica, modelo 3D com padrão de caltrops e tags de mineração com picareta.
+* **Auditoria de Arquitetura**:
+  * Criado `FiberglassSpikesArchitectureTest` e integrado ao `ItemGuiExhibitionArchitectureTest` e JEI.
+
+---
+
 ## [1.19.80] - 2026-11-02
 
 ### 🤖 Androide Atirador: Jatos de Silício, Limite de 5 Tiros & Recarga por Sucção de Areia

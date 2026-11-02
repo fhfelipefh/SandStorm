@@ -340,6 +340,7 @@ public class SandStormItems {
                         entries.accept(NUTRIENT_BOMB);
                         entries.accept(STUN_GRENADE);
                         entries.accept(SMOKE_GRENADE);
+                        entries.accept(SandStormBlocks.FIBERGLASS_SPIKES);
                         entries.accept(SandStormBlocks.SERRATED_JAW_TRAP);
                         entries.accept(SandStormBlocks.PIEZO_SHOCK_TRAP);
                         entries.accept(SandStormBlocks.COLLAPSIBLE_TRAPDOOR);

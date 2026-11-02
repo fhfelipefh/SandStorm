@@ -1380,6 +1380,8 @@
   "item.sandstorm.nanite_web_snare": "Nanite Web Snare",
   "block.sandstorm.neurotoxic_spikes": "Neurotoxic Spikes",
   "item.sandstorm.neurotoxic_spikes": "Neurotoxic Spikes",
+  "block.sandstorm.fiberglass_spikes": "Fiberglass Spikes",
+  "item.sandstorm.fiberglass_spikes": "Fiberglass Spikes",
   "entity.sandstorm.mirage_decoy": "Mirage Decoy",
   "message.sandstorm.detonator_linked": "Trap synchronized!",
   "message.sandstorm.detonator_unlinked": "Trap unlinked.",

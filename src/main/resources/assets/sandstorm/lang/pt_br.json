@@ -1380,6 +1380,8 @@
   "item.sandstorm.nanite_web_snare": "Armadilha de Teia Nanítica",
   "block.sandstorm.neurotoxic_spikes": "Espinhos Neurotóxicos",
   "item.sandstorm.neurotoxic_spikes": "Espinhos Neurotóxicos",
+  "block.sandstorm.fiberglass_spikes": "Espinhos de Fibra de Vidro",
+  "item.sandstorm.fiberglass_spikes": "Espinhos de Fibra de Vidro",
   "entity.sandstorm.mirage_decoy": "Isca Holográfica",
   "message.sandstorm.detonator_linked": "Armadilha sincronizada!",
   "message.sandstorm.detonator_unlinked": "Desvinculada do detonador.",
