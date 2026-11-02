@@ -2,6 +2,27 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.79] - 2026-11-02
+
+### 🎯 Balanceamento Crítico de Drones Atiradores (`ScoutDroneEntity`) para o Early Game
+* **Redução Drástica de Vida e Remoção de Armadura**:
+  * Vida máxima (`Attributes.MAX_HEALTH`) reduzida de 18.0 para 6.0 (3 corações).
+  * Armadura (`Attributes.ARMOR`) zerada de 4.0 para 0.0, garantindo que dano de picareta e armas iniciais não sofram atenuação de proteção.
+  * Com essa alteração, um jogador equipado com uma Picareta de Silício (`Silicon Pickaxe`) derrota o drone atirador em no máximo duas picaretadas.
+  * Resistência a repulsão (`Attributes.KNOCKBACK_RESISTANCE`) zerada (de 0.4 para 0.0), permitindo afastar o drone a cada acerto.
+* **Nerf no Ataque à Distância e Perseguição**:
+  * Dano do projétil/laser (`performRangedAttack`) reduzido de 4.5 para 1.5 por disparo, eliminando o efeito punitivo que eliminava o jogador em segundos sem armadura.
+  * Intervalo entre disparos aumentado de 30-45 ticks (1.5-2.25s) para 50-75 ticks (2.5-3.75s).
+  * Alcance máximo de disparo reduzido de 14 para 10 blocos e alcance de perseguição (`FOLLOW_RANGE`) reduzido de 64 para 20 blocos.
+  * Velocidade de movimento reduzida de 0.28 para 0.22.
+* **Raridade de Spawn & Exclusão em Cavernas (`DesertMobSpawnManager`)**:
+  * Taxa de geração de drones atiradores na superfície reduzida para apenas 4% (antes 15%).
+  * Drones atiradores não nascem no subsolo/cavernas (`isUnderground`), mantendo as expedições subterrâneas focadas em mineradores e autômatos terrestres.
+* **Novo Teste de Arquitetura (`DesertMobEcosystemArchitectureTest`)**:
+  * Adicionado teste automatizado `scoutDroneMustBeFragileAndRareForEarlyGameBalance` validando integridade de atributos de vida, armadura, dano e passagem de contexto subterrâneo.
+
+---
+
 ## [1.19.78] - 2026-11-02
 
 ### 🤖 Correção Crítica do Sistema de Spawn de Mobs Artificiais no Early Game

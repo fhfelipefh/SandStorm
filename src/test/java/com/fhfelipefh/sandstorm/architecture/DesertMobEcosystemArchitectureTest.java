@@ -69,10 +69,29 @@ class DesertMobEcosystemArchitectureTest {
     }
 
     @Test
+    void scoutDroneMustBeFragileAndRareForEarlyGameBalance() throws IOException {
+        Path scoutDroneFile = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity", "ScoutDroneEntity.java");
+        assertTrue(Files.exists(scoutDroneFile), "ScoutDroneEntity.java must exist");
+        String droneContent = Files.readString(scoutDroneFile);
+        assertTrue(droneContent.contains("Attributes.MAX_HEALTH, 6.0"),
+                "ScoutDrone must have low health (<= 6.0) to die in at most two silicon pickaxe hits");
+        assertTrue(droneContent.contains("Attributes.ARMOR, 0.0"),
+                "ScoutDrone must have 0.0 armor so tool damage is unmitigated");
+        assertTrue(droneContent.contains("1.5f"),
+                "ScoutDrone ranged attack damage must be nerfed for early-game survival");
+
+        Path spawnManagerFile = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "DesertMobSpawnManager.java");
+        assertTrue(Files.exists(spawnManagerFile), "DesertMobSpawnManager.java must exist");
+        String spawnContent = Files.readString(spawnManagerFile);
+        assertTrue(spawnContent.contains("selectArtificialMobType(random, isUnderground)"),
+                "DesertMobSpawnManager must pass underground context to mob selection");
+    }
+
+    @Test
     void versionMustMatchCurrentRelease() throws IOException {
         Path gradleProps = Path.of("gradle.properties");
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.19.78"), "gradle.properties must be 1.19.78");
+        assertTrue(content.contains("version=1.19.79"), "gradle.properties must be 1.19.79");
     }
 
     @Test

@@ -42,11 +42,11 @@ public class ScoutDroneEntity extends PathfinderMob implements Enemy, RangedAtta
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 18.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.28)
-                .add(Attributes.ARMOR, 4.0)
-                .add(Attributes.FOLLOW_RANGE, 64.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.4);
+                .add(Attributes.MAX_HEALTH, 6.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.22)
+                .add(Attributes.ARMOR, 0.0)
+                .add(Attributes.FOLLOW_RANGE, 20.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ScoutDroneEntity extends PathfinderMob implements Enemy, RangedAtta
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.0, 30, 45, 14.0f));
+        this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.0, 50, 75, 10.0f));
         this.goalSelector.addGoal(2, new DesertExplorationWanderGoal(this, 0.95));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
@@ -126,7 +126,7 @@ public class ScoutDroneEntity extends PathfinderMob implements Enemy, RangedAtta
             serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
                     SandStormSoundEvents.PLASMA_RIFLE_FIRE, SoundSource.HOSTILE, 1.0f, 1.8f);
 
-            target.hurtServer(serverLevel, damageSources().mobAttack(this), 4.5f);
+            target.hurtServer(serverLevel, damageSources().mobAttack(this), 1.5f);
         }
     }
 

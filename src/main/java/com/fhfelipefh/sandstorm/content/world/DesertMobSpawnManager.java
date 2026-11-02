@@ -158,7 +158,7 @@ public class DesertMobSpawnManager {
                 continue;
             }
 
-            EntityType<? extends Mob> entityType = selectArtificialMobType(random);
+            EntityType<? extends Mob> entityType = selectArtificialMobType(random, isUnderground);
             Mob mob = entityType.create(level, EntitySpawnReason.NATURAL);
             if (mob != null) {
                 mob.setPos(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
@@ -254,21 +254,39 @@ public class DesertMobSpawnManager {
     }
 
     public static EntityType<? extends Mob> selectArtificialMobType(RandomSource random) {
+        return selectArtificialMobType(random, false);
+    }
+
+    public static EntityType<? extends Mob> selectArtificialMobType(RandomSource random, boolean isUnderground) {
+        if (isUnderground) {
+            int roll = random.nextInt(100);
+            if (roll < 35) {
+                return SandStormEntities.DERELICT_AUTOMATON;
+            } else if (roll < 65) {
+                return SandStormEntities.LABORER_UNIT;
+            } else if (roll < 85) {
+                return SandStormEntities.CYBER_HOUND;
+            } else if (roll < 95) {
+                return SandStormEntities.CRAWLER_DRONE;
+            } else {
+                return SandStormEntities.SCRAP_SENTINEL;
+            }
+        }
         int roll = random.nextInt(100);
-        if (roll < 20) {
+        if (roll < 30) {
             return SandStormEntities.DERELICT_AUTOMATON;
-        } else if (roll < 35) {
-            return SandStormEntities.CYBER_HOUND;
-        } else if (roll < 48) {
-            return SandStormEntities.CYBER_STEED;
-        } else if (roll < 65) {
+        } else if (roll < 55) {
             return SandStormEntities.LABORER_UNIT;
-        } else if (roll < 80) {
-            return SandStormEntities.SCOUT_DRONE;
-        } else if (roll < 92) {
+        } else if (roll < 70) {
+            return SandStormEntities.CYBER_STEED;
+        } else if (roll < 85) {
+            return SandStormEntities.CYBER_HOUND;
+        } else if (roll < 91) {
             return SandStormEntities.CRAWLER_DRONE;
-        } else {
+        } else if (roll < 96) {
             return SandStormEntities.SCRAP_SENTINEL;
+        } else {
+            return SandStormEntities.SCOUT_DRONE;
         }
     }
 
