@@ -2,6 +2,27 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.75] - 2026-11-02
+
+### 💧 Depleção de Aquífero Salobro & Mineralização de Sal
+* **Mecânica de Esgotamento Sustentável (`BrackishWaterBlock`)**:
+  * Adicionada a propriedade `DRAINS` (0 a 6) ao bloco de Aquífero Salobro (`sandstorm:brackish_aquifer`).
+  * Cada extração com garrafa de vidro consome a reserva subterrânea (capacidade de 3 a 6 utilizações calculada por coordenada).
+  * Ao atingir a capacidade máxima, o aquífero mineraliza completamente: o bloco vira sal puro, dropa de 2 a 4 unidades de `sandstorm:mineral_salt` e se autodestrói sem necessidade de mineração.
+* **Mapeamento de Variantes de Blockstate**:
+  * Atualizado `brackish_aquifer.json` com suporte para todas as variantes de drenagem (`drains=0..6`).
+
+### 📱 Correção de UI do Datapad de Sobrevivência (`SurvivalDatapadScreen`)
+* **Eliminação de Sobreposição de Botões e Recompensas**:
+  * Corrigida a colisão na aba de missões onde os botões `[Ponder]` e `[HOLO]` (em missões com estruturas multibloco associadas, como "Impressora 3D" e "Receptor Solar WPT") colidiam e cobriam a renderização da recompensa e da contagem de itens. O renderizador agora desloca a recompensa dinamicamente à esquerda dos botões holográficos.
+* **Scissor Clipping e Bloqueio de Sangramento na Moldura**:
+  * Implementado corte estrito por scissor (`enableScissor` / `disableScissor`) e filtros de renderização e clique (`questAreaTop` / `questAreaBottom`) tanto na aba de missões quanto na aba de multiblocos.
+  * Cartões como "Radar Sísmico" não mais vazam para fora da borda ciano inferior do Datapad.
+* **Barra de Rolagem Dinâmica**:
+  * Adicionada renderização de barra de rolagem ciano em ambas as abas quando o conteúdo ultrapassa a área visível do Datapad.
+
+---
+
 ## [1.19.74] - 2026-11-02
 
 ### 🚫 Supressão Estrita de Notificações Vanilla & Desativação do Tutorial

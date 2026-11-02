@@ -158,10 +158,11 @@ public class SurvivalDatapadScreen extends Screen {
         maxScroll = Math.max(0, totalContentHeight - visibleHeight);
         scrollOffset = Math.clamp(scrollOffset, 0, maxScroll);
 
+        extractor.enableScissor(left + 6, questAreaTop, right - 6, questAreaBottom);
         for (int i = 0; i < quests.size(); i++) {
             QuestData quest = quests.get(i);
             int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
-            if (cy + cardHeight < questAreaTop || cy > questAreaBottom) {
+            if (cy + cardHeight <= questAreaTop || cy >= questAreaBottom) {
                 continue;
             }
 
@@ -247,9 +248,10 @@ public class SurvivalDatapadScreen extends Screen {
             }
 
             if (quest.getRewardItem() != null) {
-                extractor.item(quest.getRewardItem().getDefaultInstance(), cardRight - 94, cy + 18);
+                int rewardX = cardRight - 94 - holoOffset;
+                extractor.item(quest.getRewardItem().getDefaultInstance(), rewardX, cy + 18);
                 String countStr = "x" + quest.rewardCount();
-                extractor.text(font, countStr, cardRight - 76, cy + 22, 0xFFFFD54F);
+                extractor.text(font, countStr, rewardX + 18, cy + 22, 0xFFFFD54F);
             }
 
             int btnW = 56;
@@ -278,6 +280,16 @@ public class SurvivalDatapadScreen extends Screen {
                 drawScaledCenteredText(extractor, claimedText, btnX + btnW / 2f, btnY + 6, btnW - 2, 0xFF69F0AE);
             }
         }
+        extractor.disableScissor();
+
+        if (maxScroll > 0) {
+            int scrollbarX = right - 7;
+            int scrollbarW = 2;
+            extractor.fill(scrollbarX, questAreaTop, scrollbarX + scrollbarW, questAreaBottom, 0x44005B66);
+            int thumbH = Math.max(16, (int) ((float) visibleHeight * visibleHeight / (float) totalContentHeight));
+            int thumbY = questAreaTop + (int) ((float) scrollOffset / (float) maxScroll * (visibleHeight - thumbH));
+            extractor.fill(scrollbarX, thumbY, scrollbarX + scrollbarW, thumbY + thumbH, 0xFF00E5FF);
+        }
     }
 
     private void renderMultiblockTab(GuiGraphicsExtractor extractor, int left, int right,
@@ -288,10 +300,11 @@ public class SurvivalDatapadScreen extends Screen {
         maxScroll = Math.max(0, totalContentHeight - visibleHeight);
         scrollOffset = Math.clamp(scrollOffset, 0, maxScroll);
 
+        extractor.enableScissor(left + 6, questAreaTop, right - 6, questAreaBottom);
         for (int i = 0; i < structures.size(); i++) {
             MultiblockStructure structure = structures.get(i);
             int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
-            if (cy + cardHeight < questAreaTop || cy > questAreaBottom) {
+            if (cy + cardHeight <= questAreaTop || cy >= questAreaBottom) {
                 continue;
             }
 
@@ -352,6 +365,16 @@ public class SurvivalDatapadScreen extends Screen {
                     ? Component.translatable("gui.sandstorm.datapad.multiblock.clear_btn")
                     : Component.translatable("gui.sandstorm.datapad.multiblock.project_btn");
             drawScaledCenteredText(extractor, btnText, btnX + btnW / 2f, btnY + 6, btnW - 4, btnHovered ? 0xFF0A0E17 : 0xFFFFFFFF);
+        }
+        extractor.disableScissor();
+
+        if (maxScroll > 0) {
+            int scrollbarX = right - 7;
+            int scrollbarW = 2;
+            extractor.fill(scrollbarX, questAreaTop, scrollbarX + scrollbarW, questAreaBottom, 0x44005B66);
+            int thumbH = Math.max(16, (int) ((float) visibleHeight * visibleHeight / (float) totalContentHeight));
+            int thumbY = questAreaTop + (int) ((float) scrollOffset / (float) maxScroll * (visibleHeight - thumbH));
+            extractor.fill(scrollbarX, thumbY, scrollbarX + scrollbarW, thumbY + thumbH, 0xFF00E5FF);
         }
     }
 
@@ -480,6 +503,10 @@ public class SurvivalDatapadScreen extends Screen {
         int cardHeight = 46;
         int cardSpacing = 6;
 
+        if (my < questAreaTop || my > questAreaBottom) {
+            return false;
+        }
+
         if (currentChapter == 6) {
             return handleMultiblockClick(mx, my, left, right, questAreaTop, questAreaBottom, cardHeight, cardSpacing);
         }
@@ -490,7 +517,7 @@ public class SurvivalDatapadScreen extends Screen {
         for (int i = 0; i < quests.size(); i++) {
             QuestData quest = quests.get(i);
             int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
-            if (cy + cardHeight < questAreaTop || cy > questAreaBottom) {
+            if (cy + cardHeight <= questAreaTop || cy >= questAreaBottom) {
                 continue;
             }
 
@@ -540,11 +567,14 @@ public class SurvivalDatapadScreen extends Screen {
 
     private boolean handleMultiblockClick(double mx, double my, int left, int right,
                                           int questAreaTop, int questAreaBottom, int cardHeight, int cardSpacing) {
+        if (my < questAreaTop || my > questAreaBottom) {
+            return false;
+        }
         List<MultiblockStructure> structures = new ArrayList<>(MultiblockRegistry.getAllStructures().values());
         for (int i = 0; i < structures.size(); i++) {
             MultiblockStructure structure = structures.get(i);
             int cy = questAreaTop + i * (cardHeight + cardSpacing) - scrollOffset;
-            if (cy + cardHeight < questAreaTop || cy > questAreaBottom) {
+            if (cy + cardHeight <= questAreaTop || cy >= questAreaBottom) {
                 continue;
             }
 

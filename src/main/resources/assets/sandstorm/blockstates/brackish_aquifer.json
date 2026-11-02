@@ -1,6 +1,24 @@
 {
   "variants": {
-    "": {
+    "drains=0": {
+      "model": "sandstorm:block/brackish_aquifer"
+    },
+    "drains=1": {
+      "model": "sandstorm:block/brackish_aquifer"
+    },
+    "drains=2": {
+      "model": "sandstorm:block/brackish_aquifer"
+    },
+    "drains=3": {
+      "model": "sandstorm:block/brackish_aquifer"
+    },
+    "drains=4": {
+      "model": "sandstorm:block/brackish_aquifer"
+    },
+    "drains=5": {
+      "model": "sandstorm:block/brackish_aquifer"
+    },
+    "drains=6": {
       "model": "sandstorm:block/brackish_aquifer"
     }
   }
