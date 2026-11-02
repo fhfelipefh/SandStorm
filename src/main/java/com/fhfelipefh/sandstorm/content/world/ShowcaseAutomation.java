@@ -2897,7 +2897,7 @@ public class ShowcaseAutomation {
         automaton.setSilent(true);
         level.addFreshEntity(automaton);
 
-        placeEntityPedestal(level, new BlockPos(-8, baseY, -38), "Drone Explorad", "Vigilancia Aerea");
+        placeEntityPedestal(level, new BlockPos(-8, baseY, -38), "Androide Atirad", "Tiro de Silicio");
         ScoutDroneEntity scout = new ScoutDroneEntity(SandStormEntities.SCOUT_DRONE, level);
         scout.setPos(-7.5, entityY, -37.5);
         scout.setNoAi(true);

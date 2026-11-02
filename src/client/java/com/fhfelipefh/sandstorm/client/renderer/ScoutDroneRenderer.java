@@ -28,5 +28,7 @@ public class ScoutDroneRenderer extends MobRenderer<ScoutDroneEntity, ScoutDrone
     public void extractRenderState(ScoutDroneEntity entity, ScoutDroneRenderState state, float partialTick) {
         super.extractRenderState(entity, state, partialTick);
         state.isDeactivated = entity.isDeactivated();
+        state.isRecharging = entity.isRecharging();
+        state.animationTicks = entity.tickCount + partialTick;
     }
 }

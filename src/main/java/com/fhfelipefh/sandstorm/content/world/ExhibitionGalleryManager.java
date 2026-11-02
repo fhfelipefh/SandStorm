@@ -316,8 +316,8 @@ public class ExhibitionGalleryManager {
             spawnFrozenEntity(level, new LaborerUnitEntity(SandStormEntities.LABORER_UNIT, level), x, groundY, z, "Unidade Operária");
         }));
 
-        list.add(new RawDisplayEntry("Mob: Drone Explorador", 3, (level, x, groundY, z) -> {
-            spawnFrozenEntity(level, new ScoutDroneEntity(SandStormEntities.SCOUT_DRONE, level), x, groundY, z, "Drone Explorador");
+        list.add(new RawDisplayEntry("Mob: Androide Atirador", 3, (level, x, groundY, z) -> {
+            spawnFrozenEntity(level, new ScoutDroneEntity(SandStormEntities.SCOUT_DRONE, level), x, groundY, z, "Androide Atirador");
         }));
 
         list.add(new RawDisplayEntry("Mob: Drone Rastreador", 3, (level, x, groundY, z) -> {

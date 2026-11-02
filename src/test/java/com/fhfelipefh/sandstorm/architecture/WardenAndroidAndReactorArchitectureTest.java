@@ -86,7 +86,7 @@ public class WardenAndroidAndReactorArchitectureTest {
     @Test
     public void testVersionBumped() throws IOException {
         String content = Files.readString(Path.of("gradle.properties"));
-        assertTrue(content.contains("version=1.19.79"), "Version must be bumped to 1.19.79");
+        assertTrue(content.contains("version=1.19.80"), "Version must be bumped to 1.19.80");
     }
 }
 

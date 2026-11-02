@@ -79,6 +79,12 @@ class DesertMobEcosystemArchitectureTest {
                 "ScoutDrone must have 0.0 armor so tool damage is unmitigated");
         assertTrue(droneContent.contains("1.5f"),
                 "ScoutDrone ranged attack damage must be nerfed for early-game survival");
+        assertTrue(droneContent.contains("MAX_SHOTS = 5"),
+                "Android marksman must have 5-shot ammo limit before recharging");
+        assertTrue(droneContent.contains("RECHARGE_DURATION_TICKS = 100"),
+                "Android marksman must remain immobile for 5 seconds (100 ticks) while sucking sand");
+        assertTrue(droneContent.contains("isRecharging"),
+                "Android marksman must track and expose recharging state");
 
         Path spawnManagerFile = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "DesertMobSpawnManager.java");
         assertTrue(Files.exists(spawnManagerFile), "DesertMobSpawnManager.java must exist");
@@ -91,7 +97,7 @@ class DesertMobEcosystemArchitectureTest {
     void versionMustMatchCurrentRelease() throws IOException {
         Path gradleProps = Path.of("gradle.properties");
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.19.79"), "gradle.properties must be 1.19.79");
+        assertTrue(content.contains("version=1.19.80"), "gradle.properties must be 1.19.80");
     }
 
     @Test

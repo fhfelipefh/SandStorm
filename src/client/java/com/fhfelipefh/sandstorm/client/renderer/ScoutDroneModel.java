@@ -83,6 +83,22 @@ public class ScoutDroneModel extends EntityModel<ScoutDroneRenderState> {
             return;
         }
 
+        if (state.isRecharging) {
+            float jitter = Mth.sin(state.animationTicks * 0.8f) * 0.04f;
+            this.head.xRot = 0.55f + jitter;
+            this.head.yRot = 0.0f;
+            this.head.zRot = 0.0f;
+            this.rightArm.xRot = 0.65f + jitter;
+            this.rightArm.yRot = -0.15f;
+            this.rightArm.zRot = 0.1f;
+            this.leftArm.xRot = 0.45f - jitter;
+            this.leftArm.yRot = 0.15f;
+            this.leftArm.zRot = -0.1f;
+            this.rightLeg.xRot = 0.0f;
+            this.leftLeg.xRot = 0.0f;
+            return;
+        }
+
         this.head.zRot = 0.0f;
         this.rightArm.zRot = 0.0f;
         this.leftArm.zRot = 0.0f;

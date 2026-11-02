@@ -2,6 +2,25 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.80] - 2026-11-02
+
+### 🤖 Androide Atirador: Jatos de Silício, Limite de 5 Tiros & Recarga por Sucção de Areia
+* **Mecânica Baseada em Ciência (Sucessor do Esqueleto Vanilla)**:
+  * O mob bípede atirador agora dispara **jatos pressurizados de silício/areia** coletados do ambiente ao invés de projéteis convencionais, acompanhados de partículas densas de poeira de areia e efeitos sonoros pneumáticos.
+  * **Limite de Disparos (5 Tiros)**: O androide monitora cada tiro disparado (`DATA_SHOT_COUNT`). Ao atingir 5 disparos consecutivos, seu reservatório interno de silício se esgota, forçando uma recarga obrigatória.
+* **Janela Tática de Recarga (Vulnerabilidade para o Jogador)**:
+  * Ao esgotar a munição, o androide entra no estado de recarga (`DATA_RECHARGING`) durante **5 segundos (100 ticks)**.
+  * Durante a recarga, o androide para completamente de andar e atacar, apontando a cabeça e braços para o solo enquanto suga partículas de areia do chão.
+  * Essa janela de 5 segundos dá tempo perfeito para o jogador se aproximar e eliminá-lo em até 2 picaretadas de silício antes que ele possa recarregar.
+* **Animações e Feedback Visual (`ScoutDroneModel`)**:
+  * Adicionada animação procedural de recarga onde o androide inclina a cabeça e o canhão do braço em direção à areia com vibração mecânica de sucção.
+* **Padronização de Nomenclatura e Identidade**:
+  * Atualizada a tradução do mob para **Androide Atirador** (`pt_br`), **Marksman Android** (`en_us`) e **Androide Tirador** (`es_es`), eliminando qualquer confusão com drones aéreos.
+* **Auditoria Permanente por Teste de Arquitetura**:
+  * `DesertMobEcosystemArchitectureTest` atualizado para validar a regra dos 5 tiros (`MAX_SHOTS = 5`), a duração de recarga de 100 ticks (`RECHARGE_DURATION_TICKS = 100`) e a sincronização de recarga.
+
+---
+
 ## [1.19.79] - 2026-11-02
 
 ### 🎯 Balanceamento Crítico de Drones Atiradores (`ScoutDroneEntity`) para o Early Game
