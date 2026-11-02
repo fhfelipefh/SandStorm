@@ -2,6 +2,21 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.78] - 2026-11-02
+
+### 🤖 Correção Crítica do Sistema de Spawn de Mobs Artificiais no Early Game
+* **Remoção da Trava Indevida de Safe Zone para Robôs & Androides (`DesertMobSpawnManager`)**:
+  * Removida a verificação global de `isInsideSafeZone` que impedia o nascimento de autômatos, drones e cães cibernéticos em um raio de 96 blocos ao redor do spawn inicial (área onde o jogador estabelece sua base, forja circuitos e opera a impressora 3D).
+  * A Safe Zone sísmica permanece restrita exclusivamente à contenção do Verme da Areia gigante (`SandwormEntity` e `DesertPredationHandler`), enquanto autômatos agora povoam normalmente os desertos adjacentes.
+  * Mantida a blindagem contra spawns no interior do casco da nave acidentada (raio < 16 blocos de (0,0)), além de defesas do jogador com Escudo Cinético e Amortecimento Acústico.
+* **Suporte Completo a Spawns Subterrâneos em Cavernas & Túneis de Mineração**:
+  * O algoritmo agora detecta quando o jogador está minerando no subsolo e busca ativamente superfícies sólidas habitáveis em sua cota Y (ao invés de tentar gerar a 60 blocos acima na superfície).
+  * Habilitado o spawn de autômatos no bioma `minecraft:sulfur_caves`, permitindo encontros com autômatos hostis ativos e drones durante expedições subterrâneas.
+* **Auditoria Permanente por Teste de Arquitetura (`DesertMobEcosystemArchitectureTest`)**:
+  * Adicionado teste automatizado garantindo que `DesertMobSpawnManager` nunca seja restringido pela zona segura do Verme da Areia e que suporte cavernas de enxofre.
+
+---
+
 ## [1.19.77] - 2026-11-02
 
 ### 🔮 Hologramas Multibloco: Desativação Global, Icon Button Procedural & Limpeza de Quests

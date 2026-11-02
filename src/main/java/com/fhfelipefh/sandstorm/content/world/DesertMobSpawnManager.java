@@ -11,9 +11,12 @@ import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
-import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,6 +29,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,6 +41,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class DesertMobSpawnManager {
+    private static final ResourceKey<Biome> SULFUR_CAVES = ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("minecraft", "sulfur_caves"));
     private static int tickCounter = 0;
 
     public static void initialize() {
@@ -70,9 +75,6 @@ public class DesertMobSpawnManager {
         if (!SandStormWorldHelper.isSandStormWorld(level) || level.dimension() != Level.OVERWORLD) {
             return;
         }
-        if (SeismicSurvivalHandler.getTracker().isInsideSafeZone(player.getBlockX(), player.getBlockZ())) {
-            return;
-        }
         if (KineticShieldTracker.isInsideShield(level.dimension(), player.blockPosition())) {
             return;
         }
@@ -98,28 +100,58 @@ public class DesertMobSpawnManager {
 
             int candidateX = Mth.floor(player.getX() + Math.cos(angle) * distance);
             int candidateZ = Mth.floor(player.getZ() + Math.sin(angle) * distance);
+
+            if (candidateX * candidateX + candidateZ * candidateZ < 256) {
+                continue;
+            }
+
             int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, candidateX, candidateZ);
+            boolean isUnderground = player.getBlockY() < surfaceY - 8;
 
-            BlockPos spawnPos = new BlockPos(candidateX, surfaceY, candidateZ);
-            BlockPos groundPos = spawnPos.below();
+            BlockPos targetPos;
+            boolean deactivatedRoll = random.nextInt(5) == 0;
 
-            if (!isSpawnableGround(level.getBlockState(groundPos))) {
-                continue;
-            }
-            if (!level.getBlockState(spawnPos).isAir() || !level.getBlockState(spawnPos.above()).isAir()) {
-                continue;
-            }
-            if (!level.getBiome(spawnPos).is(Biomes.DESERT)) {
-                continue;
-            }
-
-            boolean deactivatedRoll = random.nextInt(10) == 0;
-            BlockPos targetPos = spawnPos;
-            if (deactivatedRoll) {
-                BlockPos underPos = findSubterraneanSpawnPos(level, candidateX, candidateZ, surfaceY, random);
-                if (underPos != null) {
-                    targetPos = underPos;
+            if (isUnderground) {
+                targetPos = findSubterraneanSpawnPos(level, candidateX, candidateZ, player.getBlockY(), random);
+                if (targetPos == null) {
+                    continue;
                 }
+            } else {
+                boolean undergroundRoll = random.nextInt(10) == 0;
+                if (undergroundRoll) {
+                    targetPos = findSubterraneanSpawnPos(level, candidateX, candidateZ, surfaceY, random);
+                    if (targetPos == null) {
+                        targetPos = new BlockPos(candidateX, surfaceY, candidateZ);
+                    }
+                } else {
+                    targetPos = new BlockPos(candidateX, surfaceY, candidateZ);
+                }
+            }
+
+            BlockPos groundPos = targetPos.below();
+            BlockState groundState = level.getBlockState(groundPos);
+            boolean validGround = isUnderground || targetPos.getY() < surfaceY - 4
+                    ? isSubterraneanGround(groundState)
+                    : isSpawnableGround(groundState);
+            if (!validGround) {
+                continue;
+            }
+
+            if (!level.getBlockState(targetPos).isAir() || !level.getBlockState(targetPos.above()).isAir()) {
+                continue;
+            }
+
+            Holder<Biome> biome = level.getBiome(targetPos);
+            boolean isDesertBiome = biome.is(Biomes.DESERT) || biome.is(SULFUR_CAVES);
+            if (!isDesertBiome) {
+                continue;
+            }
+
+            if (KineticShieldTracker.isInsideShield(level.dimension(), targetPos)) {
+                continue;
+            }
+            if (AcousticDefenseTracker.isInsideAcousticDamping(level.dimension(), targetPos)) {
+                continue;
             }
 
             if (isPositionVisibleToAnyPlayer(level, targetPos)) {
@@ -205,9 +237,9 @@ public class DesertMobSpawnManager {
                 || isSpawnableGround(state);
     }
 
-    public static BlockPos findSubterraneanSpawnPos(ServerLevel level, int x, int z, int surfaceY, RandomSource random) {
-        int minY = Math.max(level.getMinY() + 4, surfaceY - 60);
-        int currentY = surfaceY - 5;
+    public static BlockPos findSubterraneanSpawnPos(ServerLevel level, int x, int z, int startY, RandomSource random) {
+        int minY = Math.max(level.getMinY() + 4, startY - 32);
+        int currentY = Math.min(level.getMaxY() - 4, startY + 8);
         while (currentY > minY) {
             BlockPos checkPos = new BlockPos(x, currentY, z);
             BlockPos belowPos = checkPos.below();

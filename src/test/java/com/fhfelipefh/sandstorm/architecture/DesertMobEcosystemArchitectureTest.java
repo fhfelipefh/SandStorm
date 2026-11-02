@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DesertMobEcosystemArchitectureTest {
@@ -57,10 +58,21 @@ class DesertMobEcosystemArchitectureTest {
     }
 
     @Test
+    void spawnManagerMustNotBlockSpawnsBySafeZone() throws IOException {
+        Path spawnManagerFile = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "DesertMobSpawnManager.java");
+        assertTrue(Files.exists(spawnManagerFile), "DesertMobSpawnManager.java must exist");
+        String content = Files.readString(spawnManagerFile);
+        assertFalse(content.contains("isInsideSafeZone"),
+                "DesertMobSpawnManager must not use Sandworm safeZone to suppress android spawns");
+        assertTrue(content.contains("sulfur_caves"),
+                "DesertMobSpawnManager must allow subterranean spawning in sulfur caves");
+    }
+
+    @Test
     void versionMustMatchCurrentRelease() throws IOException {
         Path gradleProps = Path.of("gradle.properties");
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.19.77"), "gradle.properties must be 1.19.77");
+        assertTrue(content.contains("version=1.19.78"), "gradle.properties must be 1.19.78");
     }
 
     @Test
