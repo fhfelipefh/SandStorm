@@ -2,6 +2,15 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.83] - 2026-11-02
+
+### 📦 Sincronização e Distribuição Remota
+* **Incremento de Versão e Estabilidade**:
+  * Build estável sincronizada com os repositórios remotos, CurseForge, Modrinth e GitHub Releases oficiais.
+  * Validação física da integridade dos assets e arquitetura zero-warning.
+
+---
+
 ## [1.19.82] - 2026-11-02
 
 ### 🌐 Internacionalização Completa de Máquinas, Display Holográfico & GitHub Releases com Jar
