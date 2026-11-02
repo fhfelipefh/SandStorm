@@ -56,3 +56,4 @@ class FiberglassSpikesArchitectureTest {
         assertTrue(ptLang.contains("\"block.sandstorm.fiberglass_spikes\": \"Espinhos de Fibra de Vidro\""), "Must have pt_br translation");
     }
 }
+

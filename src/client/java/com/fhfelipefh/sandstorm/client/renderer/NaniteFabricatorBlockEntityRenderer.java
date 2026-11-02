@@ -170,22 +170,22 @@ public class NaniteFabricatorBlockEntityRenderer implements BlockEntityRenderer<
         poseStack.translate(0.5, 0.13, -0.05);
         poseStack.scale(0.007f, -0.007f, 0.007f);
 
-        String displayText;
+        Component displayText;
         int displayColor;
         if (state.isProcessing) {
             int pct = Math.min(100, (int) (progressRatio * 100.0f));
-            displayText = "SYNTHESIS " + pct + "%";
+            displayText = Component.translatable("gui.sandstorm.machine.synthesis", pct);
             displayColor = 0xFF00E5FF;
         } else if (state.hasItem) {
-            displayText = "READY";
+            displayText = Component.translatable("gui.sandstorm.machine.ready_synth");
             displayColor = 0xFF00E676;
         } else {
-            displayText = "ONLINE";
+            displayText = Component.translatable("gui.sandstorm.machine.online");
             displayColor = 0xFF78909C;
         }
 
         int textWidth = this.font.width(displayText);
-        collector.submitText(poseStack, -textWidth / 2.0f, 0.0f, Component.literal(displayText).getVisualOrderText(), false, Font.DisplayMode.NORMAL, displayColor, 0, 0xF000F0, 0);
+        collector.submitText(poseStack, -textWidth / 2.0f, 0.0f, displayText.getVisualOrderText(), false, Font.DisplayMode.NORMAL, displayColor, 0, 0xF000F0, 0);
         poseStack.popPose();
 
         poseStack.popPose();

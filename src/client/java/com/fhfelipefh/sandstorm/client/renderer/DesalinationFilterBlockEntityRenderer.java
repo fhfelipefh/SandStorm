@@ -108,7 +108,7 @@ public class DesalinationFilterBlockEntityRenderer implements BlockEntityRendere
         poseStack.translate(0.5, 0.13, -0.05);
         poseStack.scale(0.007f, -0.007f, 0.007f);
 
-        String displayText = buildDisplayText(state, progressRatio);
+        Component displayText = buildDisplayText(state, progressRatio);
         int displayColor = buildDisplayColor(state);
 
         if (state.isProcessing) {
@@ -120,7 +120,7 @@ public class DesalinationFilterBlockEntityRenderer implements BlockEntityRendere
         }
 
         int textWidth = this.font.width(displayText);
-        collector.submitText(poseStack, -textWidth / 2.0f, 0.0f, Component.literal(displayText).getVisualOrderText(), false, Font.DisplayMode.NORMAL, displayColor, 0, 0xF000F0, 0);
+        collector.submitText(poseStack, -textWidth / 2.0f, 0.0f, displayText.getVisualOrderText(), false, Font.DisplayMode.NORMAL, displayColor, 0, 0xF000F0, 0);
         poseStack.popPose();
 
         poseStack.popPose();
@@ -221,21 +221,21 @@ public class DesalinationFilterBlockEntityRenderer implements BlockEntityRendere
         }
     }
 
-    private String buildDisplayText(DesalinationFilterRenderState state, float progressRatio) {
+    private Component buildDisplayText(DesalinationFilterRenderState state, float progressRatio) {
         if (state.isProcessing) {
             int pct = Math.min(100, (int) (progressRatio * 100.0f));
-            return "DESALING " + pct + "%";
+            return Component.translatable("gui.sandstorm.machine.desal_filtering", pct);
         }
         if (!state.hasCartridge) {
-            return "NO CARTRIDGE";
+            return Component.translatable("gui.sandstorm.machine.no_cartridge");
         }
         if (state.waterOutput >= state.maxWater) {
-            return "OUTPUT FULL";
+            return Component.translatable("gui.sandstorm.machine.output_full");
         }
         if (state.waterInput > 0) {
-            return "READY (" + (state.waterInput / 1000) + "B)";
+            return Component.translatable("gui.sandstorm.machine.ready_water", state.waterInput / 1000);
         }
-        return "NO WATER";
+        return Component.translatable("gui.sandstorm.machine.no_water");
     }
 
     private int buildDisplayColor(DesalinationFilterRenderState state) {

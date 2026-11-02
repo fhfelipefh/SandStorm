@@ -203,3 +203,12 @@ jobs:
             git tag -a "v${{ env.MOD_VERSION }}" -m "Release v${{ env.MOD_VERSION }}"
             git push origin "v${{ env.MOD_VERSION }}" || true
           fi
+
+      - name: Criar GitHub Release Oficial com Jar
+        if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v${{ env.MOD_VERSION }}" build/libs/*-${{ env.MOD_VERSION }}.jar \
+            --title "${{ env.RELEASE_TITLE }}" \
+            --notes-file RELEASE_CHANGELOG.md || true

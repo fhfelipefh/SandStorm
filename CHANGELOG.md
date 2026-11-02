@@ -2,6 +2,21 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.82] - 2026-11-02
+
+### 🌐 Internacionalização Completa de Máquinas, Display Holográfico & GitHub Releases com Jar
+* **Tradução Dinâmica do Display Holográfico das Máquinas**:
+  * O **Filtro Dessalinizador** agora exibe seu status operacional 3D no mundo traduzido dinamicamente de acordo com o idioma do jogador (`DESSALINIZANDO %s%%`, `SEM CARTUCHO`, `SAÍDA CHEIA`, `PRONTO (%sB)`, `SEM ÁGUA`), eliminando completamente textos fixos em inglês (`DESALING`, `NO CARTRIDGE`, etc.).
+  * A **Impressora 3D** e o **Fabricador de Nanites** foram atualizados com o mesmo padrão (`IMPRIMINDO %s%%`, `CONCLUÍDO`, `EM ESPERA`, `SÍNTESE %s%%`, `PRONTO`, `ONLINE`).
+* **Correções e Refinamentos de Idioma (PT-BR e ES-ES)**:
+  * Botão de inspeção de multiblocos no PDA atualizado para `"Simular"` (em vez do termo em inglês `"Ponder"`).
+  * Atualizada tradução da faca de sílica (`item.sandstorm.vibro_crysknife`) para `"Vibro-Crisaca"`.
+* **Disponibilização Remota Direta via GitHub Releases**:
+  * Adicionada geração automática de **GitHub Releases** com anexação direta do binário `.jar` (`build/libs/*-${MOD_VERSION}.jar`) a cada build de tag/push no workflow `publish-curseforge.yml`.
+  * Isso garante acesso imediato e transparente para download direto pelo repositório remoto sem depender do tempo de moderação/revisão de arquivos do CurseForge.
+
+---
+
 ## [1.19.81] - 2026-11-02
 
 ### ⚔️ Nova Armadilha Early Game: Espinhos de Fibra de Vidro (Fiberglass Spikes)
