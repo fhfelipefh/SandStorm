@@ -2,6 +2,16 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.76] - 2026-11-02
+
+### 🛡️ Paridade Arquitetural entre Modo Sobrevivência e Modo Intenso (Hardcore)
+* **Blindagem de Regras de Spawn e Perigos Ambientais (`HardcoreParityArchitectureTest`)**:
+  * Formalizada e auditada por teste de arquitetura a paridade estrita entre os modos Survival e Intenso (Hardcore).
+  * O algoritmo de geração natural de autômatos e androides fora da visão do jogador (`DesertMobSpawnManager`), a mecânica de predação por vermes gigantes (`DesertPredationHandler`) e os sistemas de clima tóxico e tempestades (`SandstormWeatherHandler`) são permanentemente blindados contra divergências ou penalidades assimétricas entre modos de jogo.
+  * A única distinção entre Survival e Modo Intenso permanece rigorosamente a mecânica vanilla: morte definitiva e perda do mapa.
+
+---
+
 ## [1.19.75] - 2026-11-02
 
 ### 💧 Depleção de Aquífero Salobro & Mineralização de Sal
