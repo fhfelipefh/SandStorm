@@ -20,6 +20,7 @@ class CurseForgeAndRuntimeCompatibilityArchitectureTest {
         assertTrue(content.contains("\"minecraft\": \">=26.2 <=26.3\""), "fabric.mod.json must target Minecraft 26.3");
         assertTrue(content.contains("\"java\": \">=25\""), "fabric.mod.json must require Java 25");
         assertTrue(content.contains("\"fabricloader\": \">=0.19.0\""), "fabric.mod.json must declare loader 0.19.0+");
+        assertFalse(content.contains("1.21.4"), "fabric.mod.json must never claim 1.21.4 compatibility");
     }
 
     @Test
@@ -107,5 +108,47 @@ class CurseForgeAndRuntimeCompatibilityArchitectureTest {
         assertFalse(content.contains("PayloadTypeRegistry.serverboundPlay()"), "SandStormMod must not invoke serverboundPlay() directly");
         assertTrue(content.contains("PayloadRegistryHelper.registerClientbound("), "SandStormMod must register clientbound packets via PayloadRegistryHelper");
         assertTrue(content.contains("PayloadRegistryHelper.registerServerbound("), "SandStormMod must register serverbound packets via PayloadRegistryHelper");
+    }
+
+    @Test
+    void ciWorkflowMustNeverHardcodeLegacyMinecraft1214() throws IOException {
+        Path workflow = Path.of(".github", "workflows", "publish-curseforge.yml");
+        assertTrue(Files.exists(workflow), "publish-curseforge.yml must exist");
+
+        String content = Files.readString(workflow);
+        assertFalse(content.contains("MC_VERSION=\"1.21.4\""), "CI workflow must never hardcode legacy 1.21.4 fallback");
+        assertTrue(content.contains("MC_VERSION=\"26.3\""), "CI workflow must target Minecraft 26.3 by default");
+    }
+
+    @Test
+    void curseForgeProjectMdMustExplicitlyWarnAboutMinecraft263() throws IOException {
+        Path projectDoc = Path.of("CURSEFORGE_PROJECT.md");
+        assertTrue(Files.exists(projectDoc), "CURSEFORGE_PROJECT.md must exist");
+
+        String content = Files.readString(projectDoc);
+        assertTrue(content.contains("Minecraft 26.3"), "CURSEFORGE_PROJECT.md must state Minecraft 26.3");
+        assertTrue(content.contains("Java 25"), "CURSEFORGE_PROJECT.md must state Java 25");
+        assertTrue(content.contains("não é compatível com versões legadas como Minecraft 1.21.4")
+                || content.contains("Não é compatível com versões legadas como Minecraft 1.21.4"),
+                "CURSEFORGE_PROJECT.md must warn about 1.21.4 incompatibility");
+    }
+
+    @Test
+    void readmeMustExplicitlyStateMinecraft263AndJava25() throws IOException {
+        Path readme = Path.of("README.md");
+        assertTrue(Files.exists(readme), "README.md must exist");
+
+        String content = Files.readString(readme);
+        assertTrue(content.contains("Minecraft 26.3 (Fabric / Java 25)"), "README.md must state Minecraft 26.3 and Java 25");
+        assertFalse(content.contains("Minecraft-1.21.4%20%7C%2026.3"), "README.md badge must not claim 1.21.4 compatibility");
+    }
+
+    @Test
+    void playBatMustTargetMinecraft263() throws IOException {
+        Path playBat = Path.of("play.bat");
+        assertTrue(Files.exists(playBat), "play.bat must exist");
+
+        String content = Files.readString(playBat);
+        assertTrue(content.contains("SANDSTORM MOD - MINECRAFT 26.3"), "play.bat must target Minecraft 26.3");
     }
 }
