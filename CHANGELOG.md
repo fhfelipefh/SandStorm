@@ -2,6 +2,22 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.77] - 2026-11-02
+
+### 🔮 Hologramas Multibloco: Desativação Global, Icon Button Procedural & Limpeza de Quests
+* **Desativação Completa e Acessível de Projeções Holográficas (`SurvivalDatapadScreen`, `DatapadClientHelper`)**:
+  * Adicionado atalho in-world: agachar e clicar com o botão direito (`Shift + Botão Direito`) segurando o Datapad de Sobrevivência encerra e desativa imediatamente qualquer projeção holográfica ativa no mundo, emitindo som de desativação e notificação HUD.
+  * Adicionado botão de desativação emergencial no cabeçalho do Datapad (`[ ✕ DESATIVAR HOLO ]`), visível e clicável em vermelho a partir de qualquer aba do Datapad enquanto houver projeção ativa.
+  * O botão de projeção nas abas agora alterna o estado do holograma (liga se inativo, desliga se ativo).
+* **Novo Icon Button Procedural de Holograma**:
+  * Substituído o botão textual "HOLO" por um Icon Button vetorial procedural com emissor de projeção e cubo holográfico isométrico 3D, com scanline ciano quando ativo e tooltips descritivos no Datapad.
+* **Desvinculação de Estruturas Multibloco de Máquinas Monobloco (`MultiblockRegistry`)**:
+  * Removida a vinculação indevida de estruturas multibloco (ex: Cluster Quântico) na missão de máquinas monobloco como a "Impressora 3D" e "Receptor Solar WPT" nos capítulos I-V. As estruturas multibloco pertencem exclusivamente à Aba VI ("VI. Multiblocos").
+* **Auditoria Contínua (`MultiblockHologramArchitectureTest`)**:
+  * Expandido teste de arquitetura para validar a ausência de poluição de multiblocos em missões monobloco, presença dos botões de controle e integridade das chaves de tradução em pt_br, en_us e es_es.
+
+---
+
 ## [1.19.76] - 2026-11-02
 
 ### 🛡️ Paridade Arquitetural entre Modo Sobrevivência e Modo Intenso (Hardcore)

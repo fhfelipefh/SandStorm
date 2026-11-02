@@ -35,6 +35,12 @@ class MultiblockHologramArchitectureTest {
     private static final Path DATAPAD_SCREEN_PATH = Path.of(
             "src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "gui", "SurvivalDatapadScreen.java"
     );
+    private static final Path DATAPAD_ITEM_PATH = Path.of(
+            "src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "item", "SurvivalDatapadItem.java"
+    );
+    private static final Path DATAPAD_HELPER_PATH = Path.of(
+            "src", "client", "java", "com", "fhfelipefh", "sandstorm", "client", "gui", "DatapadClientHelper.java"
+    );
 
     @BeforeAll
     static void setup() throws Exception {
@@ -104,6 +110,54 @@ class MultiblockHologramArchitectureTest {
                 "Datapad must be able to clear active projections");
         assertTrue(content.contains("tabCount = 6"),
                 "Datapad must configure 6 tabs for multiblocks");
+        assertTrue(content.contains("drawHologramIconButton"),
+                "Datapad must use icon button for hologram projection");
+        assertTrue(content.contains("drawHologramIcon"),
+                "Datapad must render visual hologram icon");
+        assertTrue(content.contains("clear_header_btn"),
+                "Datapad header must offer clear button when hologram is active");
+    }
+
+    @Test
+    void testNoSingleBlockQuestsPollutedWithMultiblockStructure() {
+        for (MultiblockStructure structure : MultiblockRegistry.getAll()) {
+            assertFalse("additive_printer".equals(structure.getAssociatedQuestId()),
+                    "Multiblock structure must not be associated with single block additive printer: " + structure.getId());
+        }
+    }
+
+    @Test
+    void testDatapadInWorldClearSupport() throws IOException {
+        assertTrue(Files.exists(DATAPAD_ITEM_PATH), "SurvivalDatapadItem.java must exist");
+        String itemContent = Files.readString(DATAPAD_ITEM_PATH);
+        assertTrue(itemContent.contains("clientScreenOpener") && itemContent.contains("appendHoverText"),
+                "SurvivalDatapadItem must support client opener and hint");
+
+        assertTrue(Files.exists(DATAPAD_HELPER_PATH), "DatapadClientHelper.java must exist");
+        String helperContent = Files.readString(DATAPAD_HELPER_PATH);
+        assertTrue(helperContent.contains("isShiftKeyDown") && helperContent.contains("clearActiveStructure"),
+                "DatapadClientHelper must handle in-world hologram deactivation on shift-click");
+    }
+
+    @Test
+    void testHologramLocalizationKeysExist() throws IOException {
+        List<String> langs = List.of("pt_br.json", "en_us.json", "es_es.json");
+        List<String> requiredKeys = List.of(
+                "gui.sandstorm.datapad.multiblock.clear_header_btn",
+                "gui.sandstorm.datapad.multiblock.holo_clear_tip",
+                "gui.sandstorm.datapad.multiblock.holo_proj_tip",
+                "item.sandstorm.survival_datapad.hologram_hint"
+        );
+
+        for (String lang : langs) {
+            Path langPath = Path.of("src", "main", "resources", "assets", "sandstorm", "lang", lang);
+            assertTrue(Files.exists(langPath), "Language file must exist: " + lang);
+            String langContent = Files.readString(langPath);
+            for (String key : requiredKeys) {
+                assertTrue(langContent.contains("\"" + key + "\""),
+                        "Language file " + lang + " must contain key: " + key);
+            }
+        }
     }
 
     @Test

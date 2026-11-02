@@ -1,7 +1,11 @@
 package com.fhfelipefh.sandstorm.client.gui;
 
+import com.fhfelipefh.sandstorm.client.renderer.MultiblockHologramRenderer;
 import com.fhfelipefh.sandstorm.content.item.SurvivalDatapadItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,6 +20,12 @@ public class DatapadClientHelper {
         SurvivalDatapadItem.setClientScreenOpener(() -> {
             Minecraft client = Minecraft.getInstance();
             if (client != null) {
+                if (client.player != null && client.player.isShiftKeyDown() && MultiblockHologramRenderer.isStructureActive()) {
+                    MultiblockHologramRenderer.clearActiveStructure();
+                    client.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BEACON_DEACTIVATE, 1.0f));
+                    client.player.sendSystemMessage(Component.translatable("gui.sandstorm.datapad.multiblock_cleared"));
+                    return;
+                }
                 client.setScreenAndShow(new SurvivalDatapadScreen());
             }
         });

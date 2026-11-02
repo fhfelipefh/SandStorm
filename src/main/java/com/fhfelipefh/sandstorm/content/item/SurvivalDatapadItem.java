@@ -46,5 +46,6 @@ public class SurvivalDatapadItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipConsumer, TooltipFlag flag) {
         tooltipConsumer.accept(Component.translatable("item.sandstorm.survival_datapad.desc").withStyle(ChatFormatting.GRAY));
+        tooltipConsumer.accept(Component.translatable("item.sandstorm.survival_datapad.hologram_hint").withStyle(ChatFormatting.DARK_AQUA));
     }
 }

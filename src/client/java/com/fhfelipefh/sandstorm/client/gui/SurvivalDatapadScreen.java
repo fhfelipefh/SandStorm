@@ -42,6 +42,7 @@ public class SurvivalDatapadScreen extends Screen {
     private final Map<String, Long> claimFlashTimestamps = new HashMap<>();
     private Component statusTooltip;
     private long statusTooltipExpiry;
+    private Component hoveredHoloTooltip;
     private String lastHoveredClaimableQuestId;
     private boolean clickHandledOnPress = false;
     private MultiblockStructure ponderStructure;
@@ -65,6 +66,7 @@ public class SurvivalDatapadScreen extends Screen {
     @Override
     public void extractRenderState(GuiGraphicsExtractor extractor, int mouseX, int mouseY, float delta) {
         lastHoveredClaimableQuestId = null;
+        hoveredHoloTooltip = null;
 
         extractor.fill(0, 0, width, height, 0xD00A0E17);
 
@@ -90,7 +92,27 @@ public class SurvivalDatapadScreen extends Screen {
         int statusColor = satLinked ? 0xFF76FF03 : 0xFFFFA000;
         int statusWidth = font.width(statusComp);
         int statusX = right - statusWidth - 10;
-        float maxHeaderTitleWidth = statusX - (left + 10) - 12;
+
+        boolean holoActive = MultiblockHologramRenderer.isStructureActive();
+        int clearBtnW = 105;
+        int clearBtnH = 14;
+        int clearBtnX = statusX - clearBtnW - 8;
+        int clearBtnY = top + 6;
+
+        if (holoActive) {
+            boolean clearBtnHovered = mouseX >= clearBtnX && mouseX <= clearBtnX + clearBtnW && mouseY >= clearBtnY && mouseY <= clearBtnY + clearBtnH;
+            int clearBg = clearBtnHovered ? 0xFFD32F2F : 0xDD7A1212;
+            extractor.fill(clearBtnX, clearBtnY, clearBtnX + clearBtnW, clearBtnY + clearBtnH, clearBg);
+            extractor.fill(clearBtnX, clearBtnY, clearBtnX + clearBtnW, clearBtnY + 1, 0xFFFF5252);
+            extractor.fill(clearBtnX, clearBtnY + clearBtnH - 1, clearBtnX + clearBtnW, clearBtnY + clearBtnH, 0xFFFF5252);
+            extractor.fill(clearBtnX, clearBtnY, clearBtnX + 1, clearBtnY + clearBtnH, 0xFFFF5252);
+            extractor.fill(clearBtnX + clearBtnW - 1, clearBtnY, clearBtnX + clearBtnW, clearBtnY + clearBtnH, 0xFFFF5252);
+
+            Component clearText = Component.translatable("gui.sandstorm.datapad.multiblock.clear_header_btn");
+            drawScaledCenteredText(extractor, clearText, clearBtnX + clearBtnW / 2f, clearBtnY + 3, clearBtnW - 4, clearBtnHovered ? 0xFFFFFFFF : 0xFFFFCDD2);
+        }
+
+        float maxHeaderTitleWidth = (holoActive ? clearBtnX : statusX) - (left + 10) - 12;
 
         if (maxHeaderTitleWidth < 140) {
             float halfWidth = (right - left - 24) / 2f;
@@ -147,6 +169,10 @@ public class SurvivalDatapadScreen extends Screen {
             drawScaledCenteredText(extractor, statusTooltip, width / 2f, tooltipY + 3, tooltipWidth - 8, 0xFFFFAB40);
         } else {
             statusTooltip = null;
+        }
+
+        if (hoveredHoloTooltip != null) {
+            extractor.setComponentTooltipForNextFrame(this.font, List.of(hoveredHoloTooltip), mouseX, mouseY);
         }
     }
 
@@ -210,14 +236,16 @@ public class SurvivalDatapadScreen extends Screen {
             drawScaledText(extractor, Component.translatable(quest.titleKey()), cardLeft + 30, cy + 5, maxTitleWidth, titleColor);
 
             MultiblockStructure associatedStructure = MultiblockRegistry.getStructureForQuest(quest.id());
-            int holoOffset = (associatedStructure != null) ? 80 : 0;
+            int holoOffset = (associatedStructure != null) ? 66 : 0;
 
             float maxLineWidth = Math.max(0, (cardRight - 94 - holoOffset) - (cardLeft + 30) - 4);
             drawScaledText(extractor, Component.translatable(quest.taskKey()), cardLeft + 30, cy + 17, maxLineWidth, 0xFFCFD8DC);
             drawScaledText(extractor, Component.translatable(quest.noteKey()), cardLeft + 30, cy + 29, maxLineWidth, 0xFF80DEEA);
 
             if (associatedStructure != null) {
-                int holoW = 34;
+                boolean isActive = MultiblockHologramRenderer.isStructureActive()
+                        && associatedStructure.getId().equals(MultiblockHologramRenderer.getActiveStructure().getId());
+                int holoW = 20;
                 int holoH = 18;
                 int holoX = cardRight - 60 - holoW - 4;
                 int pdrW = 34;
@@ -236,15 +264,12 @@ public class SurvivalDatapadScreen extends Screen {
                 drawScaledCenteredText(extractor, pdrText, pdrX + pdrW / 2f, holoY + 5, pdrW - 2, pdrHovered ? 0xFF0A0E17 : 0xFFFFFFFF);
 
                 boolean holoHovered = mouseX >= holoX && mouseX <= holoX + holoW && mouseY >= holoY && mouseY <= holoY + holoH;
-                int holoBg = holoHovered ? 0xFF00E5FF : 0xAA005B66;
-                extractor.fill(holoX, holoY, holoX + holoW, holoY + holoH, holoBg);
-                extractor.fill(holoX, holoY, holoX + holoW, holoY + 1, 0xFF00E5FF);
-                extractor.fill(holoX, holoY + holoH - 1, holoX + holoW, holoY + holoH, 0xFF00E5FF);
-                extractor.fill(holoX, holoY, holoX + 1, holoY + holoH, 0xFF00E5FF);
-                extractor.fill(holoX + holoW - 1, holoY, holoX + holoW, holoY + holoH, 0xFF00E5FF);
-
-                Component holoText = Component.translatable("gui.sandstorm.datapad.multiblock.holo_btn");
-                drawScaledCenteredText(extractor, holoText, holoX + holoW / 2f, holoY + 5, holoW - 2, holoHovered ? 0xFF0A0E17 : 0xFFFFFFFF);
+                drawHologramIconButton(extractor, holoX, holoY, holoW, holoH, isActive, holoHovered);
+                if (holoHovered) {
+                    hoveredHoloTooltip = isActive
+                            ? Component.translatable("gui.sandstorm.datapad.multiblock.holo_clear_tip")
+                            : Component.translatable("gui.sandstorm.datapad.multiblock.holo_proj_tip");
+                }
             }
 
             if (quest.getRewardItem() != null) {
@@ -325,12 +350,12 @@ public class SurvivalDatapadScreen extends Screen {
                 extractor.item(firstBlock.asItem().getDefaultInstance(), cardLeft + 8, cy + 15);
             }
 
-            int btnW = 60;
+            int btnW = 82;
             int btnH = 20;
-            int btnX = cardRight - 66;
+            int btnX = cardRight - 88;
             int btnY = cy + 13;
 
-            int pdrW = 48;
+            int pdrW = 44;
             int pdrX = btnX - pdrW - 4;
 
             float maxTitleWidth = Math.max(0, pdrX - (cardLeft + 30) - 8);
@@ -361,10 +386,13 @@ public class SurvivalDatapadScreen extends Screen {
             extractor.fill(btnX, btnY, btnX + 1, btnY + btnH, 0xFFFFFFFF);
             extractor.fill(btnX + btnW - 1, btnY, btnX + btnW, btnY + btnH, 0xFFFFFFFF);
 
+            int iconColor = isActive ? (btnHovered ? 0xFFFFCDD2 : 0xFFFFFFFF) : (btnHovered ? 0xFF0A0E17 : 0xFFFFFFFF);
+            drawHologramIcon(extractor, btnX + 4, btnY + 3, iconColor, isActive);
+
             Component btnText = isActive
                     ? Component.translatable("gui.sandstorm.datapad.multiblock.clear_btn")
                     : Component.translatable("gui.sandstorm.datapad.multiblock.project_btn");
-            drawScaledCenteredText(extractor, btnText, btnX + btnW / 2f, btnY + 6, btnW - 4, btnHovered ? 0xFF0A0E17 : 0xFFFFFFFF);
+            drawScaledCenteredText(extractor, btnText, btnX + 20 + (btnW - 20) / 2f, btnY + 6, btnW - 22, btnHovered ? (isActive ? 0xFFFFFFFF : 0xFF0A0E17) : 0xFFFFFFFF);
         }
         extractor.disableScissor();
 
@@ -483,6 +511,27 @@ public class SurvivalDatapadScreen extends Screen {
         if (ponderStructure != null) {
             return handlePonderClick(mx, my, left, top, right, bottom);
         }
+
+        if (MultiblockHologramRenderer.isStructureActive()) {
+            boolean satLinked = DatapadClientHelper.isSatelliteActive();
+            Component statusComp = satLinked ? Component.translatable("gui.sandstorm.datapad.status_online") : Component.translatable("gui.sandstorm.datapad.status_offline");
+            int statusWidth = font.width(statusComp);
+            int statusX = right - statusWidth - 10;
+            int clearBtnW = 105;
+            int clearBtnH = 14;
+            int clearBtnX = statusX - clearBtnW - 8;
+            int clearBtnY = top + 6;
+            if (mx >= clearBtnX && mx <= clearBtnX + clearBtnW && my >= clearBtnY && my <= clearBtnY + clearBtnH) {
+                MultiblockHologramRenderer.clearActiveStructure();
+                if (minecraft != null) {
+                    minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BEACON_DEACTIVATE, 1.0f));
+                }
+                statusTooltip = Component.translatable("gui.sandstorm.datapad.multiblock_cleared");
+                statusTooltipExpiry = System.currentTimeMillis() + 3000;
+                return true;
+            }
+        }
+
         int tabCount = 6;
         int tabWidth = (right - left - 20) / tabCount;
         int ty = top + 36;
@@ -526,7 +575,7 @@ public class SurvivalDatapadScreen extends Screen {
 
             MultiblockStructure associatedStructure = MultiblockRegistry.getStructureForQuest(quest.id());
             if (associatedStructure != null) {
-                int holoW = 34;
+                int holoW = 20;
                 int holoH = 18;
                 int holoX = cardRight - 60 - holoW - 4;
                 int pdrW = 34;
@@ -541,7 +590,18 @@ public class SurvivalDatapadScreen extends Screen {
                     return true;
                 }
                 if (mx >= holoX && mx <= holoX + holoW && my >= holoY && my <= holoY + holoH) {
-                    projectMultiblock(associatedStructure);
+                    boolean isActive = MultiblockHologramRenderer.isStructureActive()
+                            && associatedStructure.getId().equals(MultiblockHologramRenderer.getActiveStructure().getId());
+                    if (isActive) {
+                        MultiblockHologramRenderer.clearActiveStructure();
+                        if (minecraft != null) {
+                            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BEACON_DEACTIVATE, 1.0f));
+                        }
+                        statusTooltip = Component.translatable("gui.sandstorm.datapad.multiblock_cleared");
+                        statusTooltipExpiry = System.currentTimeMillis() + 3000;
+                    } else {
+                        projectMultiblock(associatedStructure);
+                    }
                     return true;
                 }
             }
@@ -580,11 +640,11 @@ public class SurvivalDatapadScreen extends Screen {
 
             int cardLeft = left + 10;
             int cardRight = right - 10;
-            int btnW = 60;
+            int btnW = 82;
             int btnH = 20;
-            int btnX = cardRight - 66;
+            int btnX = cardRight - 88;
             int btnY = cy + 13;
-            int pdrW = 48;
+            int pdrW = 44;
             int pdrX = btnX - pdrW - 4;
 
             boolean onPonder = mx >= pdrX && mx <= pdrX + pdrW && my >= btnY && my <= btnY + btnH;
@@ -965,6 +1025,51 @@ public class SurvivalDatapadScreen extends Screen {
             extractor.pose().scale(scale, scale);
             extractor.text(font, text, 0, 0, color);
             extractor.pose().popMatrix();
+        }
+    }
+
+    private void drawHologramIconButton(GuiGraphicsExtractor extractor, int x, int y, int w, int h, boolean active, boolean hovered) {
+        int bg = active ? (hovered ? 0xFFD32F2F : 0xDD7A1212) : (hovered ? 0xFF00E5FF : 0xAA005B66);
+        extractor.fill(x, y, x + w, y + h, bg);
+        int border = active ? (hovered ? 0xFFFF8A80 : 0xFFFF5252) : (hovered ? 0xFFFFFFFF : 0xFF00E5FF);
+        extractor.fill(x, y, x + w, y + 1, border);
+        extractor.fill(x, y + h - 1, x + w, y + h, border);
+        extractor.fill(x, y, x + 1, y + h, border);
+        extractor.fill(x + w - 1, y, x + w, y + h, border);
+
+        int iconX = x + (w - 14) / 2;
+        int iconY = y + (h - 14) / 2;
+        int iconColor = active ? (hovered ? 0xFFFFCDD2 : 0xFFFF5252) : (hovered ? 0xFF0A0E17 : 0xFF00E5FF);
+        drawHologramIcon(extractor, iconX, iconY, iconColor, active);
+    }
+
+    private void drawHologramIcon(GuiGraphicsExtractor extractor, int x, int y, int color, boolean active) {
+        extractor.fill(x + 2, y + 12, x + 12, y + 14, color);
+        extractor.fill(x + 4, y + 11, x + 10, y + 12, color);
+        int rayColor = (color & 0x00FFFFFF) | 0x55000000;
+        extractor.fill(x + 5, y + 8, x + 9, y + 11, rayColor);
+
+        extractor.fill(x + 6, y + 1, x + 8, y + 2, color);
+        extractor.fill(x + 4, y + 2, x + 6, y + 3, color);
+        extractor.fill(x + 8, y + 2, x + 10, y + 3, color);
+        extractor.fill(x + 2, y + 3, x + 4, y + 4, color);
+        extractor.fill(x + 10, y + 3, x + 12, y + 4, color);
+        extractor.fill(x + 4, y + 4, x + 6, y + 5, color);
+        extractor.fill(x + 8, y + 4, x + 10, y + 5, color);
+        extractor.fill(x + 6, y + 5, x + 8, y + 6, color);
+
+        extractor.fill(x + 2, y + 4, x + 3, y + 8, color);
+        extractor.fill(x + 6, y + 6, x + 8, y + 9, color);
+        extractor.fill(x + 11, y + 4, x + 12, y + 8, color);
+
+        extractor.fill(x + 3, y + 8, x + 6, y + 9, color);
+        extractor.fill(x + 8, y + 8, x + 11, y + 9, color);
+
+        int coreColor = active ? 0xFF00FF7F : 0xFFFFFFFF;
+        extractor.fill(x + 6, y + 3, x + 8, y + 5, coreColor);
+
+        if (active) {
+            extractor.fill(x, y + 4, x + 14, y + 5, 0x8800FFFF);
         }
     }
 

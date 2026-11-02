@@ -37,7 +37,7 @@ public class MultiblockRegistry {
                 "wpt_relay_tower",
                 "multiblock.sandstorm.wpt_relay_tower.title",
                 "multiblock.sandstorm.wpt_relay_tower.desc",
-                "wireless_solar_receiver",
+                null,
                 reqs
         ));
     }
@@ -70,7 +70,7 @@ public class MultiblockRegistry {
                 "vault_door_chamber",
                 "multiblock.sandstorm.vault_door_chamber.title",
                 "multiblock.sandstorm.vault_door_chamber.desc",
-                "mechanical_menace",
+                null,
                 reqs
         ));
     }
@@ -95,7 +95,7 @@ public class MultiblockRegistry {
                 "subspace_gateway",
                 "multiblock.sandstorm.subspace_gateway.title",
                 "multiblock.sandstorm.subspace_gateway.desc",
-                "planet_terraformer",
+                null,
                 reqs
         ));
     }
@@ -112,7 +112,7 @@ public class MultiblockRegistry {
                 "quantum_computer_cluster",
                 "multiblock.sandstorm.quantum_cluster.title",
                 "multiblock.sandstorm.quantum_cluster.desc",
-                "additive_printer",
+                null,
                 reqs
         ));
     }
@@ -128,7 +128,7 @@ public class MultiblockRegistry {
                 "orbital_launch_complex",
                 "multiblock.sandstorm.orbital_launch.title",
                 "multiblock.sandstorm.orbital_launch.desc",
-                "atmospheric_probe",
+                null,
                 reqs
         ));
     }
@@ -143,7 +143,7 @@ public class MultiblockRegistry {
                 "super_piston_array",
                 "multiblock.sandstorm.super_piston.title",
                 "multiblock.sandstorm.super_piston.desc",
-                "mecha_assembly",
+                null,
                 reqs
         ));
     }
