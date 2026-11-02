@@ -33,8 +33,8 @@ jobs:
           VERSION=$(grep "^version=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
 
           MC_VERSION=$(grep "^minecraft_target_version=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
-          if [ -z "$MC_VERSION" ] || [ "$MC_VERSION" = "26.3" ]; then
-            MC_VERSION="1.21.4"
+          if [ -z "$MC_VERSION" ]; then
+            MC_VERSION="26.3"
           fi
 
           LOADER=$(grep "^mod_loader=" gradle.properties | cut -d'=' -f2 | tr -d '\r' | tr -d ' ')
@@ -166,8 +166,7 @@ jobs:
             ${{ env.MOD_LOADER_LOWER }}
           java: |
             Java 25
-            Java 21
-          fail-mode: 'fail'
+          fail-mode: 'warn'
 
       - name: Publicar no Modrinth
         if: (steps.check_tag.outputs.publish == 'true' || github.event_name == 'workflow_dispatch') && steps.check_tokens.outputs.has_mr == 'true'

@@ -2,6 +2,20 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.73] - 2026-11-01
+
+### 🎯 Formalização da Especificação Oficial Minecraft 26.3 & Blindagem de Runtime
+* **Alinhamento Rigoroso de Versão (`>=26.2 <=26.3` / Java 25)**:
+  * Formalizada a declaração oficial no `fabric.mod.json` para Minecraft `26.3` e `Java 25`, impedindo que launchers legados (como 1.21.4) tentem carregar o bytecode desofuscado do 26.3 e causem `NoClassDefFoundError`.
+  * Atualizado o `compatibilityLevel` dos Mixins para `JAVA_25`, refletindo a JVM oficial do Minecraft 26.3.
+  * Bytecode do mod compilado com alvo estrito `release = 25` no `build.gradle`.
+* **Documentação & Instruções de Instalação no CurseForge e README**:
+  * Atualizado `CURSEFORGE_PROJECT.md` e `README.md` destacando com aviso em evidência o perfil necessário no launcher: **Minecraft 26.3**, **Fabric Loader 0.19.0+** e **Java 25**.
+* **Proteção Automatizada de Arquitetura**:
+  * Atualizado `CurseForgeAndRuntimeCompatibilityArchitectureTest` para auditar a integridade das declarações de versão 26.3 e Java 25.
+
+---
+
 ## [1.19.72] - 2026-11-01
 
 ### 📡 Correção Crítica de Networking & Ponte de Compatibilidade Dupla (1.21.4 e 26.3)

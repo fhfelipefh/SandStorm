@@ -2,7 +2,7 @@
 
 ![SandStorm Showcase](https://raw.githubusercontent.com/fhfelipefh/SandStorm/main/docs/screenshots/showcase-overview.png)
 
-**SandStorm** é um mod de sobrevivência planetária, automação industrial e terraformação (Fabric 1.21.4 / 26.3).
+**SandStorm** é um mod de sobrevivência planetária, automação industrial e terraformação para **Minecraft 26.3** (Fabric / Java 25).
 
 Você aterrissou em um planeta desertificado e hostil, infestado por colossais **Vermes de Areia**. Sobreviva ao calor extremo, construa fábricas automatizadas, extraia água de aquíferos subterrâneos e transforme o deserto em um oásis verdejante.
 
@@ -38,15 +38,13 @@ Tudo o que você precisa saber (diagramas de engenharia, listas de itens, receit
 
 ---
 
-### 🛠️ Instalação
+### 🛠️ Instalação (Minecraft 26.3 / Java 25)
 
-Recomendamos usar o **App do CurseForge** para baixar e atualizar automaticamente o mod e suas dependências:
-1. Abra o aplicativo do CurseForge.
-2. Busque por **SandStorm** e clique em **Install**.
+> ⚠️ **Aviso de Versão:** O SandStorm utiliza a arquitetura moderna de renderização e desofuscação do **Minecraft 26.3** e exige **Java 25**. Ele não é compatível com versões legadas como Minecraft 1.21.4.
 
-*Instalação Manual:*
-1. Instale o **Fabric Loader 0.16.0+** para Minecraft 1.21.4 / 26.3 (Java 21+).
-2. Coloque o `.jar` do **SandStorm** e a **Fabric API** na pasta `mods`.
+1. No seu launcher (CurseForge, Prism ou Oficial), selecione ou crie um perfil para o **Minecraft 26.3** com **Fabric Loader (0.19.0+)**.
+2. Certifique-se de que a JVM do perfil utiliza **Java 25** (padrão do Minecraft 26.3).
+3. Adicione o `.jar` do **SandStorm** e a **Fabric API para 26.3** na pasta `mods`.
 
 ---
 

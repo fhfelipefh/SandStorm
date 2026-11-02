@@ -12,20 +12,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CurseForgeAndRuntimeCompatibilityArchitectureTest {
 
     @Test
-    void fabricModJsonMustSupportMinecraft1214AndJava21() throws IOException {
+    void fabricModJsonMustTargetMinecraft263AndJava25() throws IOException {
         Path fabricModJson = Path.of("src", "main", "resources", "fabric.mod.json");
         assertTrue(Files.exists(fabricModJson), "fabric.mod.json must exist");
 
         String content = Files.readString(fabricModJson);
-        assertTrue(content.contains("\"minecraft\": \">=1.21.4"), "fabric.mod.json must allow Minecraft 1.21.4");
-        assertTrue(content.contains("\"java\": \">=21\""), "fabric.mod.json must allow Java 21");
-        assertFalse(content.contains("\"java\": \">=25\""), "fabric.mod.json must never require Java 25");
-        assertFalse(content.contains("\"minecraft\": \">=26.2\""), "fabric.mod.json must never exclude Minecraft 1.21.4");
-        assertTrue(content.contains("\"fabricloader\": \">=0.16.0\""), "fabric.mod.json must declare backwards compatible loader");
+        assertTrue(content.contains("\"minecraft\": \">=26.2 <=26.3\""), "fabric.mod.json must target Minecraft 26.3");
+        assertTrue(content.contains("\"java\": \">=25\""), "fabric.mod.json must require Java 25");
+        assertTrue(content.contains("\"fabricloader\": \">=0.19.0\""), "fabric.mod.json must declare loader 0.19.0+");
     }
 
     @Test
-    void mixinConfigsMustDeclareJava21CompatibilityLevel() throws IOException {
+    void mixinConfigsMustDeclareJava25CompatibilityLevel() throws IOException {
         Path serverMixin = Path.of("src", "main", "resources", "sandstorm.mixins.json");
         Path clientMixin = Path.of("src", "client", "resources", "sandstorm.client.mixins.json");
 
@@ -35,35 +33,29 @@ class CurseForgeAndRuntimeCompatibilityArchitectureTest {
         String serverContent = Files.readString(serverMixin);
         String clientContent = Files.readString(clientMixin);
 
-        assertTrue(serverContent.contains("\"compatibilityLevel\": \"JAVA_21\""), "Server mixin must declare JAVA_21");
-        assertTrue(clientContent.contains("\"compatibilityLevel\": \"JAVA_21\""), "Client mixin must declare JAVA_21");
-
-        assertFalse(serverContent.contains("JAVA_25"), "Server mixin must never declare JAVA_25");
-        assertFalse(clientContent.contains("JAVA_25"), "Client mixin must never declare JAVA_25");
+        assertTrue(serverContent.contains("\"compatibilityLevel\": \"JAVA_25\""), "Server mixin must declare JAVA_25");
+        assertTrue(clientContent.contains("\"compatibilityLevel\": \"JAVA_25\""), "Client mixin must declare JAVA_25");
     }
 
     @Test
-    void buildGradleMustTargetJava21Bytecode() throws IOException {
+    void buildGradleMustTargetJava25Bytecode() throws IOException {
         Path buildGradle = Path.of("build.gradle");
         assertTrue(Files.exists(buildGradle), "build.gradle must exist");
 
         String content = Files.readString(buildGradle);
-        assertTrue(content.contains("it.options.release = 21"), "build.gradle must compile for release 21");
-        assertTrue(content.contains("sourceCompatibility = JavaVersion.VERSION_21"), "build.gradle sourceCompatibility must be Java 21");
-        assertTrue(content.contains("targetCompatibility = JavaVersion.VERSION_21"), "build.gradle targetCompatibility must be Java 21");
-        assertFalse(content.contains("it.options.release = 25"), "build.gradle must not use release 25");
-        assertFalse(content.contains("VERSION_25"), "build.gradle must not use VERSION_25");
+        assertTrue(content.contains("it.options.release = 25"), "build.gradle must compile for release 25");
+        assertTrue(content.contains("sourceCompatibility = JavaVersion.VERSION_25"), "build.gradle sourceCompatibility must be Java 25");
+        assertTrue(content.contains("targetCompatibility = JavaVersion.VERSION_25"), "build.gradle targetCompatibility must be Java 25");
     }
 
     @Test
-    void gradlePropertiesMustDeclareTargetVersionAndJava21() throws IOException {
+    void gradlePropertiesMustDeclareTargetVersionAndJava25() throws IOException {
         Path gradleProperties = Path.of("gradle.properties");
         assertTrue(Files.exists(gradleProperties), "gradle.properties must exist");
 
         String content = Files.readString(gradleProperties);
-        assertTrue(content.contains("java_version=21"), "gradle.properties must specify java_version=21");
-        assertTrue(content.contains("minecraft_target_version=1.21.4"), "gradle.properties must target 1.21.4 for CurseForge");
-        assertFalse(content.contains("java_version=25"), "gradle.properties must not specify java_version=25");
+        assertTrue(content.contains("java_version=25"), "gradle.properties must specify java_version=25");
+        assertTrue(content.contains("minecraft_target_version=26.3"), "gradle.properties must target 26.3");
     }
 
     @Test

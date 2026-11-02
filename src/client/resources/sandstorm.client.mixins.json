@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"package": "com.fhfelipefh.sandstorm.client.mixin",
-	"compatibilityLevel": "JAVA_21",
+	"compatibilityLevel": "JAVA_25",
 	"refmap": "sandstorm.refmap.json",
 	"client": [
 		"HudAdaptiveTextMixin",
