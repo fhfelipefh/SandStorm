@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -24,6 +25,17 @@ class JeiCompatibilityTest {
 
     private static final Path RECIPES_DIR = Path.of("src", "main", "resources", "data", "sandstorm", "recipe");
     private static final Pattern IDENTIFIER_PATTERN = Pattern.compile("^#?[a-z0-9_.-]+:[a-z0-9_.-]+$");
+    private static final Set<String> ALLOWED_RECIPE_TYPES = Set.of(
+            "minecraft:crafting_shaped",
+            "minecraft:crafting_shapeless",
+            "minecraft:smelting",
+            "minecraft:blasting",
+            "minecraft:smoking",
+            "minecraft:campfire_cooking",
+            "minecraft:stonecutting",
+            "minecraft:smithing_transform",
+            "minecraft:smithing_trim"
+    );
 
     @Test
     void shouldHaveRecipeDirectory() {
@@ -42,6 +54,7 @@ class JeiCompatibilityTest {
                     assertTrue(json.has("type"), "Recipe must define type: " + recipePath);
                     String type = json.get("type").getAsString();
                     assertTrue(IDENTIFIER_PATTERN.matcher(type).matches(), "Invalid type identifier: " + type);
+                    assertTrue(ALLOWED_RECIPE_TYPES.contains(type), "Unsupported or unregistered recipe serializer type: " + type + " in " + recipePath);
 
                     assertTrue(json.has("result"), "Recipe must define result: " + recipePath);
                     JsonObject result = json.getAsJsonObject("result");

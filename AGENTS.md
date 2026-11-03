@@ -61,6 +61,12 @@ Ao criar, modificar ou adicionar qualquer receita em `data/sandstorm/recipe/`:
    - Toda receita data-driven é obrigatoriamente auditada por `JeiCompatibilityTest`, que verifica a presença do arquivo de definição `assets/sandstorm/items/<item>.json` correspondente.
    - Qualquer discrepância entre chaves de receita e registros do mod quebra a build imediatamente.
 
+3. **Validação Estrita de Serializadores de Receita (`BuiltInRegistries.RECIPE_SERIALIZER`)**:
+   - Todo arquivo JSON dentro de `data/<namespace>/recipe/` DEVE especificar um `"type"` que esteja estritamente registrado em `BuiltInRegistries.RECIPE_SERIALIZER`.
+   - É expressamente proibido colocar arquivos JSON em `data/**/recipe/` utilizando IDs de máquinas ou estações customizadas (ex: `sandstorm:printer_3d`, `sandstorm:chemical_refinery`, `sandstorm:nanite_fabricator`, etc.) como `"type"`, a menos que exista um `RecipeSerializer<?>` registrado no vanilla.
+   - Máquinas industriais do SandStorm que utilizam processamento interno programático (`MachineRecipeRegistry`) devem registrar suas receitas exclusivamente no registry de código e em suas respectivas categorias do JEI.
+   - Violações quebram `RecipeSerializerRegistryArchitectureTest` e `JeiCompatibilityTest`.
+
 ## 📦 Protocolo de Exibição de Itens e Blocos em GUI/Inventário Criativo
 1. **Inclusão Obrigatória em Abas Criativas (`displayItems`)**:
    - Todo item registrado em `SandStormItems` e todo bloco registrado em `SandStormBlocks` DEVE ser obrigatoriamente registrado no `displayItems` da aba criativa (`SANDSTORM_TAB`).
