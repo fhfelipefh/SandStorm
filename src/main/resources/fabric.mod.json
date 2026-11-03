@@ -21,6 +21,9 @@
 		],
 		"client": [
 			"com.fhfelipefh.sandstorm.client.SandStormClient"
+		],
+		"jei_mod_plugin": [
+			"com.fhfelipefh.sandstorm.client.compat.jei.SandStormJeiPlugin"
 		]
 	},
 	"mixins": [

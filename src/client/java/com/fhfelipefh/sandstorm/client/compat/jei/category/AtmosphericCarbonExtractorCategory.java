@@ -1,0 +1,47 @@
+package com.fhfelipefh.sandstorm.client.compat.jei.category;
+
+import com.fhfelipefh.sandstorm.client.compat.jei.SandStormJeiRecipeTypes;
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.recipe.MachineRecipe;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.category.AbstractRecipeCategory;
+import net.minecraft.network.chat.Component;
+
+import java.util.List;
+
+public class AtmosphericCarbonExtractorCategory extends AbstractRecipeCategory<MachineRecipe> {
+    public AtmosphericCarbonExtractorCategory(IGuiHelper guiHelper) {
+        super(
+                SandStormJeiRecipeTypes.ATMOSPHERIC_CARBON_EXTRACTOR,
+                Component.translatable("block.sandstorm.atmospheric_carbon_extractor"),
+                guiHelper.createDrawableItemLike(SandStormBlocks.ATMOSPHERIC_CARBON_EXTRACTOR),
+                124,
+                72
+        );
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayoutBuilder builder, MachineRecipe recipe, IFocusGroup focuses) {
+        if (recipe.getSlot0InputCount() > 0) {
+            builder.addInputSlot(20, 23)
+                    .setStandardSlotBackground()
+                    .addItemStacks(recipe.getSlot0Inputs());
+        }
+        builder.addOutputSlot(84, 23)
+                .setOutputSlotBackground()
+                .add(recipe.getOutput());
+    }
+
+    @Override
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, MachineRecipe recipe, IFocusGroup focuses) {
+        int ticks = Math.max(1, recipe.getProcessTicks());
+        builder.addAnimatedRecipeArrowWidget(ticks).setPosition(50, 23);
+        String info = recipe.getEnergyCost() + " J  |  " + (ticks / 20) + "s";
+        builder.addText(List.of(Component.literal(info)), 120, 10)
+                .setPosition(14, 56)
+                .setColor(0xFF78909C);
+    }
+}
