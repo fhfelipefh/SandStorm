@@ -1,0 +1,16 @@
+{
+  "type": "sandstorm:nanite_fabricator",
+  "slot0": {
+    "item": "sandstorm:sandworm_tooth"
+  },
+  "slot1": {
+    "item": "sandstorm:nano_actuator"
+  },
+  "result": {
+    "id": "sandstorm:vibro_crysknife",
+    "count": 1
+  },
+  "energy": 240,
+  "time": 1200
+}
+

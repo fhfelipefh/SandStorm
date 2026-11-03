@@ -1,0 +1,16 @@
+{
+  "type": "sandstorm:printer_3d",
+  "slot0": {
+    "item": "sandstorm:circuit_board"
+  },
+  "slot1": {
+    "item": "sandstorm:nano_actuator"
+  },
+  "result": {
+    "id": "sandstorm:plasma_rifle",
+    "count": 1
+  },
+  "energy": 200,
+  "time": 100
+}
+

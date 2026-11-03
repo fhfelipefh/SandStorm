@@ -8,4 +8,9 @@ public class ChemicalRefineryScreen extends BaseMachineScreen<ChemicalRefineryMe
     public ChemicalRefineryScreen(ChemicalRefineryMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
     }
+
+    @Override
+    protected String getMachineId() {
+        return "sandstorm:chemical_refinery";
+    }
 }

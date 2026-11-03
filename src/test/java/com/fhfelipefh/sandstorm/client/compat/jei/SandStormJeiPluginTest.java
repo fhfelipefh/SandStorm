@@ -38,7 +38,10 @@ class SandStormJeiPluginTest {
                 "sandstorm:molecular_modifier",
                 "sandstorm:desalination_filter",
                 "sandstorm:atmospheric_carbon_extractor",
-                "sandstorm:megastructure_constructor"
+                "sandstorm:megastructure_constructor",
+                "sandstorm:chemical_refinery",
+                "sandstorm:hydroponic_chamber",
+                "sandstorm:dew_condenser"
         );
 
         for (String machineId : machineIds) {
@@ -47,7 +50,7 @@ class SandStormJeiPluginTest {
             assertFalse(recipes.isEmpty(), "Machine must register at least one recipe: " + machineId);
 
             for (MachineRecipe recipe : recipes) {
-                assertTrue(recipe.getEnergyCost() > 0, "Recipe must specify positive energy cost: " + machineId);
+                assertTrue(recipe.getEnergyCost() >= 0, "Recipe must specify non-negative energy cost: " + machineId);
                 assertTrue(recipe.getProcessTicks() > 0, "Recipe must specify positive process ticks: " + machineId);
             }
         }

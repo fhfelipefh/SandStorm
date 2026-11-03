@@ -25,6 +25,9 @@ public class MachineRecipeRegistry {
         registerMegastructureConstructorRecipes();
         registerDesalinationFilterRecipes();
         registerAtmosphericCarbonExtractorRecipes();
+        registerChemicalRefineryRecipes();
+        registerHydroponicChamberRecipes();
+        registerDewCondenserRecipes();
     }
 
     private static void registerDesalinationFilterRecipes() {
@@ -365,6 +368,104 @@ public class MachineRecipeRegistry {
                 )
         );
         RECIPES.put("sandstorm:atmospheric_carbon_extractor", Collections.unmodifiableList(list));
+    }
+
+    private static void registerChemicalRefineryRecipes() {
+        List<MachineRecipe> list = List.of(
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.PROPELLANT_CARTRIDGE),
+                        () -> Component.translatable("item.sandstorm.propellant_cartridge"),
+                        List.of(() -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        List.of(() -> new ItemStack(SandStormItems.EMPTY_CARTRIDGE), () -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE)),
+                        300,
+                        100
+                )
+        );
+        RECIPES.put("sandstorm:chemical_refinery", Collections.unmodifiableList(list));
+    }
+
+    private static void registerHydroponicChamberRecipes() {
+        List<MachineRecipe> list = List.of(
+                new MachineRecipe(
+                        () -> new ItemStack(Items.WHEAT, 2),
+                        List.of(() -> new ItemStack(Items.WHEAT_SEEDS)),
+                        List.of(() -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE), () -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        120,
+                        120
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(Items.CARROT, 3),
+                        List.of(() -> new ItemStack(Items.CARROT)),
+                        List.of(() -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE), () -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        120,
+                        120
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(Items.POTATO, 3),
+                        List.of(() -> new ItemStack(Items.POTATO)),
+                        List.of(() -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE), () -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        120,
+                        120
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(Items.BEETROOT, 2),
+                        List.of(() -> new ItemStack(Items.BEETROOT_SEEDS)),
+                        List.of(() -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE), () -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        120,
+                        120
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(Items.MELON_SLICE, 4),
+                        List.of(() -> new ItemStack(Items.MELON_SEEDS)),
+                        List.of(() -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE), () -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        120,
+                        120
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(Items.PUMPKIN, 1),
+                        List.of(() -> new ItemStack(Items.PUMPKIN_SEEDS)),
+                        List.of(() -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE), () -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        120,
+                        120
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(Items.NETHER_WART, 3),
+                        List.of(() -> new ItemStack(Items.NETHER_WART)),
+                        List.of(() -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE), () -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        120,
+                        120
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.XENO_GRASS_SEEDS, 3),
+                        List.of(() -> new ItemStack(SandStormItems.XENO_GRASS_SEEDS)),
+                        List.of(() -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE), () -> new ItemStack(SandStormItems.MINERAL_SALT)),
+                        120,
+                        120
+                )
+        );
+        RECIPES.put("sandstorm:hydroponic_chamber", Collections.unmodifiableList(list));
+    }
+
+    private static void registerDewCondenserRecipes() {
+        List<MachineRecipe> list = List.of(
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE),
+                        () -> Component.translatable("item.sandstorm.potable_water_bottle"),
+                        List.of(() -> new ItemStack(Items.GLASS_BOTTLE)),
+                        List.of(),
+                        0,
+                        200
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(Items.WATER_BUCKET),
+                        () -> new ItemStack(Items.WATER_BUCKET).getHoverName(),
+                        List.of(() -> new ItemStack(Items.BUCKET)),
+                        List.of(),
+                        0,
+                        600
+                )
+        );
+        RECIPES.put("sandstorm:dew_condenser", Collections.unmodifiableList(list));
     }
 
     private static ItemStack createUpgradedPreview(ItemLike item) {

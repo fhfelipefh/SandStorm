@@ -1,0 +1,16 @@
+{
+  "type": "sandstorm:chemical_refinery",
+  "slot0": {
+    "item": "sandstorm:mineral_salt"
+  },
+  "slot1": {
+    "item": "sandstorm:empty_cartridge"
+  },
+  "result": {
+    "id": "sandstorm:propellant_cartridge",
+    "count": 1
+  },
+  "energy": 300,
+  "time": 100
+}
+

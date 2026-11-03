@@ -40,6 +40,7 @@
 		"fabric-api": "*"
 	},
 	"suggests": {
+		"jei": "*",
 		"sodium": "*",
 		"iris": "*",
 		"lithium": "*"

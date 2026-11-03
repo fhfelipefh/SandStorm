@@ -11,6 +11,11 @@ public class HydroponicChamberScreen extends BaseMachineScreen<HydroponicChamber
     }
 
     @Override
+    protected String getMachineId() {
+        return "sandstorm:hydroponic_chamber";
+    }
+
+    @Override
     protected void renderProgressBar(GuiGraphicsExtractor extractor, int x, int y, int width, int height) {
     }
 

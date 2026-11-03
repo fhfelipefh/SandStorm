@@ -1,0 +1,16 @@
+{
+  "type": "sandstorm:desalination_filter",
+  "slot0": {
+    "item": "sandstorm:brackish_water_bottle"
+  },
+  "slot1": {
+    "item": "sandstorm:filter_cartridge"
+  },
+  "result": {
+    "id": "sandstorm:potable_water_bottle",
+    "count": 1
+  },
+  "energy": 80,
+  "time": 80
+}
+

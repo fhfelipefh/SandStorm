@@ -17,6 +17,12 @@ public final class SandStormJeiRecipeTypes {
             IRecipeType.create(SandStormMod.MOD_ID, "atmospheric_carbon_extractor", MachineRecipe.class);
     public static final IRecipeType<MachineRecipe> MEGASTRUCTURE_CONSTRUCTOR =
             IRecipeType.create(SandStormMod.MOD_ID, "megastructure_constructor", MachineRecipe.class);
+    public static final IRecipeType<MachineRecipe> CHEMICAL_REFINERY =
+            IRecipeType.create(SandStormMod.MOD_ID, "chemical_refinery", MachineRecipe.class);
+    public static final IRecipeType<MachineRecipe> HYDROPONIC_CHAMBER =
+            IRecipeType.create(SandStormMod.MOD_ID, "hydroponic_chamber", MachineRecipe.class);
+    public static final IRecipeType<MachineRecipe> DEW_CONDENSER =
+            IRecipeType.create(SandStormMod.MOD_ID, "dew_condenser", MachineRecipe.class);
 
     private SandStormJeiRecipeTypes() {
     }
