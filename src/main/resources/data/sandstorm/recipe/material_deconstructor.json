@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "D": "minecraft:diamond",
+    "P": "sandstorm:silicon_pickaxe",
+    "S": "sandstorm:scrap_metal"
+  },
+  "pattern": [
+    "SPS",
+    "SDS",
+    "SCS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:material_deconstructor"
+  }
+}
+

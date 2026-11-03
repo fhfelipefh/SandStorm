@@ -65,6 +65,8 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
     public static final double JUMP_VELOCITY = 0.62;
 
     private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(CyberSteedEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_REPAIR_PROGRESS = SynchedEntityData.defineId(CyberSteedEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_REPAIR_REQUIRED = SynchedEntityData.defineId(CyberSteedEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_CANISTER_EXPLODED = SynchedEntityData.defineId(CyberSteedEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_HAS_SONIC_TURRET = SynchedEntityData.defineId(CyberSteedEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_HAS_BATTERY_PACK = SynchedEntityData.defineId(CyberSteedEntity.class, EntityDataSerializers.BOOLEAN);
@@ -96,6 +98,8 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_DEACTIVATED, false);
+        builder.define(DATA_REPAIR_PROGRESS, 0);
+        builder.define(DATA_REPAIR_REQUIRED, 3);
         builder.define(DATA_CANISTER_EXPLODED, false);
         builder.define(DATA_HAS_SONIC_TURRET, false);
         builder.define(DATA_HAS_BATTERY_PACK, false);
@@ -335,11 +339,43 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (this.isDeactivated()) {
-            return InteractionResult.PASS;
-        }
         ItemStack itemStack = player.getItemInHand(hand);
         Level currentLevel = this.level();
+
+        if (this.isDeactivated()) {
+            if (itemStack.is(SandStormItems.SCRAP_METAL)) {
+                if (!player.isCreative()) {
+                    itemStack.shrink(1);
+                }
+                int req = Math.max(1, this.entityData.get(DATA_REPAIR_REQUIRED));
+                int prog = this.entityData.get(DATA_REPAIR_PROGRESS) + 1;
+                this.entityData.set(DATA_REPAIR_PROGRESS, prog);
+
+                if (currentLevel instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                            this.getX(), this.getY() + 0.6, this.getZ(),
+                            25, 0.35, 0.35, 0.35, 0.08);
+                    serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                            SoundEvents.IRON_GOLEM_REPAIR, this.getSoundSource(), 1.0f, 1.1f);
+                }
+
+                if (prog >= req) {
+                    this.setDeactivated(false);
+                    this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0);
+                    this.setHealth(50.0f);
+                    this.tame(player); this.setOrderedToSit(false);
+                    if (currentLevel instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                                this.getX(), this.getY() + 1.0, this.getZ(),
+                                30, 0.5, 0.5, 0.5, 0.1);
+                        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                SoundEvents.BEACON_ACTIVATE, this.getSoundSource(), 1.0f, 1.3f);
+                    }
+                }
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        }
 
         if (this.isTame()) {
             if (this.isOwnedBy(player) || player.isCreative()) {
@@ -688,6 +724,8 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
         output.putBoolean("Deactivated", this.isDeactivated());
+        output.putInt("RepairProgress", this.entityData.get(DATA_REPAIR_PROGRESS));
+        output.putInt("RepairRequired", this.entityData.get(DATA_REPAIR_REQUIRED));
         output.putBoolean("CanisterExploded", this.isCanisterExploded());
         output.putBoolean("SonicTurret", this.hasSonicTurret());
         output.putBoolean("BatteryPack", this.hasBatteryPack());
@@ -705,6 +743,8 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         this.setDeactivated(input.getBooleanOr("Deactivated", false));
+        this.entityData.set(DATA_REPAIR_PROGRESS, input.getIntOr("RepairProgress", 0));
+        this.entityData.set(DATA_REPAIR_REQUIRED, input.getIntOr("RepairRequired", 3));
         this.setCanisterExploded(input.getBooleanOr("CanisterExploded", false));
         this.setHasSonicTurret(input.getBooleanOr("SonicTurret", false));
         this.setHasBatteryPack(input.getBooleanOr("BatteryPack", false));

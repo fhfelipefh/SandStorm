@@ -106,7 +106,7 @@ public class WirelessSolarReceiverBlock extends Block implements EntityBlock {
 
             BlockEntity be = level.getBlockEntity(pos);
             long storedEnergy = 0L;
-            long capacity = tier >= 2 ? WirelessSolarReceiverBlockEntity.TIER2_CAPACITY : WirelessSolarReceiverBlockEntity.TIER1_CAPACITY;
+            long capacity = WirelessSolarReceiverBlockEntity.getCapacityForTier(tier);
             if (be instanceof WirelessSolarReceiverBlockEntity receiver) {
                 storedEnergy = receiver.getEnergyStorage().getStoredEnergy();
                 capacity = receiver.getEnergyStorage().getCapacity();

@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "top": "sandstorm:block/material_deconstructor_top",
+    "bottom": "sandstorm:block/material_deconstructor_bottom",
+    "side": "sandstorm:block/material_deconstructor_side",
+    "front": "sandstorm:block/material_deconstructor_front_on"
+  }
+}

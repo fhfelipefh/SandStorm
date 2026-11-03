@@ -2,9 +2,11 @@ package com.fhfelipefh.sandstorm.client;
 
 import com.fhfelipefh.sandstorm.client.gui.DatapadClientHelper;
 import com.fhfelipefh.sandstorm.client.gui.AmnioticIncubatorScreen;
+import com.fhfelipefh.sandstorm.client.gui.AnomalyRadarScreen;
 import com.fhfelipefh.sandstorm.client.gui.AtmosphericTerraformerScreen;
 import com.fhfelipefh.sandstorm.client.gui.ElectricArcFurnaceScreen;
 import com.fhfelipefh.sandstorm.client.gui.AtmosphericCarbonExtractorScreen;
+import com.fhfelipefh.sandstorm.client.gui.BasicThermalGeneratorScreen;
 import com.fhfelipefh.sandstorm.client.gui.AutoAssemblyLineScreen;
 import com.fhfelipefh.sandstorm.client.gui.AutonomousSonicTurretScreen;
 import com.fhfelipefh.sandstorm.client.gui.BioRegenerationPodScreen;
@@ -26,6 +28,7 @@ import com.fhfelipefh.sandstorm.client.gui.IrrigationPumpScreen;
 import com.fhfelipefh.sandstorm.client.gui.KineticRailgunScreen;
 import com.fhfelipefh.sandstorm.client.gui.KineticShieldScreen;
 import com.fhfelipefh.sandstorm.client.gui.LithoPlasmaExtractorScreen;
+import com.fhfelipefh.sandstorm.client.gui.MaterialDeconstructorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MegastructureConstructorScreen;
 import com.fhfelipefh.sandstorm.client.gui.MolecularModifierScreen;
 import com.fhfelipefh.sandstorm.client.gui.MorphingMatrixCoreScreen;
@@ -114,6 +117,7 @@ import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
 import com.fhfelipefh.sandstorm.content.network.MagneticInterferencePayload;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
+import com.fhfelipefh.sandstorm.content.network.SyncAnomalyRadarPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncUplinkZonePayload;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
@@ -158,6 +162,8 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.DESALINATION_FILTER_MENU, DesalinationFilterScreen::new);
         MenuScreens.register(SandStormMenus.DEW_CONDENSER_MENU, DewCondenserScreen::new);
         MenuScreens.register(SandStormMenus.THERMAL_GENERATOR_MENU, ThermalGeneratorScreen::new);
+        MenuScreens.register(SandStormMenus.BASIC_THERMAL_GENERATOR_MENU, BasicThermalGeneratorScreen::new);
+        MenuScreens.register(SandStormMenus.MATERIAL_DECONSTRUCTOR_MENU, MaterialDeconstructorScreen::new);
         MenuScreens.register(SandStormMenus.CHEMICAL_REFINERY_MENU, ChemicalRefineryScreen::new);
         MenuScreens.register(SandStormMenus.HYDROPONIC_CHAMBER_MENU, HydroponicChamberScreen::new);
         MenuScreens.register(SandStormMenus.AUTONOMOUS_SONIC_TURRET_MENU, AutonomousSonicTurretScreen::new);
@@ -313,7 +319,7 @@ public class SandStormClient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(SyncPlayerQuestsPayload.TYPE, (payload, context) -> {
             context.client().execute(() -> {
                 SandStormClientWorldHelper.setConnectedToSandStorm(true);
-                DatapadClientHelper.setQuests(payload.claimedQuestIds(), payload.completedConditions());
+                DatapadClientHelper.setQuests(payload.claimedQuestIds(), payload.completedConditions(), payload.readyQuestIds());
             });
         });
         ClientPlayNetworking.registerGlobalReceiver(SandstormWeatherPayload.TYPE, (payload, context) -> {
@@ -334,6 +340,11 @@ public class SandStormClient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(EmpDeafenPayload.TYPE, (payload, context) -> {
             context.client().execute(() -> {
                 EmpDeafenClientHandler.trigger(payload.durationTicks());
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(SyncAnomalyRadarPayload.TYPE, (payload, context) -> {
+            context.client().execute(() -> {
+                context.client().setScreenAndShow(new AnomalyRadarScreen(payload));
             });
         });
         ClientPlayNetworking.registerGlobalReceiver(SyncTerminalGridPayload.TYPE, (payload, context) -> {

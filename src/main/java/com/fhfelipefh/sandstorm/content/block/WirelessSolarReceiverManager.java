@@ -24,9 +24,18 @@ public class WirelessSolarReceiverManager {
     private static final Map<ResourceKey<Level>, Map<BlockPos, Integer>> RECEIVER_MAP = new ConcurrentHashMap<>();
     private static final WirelessChargerComponent CHARGER_TIER1 = new WirelessChargerComponent(1);
     private static final WirelessChargerComponent CHARGER_TIER2 = new WirelessChargerComponent(2);
+    private static final WirelessChargerComponent CHARGER_TIER3 = new WirelessChargerComponent(3);
+    private static final WirelessChargerComponent CHARGER_TIER4 = new WirelessChargerComponent(4);
+    private static final WirelessChargerComponent CHARGER_TIER5 = new WirelessChargerComponent(5);
 
     private static WirelessChargerComponent getCharger(int tier) {
-        return tier >= 2 ? CHARGER_TIER2 : CHARGER_TIER1;
+        return switch (tier) {
+            case 1 -> CHARGER_TIER1;
+            case 2 -> CHARGER_TIER2;
+            case 3 -> CHARGER_TIER3;
+            case 4 -> CHARGER_TIER4;
+            default -> CHARGER_TIER5;
+        };
     }
 
     public static void initialize() {
@@ -61,9 +70,10 @@ public class WirelessSolarReceiverManager {
 
     public static long getPrimaryWptChargeAt(Level level, BlockPos pos) {
         long thermalCharge = ThermalGeneratorManager.getWptChargeAt(level, pos);
+        long basicThermalCharge = BasicThermalGeneratorManager.getWptChargeAt(level, pos);
         long accumulatorCharge = SolidStateAccumulatorManager.getWptChargeAt(level, pos);
         long exchangerCharge = SupercriticalHeatExchangerManager.getWptChargeAt(level, pos);
-        long maxCharge = Math.max(thermalCharge, Math.max(accumulatorCharge, exchangerCharge));
+        long maxCharge = Math.max(Math.max(thermalCharge, basicThermalCharge), Math.max(accumulatorCharge, exchangerCharge));
         Map<BlockPos, Integer> map = RECEIVER_MAP.get(level.dimension());
         if (map == null || map.isEmpty()) {
             return maxCharge;

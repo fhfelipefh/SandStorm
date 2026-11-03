@@ -7,12 +7,27 @@ public class WirelessChargerComponent {
 
     public WirelessChargerComponent(int tier) {
         this.tier = Math.max(1, tier);
-        if (this.tier == 1) {
-            this.baseRadius = 24.0;
-            this.baseTransferRate = 50L;
-        } else {
-            this.baseRadius = 36.0;
-            this.baseTransferRate = 100L;
+        switch (this.tier) {
+            case 1 -> {
+                this.baseRadius = 24.0;
+                this.baseTransferRate = 50L;
+            }
+            case 2 -> {
+                this.baseRadius = 36.0;
+                this.baseTransferRate = 100L;
+            }
+            case 3 -> {
+                this.baseRadius = 48.0;
+                this.baseTransferRate = 200L;
+            }
+            case 4 -> {
+                this.baseRadius = 64.0;
+                this.baseTransferRate = 400L;
+            }
+            default -> {
+                this.baseRadius = 80.0;
+                this.baseTransferRate = 800L;
+            }
         }
     }
 

@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "top": "sandstorm:block/basic_thermal_generator_top",
+    "bottom": "sandstorm:block/basic_thermal_generator_bottom",
+    "side": "sandstorm:block/basic_thermal_generator_side",
+    "front": "sandstorm:block/basic_thermal_generator_front_on"
+  }
+}

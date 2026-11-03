@@ -23,6 +23,8 @@ public final class SandStormJeiRecipeTypes {
             IRecipeType.create(SandStormMod.MOD_ID, "hydroponic_chamber", MachineRecipe.class);
     public static final IRecipeType<MachineRecipe> DEW_CONDENSER =
             IRecipeType.create(SandStormMod.MOD_ID, "dew_condenser", MachineRecipe.class);
+    public static final IRecipeType<MachineRecipe> MATERIAL_DECONSTRUCTOR =
+            IRecipeType.create(SandStormMod.MOD_ID, "material_deconstructor", MachineRecipe.class);
 
     private SandStormJeiRecipeTypes() {
     }

@@ -35,11 +35,14 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -316,14 +319,14 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy, Deactiv
         if (target instanceof ServerPlayer player) {
             SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player);
             long cur = suit.getStoredEnergy();
-            suit.setStoredEnergy(Math.max(0L, cur - 8000L));
+            suit.setStoredEnergy(Math.max(0L, cur - 1800L));
             player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
             player.sendSystemMessage(Component.translatable("message.sandstorm.sentinel_emp_drain"), true);
         }
     }
 
     public void performEmpShockwave(ServerLevel level) {
-        this.empCooldown = 90;
+        this.empCooldown = 260;
         setAttackAnim(15);
         level.sendParticles(ParticleTypes.ELECTRIC_SPARK, getX(), getY() + 0.8, getZ(), 60, 1.8, 0.5, 1.8, 0.2);
         level.sendParticles(ParticleTypes.SMOKE, getX(), getY() + 0.5, getZ(), 20, 1.2, 0.3, 1.2, 0.05);
@@ -332,13 +335,19 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy, Deactiv
 
         AABB pulseBox = getBoundingBox().inflate(6.0, 3.0, 6.0);
         List<Player> affectedPlayers = level.getEntitiesOfClass(Player.class, pulseBox);
+        Vec3 eye = getEyePosition();
         for (Player p : affectedPlayers) {
             if (p instanceof ServerPlayer sp && !sp.isCreative() && !sp.isSpectator()) {
+                Vec3 pEye = sp.getEyePosition();
+                HitResult hit = level.clip(new ClipContext(eye, pEye, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+                if (hit.getType() != HitResult.Type.MISS) {
+                    continue;
+                }
                 SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(sp);
                 long cur = suit.getStoredEnergy();
-                suit.setStoredEnergy(Math.max(0L, cur - 6000L));
+                suit.setStoredEnergy(Math.max(0L, cur - 1800L));
                 sp.hurtServer(level, damageSources().mobAttack(this), 2.0f);
-                sp.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 80, 1));
+                sp.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
                 sp.sendSystemMessage(Component.translatable("message.sandstorm.sentinel_emp_drain"), true);
             }
         }
@@ -539,19 +548,35 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy, Deactiv
                 return false;
             }
             LivingEntity target = this.sentinel.getTarget();
-            return target != null && target.isAlive() && this.sentinel.distanceToSqr(target) <= 36.0;
+            if (target == null || !target.isAlive() || this.sentinel.distanceToSqr(target) > 36.0) {
+                return false;
+            }
+            if (!this.sentinel.getSensing().hasLineOfSight(target)) {
+                return false;
+            }
+            Vec3 eye = this.sentinel.getEyePosition();
+            Vec3 targetEye = target.getEyePosition();
+            HitResult hit = this.sentinel.level().clip(new ClipContext(eye, targetEye, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.sentinel));
+            return hit.getType() == HitResult.Type.MISS;
         }
 
         @Override
         public boolean canContinueToUse() {
+            LivingEntity target = this.sentinel.getTarget();
+            if (target == null || !target.isAlive() || !this.sentinel.getSensing().hasLineOfSight(target)) {
+                return false;
+            }
             return this.warmUpTicks > 0;
         }
 
         @Override
         public void start() {
-            this.warmUpTicks = 15;
-            this.sentinel.setAttackAnim(15);
+            this.warmUpTicks = 30;
+            this.sentinel.setAttackAnim(30);
             this.sentinel.getNavigation().stop();
+            if (this.sentinel.level() instanceof ServerLevel serverLevel) {
+                serverLevel.playSound(null, this.sentinel.getX(), this.sentinel.getY(), this.sentinel.getZ(), SoundEvents.BEACON_POWER_SELECT, SoundSource.HOSTILE, 1.2f, 0.5f);
+            }
         }
 
         @Override
@@ -561,6 +586,9 @@ public class ScrapSentinelEntity extends PathfinderMob implements Enemy, Deactiv
                 this.sentinel.getLookControl().setLookAt(target, 30.0f, 30.0f);
             }
             this.warmUpTicks--;
+            if (this.sentinel.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, this.sentinel.getX(), this.sentinel.getY() + 1.2, this.sentinel.getZ(), 4, 0.2, 0.2, 0.2, 0.05);
+            }
             if (this.warmUpTicks == 0 && this.sentinel.level() instanceof ServerLevel serverLevel) {
                 this.sentinel.performEmpShockwave(serverLevel);
             }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "D": "minecraft:diamond",
+    "G": "sandstorm:gallium_ingot",
+    "R": "sandstorm:wireless_solar_receiver_tier3",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "DWD",
+    "GRG",
+    "DCD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:wireless_solar_receiver_tier4"
+  }
+}

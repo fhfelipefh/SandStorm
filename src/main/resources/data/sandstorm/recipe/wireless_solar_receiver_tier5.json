@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": "sandstorm:mantle_alloy_ingot",
+    "N": "minecraft:netherite_ingot",
+    "Q": "sandstorm:quantum_mind_matrix",
+    "R": "sandstorm:wireless_solar_receiver_tier4",
+    "T": "sandstorm:superconductor_toroid"
+  },
+  "pattern": [
+    "NQN",
+    "MRM",
+    "NTN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:wireless_solar_receiver_tier5"
+  }
+}
+

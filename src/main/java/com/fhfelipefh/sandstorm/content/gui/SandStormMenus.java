@@ -32,6 +32,16 @@ public class SandStormMenus {
             new MenuType<>(ThermalGeneratorMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<BasicThermalGeneratorMenu> BASIC_THERMAL_GENERATOR_MENU = register(
+            "basic_thermal_generator",
+            new MenuType<>(BasicThermalGeneratorMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
+    public static final MenuType<MaterialDeconstructorMenu> MATERIAL_DECONSTRUCTOR_MENU = register(
+            "material_deconstructor",
+            new MenuType<>(MaterialDeconstructorMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     public static final MenuType<ChemicalRefineryMenu> CHEMICAL_REFINERY_MENU = register(
             "chemical_refinery",
             new MenuType<>(ChemicalRefineryMenu::new, FeatureFlags.VANILLA_SET)

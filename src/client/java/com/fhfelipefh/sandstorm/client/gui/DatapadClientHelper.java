@@ -15,6 +15,9 @@ import java.util.Set;
 public class DatapadClientHelper {
     private static final Set<String> CLAIMED_QUESTS = new HashSet<>();
     private static final Set<String> COMPLETED_CONDITIONS = new HashSet<>();
+    private static final Set<String> READY_QUESTS = new HashSet<>();
+    private static boolean satelliteActive = false;
+    private static int nextStormSeconds = -1;
 
     public static void initialize() {
         SurvivalDatapadItem.setClientScreenOpener(() -> {
@@ -31,15 +34,21 @@ public class DatapadClientHelper {
         });
     }
 
-    public static void setQuests(List<String> questIds, List<String> conditionTags) {
+    public static void setQuests(List<String> questIds, List<String> conditionTags, List<String> readyQuestIds) {
         CLAIMED_QUESTS.clear();
         CLAIMED_QUESTS.addAll(questIds);
         COMPLETED_CONDITIONS.clear();
         COMPLETED_CONDITIONS.addAll(conditionTags);
+        READY_QUESTS.clear();
+        READY_QUESTS.addAll(readyQuestIds);
+    }
+
+    public static void setQuests(List<String> questIds, List<String> conditionTags) {
+        setQuests(questIds, conditionTags, List.of());
     }
 
     public static void setClaimedQuests(List<String> questIds) {
-        setQuests(questIds, List.of());
+        setQuests(questIds, List.of(), List.of());
     }
 
     public static void setCompletedConditions(List<String> conditionTags) {
@@ -55,6 +64,14 @@ public class DatapadClientHelper {
         CLAIMED_QUESTS.add(questId);
     }
 
+    public static boolean isQuestReady(String questId) {
+        return READY_QUESTS.contains(questId);
+    }
+
+    public static void addReadyQuest(String questId) {
+        READY_QUESTS.add(questId);
+    }
+
     public static void addCondition(String conditionTag) {
         COMPLETED_CONDITIONS.add(conditionTag);
     }
@@ -63,16 +80,21 @@ public class DatapadClientHelper {
         return COMPLETED_CONDITIONS.contains(conditionTag);
     }
 
+    public static boolean hasCondition(String conditionTag) {
+        return COMPLETED_CONDITIONS.contains(conditionTag);
+    }
+
     public static Set<String> getClaimedQuests() {
         return Collections.unmodifiableSet(CLAIMED_QUESTS);
+    }
+
+    public static Set<String> getReadyQuests() {
+        return Collections.unmodifiableSet(READY_QUESTS);
     }
 
     public static Set<String> getCompletedConditions() {
         return Collections.unmodifiableSet(COMPLETED_CONDITIONS);
     }
-
-    private static boolean satelliteActive = false;
-    private static int nextStormSeconds = -1;
 
     public static boolean isSatelliteActive() {
         return satelliteActive || isConditionMet("sandstorm.satellite_active");
@@ -88,5 +110,13 @@ public class DatapadClientHelper {
 
     public static void setNextStormSeconds(int seconds) {
         nextStormSeconds = seconds;
+    }
+
+    public static void clear() {
+        CLAIMED_QUESTS.clear();
+        COMPLETED_CONDITIONS.clear();
+        READY_QUESTS.clear();
+        satelliteActive = false;
+        nextStormSeconds = -1;
     }
 }

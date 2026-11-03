@@ -47,6 +47,42 @@ class WirelessSolarReceiverBlockEntityTest {
     }
 
     @Test
+    void shouldInitializeTier3WithCorrectDefaults() {
+        WirelessSolarReceiverBlockEntity be = new WirelessSolarReceiverBlockEntity(
+                BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState(), 3
+        );
+        assertEquals(3, be.getTier());
+        assertEquals(0L, be.getEnergyStorage().getStoredEnergy());
+        assertEquals(WirelessSolarReceiverBlockEntity.TIER3_CAPACITY, be.getEnergyStorage().getCapacity());
+        assertEquals(48.0, be.getCharger().getBaseRadius());
+        assertEquals(200L, be.getCharger().getBaseTransferRate());
+    }
+
+    @Test
+    void shouldInitializeTier4WithCorrectDefaults() {
+        WirelessSolarReceiverBlockEntity be = new WirelessSolarReceiverBlockEntity(
+                BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState(), 4
+        );
+        assertEquals(4, be.getTier());
+        assertEquals(0L, be.getEnergyStorage().getStoredEnergy());
+        assertEquals(WirelessSolarReceiverBlockEntity.TIER4_CAPACITY, be.getEnergyStorage().getCapacity());
+        assertEquals(64.0, be.getCharger().getBaseRadius());
+        assertEquals(400L, be.getCharger().getBaseTransferRate());
+    }
+
+    @Test
+    void shouldInitializeTier5WithCorrectDefaults() {
+        WirelessSolarReceiverBlockEntity be = new WirelessSolarReceiverBlockEntity(
+                BlockEntityTypes.BARREL, BlockPos.ZERO, Blocks.BARREL.defaultBlockState(), 5
+        );
+        assertEquals(5, be.getTier());
+        assertEquals(0L, be.getEnergyStorage().getStoredEnergy());
+        assertEquals(WirelessSolarReceiverBlockEntity.TIER5_CAPACITY, be.getEnergyStorage().getCapacity());
+        assertEquals(80.0, be.getCharger().getBaseRadius());
+        assertEquals(800L, be.getCharger().getBaseTransferRate());
+    }
+
+    @Test
     void shouldCalculateSolarHarvestingRates() {
         WirelessChargerComponent charger = new WirelessChargerComponent(1);
 

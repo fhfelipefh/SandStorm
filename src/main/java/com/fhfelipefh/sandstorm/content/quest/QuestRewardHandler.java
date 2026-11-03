@@ -92,7 +92,7 @@ public class QuestRewardHandler {
             return;
         }
         boolean prereqsMet = arePrerequisitesMet(player.getUUID(), quest, data);
-        boolean hasItem = hasRequiredItem(player, quest, data);
+        boolean hasItem = hasRequiredItem(player, quest, data) || data.isReadyToClaim(player.getUUID(), questId);
         SandStormMod.LOGGER.info("Quest claim check for {} (player {}): prereqsMet={}, hasItem={}",
                 questId, player.getName().getString(), prereqsMet, hasItem);
 
@@ -140,6 +140,7 @@ public class QuestRewardHandler {
     public static void syncPlayerQuests(ServerPlayer player, PlayerQuestSavedData data) {
         List<String> list = new ArrayList<>(data.getClaimedQuests(player.getUUID()));
         Set<String> conditions = new HashSet<>(data.getCompletedConditions(player.getUUID()));
+        List<String> readyList = new ArrayList<>(data.getReadyQuests(player.getUUID()));
         for (String tag : player.entityTags()) {
             if (tag.startsWith("sandstorm.")) {
                 conditions.add(tag);
@@ -151,7 +152,7 @@ public class QuestRewardHandler {
                 player.addTag(cond);
             }
         }
-        ServerPlayNetworking.send(player, new SyncPlayerQuestsPayload(list, new ArrayList<>(conditions)));
+        ServerPlayNetworking.send(player, new SyncPlayerQuestsPayload(list, new ArrayList<>(conditions), readyList));
     }
 
     public static boolean arePrerequisitesMet(UUID playerUuid, QuestData quest, PlayerQuestSavedData data) {
@@ -258,23 +259,25 @@ public class QuestRewardHandler {
         return false;
     }
 
-
     public static void checkPlayerNotifications(ServerPlayer player, PlayerQuestSavedData data) {
         UUID uuid = player.getUUID();
         Set<String> notified = NOTIFIED_CACHE.computeIfAbsent(uuid, k -> new HashSet<>());
         for (QuestData quest : QuestRegistry.getAllQuests().values()) {
             String qId = quest.id();
-            if (data.isClaimed(uuid, qId) || notified.contains(qId)) {
+            if (data.isClaimed(uuid, qId)) {
                 continue;
             }
-            if (arePrerequisitesMet(uuid, quest, data) && hasRequiredItem(player, quest)) {
-                notified.add(qId);
-                player.sendSystemMessage(
-                        Component.translatable("hud.sandstorm.quest_ready", Component.translatable(quest.titleKey())),
-                        true
-                );
-                player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7f, 1.2f);
-                break;
+            if (arePrerequisitesMet(uuid, quest, data) && hasRequiredItem(player, quest, data)) {
+                data.markReadyToClaim(uuid, qId);
+                if (!notified.contains(qId)) {
+                    notified.add(qId);
+                    player.sendSystemMessage(
+                            Component.translatable("hud.sandstorm.quest_ready", Component.translatable(quest.titleKey())),
+                            true
+                    );
+                    player.level().playSound(null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7f, 1.2f);
+                    break;
+                }
             }
         }
     }

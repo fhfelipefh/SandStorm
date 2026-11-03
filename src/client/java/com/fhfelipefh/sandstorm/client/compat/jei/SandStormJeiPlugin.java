@@ -5,7 +5,10 @@ import com.fhfelipefh.sandstorm.client.compat.jei.category.ChemicalRefineryCateg
 import com.fhfelipefh.sandstorm.client.compat.jei.category.DesalinationFilterCategory;
 import com.fhfelipefh.sandstorm.client.compat.jei.category.DewCondenserCategory;
 import com.fhfelipefh.sandstorm.client.compat.jei.category.HydroponicChamberCategory;
+import com.fhfelipefh.sandstorm.client.compat.jei.category.MaterialDeconstructorCategory;
 import com.fhfelipefh.sandstorm.client.compat.jei.category.MegastructureConstructorCategory;
+import com.fhfelipefh.sandstorm.client.gui.MaterialDeconstructorScreen;
+import com.fhfelipefh.sandstorm.content.gui.MaterialDeconstructorMenu;
 import com.fhfelipefh.sandstorm.client.compat.jei.category.MolecularModifierCategory;
 import com.fhfelipefh.sandstorm.client.compat.jei.category.NaniteFabricatorCategory;
 import com.fhfelipefh.sandstorm.client.compat.jei.category.Printer3DCategory;
@@ -60,7 +63,8 @@ public class SandStormJeiPlugin implements IModPlugin {
                 new MegastructureConstructorCategory(guiHelper),
                 new ChemicalRefineryCategory(guiHelper),
                 new HydroponicChamberCategory(guiHelper),
-                new DewCondenserCategory(guiHelper)
+                new DewCondenserCategory(guiHelper),
+                new MaterialDeconstructorCategory(guiHelper)
         );
     }
 
@@ -75,6 +79,7 @@ public class SandStormJeiPlugin implements IModPlugin {
         registration.addRecipes(SandStormJeiRecipeTypes.CHEMICAL_REFINERY, MachineRecipeRegistry.getRecipes("sandstorm:chemical_refinery"));
         registration.addRecipes(SandStormJeiRecipeTypes.HYDROPONIC_CHAMBER, MachineRecipeRegistry.getRecipes("sandstorm:hydroponic_chamber"));
         registration.addRecipes(SandStormJeiRecipeTypes.DEW_CONDENSER, MachineRecipeRegistry.getRecipes("sandstorm:dew_condenser"));
+        registration.addRecipes(SandStormJeiRecipeTypes.MATERIAL_DECONSTRUCTOR, MachineRecipeRegistry.getRecipes("sandstorm:material_deconstructor"));
     }
 
     @Override
@@ -88,6 +93,7 @@ public class SandStormJeiPlugin implements IModPlugin {
         registration.addCraftingStation(SandStormJeiRecipeTypes.CHEMICAL_REFINERY, SandStormBlocks.CHEMICAL_REFINERY);
         registration.addCraftingStation(SandStormJeiRecipeTypes.HYDROPONIC_CHAMBER, SandStormBlocks.HYDROPONIC_CHAMBER);
         registration.addCraftingStation(SandStormJeiRecipeTypes.DEW_CONDENSER, SandStormBlocks.DEW_CONDENSER);
+        registration.addCraftingStation(SandStormJeiRecipeTypes.MATERIAL_DECONSTRUCTOR, SandStormBlocks.MATERIAL_DECONSTRUCTOR);
 
         registration.addCraftingStation(RecipeTypes.SMELTING, SandStormBlocks.ELECTRIC_ARC_FURNACE);
         registration.addCraftingStation(RecipeTypes.BLASTING, SandStormBlocks.ELECTRIC_ARC_FURNACE);
@@ -104,12 +110,22 @@ public class SandStormJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(ChemicalRefineryScreen.class, 69, 38, 38, 14, SandStormJeiRecipeTypes.CHEMICAL_REFINERY);
         registration.addRecipeClickArea(HydroponicChamberScreen.class, 76, 24, 30, 40, SandStormJeiRecipeTypes.HYDROPONIC_CHAMBER);
         registration.addRecipeClickArea(DewCondenserScreen.class, 76, 42, 28, 5, SandStormJeiRecipeTypes.DEW_CONDENSER);
+        registration.addRecipeClickArea(MaterialDeconstructorScreen.class, 76, 35, 34, 16, SandStormJeiRecipeTypes.MATERIAL_DECONSTRUCTOR);
 
         registration.addRecipeClickArea(ElectricArcFurnaceScreen.class, 76, 30, 28, 16, RecipeTypes.SMELTING, RecipeTypes.BLASTING);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+        registration.addRecipeTransferHandler(
+                MaterialDeconstructorMenu.class,
+                SandStormMenus.MATERIAL_DECONSTRUCTOR_MENU,
+                SandStormJeiRecipeTypes.MATERIAL_DECONSTRUCTOR,
+                0,
+                1,
+                3,
+                36
+        );
         registration.addRecipeTransferHandler(
                 Printer3DMenu.class,
                 SandStormMenus.PRINTER_3D_MENU,

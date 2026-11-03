@@ -30,6 +30,7 @@ import com.fhfelipefh.sandstorm.content.network.EmpDeafenPayload;
 import com.fhfelipefh.sandstorm.content.network.MagneticInterferencePayload;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
+import com.fhfelipefh.sandstorm.content.network.SyncAnomalyRadarPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncTerminalGridPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncUplinkZonePayload;
@@ -86,6 +87,10 @@ public class SandStormMod implements ModInitializer {
         PayloadRegistryHelper.registerClientbound(
                 SyncPlayerQuestsPayload.TYPE,
                 SyncPlayerQuestsPayload.STREAM_CODEC
+        );
+        PayloadRegistryHelper.registerClientbound(
+                SyncAnomalyRadarPayload.TYPE,
+                SyncAnomalyRadarPayload.STREAM_CODEC
         );
         PayloadRegistryHelper.registerClientbound(
                 MagneticInterferencePayload.TYPE,

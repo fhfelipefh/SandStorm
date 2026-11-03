@@ -4,6 +4,9 @@ import com.fhfelipefh.sandstorm.content.recipe.MachineRecipe;
 import com.fhfelipefh.sandstorm.content.recipe.MachineRecipeRegistry;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.minecraft.SharedConstants;
+import net.minecraft.server.Bootstrap;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileReader;
@@ -16,6 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SandStormJeiPluginTest {
+
+    @BeforeAll
+    static void setup() {
+        SharedConstants.tryDetectVersion();
+        Bootstrap.bootStrap();
+    }
 
     @Test
     void fabricModJsonMustRegisterJeiPluginEntrypoint() throws IOException {
@@ -41,7 +50,8 @@ class SandStormJeiPluginTest {
                 "sandstorm:megastructure_constructor",
                 "sandstorm:chemical_refinery",
                 "sandstorm:hydroponic_chamber",
-                "sandstorm:dew_condenser"
+                "sandstorm:dew_condenser",
+                "sandstorm:material_deconstructor"
         );
 
         for (String machineId : machineIds) {

@@ -17,12 +17,19 @@ public record QuestData(
         List<String> prerequisiteIds,
         Identifier rewardItemId,
         int rewardCount,
-        String conditionTag
+        String conditionTag,
+        boolean nonBlocking
 ) {
     public QuestData(String id, int chapter, String titleKey, String taskKey, String noteKey,
                      Identifier iconId, Identifier requiredItemId, List<String> prerequisiteIds,
                      Identifier rewardItemId, int rewardCount) {
-        this(id, chapter, titleKey, taskKey, noteKey, iconId, requiredItemId, prerequisiteIds, rewardItemId, rewardCount, null);
+        this(id, chapter, titleKey, taskKey, noteKey, iconId, requiredItemId, prerequisiteIds, rewardItemId, rewardCount, null, false);
+    }
+
+    public QuestData(String id, int chapter, String titleKey, String taskKey, String noteKey,
+                     Identifier iconId, Identifier requiredItemId, List<String> prerequisiteIds,
+                     Identifier rewardItemId, int rewardCount, String conditionTag) {
+        this(id, chapter, titleKey, taskKey, noteKey, iconId, requiredItemId, prerequisiteIds, rewardItemId, rewardCount, conditionTag, false);
     }
 
     public boolean isConditionBased() {

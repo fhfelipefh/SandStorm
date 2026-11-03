@@ -8,6 +8,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.AutonomousSonicTurretBlockE
 import com.fhfelipefh.sandstorm.content.block.entity.CryogenicAtmosphericChillerBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CryostasisPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CryoRevivalVatBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.BasicThermalGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioRegenerationPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BioreactorVatBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.BiosphereDoorBlockEntity;
@@ -35,6 +36,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.StormWindTurbineBlockEntity
 import com.fhfelipefh.sandstorm.content.block.entity.KineticRailgunBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.KineticShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.LithoPlasmaExtractorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.MaterialDeconstructorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MolecularModifierBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.MorphingFluidTransitionBlockEntity;
@@ -315,6 +317,41 @@ public class SandStormBlocks {
                     .strength(4.5f)
                     .lightLevel(state -> 8)
                     .sound(SoundType.HEAVY_CORE), 2));
+    public static final WirelessSolarReceiverBlock WIRELESS_SOLAR_RECEIVER_TIER3 = register("wireless_solar_receiver_tier3",
+            new WirelessSolarReceiverBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("wireless_solar_receiver_tier3")))
+                    .mapColor(MapColor.GOLD)
+                    .strength(5.0f)
+                    .lightLevel(state -> 10)
+                    .sound(SoundType.HEAVY_CORE), 3));
+    public static final WirelessSolarReceiverBlock WIRELESS_SOLAR_RECEIVER_TIER4 = register("wireless_solar_receiver_tier4",
+            new WirelessSolarReceiverBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("wireless_solar_receiver_tier4")))
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(5.5f)
+                    .lightLevel(state -> 12)
+                    .sound(SoundType.HEAVY_CORE), 4));
+    public static final WirelessSolarReceiverBlock WIRELESS_SOLAR_RECEIVER_TIER5 = register("wireless_solar_receiver_tier5",
+            new WirelessSolarReceiverBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("wireless_solar_receiver_tier5")))
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(6.0f)
+                    .lightLevel(state -> 15)
+                    .sound(SoundType.NETHERITE_BLOCK), 5));
+    public static final BasicThermalGeneratorBlock BASIC_THERMAL_GENERATOR = register("basic_thermal_generator",
+            new BasicThermalGeneratorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("basic_thermal_generator")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(3.0f)
+                    .lightLevel(state -> state.getValue(BasicThermalGeneratorBlock.LIT) ? 12 : 0)
+                    .sound(SoundType.COPPER)));
+    public static final MaterialDeconstructorBlock MATERIAL_DECONSTRUCTOR = register("material_deconstructor",
+            new MaterialDeconstructorBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("material_deconstructor")))
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(4.0f)
+                    .lightLevel(state -> state.getValue(MaterialDeconstructorBlock.LIT) ? 10 : 0)
+                    .sound(SoundType.NETHERITE_BLOCK)));
     public static final ThermalGeneratorBlock THERMAL_GENERATOR = register("thermal_generator",
             new ThermalGeneratorBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("thermal_generator")))
@@ -1371,10 +1408,26 @@ public class SandStormBlocks {
             SandStormMod.id("thermal_generator"),
             new BlockEntityType<>(ThermalGeneratorBlockEntity::new, Set.of(THERMAL_GENERATOR))
     );
+    public static final BlockEntityType<BasicThermalGeneratorBlockEntity> BASIC_THERMAL_GENERATOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("basic_thermal_generator"),
+            new BlockEntityType<>(BasicThermalGeneratorBlockEntity::new, Set.of(BASIC_THERMAL_GENERATOR))
+    );
+    public static final BlockEntityType<MaterialDeconstructorBlockEntity> MATERIAL_DECONSTRUCTOR_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("material_deconstructor"),
+            new BlockEntityType<>(MaterialDeconstructorBlockEntity::new, Set.of(MATERIAL_DECONSTRUCTOR))
+    );
     public static final BlockEntityType<WirelessSolarReceiverBlockEntity> WIRELESS_SOLAR_RECEIVER_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("wireless_solar_receiver"),
-            new BlockEntityType<>(WirelessSolarReceiverBlockEntity::new, Set.of(WIRELESS_SOLAR_RECEIVER, WIRELESS_SOLAR_RECEIVER_TIER2))
+            new BlockEntityType<>(WirelessSolarReceiverBlockEntity::new, Set.of(
+                    WIRELESS_SOLAR_RECEIVER,
+                    WIRELESS_SOLAR_RECEIVER_TIER2,
+                    WIRELESS_SOLAR_RECEIVER_TIER3,
+                    WIRELESS_SOLAR_RECEIVER_TIER4,
+                    WIRELESS_SOLAR_RECEIVER_TIER5
+            ))
     );
     public static final BlockEntityType<ChemicalRefineryBlockEntity> CHEMICAL_REFINERY_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
@@ -1734,11 +1787,14 @@ public class SandStormBlocks {
         RustMigrationManager.initialize();
         WirelessSolarReceiverManager.initialize();
         ThermalGeneratorManager.initialize();
+        BasicThermalGeneratorManager.initialize();
         SupercriticalHeatExchangerManager.initialize();
         registerTransferApi();
     }
 
     private static void registerTransferApi() {
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, MATERIAL_DECONSTRUCTOR_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, BASIC_THERMAL_GENERATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, PRINTER_3D_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, NANITE_FABRICATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, DESALINATION_FILTER_BE);

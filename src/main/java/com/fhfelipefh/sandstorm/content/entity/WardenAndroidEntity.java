@@ -34,10 +34,12 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
@@ -205,15 +207,21 @@ public class WardenAndroidEntity extends PathfinderMob implements Enemy, Deactiv
     }
 
     private void executeEmpPulse(ServerLevel serverLevel) {
-        this.empCooldown = 200;
+        this.empCooldown = 360;
         serverLevel.playSound(null, this.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.HOSTILE, 2.0f, 1.2f);
         serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, this.getX(), this.getY() + 1.5, this.getZ(), 40, 3.0, 1.5, 3.0, 0.2);
 
         AABB empArea = this.getBoundingBox().inflate(12.0);
         List<Player> nearbyPlayers = serverLevel.getEntitiesOfClass(Player.class, empArea, LivingEntity::isAlive);
+        Vec3 eye = getEyePosition();
         for (Player player : nearbyPlayers) {
+            Vec3 pEye = player.getEyePosition();
+            HitResult hit = serverLevel.clip(new ClipContext(eye, pEye, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+            if (hit.getType() != HitResult.Type.MISS) {
+                continue;
+            }
             SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
-            suit.consumeEnergy(10000L);
+            suit.consumeEnergy(5000L);
             player.addEffect(new MobEffectInstance(MobEffects.GLOWING, 60, 0));
         }
     }

@@ -82,7 +82,11 @@ public class SuitPowerComponent {
             heatTransferRate = 0.05;
         } else {
             double insulation = calculateInsulationFactor();
-            heatTransferRate = (1.0 - Math.clamp(insulation, 0.0, 1.0)) * 0.0075 + 0.004;
+            heatTransferRate = (1.0 - Math.clamp(insulation, 0.0, 1.0)) * 0.015 + 0.008;
+            double current = thermal.getCurrentTemperature();
+            if (target > current) {
+                heatTransferRate = Math.max(heatTransferRate, 0.04);
+            }
         }
 
         double current = thermal.getCurrentTemperature();

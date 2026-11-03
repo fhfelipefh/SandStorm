@@ -95,6 +95,11 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             }
             return false;
         }
+        if ((in0.is(Items.COPPER_INGOT) && (in1.is(SandStormItems.SCRAP_METAL) || in1.is(SandStormItems.RAW_SILICON)))
+                || ((in0.is(SandStormItems.SCRAP_METAL) || in0.is(SandStormItems.RAW_SILICON)) && in1.is(Items.COPPER_INGOT))) {
+            ItemStack out = items.get(2);
+            return out.isEmpty() || (out.is(SandStormItems.COPPER_COIL) && out.getCount() < out.getMaxStackSize());
+        }
         return false;
     }
 
@@ -164,6 +169,16 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
                     out.grow(2);
                 }
             }
+        } else if ((in0.is(Items.COPPER_INGOT) && (in1.is(SandStormItems.SCRAP_METAL) || in1.is(SandStormItems.RAW_SILICON)))
+                || ((in0.is(SandStormItems.SCRAP_METAL) || in0.is(SandStormItems.RAW_SILICON)) && in1.is(Items.COPPER_INGOT))) {
+            in0.shrink(1);
+            in1.shrink(1);
+            ItemStack out = items.get(2);
+            if (out.isEmpty()) {
+                items.set(2, new ItemStack(SandStormItems.COPPER_COIL));
+            } else {
+                out.grow(1);
+            }
         }
     }
 
@@ -191,6 +206,7 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
     public ItemStack getPrintingItem() {
         if (this.isProcessing()) {
             ItemStack in0 = items.get(0);
+            ItemStack in1 = items.get(1);
             if (in0.is(SandStormItems.TITANIUM_CHITIN_COMPOSITE)) {
                 return new ItemStack(SandStormItems.HYPO_INJECTOR);
             }
@@ -202,6 +218,9 @@ public class Printer3DBlockEntity extends BaseMachineBlockEntity {
             }
             if (in0.is(Items.GLASS) || in0.is(Items.GLASS_PANE)) {
                 return new ItemStack(SandStormItems.FIBERGLASS);
+            }
+            if (in0.is(Items.COPPER_INGOT) || in1.is(Items.COPPER_INGOT)) {
+                return new ItemStack(SandStormItems.COPPER_COIL);
             }
             return new ItemStack(SandStormItems.CIRCUIT_BOARD);
         }

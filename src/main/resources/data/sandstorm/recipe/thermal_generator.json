@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "sandstorm:basic_thermal_generator",
+    "C": "sandstorm:circuit_board",
+    "F": "sandstorm:steel_furnace",
+    "I": "minecraft:iron_ingot",
+    "T": "sandstorm:thermal_radiator_fin"
+  },
+  "pattern": [
+    "ITI",
+    "CBC",
+    "IFI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:thermal_generator"
+  }
+}
+

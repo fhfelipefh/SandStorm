@@ -195,7 +195,7 @@ public class SurvivalDatapadScreen extends Screen {
 
             boolean isClaimed = DatapadClientHelper.isQuestClaimed(quest.id());
             boolean prereqsClaimed = arePrerequisitesClaimed(quest);
-            boolean hasItem = hasRequiredItem(player, quest);
+            boolean hasItem = hasRequiredItem(player, quest) || DatapadClientHelper.isQuestReady(quest.id());
             boolean isClaimable = !isClaimed && prereqsClaimed && hasItem;
             boolean isInProgress = !isClaimed && prereqsClaimed && !hasItem;
 
@@ -768,7 +768,7 @@ public class SurvivalDatapadScreen extends Screen {
         if (DatapadClientHelper.isQuestClaimed(quest.id())) {
             return false;
         }
-        return arePrerequisitesClaimed(quest) && hasRequiredItem(player, quest);
+        return arePrerequisitesClaimed(quest) && (hasRequiredItem(player, quest) || DatapadClientHelper.isQuestReady(quest.id()));
     }
 
     private boolean hasRequiredItem(Player player, QuestData quest) {
@@ -833,7 +833,7 @@ public class SurvivalDatapadScreen extends Screen {
             statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.prereqs_missing");
         } else if (quest.isConditionBased()) {
             statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.condition_missing");
-        } else if (!hasRequiredItem(player, quest)) {
+        } else if (!hasRequiredItem(player, quest) && !DatapadClientHelper.isQuestReady(quest.id())) {
             statusTooltip = Component.translatable("gui.sandstorm.datapad.tooltip.item_missing");
         } else {
             return;

@@ -30,7 +30,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -137,6 +139,10 @@ public class SuitSurvivalHandler {
         boolean underground = isOverworld && pos.getY() < 50;
 
         double ambientTemperature = calculateAmbientTemperature(player, pos.getY(), canSeeSky, isDay);
+        double localHeatBonus = calculateLocalHeatSourceBonus((ServerLevel) player.level(), pos);
+        if (localHeatBonus > 0.0) {
+            ambientTemperature = Math.max(ambientTemperature, Math.min(48.0, ambientTemperature + localHeatBonus));
+        }
         if (suitData.hasUpgrade(player.getUUID(), "thermal")) {
             ambientTemperature = 37.0 + (ambientTemperature - 37.0) * 0.5;
         }
@@ -154,6 +160,10 @@ public class SuitSurvivalHandler {
         }
 
         suit.tick(exposedToSunlight, ambientTemperature, underground, solarMultiplier);
+        if (player.isSprinting() && suit.getThermal().getCurrentTemperature() < 36.6) {
+            double cur = suit.getThermal().getCurrentTemperature();
+            suit.getThermal().setCurrentTemperature(Math.min(36.6, cur + 0.06));
+        }
         handleExoSuitChips(player, suit);
         if (insideSaltRoom && player.tickCount % 10 == 0 && suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity()) {
             suit.getEnergyStorage().receiveEnergy(1L);
@@ -317,6 +327,37 @@ public class SuitSurvivalHandler {
         return false;
     }
 
+    public static double calculateLocalHeatSourceBonus(ServerLevel level, BlockPos center) {
+        double maxBonus = 0.0;
+        int torchCount = 0;
+        for (BlockPos p : BlockPos.betweenClosed(center.offset(-4, -2, -4), center.offset(4, 2, 4))) {
+            BlockState state = level.getBlockState(p);
+            double distSq = center.distSqr(p);
+            if (state.is(Blocks.LAVA) || state.is(Blocks.LAVA_CAULDRON)) {
+                double bonus = (distSq <= 4.0) ? 38.0 : ((distSq <= 9.0) ? 26.0 : 16.0);
+                maxBonus = Math.max(maxBonus, bonus);
+            } else if (state.is(Blocks.CAMPFIRE) || state.is(Blocks.SOUL_CAMPFIRE) || state.is(Blocks.FIRE) || state.is(Blocks.SOUL_FIRE)) {
+                if (!state.hasProperty(BlockStateProperties.LIT) || state.getValue(BlockStateProperties.LIT)) {
+                    double bonus = (distSq <= 4.0) ? 24.0 : ((distSq <= 9.0) ? 16.0 : 10.0);
+                    maxBonus = Math.max(maxBonus, bonus);
+                }
+            } else if (state.is(Blocks.FURNACE) || state.is(Blocks.BLAST_FURNACE) || state.is(Blocks.SMOKER)
+                    || state.is(SandStormBlocks.SANDSTONE_FURNACE) || state.is(SandStormBlocks.ELECTRIC_ARC_FURNACE)) {
+                if (state.hasProperty(BlockStateProperties.LIT) && state.getValue(BlockStateProperties.LIT)) {
+                    double bonus = (distSq <= 4.0) ? 20.0 : ((distSq <= 9.0) ? 14.0 : 8.0);
+                    maxBonus = Math.max(maxBonus, bonus);
+                }
+            } else if (state.is(Blocks.TORCH) || state.is(Blocks.WALL_TORCH) || state.is(Blocks.SOUL_TORCH) || state.is(Blocks.SOUL_WALL_TORCH) || state.is(Blocks.LANTERN) || state.is(Blocks.SOUL_LANTERN)) {
+                torchCount++;
+            }
+        }
+        if (torchCount > 0) {
+            double torchBonus = Math.min(14.0, torchCount * 3.5);
+            maxBonus = Math.max(maxBonus, torchBonus);
+        }
+        return Math.min(45.0, maxBonus);
+    }
+
     public static SuitPowerComponent getOrCreateSuit(UUID playerUuid) {
         SuitPowerComponent suit = PLAYER_SUIT_MAP.get(playerUuid);
         if (suit == null) {
@@ -425,6 +466,8 @@ public class SuitSurvivalHandler {
         return false;
     }
 
+
+
     private static boolean consumePropellant(ServerPlayer player) {
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
@@ -439,6 +482,8 @@ public class SuitSurvivalHandler {
         }
         return false;
     }
+
+
 
     private static void handleJetpackFlight(ServerPlayer player) {
         if (player.isCreative() || player.isSpectator()) {

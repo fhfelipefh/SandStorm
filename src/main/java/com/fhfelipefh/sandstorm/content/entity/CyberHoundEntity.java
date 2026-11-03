@@ -40,6 +40,8 @@ import net.minecraft.world.phys.AABB;
 
 public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndroid {
     private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_REPAIR_PROGRESS = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_REPAIR_REQUIRED = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.INT);
 
     private int alertCooldown = 0;
 
@@ -61,6 +63,8 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_DEACTIVATED, false);
+        builder.define(DATA_REPAIR_PROGRESS, 0);
+        builder.define(DATA_REPAIR_REQUIRED, 2);
     }
 
     @Override
@@ -107,11 +111,44 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (this.isDeactivated()) {
-            return InteractionResult.PASS;
-        }
         ItemStack itemStack = player.getItemInHand(hand);
         Level currentLevel = this.level();
+
+        if (this.isDeactivated()) {
+            if (itemStack.is(SandStormItems.SCRAP_METAL)) {
+                if (!player.isCreative()) {
+                    itemStack.shrink(1);
+                }
+                int req = Math.max(1, this.entityData.get(DATA_REPAIR_REQUIRED));
+                int prog = this.entityData.get(DATA_REPAIR_PROGRESS) + 1;
+                this.entityData.set(DATA_REPAIR_PROGRESS, prog);
+
+                if (currentLevel instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                            this.getX(), this.getY() + 0.4, this.getZ(),
+                            20, 0.25, 0.25, 0.25, 0.08);
+                    serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                            SoundEvents.IRON_GOLEM_REPAIR, this.getSoundSource(), 1.0f, 1.2f);
+                }
+
+                if (prog >= req) {
+                    this.setDeactivated(false);
+                    this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30.0);
+                    this.setHealth(30.0f);
+                    this.tame(player);
+                    this.setOrderedToSit(false);
+                    if (currentLevel instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                                this.getX(), this.getY() + 0.6, this.getZ(),
+                                25, 0.4, 0.4, 0.4, 0.1);
+                        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                SoundEvents.BEACON_ACTIVATE, this.getSoundSource(), 1.0f, 1.4f);
+                    }
+                }
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        }
 
         if (this.isTame()) {
             if (this.isOwnedBy(player)) {
@@ -233,6 +270,8 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
         super.addAdditionalSaveData(output);
         output.putInt("AlertCooldown", this.alertCooldown);
         output.putBoolean("Deactivated", this.isDeactivated());
+        output.putInt("RepairProgress", this.entityData.get(DATA_REPAIR_PROGRESS));
+        output.putInt("RepairRequired", this.entityData.get(DATA_REPAIR_REQUIRED));
     }
 
     @Override
@@ -240,5 +279,7 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
         super.readAdditionalSaveData(input);
         this.alertCooldown = input.getIntOr("AlertCooldown", 0);
         this.setDeactivated(input.getBooleanOr("Deactivated", false));
+        this.entityData.set(DATA_REPAIR_PROGRESS, input.getIntOr("RepairProgress", 0));
+        this.entityData.set(DATA_REPAIR_REQUIRED, input.getIntOr("RepairRequired", 2));
     }
 }

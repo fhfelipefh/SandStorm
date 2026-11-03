@@ -22,10 +22,49 @@ import net.minecraft.world.level.storage.ValueOutput;
 public class WirelessSolarReceiverBlockEntity extends BlockEntity {
     public static final long TIER1_CAPACITY = 50000L;
     public static final long TIER2_CAPACITY = 100000L;
+    public static final long TIER3_CAPACITY = 250000L;
+    public static final long TIER4_CAPACITY = 500000L;
+    public static final long TIER5_CAPACITY = 1000000L;
     public static final long TIER1_MAX_RECEIVE = 50L;
     public static final long TIER2_MAX_RECEIVE = 100L;
+    public static final long TIER3_MAX_RECEIVE = 200L;
+    public static final long TIER4_MAX_RECEIVE = 400L;
+    public static final long TIER5_MAX_RECEIVE = 800L;
     public static final long TIER1_MAX_EXTRACT = 500L;
     public static final long TIER2_MAX_EXTRACT = 1000L;
+    public static final long TIER3_MAX_EXTRACT = 2500L;
+    public static final long TIER4_MAX_EXTRACT = 5000L;
+    public static final long TIER5_MAX_EXTRACT = 10000L;
+
+    public static long getCapacityForTier(int tier) {
+        return switch (tier) {
+            case 1 -> TIER1_CAPACITY;
+            case 2 -> TIER2_CAPACITY;
+            case 3 -> TIER3_CAPACITY;
+            case 4 -> TIER4_CAPACITY;
+            default -> TIER5_CAPACITY;
+        };
+    }
+
+    public static long getMaxReceiveForTier(int tier) {
+        return switch (tier) {
+            case 1 -> TIER1_MAX_RECEIVE;
+            case 2 -> TIER2_MAX_RECEIVE;
+            case 3 -> TIER3_MAX_RECEIVE;
+            case 4 -> TIER4_MAX_RECEIVE;
+            default -> TIER5_MAX_RECEIVE;
+        };
+    }
+
+    public static long getMaxExtractForTier(int tier) {
+        return switch (tier) {
+            case 1 -> TIER1_MAX_EXTRACT;
+            case 2 -> TIER2_MAX_EXTRACT;
+            case 3 -> TIER3_MAX_EXTRACT;
+            case 4 -> TIER4_MAX_EXTRACT;
+            default -> TIER5_MAX_EXTRACT;
+        };
+    }
 
     private int tier;
     private WirelessChargerComponent charger;
@@ -40,9 +79,9 @@ public class WirelessSolarReceiverBlockEntity extends BlockEntity {
         super(type, pos, state);
         this.tier = Math.max(1, tier);
         this.charger = new WirelessChargerComponent(this.tier);
-        long capacity = this.tier >= 2 ? TIER2_CAPACITY : TIER1_CAPACITY;
-        long maxReceive = this.tier >= 2 ? TIER2_MAX_RECEIVE : TIER1_MAX_RECEIVE;
-        long maxExtract = this.tier >= 2 ? TIER2_MAX_EXTRACT : TIER1_MAX_EXTRACT;
+        long capacity = getCapacityForTier(this.tier);
+        long maxReceive = getMaxReceiveForTier(this.tier);
+        long maxExtract = getMaxExtractForTier(this.tier);
         this.energyStorage = new EnergyStorageComponent(capacity, maxReceive, maxExtract);
     }
 
@@ -110,9 +149,9 @@ public class WirelessSolarReceiverBlockEntity extends BlockEntity {
         super.loadAdditional(input);
         this.tier = input.getIntOr("tier", this.tier);
         this.charger = new WirelessChargerComponent(this.tier);
-        long capacity = this.tier >= 2 ? TIER2_CAPACITY : TIER1_CAPACITY;
-        long maxReceive = this.tier >= 2 ? TIER2_MAX_RECEIVE : TIER1_MAX_RECEIVE;
-        long maxExtract = this.tier >= 2 ? TIER2_MAX_EXTRACT : TIER1_MAX_EXTRACT;
+        long capacity = getCapacityForTier(this.tier);
+        long maxReceive = getMaxReceiveForTier(this.tier);
+        long maxExtract = getMaxExtractForTier(this.tier);
         this.energyStorage = new EnergyStorageComponent(capacity, maxReceive, maxExtract);
         this.energyStorage.setStoredEnergy(input.getLongOr("storedEnergy", 0L));
         this.hasRefractionLens = input.getBooleanOr("hasRefractionLens", false);

@@ -8,7 +8,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import java.util.ArrayList;
 import java.util.List;
 
-public record SyncPlayerQuestsPayload(List<String> claimedQuestIds, List<String> completedConditions) implements CustomPacketPayload {
+public record SyncPlayerQuestsPayload(List<String> claimedQuestIds, List<String> completedConditions, List<String> readyQuestIds) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<SyncPlayerQuestsPayload> TYPE = new CustomPacketPayload.Type<>(SandStormMod.id("sync_player_quests"));
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncPlayerQuestsPayload> STREAM_CODEC = StreamCodec.of(
             (buf, payload) -> {
@@ -19,6 +19,10 @@ public record SyncPlayerQuestsPayload(List<String> claimedQuestIds, List<String>
                 buf.writeInt(payload.completedConditions().size());
                 for (String cond : payload.completedConditions()) {
                     buf.writeUtf(cond);
+                }
+                buf.writeInt(payload.readyQuestIds().size());
+                for (String r : payload.readyQuestIds()) {
+                    buf.writeUtf(r);
                 }
             },
             buf -> {
@@ -32,12 +36,21 @@ public record SyncPlayerQuestsPayload(List<String> claimedQuestIds, List<String>
                 for (int i = 0; i < condCount; i++) {
                     condList.add(buf.readUtf());
                 }
-                return new SyncPlayerQuestsPayload(list, condList);
+                int readyCount = buf.readInt();
+                List<String> readyList = new ArrayList<>(readyCount);
+                for (int i = 0; i < readyCount; i++) {
+                    readyList.add(buf.readUtf());
+                }
+                return new SyncPlayerQuestsPayload(list, condList, readyList);
             }
     );
 
+    public SyncPlayerQuestsPayload(List<String> claimedQuestIds, List<String> completedConditions) {
+        this(claimedQuestIds, completedConditions, List.of());
+    }
+
     public SyncPlayerQuestsPayload(List<String> claimedQuestIds) {
-        this(claimedQuestIds, List.of());
+        this(claimedQuestIds, List.of(), List.of());
     }
 
     @Override

@@ -20,15 +20,20 @@ import java.util.UUID;
 
 public class PlayerQuestSavedData extends SavedData {
 
-    public record Entry(UUID uuid, List<String> claimed, List<String> conditions) {
+    public record Entry(UUID uuid, List<String> claimed, List<String> conditions, List<String> ready) {
         public Entry(UUID uuid, List<String> claimed) {
-            this(uuid, claimed, List.of());
+            this(uuid, claimed, List.of(), List.of());
+        }
+
+        public Entry(UUID uuid, List<String> claimed, List<String> conditions) {
+            this(uuid, claimed, conditions, List.of());
         }
 
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.STRING.xmap(UUID::fromString, UUID::toString).fieldOf("uuid").forGetter(Entry::uuid),
                 Codec.STRING.listOf().optionalFieldOf("claimed", List.of()).forGetter(Entry::claimed),
-                Codec.STRING.listOf().optionalFieldOf("conditions", List.of()).forGetter(Entry::conditions)
+                Codec.STRING.listOf().optionalFieldOf("conditions", List.of()).forGetter(Entry::conditions),
+                Codec.STRING.listOf().optionalFieldOf("ready", List.of()).forGetter(Entry::ready)
         ).apply(instance, Entry::new));
     }
 
@@ -45,6 +50,7 @@ public class PlayerQuestSavedData extends SavedData {
 
     private final Map<UUID, Set<String>> claimedMap = new HashMap<>();
     private final Map<UUID, Set<String>> completedConditionsMap = new HashMap<>();
+    private final Map<UUID, Set<String>> readyToClaimMap = new HashMap<>();
 
     public PlayerQuestSavedData() {
     }
@@ -54,6 +60,7 @@ public class PlayerQuestSavedData extends SavedData {
         for (Entry entry : entries) {
             data.claimedMap.put(entry.uuid(), new HashSet<>(entry.claimed()));
             data.completedConditionsMap.put(entry.uuid(), new HashSet<>(entry.conditions()));
+            data.readyToClaimMap.put(entry.uuid(), new HashSet<>(entry.ready()));
         }
         return data;
     }
@@ -61,11 +68,13 @@ public class PlayerQuestSavedData extends SavedData {
     public List<Entry> getEntries() {
         Set<UUID> allUuids = new HashSet<>(claimedMap.keySet());
         allUuids.addAll(completedConditionsMap.keySet());
+        allUuids.addAll(readyToClaimMap.keySet());
         List<Entry> entries = new ArrayList<>();
         for (UUID uuid : allUuids) {
             Set<String> claimed = claimedMap.getOrDefault(uuid, Set.of());
             Set<String> conditions = completedConditionsMap.getOrDefault(uuid, Set.of());
-            entries.add(new Entry(uuid, new ArrayList<>(claimed), new ArrayList<>(conditions)));
+            Set<String> ready = readyToClaimMap.getOrDefault(uuid, Set.of());
+            entries.add(new Entry(uuid, new ArrayList<>(claimed), new ArrayList<>(conditions), new ArrayList<>(ready)));
         }
         return entries;
     }
@@ -86,6 +95,25 @@ public class PlayerQuestSavedData extends SavedData {
 
     public Set<String> getClaimedQuests(UUID playerUuid) {
         Set<String> set = claimedMap.get(playerUuid);
+        return set != null ? Collections.unmodifiableSet(set) : Set.of();
+    }
+
+    public boolean isReadyToClaim(UUID playerUuid, String questId) {
+        Set<String> set = readyToClaimMap.get(playerUuid);
+        return set != null && set.contains(questId);
+    }
+
+    public boolean markReadyToClaim(UUID playerUuid, String questId) {
+        Set<String> set = readyToClaimMap.computeIfAbsent(playerUuid, k -> new HashSet<>());
+        boolean added = set.add(questId);
+        if (added) {
+            setDirty();
+        }
+        return added;
+    }
+
+    public Set<String> getReadyQuests(UUID playerUuid) {
+        Set<String> set = readyToClaimMap.get(playerUuid);
         return set != null ? Collections.unmodifiableSet(set) : Set.of();
     }
 

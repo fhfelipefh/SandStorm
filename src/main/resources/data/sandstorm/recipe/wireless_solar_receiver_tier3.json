@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "G": "minecraft:gold_ingot",
+    "P": "sandstorm:piezo_quartz_shard",
+    "R": "sandstorm:wireless_solar_receiver_tier2",
+    "W": "sandstorm:silicon_wafer"
+  },
+  "pattern": [
+    "GWG",
+    "PRP",
+    "GCG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:wireless_solar_receiver_tier3"
+  }
+}

@@ -45,7 +45,10 @@ public class SandStormItems {
     public static final Item RAW_SILICON = register("raw_silicon", new Item(properties("raw_silicon")));
     public static final Item TOOL_BASE = register("tool_base", new Item(properties("tool_base")));
     public static final Item ELECTRIC_COMPONENT = register("electric_component", new Item(properties("electric_component").rarity(Rarity.UNCOMMON)));
+    public static final Item COPPER_COIL = register("copper_coil", new Item(properties("copper_coil").rarity(Rarity.UNCOMMON)));
     public static final Item SILICON_PICKAXE = register("silicon_pickaxe", new Item(properties("silicon_pickaxe").pickaxe(ToolMaterial.IRON, 1.0f, -2.8f).rarity(Rarity.UNCOMMON)));
+    public static final Item SILICON_SHOVEL = register("silicon_shovel", new Item(properties("silicon_shovel").shovel(ToolMaterial.IRON, 1.5f, -3.0f).rarity(Rarity.UNCOMMON)));
+    public static final Item SILICON_SWORD = register("silicon_sword", new Item(properties("silicon_sword").sword(ToolMaterial.IRON, 3.0f, -2.4f).rarity(Rarity.UNCOMMON)));
     public static final Item SILICON_WAFER = register("silicon_wafer", new Item(properties("silicon_wafer")));
     public static final Item MINERAL_SALT = register("mineral_salt", new Item(properties("mineral_salt")));
     public static final PotableWaterBottleItem POTABLE_WATER_BOTTLE = register("potable_water_bottle", new PotableWaterBottleItem(properties("potable_water_bottle")));
@@ -288,7 +291,10 @@ public class SandStormItems {
                         entries.accept(RAW_SILICON);
                         entries.accept(TOOL_BASE);
                         entries.accept(ELECTRIC_COMPONENT);
+                        entries.accept(COPPER_COIL);
                         entries.accept(SILICON_PICKAXE);
+                        entries.accept(SILICON_SHOVEL);
+                        entries.accept(SILICON_SWORD);
                         entries.accept(SILICON_WAFER);
                         entries.accept(CIRCUIT_BOARD);
                         entries.accept(NANO_ACTUATOR);
@@ -332,6 +338,11 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.ATMOSPHERIC_TERRAFORMER);
                         entries.accept(SandStormBlocks.WIRELESS_SOLAR_RECEIVER);
                         entries.accept(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2);
+                        entries.accept(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER3);
+                        entries.accept(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER4);
+                        entries.accept(SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER5);
+                        entries.accept(SandStormBlocks.BASIC_THERMAL_GENERATOR);
+                        entries.accept(SandStormBlocks.MATERIAL_DECONSTRUCTOR);
                         entries.accept(SandStormBlocks.THERMAL_GENERATOR);
                         entries.accept(SandStormBlocks.WPT_RELAY_TOWER);
                         entries.accept(SandStormBlocks.SOLID_STATE_ACCUMULATOR);

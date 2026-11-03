@@ -153,6 +153,12 @@ public class TechnicalSpecificationRegistry {
                 .add(Component.translatable("tooltip.sandstorm.tech.function_thermal_gen"))
                 .build());
 
+        register(SandStormBlocks.BASIC_THERMAL_GENERATOR, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.energy_generation", 16))
+                .add(Component.translatable("tooltip.sandstorm.tech.network_wpt_basic"))
+                .add(Component.translatable("tooltip.sandstorm.tech.function_basic_thermal_gen"))
+                .build());
+
         register(SandStormBlocks.SOLID_STATE_ACCUMULATOR, TechnicalSpecEntry.builder()
                 .add(Component.translatable("tooltip.sandstorm.tech.energy_capacity", "1.000.000"))
                 .add(Component.translatable("tooltip.sandstorm.tech.energy_transfer", 500))
@@ -287,6 +293,154 @@ public class TechnicalSpecificationRegistry {
         register(SandStormItems.SUBSPACE_WARP_CORE, TechnicalSpecEntry.builder()
                 .add(Component.translatable("tooltip.sandstorm.tech.subspace_warp_core_lore"))
                 .add(Component.translatable("tooltip.sandstorm.tech.subspace_warp_core_function"))
+                .build());
+
+        register(SandStormItems.SUIT_UPGRADE_BATTERY, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_suit_chestplate"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_suit_battery"))
+                .build());
+        register(SandStormItems.SUIT_UPGRADE_THERMAL, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_suit_leggings"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_suit_thermal"))
+                .build());
+        register(SandStormItems.SUIT_UPGRADE_SEISMIC, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_suit_boots"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_suit_seismic"))
+                .build());
+        register(SandStormItems.SUIT_UPGRADE_VISOR, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_suit_helmet"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_suit_visor"))
+                .build());
+        register(SandStormItems.SUIT_UPGRADE_JETPACK, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_suit_chestplate"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_suit_jetpack"))
+                .build());
+
+        register(SandStormItems.COPPER_COIL, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_component"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_copper_coil"))
+                .build());
+
+        register(SandStormItems.STEED_UPGRADE_BATTERY, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_steed"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_steed_battery"))
+                .build());
+        register(SandStormItems.STEED_UPGRADE_SPEED, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_steed"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_steed_speed"))
+                .build());
+        register(SandStormItems.STEED_UPGRADE_CARGO, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_steed"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_steed_cargo"))
+                .build());
+        register(SandStormItems.STEED_UPGRADE_SONIC_TURRET, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_steed"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_steed_turret"))
+                .build());
+
+        register(SandStormItems.MEGAZORD_FLIGHT_MODULE, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_megazord"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_megazord_flight"))
+                .build());
+        register(SandStormItems.MEGAZORD_SUBMERSIBLE_HULL, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_megazord"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_megazord_sub"))
+                .build());
+        register(SandStormItems.MEGAZORD_TACTICAL_OVERDRIVE, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_megazord"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_megazord_overdrive"))
+                .build());
+
+        register(SandStormItems.PIEZO_HOVER_THRUSTER, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_cyborg"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_piezo_thruster"))
+                .build());
+        register(SandStormItems.CYBERNETIC_COMMAND_UPLINK, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_cyborg"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_command_uplink"))
+                .build());
+        register(SandStormItems.NEURAL_SYNAPSE_LINK, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_cyborg"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_neural_synapse"))
+                .build());
+
+        register(SandStormItems.VIBRO_RESONATOR_MODULE, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_tool"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_vibro_resonator"))
+                .build());
+        register(SandStormItems.THERMAL_PLASMA_EMITTER, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_tool"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_thermal_plasma"))
+                .build());
+        register(SandStormItems.KINETIC_FOCUS_MODULE, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_tool"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_kinetic_focus"))
+                .build());
+        register(SandStormItems.CAVITATION_FREQUENCY_CORE, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_tool"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_cavitation_core"))
+                .build());
+        register(SandStormItems.ATOMIC_PHASE_DISRUPTER, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_tool"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_atomic_disrupter"))
+                .build());
+        register(SandStormItems.SPECTROMETRIC_SIFTER, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_tool"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_spectrometric_sifter"))
+                .build());
+
+        register(SandStormItems.SELF_HEALING_NANITE_MATRIX, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_armor"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_self_healing_matrix"))
+                .build());
+        register(SandStormItems.TITANIUM_LATTICE_COATING, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_armor"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_titanium_lattice"))
+                .build());
+        register(SandStormItems.BALLISTIC_DAMPENER_MESH, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_armor"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_ballistic_dampener"))
+                .build());
+        register(SandStormItems.ABLATIVE_THERMAL_PLATING, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_armor"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_ablative_plating"))
+                .build());
+        register(SandStormItems.PNEUMATIC_FALL_DAMPERS, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_armor"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_fall_dampers"))
+                .build());
+        register(SandStormItems.REACTIVE_SHOCK_PLATING, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_molecular_armor"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_reactive_shock"))
+                .build());
+
+        register(SandStormItems.BIOSPHERE_CARTRIDGE_PLAINS, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_terraformer"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_biosphere_plains"))
+                .build());
+        register(SandStormItems.BIOSPHERE_CARTRIDGE_FOREST, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_terraformer"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_biosphere_forest"))
+                .build());
+        register(SandStormItems.BIOSPHERE_CARTRIDGE_JUNGLE, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_terraformer"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_biosphere_jungle"))
+                .build());
+        register(SandStormItems.BIOSPHERE_CARTRIDGE_CRYO, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_terraformer"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_biosphere_cryo"))
+                .build());
+        register(SandStormItems.BIOSPHERE_CARTRIDGE_FUNGAL, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_terraformer"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_biosphere_fungal"))
+                .build());
+        register(SandStormItems.BIOSPHERE_CARTRIDGE_MAGNETIC, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_terraformer"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_biosphere_magnetic"))
+                .build());
+        register(SandStormItems.BIOSPHERE_CARTRIDGE_OASIS, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_terraformer"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_biosphere_oasis"))
                 .build());
     }
 }

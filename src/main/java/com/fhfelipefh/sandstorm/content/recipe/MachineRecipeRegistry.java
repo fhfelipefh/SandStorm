@@ -9,7 +9,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.WeatheringCopperCollection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,7 @@ public class MachineRecipeRegistry {
         registerChemicalRefineryRecipes();
         registerHydroponicChamberRecipes();
         registerDewCondenserRecipes();
+        registerMaterialDeconstructorRecipes();
     }
 
     private static void registerDesalinationFilterRecipes() {
@@ -129,6 +133,13 @@ public class MachineRecipeRegistry {
                         List.of(() -> new ItemStack(SandStormItems.FIBERGLASS)),
                         120,
                         80
+                ),
+                new MachineRecipe(
+                        () -> new ItemStack(SandStormItems.COPPER_COIL),
+                        List.of(() -> new ItemStack(Items.COPPER_INGOT)),
+                        List.of(() -> new ItemStack(SandStormItems.SCRAP_METAL), () -> new ItemStack(SandStormItems.RAW_SILICON)),
+                        150,
+                        100
                 )
         );
         RECIPES.put("sandstorm:printer_3d", Collections.unmodifiableList(list));
@@ -474,7 +485,46 @@ public class MachineRecipeRegistry {
         return stack;
     }
 
+    private static void registerMaterialDeconstructorRecipes() {
+        List<MachineRecipe> list = new ArrayList<>();
+        for (WeatheringCopperCollection<Item> copperColl : List.of(
+                Items.CUT_COPPER, Items.CHISELED_COPPER, Items.COPPER_GRATE, Items.COPPER_BULB, Items.CUT_COPPER_STAIRS
+        )) {
+            for (Item copperItem : copperColl.asList()) {
+                list.add(new MachineRecipe(() -> new ItemStack(Items.COPPER_INGOT), List.of(() -> new ItemStack(copperItem)), List.of(), 20, 50));
+            }
+        }
+        list.add(new MachineRecipe(() -> new ItemStack(Items.SANDSTONE), List.of(() -> new ItemStack(Items.CUT_SANDSTONE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.SANDSTONE), List.of(() -> new ItemStack(Items.CHISELED_SANDSTONE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.SANDSTONE), List.of(() -> new ItemStack(Items.SMOOTH_SANDSTONE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.RED_SANDSTONE), List.of(() -> new ItemStack(Items.CUT_RED_SANDSTONE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.RED_SANDSTONE), List.of(() -> new ItemStack(Items.CHISELED_RED_SANDSTONE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.RED_SANDSTONE), List.of(() -> new ItemStack(Items.SMOOTH_RED_SANDSTONE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.COBBLED_DEEPSLATE), List.of(() -> new ItemStack(Items.POLISHED_DEEPSLATE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.COBBLED_DEEPSLATE), List.of(() -> new ItemStack(Items.DEEPSLATE_BRICKS)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.COBBLED_DEEPSLATE), List.of(() -> new ItemStack(Items.DEEPSLATE_TILES)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.COBBLED_DEEPSLATE), List.of(() -> new ItemStack(Items.CHISELED_DEEPSLATE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.QUARTZ, 4), List.of(() -> new ItemStack(Items.QUARTZ_BLOCK)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.QUARTZ, 4), List.of(() -> new ItemStack(Items.CHISELED_QUARTZ_BLOCK)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.QUARTZ, 4), List.of(() -> new ItemStack(Items.QUARTZ_PILLAR)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.QUARTZ, 4), List.of(() -> new ItemStack(Items.QUARTZ_BRICKS)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.STONE), List.of(() -> new ItemStack(Items.SMOOTH_STONE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.STONE), List.of(() -> new ItemStack(Items.STONE_BRICKS)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.STONE), List.of(() -> new ItemStack(Items.CHISELED_STONE_BRICKS)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.STONE), List.of(() -> new ItemStack(Items.CRACKED_STONE_BRICKS)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.GRANITE), List.of(() -> new ItemStack(Items.POLISHED_GRANITE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.DIORITE), List.of(() -> new ItemStack(Items.POLISHED_DIORITE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.ANDESITE), List.of(() -> new ItemStack(Items.POLISHED_ANDESITE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.BLACKSTONE), List.of(() -> new ItemStack(Items.POLISHED_BLACKSTONE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.BLACKSTONE), List.of(() -> new ItemStack(Items.POLISHED_BLACKSTONE_BRICKS)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(Items.BLACKSTONE), List.of(() -> new ItemStack(Items.CHISELED_POLISHED_BLACKSTONE)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(SandStormItems.MINERAL_SALT, 4), List.of(() -> new ItemStack(SandStormBlocks.SALT_BRICKS)), List.of(), 20, 50));
+        list.add(new MachineRecipe(() -> new ItemStack(SandStormItems.FIBERGLASS), List.of(() -> new ItemStack(SandStormBlocks.FIBERGLASS_CORRUGATED_SHEET)), List.of(), 20, 50));
+        RECIPES.put("sandstorm:material_deconstructor", Collections.unmodifiableList(list));
+    }
+
     public static List<MachineRecipe> getRecipes(String machineId) {
-        return RECIPES.getOrDefault(machineId, Collections.emptyList());
+        String key = machineId.contains(":") ? machineId : "sandstorm:" + machineId;
+        return RECIPES.getOrDefault(key, Collections.emptyList());
     }
 }
