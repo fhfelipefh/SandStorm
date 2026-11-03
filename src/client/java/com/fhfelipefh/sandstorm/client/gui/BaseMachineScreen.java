@@ -413,7 +413,7 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
                     extractor.setTooltipForNextFrame(this.font, out.getHoverName(), mouseX, mouseY);
                 }
             } else if (mouseX >= infoX && mouseX <= cx + cw && mouseY >= cy + 15 && mouseY <= cy + 35) {
-                Component costTooltip = Component.literal("§bEnergia: " + recipe.getEnergyCost() + " J (" + recipe.getProcessTicks() + " ticks)");
+                Component costTooltip = Component.translatable("gui.sandstorm.machine.cost_tooltip", recipe.getEnergyCost(), recipe.getProcessTicks());
                 extractor.setTooltipForNextFrame(this.font, costTooltip, mouseX, mouseY);
             }
         }
@@ -525,26 +525,27 @@ public abstract class BaseMachineScreen<T extends AbstractContainerMenu & Machin
         if (mouseX >= x + 7 && mouseX <= x + 25 && mouseY >= y + 18 && mouseY <= y + 46) {
             String energy = formatCompact(this.menu.getEnergy());
             String maxEnergy = formatCompact(this.menu.getMaxEnergy());
-            String wptStatus = this.menu.isWptConnected()
-                    ? "§a⚡ WPT Ativa"
-                    : "§c⚡ Sem WPT";
-            Component tooltip = Component.literal("§b" + energy + " / " + maxEnergy + " J " + wptStatus);
+            Component wptStatus = this.menu.isWptConnected()
+                    ? Component.translatable("gui.sandstorm.machine.wpt_active")
+                    : Component.translatable("gui.sandstorm.machine.wpt_inactive");
+            Component tooltip = Component.literal("§b" + energy + " / " + maxEnergy + " J ").append(wptStatus);
             extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
         } else if (mouseX >= x + 8 && mouseX <= x + 22 && mouseY >= y + 4 && mouseY <= y + 16) {
-            String wptStatus = this.menu.isWptConnected()
-                    ? "§aWPT Online"
-                    : "§7WPT Offline";
-            Component tooltip = Component.literal(wptStatus);
-            extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
+            Component wptStatus = this.menu.isWptConnected()
+                    ? Component.translatable("gui.sandstorm.machine.wpt_online")
+                    : Component.translatable("gui.sandstorm.machine.wpt_offline");
+            extractor.setTooltipForNextFrame(this.font, wptStatus, mouseX, mouseY);
         } else if (isMouseOverProgress(mouseX, mouseY, x, y)) {
             int maxProg = this.menu.getMaxProgress();
             int pct = maxProg > 0 ? (this.menu.getProgress() * 100 / maxProg) : 0;
-            String status = this.menu.isProcessing() ? " §a[PROCESSANDO]" : " §7[EM ESPERA]";
+            Component status = this.menu.isProcessing()
+                    ? Component.translatable("gui.sandstorm.machine.status_processing")
+                    : Component.translatable("gui.sandstorm.machine.status_idle");
             if (!this.menu.isProcessing() && hasOutputReady()) {
                 pct = 100;
-                status = " §a[PRONTO]";
+                status = Component.translatable("gui.sandstorm.machine.status_ready");
             }
-            Component tooltip = Component.literal("§bProgresso: §f" + pct + "%" + status);
+            Component tooltip = Component.translatable("gui.sandstorm.machine.progress", pct, status);
             extractor.setTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
         } else if (mouseX >= x + 7 && mouseX <= x + 25 && mouseY >= y + 47 && mouseY <= y + 65) {
             boolean hasBatterySlot = this.menu.slots.stream().anyMatch(s -> s.x == 8 && s.y == 53);

@@ -269,7 +269,7 @@ public class SandStormClient implements ClientModInitializer {
                         playFlashlightSound(client, newMode);
                         client.player.sendOverlayMessage(getFlashlightFeedbackMessage(newMode));
                     } else {
-                        client.player.sendOverlayMessage(Component.literal("§c[Lanterna] Requer Capacete do Traje Espacial!"));
+                        client.player.sendOverlayMessage(Component.translatable("message.sandstorm.flashlight.require_helmet"));
                     }
                 }
             }
@@ -416,10 +416,10 @@ public class SandStormClient implements ClientModInitializer {
 
     private static Component getFlashlightFeedbackMessage(int mode) {
         return switch (mode) {
-            case FlashlightState.MODE_LOW -> Component.literal("§6[Lanterna] §fModo: §aFraco §7(1x Consumo)");
-            case FlashlightState.MODE_MEDIUM -> Component.literal("§6[Lanterna] §fModo: §eMédio §7(2x Consumo)");
-            case FlashlightState.MODE_HIGH -> Component.literal("§6[Lanterna] §fModo: §bForte §7(4x Consumo)");
-            default -> Component.literal("§6[Lanterna] §7Desligada");
+            case FlashlightState.MODE_LOW -> Component.translatable("message.sandstorm.flashlight.low");
+            case FlashlightState.MODE_MEDIUM -> Component.translatable("message.sandstorm.flashlight.medium");
+            case FlashlightState.MODE_HIGH -> Component.translatable("message.sandstorm.flashlight.high");
+            default -> Component.translatable("message.sandstorm.flashlight.off");
         };
     }
 }

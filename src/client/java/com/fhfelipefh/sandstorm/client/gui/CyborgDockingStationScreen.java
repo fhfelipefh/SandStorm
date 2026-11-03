@@ -137,7 +137,7 @@ public class CyborgDockingStationScreen extends AbstractContainerScreen<CyborgDo
         if (this.menu.isDocked()) {
             extractor.fill(tx, ty, tx + tw, ty + 12, 0x4476FF03);
             extractor.fill(tx, ty + 12, tx + tw, ty + 13, 0xFF76FF03);
-            extractor.text(this.font, Component.literal("§a● CIBORGUE ACOPLADO [WPT ATIVO]"), tx + 4, ty + 2, 0xFF76FF03, false);
+            extractor.text(this.font, Component.translatable("gui.sandstorm.cyborg_dock.coupled"), tx + 4, ty + 2, 0xFF76FF03, false);
 
             int cx = tx + 4;
             int cy = ty + 16;

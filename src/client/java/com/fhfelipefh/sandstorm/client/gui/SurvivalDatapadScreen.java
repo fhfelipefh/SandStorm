@@ -36,7 +36,8 @@ import java.util.List;
 import java.util.Map;
 
 public class SurvivalDatapadScreen extends Screen {
-    private int currentChapter = 1;
+    private static int lastSelectedChapter = 1;
+    private int currentChapter = lastSelectedChapter;
     private int scrollOffset = 0;
     private int maxScroll = 0;
     private final Map<String, Long> claimFlashTimestamps = new HashMap<>();
@@ -496,6 +497,7 @@ public class SurvivalDatapadScreen extends Screen {
         }
         if (event.key() >= 49 && event.key() <= 54) {
             currentChapter = event.key() - 48;
+            lastSelectedChapter = currentChapter;
             scrollOffset = 0;
             return true;
         }
@@ -541,6 +543,7 @@ public class SurvivalDatapadScreen extends Screen {
                 int tx = left + 10 + (ch - 1) * tabWidth;
                 if (mx >= tx && mx <= tx + tabWidth) {
                     currentChapter = ch;
+                    lastSelectedChapter = currentChapter;
                     scrollOffset = 0;
                     return true;
                 }
@@ -747,6 +750,7 @@ public class SurvivalDatapadScreen extends Screen {
         for (QuestData quest : QuestRegistry.getAllQuests().values()) {
             if (isQuestClaimable(player, quest)) {
                 currentChapter = quest.chapter();
+                lastSelectedChapter = currentChapter;
                 scrollOffset = 0;
                 return executeClaim(player, quest);
             }

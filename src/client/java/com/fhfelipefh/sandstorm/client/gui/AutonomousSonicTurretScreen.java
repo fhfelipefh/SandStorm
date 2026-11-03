@@ -294,39 +294,41 @@ public class AutonomousSonicTurretScreen extends AbstractContainerScreen<Autonom
         ControlsLayout cl = getControlsLayout();
 
         int modeColor = (filterMode == 0) ? 0xFF00E5FF : 0xFFFFAB40;
-        String modeText = (filterMode == 0) ? "MODO: ALVOS (WHITELIST)" : "MODO: IGNORADOS (BLACKLIST)";
+        Component modeComp = (filterMode == 0)
+                ? Component.translatable("gui.sandstorm.sonic_turret.mode_whitelist")
+                : Component.translatable("gui.sandstorm.sonic_turret.mode_blacklist");
         extractor.fill(cl.modeX, btnTop, cl.modeX + cl.modeW, btnTop + 16, 0x44000000);
         extractor.fill(cl.modeX, btnTop, cl.modeX + cl.modeW, btnTop + 1, modeColor);
         extractor.fill(cl.modeX, btnTop + 15, cl.modeX + cl.modeW, btnTop + 16, modeColor);
         extractor.fill(cl.modeX, btnTop, cl.modeX + 1, btnTop + 16, modeColor);
         extractor.fill(cl.modeX + cl.modeW - 1, btnTop, cl.modeX + cl.modeW, btnTop + 16, modeColor);
-        drawScaledCenteredText(extractor, Component.literal(modeText), cl.modeX + cl.modeW / 2f, btnTop + 4, cl.modeW - 6, modeColor);
+        drawScaledCenteredText(extractor, modeComp, cl.modeX + cl.modeW / 2f, btnTop + 4, cl.modeW - 6, modeColor);
 
-        String stratText = switch (targetingStrategy) {
-            case 1 -> "FOCO: MENOR VIDA";
-            case 2 -> "FOCO: MAIOR AMEAÇA";
-            default -> "FOCO: MAIS PRÓXIMO";
+        Component stratComp = switch (targetingStrategy) {
+            case 1 -> Component.translatable("gui.sandstorm.sonic_turret.focus_lowest_health");
+            case 2 -> Component.translatable("gui.sandstorm.sonic_turret.focus_highest_threat");
+            default -> Component.translatable("gui.sandstorm.sonic_turret.focus_closest");
         };
         extractor.fill(cl.stratX, btnTop, cl.stratX + cl.stratW, btnTop + 16, 0x44000000);
         extractor.fill(cl.stratX, btnTop, cl.stratX + cl.stratW, btnTop + 1, 0xFF81D4FA);
         extractor.fill(cl.stratX, btnTop + 15, cl.stratX + cl.stratW, btnTop + 16, 0xFF81D4FA);
         extractor.fill(cl.stratX, btnTop, cl.stratX + 1, btnTop + 16, 0xFF81D4FA);
         extractor.fill(cl.stratX + cl.stratW - 1, btnTop, cl.stratX + cl.stratW, btnTop + 16, 0xFF81D4FA);
-        drawScaledCenteredText(extractor, Component.literal(stratText), cl.stratX + cl.stratW / 2f, btnTop + 4, cl.stratW - 6, 0xFF81D4FA);
+        drawScaledCenteredText(extractor, stratComp, cl.stratX + cl.stratW / 2f, btnTop + 4, cl.stratW - 6, 0xFF81D4FA);
 
         extractor.fill(cl.hostilesX, btnTop, cl.hostilesX + cl.hostilesW, btnTop + 16, 0x44000000);
         extractor.fill(cl.hostilesX, btnTop, cl.hostilesX + cl.hostilesW, btnTop + 1, 0xFFFF7043);
         extractor.fill(cl.hostilesX, btnTop + 15, cl.hostilesX + cl.hostilesW, btnTop + 16, 0xFFFF7043);
         extractor.fill(cl.hostilesX, btnTop, cl.hostilesX + 1, btnTop + 16, 0xFFFF7043);
         extractor.fill(cl.hostilesX + cl.hostilesW - 1, btnTop, cl.hostilesX + cl.hostilesW, btnTop + 16, 0xFFFF7043);
-        drawScaledCenteredText(extractor, Component.literal("MONSTROS"), cl.hostilesX + cl.hostilesW / 2f, btnTop + 4, cl.hostilesW - 4, 0xFFFF7043);
+        drawScaledCenteredText(extractor, Component.translatable("gui.sandstorm.sonic_turret.monsters"), cl.hostilesX + cl.hostilesW / 2f, btnTop + 4, cl.hostilesW - 4, 0xFFFF7043);
 
         extractor.fill(cl.clearX, btnTop, cl.clearX + cl.clearW, btnTop + 16, 0x44000000);
         extractor.fill(cl.clearX, btnTop, cl.clearX + cl.clearW, btnTop + 1, 0xFFB0BEC5);
         extractor.fill(cl.clearX, btnTop + 15, cl.clearX + cl.clearW, btnTop + 16, 0xFFB0BEC5);
         extractor.fill(cl.clearX, btnTop, cl.clearX + 1, btnTop + 16, 0xFFB0BEC5);
         extractor.fill(cl.clearX + cl.clearW - 1, btnTop, cl.clearX + cl.clearW, btnTop + 16, 0xFFB0BEC5);
-        drawScaledCenteredText(extractor, Component.literal("LIMPAR"), cl.clearX + cl.clearW / 2f, btnTop + 4, cl.clearW - 4, 0xFFB0BEC5);
+        drawScaledCenteredText(extractor, Component.translatable("gui.sandstorm.sonic_turret.clear"), cl.clearX + cl.clearW / 2f, btnTop + 4, cl.clearW - 4, 0xFFB0BEC5);
 
         renderCardsGrid(extractor, mouseX, mouseY);
         renderFooter(extractor);

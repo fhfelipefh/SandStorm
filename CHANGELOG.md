@@ -2,6 +2,18 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.84] - 2026-11-02
+
+### 🌐 Internacionalização Multilíngue Completa & UX de Missões
+* **Localização Total (EN, PT, ES)**:
+  * Mensagens de feedback da lanterna de capacete internacionalizadas (`[Flashlight] Mode: Low/Medium/High/Off`).
+  * Telemetria e tooltips de rede WPT (`⚡ WPT Active/Online/Offline`, `Progress`, `Energy`) em telas de máquinas e geradores.
+  * Painel de controle da Torreta Sônica Autônoma totalmente traduzido (Whitelist, Blacklist, Estratégias de Alvo).
+* **Persistência de Sessão no Datapad**:
+  * O Datapad agora retém o último capítulo/tier selecionado entre aberturas da interface (`lastSelectedChapter`), evitando resets para o capítulo 1.
+
+---
+
 ## [1.19.83] - 2026-11-02
 
 ### 📦 Sincronização e Distribuição Remota

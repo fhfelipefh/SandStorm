@@ -192,19 +192,23 @@ public class KineticShieldScreen extends AbstractContainerScreen<KineticShieldMe
         int y = this.topPos;
 
         if (mouseX >= x + 8 && mouseX <= x + 168 && mouseY >= y + 14 && mouseY <= y + 20) {
-            String wptInfo = this.menu.isWptConnected() ? " §a[⚡ WPT Ativa]" : " §7[Sem WPT]";
-            String energyTip = String.format("Energia: %s / %s J%s", NumberFormat.compact(this.menu.getStoredEnergy()), NumberFormat.compact(this.menu.getMaxEnergy()), wptInfo);
-            extractor.setTooltipForNextFrame(this.font, Component.literal(energyTip), mouseX, mouseY);
+            Component wptInfo = this.menu.isWptConnected()
+                    ? Component.translatable("gui.sandstorm.machine.wpt_active_bracket")
+                    : Component.translatable("gui.sandstorm.machine.wpt_none_bracket");
+            Component energyTip = Component.translatable("gui.sandstorm.kinetic_shield.energy",
+                    NumberFormat.compact(this.menu.getStoredEnergy()),
+                    NumberFormat.compact(this.menu.getMaxEnergy())).append(wptInfo);
+            extractor.setTooltipForNextFrame(this.font, energyTip, mouseX, mouseY);
         } else if (mouseX >= x + 14 && mouseX <= x + 54 && mouseY >= y + 24 && mouseY <= y + 64) {
             extractor.setComponentTooltipForNextFrame(this.font, List.of(
-                    Component.literal("§bCampo Defensivo Cinético"),
-                    Component.literal("§7Raio de Projeção: 20 metros"),
-                    Component.literal("§7Deflete projéteis balísticos e"),
-                    Component.literal("§7amortece vibrações sísmicas.")
+                    Component.translatable("gui.sandstorm.kinetic_shield.desc1"),
+                    Component.translatable("gui.sandstorm.kinetic_shield.desc2"),
+                    Component.translatable("gui.sandstorm.kinetic_shield.desc3"),
+                    Component.translatable("gui.sandstorm.kinetic_shield.desc4")
             ), mouseX, mouseY);
         } else if (mouseX >= x + 147 && mouseX <= x + 165 && mouseY >= y + 39 && mouseY <= y + 57) {
             if (!this.menu.slots.get(0).hasItem()) {
-                extractor.setTooltipForNextFrame(this.font, Component.literal("Slot de Bateria / Célula de Energia"), mouseX, mouseY);
+                extractor.setTooltipForNextFrame(this.font, Component.translatable("gui.sandstorm.kinetic_shield.battery_slot"), mouseX, mouseY);
             }
         }
     }
