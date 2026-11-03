@@ -3,7 +3,6 @@
   "category": "equipment",
   "key": {
     "B": "sandstorm:tool_base",
-    "E": "sandstorm:electric_component",
     "R": "sandstorm:raw_silicon"
   },
   "pattern": [
@@ -16,4 +15,3 @@
     "id": "sandstorm:silicon_shovel"
   }
 }
-
