@@ -2,10 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "T": "sandstorm:titanium_chitin_composite",
-    "P": "sandstorm:smart_fluid_pipe",
     "A": "sandstorm:nano_actuator",
-    "R": "minecraft:piston"
+    "P": "sandstorm:smart_fluid_pipe",
+    "R": "#c:pistons",
+    "T": "sandstorm:titanium_chitin_composite"
   },
   "pattern": [
     "TPT",

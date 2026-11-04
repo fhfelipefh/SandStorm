@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "P": "sandstorm:scrap_metal",
+    "R": "minecraft:redstone",
+    "S": "minecraft:sandstone"
+  },
+  "pattern": [
+    "PPP",
+    "SIS",
+    "SRS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:piston"
+  }
+}
+

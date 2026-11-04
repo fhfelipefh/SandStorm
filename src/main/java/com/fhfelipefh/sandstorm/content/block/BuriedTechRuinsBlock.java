@@ -19,6 +19,7 @@ public class BuriedTechRuinsBlock extends Block {
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide() && !player.isCreative()) {
             popResource(level, pos, new ItemStack(SandStormItems.SCRAP_METAL, 1 + level.getRandom().nextInt(2)));
+            popResource(level, pos, new ItemStack(SandStormItems.SALVAGED_POLYMER, 1 + level.getRandom().nextInt(2)));
             if (level.getRandom().nextFloat() < 0.30f) {
                 popResource(level, pos, new ItemStack(SandStormItems.TECH_DISC, 1));
             }

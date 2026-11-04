@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "C": "sandstorm:circuit_mount",
-    "P": "minecraft:piston",
+    "P": "#c:pistons",
     "R": "minecraft:redstone",
     "S": "minecraft:smooth_stone_slab"
   },

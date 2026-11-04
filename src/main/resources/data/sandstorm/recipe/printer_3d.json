@@ -6,7 +6,7 @@
     "C": "sandstorm:circuit_board",
     "G": "minecraft:glass",
     "M": "sandstorm:scrap_metal",
-    "P": "minecraft:piston",
+    "P": "#c:pistons",
     "T": "sandstorm:tech_disc",
     "W": "sandstorm:silicon_wafer"
   },

@@ -278,6 +278,12 @@ public class SandStormBlocks {
                     .strength(1.2f, 3.0f)
                     .sound(SoundType.COPPER)
                     .noOcclusion()));
+    public static final Block WPC_PLANKS = register("wpc_planks",
+            new Block(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("wpc_planks")))
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .strength(2.0f, 3.0f)
+                    .sound(SoundType.WOOD)));
     public static final BuriedTechRuinsBlock BURIED_TECH_RUINS = register("buried_tech_ruins",
             new BuriedTechRuinsBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("buried_tech_ruins")))

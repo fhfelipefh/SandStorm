@@ -147,6 +147,13 @@ WEAPONS = [
         "role": "Incubação Mecatrônica Predatória",
         "type": "2d",
         "texture": "src/main/resources/assets/sandstorm/textures/item/scavenger_vulture_spawn_egg.png"
+    },
+    {
+        "id": "salvaged_polymer",
+        "name": "Polímero Recuperado",
+        "role": "Resina Termoplástica Reciclada para WPC",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/salvaged_polymer.png"
     }
 ]
 

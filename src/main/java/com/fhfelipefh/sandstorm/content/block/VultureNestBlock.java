@@ -189,6 +189,7 @@ public class VultureNestBlock extends Block {
                 ingredients.add(new IngredientReward(SandStormItems.CIRCUIT_BOARD, 2));
                 ingredients.add(new IngredientReward(SandStormItems.SCRAP_METAL, 4));
                 ingredients.add(new IngredientReward(SandStormItems.RAW_SILICON, 4));
+                ingredients.add(new IngredientReward(Items.PISTON, 1));
             }
             case "wireless_solar_receiver" -> {
                 ingredients.add(new IngredientReward(SandStormItems.CIRCUIT_BOARD, 2));
@@ -204,6 +205,7 @@ public class VultureNestBlock extends Block {
                 ingredients.add(new IngredientReward(SandStormItems.CIRCUIT_BOARD, 2));
                 ingredients.add(new IngredientReward(SandStormItems.SCRAP_METAL, 4));
                 ingredients.add(new IngredientReward(SandStormItems.RAW_SILICON, 4));
+                ingredients.add(new IngredientReward(Items.PISTON, 1));
             }
             case "sonic_defense" -> {
                 ingredients.add(new IngredientReward(SandStormItems.CIRCUIT_BOARD, 2));

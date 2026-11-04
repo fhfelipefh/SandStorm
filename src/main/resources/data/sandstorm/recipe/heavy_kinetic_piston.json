@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "C": "sandstorm:circuit_board",
-    "P": "minecraft:piston",
+    "P": "#c:pistons",
     "R": "minecraft:redstone",
     "T": "sandstorm:titanium_chitin_composite"
   },

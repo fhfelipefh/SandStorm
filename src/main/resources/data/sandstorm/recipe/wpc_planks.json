@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "P": "sandstorm:salvaged_polymer",
+    "S": "minecraft:sand"
+  },
+  "pattern": [
+    "PS",
+    "SP"
+  ],
+  "result": {
+    "count": 4,
+    "id": "sandstorm:wpc_planks"
+  }
+}
+

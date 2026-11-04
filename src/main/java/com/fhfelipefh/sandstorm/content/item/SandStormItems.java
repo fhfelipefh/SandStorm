@@ -251,6 +251,7 @@ public class SandStormItems {
     public static final Item AVIONICS_OPTICAL_SENSOR = register("avionics_optical_sensor", new Item(properties("avionics_optical_sensor").rarity(Rarity.RARE)));
     public static final ExoSuitChipItem SUIT_GLIDER_MODULE = register("suit_glider_module", new ExoSuitChipItem(ExoSuitChipComponent.GLIDER_MODULE, properties("suit_glider_module").rarity(Rarity.RARE)));
     public static final SpawnEggItem SCAVENGER_VULTURE_SPAWN_EGG = register("scavenger_vulture_spawn_egg", new SpawnEggItem(properties("scavenger_vulture_spawn_egg").spawnEgg(SandStormEntities.SCAVENGER_VULTURE)));
+    public static final Item SALVAGED_POLYMER = register("salvaged_polymer", new Item(properties("salvaged_polymer").rarity(Rarity.COMMON)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -337,6 +338,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.FLUID_PIPE);
                         entries.accept(SandStormBlocks.BURIED_TECH_RUINS);
                         entries.accept(SandStormBlocks.VULTURE_NEST);
+                        entries.accept(SandStormBlocks.WPC_PLANKS);
                         entries.accept(SandStormBlocks.ANCIENT_DATA_CORE);
                         entries.accept(SandStormBlocks.DRONE_DOCK);
                         entries.accept(SandStormBlocks.ASSEMBLY_BAY);
@@ -643,6 +645,7 @@ public class SandStormItems {
                         entries.accept(AVIONICS_OPTICAL_SENSOR);
                         entries.accept(SUIT_GLIDER_MODULE);
                         entries.accept(SCAVENGER_VULTURE_SPAWN_EGG);
+                        entries.accept(SALVAGED_POLYMER);
                     })
                     .build()
     );

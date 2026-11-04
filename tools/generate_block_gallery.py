@@ -175,6 +175,12 @@ BLOCKS = [
         "name": "Receptor Solar WPT",
         "role": "Recepção e Distribuição de Energia Sem Fio",
         "model": "wireless_solar_receiver.json"
+    },
+    {
+        "id": "wpc_planks",
+        "name": "Tábuas de Madeira Plástica (WPC)",
+        "role": "Compósito Mineral e Polímero para Construção",
+        "model": "wpc_planks.json"
     }
 ]
 

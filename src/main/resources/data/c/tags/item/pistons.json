@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:piston",
+    "sandstorm:compact_slab_piston",
+    "sandstorm:heavy_kinetic_piston"
+  ]
+}
+

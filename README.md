@@ -201,7 +201,7 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
 ## 🧱 Novos Blocos, Maquinários & Automação
 
 <details>
-<summary><b>Clique para expandir o catálogo de maquinários e blocos (28 modelos)</b></summary>
+<summary><b>Clique para expandir o catálogo de maquinários e blocos (29 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -359,6 +359,16 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
       <sub>Recepção e Distribuição de Energia Sem Fio</sub>
     </td>
   </tr>
+  <tr>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/blocks/wpc_planks.png" width="140" alt="Tábuas de Madeira Plástica (WPC)"><br>
+      <b>Tábuas de Madeira Plástica (WPC)</b><br>
+      <sub>Compósito Mineral e Polímero para Construção</sub>
+    </td>
+    <td width="25%"></td>
+    <td width="25%"></td>
+    <td width="25%"></td>
+  </tr>
 </table>
 
 ### Desgaste progressivo
@@ -385,7 +395,7 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
 ## ⚔️ Arsenal Tático, Armas & Equipamentos
 
 <details>
-<summary><b>Clique para expandir o arsenal de armas e equipamentos (20 modelos)</b></summary>
+<summary><b>Clique para expandir o arsenal de armas e equipamentos (21 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -498,6 +508,16 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
       <b>Ovo de Abutre Sucateiro</b><br>
       <sub>Incubação Mecatrônica Predatória</sub>
     </td>
+  </tr>
+  <tr>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/salvaged_polymer.png" width="140" alt="Polímero Recuperado"><br>
+      <b>Polímero Recuperado</b><br>
+      <sub>Resina Termoplástica Reciclada para WPC</sub>
+    </td>
+    <td width="25%"></td>
+    <td width="25%"></td>
+    <td width="25%"></td>
   </tr>
 </table>
 
