@@ -336,6 +336,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.CHEMICAL_REFINERY);
                         entries.accept(SandStormBlocks.FLUID_PIPE);
                         entries.accept(SandStormBlocks.BURIED_TECH_RUINS);
+                        entries.accept(SandStormBlocks.VULTURE_NEST);
                         entries.accept(SandStormBlocks.ANCIENT_DATA_CORE);
                         entries.accept(SandStormBlocks.DRONE_DOCK);
                         entries.accept(SandStormBlocks.ASSEMBLY_BAY);

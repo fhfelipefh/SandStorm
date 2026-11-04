@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.world;
 
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.defense.AcousticDefenseTracker;
 import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
@@ -9,6 +10,7 @@ import com.fhfelipefh.sandstorm.content.entity.DeactivatableAndroid;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
 import com.fhfelipefh.sandstorm.content.entity.LaborerUnitEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
+import com.fhfelipefh.sandstorm.content.entity.ScavengerVultureEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScrapSentinelEntity;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -56,6 +58,9 @@ public class DesertMobSpawnManager {
 
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             attemptSpawnForPlayer(player);
+            if (tickCounter % 150 == 0) {
+                attemptSpawnVultureNestForPlayer(player);
+            }
         }
 
         if (tickCounter % 250 == 0) {
@@ -330,6 +335,74 @@ public class DesertMobSpawnManager {
                     mob.discard();
                 }
             }
+        }
+    }
+
+    public static void attemptSpawnVultureNestForPlayer(ServerPlayer player) {
+        if (!player.isAlive() || player.isSpectator()) {
+            return;
+        }
+        ServerLevel level = player.level();
+        if (!SandStormWorldHelper.isSandStormWorld(level) || level.dimension() != Level.OVERWORLD) {
+            return;
+        }
+        if (KineticShieldTracker.isInsideShield(level.dimension(), player.blockPosition())) {
+            return;
+        }
+        if (AcousticDefenseTracker.isInsideAcousticDamping(level.dimension(), player.blockPosition())) {
+            return;
+        }
+
+        RandomSource random = level.getRandom();
+        for (int attempt = 0; attempt < 8; attempt++) {
+            int rx = player.getBlockX() + (random.nextInt(65) - 32);
+            int rz = player.getBlockZ() + (random.nextInt(65) - 32);
+            BlockPos probe = new BlockPos(rx, 0, rz);
+            if (!level.isLoaded(probe)) {
+                continue;
+            }
+
+            int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, rx, rz);
+            if (surfaceY < 72) {
+                continue;
+            }
+
+            BlockPos nestPos = new BlockPos(rx, surfaceY, rz);
+            if (!level.getBlockState(nestPos).isAir() || !level.canSeeSky(nestPos)) {
+                continue;
+            }
+
+            BlockPos groundPos = nestPos.below();
+            BlockState groundState = level.getBlockState(groundPos);
+            if (!groundState.isSolid() || groundState.is(SandStormBlocks.VULTURE_NEST)) {
+                continue;
+            }
+
+            Holder<Biome> biome = level.getBiome(nestPos);
+            if (!biome.is(Biomes.DESERT) && !biome.is(SULFUR_CAVES)) {
+                continue;
+            }
+
+            AABB box = new AABB(nestPos).inflate(36.0, 16.0, 36.0);
+            List<BlockPos> existing = BlockPos.betweenClosedStream(box)
+                    .filter(p -> level.getBlockState(p).is(SandStormBlocks.VULTURE_NEST))
+                    .map(BlockPos::immutable)
+                    .toList();
+            if (!existing.isEmpty()) {
+                continue;
+            }
+
+            level.setBlock(nestPos, SandStormBlocks.VULTURE_NEST.defaultBlockState(), 3);
+
+            if (random.nextFloat() < 0.40f) {
+                ScavengerVultureEntity vulture = SandStormEntities.SCAVENGER_VULTURE.create(level, EntitySpawnReason.EVENT);
+                if (vulture != null) {
+                    vulture.setPos(nestPos.getX() + 0.5, nestPos.getY() + 1.0, nestPos.getZ() + 0.5);
+                    vulture.setVultureState(ScavengerVultureEntity.STATE_CIRCLING);
+                    level.addFreshEntity(vulture);
+                }
+            }
+            break;
         }
     }
 }

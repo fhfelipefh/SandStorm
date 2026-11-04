@@ -4601,6 +4601,7 @@ public class ShowcaseAutomation {
             chest.setItem(11, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 32));
             chest.setItem(12, new ItemStack(SandStormItems.ANOMALY_RADAR));
             chest.setItem(13, new ItemStack(SandStormItems.SURVIVAL_DATAPAD));
+            chest.setItem(14, new ItemStack(SandStormBlocks.VULTURE_NEST, 16));
         }
 
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.2, stationCenter.getZ() - 22.0, "§6§l[SETOR AERONÁUTICO: ABUTRE & PLANADOR]");
@@ -4766,6 +4767,23 @@ public class ShowcaseAutomation {
                 level.setBlock(dunePos, Blocks.SAND.defaultBlockState(), 2);
             }
         }
+
+        BlockPos nestPillar = stationCenter.offset(6, 0, 18);
+        for (int dy = 1; dy <= 6; dy++) {
+            level.setBlock(nestPillar.above(dy), Blocks.CUT_SANDSTONE.defaultBlockState(), 2);
+        }
+        level.setBlock(nestPillar.above(7), SandStormBlocks.VULTURE_NEST.defaultBlockState(), 3);
+        ScavengerVultureEntity nestVulture = new ScavengerVultureEntity(SandStormEntities.SCAVENGER_VULTURE, level);
+        nestVulture.setPos(nestPillar.getX() + 0.5, baseY + 8.0, nestPillar.getZ() + 0.5);
+        nestVulture.setVultureState(ScavengerVultureEntity.STATE_CIRCLING);
+        nestVulture.setPersistenceRequired();
+        nestVulture.setCustomName(Component.literal("§6Abutre do Ninho"));
+        nestVulture.setCustomNameVisible(true);
+        level.addFreshEntity(nestVulture);
+
+        spawnHologram(level, nestPillar.getX() + 0.5, baseY + 9.5, nestPillar.getZ() + 0.5, "§6§l[Ninho de Abutre: Palha de Aço]");
+        spawnHologram(level, nestPillar.getX() + 0.5, baseY + 9.15, nestPillar.getZ() + 0.5, "§7Lajes metálicas geradas em picos do deserto");
+        spawnHologram(level, nestPillar.getX() + 0.5, baseY + 8.8, nestPillar.getZ() + 0.5, "§eQuebre para extrair sucata e componentes!");
     }
 
     public static void buildCyberSteedShowcase(ServerLevel level, BlockPos stationCenter, ServerPlayer player) {

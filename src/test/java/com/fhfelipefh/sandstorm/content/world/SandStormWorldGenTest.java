@@ -81,6 +81,11 @@ class SandStormWorldGenTest {
         assertEquals(Registries.PLACED_FEATURE, SandStormWorldGen.FOSSILIZED_OASIS_KEY.registryKey());
         assertEquals("sandstorm", SandStormWorldGen.FOSSILIZED_OASIS_KEY.identifier().getNamespace());
         assertEquals("fossilized_oasis", SandStormWorldGen.FOSSILIZED_OASIS_KEY.identifier().getPath());
+
+        assertNotNull(SandStormWorldGen.VULTURE_NEST_KEY);
+        assertEquals(Registries.PLACED_FEATURE, SandStormWorldGen.VULTURE_NEST_KEY.registryKey());
+        assertEquals("sandstorm", SandStormWorldGen.VULTURE_NEST_KEY.identifier().getNamespace());
+        assertEquals("vulture_nest", SandStormWorldGen.VULTURE_NEST_KEY.identifier().getPath());
     }
 
     @Test

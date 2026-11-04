@@ -1,0 +1,28 @@
+{
+  "feature": "sandstorm:vulture_nest",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 12
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 120
+        },
+        "min_inclusive": {
+          "absolute": 74
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}
+

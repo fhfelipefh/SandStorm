@@ -86,6 +86,6 @@ class CompanionTrapAvoidanceArchitectureTest {
         Path gradleProps = Path.of("gradle.properties");
         assertTrue(Files.exists(gradleProps));
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.19.95"), "gradle.properties must be 1.19.95");
+        assertTrue(content.contains("version=1.19.96"), "gradle.properties must be 1.19.96");
     }
 }

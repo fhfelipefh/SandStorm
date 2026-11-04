@@ -29,6 +29,9 @@ public class SandStormWorldGen {
     public static final ResourceKey<PlacedFeature> FOSSILIZED_OASIS_KEY =
             ResourceKey.create(Registries.PLACED_FEATURE, SandStormMod.id("fossilized_oasis"));
 
+    public static final ResourceKey<PlacedFeature> VULTURE_NEST_KEY =
+            ResourceKey.create(Registries.PLACED_FEATURE, SandStormMod.id("vulture_nest"));
+
     public static void initialize() {
         BiomeModifications.addFeature(
                 BiomeSelectors.includeByKey(Biomes.DESERT, Biomes.SULFUR_CAVES),
@@ -64,6 +67,12 @@ public class SandStormWorldGen {
                 BiomeSelectors.includeByKey(Biomes.DESERT),
                 GenerationStep.Decoration.VEGETAL_DECORATION,
                 FOSSILIZED_OASIS_KEY
+        );
+
+        BiomeModifications.addFeature(
+                BiomeSelectors.includeByKey(Biomes.DESERT),
+                GenerationStep.Decoration.SURFACE_STRUCTURES,
+                VULTURE_NEST_KEY
         );
     }
 }

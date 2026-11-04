@@ -96,5 +96,27 @@ class ShowcaseVultureAndGliderTest {
         assertTrue(code.contains("Commands.literal(\"glider\")"));
         assertTrue(code.contains("Setor Leste: Aviário do Abutre"));
         assertTrue(code.contains("Zona 4: Abutre Hackeado - Baliza"));
+        assertTrue(code.contains("Ninho de Abutre: Palha de Aço"));
+    }
+
+    @Test
+    void vultureNestBlockMustBeRegisteredAndConfigured() throws IOException {
+        Path blocksSource = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "block", "SandStormBlocks.java");
+        assertTrue(Files.exists(blocksSource));
+        String code = Files.readString(blocksSource);
+        assertTrue(code.contains("VULTURE_NEST"));
+
+        Path nestBlockstate = Path.of("src", "main", "resources", "assets", "sandstorm", "blockstates", "vulture_nest.json");
+        Path nestBlockModel = Path.of("src", "main", "resources", "assets", "sandstorm", "models", "block", "vulture_nest.json");
+        Path nestItemModel = Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item", "vulture_nest.json");
+        Path nestItemDef = Path.of("src", "main", "resources", "assets", "sandstorm", "items", "vulture_nest.json");
+        Path nestTexture = Path.of("src", "main", "resources", "assets", "sandstorm", "textures", "block", "vulture_nest.png");
+
+        assertTrue(Files.exists(nestBlockstate));
+        assertTrue(Files.exists(nestBlockModel));
+        assertTrue(Files.exists(nestItemModel));
+        assertTrue(Files.exists(nestItemDef));
+        assertTrue(Files.exists(nestTexture));
+        assertTrue(Files.readAllBytes(nestTexture).length > 8);
     }
 }

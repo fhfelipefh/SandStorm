@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "sandstorm:block/vulture_nest",
+    "top": "sandstorm:block/vulture_nest",
+    "side": "sandstorm:block/vulture_nest"
+  }
+}
+

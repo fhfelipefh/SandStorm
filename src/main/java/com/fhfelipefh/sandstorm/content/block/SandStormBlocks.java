@@ -271,6 +271,13 @@ public class SandStormBlocks {
                     .strength(1.5f)
                     .sound(SoundType.METAL)
                     .noOcclusion()));
+    public static final VultureNestBlock VULTURE_NEST = register("vulture_nest",
+            new VultureNestBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("vulture_nest")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(1.2f, 3.0f)
+                    .sound(SoundType.COPPER)
+                    .noOcclusion()));
     public static final BuriedTechRuinsBlock BURIED_TECH_RUINS = register("buried_tech_ruins",
             new BuriedTechRuinsBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("buried_tech_ruins")))
