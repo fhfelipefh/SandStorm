@@ -32,7 +32,7 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
 ## 👾 Entidades & Mobs Cibernéticos
 
 <details>
-<summary><b>Clique para expandir a galeria isométrica de entidades (27 modelos)</b></summary>
+<summary><b>Clique para expandir a galeria isométrica de entidades (28 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -184,7 +184,11 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
       <b>Prancha de Areia (Sandboard)</b><br>
       <sub>Locomoção Veloz nas Dunas</sub>
     </td>
-    <td width="25%"></td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/entities/scavenger_vulture.gif" width="140" alt="Abutre Sucateiro (Scavenger Vulture)"><br>
+      <b>Abutre Sucateiro (Scavenger Vulture)</b><br>
+      <sub>Predador Aéreo & Rastreador de Carcaças</sub>
+    </td>
   </tr>
 </table>
 
@@ -197,7 +201,7 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
 ## 🧱 Novos Blocos, Maquinários & Automação
 
 <details>
-<summary><b>Clique para expandir o catálogo de maquinários e blocos (25 modelos)</b></summary>
+<summary><b>Clique para expandir o catálogo de maquinários e blocos (28 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -339,9 +343,21 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
       <b>Câmara Hidropônica</b><br>
       <sub>Cultivo Subterrâneo Otimizado</sub>
     </td>
-    <td width="25%"></td>
-    <td width="25%"></td>
-    <td width="25%"></td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/blocks/vulture_nest.png" width="140" alt="Ninho de Abutre em Palha de Aço"><br>
+      <b>Ninho de Abutre em Palha de Aço</b><br>
+      <sub>Ninho em Picos de Deserto & Salvamento Tático</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/blocks/basic_thermal_generator.png" width="140" alt="Gerador Térmico Básico"><br>
+      <b>Gerador Térmico Básico</b><br>
+      <sub>Conversão Inicial de Calor em Energia</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/blocks/wireless_solar_receiver.png" width="140" alt="Receptor Solar WPT"><br>
+      <b>Receptor Solar WPT</b><br>
+      <sub>Recepção e Distribuição de Energia Sem Fio</sub>
+    </td>
   </tr>
 </table>
 
@@ -369,7 +385,7 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
 ## ⚔️ Arsenal Tático, Armas & Equipamentos
 
 <details>
-<summary><b>Clique para expandir o arsenal de armas e equipamentos (15 modelos)</b></summary>
+<summary><b>Clique para expandir o arsenal de armas e equipamentos (20 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -455,7 +471,33 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
       <b>Uplink Cibernético</b><br>
       <sub>Comando Remoto de Drones & Ciborgues</sub>
     </td>
-    <td width="25%"></td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/sandboard.png" width="140" alt="Prancha de Areia (Sandboard)"><br>
+      <b>Prancha de Areia (Sandboard)</b><br>
+      <sub>Locomoção Tática de Alta Velocidade</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/suit_glider_module.png" width="140" alt="Módulo de Planador Tático"><br>
+      <b>Módulo de Planador Tático</b><br>
+      <sub>Voo Planado Integrado ao Traje</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/avionics_optical_sensor.png" width="140" alt="Sensor Óptico de Aviônica"><br>
+      <b>Sensor Óptico de Aviônica</b><br>
+      <sub>Varredura Aérea & Telemetria</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/carbon_fiber_servo_feather.png" width="140" alt="Pena Servo de Fibra de Carbono"><br>
+      <b>Pena Servo de Fibra de Carbono</b><br>
+      <sub>Componente Aerodinâmico Ultraleve</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/scavenger_vulture_spawn_egg.png" width="140" alt="Ovo de Abutre Sucateiro"><br>
+      <b>Ovo de Abutre Sucateiro</b><br>
+      <sub>Incubação Mecatrônica Predatória</sub>
+    </td>
   </tr>
 </table>
 

@@ -119,6 +119,34 @@ WEAPONS = [
         "role": "Locomoção Tática de Alta Velocidade",
         "type": "2d",
         "texture": "src/main/resources/assets/sandstorm/textures/item/sandboard.png"
+    },
+    {
+        "id": "suit_glider_module",
+        "name": "Módulo de Planador Tático",
+        "role": "Voo Planado Integrado ao Traje",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/suit_glider_module.png"
+    },
+    {
+        "id": "avionics_optical_sensor",
+        "name": "Sensor Óptico de Aviônica",
+        "role": "Varredura Aérea & Telemetria",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/avionics_optical_sensor.png"
+    },
+    {
+        "id": "carbon_fiber_servo_feather",
+        "name": "Pena Servo de Fibra de Carbono",
+        "role": "Componente Aerodinâmico Ultraleve",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/carbon_fiber_servo_feather.png"
+    },
+    {
+        "id": "scavenger_vulture_spawn_egg",
+        "name": "Ovo de Abutre Sucateiro",
+        "role": "Incubação Mecatrônica Predatória",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/scavenger_vulture_spawn_egg.png"
     }
 ]
 

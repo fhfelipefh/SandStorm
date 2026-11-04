@@ -157,6 +157,24 @@ BLOCKS = [
         "name": "Câmara Hidropônica",
         "role": "Cultivo Subterrâneo Otimizado",
         "model": "hydroponic_chamber.json"
+    },
+    {
+        "id": "vulture_nest",
+        "name": "Ninho de Abutre em Palha de Aço",
+        "role": "Ninho em Picos de Deserto & Salvamento Tático",
+        "model": "vulture_nest.json"
+    },
+    {
+        "id": "basic_thermal_generator",
+        "name": "Gerador Térmico Básico",
+        "role": "Conversão Inicial de Calor em Energia",
+        "model": "basic_thermal_generator.json"
+    },
+    {
+        "id": "wireless_solar_receiver",
+        "name": "Receptor Solar WPT",
+        "role": "Recepção e Distribuição de Energia Sem Fio",
+        "model": "wireless_solar_receiver.json"
     }
 ]
 
@@ -212,6 +230,17 @@ def get_block_elements(model_json_path):
     elif 'cube' in parent:
         for fn in ['up', 'down', 'north', 'south', 'east', 'west']:
             faces[fn] = {'texture': f'#{fn}'}
+    elif 'slab' in parent:
+        faces['up'] = {'texture': '#top'}
+        faces['down'] = {'texture': '#bottom'}
+        for fn in ['north', 'south', 'east', 'west']:
+            faces[fn] = {'texture': '#side'}
+        element = {
+            'from': [0, 0, 0],
+            'to': [16, 8, 16],
+            'faces': faces
+        }
+        return [element], textures
     else:
         first_tex = list(textures.keys())[0] if textures else 'all'
         for fn in ['up', 'down', 'north', 'south', 'east', 'west']:

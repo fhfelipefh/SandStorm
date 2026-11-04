@@ -195,6 +195,13 @@ ENTITIES = [
         "role": "Locomoção Veloz nas Dunas",
         "model": "SandboardModel.java",
         "texture": "textures/entity/sandboard/sandboard.png"
+    },
+    {
+        "id": "scavenger_vulture",
+        "name": "Abutre Sucateiro (Scavenger Vulture)",
+        "role": "Predador Aéreo & Rastreador de Carcaças",
+        "model": "ScavengerVultureModel.java",
+        "texture": "textures/entity/scavenger_vulture/scavenger_vulture.png"
     }
 ]
 
@@ -210,7 +217,8 @@ ANIMATED_ENTITIES = {
     "sandworm",
     "megazord",
     "cyber_steed",
-    "cyber_hound"
+    "cyber_hound",
+    "scavenger_vulture"
 }
 
 def rot_x(rad):
@@ -365,6 +373,23 @@ def apply_entity_pose(part_nodes, entity_id, t):
             part_nodes['tail']['rx'] = -0.1 + math.cos(t * 0.5) * 0.06
         if 'body' in part_nodes:
             part_nodes['body']['oy'] += math.sin(t) * 1.5
+
+    elif entity_id == 'scavenger_vulture':
+        flap = math.sin(t) * 0.45
+        if 'right_wing' in part_nodes:
+            part_nodes['right_wing']['rz'] = flap
+            part_nodes['right_wing']['rx'] = math.cos(t) * 0.08
+        if 'left_wing' in part_nodes:
+            part_nodes['left_wing']['rz'] = -flap
+            part_nodes['left_wing']['rx'] = math.cos(t) * 0.08
+        if 'tail' in part_nodes:
+            part_nodes['tail']['rx'] = -0.1 + math.cos(t * 0.5) * 0.08
+        if 'body' in part_nodes:
+            part_nodes['body']['oy'] += math.sin(t) * 1.5
+        if 'head' in part_nodes:
+            part_nodes['head']['rx'] = -math.sin(t) * 0.08
+        if 'neck' in part_nodes:
+            part_nodes['neck']['rx'] = 0.1 + math.sin(t) * 0.05
 
     elif entity_id == 'autonomous_sonic_turret':
         if 'head' in part_nodes:
