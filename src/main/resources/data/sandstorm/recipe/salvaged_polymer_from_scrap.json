@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "sandstorm:scrap_metal",
+    "minecraft:sand"
+  ],
+  "result": {
+    "count": 2,
+    "id": "sandstorm:salvaged_polymer"
+  }
+}
+

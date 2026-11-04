@@ -1753,5 +1753,8 @@
   "message.sandstorm.cyber_mole_reprogrammed": "Firmware reescrito: ¡Topo vinculado!",
   "message.sandstorm.cyber_mole_already_tamed": "Firmware de unidad ya vinculado al dueño.",
   "message.sandstorm.cyber_mole_firewall_active": "¡Firewall activo! Sobrecarga con PEM primero.",
-  "message.sandstorm.cyber_mole_needs_circuit": "Requiere 1x Placa de Circuito para reprogramar."
+  "message.sandstorm.cyber_mole_needs_circuit": "Requiere 1x Placa de Circuito para reprogramar.",
+  "quest.sandstorm.polymer_recovery.title": "Recuperación de Polímeros",
+  "quest.sandstorm.polymer_recovery.task": "Consigue Polímero Recuperado.",
+  "quest.sandstorm.polymer_recovery.note": "Excava ruinas o recicla chatarra con arena."
 }

@@ -216,10 +216,14 @@ public class DerelictAutomatonEntity extends PathfinderMob implements Enemy, Dea
             if (this.random.nextFloat() < 0.15f) {
                 this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.CIRCUIT_BOARD, 1));
             }
+            if (this.random.nextFloat() < 0.60f) {
+                this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SALVAGED_POLYMER, 1));
+            }
             return;
         }
         int scrapCount = 1 + this.random.nextInt(2);
         this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SCRAP_METAL, scrapCount));
+        this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SALVAGED_POLYMER, 1 + this.random.nextInt(3)));
         if (this.random.nextFloat() < 0.35f) {
             this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.CIRCUIT_BOARD, 1));
         }

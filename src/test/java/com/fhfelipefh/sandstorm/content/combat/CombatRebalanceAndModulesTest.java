@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.quest.QuestData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRegistry;
 import com.fhfelipefh.sandstorm.content.survival.PlayerSuitSavedData;
+import com.fhfelipefh.sandstorm.core.SandStormMod;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -118,6 +119,7 @@ class CombatRebalanceAndModulesTest {
         assertNotNull(chapter3);
 
         int idxDog = -1;
+        int idxPolymer = -1;
         int idxArmor = -1;
         int idxClaws = -1;
         int idxDodge = -1;
@@ -125,19 +127,31 @@ class CombatRebalanceAndModulesTest {
         for (int i = 0; i < chapter3.size(); i++) {
             QuestData q = chapter3.get(i);
             if ("cyber_hound_companion".equals(q.id())) idxDog = i;
+            if ("polymer_recovery".equals(q.id())) idxPolymer = i;
             if ("hound_armor_upgrade".equals(q.id())) idxArmor = i;
             if ("hound_claws_upgrade".equals(q.id())) idxClaws = i;
             if ("hound_dodge_upgrade".equals(q.id())) idxDodge = i;
         }
 
         assertTrue(idxDog >= 0);
+        assertTrue(idxPolymer >= 0);
         assertTrue(idxArmor >= 0);
         assertTrue(idxClaws >= 0);
         assertTrue(idxDodge >= 0);
 
-        assertTrue(idxDog < idxArmor);
+        assertTrue(idxDog < idxPolymer);
+        assertTrue(idxPolymer < idxArmor);
         assertTrue(idxArmor < idxClaws);
         assertTrue(idxClaws < idxDodge);
+
+        QuestData polymerQuest = QuestRegistry.getQuest("polymer_recovery");
+        assertNotNull(polymerQuest);
+        assertTrue(polymerQuest.prerequisiteIds().contains("cyber_hound_companion"));
+        assertEquals(SandStormMod.id("salvaged_polymer"), polymerQuest.requiredItemId());
+
+        QuestData armorQuest = QuestRegistry.getQuest("hound_armor_upgrade");
+        assertNotNull(armorQuest);
+        assertTrue(armorQuest.prerequisiteIds().contains("polymer_recovery"));
     }
 }
 

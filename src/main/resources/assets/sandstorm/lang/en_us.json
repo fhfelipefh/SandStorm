@@ -1753,5 +1753,8 @@
   "quest.sandstorm.tactical_evasion.note": "Dodges lethal strikes and sandworms.",
   "quest.sandstorm.energized_vibro_blade_quest.title": "High-Frequency Kinetic Blade",
   "quest.sandstorm.energized_vibro_blade_quest.task": "Craft the Energized Vibro-Blade.",
-  "quest.sandstorm.energized_vibro_blade_quest.note": "Piezoelectric motor dealing 18-22 dmg."
+  "quest.sandstorm.energized_vibro_blade_quest.note": "Piezoelectric motor dealing 18-22 dmg.",
+  "quest.sandstorm.polymer_recovery.title": "Polymer Recovery",
+  "quest.sandstorm.polymer_recovery.task": "Obtain Salvaged Polymer.",
+  "quest.sandstorm.polymer_recovery.note": "Dig buried ruins or recycle scrap with sand."
 }

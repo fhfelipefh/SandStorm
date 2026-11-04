@@ -214,11 +214,17 @@ public class ScoutDroneEntity extends PathfinderMob implements Enemy, RangedAtta
             if (this.random.nextFloat() < 0.1f) {
                 this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.CIRCUIT_BOARD, 1));
             }
+            if (this.random.nextFloat() < 0.50f) {
+                this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SALVAGED_POLYMER, 1));
+            }
             return;
         }
         int scrapCount = 1 + this.random.nextInt(2);
         this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SCRAP_METAL, scrapCount));
         this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.LOOSE_WIRES, 1 + this.random.nextInt(2)));
+        if (this.random.nextFloat() < 0.75f) {
+            this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.SALVAGED_POLYMER, 1 + this.random.nextInt(2)));
+        }
         if (this.random.nextFloat() < 0.25f) {
             this.spawnAtLocation(serverLevel, new ItemStack(SandStormItems.CIRCUIT_BOARD, 1));
         }

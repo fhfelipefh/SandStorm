@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.25,
+  "ingredient": "sandstorm:synthetic_fiber",
+  "result": {
+    "count": 1,
+    "id": "sandstorm:salvaged_polymer"
+  }
+}
+

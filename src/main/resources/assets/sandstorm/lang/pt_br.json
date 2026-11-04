@@ -1753,5 +1753,8 @@
   "message.sandstorm.cyber_mole_reprogrammed": "Firmware regravado! Toupeira vinculada.",
   "message.sandstorm.cyber_mole_already_tamed": "Firmware da unidade já vinculado.",
   "message.sandstorm.cyber_mole_firewall_active": "Firewall ativo! Paralise com PEM primeiro.",
-  "message.sandstorm.cyber_mole_needs_circuit": "Requer 1x Placa de Circuito para regravar."
+  "message.sandstorm.cyber_mole_needs_circuit": "Requer 1x Placa de Circuito para regravar.",
+  "quest.sandstorm.polymer_recovery.title": "Recuperação de Polímeros",
+  "quest.sandstorm.polymer_recovery.task": "Colete Polímero Recuperado.",
+  "quest.sandstorm.polymer_recovery.note": "Escave ruínas ou recicle sucata com areia."
 }
