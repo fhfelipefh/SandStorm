@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -78,6 +79,9 @@ public class MicroSingularityTrapBlock extends Block {
             AABB blastArea = new AABB(pos).inflate(3.5);
             List<LivingEntity> blastTargets = level.getEntitiesOfClass(LivingEntity.class, blastArea);
             for (LivingEntity target : blastTargets) {
+                if (CompanionTrapHelper.isTamedCompanion(target)) {
+                    continue;
+                }
                 target.hurtServer(level, level.damageSources().explosion(null, null), 8.0f);
             }
 

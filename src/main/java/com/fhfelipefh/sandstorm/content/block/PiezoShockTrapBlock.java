@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -81,6 +82,9 @@ public class PiezoShockTrapBlock extends Block {
 
     private void handleShockTrigger(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (!state.getValue(CHARGED)) {
+            return;
+        }
+        if (entity instanceof LivingEntity living && CompanionTrapHelper.isTamedCompanion(living)) {
             return;
         }
 

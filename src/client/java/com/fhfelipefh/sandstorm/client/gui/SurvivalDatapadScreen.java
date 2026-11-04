@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.client.gui;
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.client.renderer.MultiblockHologramRenderer;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
+import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
 import com.fhfelipefh.sandstorm.content.multiblock.MultiblockBlockRequirement;
 import com.fhfelipefh.sandstorm.content.multiblock.MultiblockRegistry;
 import com.fhfelipefh.sandstorm.content.multiblock.MultiblockStructure;
@@ -27,6 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
@@ -787,6 +789,16 @@ public class SurvivalDatapadScreen extends Screen {
                     }
                 }
             }
+            if ("sandstorm.tame_cyber_hound".equals(quest.conditionTag())) {
+                if (DatapadClientHelper.isConditionMet("sandstorm.tame_cyber_hound")
+                        || player.entityTags().contains("sandstorm.tame_cyber_hound")) {
+                    return true;
+                }
+                if (hasClientBoundCyberHound(player)) {
+                    DatapadClientHelper.addCondition("sandstorm.tame_cyber_hound");
+                    return true;
+                }
+            }
             return DatapadClientHelper.isConditionMet(quest.conditionTag())
                     || player.entityTags().contains(quest.conditionTag());
         }
@@ -811,6 +823,19 @@ public class SurvivalDatapadScreen extends Screen {
 
     public static boolean matchesQuestItem(QuestData quest, ItemStack stack, Item req) {
         return QuestRewardHandler.matchesQuestItem(quest, stack, req);
+    }
+
+    private boolean hasClientBoundCyberHound(Player player) {
+        if (player == null || player.level() == null) {
+            return false;
+        }
+        AABB searchBox = player.getBoundingBox().inflate(128.0, 64.0, 128.0);
+        List<CyberHoundEntity> hounds = player.level().getEntitiesOfClass(
+                CyberHoundEntity.class,
+                searchBox,
+                hound -> hound.isTame() && hound.isOwnedBy(player)
+        );
+        return !hounds.isEmpty();
     }
 
     private boolean arePrerequisitesClaimed(QuestData quest) {

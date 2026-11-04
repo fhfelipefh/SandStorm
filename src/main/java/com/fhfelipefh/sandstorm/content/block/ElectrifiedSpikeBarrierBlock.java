@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import com.fhfelipefh.sandstorm.content.item.SpaceSuitItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -91,6 +92,9 @@ public class ElectrifiedSpikeBarrierBlock extends Block {
 
     private void applyShock(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (!level.isClientSide() && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity living) {
+            if (CompanionTrapHelper.isTamedCompanion(living)) {
+                return;
+            }
             boolean isElectrified = state.getValue(POWERED);
             if (isElectrified) {
                 boolean fullyInsulated = living.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof SpaceSuitItem

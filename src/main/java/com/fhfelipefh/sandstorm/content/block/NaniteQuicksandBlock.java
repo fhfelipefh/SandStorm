@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -46,6 +47,9 @@ public class NaniteQuicksandBlock extends Block {
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean inside) {
+        if (entity instanceof LivingEntity living && CompanionTrapHelper.isTamedCompanion(living)) {
+            return;
+        }
         entity.makeStuckInBlock(state, new Vec3(0.25, 0.05, 0.25));
         Vec3 motion = entity.getDeltaMovement();
         entity.setDeltaMovement(motion.x * 0.4, -0.06, motion.z * 0.4);

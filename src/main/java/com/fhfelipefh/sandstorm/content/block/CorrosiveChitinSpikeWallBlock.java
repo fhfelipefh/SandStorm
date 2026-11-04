@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -89,6 +90,9 @@ public class CorrosiveChitinSpikeWallBlock extends Block {
 
     private void applyCorrosion(Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide() && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity living) {
+            if (CompanionTrapHelper.isTamedCompanion(living)) {
+                return;
+            }
             boolean hurt = living.hurtServer(serverLevel, serverLevel.damageSources().cactus(), 6.0f);
             if (hurt) {
                 living.addEffect(new MobEffectInstance(MobEffects.POISON, 100, 1));

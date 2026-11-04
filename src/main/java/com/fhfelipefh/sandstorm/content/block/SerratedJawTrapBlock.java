@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -75,6 +76,9 @@ public class SerratedJawTrapBlock extends Block {
     }
 
     private void handleEntityInteraction(Level level, BlockPos pos, BlockState state, Entity entity) {
+        if (entity instanceof LivingEntity living && CompanionTrapHelper.isTamedCompanion(living)) {
+            return;
+        }
         if (!state.getValue(SNAPPED)) {
             level.setBlock(pos, state.setValue(SNAPPED, true), 3);
             level.playSound(null, pos, SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 1.0f, 0.7f);

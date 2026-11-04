@@ -1,10 +1,13 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionGroundPathNavigation;
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import com.fhfelipefh.sandstorm.content.entity.ai.DesertExplorationWanderGoal;
 import com.fhfelipefh.sandstorm.content.item.CyberSteedUpgradeItem;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -44,6 +47,7 @@ import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -52,6 +56,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SandBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
@@ -78,9 +83,18 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
     private int jumpBufferTicks = 0;
     private boolean wasJumpingLastTick = false;
     private int sonicTurretCooldown = 0;
+    private int spikeJumpCooldown = 0;
 
     public CyberSteedEntity(EntityType<? extends CyberSteedEntity> entityType, Level level) {
         super(entityType, level);
+        this.setPathfindingMalus(PathType.DAMAGING, 32.0f);
+        this.setPathfindingMalus(PathType.DAMAGING_IN_NEIGHBOR, 16.0f);
+        this.setPathfindingMalus(PathType.DAMAGE_CAUTIOUS, 16.0f);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        return new CompanionGroundPathNavigation(this, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -260,6 +274,16 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
         this.yHeadRot = this.yBodyRot;
 
         boolean shouldJump = updateJumpBufferAndCoyote(player.isJumping(), this.onGround());
+        if (!shouldJump && this.onGround() && player.zza > 0.05) {
+            Vec3 forward = this.getLookAngle();
+            BlockPos front = BlockPos.containing(this.getX() + forward.x * 1.6, this.getY(), this.getZ() + forward.z * 1.6);
+            if (CompanionTrapHelper.isSpikeTrapBlock(this.level().getBlockState(front))
+                    || CompanionTrapHelper.isSpikeTrapBlock(this.level().getBlockState(front.below()))
+                    || CompanionTrapHelper.isSpikeTrapBlock(this.level().getBlockState(this.blockPosition()))
+                    || CompanionTrapHelper.isSpikeTrapBlock(this.level().getBlockState(this.blockPosition().below()))) {
+                shouldJump = true;
+            }
+        }
         double jumpVel = this.hasSpeedOverdrive() ? 0.78 : JUMP_VELOCITY;
         if (shouldJump) {
             Vec3 currentDelta = this.getDeltaMovement();
@@ -325,6 +349,9 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
 
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float amount) {
+        if (this.isTame() && (source.is(DamageTypes.CACTUS) || source.is(DamageTypes.SWEET_BERRY_BUSH) || source.is(DamageTypes.STALAGMITE))) {
+            return false;
+        }
         if (!this.isCanisterExploded()) {
             if (source.is(DamageTypes.IN_FIRE)
                     || source.is(DamageTypes.ON_FIRE)
@@ -660,6 +687,47 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
         if (!this.level().isClientSide() && this.level() instanceof ServerLevel serverLevel) {
             this.tickSonicTurret(serverLevel);
             this.tickBatteryPack(serverLevel);
+            if (this.isTame() && !this.isOrderedToSit() && !this.isDeactivated() && this.onGround() && this.getFirstPassenger() == null) {
+                checkSpikeJump(serverLevel);
+            }
+        }
+    }
+
+    private void checkSpikeJump(Level level) {
+        if (this.spikeJumpCooldown > 0) {
+            this.spikeJumpCooldown--;
+            return;
+        }
+        Vec3 movement = this.getDeltaMovement();
+        double speedSqr = movement.x * movement.x + movement.z * movement.z;
+        if (speedSqr < 0.0004 && !this.getNavigation().isInProgress()) {
+            return;
+        }
+        double lookX = Math.abs(movement.x) > 0.02 ? movement.x : -Math.sin(Math.toRadians(this.getYRot()));
+        double lookZ = Math.abs(movement.z) > 0.02 ? movement.z : Math.cos(Math.toRadians(this.getYRot()));
+        Vec3 forward = new Vec3(lookX, 0, lookZ).normalize();
+
+        BlockPos posFront = BlockPos.containing(this.getX() + forward.x * 1.6, this.getY(), this.getZ() + forward.z * 1.6);
+        BlockPos posFrontBelow = posFront.below();
+        BlockPos posFeet = this.blockPosition();
+        BlockPos posFeetBelow = posFeet.below();
+
+        boolean hazardAhead = CompanionTrapHelper.isSpikeTrapBlock(level.getBlockState(posFront))
+                || CompanionTrapHelper.isSpikeTrapBlock(level.getBlockState(posFrontBelow))
+                || CompanionTrapHelper.isSpikeTrapBlock(level.getBlockState(posFeet))
+                || CompanionTrapHelper.isSpikeTrapBlock(level.getBlockState(posFeetBelow));
+
+        if (hazardAhead) {
+            double jumpVel = this.hasSpeedOverdrive() ? 0.78 : JUMP_VELOCITY;
+            double boost = 1.35;
+            this.setDeltaMovement(movement.x * boost, jumpVel, movement.z * boost);
+            this.spikeJumpCooldown = 18;
+            if (level instanceof ServerLevel serverLevel) {
+                serverLevel.playSound(null, this.blockPosition(), SoundEvents.IRON_GOLEM_ATTACK, SoundSource.PLAYERS, 0.9f, 1.4f);
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                        this.getX(), this.getY() + 0.3, this.getZ(),
+                        10, 0.25, 0.15, 0.25, 0.05);
+            }
         }
     }
 

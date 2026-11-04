@@ -6,6 +6,7 @@ import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.content.entity.WardenAndroidEntity;
+import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -41,6 +42,9 @@ public class ReprogrammerToolItem extends Item {
         if (interactionTarget instanceof CyberHoundEntity hound) {
             Level level = player.level();
             if (hound.isTame()) {
+                if (hound.isOwnedBy(player)) {
+                    QuestRewardHandler.triggerCyberHoundTamed(player);
+                }
                 if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_hound_already_tamed"), true);
                 }
@@ -59,6 +63,7 @@ public class ReprogrammerToolItem extends Item {
 
                 hound.tame(player);
                 hound.setOrderedToSit(false);
+                QuestRewardHandler.triggerCyberHoundTamed(serverPlayer);
                 serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
                         hound.getX(), hound.getY() + 0.5, hound.getZ(),
                         35, 0.35, 0.4, 0.35, 0.1);

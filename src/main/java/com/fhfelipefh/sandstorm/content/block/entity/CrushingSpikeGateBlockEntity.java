@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.content.block.entity;
 
 import com.fhfelipefh.sandstorm.content.block.CrushingSpikeGateBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -53,6 +54,9 @@ public class CrushingSpikeGateBlockEntity extends BlockEntity {
                 AABB aabb = new AABB(pos);
                 List<LivingEntity> victims = serverLevel.getEntitiesOfClass(LivingEntity.class, aabb);
                 for (LivingEntity victim : victims) {
+                    if (CompanionTrapHelper.isTamedCompanion(victim)) {
+                        continue;
+                    }
                     victim.hurtServer(serverLevel, serverLevel.damageSources().generic(), 12.0f);
                 }
             }

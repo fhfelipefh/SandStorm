@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -87,6 +88,9 @@ public class TitaniumSpikeWallBlock extends Block {
 
     private void applySpikeDamage(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (!level.isClientSide() && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity living) {
+            if (CompanionTrapHelper.isTamedCompanion(living)) {
+                return;
+            }
             boolean hurt = living.hurtServer(serverLevel, serverLevel.damageSources().cactus(), 8.0f);
             if (hurt) {
                 living.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 1));

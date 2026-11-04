@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -121,6 +122,9 @@ public class RetractableSpikeWallBlock extends Block {
 
     private void applyExtendedDamage(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (!level.isClientSide() && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity living) {
+            if (CompanionTrapHelper.isTamedCompanion(living)) {
+                return;
+            }
             boolean hurt = living.hurtServer(serverLevel, serverLevel.damageSources().cactus(), 10.0f);
             if (hurt) {
                 Direction dir = state.getValue(FACING);

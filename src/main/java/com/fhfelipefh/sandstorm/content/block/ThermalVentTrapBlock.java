@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -65,6 +66,9 @@ public class ThermalVentTrapBlock extends Block {
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
         if (entity instanceof LivingEntity living) {
+            if (CompanionTrapHelper.isTamedCompanion(living)) {
+                return;
+            }
             triggerThermalVent(level, pos, state, living);
         }
     }
@@ -77,6 +81,9 @@ public class ThermalVentTrapBlock extends Block {
             AABB burnArea = new AABB(pos).inflate(0.5, 1.5, 0.5);
             List<LivingEntity> victims = level.getEntitiesOfClass(LivingEntity.class, burnArea);
             for (LivingEntity living : victims) {
+                if (CompanionTrapHelper.isTamedCompanion(living)) {
+                    continue;
+                }
                 living.igniteForSeconds(4.0f);
                 living.hurtServer(serverLevel, level.damageSources().hotFloor(), 5.0f);
                 living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0));

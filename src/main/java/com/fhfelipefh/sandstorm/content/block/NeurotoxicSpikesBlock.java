@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -44,6 +45,9 @@ public class NeurotoxicSpikesBlock extends Block {
 
     private void applyVenom(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (entity instanceof LivingEntity living) {
+            if (CompanionTrapHelper.isTamedCompanion(living)) {
+                return;
+            }
             entity.makeStuckInBlock(state, new Vec3(0.8, 0.75, 0.8));
             if (level instanceof ServerLevel serverLevel && entity.tickCount % 20 == 0) {
                 living.hurtServer(serverLevel, level.damageSources().cactus(), 3.5f);

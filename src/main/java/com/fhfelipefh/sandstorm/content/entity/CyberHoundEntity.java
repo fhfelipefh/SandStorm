@@ -1,7 +1,11 @@
 package com.fhfelipefh.sandstorm.content.entity;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionGroundPathNavigation;
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import com.fhfelipefh.sandstorm.content.entity.ai.DesertExplorationWanderGoal;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -14,6 +18,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,13 +35,16 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndroid {
     private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.BOOLEAN);
@@ -44,9 +52,18 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
     private static final EntityDataAccessor<Integer> DATA_REPAIR_REQUIRED = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.INT);
 
     private int alertCooldown = 0;
+    private int spikeJumpCooldown = 0;
 
     public CyberHoundEntity(EntityType<? extends CyberHoundEntity> entityType, Level level) {
         super(entityType, level);
+        this.setPathfindingMalus(PathType.DAMAGING, 32.0f);
+        this.setPathfindingMalus(PathType.DAMAGING_IN_NEIGHBOR, 16.0f);
+        this.setPathfindingMalus(PathType.DAMAGE_CAUTIOUS, 16.0f);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        return new CompanionGroundPathNavigation(this, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -137,6 +154,7 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
                     this.setHealth(30.0f);
                     this.tame(player);
                     this.setOrderedToSit(false);
+                    QuestRewardHandler.triggerCyberHoundTamed(player);
                     if (currentLevel instanceof ServerLevel serverLevel) {
                         serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
                                 this.getX(), this.getY() + 0.6, this.getZ(),
@@ -152,6 +170,7 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
 
         if (this.isTame()) {
             if (this.isOwnedBy(player)) {
+                QuestRewardHandler.triggerCyberHoundTamed(player);
                 if (itemStack.is(SandStormItems.SCRAP_METAL)) {
                     if (this.getHealth() < this.getMaxHealth()) {
                         this.heal(6.0f);
@@ -214,6 +233,12 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
         }
 
         Level currentLevel = this.level();
+        if (!currentLevel.isClientSide() && this.isTame() && this.tickCount % 40 == 0) {
+            LivingEntity owner = this.getOwner();
+            if (owner instanceof ServerPlayer serverPlayer && !serverPlayer.entityTags().contains("sandstorm.tame_cyber_hound")) {
+                QuestRewardHandler.triggerCyberHoundTamed(serverPlayer);
+            }
+        }
         if (!currentLevel.isClientSide() && this.isTame() && this.alertCooldown <= 0) {
             LivingEntity owner = this.getOwner();
             if (owner != null && this.distanceToSqr(owner) < 400.0) {
@@ -226,6 +251,56 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
                 }
             }
         }
+
+        if (!currentLevel.isClientSide() && this.isTame() && !this.isOrderedToSit() && !this.isDeactivated() && this.onGround()) {
+            checkSpikeJump(currentLevel);
+        }
+    }
+
+    private void checkSpikeJump(Level level) {
+        if (this.spikeJumpCooldown > 0) {
+            this.spikeJumpCooldown--;
+            return;
+        }
+        Vec3 movement = this.getDeltaMovement();
+        double speedSqr = movement.x * movement.x + movement.z * movement.z;
+        if (speedSqr < 0.0004 && !this.getNavigation().isInProgress()) {
+            return;
+        }
+        double lookX = Math.abs(movement.x) > 0.02 ? movement.x : -Math.sin(Math.toRadians(this.getYRot()));
+        double lookZ = Math.abs(movement.z) > 0.02 ? movement.z : Math.cos(Math.toRadians(this.getYRot()));
+        Vec3 forward = new Vec3(lookX, 0, lookZ).normalize();
+
+        BlockPos posFront = BlockPos.containing(this.getX() + forward.x * 1.2, this.getY(), this.getZ() + forward.z * 1.2);
+        BlockPos posFrontBelow = posFront.below();
+        BlockPos posFeet = this.blockPosition();
+        BlockPos posFeetBelow = posFeet.below();
+
+        boolean hazardAhead = CompanionTrapHelper.isSpikeTrapBlock(level.getBlockState(posFront))
+                || CompanionTrapHelper.isSpikeTrapBlock(level.getBlockState(posFrontBelow))
+                || CompanionTrapHelper.isSpikeTrapBlock(level.getBlockState(posFeet))
+                || CompanionTrapHelper.isSpikeTrapBlock(level.getBlockState(posFeetBelow));
+
+        if (hazardAhead) {
+            double boost = 1.35;
+            this.setDeltaMovement(movement.x * boost, 0.48, movement.z * boost);
+            this.spikeJumpCooldown = 15;
+            if (level instanceof ServerLevel serverLevel) {
+                serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                        SoundEvents.WOLF_STEP, this.getSoundSource(), 0.9f, 1.4f);
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                        this.getX(), this.getY() + 0.2, this.getZ(),
+                        8, 0.2, 0.1, 0.2, 0.04);
+            }
+        }
+    }
+
+    @Override
+    public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float amount) {
+        if (this.isTame() && (source.is(DamageTypes.CACTUS) || source.is(DamageTypes.SWEET_BERRY_BUSH) || source.is(DamageTypes.STALAGMITE))) {
+            return false;
+        }
+        return super.hurtServer(serverLevel, source, amount);
     }
 
     @Override

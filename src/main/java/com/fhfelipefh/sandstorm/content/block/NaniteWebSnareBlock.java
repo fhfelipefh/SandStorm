@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -60,8 +61,15 @@ public class NaniteWebSnareBlock extends Block {
 
         AABB scanBox = new AABB(pos.getX() + 0.1, pos.getY() - 5.0, pos.getZ() + 0.1, pos.getX() + 0.9, pos.getY(), pos.getZ() + 0.9);
         List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, scanBox);
-        if (!targets.isEmpty()) {
-            triggerSnare(level, pos, state, targets.getFirst());
+        LivingEntity validTarget = null;
+        for (LivingEntity target : targets) {
+            if (!CompanionTrapHelper.isTamedCompanion(target)) {
+                validTarget = target;
+                break;
+            }
+        }
+        if (validTarget != null) {
+            triggerSnare(level, pos, state, validTarget);
         } else {
             level.scheduleTick(pos, this, 10);
         }

@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.quest;
 
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
+import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +54,12 @@ public class QuestRewardHandler {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             ServerPlayer player = handler.getPlayer();
             PlayerQuestSavedData data = PlayerQuestSavedData.get(server);
+            if (hasBoundCyberHound(player)) {
+                player.addTag("sandstorm.tame_cyber_hound");
+                data.markConditionCompleted(player.getUUID(), "sandstorm.tame_cyber_hound");
+            }
             syncPlayerQuests(player, data);
+            checkPlayerNotifications(player, data);
         });
 
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
@@ -198,6 +205,15 @@ public class QuestRewardHandler {
                     return true;
                 }
             }
+            if ("sandstorm.tame_cyber_hound".equals(quest.conditionTag())) {
+                if (hasBoundCyberHound(player)) {
+                    player.addTag("sandstorm.tame_cyber_hound");
+                    if (data != null) {
+                        data.markConditionCompleted(player.getUUID(), "sandstorm.tame_cyber_hound");
+                    }
+                    return true;
+                }
+            }
             return false;
         }
         if (quest.getRequiredItem() == null) {
@@ -280,5 +296,37 @@ public class QuestRewardHandler {
                 }
             }
         }
+    }
+
+    public static void triggerCyberHoundTamed(Player player) {
+        if (player == null) {
+            return;
+        }
+        player.addTag("sandstorm.tame_cyber_hound");
+        if (player instanceof ServerPlayer serverPlayer) {
+            MinecraftServer server = serverPlayer.level().getServer();
+            if (server != null) {
+                PlayerQuestSavedData data = PlayerQuestSavedData.get(server);
+                data.markConditionCompleted(serverPlayer.getUUID(), "sandstorm.tame_cyber_hound");
+                syncPlayerQuests(serverPlayer, data);
+                checkPlayerNotifications(serverPlayer, data);
+            }
+        }
+    }
+
+    public static boolean hasBoundCyberHound(Player player) {
+        if (player == null || !(player.level() instanceof ServerLevel serverLevel)) {
+            return false;
+        }
+        if (player.entityTags().contains("sandstorm.tame_cyber_hound")) {
+            return true;
+        }
+        AABB searchBox = player.getBoundingBox().inflate(128.0, 64.0, 128.0);
+        List<CyberHoundEntity> hounds = serverLevel.getEntitiesOfClass(
+                CyberHoundEntity.class,
+                searchBox,
+                hound -> hound.isTame() && hound.isOwnedBy(player)
+        );
+        return !hounds.isEmpty();
     }
 }

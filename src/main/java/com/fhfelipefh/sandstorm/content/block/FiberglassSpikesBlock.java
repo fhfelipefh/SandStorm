@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -64,6 +65,9 @@ public class FiberglassSpikesBlock extends Block {
         }
 
         if (entity instanceof LivingEntity living) {
+            if (CompanionTrapHelper.isTamedCompanion(living)) {
+                return;
+            }
             living.makeStuckInBlock(state, new Vec3(0.2, 0.2, 0.2));
             living.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 2, false, false, false));
 

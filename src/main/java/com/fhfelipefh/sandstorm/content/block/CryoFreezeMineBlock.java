@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -64,7 +65,10 @@ public class CryoFreezeMineBlock extends Block {
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
-        if (entity instanceof LivingEntity && !state.getValue(ACTIVE)) {
+        if (entity instanceof LivingEntity living && !state.getValue(ACTIVE)) {
+            if (CompanionTrapHelper.isTamedCompanion(living)) {
+                return;
+            }
             triggerCryoDetonation(level, pos, state);
         }
     }
@@ -81,6 +85,9 @@ public class CryoFreezeMineBlock extends Block {
             AABB freezeArea = new AABB(pos).inflate(4.5);
             List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, freezeArea);
             for (LivingEntity target : targets) {
+                if (CompanionTrapHelper.isTamedCompanion(target)) {
+                    continue;
+                }
                 target.setTicksFrozen(400);
                 target.hurtServer(serverLevel, level.damageSources().freeze(), 8.0f);
                 target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 80, 4, false, false, false));

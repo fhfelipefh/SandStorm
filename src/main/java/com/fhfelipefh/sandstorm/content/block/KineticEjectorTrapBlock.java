@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -78,6 +79,9 @@ public class KineticEjectorTrapBlock extends Block {
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
         if (state.getValue(CHARGED) && entity instanceof LivingEntity living) {
+            if (CompanionTrapHelper.isTamedCompanion(living)) {
+                return;
+            }
             triggerEjection(level, pos, state, living);
         }
     }
@@ -87,6 +91,9 @@ public class KineticEjectorTrapBlock extends Block {
         List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, area);
         if (!targets.isEmpty()) {
             for (LivingEntity target : targets) {
+                if (CompanionTrapHelper.isTamedCompanion(target)) {
+                    continue;
+                }
                 triggerEjection(level, pos, state, target);
             }
         } else {

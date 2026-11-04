@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.block;
 
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import com.fhfelipefh.sandstorm.content.item.SpaceSuitItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -58,6 +59,9 @@ public class KineticFloorSpikesBlock extends Block {
 
     private void triggerSpikes(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (!state.getValue(TRIGGERED)) {
+            if (entity instanceof LivingEntity living && CompanionTrapHelper.isTamedCompanion(living)) {
+                return;
+            }
             level.setBlock(pos, state.setValue(TRIGGERED, true), 3);
             level.scheduleTick(pos, this, 40);
             level.playSound(null, pos, SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS, 0.7f, 1.4f);
