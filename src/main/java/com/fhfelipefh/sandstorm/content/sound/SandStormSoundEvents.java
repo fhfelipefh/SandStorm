@@ -41,6 +41,10 @@ public class SandStormSoundEvents {
     public static final SoundEvent HYPO_INJECTOR_USE = register("item.hypo_injector.use");
     public static final SoundEvent CYBER_COMPANION_SERVO_RETRACT = register("entity.cyber_companion.servo_retract");
     public static final SoundEvent CYBER_COMPANION_SERVO_EXPAND = register("entity.cyber_companion.servo_expand");
+    public static final SoundEvent SCAVENGER_VULTURE_SCREECH = register("entity.scavenger_vulture.screech");
+    public static final SoundEvent SCAVENGER_VULTURE_TEAR = register("entity.scavenger_vulture.tear");
+    public static final SoundEvent SCAVENGER_VULTURE_FLEE = register("entity.scavenger_vulture.flee");
+    public static final SoundEvent SUIT_GLIDER_WHOOSH = register("suit.glider.whoosh");
 
     private static SoundEvent register(String path) {
         Identifier id = SandStormMod.id(path);

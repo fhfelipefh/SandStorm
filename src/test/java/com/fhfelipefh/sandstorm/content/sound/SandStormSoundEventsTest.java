@@ -64,6 +64,10 @@ class SandStormSoundEventsTest {
         assertNotNull(SandStormSoundEvents.HYPO_INJECTOR_USE);
         assertNotNull(SandStormSoundEvents.CYBER_COMPANION_SERVO_RETRACT);
         assertNotNull(SandStormSoundEvents.CYBER_COMPANION_SERVO_EXPAND);
+        assertNotNull(SandStormSoundEvents.SCAVENGER_VULTURE_SCREECH);
+        assertNotNull(SandStormSoundEvents.SCAVENGER_VULTURE_TEAR);
+        assertNotNull(SandStormSoundEvents.SCAVENGER_VULTURE_FLEE);
+        assertNotNull(SandStormSoundEvents.SUIT_GLIDER_WHOOSH);
     }
 
     @Test
@@ -92,7 +96,11 @@ class SandStormSoundEventsTest {
                 "terraformer_hum",
                 "thumper_thump",
                 "servo_retract",
-                "servo_expand"
+                "servo_expand",
+                "scavenger_vulture_screech",
+                "scavenger_vulture_tear",
+                "scavenger_vulture_flee",
+                "suit_glider_whoosh"
         };
 
         for (String base : soundBases) {

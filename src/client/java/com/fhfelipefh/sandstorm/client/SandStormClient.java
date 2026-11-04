@@ -93,6 +93,7 @@ import com.fhfelipefh.sandstorm.client.renderer.MegazordRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.MirageDecoyRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandboardRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandwormRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.ScavengerVultureRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.DerelictAutomatonRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyberHoundRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.CyberSteedRenderer;
@@ -265,6 +266,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.APEX_SANDWORM, SandwormRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.WARDEN_ANDROID, WardenAndroidRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SEISMIC_SCORPION, SeismicScorpionRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.SCAVENGER_VULTURE, ScavengerVultureRenderer::new);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (SandstormFlashlightKeys.FLASHLIGHT_KEY.consumeClick()) {

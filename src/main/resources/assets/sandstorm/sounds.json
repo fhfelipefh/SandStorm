@@ -240,5 +240,33 @@
     "sounds": [
       "sandstorm:servo_expand"
     ]
+  },
+  "entity.scavenger_vulture.screech": {
+    "category": "hostile",
+    "subtitle": "subtitles.sandstorm.entity.scavenger_vulture.screech",
+    "sounds": [
+      "sandstorm:scavenger_vulture_screech"
+    ]
+  },
+  "entity.scavenger_vulture.tear": {
+    "category": "hostile",
+    "subtitle": "subtitles.sandstorm.entity.scavenger_vulture.tear",
+    "sounds": [
+      "sandstorm:scavenger_vulture_tear"
+    ]
+  },
+  "entity.scavenger_vulture.flee": {
+    "category": "hostile",
+    "subtitle": "subtitles.sandstorm.entity.scavenger_vulture.flee",
+    "sounds": [
+      "sandstorm:scavenger_vulture_flee"
+    ]
+  },
+  "suit.glider.whoosh": {
+    "category": "players",
+    "subtitle": "subtitles.sandstorm.suit.glider.whoosh",
+    "sounds": [
+      "sandstorm:suit_glider_whoosh"
+    ]
   }
 }

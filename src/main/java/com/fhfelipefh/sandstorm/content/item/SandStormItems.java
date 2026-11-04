@@ -247,6 +247,10 @@ public class SandStormItems {
     public static final SubcriticalFissionCoreItem SUBCRITICAL_FISSION_CORE = register("subcritical_fission_core", new SubcriticalFissionCoreItem(properties("subcritical_fission_core")));
     public static final MiniNukeItem MINI_NUKE = register("mini_nuke", new MiniNukeItem(properties("mini_nuke")));
     public static final MiniNukeLauncherItem MINI_NUKE_LAUNCHER = register("mini_nuke_launcher", new MiniNukeLauncherItem(properties("mini_nuke_launcher")));
+    public static final Item CARBON_FIBER_SERVO_FEATHER = register("carbon_fiber_servo_feather", new Item(properties("carbon_fiber_servo_feather").rarity(Rarity.UNCOMMON)));
+    public static final Item AVIONICS_OPTICAL_SENSOR = register("avionics_optical_sensor", new Item(properties("avionics_optical_sensor").rarity(Rarity.RARE)));
+    public static final ExoSuitChipItem SUIT_GLIDER_MODULE = register("suit_glider_module", new ExoSuitChipItem(ExoSuitChipComponent.GLIDER_MODULE, properties("suit_glider_module").rarity(Rarity.RARE)));
+    public static final SpawnEggItem SCAVENGER_VULTURE_SPAWN_EGG = register("scavenger_vulture_spawn_egg", new SpawnEggItem(properties("scavenger_vulture_spawn_egg").spawnEgg(SandStormEntities.SCAVENGER_VULTURE)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -634,6 +638,10 @@ public class SandStormItems {
                         entries.accept(SUBCRITICAL_FISSION_CORE);
                         entries.accept(MINI_NUKE);
                         entries.accept(MINI_NUKE_LAUNCHER);
+                        entries.accept(CARBON_FIBER_SERVO_FEATHER);
+                        entries.accept(AVIONICS_OPTICAL_SENSOR);
+                        entries.accept(SUIT_GLIDER_MODULE);
+                        entries.accept(SCAVENGER_VULTURE_SPAWN_EGG);
                     })
                     .build()
     );

@@ -610,6 +610,29 @@ public class SuitSurvivalHandler {
                 suit.consumeEnergy(15L);
             }
         }
+
+        if (suit.hasChip(ExoSuitChipComponent.GLIDER_MODULE) && energy >= 2L) {
+            if (!player.onGround() && !player.isInWater() && !player.isFallFlying()) {
+                Vec3 motion = player.getDeltaMovement();
+                if (motion.y < -0.05) {
+                    double glideY = Math.max(motion.y * 0.75, -0.08);
+                    boolean isThermal = level.getSkyDarken() < 4 && level.canSeeSky(player.blockPosition());
+                    if (isThermal) {
+                        glideY = Math.max(glideY, -0.02);
+                    }
+                    Vec3 look = player.getLookAngle();
+                    double forwardSpeed = 0.04;
+                    Vec3 horizontal = new Vec3(look.x * forwardSpeed, 0, look.z * forwardSpeed);
+                    player.setDeltaMovement(motion.x * 0.98 + horizontal.x, glideY, motion.z * 0.98 + horizontal.z);
+                    player.fallDistance = 0.0f;
+                    if (player.tickCount % 20 == 0) {
+                        suit.consumeEnergy(1L);
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                                SandStormSoundEvents.SUIT_GLIDER_WHOOSH, SoundSource.PLAYERS, 0.4f, 1.0f);
+                    }
+                }
+            }
+        }
     }
 
     public static void removePlayer(UUID playerUuid) {

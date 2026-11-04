@@ -564,6 +564,10 @@
   "subtitles.sandstorm.item.hypo_injector.use": "Hipo-inyector sisea",
   "subtitles.sandstorm.entity.cyber_companion.servo_retract": "Servo eléctrico se retrae",
   "subtitles.sandstorm.entity.cyber_companion.servo_expand": "Servo eléctrico se expande",
+  "subtitles.sandstorm.entity.scavenger_vulture.screech": "Buitre carroñero chilla",
+  "subtitles.sandstorm.entity.scavenger_vulture.tear": "Buitre carroñero desgarra metal",
+  "subtitles.sandstorm.entity.scavenger_vulture.flee": "Buitre carroñero huye en pánico",
+  "subtitles.sandstorm.suit.glider.whoosh": "Exo-planeador susurra",
   "tooltip.sandstorm.stim.pharma_header": "ESTIMULANTE FARMACÉUTICO",
   "item.sandstorm.adrenal_stim": "Estimulante Neuro-Adrenérgico",
   "tooltip.sandstorm.stim.adrenal_stim.effect": "+ Velocidad II (3:00)",
@@ -1685,5 +1689,14 @@
   "gui.sandstorm.sonic_turret.focus_highest_threat": "FOCO: MAYOR AMENAZA",
   "gui.sandstorm.sonic_turret.focus_closest": "FOCO: MÁS CERCANO",
   "gui.sandstorm.sonic_turret.monsters": "MONSTRUOS",
-  "gui.sandstorm.sonic_turret.clear": "LIMPIAR"
+  "gui.sandstorm.sonic_turret.clear": "LIMPIAR",
+  "entity.sandstorm.scavenger_vulture": "Androide Buitre Carroñero",
+  "entity.sandstorm.scavenger_vulture.deactivated": "Buitre Carroñero Desactivado",
+  "item.sandstorm.scavenger_vulture_spawn_egg": "Generar Buitre Carroñero",
+  "item.sandstorm.carbon_fiber_servo_feather": "Servopluma de Fibra de Carbono",
+  "item.sandstorm.avionics_optical_sensor": "Sensor Óptico de Aviónica",
+  "item.sandstorm.suit_glider_module": "Módulo Exo-Planeador de Traje",
+  "tooltip.sandstorm.suit_glider_module": "Planea sobre dunas y aprovecha térmicas",
+  "tooltip.sandstorm.carbon_fiber_servo_feather": "Pluma robótica ultraligera de alas de buitre",
+  "tooltip.sandstorm.avionics_optical_sensor": "Ojo compuesto de gran altitud y cámara térmica"
 }

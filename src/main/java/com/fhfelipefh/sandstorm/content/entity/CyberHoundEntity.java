@@ -54,6 +54,7 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
 
     private int alertCooldown = 0;
     private int spikeJumpCooldown = 0;
+    private int deactivationTicks = 0;
 
     public CyberHoundEntity(EntityType<? extends CyberHoundEntity> entityType, Level level) {
         super(entityType, level);
@@ -116,6 +117,8 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
             this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0);
             this.setTarget(null);
             this.getNavigation().stop();
+        } else {
+            this.deactivationTicks = 0;
         }
     }
 
@@ -228,6 +231,15 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
             this.setDeltaMovement(0.0, Math.min(0.0, this.getDeltaMovement().y), 0.0);
             this.yBodyRot = this.getYRot();
             this.yHeadRot = this.getYRot();
+            if (this.level() instanceof ServerLevel serverLevel) {
+                this.deactivationTicks++;
+                if (this.deactivationTicks >= 48000 && this.deactivationTicks % 600 == 0 && serverLevel.canSeeSky(this.blockPosition())) {
+                    AABB searchBox = this.getBoundingBox().inflate(64.0, 60.0, 64.0);
+                    if (serverLevel.getEntitiesOfClass(ScavengerVultureEntity.class, searchBox).isEmpty()) {
+                        ScavengerVultureEntity.spawnForCarcass(serverLevel, this);
+                    }
+                }
+            }
             return;
         }
         super.tick();
@@ -344,6 +356,14 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
         return this.isDeactivated() ? SoundEvents.ITEM_BREAK.value() : SoundEvents.IRON_GOLEM_DEATH;
     }
 
+    public int getDeactivationTicks() {
+        return this.deactivationTicks;
+    }
+
+    public void setDeactivationTicks(int deactivationTicks) {
+        this.deactivationTicks = deactivationTicks;
+    }
+
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
@@ -351,6 +371,7 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
         output.putBoolean("Deactivated", this.isDeactivated());
         output.putInt("RepairProgress", this.entityData.get(DATA_REPAIR_PROGRESS));
         output.putInt("RepairRequired", this.entityData.get(DATA_REPAIR_REQUIRED));
+        output.putInt("DeactivationTicks", this.deactivationTicks);
     }
 
     @Override
@@ -360,5 +381,6 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
         this.setDeactivated(input.getBooleanOr("Deactivated", false));
         this.entityData.set(DATA_REPAIR_PROGRESS, input.getIntOr("RepairProgress", 0));
         this.entityData.set(DATA_REPAIR_REQUIRED, input.getIntOr("RepairRequired", 2));
+        this.deactivationTicks = input.getIntOr("DeactivationTicks", 0);
     }
 }

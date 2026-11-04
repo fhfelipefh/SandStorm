@@ -85,6 +85,7 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
     private boolean wasJumpingLastTick = false;
     private int sonicTurretCooldown = 0;
     private int spikeJumpCooldown = 0;
+    private int deactivationTicks = 0;
 
     public CyberSteedEntity(EntityType<? extends CyberSteedEntity> entityType, Level level) {
         super(entityType, level);
@@ -153,6 +154,8 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
             this.setTarget(null);
             this.getNavigation().stop();
             this.ejectPassengers();
+        } else {
+            this.deactivationTicks = 0;
         }
     }
 
@@ -685,6 +688,15 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
             this.setDeltaMovement(0.0, Math.min(0.0, this.getDeltaMovement().y), 0.0);
             this.yBodyRot = this.getYRot();
             this.yHeadRot = this.getYRot();
+            if (this.level() instanceof ServerLevel serverLevel) {
+                this.deactivationTicks++;
+                if (this.deactivationTicks >= 48000 && this.deactivationTicks % 600 == 0 && serverLevel.canSeeSky(this.blockPosition())) {
+                    AABB searchBox = this.getBoundingBox().inflate(64.0, 60.0, 64.0);
+                    if (serverLevel.getEntitiesOfClass(ScavengerVultureEntity.class, searchBox).isEmpty()) {
+                        ScavengerVultureEntity.spawnForCarcass(serverLevel, this);
+                    }
+                }
+            }
             return;
         }
         super.tick();
@@ -792,6 +804,14 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
         return this.isDeactivated() ? SoundEvents.ITEM_BREAK.value() : SoundEvents.IRON_GOLEM_DEATH;
     }
 
+    public int getDeactivationTicks() {
+        return this.deactivationTicks;
+    }
+
+    public void setDeactivationTicks(int deactivationTicks) {
+        this.deactivationTicks = deactivationTicks;
+    }
+
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
@@ -803,6 +823,7 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
         output.putBoolean("BatteryPack", this.hasBatteryPack());
         output.putBoolean("SpeedOverdrive", this.hasSpeedOverdrive());
         output.putBoolean("CargoPanniers", this.hasCargoPanniers());
+        output.putInt("DeactivationTicks", this.deactivationTicks);
         for (int i = 0; i < this.cargoInventory.getContainerSize(); i++) {
             ItemStack stack = this.cargoInventory.getItem(i);
             if (!stack.isEmpty()) {
@@ -822,6 +843,7 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
         this.setHasBatteryPack(input.getBooleanOr("BatteryPack", false));
         this.setHasSpeedOverdrive(input.getBooleanOr("SpeedOverdrive", false));
         this.setHasCargoPanniers(input.getBooleanOr("CargoPanniers", false));
+        this.deactivationTicks = input.getIntOr("DeactivationTicks", 0);
         for (int i = 0; i < this.cargoInventory.getContainerSize(); i++) {
             int slot = i;
             input.read("Slot" + i, ItemStack.CODEC).ifPresent(stack -> this.cargoInventory.setItem(slot, stack));

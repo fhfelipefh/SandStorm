@@ -564,6 +564,10 @@
   "subtitles.sandstorm.item.hypo_injector.use": "Hipo-injetor assobia",
   "subtitles.sandstorm.entity.cyber_companion.servo_retract": "Servo elétrico se recolhe",
   "subtitles.sandstorm.entity.cyber_companion.servo_expand": "Servo elétrico se expande",
+  "subtitles.sandstorm.entity.scavenger_vulture.screech": "Abutre catador guincha",
+  "subtitles.sandstorm.entity.scavenger_vulture.tear": "Abutre catador corta metal",
+  "subtitles.sandstorm.entity.scavenger_vulture.flee": "Abutre catador foge em pânico",
+  "subtitles.sandstorm.suit.glider.whoosh": "Exo-planador sibila",
   "tooltip.sandstorm.stim.pharma_header": "ESTIMULANTE FARMACÊUTICO",
   "item.sandstorm.adrenal_stim": "Estimulante Neuro-Adrenérgico",
   "tooltip.sandstorm.stim.adrenal_stim.effect": "+ Velocidade II (3:00)",
@@ -1685,5 +1689,14 @@
   "gui.sandstorm.sonic_turret.focus_highest_threat": "FOCO: MAIOR AMEAÇA",
   "gui.sandstorm.sonic_turret.focus_closest": "FOCO: MAIS PRÓXIMO",
   "gui.sandstorm.sonic_turret.monsters": "MONSTROS",
-  "gui.sandstorm.sonic_turret.clear": "LIMPAR"
+  "gui.sandstorm.sonic_turret.clear": "LIMPAR",
+  "entity.sandstorm.scavenger_vulture": "Androide Abutre Sucateiro",
+  "entity.sandstorm.scavenger_vulture.deactivated": "Abutre Sucateiro Desativado",
+  "item.sandstorm.scavenger_vulture_spawn_egg": "Ovo Gerador de Abutre Sucateiro",
+  "item.sandstorm.carbon_fiber_servo_feather": "Servo-Pena de Fibra de Carbono",
+  "item.sandstorm.avionics_optical_sensor": "Sensor Óptico de Aviônica",
+  "item.sandstorm.suit_glider_module": "Módulo Exo-Planador de Traje",
+  "tooltip.sandstorm.suit_glider_module": "Planeia sobre dunas e aproveita térmicas",
+  "tooltip.sandstorm.carbon_fiber_servo_feather": "Pena robótica ultraleve de asas de abutre",
+  "tooltip.sandstorm.avionics_optical_sensor": "Olho composto de alta altitude e câmera térmica"
 }

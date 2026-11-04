@@ -493,6 +493,19 @@ public class SandStormEntities {
                     .build(MINI_NUKE_PROJECTILE_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> SCAVENGER_VULTURE_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("scavenger_vulture")
+    );
+
+    public static final EntityType<ScavengerVultureEntity> SCAVENGER_VULTURE = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("scavenger_vulture"),
+            EntityType.Builder.of(ScavengerVultureEntity::new, MobCategory.MONSTER)
+                    .sized(2.4f, 1.2f)
+                    .build(SCAVENGER_VULTURE_KEY)
+    );
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(SANDWORM, SandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(CARGO_DRONE, CargoDroneEntity.createAttributes());
@@ -524,5 +537,6 @@ public class SandStormEntities {
         FabricDefaultAttributeRegistry.register(APEX_SANDWORM, ApexSandwormEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(WARDEN_ANDROID, WardenAndroidEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SEISMIC_SCORPION, SeismicScorpionEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(SCAVENGER_VULTURE, ScavengerVultureEntity.createAttributes());
     }
 }
