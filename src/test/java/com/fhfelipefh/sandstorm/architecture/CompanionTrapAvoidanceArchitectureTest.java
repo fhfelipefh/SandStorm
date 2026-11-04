@@ -82,10 +82,10 @@ class CompanionTrapAvoidanceArchitectureTest {
     }
 
     @Test
-    void testVersionIncrementedTo90() throws Exception {
+    void testVersionIncrementedTo91() throws Exception {
         Path gradleProps = Path.of("gradle.properties");
         assertTrue(Files.exists(gradleProps));
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.19.90"), "gradle.properties must be 1.19.90");
+        assertTrue(content.contains("version=1.19.91"), "gradle.properties must be 1.19.91");
     }
 }
