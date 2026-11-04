@@ -39,7 +39,7 @@ class ScavengerVultureEntityTest {
         assertEquals(24.0, supplier.getBaseValue(Attributes.MAX_HEALTH), 0.001);
         assertEquals(0.28, supplier.getBaseValue(Attributes.MOVEMENT_SPEED), 0.001);
         assertEquals(0.50, supplier.getBaseValue(Attributes.FLYING_SPEED), 0.001);
-        assertEquals(2.5, supplier.getBaseValue(Attributes.ATTACK_DAMAGE), 0.001);
+        assertEquals(3.5, supplier.getBaseValue(Attributes.ATTACK_DAMAGE), 0.001);
         assertEquals(2.0, supplier.getBaseValue(Attributes.ARMOR), 0.001);
         assertEquals(48.0, supplier.getBaseValue(Attributes.FOLLOW_RANGE), 0.001);
     }
@@ -85,6 +85,11 @@ class ScavengerVultureEntityTest {
         assertTrue(Files.exists(recipeFile), "Suit glider recipe must exist");
 
         assertTrue(Files.readAllBytes(activeTexture).length > 8);
+    }
+
+    @Test
+    void shouldImplementOverridableMachine() {
+        assertTrue(OverridableMachine.class.isAssignableFrom(ScavengerVultureEntity.class));
     }
 }
 

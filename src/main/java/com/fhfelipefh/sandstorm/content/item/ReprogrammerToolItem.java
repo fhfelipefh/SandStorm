@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.content.entity.ApexSandwormEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
+import com.fhfelipefh.sandstorm.content.entity.ScavengerVultureEntity;
 import com.fhfelipefh.sandstorm.content.entity.WardenAndroidEntity;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
@@ -101,6 +102,36 @@ public class ReprogrammerToolItem extends Item {
                 serverLevel.playSound(null, steed.getX(), steed.getY(), steed.getZ(),
                         SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 1.5f);
                 serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_steed_reprogrammed"), true);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        if (interactionTarget instanceof ScavengerVultureEntity vulture) {
+            Level level = player.level();
+            if (vulture.isOverridden()) {
+                return InteractionResult.SUCCESS;
+            }
+
+            if (!level.isClientSide() && level instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer) {
+                if (!serverPlayer.isCreative()) {
+                    SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(serverPlayer);
+                    if (suit.getStoredEnergy() < REPROGRAM_POWER_COST) {
+                        return InteractionResult.FAIL;
+                    }
+                    suit.consumeEnergy(REPROGRAM_POWER_COST);
+                }
+
+                vulture.setOverridden(true);
+                vulture.setOverrideOwner(player.getUUID());
+                vulture.setOrderedToSit(false);
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                        vulture.getX(), vulture.getY() + 0.6, vulture.getZ(),
+                        35, 0.35, 0.4, 0.35, 0.1);
+                serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                        vulture.getX(), vulture.getY() + 0.6, vulture.getZ(),
+                        20, 0.3, 0.3, 0.3, 0.05);
+                serverLevel.playSound(null, vulture.getX(), vulture.getY(), vulture.getZ(),
+                        SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 1.5f);
             }
             return InteractionResult.SUCCESS;
         }

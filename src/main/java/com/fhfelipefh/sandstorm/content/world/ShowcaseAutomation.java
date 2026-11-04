@@ -4605,7 +4605,7 @@ public class ShowcaseAutomation {
 
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.2, stationCenter.getZ() - 22.0, "§6§l[SETOR AERONÁUTICO: ABUTRE & PLANADOR]");
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.85, stationCenter.getZ() - 22.0, "§eDemonstração do Predador Sucateiro & Voo");
-        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.5, stationCenter.getZ() - 22.0, "§7Atração | Desmanche | Pânico | Exo-Planador");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.5, stationCenter.getZ() - 22.0, "§7Atração | Desmanche | Baliza | Exo-Planador");
 
         BlockPos z1Pos = stationCenter.offset(-10, 0, -8);
         for (int dx = -4; dx <= 4; dx++) {
@@ -4694,6 +4694,41 @@ public class ShowcaseAutomation {
 
         spawnHologram(level, z3Pos.getX() + 0.5, baseY + 3.5, z3Pos.getZ() - 3.5, "§c§l[Zona 3: Reação de Pânico & Fuga]");
         spawnHologram(level, z3Pos.getX() + 0.5, baseY + 3.15, z3Pos.getZ() - 3.5, "§7Ao ser atacado, emite guincho e sobe aos céus");
+
+        BlockPos z4Pos = stationCenter.offset(0, 0, 2);
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                BlockPos p = z4Pos.offset(dx, 0, dz);
+                boolean edge = Math.abs(dx) == 3 || Math.abs(dz) == 3;
+                level.setBlock(p, edge ? Blocks.DEEPSLATE_BRICKS.defaultBlockState() : Blocks.POLISHED_DEEPSLATE.defaultBlockState(), 2);
+            }
+        }
+        level.setBlock(z4Pos.offset(0, 1, 0), SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
+        CyberHoundEntity houndCarcass3 = new CyberHoundEntity(SandStormEntities.CYBER_HOUND, level);
+        houndCarcass3.setPos(z4Pos.getX() + 0.5, baseY + 2.0, z4Pos.getZ() + 0.5);
+        houndCarcass3.setDeactivated(true);
+        houndCarcass3.setDeactivationTicks(48000);
+        houndCarcass3.setPersistenceRequired();
+        houndCarcass3.setCustomName(Component.literal("§3Carcaça Sinalizada"));
+        houndCarcass3.setCustomNameVisible(true);
+        level.addFreshEntity(houndCarcass3);
+
+        ScavengerVultureEntity hackedVulture = new ScavengerVultureEntity(SandStormEntities.SCAVENGER_VULTURE, level);
+        hackedVulture.setPos(z4Pos.getX() + 1.2, baseY + 1.0, z4Pos.getZ() + 0.5);
+        hackedVulture.setOverridden(true);
+        if (player != null) {
+            hackedVulture.setOverrideOwner(player.getUUID());
+        }
+        hackedVulture.setTargetCarcass(houndCarcass3);
+        hackedVulture.setVultureState(ScavengerVultureEntity.STATE_BEACON);
+        hackedVulture.setPersistenceRequired();
+        hackedVulture.setCustomName(Component.literal("§3Abutre Hackeado (Baliza Ativa)"));
+        hackedVulture.setCustomNameVisible(true);
+        level.addFreshEntity(hackedVulture);
+
+        spawnHologram(level, z4Pos.getX() + 0.5, baseY + 4.2, z4Pos.getZ() - 3.5, "§3§l[Zona 4: Abutre Hackeado - Baliza]");
+        spawnHologram(level, z4Pos.getX() + 0.5, baseY + 3.85, z4Pos.getZ() - 3.5, "§7Pousa na carcaça emitindo pulsos de laser");
+        spawnHologram(level, z4Pos.getX() + 0.5, baseY + 3.5, z4Pos.getZ() - 3.5, "§eRepare com Sucata ou destrua para vê-lo voar!");
 
         BlockPos towerBase = stationCenter.offset(10, 0, 6);
         int towerHeight = 18;

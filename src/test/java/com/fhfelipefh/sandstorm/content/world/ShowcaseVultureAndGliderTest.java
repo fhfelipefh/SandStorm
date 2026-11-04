@@ -67,6 +67,9 @@ class ShowcaseVultureAndGliderTest {
         assertEquals(2, ScavengerVultureEntity.STATE_SCRAPPING);
         assertEquals(3, ScavengerVultureEntity.STATE_FLEEING);
         assertEquals(4, ScavengerVultureEntity.STATE_ATTACKING);
+        assertEquals(5, ScavengerVultureEntity.STATE_ESCORTING);
+        assertEquals(6, ScavengerVultureEntity.STATE_SCOUT_DIVE);
+        assertEquals(7, ScavengerVultureEntity.STATE_BEACON);
     }
 
     @Test
@@ -92,5 +95,6 @@ class ShowcaseVultureAndGliderTest {
         assertTrue(code.contains("Commands.literal(\"vulture\")"));
         assertTrue(code.contains("Commands.literal(\"glider\")"));
         assertTrue(code.contains("Setor Leste: Aviário do Abutre"));
+        assertTrue(code.contains("Zona 4: Abutre Hackeado - Baliza"));
     }
 }

@@ -115,15 +115,28 @@ public class ScavengerVultureModel extends EntityModel<ScavengerVultureRenderSta
             return;
         }
 
-        if (state.vultureState == 1) {
+        if (state.vultureState == 7) {
+            this.body.xRot = 0.05f;
+            this.neck.xRot = 0.1f + Mth.sin(state.animationTicks * 0.15f) * 0.08f;
+            this.head.xRot = -0.1f + Mth.cos(state.animationTicks * 0.15f) * 0.1f;
+            this.rightWing.zRot = 0.82f;
+            this.leftWing.zRot = -0.82f;
+            this.rightWing.xRot = 0.15f;
+            this.leftWing.xRot = 0.15f;
+            this.rightLeg.xRot = 0.0f;
+            this.leftLeg.xRot = 0.0f;
+            return;
+        }
+
+        if (state.vultureState == 1 || state.vultureState == 4 || state.vultureState == 6) {
             this.body.xRot = 0.65f;
             this.neck.xRot = -0.3f;
             this.rightWing.zRot = 0.35f;
             this.leftWing.zRot = -0.35f;
             this.rightWing.xRot = 0.55f;
             this.leftWing.xRot = 0.55f;
-            this.rightLeg.xRot = 0.55f;
-            this.leftLeg.xRot = 0.55f;
+            this.rightLeg.xRot = state.vultureState == 4 ? 0.75f : 0.55f;
+            this.leftLeg.xRot = state.vultureState == 4 ? 0.75f : 0.55f;
             return;
         }
 

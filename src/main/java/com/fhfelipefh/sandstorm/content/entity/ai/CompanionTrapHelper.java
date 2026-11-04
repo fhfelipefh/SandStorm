@@ -18,6 +18,7 @@ import com.fhfelipefh.sandstorm.content.block.SerratedJawTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.SubglacialIceSpikeBlock;
 import com.fhfelipefh.sandstorm.content.block.ThermalVentTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.TitaniumSpikeWallBlock;
+import com.fhfelipefh.sandstorm.content.entity.OverridableMachine;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.TamableAnimal;
@@ -33,6 +34,9 @@ public class CompanionTrapHelper {
         }
         if (entity instanceof AbstractHorse horse) {
             return horse.isTamed();
+        }
+        if (entity instanceof OverridableMachine om) {
+            return om.isOverridden();
         }
         return false;
     }
