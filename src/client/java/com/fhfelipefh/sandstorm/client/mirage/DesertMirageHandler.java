@@ -2,6 +2,7 @@ package com.fhfelipefh.sandstorm.client.mirage;
 
 import com.fhfelipefh.sandstorm.client.hud.SurvivalHudOverlay;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import com.fhfelipefh.sandstorm.content.world.ShelterDetectionHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -40,7 +41,7 @@ public class DesertMirageHandler {
         if (!client.level.getBiome(client.player.blockPosition()).is(Biomes.DESERT)) {
             return false;
         }
-        if (!client.level.canSeeSky(client.player.blockPosition())) {
+        if (ShelterDetectionHelper.isSheltered(client.level, client.player.blockPosition())) {
             return false;
         }
 

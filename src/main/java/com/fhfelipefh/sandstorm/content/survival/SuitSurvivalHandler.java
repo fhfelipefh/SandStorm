@@ -11,6 +11,7 @@ import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import com.fhfelipefh.sandstorm.content.world.SandStormWorldHelper;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import com.fhfelipefh.sandstorm.content.world.ShelterDetectionHelper;
 import com.fhfelipefh.sandstorm.content.survival.FlashlightStateServer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -131,12 +132,13 @@ public class SuitSurvivalHandler {
 
         boolean isOverworld = player.level().dimension() == Level.OVERWORLD;
         BlockPos pos = player.blockPosition();
-        boolean canSeeSky = (player.tickCount % 10 == 0)
+        boolean sheltered = ShelterDetectionHelper.isSheltered(player.level(), pos);
+        boolean canSeeSky = !sheltered && ((player.tickCount % 10 == 0)
                 ? player.level().canSeeSkyFromBelowWater(pos)
-                : player.level().canSeeSky(pos);
+                : player.level().canSeeSky(pos));
         boolean isDay = player.level().getSkyDarken() < 4;
         boolean exposedToSunlight = isOverworld && isDay && canSeeSky && pos.getY() >= 50;
-        boolean underground = isOverworld && pos.getY() < 50;
+        boolean underground = (isOverworld && pos.getY() < 50) || sheltered;
 
         double ambientTemperature = calculateAmbientTemperature(player, pos.getY(), canSeeSky, isDay);
         double localHeatBonus = calculateLocalHeatSourceBonus((ServerLevel) player.level(), pos);
@@ -283,9 +285,10 @@ public class SuitSurvivalHandler {
 
     public static double calculateAmbientTemperature(ServerPlayer player) {
         BlockPos pos = player.blockPosition();
-        boolean canSeeSky = (player.tickCount % 10 == 0)
+        boolean sheltered = ShelterDetectionHelper.isSheltered(player.level(), pos);
+        boolean canSeeSky = !sheltered && ((player.tickCount % 10 == 0)
                 ? player.level().canSeeSkyFromBelowWater(pos)
-                : player.level().canSeeSky(pos);
+                : player.level().canSeeSky(pos));
         boolean isDay = player.level().getSkyDarken() < 4;
         return calculateAmbientTemperature(player, pos.getY(), canSeeSky, isDay);
     }

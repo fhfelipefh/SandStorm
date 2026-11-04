@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client.particle;
 
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
+import com.fhfelipefh.sandstorm.content.world.ShelterDetectionHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -34,8 +35,7 @@ public class SandstormParticleHandler {
         }
 
         BlockPos playerPos = client.player.blockPosition();
-        boolean outdoors = client.level.canSeeSky(playerPos) || client.level.canSeeSky(playerPos.above(2));
-        if (!outdoors) {
+        if (ShelterDetectionHelper.isSheltered(client.level, playerPos) || ShelterDetectionHelper.isSheltered(client.level, playerPos.above())) {
             return;
         }
 
@@ -53,6 +53,11 @@ public class SandstormParticleHandler {
             double x = client.player.getX() - (windVx * 2.0) + Math.cos(angle) * distance;
             double y = client.player.getY() + spreadY;
             double z = client.player.getZ() - (windVz * 2.0) + Math.sin(angle) * distance;
+
+            BlockPos spawnPos = BlockPos.containing(x, y, z);
+            if (!client.level.getBlockState(spawnPos).isAir() || ShelterDetectionHelper.isSheltered(client.level, spawnPos)) {
+                continue;
+            }
 
             float roll = random.nextFloat();
             DustParticleOptions particle;
@@ -78,6 +83,12 @@ public class SandstormParticleHandler {
                 double px = client.player.getX() + (random.nextDouble() - 0.5) * 18.0;
                 double py = client.player.getY() + random.nextDouble() * 4.0;
                 double pz = client.player.getZ() + (random.nextDouble() - 0.5) * 18.0;
+
+                BlockPos ionPos = BlockPos.containing(px, py, pz);
+                if (!client.level.getBlockState(ionPos).isAir() || ShelterDetectionHelper.isSheltered(client.level, ionPos)) {
+                    continue;
+                }
+
                 client.level.addParticle(
                         ParticleTypes.ELECTRIC_SPARK,
                         px, py, pz,

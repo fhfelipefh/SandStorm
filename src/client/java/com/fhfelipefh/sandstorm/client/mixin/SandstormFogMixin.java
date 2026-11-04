@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.client.mixin;
 import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import com.fhfelipefh.sandstorm.content.world.ShowcaseAutomation;
+import com.fhfelipefh.sandstorm.content.world.ShelterDetectionHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -62,8 +63,11 @@ public class SandstormFogMixin {
             return;
         }
 
-        boolean outdoors = clientLevel.canSeeSky(camera.blockPosition()) || clientLevel.canSeeSky(camera.blockPosition().above());
-        float factor = outdoors ? intensity : (intensity * 0.35f);
+        if (ShelterDetectionHelper.isSheltered(clientLevel, camera.blockPosition())) {
+            return;
+        }
+
+        float factor = intensity;
 
         Vector4f color = data.color;
         if (color != null) {

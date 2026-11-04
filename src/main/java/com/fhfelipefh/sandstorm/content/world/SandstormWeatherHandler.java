@@ -88,7 +88,7 @@ public class SandstormWeatherHandler {
             return;
         }
         for (ServerPlayer player : level.players()) {
-            if (!level.canSeeSky(player.blockPosition())) {
+            if (!level.canSeeSky(player.blockPosition()) || ShelterDetectionHelper.isSheltered(level, player.blockPosition())) {
                 continue;
             }
             int dx = level.getRandom().nextInt(25) - 12;
@@ -113,7 +113,7 @@ public class SandstormWeatherHandler {
             return;
         }
         for (ServerPlayer player : level.players()) {
-            if (!level.canSeeSky(player.blockPosition())) {
+            if (!level.canSeeSky(player.blockPosition()) || ShelterDetectionHelper.isSheltered(level, player.blockPosition())) {
                 continue;
             }
             if (level.getRandom().nextFloat() > 0.35f) {
@@ -169,7 +169,8 @@ public class SandstormWeatherHandler {
 
         for (ServerPlayer player : level.players()) {
             boolean insideSafeZone = SeismicSurvivalHandler.getTracker().isInsideSafeZone(player.getBlockX(), player.getBlockZ());
-            if (player.level().canSeeSky(player.blockPosition())) {
+            boolean sheltered = ShelterDetectionHelper.isSheltered(player.level(), player.blockPosition());
+            if (!sheltered && player.level().canSeeSky(player.blockPosition())) {
                 float effectiveVolume = insideSafeZone ? baseVolume * 0.35f : baseVolume;
                 level.playSound(null, player.blockPosition(), selectedSound, SoundSource.WEATHER, effectiveVolume, pitch);
             }
