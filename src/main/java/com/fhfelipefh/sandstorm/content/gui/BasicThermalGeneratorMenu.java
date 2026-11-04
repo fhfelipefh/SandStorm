@@ -30,7 +30,7 @@ public class BasicThermalGeneratorMenu extends AbstractContainerMenu implements 
         this.container = container;
         this.data = data;
 
-        this.addSlot(new Slot(container, 0, 80, 48));
+        this.addSlot(new Slot(container, 0, 80, 49));
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {

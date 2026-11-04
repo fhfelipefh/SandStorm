@@ -13,3 +13,4 @@ public class ShelterDetectionHelperTest {
         assertFalse(ShelterDetectionHelper.isSheltered(null, new BlockPos(0, 64, 0)));
     }
 }
+
