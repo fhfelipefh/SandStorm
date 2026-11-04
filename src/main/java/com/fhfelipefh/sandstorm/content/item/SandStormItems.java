@@ -138,6 +138,7 @@ public class SandStormItems {
     public static final SpawnEggItem NOMAD_SCAVENGER_SPAWN_EGG = register("nomad_scavenger_spawn_egg", new SpawnEggItem(properties("nomad_scavenger_spawn_egg").spawnEgg(SandStormEntities.NOMAD_SCAVENGER)));
     public static final SpawnEggItem DERELICT_AUTOMATON_SPAWN_EGG = register("derelict_automaton_spawn_egg", new SpawnEggItem(properties("derelict_automaton_spawn_egg").spawnEgg(SandStormEntities.DERELICT_AUTOMATON)));
     public static final SpawnEggItem CYBER_HOUND_SPAWN_EGG = register("cyber_hound_spawn_egg", new SpawnEggItem(properties("cyber_hound_spawn_egg").spawnEgg(SandStormEntities.CYBER_HOUND)));
+    public static final SpawnEggItem CYBER_MOLE_SPAWN_EGG = register("cyber_mole_spawn_egg", new SpawnEggItem(properties("cyber_mole_spawn_egg").spawnEgg(SandStormEntities.CYBER_MOLE)));
     public static final SpawnEggItem CYBER_STEED_SPAWN_EGG = register("cyber_steed_spawn_egg", new SpawnEggItem(properties("cyber_steed_spawn_egg").spawnEgg(SandStormEntities.CYBER_STEED)));
     public static final CyberSteedUpgradeItem STEED_UPGRADE_SONIC_TURRET = register("steed_upgrade_sonic_turret", new CyberSteedUpgradeItem(CyberSteedUpgradeItem.UpgradeType.SONIC_TURRET, properties("steed_upgrade_sonic_turret").rarity(Rarity.RARE).stacksTo(1)));
     public static final CyberSteedUpgradeItem STEED_UPGRADE_BATTERY = register("steed_upgrade_battery", new CyberSteedUpgradeItem(CyberSteedUpgradeItem.UpgradeType.BATTERY, properties("steed_upgrade_battery").rarity(Rarity.RARE).stacksTo(1)));
@@ -481,6 +482,7 @@ public class SandStormItems {
                         entries.accept(NOMAD_SCAVENGER_SPAWN_EGG);
                         entries.accept(DERELICT_AUTOMATON_SPAWN_EGG);
                         entries.accept(CYBER_HOUND_SPAWN_EGG);
+                        entries.accept(CYBER_MOLE_SPAWN_EGG);
                         entries.accept(CYBER_STEED_SPAWN_EGG);
                         entries.accept(STEED_UPGRADE_SONIC_TURRET);
                         entries.accept(STEED_UPGRADE_BATTERY);

@@ -1746,5 +1746,12 @@
   "quest.sandstorm.tactical_evasion.note": "Esquiva ataques letales y del gusano.",
   "quest.sandstorm.energized_vibro_blade_quest.title": "Hoja Cinética de Alta Frecuencia",
   "quest.sandstorm.energized_vibro_blade_quest.task": "Fabrica la Hoja Motorizada.",
-  "quest.sandstorm.energized_vibro_blade_quest.note": "Motor piezoeléctrico de 18 a 22 daño."
+  "quest.sandstorm.energized_vibro_blade_quest.note": "Motor piezoeléctrico de 18 a 22 daño.",
+  "entity.sandstorm.cyber_mole": "Topo Perforador Cibernético",
+  "entity.sandstorm.cyber_mole.deactivated": "Topo Cibernético Desactivado",
+  "item.sandstorm.cyber_mole_spawn_egg": "Generador de Topo Cibernético",
+  "message.sandstorm.cyber_mole_reprogrammed": "Firmware reescrito: ¡Topo vinculado!",
+  "message.sandstorm.cyber_mole_already_tamed": "Firmware de unidad ya vinculado al dueño.",
+  "message.sandstorm.cyber_mole_firewall_active": "¡Firewall activo! Sobrecarga con PEM primero.",
+  "message.sandstorm.cyber_mole_needs_circuit": "Requiere 1x Placa de Circuito para reprogramar."
 }

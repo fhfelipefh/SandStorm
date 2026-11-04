@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.content.defense.AcousticDefenseTracker;
 import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberMoleEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.DeactivatableAndroid;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
@@ -265,7 +266,9 @@ public class DesertMobSpawnManager {
     public static EntityType<? extends Mob> selectArtificialMobType(RandomSource random, boolean isUnderground) {
         if (isUnderground) {
             int roll = random.nextInt(100);
-            if (roll < 35) {
+            if (roll < 3) {
+                return SandStormEntities.CYBER_MOLE;
+            } else if (roll < 35) {
                 return SandStormEntities.DERELICT_AUTOMATON;
             } else if (roll < 65) {
                 return SandStormEntities.LABORER_UNIT;
@@ -298,6 +301,7 @@ public class DesertMobSpawnManager {
     public static boolean isArtificialMob(Entity entity) {
         return entity instanceof DerelictAutomatonEntity
                 || entity instanceof CyberHoundEntity
+                || entity instanceof CyberMoleEntity
                 || entity instanceof CyberSteedEntity
                 || entity instanceof LaborerUnitEntity
                 || entity instanceof ScoutDroneEntity
@@ -319,6 +323,9 @@ public class DesertMobSpawnManager {
                     continue;
                 }
                 if (mob instanceof CyberHoundEntity hound && hound.isTame()) {
+                    continue;
+                }
+                if (mob instanceof CyberMoleEntity mole && mole.isTame()) {
                     continue;
                 }
                 if (mob instanceof CyberSteedEntity steed && steed.isTame()) {

@@ -154,6 +154,13 @@ WEAPONS = [
         "role": "Resina Termoplástica Reciclada para WPC",
         "type": "2d",
         "texture": "src/main/resources/assets/sandstorm/textures/item/salvaged_polymer.png"
+    },
+    {
+        "id": "cyber_mole_spawn_egg",
+        "name": "Ovo de Toupeira Cibernética",
+        "role": "Incubação Mecatrônica Subterrânea",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/cyber_mole_spawn_egg.png"
     }
 ]
 

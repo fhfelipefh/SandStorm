@@ -32,7 +32,7 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
 ## 👾 Entidades & Mobs Cibernéticos
 
 <details>
-<summary><b>Clique para expandir a galeria isométrica de entidades (28 modelos)</b></summary>
+<summary><b>Clique para expandir a galeria isométrica de entidades (29 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -189,6 +189,16 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
       <b>Abutre Sucateiro (Scavenger Vulture)</b><br>
       <sub>Predador Aéreo & Rastreador de Carcaças</sub>
     </td>
+  </tr>
+  <tr>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/entities/cyber_mole.png" width="140" alt="Toupeira Perfuradora Cibernética"><br>
+      <b>Toupeira Perfuradora Cibernética</b><br>
+      <sub>Escavação Geológica & Emboscada de Subsolo</sub>
+    </td>
+    <td width="25%"></td>
+    <td width="25%"></td>
+    <td width="25%"></td>
   </tr>
 </table>
 
@@ -395,7 +405,7 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
 ## ⚔️ Arsenal Tático, Armas & Equipamentos
 
 <details>
-<summary><b>Clique para expandir o arsenal de armas e equipamentos (21 modelos)</b></summary>
+<summary><b>Clique para expandir o arsenal de armas e equipamentos (22 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -515,7 +525,11 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
       <b>Polímero Recuperado</b><br>
       <sub>Resina Termoplástica Reciclada para WPC</sub>
     </td>
-    <td width="25%"></td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/cyber_mole_spawn_egg.png" width="140" alt="Ovo de Toupeira Cibernética"><br>
+      <b>Ovo de Toupeira Cibernética</b><br>
+      <sub>Incubação Mecatrônica Subterrânea</sub>
+    </td>
     <td width="25%"></td>
     <td width="25%"></td>
   </tr>

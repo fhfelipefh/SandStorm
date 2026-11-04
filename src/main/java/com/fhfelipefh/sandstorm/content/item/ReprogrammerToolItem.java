@@ -3,6 +3,7 @@ package com.fhfelipefh.sandstorm.content.item;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.entity.ApexSandwormEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberMoleEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScavengerVultureEntity;
@@ -71,6 +72,61 @@ public class ReprogrammerToolItem extends Item {
                 serverLevel.playSound(null, hound.getX(), hound.getY(), hound.getZ(),
                         SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 1.5f);
                 serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_hound_reprogrammed"), true);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        if (interactionTarget instanceof CyberMoleEntity mole) {
+            Level level = player.level();
+            if (mole.isTame()) {
+                if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_mole_already_tamed"), true);
+                }
+                return InteractionResult.SUCCESS;
+            }
+
+            if (!level.isClientSide() && level instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer) {
+                if (!mole.isDeactivated()) {
+                    serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_mole_firewall_active"), true);
+                    serverLevel.playSound(null, mole.getX(), mole.getY(), mole.getZ(),
+                            SoundEvents.ANVIL_HIT, SoundSource.PLAYERS, 1.0f, 0.8f);
+                    return InteractionResult.FAIL;
+                }
+
+                if (!serverPlayer.isCreative()) {
+                    SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(serverPlayer);
+                    if (suit.getStoredEnergy() < REPROGRAM_POWER_COST) {
+                        serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.reprogrammer_insufficient_power"), true);
+                        return InteractionResult.FAIL;
+                    }
+
+                    boolean hasCircuit = false;
+                    for (int i = 0; i < serverPlayer.getInventory().getContainerSize(); i++) {
+                        ItemStack item = serverPlayer.getInventory().getItem(i);
+                        if (item.is(SandStormItems.CIRCUIT_BOARD)) {
+                            item.shrink(1);
+                            hasCircuit = true;
+                            break;
+                        }
+                    }
+
+                    if (!hasCircuit) {
+                        serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_mole_needs_circuit"), true);
+                        return InteractionResult.FAIL;
+                    }
+
+                    suit.consumeEnergy(REPROGRAM_POWER_COST);
+                }
+
+                mole.tame(player);
+                mole.setDeactivated(false);
+                mole.setOrderedToSit(false);
+                serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                        mole.getX(), mole.getY() + 0.5, mole.getZ(),
+                        40, 0.4, 0.4, 0.4, 0.1);
+                serverLevel.playSound(null, mole.getX(), mole.getY(), mole.getZ(),
+                        SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 1.5f);
+                serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_mole_reprogrammed"), true);
             }
             return InteractionResult.SUCCESS;
         }

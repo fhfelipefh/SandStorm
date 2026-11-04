@@ -202,6 +202,13 @@ ENTITIES = [
         "role": "Predador Aéreo & Rastreador de Carcaças",
         "model": "ScavengerVultureModel.java",
         "texture": "textures/entity/scavenger_vulture/scavenger_vulture.png"
+    },
+    {
+        "id": "cyber_mole",
+        "name": "Toupeira Perfuradora Cibernética",
+        "role": "Escavação Geológica & Emboscada de Subsolo",
+        "model": "CyberMoleModel.java",
+        "texture": "textures/entity/cyber_mole/cyber_mole.png"
     }
 ]
 
