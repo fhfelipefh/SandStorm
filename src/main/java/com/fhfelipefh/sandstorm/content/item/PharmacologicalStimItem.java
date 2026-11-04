@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
@@ -48,7 +49,7 @@ public class PharmacologicalStimItem extends Item {
 
     public PharmacologicalStimItem(StimType type, Properties properties) {
         super(properties
-                .food(STIM_FOOD)
+                .food(STIM_FOOD, Consumables.DEFAULT_DRINK)
                 .stacksTo(16)
                 .rarity(Rarity.UNCOMMON));
         this.type = type;

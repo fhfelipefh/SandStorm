@@ -6,6 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.level.Level;
 
 public class PotableWaterBottleItem extends Item {
@@ -13,7 +14,7 @@ public class PotableWaterBottleItem extends Item {
 
     public PotableWaterBottleItem(Properties properties) {
         super(properties
-                .food(POTABLE_FOOD)
+                .food(POTABLE_FOOD, Consumables.DEFAULT_DRINK)
                 .stacksTo(16));
     }
 
@@ -25,6 +26,9 @@ public class PotableWaterBottleItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         ItemStack result = super.finishUsingItem(stack, level, entity);
+        if (!level.isClientSide()) {
+            entity.heal(4.0f);
+        }
         if (stack.isEmpty()) {
             return new ItemStack(Items.GLASS_BOTTLE);
         }
