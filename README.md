@@ -405,7 +405,7 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
 ## ⚔️ Arsenal Tático, Armas & Equipamentos
 
 <details>
-<summary><b>Clique para expandir o arsenal de armas e equipamentos (22 modelos)</b></summary>
+<summary><b>Clique para expandir o arsenal de armas e equipamentos (30 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -529,6 +529,50 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
       <img src="docs/images/weapons/cyber_mole_spawn_egg.png" width="140" alt="Ovo de Toupeira Cibernética"><br>
       <b>Ovo de Toupeira Cibernética</b><br>
       <sub>Incubação Mecatrônica Subterrânea</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/energized_vibro_blade.png" width="140" alt="Lâmina Vibro Motorizada"><br>
+      <b>Lâmina Vibro Motorizada</b><br>
+      <sub>Lâmina Cinética de Alta Frequência (Modo Motor)</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/tactical_dodge_module.png" width="140" alt="Módulo de Esquiva Neural"><br>
+      <b>Módulo de Esquiva Neural</b><br>
+      <sub>Propulsor de Evasão Instantânea do Traje</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/suit_capacity_expander.png" width="140" alt="Expansor de Matriz do Traje"><br>
+      <b>Expansor de Matriz do Traje</b><br>
+      <sub>Expansor Modular de Energia Integrada (Até 20x)</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/portable_energy_pack.png" width="140" alt="Célula de Energia Portátil"><br>
+      <b>Célula de Energia Portátil</b><br>
+      <sub>Bateria Tática Auxiliar de Inventário</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/hound_defense_module.png" width="140" alt="Blindagem Canina Reforçada"><br>
+      <b>Blindagem Canina Reforçada</b><br>
+      <sub>Módulo Defensivo para Cães Cibernéticos</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/hound_attack_module.png" width="140" alt="Garras de Choque Caninas"><br>
+      <b>Garras de Choque Caninas</b><br>
+      <sub>Módulo Ofensivo Elétrico para Cães</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/hound_dodge_module.png" width="140" alt="Propulsor de Evasão Solar"><br>
+      <b>Propulsor de Evasão Solar</b><br>
+      <sub>Módulo de Mobilidade e Salto para Cães</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/cyber_hound_spawn_egg.png" width="140" alt="Ovo de Cão Cibernético"><br>
+      <b>Ovo de Cão Cibernético</b><br>
+      <sub>Incubação Mecatrônica do Guardião Canino</sub>
     </td>
     <td width="25%"></td>
     <td width="25%"></td>

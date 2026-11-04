@@ -161,6 +161,62 @@ WEAPONS = [
         "role": "Incubação Mecatrônica Subterrânea",
         "type": "2d",
         "texture": "src/main/resources/assets/sandstorm/textures/item/cyber_mole_spawn_egg.png"
+    },
+    {
+        "id": "energized_vibro_blade",
+        "name": "Lâmina Vibro Motorizada",
+        "role": "Lâmina Cinética de Alta Frequência (Modo Motor)",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/energized_vibro_blade.png"
+    },
+    {
+        "id": "tactical_dodge_module",
+        "name": "Módulo de Esquiva Neural",
+        "role": "Propulsor de Evasão Instantânea do Traje",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/tactical_dodge_module.png"
+    },
+    {
+        "id": "suit_capacity_expander",
+        "name": "Expansor de Matriz do Traje",
+        "role": "Expansor Modular de Energia Integrada (Até 20x)",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/suit_capacity_expander.png"
+    },
+    {
+        "id": "portable_energy_pack",
+        "name": "Célula de Energia Portátil",
+        "role": "Bateria Tática Auxiliar de Inventário",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/portable_energy_pack.png"
+    },
+    {
+        "id": "hound_defense_module",
+        "name": "Blindagem Canina Reforçada",
+        "role": "Módulo Defensivo para Cães Cibernéticos",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/hound_defense_module.png"
+    },
+    {
+        "id": "hound_attack_module",
+        "name": "Garras de Choque Caninas",
+        "role": "Módulo Ofensivo Elétrico para Cães",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/hound_attack_module.png"
+    },
+    {
+        "id": "hound_dodge_module",
+        "name": "Propulsor de Evasão Solar",
+        "role": "Módulo de Mobilidade e Salto para Cães",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/hound_dodge_module.png"
+    },
+    {
+        "id": "cyber_hound_spawn_egg",
+        "name": "Ovo de Cão Cibernético",
+        "role": "Incubação Mecatrônica do Guardião Canino",
+        "type": "2d",
+        "texture": "src/main/resources/assets/sandstorm/textures/item/cyber_hound_spawn_egg.png"
     }
 ]
 

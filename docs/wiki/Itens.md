@@ -96,3 +96,15 @@
 | **Item**     | `cryo_glazed_ration`   | Racao Glaciada Criogenica | Alimento criopreservado com resistencia ao calor extremo |
 | **Item**     | `hydroponic_feast`     | Banquete Hidroponico | Prato gastrononico de explorador interplanetario supremo |
 | **Entidade** | `apex_sandworm`        | Apex Sandworm Sovereign | Chefe monumental do manto planetario (600 HP, 3 fases) |
+| **Entidade** | `cyber_mole`           | Toupeira Perfuradora Cibernética | Companheiro escavador com ataque sísmico de subsolo |
+| **Item**     | `cyber_mole_spawn_egg` | Ovo de Toupeira Cibernética | Invoca a Toupeira Perfuradora Cibernética |
+| **Item**     | `salvaged_polymer`     | Polímero Recuperado | Resina termoplástica reciclada para WPC e blindagens |
+| **Bloco**    | `wpc_planks`           | Tábuas de Madeira Plástica (WPC) | Compósito mineral e polímero imune a fogo e tempestades |
+| **Item**     | `energized_vibro_blade`| Lâmina Vibro Motorizada | Lâmina cinética com modo motor de 18-22 de dano |
+| **Item**     | `tactical_dodge_module`| Módulo de Esquiva Neural | Propulsor do traje que esquiva automaticamente de dano |
+| **Item**     | `suit_capacity_expander`| Expansor de Matriz do Traje | Módulo empilhável que dobra a capacidade energética |
+| **Item**     | `portable_energy_pack` | Célula de Energia Portátil | Bateria auxiliar de inventário para reserva tática |
+| **Item**     | `hound_defense_module` | Blindagem Canina Reforçada | Aumenta vida máxima e defesa do cão (até 3x) |
+| **Item**     | `hound_attack_module`  | Garras de Choque Caninas | Concede ataque elétrico com choque e lentidão ao cão |
+| **Item**     | `hound_dodge_module`   | Propulsor de Evasão Solar | Concede esquiva automática e saltos acrobáticos ao cão |
+| **Item**     | `cyber_hound_spawn_egg`| Ovo de Cão Cibernético | Invoca o Cão Cibernético autônomo |
