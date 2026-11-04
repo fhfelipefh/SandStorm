@@ -5,6 +5,7 @@ import com.fhfelipefh.sandstorm.content.entity.ai.CompanionTrapHelper;
 import com.fhfelipefh.sandstorm.content.entity.ai.DesertExplorationWanderGoal;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
+import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -201,8 +202,11 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
                         if (player instanceof ServerPlayer serverPlayer) {
                             serverPlayer.sendSystemMessage(status, true);
                         }
+                        SoundEvent servoSound = this.isOrderedToSit()
+                                ? SandStormSoundEvents.CYBER_COMPANION_SERVO_RETRACT
+                                : SandStormSoundEvents.CYBER_COMPANION_SERVO_EXPAND;
                         serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
-                                SoundEvents.UI_BUTTON_CLICK.value(), this.getSoundSource(), 0.8f, this.isOrderedToSit() ? 0.9f : 1.4f);
+                                servoSound, this.getSoundSource(), 0.9f, 1.0f);
                     }
                     return InteractionResult.SUCCESS;
                 }

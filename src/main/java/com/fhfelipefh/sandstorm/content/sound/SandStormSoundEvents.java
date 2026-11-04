@@ -39,6 +39,8 @@ public class SandStormSoundEvents {
     public static final SoundEvent MEGASTRUCTURE_LAYER_COMPLETE = register("block.megastructure_constructor.layer_complete");
     public static final SoundEvent MEGASTRUCTURE_COMPLETE = register("block.megastructure_constructor.complete");
     public static final SoundEvent HYPO_INJECTOR_USE = register("item.hypo_injector.use");
+    public static final SoundEvent CYBER_COMPANION_SERVO_RETRACT = register("entity.cyber_companion.servo_retract");
+    public static final SoundEvent CYBER_COMPANION_SERVO_EXPAND = register("entity.cyber_companion.servo_expand");
 
     private static SoundEvent register(String path) {
         Identifier id = SandStormMod.id(path);

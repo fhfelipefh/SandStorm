@@ -64,10 +64,28 @@ class CompanionTrapAvoidanceArchitectureTest {
     }
 
     @Test
-    void testVersionIncrementedTo89() throws Exception {
+    void testCompanionSittingUsesFuturisticServoSounds() throws Exception {
+        Path houndFile = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity", "CyberHoundEntity.java");
+        Path steedFile = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "entity", "CyberSteedEntity.java");
+
+        assertTrue(Files.exists(houndFile));
+        assertTrue(Files.exists(steedFile));
+
+        String houndContent = Files.readString(houndFile);
+        String steedContent = Files.readString(steedFile);
+
+        assertTrue(houndContent.contains("CYBER_COMPANION_SERVO_RETRACT"), "CyberHound must play servo retract sound when sitting");
+        assertTrue(houndContent.contains("CYBER_COMPANION_SERVO_EXPAND"), "CyberHound must play servo expand sound when standing");
+
+        assertTrue(steedContent.contains("CYBER_COMPANION_SERVO_RETRACT"), "CyberSteed must play servo retract sound when sitting");
+        assertTrue(steedContent.contains("CYBER_COMPANION_SERVO_EXPAND"), "CyberSteed must play servo expand sound when standing");
+    }
+
+    @Test
+    void testVersionIncrementedTo90() throws Exception {
         Path gradleProps = Path.of("gradle.properties");
         assertTrue(Files.exists(gradleProps));
         String content = Files.readString(gradleProps);
-        assertTrue(content.contains("version=1.19.89"), "gradle.properties must be 1.19.89");
+        assertTrue(content.contains("version=1.19.90"), "gradle.properties must be 1.19.90");
     }
 }

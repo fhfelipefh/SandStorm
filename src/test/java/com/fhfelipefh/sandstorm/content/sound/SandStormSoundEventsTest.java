@@ -62,6 +62,8 @@ class SandStormSoundEventsTest {
         assertNotNull(SandStormSoundEvents.MEGASTRUCTURE_LAYER_COMPLETE);
         assertNotNull(SandStormSoundEvents.MEGASTRUCTURE_COMPLETE);
         assertNotNull(SandStormSoundEvents.HYPO_INJECTOR_USE);
+        assertNotNull(SandStormSoundEvents.CYBER_COMPANION_SERVO_RETRACT);
+        assertNotNull(SandStormSoundEvents.CYBER_COMPANION_SERVO_EXPAND);
     }
 
     @Test
@@ -88,7 +90,9 @@ class SandStormSoundEventsTest {
                 "suit_battery_low",
                 "suit_solar_charge",
                 "terraformer_hum",
-                "thumper_thump"
+                "thumper_thump",
+                "servo_retract",
+                "servo_expand"
         };
 
         for (String base : soundBases) {

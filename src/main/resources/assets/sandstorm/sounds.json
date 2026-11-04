@@ -226,5 +226,19 @@
     "sounds": [
       "sandstorm:terraformer_hum"
     ]
+  },
+  "entity.cyber_companion.servo_retract": {
+    "category": "neutral",
+    "subtitle": "subtitles.sandstorm.entity.cyber_companion.servo_retract",
+    "sounds": [
+      "sandstorm:servo_retract"
+    ]
+  },
+  "entity.cyber_companion.servo_expand": {
+    "category": "neutral",
+    "subtitle": "subtitles.sandstorm.entity.cyber_companion.servo_expand",
+    "sounds": [
+      "sandstorm:servo_expand"
+    ]
   }
 }

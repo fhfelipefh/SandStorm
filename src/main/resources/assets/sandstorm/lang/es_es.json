@@ -562,6 +562,8 @@
   "message.sandstorm.hypo_injector.no_stim": "NO SE DETECTÓ NINGÚN CARTUCHO ESTIMULANTE COMPATIBLE",
   "message.sandstorm.hypo_injector.injected": "ADMINISTRADO: %s",
   "subtitles.sandstorm.item.hypo_injector.use": "Hipo-inyector sisea",
+  "subtitles.sandstorm.entity.cyber_companion.servo_retract": "Servo eléctrico se retrae",
+  "subtitles.sandstorm.entity.cyber_companion.servo_expand": "Servo eléctrico se expande",
   "tooltip.sandstorm.stim.pharma_header": "ESTIMULANTE FARMACÉUTICO",
   "item.sandstorm.adrenal_stim": "Estimulante Neuro-Adrenérgico",
   "tooltip.sandstorm.stim.adrenal_stim.effect": "+ Velocidad II (3:00)",
