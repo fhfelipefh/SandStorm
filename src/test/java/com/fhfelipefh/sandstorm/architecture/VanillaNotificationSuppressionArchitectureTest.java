@@ -87,7 +87,7 @@ class VanillaNotificationSuppressionArchitectureTest {
     void versionMustBeBumpedTo11976() throws IOException {
         Path props = Path.of("gradle.properties");
         String content = Files.readString(props);
-        assertTrue(content.contains("version=1.19.93"), "gradle.properties must be 1.19.93");
+        assertTrue(content.contains("version=1.19.94"), "gradle.properties must be 1.19.94");
     }
 }
 

@@ -394,7 +394,7 @@ public class ScavengerVultureEntity extends PathfinderMob implements Enemy, Deac
             Vec3 current = this.vulture.getDeltaMovement();
             this.vulture.setDeltaMovement(current.x * 1.02, Math.min(current.y + 0.035, 0.65), current.z * 1.02);
 
-            if (this.vulture.fleeingTicks > 160 || this.vulture.getY() > 160.0) {
+            if (this.vulture.fleeingTicks > 160 || this.vulture.getY() > 300.0) {
                 this.vulture.discard();
             }
         }

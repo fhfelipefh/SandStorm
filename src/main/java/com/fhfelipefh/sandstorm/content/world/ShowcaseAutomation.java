@@ -61,6 +61,7 @@ import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberneticGolemEntity;
 import com.fhfelipefh.sandstorm.content.entity.DerelictAutomatonEntity;
 import com.fhfelipefh.sandstorm.content.entity.ScoutDroneEntity;
+import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
 import com.fhfelipefh.sandstorm.content.entity.CyberSteedEntity;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.FanghornEntity;
@@ -72,6 +73,7 @@ import com.fhfelipefh.sandstorm.content.entity.MirageDecoyEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.entity.SandboardEntity;
 import com.fhfelipefh.sandstorm.content.entity.SandwormEntity;
+import com.fhfelipefh.sandstorm.content.entity.ScavengerVultureEntity;
 import com.fhfelipefh.sandstorm.content.entity.SeismicScorpionEntity;
 import com.fhfelipefh.sandstorm.content.entity.WaterwingEntity;
 import com.fhfelipefh.sandstorm.content.entity.cyborg.CyborgBuilderEntity;
@@ -137,6 +139,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.LadderBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -219,6 +222,7 @@ public class ShowcaseAutomation {
                 new ShowcaseFootprint("Complexo de Ciborgues", -20, 20, -115, -80),
                 new ShowcaseFootprint("Arena do Sandworm", -26, 26, -196, -144),
                 new ShowcaseFootprint("Base Orbital", 108, 122, 13, 27),
+                new ShowcaseFootprint("Campo do Abutre & Exo-Planador", 140, 180, 15, 65),
                 new ShowcaseFootprint("Hipódromo Cibernético", -100, -50, 25, 58),
                 new ShowcaseFootprint("Biosferas", -130, 130, biosphereFrontZ - biosphereRadius - 8,
                         biosphereFrontZ + 60 + biosphereRadius + 10)
@@ -276,6 +280,7 @@ public class ShowcaseAutomation {
                     buildEntityWing(level, new BlockPos(0, 160, 0));
                     buildAutonomousCyborgFacility(level, new BlockPos(0, 160, 0), player);
                     buildPistonTestingRange(level, new BlockPos(50, 160, -125));
+                    buildScavengerVultureShowcase(level, new BlockPos(160, 160, 40), player);
                     preparePlayerForShowcase(level, player);
                 } else if (!GENERATED_PLAYERS.contains(player.getUUID())) {
                     GENERATED_PLAYERS.add(player.getUUID());
@@ -621,6 +626,14 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeSteedCommand)
                 )
+                .then(Commands.literal("vulture")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeVultureCommand)
+                )
+                .then(Commands.literal("glider")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeVultureCommand)
+                )
                 .then(Commands.literal("military_lab")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
@@ -725,6 +738,14 @@ public class ShowcaseAutomation {
                 .then(Commands.literal("horse")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeSteedCommand)
+                )
+                .then(Commands.literal("vulture")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeVultureCommand)
+                )
+                .then(Commands.literal("glider")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeVultureCommand)
                 )
                 .then(Commands.literal("military_lab")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
@@ -1103,6 +1124,25 @@ public class ShowcaseAutomation {
         return 0;
     }
 
+    public static int executeVultureCommand(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
+        if (source.getEntity() instanceof ServerPlayer player) {
+            ServerLevel level = source.getLevel();
+            if (showcaseActive) {
+                BlockPos targetPos = new BlockPos(160, 161, 40);
+                player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 180.0f, 0.0f, true);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Campo do Abutre!"), true);
+            } else {
+                BlockPos targetPos = BlockPos.containing(player.position()).relative(player.getDirection(), 4);
+                buildScavengerVultureShowcase(level, targetPos, player);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Campo do Abutre montado com sucesso!"), true);
+            }
+            return 1;
+        }
+        source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
+        return 0;
+    }
+
     public static void buildShowcase(ServerLevel level, ServerPlayer player) {
         validateShowcaseLayout();
         showcaseActive = true;
@@ -1148,6 +1188,10 @@ public class ShowcaseAutomation {
         buildOrbitalLaunchStation(level, center.offset(115, 0, 20));
         buildShowcaseWalkway(level, center.offset(95, 0, -5), center.offset(95, 0, 20));
         buildShowcaseWalkway(level, center.offset(95, 0, 20), center.offset(107, 0, 20));
+        buildScavengerVultureShowcase(level, center.offset(160, 0, 40), player);
+        buildShowcaseWalkway(level, center.offset(123, 0, 20), center.offset(142, 0, 20));
+        buildShowcaseWalkway(level, center.offset(142, 0, 20), center.offset(142, 0, 40));
+        buildShowcaseWalkway(level, center.offset(142, 0, 40), center.offset(158, 0, 40));
         buildCyberSteedShowcase(level, center.offset(-75, 0, 40), player);
         buildCyberSteedWalkway(level, center);
         buildBiospheresShowcase(level, center);
@@ -1464,6 +1508,7 @@ public class ShowcaseAutomation {
         setupPedestal(level, center.offset(-18, 0, -29), showcaseCenter.offset(-75, 1, 40), "Setor Sudoeste: Hipódromo Cibernético", "Pista de Galope, Saltos & Sobrescrita", Blocks.HAY_BLOCK);
         setupPedestal(level, center.offset(-22, 0, -29), showcaseCenter.offset(0, 1, -149), "Setor Norte: Arena do Colosso (Sandworm)", "Verme de Areia Adulto | Arena de Dunas & Fosso", Blocks.RED_SANDSTONE);
         setupPedestal(level, center.offset(-26, 0, -29), showcaseCenter.offset(50, 1, -125), "Setor Mecânica: Super Pistões", "Meia-Laje (7) | Cinético (24) | Tectônico (48 + Obsidiana)", Blocks.REDSTONE_BLOCK);
+        setupPedestal(level, center.offset(-30, 0, -29), showcaseCenter.offset(160, 1, 40), "Setor Leste: Aviário do Abutre", "Abutres, Carcaças, Desmanche & Exo-Planador", Blocks.WARPED_WART_BLOCK);
     }
 
     private static void setupPedestal(ServerLevel level, BlockPos floorPos, BlockPos destination, String title, String subtitle, Block baseBlock) {
@@ -2361,6 +2406,7 @@ public class ShowcaseAutomation {
                         new ItemStack(SandStormItems.SUIT_UPGRADE_SEISMIC, 64),
                         new ItemStack(SandStormItems.SUIT_UPGRADE_VISOR, 64),
                         new ItemStack(SandStormItems.SUIT_UPGRADE_JETPACK, 64),
+                        new ItemStack(SandStormItems.SUIT_GLIDER_MODULE, 64),
                         new ItemStack(SandStormItems.SEISMIC_SONAR_CHIP, 64),
                         new ItemStack(SandStormItems.JETBOOT_MODULE, 64),
                         new ItemStack(SandStormItems.GRAVITATIONAL_MAGNET_CHIP, 64),
@@ -2501,7 +2547,9 @@ public class ShowcaseAutomation {
                         new ItemStack(SandStormItems.ELECTROLYTE_JUICE, 64),
                         new ItemStack(SandStormItems.CRYO_GLAZED_RATION, 64),
                         new ItemStack(SandStormItems.HYDROPONIC_FEAST, 64),
-                        new ItemStack(SandStormItems.APEX_HEART_MATRIX, 64)
+                        new ItemStack(SandStormItems.APEX_HEART_MATRIX, 64),
+                        new ItemStack(SandStormItems.CARBON_FIBER_SERVO_FEATHER, 64),
+                        new ItemStack(SandStormItems.AVIONICS_OPTICAL_SENSOR, 64)
                 ),
                 true,
                 ItemStack.EMPTY,
@@ -2622,7 +2670,8 @@ public class ShowcaseAutomation {
                         new ItemStack(SandStormItems.SCOUT_DRONE_SPAWN_EGG, 64),
                         new ItemStack(SandStormItems.CRAWLER_DRONE_SPAWN_EGG, 64),
                         new ItemStack(SandStormItems.SANDWORM_SPAWN_EGG, 64),
-                        new ItemStack(SandStormItems.APEX_SANDWORM_SPAWN_EGG, 64)
+                        new ItemStack(SandStormItems.APEX_SANDWORM_SPAWN_EGG, 64),
+                        new ItemStack(SandStormItems.SCAVENGER_VULTURE_SPAWN_EGG, 64)
                 ),
                 true,
                 ItemStack.EMPTY,
@@ -4507,6 +4556,179 @@ public class ShowcaseAutomation {
                 boolean light = (x % 4 == 0 && dz == 0);
                 Block b = light ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
                 level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+    }
+
+    public static void buildScavengerVultureShowcase(ServerLevel level, BlockPos stationCenter, ServerPlayer player) {
+        int baseY = stationCenter.getY();
+
+        AABB clearBox = new AABB(stationCenter.getX() - 20.0, baseY - 2, stationCenter.getZ() - 25.0,
+                stationCenter.getX() + 20.0, baseY + 30, stationCenter.getZ() + 25.0);
+        List<Entity> existing = level.getEntitiesOfClass(Entity.class, clearBox, e -> !(e instanceof ServerPlayer));
+        for (Entity e : existing) {
+            e.discard();
+        }
+
+        for (int x = -19; x <= 19; x++) {
+            for (int z = -24; z <= 24; z++) {
+                BlockPos floorPos = stationCenter.offset(x, 0, z);
+                level.setBlock(floorPos.below(), Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+                boolean edge = Math.abs(x) == 19 || Math.abs(z) == 24;
+                boolean corner = (Math.abs(x) == 19 && Math.abs(z) == 24);
+                Block b = corner ? Blocks.OCHRE_FROGLIGHT : (edge ? Blocks.CUT_SANDSTONE : Blocks.SMOOTH_STONE);
+                level.setBlock(floorPos, b.defaultBlockState(), 2);
+            }
+        }
+
+        setupReturnPad(level, stationCenter.offset(0, 1, -22));
+
+        BlockPos chestPos = stationCenter.offset(2, 1, -22);
+        level.setBlock(chestPos.below(), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+        setChestSafe(level, chestPos, Blocks.CHEST.defaultBlockState());
+        if (level.getBlockEntity(chestPos) instanceof ChestBlockEntity chest) {
+            chest.setItem(0, new ItemStack(SandStormItems.SPACE_SUIT_HELMET));
+            chest.setItem(1, new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE));
+            chest.setItem(2, new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS));
+            chest.setItem(3, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS));
+            chest.setItem(4, new ItemStack(SandStormItems.SUIT_GLIDER_MODULE, 16));
+            chest.setItem(5, new ItemStack(SandStormItems.CARBON_FIBER_SERVO_FEATHER, 64));
+            chest.setItem(6, new ItemStack(SandStormItems.AVIONICS_OPTICAL_SENSOR, 64));
+            chest.setItem(7, new ItemStack(SandStormItems.SCAVENGER_VULTURE_SPAWN_EGG, 64));
+            chest.setItem(8, new ItemStack(SandStormItems.CYBER_HOUND_SPAWN_EGG, 16));
+            chest.setItem(9, new ItemStack(SandStormItems.PLASMA_RIFLE));
+            chest.setItem(10, new ItemStack(SandStormItems.REPROGRAMMER_TOOL));
+            chest.setItem(11, new ItemStack(SandStormItems.TITANIUM_CHITIN_COMPOSITE, 32));
+            chest.setItem(12, new ItemStack(SandStormItems.ANOMALY_RADAR));
+            chest.setItem(13, new ItemStack(SandStormItems.SURVIVAL_DATAPAD));
+        }
+
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.2, stationCenter.getZ() - 22.0, "§6§l[SETOR AERONÁUTICO: ABUTRE & PLANADOR]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.85, stationCenter.getZ() - 22.0, "§eDemonstração do Predador Sucateiro & Voo");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.5, stationCenter.getZ() - 22.0, "§7Atração | Desmanche | Pânico | Exo-Planador");
+
+        BlockPos z1Pos = stationCenter.offset(-10, 0, -8);
+        for (int dx = -4; dx <= 4; dx++) {
+            for (int dz = -4; dz <= 4; dz++) {
+                BlockPos p = z1Pos.offset(dx, 0, dz);
+                boolean duneBorder = Math.abs(dx) == 4 || Math.abs(dz) == 4;
+                level.setBlock(p, duneBorder ? Blocks.SANDSTONE.defaultBlockState() : Blocks.SAND.defaultBlockState(), 2);
+            }
+        }
+        level.setBlock(z1Pos.offset(0, 1, 0), SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
+        CyberHoundEntity houndCarcass1 = new CyberHoundEntity(SandStormEntities.CYBER_HOUND, level);
+        houndCarcass1.setPos(z1Pos.getX() + 0.5, baseY + 2.0, z1Pos.getZ() + 0.5);
+        houndCarcass1.setDeactivated(true);
+        houndCarcass1.setDeactivationTicks(48000);
+        houndCarcass1.setPersistenceRequired();
+        houndCarcass1.setCustomName(Component.literal("§7Carcaça Cibernética Abandonada"));
+        houndCarcass1.setCustomNameVisible(true);
+        level.addFreshEntity(houndCarcass1);
+
+        ScavengerVultureEntity circlingVulture = new ScavengerVultureEntity(SandStormEntities.SCAVENGER_VULTURE, level);
+        circlingVulture.setPos(z1Pos.getX() + 0.5, baseY + 14.0, z1Pos.getZ() + 0.5);
+        circlingVulture.setTargetCarcass(houndCarcass1);
+        circlingVulture.setVultureState(ScavengerVultureEntity.STATE_CIRCLING);
+        circlingVulture.setPersistenceRequired();
+        circlingVulture.setCustomName(Component.literal("§6Abutre em Patrulha Circular"));
+        circlingVulture.setCustomNameVisible(true);
+        level.addFreshEntity(circlingVulture);
+
+        spawnHologram(level, z1Pos.getX() + 0.5, baseY + 3.5, z1Pos.getZ() - 4.5, "§e§l[Zona 1: Detecção e Voo Circular]");
+        spawnHologram(level, z1Pos.getX() + 0.5, baseY + 3.15, z1Pos.getZ() - 4.5, "§7Abutre patrulha em órbitas sobre a carcaça");
+
+        BlockPos z2Pos = stationCenter.offset(10, 0, -8);
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                BlockPos p = z2Pos.offset(dx, 0, dz);
+                boolean border = Math.abs(dx) == 3 || Math.abs(dz) == 3;
+                level.setBlock(p, border ? Blocks.CUT_SANDSTONE.defaultBlockState() : Blocks.POLISHED_ANDESITE.defaultBlockState(), 2);
+                if (border) {
+                    for (int dy = 1; dy <= 3; dy++) {
+                        if (!(dx == 0 && dz == 3 && dy <= 2)) {
+                            level.setBlock(p.above(dy), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 2);
+                        }
+                    }
+                    level.setBlock(p.above(4), Blocks.CUT_SANDSTONE.defaultBlockState(), 2);
+                }
+            }
+        }
+        level.setBlock(z2Pos.offset(0, 1, 0), SandStormBlocks.BURIED_TECH_RUINS.defaultBlockState(), 3);
+        CyberHoundEntity houndCarcass2 = new CyberHoundEntity(SandStormEntities.CYBER_HOUND, level);
+        houndCarcass2.setPos(z2Pos.getX() + 0.5, baseY + 2.0, z2Pos.getZ() + 0.5);
+        houndCarcass2.setDeactivated(true);
+        houndCarcass2.setDeactivationTicks(48000);
+        houndCarcass2.setPersistenceRequired();
+        houndCarcass2.setCustomName(Component.literal("§7Carcaça em Desmanche"));
+        houndCarcass2.setCustomNameVisible(true);
+        level.addFreshEntity(houndCarcass2);
+
+        ScavengerVultureEntity scrappingVulture = new ScavengerVultureEntity(SandStormEntities.SCAVENGER_VULTURE, level);
+        scrappingVulture.setPos(z2Pos.getX() + 1.2, baseY + 1.0, z2Pos.getZ() + 0.5);
+        scrappingVulture.setTargetCarcass(houndCarcass2);
+        scrappingVulture.setVultureState(ScavengerVultureEntity.STATE_SCRAPPING);
+        scrappingVulture.setPersistenceRequired();
+        scrappingVulture.setCustomName(Component.literal("§bAbutre Sucateiro Operando"));
+        scrappingVulture.setCustomNameVisible(true);
+        level.addFreshEntity(scrappingVulture);
+
+        spawnHologram(level, z2Pos.getX() + 0.5, baseY + 5.2, z2Pos.getZ() + 0.5, "§b§l[Zona 2: Desmanche de Sucata]");
+        spawnHologram(level, z2Pos.getX() + 0.5, baseY + 4.85, z2Pos.getZ() + 0.5, "§7Arranca penas de carbono e circuitos óticos");
+
+        BlockPos z3Pos = stationCenter.offset(-10, 0, 10);
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                BlockPos p = z3Pos.offset(dx, 0, dz);
+                boolean edge = Math.abs(dx) == 3 || Math.abs(dz) == 3;
+                level.setBlock(p, edge ? Blocks.POLISHED_BASALT.defaultBlockState() : Blocks.SMOOTH_SANDSTONE.defaultBlockState(), 2);
+            }
+        }
+        level.setBlock(z3Pos.offset(0, 1, 0), Blocks.CHISELED_SANDSTONE.defaultBlockState(), 3);
+        ScavengerVultureEntity fleeTargetVulture = new ScavengerVultureEntity(SandStormEntities.SCAVENGER_VULTURE, level);
+        fleeTargetVulture.setPos(z3Pos.getX() + 0.5, baseY + 2.0, z3Pos.getZ() + 0.5);
+        fleeTargetVulture.setVultureState(ScavengerVultureEntity.STATE_CIRCLING);
+        fleeTargetVulture.setPersistenceRequired();
+        fleeTargetVulture.setCustomName(Component.literal("§cAbutre Alvo (Ataque para ver Pânico!)"));
+        fleeTargetVulture.setCustomNameVisible(true);
+        level.addFreshEntity(fleeTargetVulture);
+
+        spawnHologram(level, z3Pos.getX() + 0.5, baseY + 3.5, z3Pos.getZ() - 3.5, "§c§l[Zona 3: Reação de Pânico & Fuga]");
+        spawnHologram(level, z3Pos.getX() + 0.5, baseY + 3.15, z3Pos.getZ() - 3.5, "§7Ao ser atacado, emite guincho e sobe aos céus");
+
+        BlockPos towerBase = stationCenter.offset(10, 0, 6);
+        int towerHeight = 18;
+        for (int dy = 0; dy <= towerHeight; dy++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    BlockPos p = towerBase.offset(dx, dy, dz);
+                    if (dx == 0 && dz == 0) {
+                        level.setBlock(p, Blocks.CUT_SANDSTONE.defaultBlockState(), 2);
+                    } else if (dy == towerHeight) {
+                        level.setBlock(p, Blocks.SMOOTH_STONE.defaultBlockState(), 2);
+                    }
+                }
+            }
+            level.setBlock(towerBase.offset(0, dy, -1), Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, Direction.NORTH), 2);
+        }
+
+        BlockPos jumpPlatform = towerBase.offset(0, towerHeight, 2);
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = 0; dz <= 3; dz++) {
+                BlockPos p = towerBase.offset(dx, towerHeight, dz);
+                boolean edge = Math.abs(dx) == 2 || dz == 3;
+                Block b = edge ? Blocks.OCHRE_FROGLIGHT : Blocks.SMOOTH_STONE;
+                level.setBlock(p, b.defaultBlockState(), 2);
+            }
+        }
+
+        spawnHologram(level, jumpPlatform.getX() + 0.5, baseY + towerHeight + 2.5, jumpPlatform.getZ() + 1.5, "§a§l[Plataforma de Salto: Exo-Planador]");
+        spawnHologram(level, jumpPlatform.getX() + 0.5, baseY + towerHeight + 2.15, jumpPlatform.getZ() + 1.5, "§bEquipe o Chip Planador e segure ESPAÇO no ar");
+        spawnHologram(level, jumpPlatform.getX() + 0.5, baseY + towerHeight + 1.8, jumpPlatform.getZ() + 1.5, "§6Correntes térmicas sob o sol erguem o voo!");
+
+        for (int x = 2; x <= 18; x++) {
+            for (int z = 12; z <= 24; z++) {
+                BlockPos dunePos = stationCenter.offset(x, 0, z);
+                level.setBlock(dunePos, Blocks.SAND.defaultBlockState(), 2);
             }
         }
     }
