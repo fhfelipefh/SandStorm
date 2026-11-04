@@ -128,3 +128,10 @@ Sempre que o usuário pedir para abrir, reabrir ou testar o jogo no mundo de sho
      schtasks /create /tn "SandStormShowcase" /tr "cmd.exe /c C:\Users\fhgam\Documents\GitHub\SandStorm\run\start_showcase.bat" /sc once /st 23:59 /it /f; schtasks /run /tn "SandStormShowcase"; schtasks /delete /tn "SandStormShowcase" /f
      ```
    - O processo abre em 2 segundos uma janela visível no monitor do usuário, entrando direto no mundo `SandStorm_Showcase`.
+
+## 🚫 Proibição Absoluta de Manipulação das Pastas do CurseForge
+1. **Zero Toque em Diretórios Externos do CurseForge**:
+   - É terminantemente PROIBIDO copiar, mover, criar, renomear ou deletar qualquer arquivo ou pasta dentro de `C:\Users\fhgam\curseforge\` (incluindo `C:\Users\fhgam\curseforge\minecraft\Instances\...`).
+   - O mod só deve entrar na instância do CurseForge pela plataforma oficial do CurseForge (quando o usuário faz download/update como qualquer jogador comum).
+   - O agente deve atuar exclusivamente no workspace local do mod (`build/libs/`, `run/`, etc.) e no repositório GitHub.
+
