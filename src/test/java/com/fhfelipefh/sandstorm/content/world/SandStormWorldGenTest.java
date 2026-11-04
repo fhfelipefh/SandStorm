@@ -305,7 +305,7 @@ class SandStormWorldGenTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "ancient_city", "desert_pyramid", "mineshaft", "mineshaft_mesa",
-            "stronghold", "trial_chambers", "ruined_portal_desert", "ruined_portal_standard",
+            "stronghold", "ruined_portal_desert", "ruined_portal_standard",
             "village_desert", "village_plains", "village_savanna", "village_snowy", "village_taiga",
             "pillager_outpost", "woodland_mansion", "jungle_temple", "swamp_hut", "igloo"
     })
@@ -316,6 +316,18 @@ class SandStormWorldGenTest {
             JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
             assertTrue(json.has("replace") && json.get("replace").getAsBoolean());
             assertEquals(0, json.getAsJsonArray("values").size(), structureName + " structure must have no allowed biomes");
+        }
+    }
+
+    @Test
+    void shouldEnableTrialChambersInDesertBiome() throws IOException {
+        Path tagPath = HAS_STRUCTURE_TAG_DIR.resolve("trial_chambers.json");
+        assertTrue(Files.exists(tagPath), "trial_chambers.json must exist");
+        try (FileReader reader = new FileReader(tagPath.toFile())) {
+            JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+            assertTrue(json.has("replace") && json.get("replace").getAsBoolean());
+            assertEquals(1, json.getAsJsonArray("values").size());
+            assertEquals("minecraft:desert", json.getAsJsonArray("values").get(0).getAsString());
         }
     }
 }

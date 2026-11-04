@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "FSF",
+    "FRF",
+    "TCT"
+  ],
+  "key": {
+    "F": "sandstorm:carbon_fiber_servo_feather",
+    "S": "sandstorm:avionics_optical_sensor",
+    "R": "minecraft:breeze_rod",
+    "T": "sandstorm:titanium_chitin_composite",
+    "C": "sandstorm:copper_coil"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:suit_glider_module"
+  }
+}
+

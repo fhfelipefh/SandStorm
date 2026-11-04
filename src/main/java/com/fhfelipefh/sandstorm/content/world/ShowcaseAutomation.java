@@ -2438,7 +2438,10 @@ public class ShowcaseAutomation {
                         new ItemStack(SandStormItems.TACTICAL_DETONATOR, 64),
                         new ItemStack(SandStormItems.KINETIC_SLUG, 64),
                         new ItemStack(SandStormItems.NEURAL_OVERRIDE_LANCE, 64),
-                        new ItemStack(SandStormItems.APEX_RAILGUN_HARPOON, 64)
+                        new ItemStack(SandStormItems.APEX_RAILGUN_HARPOON, 64),
+                        new ItemStack(Items.MACE, 64),
+                        new ItemStack(Items.WIND_CHARGE, 64),
+                        new ItemStack(Items.BREEZE_ROD, 64)
                 ),
                 true,
                 ItemStack.EMPTY,
@@ -4602,6 +4605,11 @@ public class ShowcaseAutomation {
             chest.setItem(12, new ItemStack(SandStormItems.ANOMALY_RADAR));
             chest.setItem(13, new ItemStack(SandStormItems.SURVIVAL_DATAPAD));
             chest.setItem(14, new ItemStack(SandStormBlocks.VULTURE_NEST, 16));
+            chest.setItem(15, new ItemStack(Items.MACE));
+            chest.setItem(16, new ItemStack(Items.WIND_CHARGE, 64));
+            chest.setItem(17, new ItemStack(Items.BREEZE_ROD, 32));
+            chest.setItem(18, new ItemStack(Items.TRIAL_KEY, 16));
+            chest.setItem(19, new ItemStack(Items.OMINOUS_TRIAL_KEY, 16));
         }
 
         spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.2, stationCenter.getZ() - 22.0, "§6§l[SETOR AERONÁUTICO: ABUTRE & PLANADOR]");

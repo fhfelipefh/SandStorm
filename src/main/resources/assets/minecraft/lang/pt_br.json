@@ -1,0 +1,12 @@
+{
+  "item.minecraft.mace": "Marreta de Impacto Cinético",
+  "item.minecraft.breeze_rod": "Haste de Atuador Pneumático",
+  "item.minecraft.wind_charge": "Cartucho de Pulso Pneumático",
+  "entity.minecraft.breeze": "Drone Aerocinético",
+  "block.minecraft.trial_spawner": "Sintetizador de Provas Balísticas",
+  "block.minecraft.vault": "Cofre Militar Criptografado",
+  "item.minecraft.trial_key": "Chave Criptográfica de Provas",
+  "item.minecraft.ominous_trial_key": "Chave Militar Sobrecarregada",
+  "block.minecraft.heavy_core": "Núcleo de Densidade Gravimétrica"
+}
+
