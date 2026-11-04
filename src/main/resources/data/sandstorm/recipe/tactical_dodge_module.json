@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PWP",
+    "ABA",
+    "ICI"
+  ],
+  "key": {
+    "P": "sandstorm:salvaged_polymer",
+    "W": "sandstorm:silicon_wafer",
+    "A": "sandstorm:nano_actuator",
+    "B": "sandstorm:circuit_board",
+    "I": "minecraft:iron_ingot",
+    "C": "sandstorm:copper_coil"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:tactical_dodge_module"
+  }
+}

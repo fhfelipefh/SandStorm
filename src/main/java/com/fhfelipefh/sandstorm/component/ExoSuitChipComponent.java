@@ -6,7 +6,8 @@ public enum ExoSuitChipComponent {
     GRAVITATIONAL_MAGNET("gravitational_magnet_chip", "item.sandstorm.gravitational_magnet_chip", "tooltip.sandstorm.gravitational_magnet_chip"),
     OSMOTIC_RECYCLER("osmotic_recycler_module", "item.sandstorm.osmotic_recycler_module", "tooltip.sandstorm.osmotic_recycler_module"),
     KINETIC_DEFLECTOR("kinetic_deflector_chip", "item.sandstorm.kinetic_deflector_chip", "tooltip.sandstorm.kinetic_deflector_chip"),
-    GLIDER_MODULE("suit_glider_module", "item.sandstorm.suit_glider_module", "tooltip.sandstorm.suit_glider_module");
+    GLIDER_MODULE("suit_glider_module", "item.sandstorm.suit_glider_module", "tooltip.sandstorm.suit_glider_module"),
+    EVASIVE_REFLEX_THRUSTER("tactical_dodge_module", "item.sandstorm.tactical_dodge_module", "tooltip.sandstorm.tactical_dodge_module");
 
     private final String id;
     private final String nameKey;

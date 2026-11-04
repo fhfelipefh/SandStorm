@@ -252,6 +252,13 @@ public class SandStormItems {
     public static final ExoSuitChipItem SUIT_GLIDER_MODULE = register("suit_glider_module", new ExoSuitChipItem(ExoSuitChipComponent.GLIDER_MODULE, properties("suit_glider_module").rarity(Rarity.RARE)));
     public static final SpawnEggItem SCAVENGER_VULTURE_SPAWN_EGG = register("scavenger_vulture_spawn_egg", new SpawnEggItem(properties("scavenger_vulture_spawn_egg").spawnEgg(SandStormEntities.SCAVENGER_VULTURE)));
     public static final Item SALVAGED_POLYMER = register("salvaged_polymer", new Item(properties("salvaged_polymer").rarity(Rarity.COMMON)));
+    public static final PortableEnergyPackItem PORTABLE_ENERGY_PACK = register("portable_energy_pack", new PortableEnergyPackItem(properties("portable_energy_pack").rarity(Rarity.UNCOMMON)));
+    public static final SuitCapacityExpanderItem SUIT_CAPACITY_EXPANDER = register("suit_capacity_expander", new SuitCapacityExpanderItem(properties("suit_capacity_expander").rarity(Rarity.RARE)));
+    public static final EnergizedVibroBladeItem ENERGIZED_VIBRO_BLADE = register("energized_vibro_blade", new EnergizedVibroBladeItem(properties("energized_vibro_blade").rarity(Rarity.RARE)));
+    public static final ExoSuitChipItem TACTICAL_DODGE_MODULE = register("tactical_dodge_module", new ExoSuitChipItem(ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER, properties("tactical_dodge_module").rarity(Rarity.RARE)));
+    public static final HoundDefenseModuleItem HOUND_DEFENSE_MODULE = register("hound_defense_module", new HoundDefenseModuleItem(properties("hound_defense_module").rarity(Rarity.RARE)));
+    public static final HoundAttackModuleItem HOUND_ATTACK_MODULE = register("hound_attack_module", new HoundAttackModuleItem(properties("hound_attack_module").rarity(Rarity.RARE)));
+    public static final HoundDodgeModuleItem HOUND_DODGE_MODULE = register("hound_dodge_module", new HoundDodgeModuleItem(properties("hound_dodge_module").rarity(Rarity.RARE)));
 
     public static final CreativeModeTab SANDSTORM_TAB = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -646,6 +653,13 @@ public class SandStormItems {
                         entries.accept(SUIT_GLIDER_MODULE);
                         entries.accept(SCAVENGER_VULTURE_SPAWN_EGG);
                         entries.accept(SALVAGED_POLYMER);
+                        entries.accept(PORTABLE_ENERGY_PACK);
+                        entries.accept(SUIT_CAPACITY_EXPANDER);
+                        entries.accept(ENERGIZED_VIBRO_BLADE);
+                        entries.accept(TACTICAL_DODGE_MODULE);
+                        entries.accept(HOUND_DEFENSE_MODULE);
+                        entries.accept(HOUND_ATTACK_MODULE);
+                        entries.accept(HOUND_DODGE_MODULE);
                     })
                     .build()
     );

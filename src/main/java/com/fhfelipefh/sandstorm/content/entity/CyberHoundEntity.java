@@ -20,7 +20,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
@@ -51,10 +54,14 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
     private static final EntityDataAccessor<Boolean> DATA_DEACTIVATED = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_REPAIR_PROGRESS = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_REPAIR_REQUIRED = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_ARMOR_TIER = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_HAS_CLAWS = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_HAS_DODGE = SynchedEntityData.defineId(CyberHoundEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int alertCooldown = 0;
     private int spikeJumpCooldown = 0;
     private int deactivationTicks = 0;
+    private int dodgeCooldown = 0;
 
     public CyberHoundEntity(EntityType<? extends CyberHoundEntity> entityType, Level level) {
         super(entityType, level);
@@ -84,6 +91,9 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
         builder.define(DATA_DEACTIVATED, false);
         builder.define(DATA_REPAIR_PROGRESS, 0);
         builder.define(DATA_REPAIR_REQUIRED, 2);
+        builder.define(DATA_ARMOR_TIER, 0);
+        builder.define(DATA_HAS_CLAWS, false);
+        builder.define(DATA_HAS_DODGE, false);
     }
 
     @Override
@@ -128,6 +138,38 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
             return Component.translatable(this.getType().getDescriptionId() + ".deactivated");
         }
         return super.getName();
+    }
+
+    public int getArmorTier() {
+        return this.entityData.get(DATA_ARMOR_TIER);
+    }
+
+    public void setArmorTier(int tier) {
+        int clamped = Math.clamp(tier, 0, 3);
+        this.entityData.set(DATA_ARMOR_TIER, clamped);
+        double maxHp = 30.0 + clamped * 15.0;
+        double armor = 8.0 + clamped * 4.0;
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(maxHp);
+        this.getAttribute(Attributes.ARMOR).setBaseValue(armor);
+    }
+
+    public boolean hasClaws() {
+        return this.entityData.get(DATA_HAS_CLAWS);
+    }
+
+    public void setClaws(boolean claws) {
+        this.entityData.set(DATA_HAS_CLAWS, claws);
+        if (claws) {
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(14.0);
+        }
+    }
+
+    public boolean hasDodge() {
+        return this.entityData.get(DATA_HAS_DODGE);
+    }
+
+    public void setDodge(boolean dodge) {
+        this.entityData.set(DATA_HAS_DODGE, dodge);
     }
 
     @Override
@@ -188,6 +230,65 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
                             serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
                                     SoundEvents.ANVIL_USE, this.getSoundSource(), 0.8f, 1.4f);
                         }
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.CONSUME;
+                }
+
+                if (itemStack.is(SandStormItems.HOUND_DEFENSE_MODULE)) {
+                    int tier = this.getArmorTier();
+                    if (tier < 3) {
+                        this.setArmorTier(tier + 1);
+                        this.heal(15.0f);
+                        if (!player.isCreative()) {
+                            itemStack.shrink(1);
+                        }
+                        if (currentLevel instanceof ServerLevel serverLevel) {
+                            serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                                    this.getX(), this.getY() + 0.5, this.getZ(),
+                                    16, 0.25, 0.25, 0.25, 0.08);
+                            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                    SoundEvents.ARMOR_EQUIP_NETHERITE.value(), this.getSoundSource(), 1.0f, 1.2f);
+                        }
+                        player.addTag("sandstorm.hound_armor_upgraded");
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.CONSUME;
+                }
+
+                if (itemStack.is(SandStormItems.HOUND_ATTACK_MODULE)) {
+                    if (!this.hasClaws()) {
+                        this.setClaws(true);
+                        if (!player.isCreative()) {
+                            itemStack.shrink(1);
+                        }
+                        if (currentLevel instanceof ServerLevel serverLevel) {
+                            serverLevel.sendParticles(ParticleTypes.CRIT,
+                                    this.getX(), this.getY() + 0.5, this.getZ(),
+                                    16, 0.25, 0.25, 0.25, 0.08);
+                            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                    SoundEvents.GRINDSTONE_USE, this.getSoundSource(), 1.0f, 1.4f);
+                        }
+                        player.addTag("sandstorm.hound_claws_upgraded");
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.CONSUME;
+                }
+
+                if (itemStack.is(SandStormItems.HOUND_DODGE_MODULE)) {
+                    if (!this.hasDodge()) {
+                        this.setDodge(true);
+                        if (!player.isCreative()) {
+                            itemStack.shrink(1);
+                        }
+                        if (currentLevel instanceof ServerLevel serverLevel) {
+                            serverLevel.sendParticles(ParticleTypes.POOF,
+                                    this.getX(), this.getY() + 0.5, this.getZ(),
+                                    16, 0.25, 0.25, 0.25, 0.08);
+                            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                    SoundEvents.BEACON_ACTIVATE, this.getSoundSource(), 1.0f, 1.5f);
+                        }
+                        player.addTag("sandstorm.hound_dodge_upgraded");
                         return InteractionResult.SUCCESS;
                     }
                     return InteractionResult.CONSUME;
@@ -268,9 +369,38 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
             }
         }
 
+        if (this.dodgeCooldown > 0) {
+            this.dodgeCooldown--;
+        }
+
+        if (!currentLevel.isClientSide() && this.isTame() && this.hasDodge() && this.tickCount % 40 == 0) {
+            if (currentLevel.getSkyDarken() < 4 && currentLevel.canSeeSky(this.blockPosition()) && this.getHealth() < this.getMaxHealth()) {
+                this.heal(1.0f);
+                if (currentLevel instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.GLOW,
+                            this.getX(), this.getY() + 0.5, this.getZ(),
+                            3, 0.2, 0.2, 0.2, 0.02);
+                }
+            }
+        }
+
         if (!currentLevel.isClientSide() && this.isTame() && !this.isOrderedToSit() && !this.isDeactivated() && this.onGround()) {
             checkSpikeJump(currentLevel);
         }
+    }
+
+    @Override
+    public boolean doHurtTarget(ServerLevel serverLevel, Entity target) {
+        boolean hurt = super.doHurtTarget(serverLevel, target);
+        if (hurt && this.hasClaws() && target instanceof LivingEntity living) {
+            living.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
+            serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                    living.getX(), living.getY() + living.getBbHeight() * 0.5, living.getZ(),
+                    8, 0.2, 0.2, 0.2, 0.05);
+            serverLevel.playSound(null, living.blockPosition(),
+                    SoundEvents.LIGHTNING_BOLT_THUNDER, this.getSoundSource(), 0.3f, 2.0f);
+        }
+        return hurt;
     }
 
     private void checkSpikeJump(Level level) {
@@ -314,6 +444,21 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
     @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float amount) {
         if (this.isTame() && (source.is(DamageTypes.CACTUS) || source.is(DamageTypes.SWEET_BERRY_BUSH) || source.is(DamageTypes.STALAGMITE))) {
+            return false;
+        }
+        if (this.isTame() && this.hasDodge() && this.dodgeCooldown <= 0 && source.getEntity() != null) {
+            this.dodgeCooldown = 30;
+            serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                    this.getX(), this.getY() + 0.4, this.getZ(),
+                    10, 0.2, 0.2, 0.2, 0.05);
+            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                    SoundEvents.PLAYER_TELEPORT, this.getSoundSource(), 0.8f, 1.6f);
+            Vec3 diff = this.position().subtract(source.getEntity().position());
+            Vec3 away = new Vec3(diff.x, 0, diff.z).normalize().scale(5.0);
+            BlockPos targetPos = BlockPos.containing(this.getX() + away.x, this.getY(), this.getZ() + away.z);
+            if (serverLevel.getBlockState(targetPos.below()).isSolid() && serverLevel.getBlockState(targetPos).isAir()) {
+                this.teleportTo(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
+            }
             return false;
         }
         return super.hurtServer(serverLevel, source, amount);
@@ -372,6 +517,9 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
         output.putInt("RepairProgress", this.entityData.get(DATA_REPAIR_PROGRESS));
         output.putInt("RepairRequired", this.entityData.get(DATA_REPAIR_REQUIRED));
         output.putInt("DeactivationTicks", this.deactivationTicks);
+        output.putInt("ArmorTier", this.getArmorTier());
+        output.putBoolean("HasClaws", this.hasClaws());
+        output.putBoolean("HasDodge", this.hasDodge());
     }
 
     @Override
@@ -382,5 +530,8 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
         this.entityData.set(DATA_REPAIR_PROGRESS, input.getIntOr("RepairProgress", 0));
         this.entityData.set(DATA_REPAIR_REQUIRED, input.getIntOr("RepairRequired", 2));
         this.deactivationTicks = input.getIntOr("DeactivationTicks", 0);
+        this.setArmorTier(input.getIntOr("ArmorTier", 0));
+        this.setClaws(input.getBooleanOr("HasClaws", false));
+        this.setDodge(input.getBooleanOr("HasDodge", false));
     }
 }

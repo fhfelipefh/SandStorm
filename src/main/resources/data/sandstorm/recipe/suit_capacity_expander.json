@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PAP",
+    "WBW",
+    "GAG"
+  ],
+  "key": {
+    "P": "sandstorm:salvaged_polymer",
+    "A": "sandstorm:nano_actuator",
+    "W": "sandstorm:silicon_wafer",
+    "B": "sandstorm:circuit_board",
+    "G": "minecraft:gold_ingot"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:suit_capacity_expander"
+  }
+}

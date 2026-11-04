@@ -5,6 +5,8 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class SuitPowerComponent {
+    public static final int MAX_CAPACITY_TIER = 20;
+    public static final long BASE_CAPACITY = 100000L;
     private final EnergyStorageComponent energyStorage;
     private final ThermalComponent thermal;
     private final Set<ExoSuitChipComponent> installedChips = EnumSet.noneOf(ExoSuitChipComponent.class);
@@ -12,6 +14,7 @@ public class SuitPowerComponent {
     private final long thermalRegulationCostPerTick;
     private final long solarRechargePerTick;
     private int equippedArmorCount;
+    private int capacityTier = 0;
 
     public SuitPowerComponent(long capacity, long solarRechargeRate, long idleDrain, long thermalDrain) {
         this.energyStorage = new EnergyStorageComponent(capacity, Math.max(solarRechargeRate, 500L), Math.max(idleDrain, thermalDrain) * 4);
@@ -55,6 +58,24 @@ public class SuitPowerComponent {
 
     public void setCapacity(long capacity) {
         energyStorage.setCapacity(capacity);
+    }
+
+    public int getCapacityTier() {
+        return capacityTier;
+    }
+
+    public void setCapacityTier(int tier) {
+        this.capacityTier = Math.clamp(tier, 0, MAX_CAPACITY_TIER);
+        long newCapacity = BASE_CAPACITY * (1L << this.capacityTier);
+        energyStorage.setCapacity(newCapacity);
+    }
+
+    public boolean addCapacityTier() {
+        if (this.capacityTier >= MAX_CAPACITY_TIER) {
+            return false;
+        }
+        setCapacityTier(this.capacityTier + 1);
+        return true;
     }
 
     public void tick(boolean exposedToSunlight, double ambientTemperature, boolean underground) {

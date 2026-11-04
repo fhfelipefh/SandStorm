@@ -107,6 +107,37 @@ public class PlayerSuitSavedData extends SavedData {
         return false;
     }
 
+    public int getCapacityTier(UUID playerUuid) {
+        Entry entry = getSuitData(playerUuid);
+        if (entry != null) {
+            for (String u : entry.upgrades()) {
+                if (u.startsWith("capacity_tier:")) {
+                    try {
+                        return Integer.parseInt(u.substring(14));
+                    } catch (NumberFormatException ignored) {
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    public void setCapacityTier(UUID playerUuid, int tier) {
+        Entry existing = getSuitData(playerUuid);
+        List<String> list = existing != null ? new ArrayList<>(existing.upgrades()) : new ArrayList<>();
+        list.removeIf(u -> u.startsWith("capacity_tier:"));
+        list.add("capacity_tier:" + tier);
+        UUID uuid = existing != null ? existing.uuid() : playerUuid;
+        long energy = existing != null ? existing.energy() : 50000L;
+        double temp = existing != null ? existing.temperature() : 37.0;
+        Entry newEntry = new Entry(uuid, energy, temp, list);
+        suitMap.put(uuid, newEntry);
+        if (singleplayerEntry != null && singleplayerEntry.uuid().equals(uuid)) {
+            singleplayerEntry = newEntry;
+        }
+        setDirty();
+    }
+
     public boolean addUpgrade(UUID playerUuid, String upgrade) {
         Entry existing = suitMap.get(playerUuid);
         if (existing == null && singleplayerEntry != null) {

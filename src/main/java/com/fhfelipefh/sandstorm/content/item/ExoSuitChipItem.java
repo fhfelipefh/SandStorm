@@ -11,6 +11,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -71,6 +73,41 @@ public class ExoSuitChipItem extends Item {
         }
 
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
+        if (action == ClickAction.SECONDARY && slot.getItem().getItem() instanceof SpaceSuitItem) {
+            Level level = player.level();
+            if (level.isClientSide()) {
+                return true;
+            }
+
+            SuitPowerComponent suit = (player instanceof ServerPlayer sp)
+                    ? SuitSurvivalHandler.getOrCreateSuit(sp)
+                    : SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
+
+            if (suit.hasChip(this.chipType)) {
+                player.sendSystemMessage(Component.translatable("message.sandstorm.chip_already_installed"));
+                return true;
+            }
+
+            if (!suit.installChip(this.chipType)) {
+                player.sendSystemMessage(Component.translatable("message.sandstorm.chip_slots_full"));
+                return true;
+            }
+
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARMOR_EQUIP_NETHERITE.value(), SoundSource.PLAYERS, 1.0f, 1.3f);
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.NOTE_BLOCK_CHIME.value(), SoundSource.PLAYERS, 0.8f, 1.8f);
+
+            player.sendSystemMessage(Component.translatable("message.sandstorm.chip_installed", Component.translatable(this.chipType.getNameKey())));
+
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override

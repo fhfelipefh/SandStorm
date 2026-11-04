@@ -46,7 +46,7 @@ class SandwormEntityTest {
 
         QuestData sandwormHunt = QuestRegistry.getQuest("sandworm_hunt");
         assertNotNull(sandwormHunt);
-        assertEquals(List.of("seismic_bait"), sandwormHunt.prerequisiteIds());
+        assertEquals(List.of("seismic_bait", "energized_vibro_blade_quest", "tactical_evasion"), sandwormHunt.prerequisiteIds());
         assertEquals("sandstorm.kill_sandworm", sandwormHunt.conditionTag());
         assertEquals(SandStormMod.id("sandworm_spawn_egg"), sandwormHunt.iconId());
 

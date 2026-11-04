@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.client.particle;
 
+import com.fhfelipefh.sandstorm.client.weather.ClientStormTransitionHandler;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import com.fhfelipefh.sandstorm.content.world.ShelterDetectionHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -34,8 +35,8 @@ public class SandstormParticleHandler {
             return;
         }
 
-        BlockPos playerPos = client.player.blockPosition();
-        if (ShelterDetectionHelper.isSheltered(client.level, playerPos) || ShelterDetectionHelper.isSheltered(client.level, playerPos.above())) {
+        float exposure = ClientStormTransitionHandler.getExposure();
+        if (exposure <= 0.02f) {
             return;
         }
 
@@ -44,7 +45,7 @@ public class SandstormParticleHandler {
         double windVy = -0.02 - (random.nextDouble() * 0.02);
         double windVz = -0.6 - (intensity * 0.3);
 
-        int count = (int) (3 + (intensity * 6));
+        int count = Math.max(1, (int) Math.round((3 + (intensity * 6)) * exposure));
         for (int i = 0; i < count; i++) {
             double angle = random.nextDouble() * Math.PI * 2.0;
             double distance = 4.0 + random.nextDouble() * 18.0;

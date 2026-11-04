@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "PWP",
+    "EAB",
+    "SCS"
+  ],
+  "key": {
+    "P": "sandstorm:salvaged_polymer",
+    "W": "sandstorm:silicon_wafer",
+    "E": "sandstorm:portable_energy_pack",
+    "A": "sandstorm:nano_actuator",
+    "B": "sandstorm:circuit_board",
+    "S": "sandstorm:scrap_metal",
+    "C": "sandstorm:copper_coil"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:hound_dodge_module"
+  }
+}

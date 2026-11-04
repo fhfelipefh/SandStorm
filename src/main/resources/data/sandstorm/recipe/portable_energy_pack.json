@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CPC",
+    "IRI",
+    "CRC"
+  ],
+  "key": {
+    "C": "minecraft:copper_ingot",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone",
+    "P": "sandstorm:salvaged_polymer"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:portable_energy_pack"
+  }
+}

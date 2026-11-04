@@ -55,6 +55,7 @@ import com.fhfelipefh.sandstorm.client.hud.MachineInspectionHudOverlay;
 import com.fhfelipefh.sandstorm.client.handler.EmpDeafenClientHandler;
 import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
+import com.fhfelipefh.sandstorm.client.weather.ClientStormTransitionHandler;
 import com.fhfelipefh.sandstorm.client.tooltip.SandStormTechnicalTooltipHandler;
 import com.fhfelipefh.sandstorm.client.renderer.AquiferBeetleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.AutonomousSonicTurretRenderer;
@@ -152,6 +153,7 @@ public class SandStormClient implements ClientModInitializer {
         MachineCockpitHudOverlay.initialize();
         MachineInspectionHudOverlay.initialize();
         DatapadClientHelper.initialize();
+        ClientStormTransitionHandler.initialize();
         SandstormParticleHandler.initialize();
         SandstormFlashlightKeys.initialize();
         DesertMirageHandler.initialize();

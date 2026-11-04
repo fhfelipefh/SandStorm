@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.content.quest;
 
+import com.fhfelipefh.sandstorm.component.ExoSuitChipComponent;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.entity.CyberHoundEntity;
 import com.fhfelipefh.sandstorm.content.network.ClaimQuestRewardPayload;
@@ -216,6 +217,28 @@ public class QuestRewardHandler {
             }
             return false;
         }
+        if ("tactical_evasion".equals(quest.id())) {
+            SuitPowerComponent suit = (player instanceof ServerPlayer sp) ? SuitSurvivalHandler.getOrCreateSuit(sp) : SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
+            if (suit.hasChip(ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER)) {
+                return true;
+            }
+        }
+        if ("suit_capacity_expander_quest".equals(quest.id())) {
+            SuitPowerComponent suit = (player instanceof ServerPlayer sp) ? SuitSurvivalHandler.getOrCreateSuit(sp) : SuitSurvivalHandler.getOrCreateSuit(player.getUUID());
+            if (suit.getCapacityTier() > 0) {
+                return true;
+            }
+        }
+        if ("hound_armor_upgrade".equals(quest.id()) && player.entityTags().contains("sandstorm.hound_armor_upgraded")) {
+            return true;
+        }
+        if ("hound_claws_upgrade".equals(quest.id()) && player.entityTags().contains("sandstorm.hound_claws_upgraded")) {
+            return true;
+        }
+        if ("hound_dodge_upgrade".equals(quest.id()) && player.entityTags().contains("sandstorm.hound_dodge_upgraded")) {
+            return true;
+        }
+
         if (quest.getRequiredItem() == null) {
             return false;
         }

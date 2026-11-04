@@ -43,6 +43,7 @@ import com.fhfelipefh.sandstorm.content.survival.MagicSuppressionHandler;
 import com.fhfelipefh.sandstorm.content.survival.MultiplayerSpawnHandler;
 import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
+import com.fhfelipefh.sandstorm.content.survival.TacticalDodgeHandler;
 import com.fhfelipefh.sandstorm.content.survival.TechnologyToolRestrictionHandler;
 import com.fhfelipefh.sandstorm.content.world.DesertMobSpawnManager;
 import com.fhfelipefh.sandstorm.content.world.DesertPredationHandler;
@@ -136,6 +137,7 @@ public class SandStormMod implements ModInitializer {
         AutoModeManager.initialize();
         SandStormMenus.initialize();
         SuitSurvivalHandler.initialize();
+        TacticalDodgeHandler.initialize();
         VanillaMonsterSuppressionHandler.initialize();
         DesertMobSpawnManager.initialize();
         DesertPredationHandler.initialize();

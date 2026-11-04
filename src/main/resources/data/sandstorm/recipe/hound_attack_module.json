@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "IDI",
+    "WAW",
+    "SCS"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "D": "minecraft:diamond",
+    "W": "sandstorm:silicon_wafer",
+    "A": "sandstorm:nano_actuator",
+    "S": "sandstorm:scrap_metal",
+    "C": "sandstorm:copper_coil"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:hound_attack_module"
+  }
+}

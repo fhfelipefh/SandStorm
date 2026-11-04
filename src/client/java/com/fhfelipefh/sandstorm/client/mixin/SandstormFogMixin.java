@@ -1,9 +1,9 @@
 package com.fhfelipefh.sandstorm.client.mixin;
 
+import com.fhfelipefh.sandstorm.client.weather.ClientStormTransitionHandler;
 import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.content.world.SandstormWeatherHandler;
 import com.fhfelipefh.sandstorm.content.world.ShowcaseAutomation;
-import com.fhfelipefh.sandstorm.content.world.ShelterDetectionHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -63,11 +63,12 @@ public class SandstormFogMixin {
             return;
         }
 
-        if (ShelterDetectionHelper.isSheltered(clientLevel, camera.blockPosition())) {
+        float exposure = ClientStormTransitionHandler.getExposure();
+        if (exposure <= 0.005f) {
             return;
         }
 
-        float factor = intensity;
+        float factor = intensity * exposure;
 
         Vector4f color = data.color;
         if (color != null) {
@@ -76,8 +77,13 @@ public class SandstormFogMixin {
             color.z = color.z + (DUST_B - color.z) * factor;
         }
 
-        float targetEnd = 24.0f + (1.0f - factor) * 44.0f;
-        float targetStart = 4.0f + (1.0f - factor) * 8.0f;
+        float vanillaEnd = data.renderDistanceEnd;
+        float vanillaStart = data.renderDistanceStart;
+        float stormEnd = 24.0f + (1.0f - intensity) * 44.0f;
+        float stormStart = 4.0f + (1.0f - intensity) * 8.0f;
+
+        float targetEnd = vanillaEnd + (stormEnd - vanillaEnd) * exposure;
+        float targetStart = vanillaStart + (stormStart - vanillaStart) * exposure;
 
         data.renderDistanceEnd = Math.min(data.renderDistanceEnd, targetEnd);
         data.environmentalEnd = Math.min(data.environmentalEnd, targetEnd);

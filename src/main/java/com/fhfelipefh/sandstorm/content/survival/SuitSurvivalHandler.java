@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.component.SandstormWeatherComponent;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
 import com.fhfelipefh.sandstorm.content.block.CryogenicChillerManager;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.item.PortableEnergyPackItem;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
@@ -162,6 +163,7 @@ public class SuitSurvivalHandler {
         }
 
         suit.tick(exposedToSunlight, ambientTemperature, underground, solarMultiplier);
+        handlePortableEnergyPacks(player, suit, exposedToSunlight, underground, solarMultiplier);
         if (player.isSprinting() && suit.getThermal().getCurrentTemperature() < 36.6) {
             double cur = suit.getThermal().getCurrentTemperature();
             suit.getThermal().setCurrentTemperature(Math.min(36.6, cur + 0.06));
@@ -387,12 +389,14 @@ public class SuitSurvivalHandler {
             long restoredEnergy = -1L;
             double restoredTemp = -1.0;
 
+            int restoredTier = -1;
             if (server != null) {
                 PlayerSuitSavedData data = PlayerSuitSavedData.get(server);
                 PlayerSuitSavedData.Entry entry = data.getSuitData(uuid);
                 if (entry != null) {
                     restoredEnergy = entry.energy();
                     restoredTemp = entry.temperature();
+                    restoredTier = data.getCapacityTier(uuid);
                 }
             }
 
@@ -408,8 +412,17 @@ public class SuitSurvivalHandler {
                             restoredTemp = Double.parseDouble(tag.substring(20)) / 100.0;
                         } catch (NumberFormatException ignored) {
                         }
+                    } else if (tag.startsWith("sandstorm.capacity_tier:")) {
+                        try {
+                            restoredTier = Integer.parseInt(tag.substring(24));
+                        } catch (NumberFormatException ignored) {
+                        }
                     }
                 }
+            }
+
+            if (restoredTier > 0) {
+                suit.setCapacityTier(restoredTier);
             }
 
             if (restoredEnergy >= 0) {
@@ -432,15 +445,18 @@ public class SuitSurvivalHandler {
         if (suit != null) {
             long energy = suit.getEnergyStorage().getStoredEnergy();
             double temp = suit.getThermal().getCurrentTemperature();
-            updatePlayerSuitTags(player, energy, temp);
+            int tier = suit.getCapacityTier();
+            updatePlayerSuitTags(player, energy, temp, tier);
 
             MinecraftServer s = server != null ? server : (player.level().getServer() != null ? player.level().getServer() : currentServer);
             if (s != null) {
-                PlayerSuitSavedData.get(s).setSuitData(
+                PlayerSuitSavedData data = PlayerSuitSavedData.get(s);
+                data.setSuitData(
                         player.getUUID(),
                         energy,
                         temp
                 );
+                data.setCapacityTier(player.getUUID(), tier);
             }
         }
     }
@@ -450,13 +466,87 @@ public class SuitSurvivalHandler {
     }
 
     private static void updatePlayerSuitTags(ServerPlayer player, long energy, double temp) {
+        SuitPowerComponent suit = PLAYER_SUIT_MAP.get(player.getUUID());
+        int tier = suit != null ? suit.getCapacityTier() : 0;
+        updatePlayerSuitTags(player, energy, temp, tier);
+    }
+
+    private static void updatePlayerSuitTags(ServerPlayer player, long energy, double temp, int tier) {
         for (String tag : new ArrayList<>(player.entityTags())) {
-            if (tag.startsWith("sandstorm.suit_energy:") || tag.startsWith("sandstorm.suit_temp:")) {
+            if (tag.startsWith("sandstorm.suit_energy:") || tag.startsWith("sandstorm.suit_temp:") || tag.startsWith("sandstorm.capacity_tier:")) {
                 player.removeTag(tag);
             }
         }
         player.addTag("sandstorm.suit_energy:" + energy);
         player.addTag("sandstorm.suit_temp:" + Math.round(temp * 100.0));
+        player.addTag("sandstorm.capacity_tier:" + tier);
+    }
+
+    private static void handlePortableEnergyPacks(ServerPlayer player, SuitPowerComponent suit, boolean exposedToSunlight, boolean underground, double solarMultiplier) {
+        long current = suit.getEnergyStorage().getStoredEnergy();
+        long capacity = suit.getEnergyStorage().getCapacity();
+
+        if (current >= capacity && exposedToSunlight && !underground) {
+            long surplus = Math.round(5L * Math.clamp(solarMultiplier, 0.0, 1.0));
+            if (surplus > 0) {
+                for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                    ItemStack stack = player.getInventory().getItem(i);
+                    if (!stack.isEmpty() && stack.getItem() instanceof PortableEnergyPackItem) {
+                        long accepted = PortableEnergyPackItem.receiveEnergy(stack, surplus);
+                        if (accepted > 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+        } else if (current < capacity) {
+            long needed = capacity - current;
+            long transferRate = Math.min(needed, 100L);
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                ItemStack stack = player.getInventory().getItem(i);
+                if (!stack.isEmpty() && stack.getItem() instanceof PortableEnergyPackItem) {
+                    long extracted = PortableEnergyPackItem.extractEnergy(stack, transferRate);
+                    if (extracted > 0) {
+                        suit.getEnergyStorage().receiveEnergy(extracted);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public static boolean consumePlayerEnergy(ServerPlayer player, long amount) {
+        if (amount <= 0L) {
+            return true;
+        }
+        SuitPowerComponent suit = getOrCreateSuit(player);
+        if (suit.consumeEnergy(amount)) {
+            return true;
+        }
+        long availableInSuit = suit.getEnergyStorage().getStoredEnergy();
+        long neededFromPacks = amount - availableInSuit;
+        long totalInPacks = 0L;
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (!stack.isEmpty() && stack.getItem() instanceof PortableEnergyPackItem) {
+                totalInPacks += PortableEnergyPackItem.getStoredEnergy(stack);
+            }
+        }
+        if (availableInSuit + totalInPacks >= amount) {
+            suit.getEnergyStorage().setStoredEnergy(0L);
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                ItemStack stack = player.getInventory().getItem(i);
+                if (!stack.isEmpty() && stack.getItem() instanceof PortableEnergyPackItem) {
+                    long extracted = PortableEnergyPackItem.extractEnergy(stack, neededFromPacks);
+                    neededFromPacks -= extracted;
+                    if (neededFromPacks <= 0L) {
+                        break;
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     private static boolean hasPropellant(ServerPlayer player) {
