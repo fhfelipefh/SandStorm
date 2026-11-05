@@ -1756,5 +1756,8 @@
   "message.sandstorm.cyber_mole_needs_circuit": "Requer 1x Placa de Circuito para regravar.",
   "quest.sandstorm.polymer_recovery.title": "Recuperação de Polímeros",
   "quest.sandstorm.polymer_recovery.task": "Colete Polímero Recuperado.",
-  "quest.sandstorm.polymer_recovery.note": "Escave ruínas ou recicle sucata com areia."
+  "quest.sandstorm.polymer_recovery.note": "Escave ruínas ou recicle sucata com areia.",
+  "block.sandstorm.sand_suction_quarry": "Escavadeira por Succao de Sedimentos",
+  "item.sandstorm.sand_suction_quarry": "Escavadeira por Succao de Sedimentos",
+  "container.sandstorm.sand_suction_quarry": "Escavadeira por Succao"
 }

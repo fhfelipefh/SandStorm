@@ -403,6 +403,7 @@ public class SandStormItems {
                         entries.accept(SandStormBlocks.BUDDING_PIEZO_QUARTZ);
                         entries.accept(SandStormBlocks.PIEZO_QUARTZ_CLUSTER);
                         entries.accept(SandStormBlocks.DEEP_CORE_DRILL);
+                        entries.accept(SandStormBlocks.SAND_SUCTION_QUARRY);
                         entries.accept(TITANIUM_CHITIN_COMPOSITE);
                         entries.accept(HEAVY_PLASMA_CANNON);
                         entries.accept(ORBITAL_SURVEY_SATELLITE);

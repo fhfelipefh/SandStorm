@@ -181,6 +181,12 @@ BLOCKS = [
         "name": "Tábuas de Madeira Plástica (WPC)",
         "role": "Compósito Mineral e Polímero para Construção",
         "model": "wpc_planks.json"
+    },
+    {
+        "id": "sand_suction_quarry",
+        "name": "Escavadeira por Sucção de Sedimentos",
+        "role": "Vórtice Pneumático & Limpeza Geológica",
+        "model": "sand_suction_quarry.json"
     }
 ]
 

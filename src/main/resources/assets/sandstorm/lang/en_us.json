@@ -1756,5 +1756,8 @@
   "quest.sandstorm.energized_vibro_blade_quest.note": "Piezoelectric motor dealing 18-22 dmg.",
   "quest.sandstorm.polymer_recovery.title": "Polymer Recovery",
   "quest.sandstorm.polymer_recovery.task": "Obtain Salvaged Polymer.",
-  "quest.sandstorm.polymer_recovery.note": "Dig buried ruins or recycle scrap with sand."
+  "quest.sandstorm.polymer_recovery.note": "Dig buried ruins or recycle scrap with sand.",
+  "block.sandstorm.sand_suction_quarry": "Sand Suction Quarry",
+  "item.sandstorm.sand_suction_quarry": "Sand Suction Quarry",
+  "container.sandstorm.sand_suction_quarry": "Sand Suction Quarry"
 }

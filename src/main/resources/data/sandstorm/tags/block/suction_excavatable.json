@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:sand",
+    "minecraft:gravel",
+    "minecraft:suspicious_gravel",
+    "sandstorm:salinized_sand",
+    "sandstorm:electrified_sand",
+    "sandstorm:nanite_quicksand"
+  ]
+}

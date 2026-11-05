@@ -1756,5 +1756,8 @@
   "message.sandstorm.cyber_mole_needs_circuit": "Requiere 1x Placa de Circuito para reprogramar.",
   "quest.sandstorm.polymer_recovery.title": "Recuperación de Polímeros",
   "quest.sandstorm.polymer_recovery.task": "Consigue Polímero Recuperado.",
-  "quest.sandstorm.polymer_recovery.note": "Excava ruinas o recicla chatarra con arena."
+  "quest.sandstorm.polymer_recovery.note": "Excava ruinas o recicla chatarra con arena.",
+  "block.sandstorm.sand_suction_quarry": "Cantera de Succion de Sedimentos",
+  "item.sandstorm.sand_suction_quarry": "Cantera de Succion de Sedimentos",
+  "container.sandstorm.sand_suction_quarry": "Cantera de Succion"
 }

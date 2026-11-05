@@ -42,6 +42,7 @@ import com.fhfelipefh.sandstorm.client.gui.QuantumControllerScreen;
 import com.fhfelipefh.sandstorm.client.gui.QuantumDiskDriveScreen;
 import com.fhfelipefh.sandstorm.client.gui.QuantumSleeperScreen;
 import com.fhfelipefh.sandstorm.client.gui.QuantumTerminalScreen;
+import com.fhfelipefh.sandstorm.client.gui.SandSuctionQuarryScreen;
 import com.fhfelipefh.sandstorm.client.gui.SolidStateAccumulatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.SpectralSurveyTelescopeScreen;
 import com.fhfelipefh.sandstorm.client.gui.StellarSingularityReactorScreen;
@@ -174,6 +175,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.SOLID_STATE_ACCUMULATOR_MENU, SolidStateAccumulatorScreen::new);
         MenuScreens.register(SandStormMenus.GRID_MONITOR_CONSOLE_MENU, GridMonitorConsoleScreen::new);
         MenuScreens.register(SandStormMenus.DEEP_CORE_DRILL_MENU, DeepCoreDrillScreen::new);
+        MenuScreens.register(SandStormMenus.SAND_SUCTION_QUARRY_MENU, SandSuctionQuarryScreen::new);
         MenuScreens.register(SandStormMenus.AUTO_ASSEMBLY_LINE_MENU, AutoAssemblyLineScreen::new);
         MenuScreens.register(SandStormMenus.MEGASTRUCTURE_CONSTRUCTOR_MENU, MegastructureConstructorScreen::new);
         MenuScreens.register(SandStormMenus.BIOREACTOR_VAT_MENU, BioreactorVatScreen::new);

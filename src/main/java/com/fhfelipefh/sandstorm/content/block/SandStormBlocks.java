@@ -54,6 +54,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.SpectralSurveyTelescopeBloc
 import com.fhfelipefh.sandstorm.content.block.entity.StellarSingularityReactorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneCrateBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SandSuctionQuarryBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SteelFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SynapticCondenserBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.XpVacuumBlockEntity;
@@ -470,6 +471,13 @@ public class SandStormBlocks {
     public static final DeepCoreDrillBlock DEEP_CORE_DRILL = register("deep_core_drill",
             new DeepCoreDrillBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("deep_core_drill")))
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(5.0f, 12.0f)
+                    .sound(SoundType.NETHERITE_BLOCK)
+                    .requiresCorrectToolForDrops()));
+    public static final SandSuctionQuarryBlock SAND_SUCTION_QUARRY = register("sand_suction_quarry",
+            new SandSuctionQuarryBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("sand_suction_quarry")))
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(5.0f, 12.0f)
                     .sound(SoundType.NETHERITE_BLOCK)
@@ -1532,6 +1540,11 @@ public class SandStormBlocks {
             SandStormMod.id("deep_core_drill"),
             new BlockEntityType<>(DeepCoreDrillBlockEntity::new, Set.of(DEEP_CORE_DRILL))
     );
+    public static final BlockEntityType<SandSuctionQuarryBlockEntity> SAND_SUCTION_QUARRY_BE = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE,
+            SandStormMod.id("sand_suction_quarry"),
+            new BlockEntityType<>(SandSuctionQuarryBlockEntity::new, Set.of(SAND_SUCTION_QUARRY))
+    );
     public static final BlockEntityType<KineticShieldGeneratorBlockEntity> KINETIC_SHIELD_GENERATOR_BE = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE,
             SandStormMod.id("kinetic_shield_generator"),
@@ -1828,6 +1841,7 @@ public class SandStormBlocks {
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SOLID_STATE_ACCUMULATOR_BE);
         FluidStorage.SIDED.registerForBlockEntity(SmartFluidPipeBlockEntity::getFluidStorage, SMART_FLUID_PIPE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, DEEP_CORE_DRILL_BE);
+        ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, SAND_SUCTION_QUARRY_BE);
         FluidStorage.SIDED.registerForBlockEntity(DeepCoreDrillBlockEntity::getFluidStorage, DEEP_CORE_DRILL_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, KINETIC_SHIELD_GENERATOR_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, AUTO_ASSEMBLY_LINE_BE);

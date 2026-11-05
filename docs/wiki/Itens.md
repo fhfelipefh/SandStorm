@@ -108,3 +108,4 @@
 | **Item**     | `hound_attack_module`  | Garras de Choque Caninas | Concede ataque elétrico com choque e lentidão ao cão |
 | **Item**     | `hound_dodge_module`   | Propulsor de Evasão Solar | Concede esquiva automática e saltos acrobáticos ao cão |
 | **Item**     | `cyber_hound_spawn_egg`| Ovo de Cão Cibernético | Invoca o Cão Cibernético autônomo |
+| **Bloco**    | `sand_suction_quarry`  | Escavadeira por Sucção de Sedimentos | Vórtice pneumático que escava areia e sedimentos em raio configurável (1-64) |

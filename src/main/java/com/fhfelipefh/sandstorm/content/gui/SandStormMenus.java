@@ -72,6 +72,11 @@ public class SandStormMenus {
             new MenuType<>(DeepCoreDrillMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<SandSuctionQuarryMenu> SAND_SUCTION_QUARRY_MENU = register(
+            "sand_suction_quarry",
+            new MenuType<>(SandSuctionQuarryMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     public static final MenuType<AutoAssemblyLineMenu> AUTO_ASSEMBLY_LINE_MENU = register(
             "auto_assembly_line",
             new MenuType<>(AutoAssemblyLineMenu::new, FeatureFlags.VANILLA_SET)

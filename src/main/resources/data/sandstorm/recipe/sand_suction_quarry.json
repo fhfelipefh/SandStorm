@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "sandstorm:circuit_board",
+    "D": "sandstorm:deep_core_drill",
+    "H": "minecraft:hopper",
+    "P": "minecraft:piston",
+    "S": "sandstorm:scrap_metal",
+    "T": "sandstorm:titanium_chitin_composite"
+  },
+  "pattern": [
+    "THT",
+    "PDP",
+    "SCS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:sand_suction_quarry"
+  }
+}

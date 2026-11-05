@@ -211,7 +211,7 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
 ## 🧱 Novos Blocos, Maquinários & Automação
 
 <details>
-<summary><b>Clique para expandir o catálogo de maquinários e blocos (29 modelos)</b></summary>
+<summary><b>Clique para expandir o catálogo de maquinários e blocos (30 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -375,7 +375,11 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
       <b>Tábuas de Madeira Plástica (WPC)</b><br>
       <sub>Compósito Mineral e Polímero para Construção</sub>
     </td>
-    <td width="25%"></td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/blocks/sand_suction_quarry.png" width="140" alt="Escavadeira por Sucção de Sedimentos"><br>
+      <b>Escavadeira por Sucção de Sedimentos</b><br>
+      <sub>Vórtice Pneumático & Limpeza Geológica</sub>
+    </td>
     <td width="25%"></td>
     <td width="25%"></td>
   </tr>
