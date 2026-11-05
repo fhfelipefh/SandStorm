@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": "sandstorm:fiberglass",
+    "S": "sandstorm:scrap_metal",
+    "P": "minecraft:piston",
+    "B": "sandstorm:tool_base"
+  },
+  "pattern": [
+    " G ",
+    "SPS",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:pneumatic_sand_blaster"
+  }
+}
+

@@ -1759,5 +1759,10 @@
   "quest.sandstorm.polymer_recovery.note": "Excava ruinas o recicla chatarra con arena.",
   "block.sandstorm.sand_suction_quarry": "Cantera de Succion de Sedimentos",
   "item.sandstorm.sand_suction_quarry": "Cantera de Succion de Sedimentos",
-  "container.sandstorm.sand_suction_quarry": "Cantera de Succion"
+  "container.sandstorm.sand_suction_quarry": "Cantera de Succion",
+  "item.sandstorm.pneumatic_sand_blaster": "Lanza-Arena Neumático",
+  "tooltip.sandstorm.pneumatic_sand_blaster.desc": "Compresor de arena por vacío Venturi.",
+  "tooltip.sandstorm.pneumatic_sand_blaster.damage": "Daño: 10 (Corto) a 3.5 (Largo)",
+  "tooltip.sandstorm.pneumatic_sand_blaster.ammo": "Munición: Infinita (Aspira arena del suelo)",
+  "message.sandstorm.pneumatic_sand_blaster.no_sand": "Vacío insuficiente: sin arena alrededor."
 }

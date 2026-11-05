@@ -1,0 +1,152 @@
+{
+  "credit": "Made for SandStorm Mod - Pneumatic Sand Blaster Mk-I",
+  "texture_size": [32, 32],
+  "textures": {
+    "texture": "sandstorm:item/pneumatic_sand_blaster",
+    "particle": "sandstorm:item/pneumatic_sand_blaster"
+  },
+  "elements": [
+    {
+      "name": "receiver_frame",
+      "from": [6.5, 4.5, 2],
+      "to": [9.5, 8.5, 12],
+      "faces": {
+        "north": {"uv": [0, 0, 3, 4], "texture": "#texture"},
+        "east": {"uv": [0, 0, 10, 4], "texture": "#texture"},
+        "south": {"uv": [3, 0, 6, 4], "texture": "#texture"},
+        "west": {"uv": [0, 0, 10, 4], "texture": "#texture"},
+        "up": {"uv": [0, 0, 3, 10], "texture": "#texture"},
+        "down": {"uv": [0, 0, 3, 10], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "tactical_stock",
+      "from": [7, 4.5, 12],
+      "to": [9, 8, 18],
+      "faces": {
+        "north": {"uv": [16, 16, 18, 19.5], "texture": "#texture"},
+        "east": {"uv": [16, 16, 22, 19.5], "texture": "#texture"},
+        "south": {"uv": [18, 16, 20, 19.5], "texture": "#texture"},
+        "west": {"uv": [16, 16, 22, 19.5], "texture": "#texture"},
+        "up": {"uv": [16, 16, 18, 22], "texture": "#texture"},
+        "down": {"uv": [16, 16, 18, 22], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "grip_handle",
+      "from": [7, 0.5, 7],
+      "to": [9, 4.5, 9],
+      "faces": {
+        "north": {"uv": [0, 16, 2, 20], "texture": "#texture"},
+        "east": {"uv": [0, 16, 2, 20], "texture": "#texture"},
+        "south": {"uv": [0, 16, 2, 20], "texture": "#texture"},
+        "west": {"uv": [0, 16, 2, 20], "texture": "#texture"},
+        "up": {"uv": [0, 16, 2, 18], "texture": "#texture"},
+        "down": {"uv": [0, 16, 2, 18], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "suction_funnel",
+      "from": [6, 1.5, 0],
+      "to": [10, 4.5, 4],
+      "faces": {
+        "north": {"uv": [16, 8, 20, 11], "texture": "#texture"},
+        "east": {"uv": [16, 8, 20, 11], "texture": "#texture"},
+        "south": {"uv": [16, 8, 20, 11], "texture": "#texture"},
+        "west": {"uv": [16, 8, 20, 11], "texture": "#texture"},
+        "up": {"uv": [16, 8, 20, 12], "texture": "#texture"},
+        "down": {"uv": [16, 8, 20, 12], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "fiberglass_chamber",
+      "from": [6, 5, -6],
+      "to": [10, 8.5, 2],
+      "faces": {
+        "north": {"uv": [0, 24, 4, 27.5], "texture": "#texture"},
+        "east": {"uv": [0, 24, 8, 27.5], "texture": "#texture"},
+        "south": {"uv": [0, 24, 4, 27.5], "texture": "#texture"},
+        "west": {"uv": [0, 24, 8, 27.5], "texture": "#texture"},
+        "up": {"uv": [0, 24, 4, 32], "texture": "#texture"},
+        "down": {"uv": [0, 24, 4, 32], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "pressure_gauge",
+      "from": [5.5, 6, 6],
+      "to": [6.5, 8.5, 8.5],
+      "faces": {
+        "north": {"uv": [24, 0, 25, 2.5], "texture": "#texture"},
+        "east": {"uv": [24, 0, 26.5, 2.5], "texture": "#texture"},
+        "south": {"uv": [24, 0, 25, 2.5], "texture": "#texture"},
+        "west": {"uv": [24, 0, 26.5, 2.5], "texture": "#texture"},
+        "up": {"uv": [24, 0, 25, 2.5], "texture": "#texture"},
+        "down": {"uv": [24, 0, 25, 2.5], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "pneumatic_barrel",
+      "from": [7, 5.5, -12],
+      "to": [9, 7.5, -6],
+      "faces": {
+        "north": {"uv": [16, 0, 18, 2], "texture": "#texture"},
+        "east": {"uv": [16, 0, 22, 2], "texture": "#texture"},
+        "south": {"uv": [16, 0, 18, 2], "texture": "#texture"},
+        "west": {"uv": [16, 0, 22, 2], "texture": "#texture"},
+        "up": {"uv": [16, 0, 18, 6], "texture": "#texture"},
+        "down": {"uv": [16, 0, 18, 6], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "fluted_muzzle",
+      "from": [6.5, 5, -14],
+      "to": [9.5, 8, -12],
+      "faces": {
+        "north": {"uv": [24, 16, 27, 19], "texture": "#texture"},
+        "east": {"uv": [24, 16, 26, 19], "texture": "#texture"},
+        "south": {"uv": [24, 16, 27, 19], "texture": "#texture"},
+        "west": {"uv": [24, 16, 26, 19], "texture": "#texture"},
+        "up": {"uv": [24, 16, 27, 18], "texture": "#texture"},
+        "down": {"uv": [24, 16, 27, 18], "texture": "#texture"}
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [-10, -90, 0],
+      "translation": [0, 2.5, 0.5],
+      "scale": [0.85, 0.85, 0.85]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [-10, 90, 0],
+      "translation": [0, 2.5, 0.5],
+      "scale": [0.85, 0.85, 0.85]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, -90, 15],
+      "translation": [1.13, 3.2, 1.13],
+      "scale": [0.68, 0.68, 0.68]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 90, -15],
+      "translation": [1.13, 3.2, 1.13],
+      "scale": [0.68, 0.68, 0.68]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.55, 0.55, 0.55]
+    },
+    "gui": {
+      "rotation": [15, -45, -5],
+      "translation": [0, 1.5, 0],
+      "scale": [0.65, 0.65, 0.65]
+    },
+    "fixed": {
+      "rotation": [0, 180, 0],
+      "translation": [0, 0, 0],
+      "scale": [1, 1, 1]
+    }
+  }
+}
+

@@ -1759,5 +1759,10 @@
   "quest.sandstorm.polymer_recovery.note": "Dig buried ruins or recycle scrap with sand.",
   "block.sandstorm.sand_suction_quarry": "Sand Suction Quarry",
   "item.sandstorm.sand_suction_quarry": "Sand Suction Quarry",
-  "container.sandstorm.sand_suction_quarry": "Sand Suction Quarry"
+  "container.sandstorm.sand_suction_quarry": "Sand Suction Quarry",
+  "item.sandstorm.pneumatic_sand_blaster": "Pneumatic Sand Blaster",
+  "tooltip.sandstorm.pneumatic_sand_blaster.desc": "Venturi vacuum sand compressor.",
+  "tooltip.sandstorm.pneumatic_sand_blaster.damage": "Damage: 10 (Close) to 3.5 (Long)",
+  "tooltip.sandstorm.pneumatic_sand_blaster.ammo": "Ammo: Infinite (Sucks ambient sand)",
+  "message.sandstorm.pneumatic_sand_blaster.no_sand": "Insufficient vacuum: no sand nearby."
 }

@@ -1759,5 +1759,10 @@
   "quest.sandstorm.polymer_recovery.note": "Escave ruínas ou recicle sucata com areia.",
   "block.sandstorm.sand_suction_quarry": "Escavadeira por Succao de Sedimentos",
   "item.sandstorm.sand_suction_quarry": "Escavadeira por Succao de Sedimentos",
-  "container.sandstorm.sand_suction_quarry": "Escavadeira por Succao"
+  "container.sandstorm.sand_suction_quarry": "Escavadeira por Succao",
+  "item.sandstorm.pneumatic_sand_blaster": "Lança-Areia Pneumático",
+  "tooltip.sandstorm.pneumatic_sand_blaster.desc": "Compressor de areia a vácuo Venturi.",
+  "tooltip.sandstorm.pneumatic_sand_blaster.damage": "Dano: 10 (Curto) a 3.5 (Longo)",
+  "tooltip.sandstorm.pneumatic_sand_blaster.ammo": "Munição: Infinita (Suga areia do solo)",
+  "message.sandstorm.pneumatic_sand_blaster.no_sand": "Vácuo insuficiente: sem areia ao redor."
 }

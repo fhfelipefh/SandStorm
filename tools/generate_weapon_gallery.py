@@ -217,6 +217,13 @@ WEAPONS = [
         "role": "Incubação Mecatrônica do Guardião Canino",
         "type": "2d",
         "texture": "src/main/resources/assets/sandstorm/textures/item/cyber_hound_spawn_egg.png"
+    },
+    {
+        "id": "pneumatic_sand_blaster",
+        "name": "Lança-Areia Pneumático",
+        "role": "Dispersão Balística por Vácuo de Sedimentos",
+        "type": "3d",
+        "model": "src/main/resources/assets/sandstorm/models/item/pneumatic_sand_blaster.json"
     }
 ]
 

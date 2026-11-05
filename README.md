@@ -409,7 +409,7 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
 ## ⚔️ Arsenal Tático, Armas & Equipamentos
 
 <details>
-<summary><b>Clique para expandir o arsenal de armas e equipamentos (30 modelos)</b></summary>
+<summary><b>Clique para expandir o arsenal de armas e equipamentos (31 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -578,7 +578,11 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
       <b>Ovo de Cão Cibernético</b><br>
       <sub>Incubação Mecatrônica do Guardião Canino</sub>
     </td>
-    <td width="25%"></td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/weapons/pneumatic_sand_blaster.png" width="140" alt="Lança-Areia Pneumático"><br>
+      <b>Lança-Areia Pneumático</b><br>
+      <sub>Dispersão Balística por Vácuo de Sedimentos</sub>
+    </td>
     <td width="25%"></td>
   </tr>
 </table>
