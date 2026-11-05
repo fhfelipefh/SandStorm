@@ -19,6 +19,7 @@ import com.fhfelipefh.sandstorm.content.block.LegacyRustBlock;
 import com.fhfelipefh.sandstorm.content.block.MicroSingularityTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.PiezoShockTrapBlock;
 import com.fhfelipefh.sandstorm.content.block.PlasmaShieldGeneratorBlock;
+import com.fhfelipefh.sandstorm.content.block.QuantumSleeperPodBlock;
 import com.fhfelipefh.sandstorm.content.block.RappelAnchorBlock;
 import com.fhfelipefh.sandstorm.content.block.RetractableSpikeWallBlock;
 import com.fhfelipefh.sandstorm.content.block.SandMaglevRailBlock;
@@ -47,6 +48,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.MegastructureConstructorBlo
 import com.fhfelipefh.sandstorm.content.block.entity.OrbitalGroundStationBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.OrbitalMassDriverBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneCrateBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
@@ -55,6 +57,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.SubspaceGatewayBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.CompactSlabPistonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.HeavyKineticPistonBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.TectonicKineticPistonBlockEntity;
+import com.fhfelipefh.sandstorm.content.clone.CloneNetworkSavedData;
 import com.fhfelipefh.sandstorm.content.entity.BuilderDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CargoDroneEntity;
 import com.fhfelipefh.sandstorm.content.entity.CrawlerDroneEntity;
@@ -222,6 +225,7 @@ public class ShowcaseAutomation {
                 new ShowcaseFootprint("Complexo de Ciborgues", -20, 20, -115, -80),
                 new ShowcaseFootprint("Arena do Sandworm", -26, 26, -196, -144),
                 new ShowcaseFootprint("Base Orbital", 108, 122, 13, 27),
+                new ShowcaseFootprint("Laboratório de Clonagem", 80, 104, 34, 54),
                 new ShowcaseFootprint("Campo do Abutre & Exo-Planador", 140, 180, 15, 65),
                 new ShowcaseFootprint("Hipódromo Cibernético", -100, -50, 25, 58),
                 new ShowcaseFootprint("Biosferas", -130, 130, biosphereFrontZ - biosphereRadius - 8,
@@ -281,6 +285,7 @@ public class ShowcaseAutomation {
                     buildAutonomousCyborgFacility(level, new BlockPos(0, 160, 0), player);
                     buildPistonTestingRange(level, new BlockPos(50, 160, -125));
                     buildScavengerVultureShowcase(level, new BlockPos(160, 160, 40), player);
+                    buildQuantumCloningStation(level, new BlockPos(0, 160, 0).offset(92, 0, 44), player);
                     preparePlayerForShowcase(level, player);
                 } else if (!GENERATED_PLAYERS.contains(player.getUUID())) {
                     GENERATED_PLAYERS.add(player.getUUID());
@@ -634,6 +639,14 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeVultureCommand)
                 )
+                .then(Commands.literal("clone")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCloneCommand)
+                )
+                .then(Commands.literal("sleeper")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCloneCommand)
+                )
                 .then(Commands.literal("military_lab")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
@@ -747,6 +760,14 @@ public class ShowcaseAutomation {
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ShowcaseAutomation::executeVultureCommand)
                 )
+                .then(Commands.literal("clone")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCloneCommand)
+                )
+                .then(Commands.literal("sleeper")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                        .executes(ShowcaseAutomation::executeCloneCommand)
+                )
                 .then(Commands.literal("military_lab")
                         .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .executes(ctx -> executeDungeonTeleportCommand(ctx, "military_lab"))
@@ -822,6 +843,16 @@ public class ShowcaseAutomation {
         dispatcher.register(Commands.literal("sandstorm_computer")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .executes(ShowcaseAutomation::executeComputerCommand)
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_clone")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeCloneCommand)
+        );
+
+        dispatcher.register(Commands.literal("sandstorm_sleeper")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .executes(ShowcaseAutomation::executeCloneCommand)
         );
 
         dispatcher.register(Commands.literal("sandstorm_biospheres")
@@ -984,6 +1015,25 @@ public class ShowcaseAutomation {
                 BlockPos targetPos = BlockPos.containing(player.position()).relative(player.getDirection(), 4);
                 buildSubspaceGatewayStation(level, targetPos);
                 source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Estação do Portal do Subespaço montada com sucesso!"), true);
+            }
+            return 1;
+        }
+        source.sendFailure(Component.literal("§c[SandStorm] Este comando deve ser executado por um jogador."));
+        return 0;
+    }
+
+    public static int executeCloneCommand(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
+        if (source.getEntity() instanceof ServerPlayer player) {
+            ServerLevel level = source.getLevel();
+            if (showcaseActive) {
+                BlockPos targetPos = new BlockPos(92, 161, 41);
+                player.teleportTo(level, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, Set.of(), 0.0f, 0.0f, true);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Teleportado para o Laboratório de Clonagem!"), true);
+            } else {
+                BlockPos targetPos = BlockPos.containing(player.position()).relative(player.getDirection(), 4);
+                buildQuantumCloningStation(level, targetPos, player);
+                source.sendSuccess(() -> Component.literal("§6[SandStorm]§a Laboratório de Clonagem Quântica montado!"), true);
             }
             return 1;
         }
@@ -1188,6 +1238,9 @@ public class ShowcaseAutomation {
         buildOrbitalLaunchStation(level, center.offset(115, 0, 20));
         buildShowcaseWalkway(level, center.offset(95, 0, -5), center.offset(95, 0, 20));
         buildShowcaseWalkway(level, center.offset(95, 0, 20), center.offset(107, 0, 20));
+        buildQuantumCloningStation(level, center.offset(92, 0, 44), player);
+        buildShowcaseWalkway(level, center.offset(95, 0, 20), center.offset(95, 0, 35));
+        buildShowcaseWalkway(level, center.offset(95, 0, 35), center.offset(92, 0, 35));
         buildScavengerVultureShowcase(level, center.offset(160, 0, 40), player);
         buildShowcaseWalkway(level, center.offset(123, 0, 20), center.offset(142, 0, 20));
         buildShowcaseWalkway(level, center.offset(142, 0, 20), center.offset(142, 0, 40));
@@ -1509,6 +1562,7 @@ public class ShowcaseAutomation {
         setupPedestal(level, center.offset(-22, 0, -29), showcaseCenter.offset(0, 1, -149), "Setor Norte: Arena do Colosso (Sandworm)", "Verme de Areia Adulto | Arena de Dunas & Fosso", Blocks.RED_SANDSTONE);
         setupPedestal(level, center.offset(-26, 0, -29), showcaseCenter.offset(50, 1, -125), "Setor Mecânica: Super Pistões", "Meia-Laje (7) | Cinético (24) | Tectônico (48 + Obsidiana)", Blocks.REDSTONE_BLOCK);
         setupPedestal(level, center.offset(-30, 0, -29), showcaseCenter.offset(160, 1, 40), "Setor Leste: Aviário do Abutre", "Abutres, Carcaças, Desmanche & Exo-Planador", Blocks.WARPED_WART_BLOCK);
+        setupPedestal(level, center.offset(-18, 0, -32), showcaseCenter.offset(92, 1, 41), "Setor Leste: Laboratório de Clonagem", "Câmaras Quânticas & Vidas Hardcore", SandStormBlocks.REINFORCED_CONCRETE);
     }
 
     private static void setupPedestal(ServerLevel level, BlockPos floorPos, BlockPos destination, String title, String subtitle, Block baseBlock) {
@@ -4561,6 +4615,218 @@ public class ShowcaseAutomation {
                 level.setBlock(p, b.defaultBlockState(), 2);
             }
         }
+    }
+
+    public static void buildQuantumCloningStation(ServerLevel level, BlockPos stationCenter) {
+        buildQuantumCloningStation(level, stationCenter, null);
+    }
+
+    public static void buildQuantumCloningStation(ServerLevel level, BlockPos stationCenter, ServerPlayer player) {
+        int baseY = stationCenter.getY();
+
+        for (int dx = -11; dx <= 11; dx++) {
+            for (int dz = -9; dz <= 9; dz++) {
+                for (int dy = 1; dy <= 7; dy++) {
+                    BlockPos p = stationCenter.offset(dx, dy, dz);
+                    if (!level.getBlockState(p).isAir()) {
+                        setAirSafe(level, p);
+                    }
+                }
+            }
+        }
+
+        for (int dx = -11; dx <= 11; dx++) {
+            for (int dz = -9; dz <= 9; dz++) {
+                BlockPos p = stationCenter.offset(dx, 0, dz);
+                boolean edge = Math.abs(dx) == 11 || Math.abs(dz) == 9;
+                boolean corner = Math.abs(dx) == 11 && Math.abs(dz) == 9;
+                boolean entrance = (dz == -9 && Math.abs(dx) <= 2);
+                boolean floorAccent = (Math.abs(dx) == 6 && Math.abs(dz) == 4) || (dx == 0 && dz == 0);
+                Block b = corner ? Blocks.OCHRE_FROGLIGHT : (floorAccent ? Blocks.SEA_LANTERN : (edge ? Blocks.CUT_SANDSTONE : ((Math.abs(dx) + Math.abs(dz)) % 2 == 0 ? Blocks.SMOOTH_STONE : SandStormBlocks.REINFORCED_CONCRETE)));
+                level.setBlock(p, b.defaultBlockState(), 3);
+                if (edge && !corner && !entrance) {
+                    level.setBlock(p.above(), SandStormBlocks.FULGURITE_GLASS.defaultBlockState(), 3);
+                }
+            }
+        }
+
+        for (int x = -6; x <= 6; x++) {
+            BlockPos cablePos = stationCenter.offset(x, 1, -1);
+            level.setBlock(cablePos, SandStormBlocks.QUANTUM_NETWORK_CABLE.defaultBlockState(), 3);
+        }
+
+        BlockPos accumulatorPos = stationCenter.offset(-7, 1, 0);
+        BlockPos solarPos = stationCenter.offset(-7, 1, -1);
+        BlockPos controllerPos = stationCenter.offset(-7, 1, 1);
+        level.setBlock(accumulatorPos, SandStormBlocks.SOLID_STATE_ACCUMULATOR.defaultBlockState().setValue(SolidStateAccumulatorBlock.CHARGE_LEVEL, 4), 3);
+        level.setBlock(solarPos, SandStormBlocks.WIRELESS_SOLAR_RECEIVER_TIER2.defaultBlockState(), 3);
+        if (level.getBlockEntity(accumulatorPos) instanceof SolidStateAccumulatorBlockEntity accBe) {
+            accBe.setStoredEnergy(500000);
+        }
+        level.setBlock(controllerPos, SandStormBlocks.QUANTUM_NETWORK_CONTROLLER.defaultBlockState().setValue(QuantumNetworkControllerBlock.ACTIVE, true), 3);
+        if (level.getBlockEntity(controllerPos) instanceof QuantumNetworkControllerBlockEntity ctrlBe) {
+            ctrlBe.receiveEnergy(100000);
+            ctrlBe.setChanged();
+        }
+
+        BlockPos podAlphaPos = stationCenter.offset(-4, 1, 0);
+        level.setBlock(podAlphaPos, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState()
+                .setValue(QuantumSleeperPodBlock.FACING, Direction.SOUTH)
+                .setValue(QuantumSleeperPodBlock.HALF, DoubleBlockHalf.LOWER)
+                .setValue(QuantumSleeperPodBlock.ACTIVE, true)
+                .setValue(QuantumSleeperPodBlock.OCCUPIED, true)
+                .setValue(QuantumSleeperPodBlock.OPEN, false), 3);
+        level.setBlock(podAlphaPos.above(), SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState()
+                .setValue(QuantumSleeperPodBlock.FACING, Direction.SOUTH)
+                .setValue(QuantumSleeperPodBlock.HALF, DoubleBlockHalf.UPPER)
+                .setValue(QuantumSleeperPodBlock.ACTIVE, true)
+                .setValue(QuantumSleeperPodBlock.OCCUPIED, true)
+                .setValue(QuantumSleeperPodBlock.OPEN, false), 3);
+        if (level.getBlockEntity(podAlphaPos) instanceof QuantumSleeperPodBlockEntity podAlphaBe) {
+            podAlphaBe.setStoredEnergy(100000);
+            podAlphaBe.setBioNutrients(100);
+            podAlphaBe.setHasClone(true);
+            podAlphaBe.setCustomPodName("§aCâmara Alfa (2ª Vida)");
+            podAlphaBe.setItem(36, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS));
+            podAlphaBe.setItem(37, new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS));
+            podAlphaBe.setItem(38, new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE));
+            podAlphaBe.setItem(39, new ItemStack(SandStormItems.SPACE_SUIT_HELMET));
+            podAlphaBe.setItem(0, new ItemStack(SandStormItems.SURVIVAL_DATAPAD));
+            podAlphaBe.setItem(1, new ItemStack(SandStormItems.SPACE_RATION, 16));
+            podAlphaBe.setItem(2, new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE, 4));
+            podAlphaBe.setItem(3, new ItemStack(SandStormItems.BIOFOAM_CARTRIDGE, 4));
+            podAlphaBe.setItem(41, new ItemStack(SandStormItems.CHITOSAN_EXTRACT, 16));
+            if (level.getServer() != null) {
+                UUID owner = player != null ? player.getUUID() : CloneNetworkSavedData.UNASSIGNED_OWNER;
+                podAlphaBe.setOwnerUuid(owner);
+                CloneNetworkSavedData networkData = CloneNetworkSavedData.get(level.getServer());
+                networkData.registerPod(owner, podAlphaPos, level.dimension().identifier().toString(), "§aCâmara Alfa (2ª Vida)", true, level.getGameTime());
+            }
+            podAlphaBe.setChanged();
+        }
+
+        BlockPos podBetaPos = stationCenter.offset(0, 1, 0);
+        level.setBlock(podBetaPos, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState()
+                .setValue(QuantumSleeperPodBlock.FACING, Direction.SOUTH)
+                .setValue(QuantumSleeperPodBlock.HALF, DoubleBlockHalf.LOWER)
+                .setValue(QuantumSleeperPodBlock.ACTIVE, true)
+                .setValue(QuantumSleeperPodBlock.OCCUPIED, true)
+                .setValue(QuantumSleeperPodBlock.OPEN, false), 3);
+        level.setBlock(podBetaPos.above(), SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState()
+                .setValue(QuantumSleeperPodBlock.FACING, Direction.SOUTH)
+                .setValue(QuantumSleeperPodBlock.HALF, DoubleBlockHalf.UPPER)
+                .setValue(QuantumSleeperPodBlock.ACTIVE, true)
+                .setValue(QuantumSleeperPodBlock.OCCUPIED, true)
+                .setValue(QuantumSleeperPodBlock.OPEN, false), 3);
+        if (level.getBlockEntity(podBetaPos) instanceof QuantumSleeperPodBlockEntity podBetaBe) {
+            podBetaBe.setStoredEnergy(100000);
+            podBetaBe.setBioNutrients(100);
+            podBetaBe.setHasClone(true);
+            podBetaBe.setCustomPodName("§bCâmara Beta (3ª Vida)");
+            podBetaBe.setItem(36, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS));
+            podBetaBe.setItem(37, new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS));
+            podBetaBe.setItem(38, new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE));
+            podBetaBe.setItem(39, new ItemStack(SandStormItems.SPACE_SUIT_HELMET));
+            podBetaBe.setItem(0, new ItemStack(SandStormItems.BIO_NEURAL_CORE));
+            podBetaBe.setItem(1, new ItemStack(SandStormItems.ADRENAL_STIM, 8));
+            podBetaBe.setItem(2, new ItemStack(SandStormItems.BIO_COOLANT_CANISTER, 4));
+            podBetaBe.setItem(3, new ItemStack(SandStormItems.SPACE_RATION, 16));
+            podBetaBe.setItem(41, new ItemStack(SandStormItems.TREHALOSE_SUGAR, 16));
+            if (level.getServer() != null) {
+                UUID owner = player != null ? player.getUUID() : CloneNetworkSavedData.UNASSIGNED_OWNER;
+                podBetaBe.setOwnerUuid(owner);
+                CloneNetworkSavedData networkData = CloneNetworkSavedData.get(level.getServer());
+                networkData.registerPod(owner, podBetaPos, level.dimension().identifier().toString(), "§bCâmara Beta (3ª Vida)", true, level.getGameTime());
+            }
+            podBetaBe.setChanged();
+        }
+
+        BlockPos podGammaPos = stationCenter.offset(4, 1, 0);
+        level.setBlock(podGammaPos, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState()
+                .setValue(QuantumSleeperPodBlock.FACING, Direction.SOUTH)
+                .setValue(QuantumSleeperPodBlock.HALF, DoubleBlockHalf.LOWER)
+                .setValue(QuantumSleeperPodBlock.ACTIVE, true)
+                .setValue(QuantumSleeperPodBlock.OCCUPIED, false)
+                .setValue(QuantumSleeperPodBlock.OPEN, false), 3);
+        level.setBlock(podGammaPos.above(), SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState()
+                .setValue(QuantumSleeperPodBlock.FACING, Direction.SOUTH)
+                .setValue(QuantumSleeperPodBlock.HALF, DoubleBlockHalf.UPPER)
+                .setValue(QuantumSleeperPodBlock.ACTIVE, true)
+                .setValue(QuantumSleeperPodBlock.OCCUPIED, false)
+                .setValue(QuantumSleeperPodBlock.OPEN, false), 3);
+        if (level.getBlockEntity(podGammaPos) instanceof QuantumSleeperPodBlockEntity podGammaBe) {
+            podGammaBe.setStoredEnergy(80000);
+            podGammaBe.setBioNutrients(75);
+            podGammaBe.setHasClone(false);
+            podGammaBe.setCustomPodName("§eCâmara Gamma (Pronta p/ 4ª Vida)");
+            podGammaBe.setItem(41, new ItemStack(SandStormItems.OSMOLYTE_GLYCEROL, 16));
+            if (level.getServer() != null) {
+                UUID owner = player != null ? player.getUUID() : CloneNetworkSavedData.UNASSIGNED_OWNER;
+                podGammaBe.setOwnerUuid(owner);
+                CloneNetworkSavedData networkData = CloneNetworkSavedData.get(level.getServer());
+                networkData.registerPod(owner, podGammaPos, level.dimension().identifier().toString(), "§eCâmara Gamma (Pronta p/ 4ª Vida)", false, level.getGameTime());
+            }
+            podGammaBe.setChanged();
+        }
+
+        BlockPos incubatorPos = stationCenter.offset(7, 1, 0);
+        level.setBlock(incubatorPos, SandStormBlocks.AMNIOTIC_INCUBATOR.defaultBlockState(), 3);
+        if (level.getBlockEntity(incubatorPos) instanceof AmnioticIncubatorBlockEntity incubator) {
+            incubator.getEnergyStorage().receiveEnergy(250000L);
+            incubator.setWaterAmount(10000);
+            incubator.setBiomassUnits(32);
+            incubator.setChanged();
+        }
+
+        BlockPos chestNutrientsPos = stationCenter.offset(-3, 1, 3);
+        setChestSafe(level, chestNutrientsPos, Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
+        if (level.getBlockEntity(chestNutrientsPos) instanceof ChestBlockEntity chestNutrients) {
+            chestNutrients.setItem(0, new ItemStack(SandStormItems.CHITOSAN_EXTRACT, 64));
+            chestNutrients.setItem(1, new ItemStack(SandStormItems.TREHALOSE_SUGAR, 64));
+            chestNutrients.setItem(2, new ItemStack(SandStormItems.OSMOLYTE_GLYCEROL, 64));
+            chestNutrients.setItem(3, new ItemStack(SandStormItems.POTABLE_WATER_BOTTLE, 16));
+            chestNutrients.setItem(4, new ItemStack(SandStormItems.QUANTUM_MIND_MATRIX, 4));
+            chestNutrients.setItem(5, new ItemStack(SandStormItems.BIO_NEURAL_CORE, 8));
+            chestNutrients.setItem(6, new ItemStack(SandStormItems.BIO_COOLANT_CANISTER, 16));
+            chestNutrients.setItem(7, new ItemStack(SandStormItems.CHITOSAN_EXTRACT, 64));
+            chestNutrients.setItem(8, new ItemStack(SandStormItems.TREHALOSE_SUGAR, 64));
+            chestNutrients.setChanged();
+        }
+
+        BlockPos chestEquipPos = stationCenter.offset(3, 1, 3);
+        setChestSafe(level, chestEquipPos, Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
+        if (level.getBlockEntity(chestEquipPos) instanceof ChestBlockEntity chestEquip) {
+            chestEquip.setItem(0, new ItemStack(SandStormItems.SPACE_SUIT_HELMET));
+            chestEquip.setItem(1, new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE));
+            chestEquip.setItem(2, new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS));
+            chestEquip.setItem(3, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS));
+            chestEquip.setItem(4, new ItemStack(SandStormItems.SURVIVAL_DATAPAD));
+            chestEquip.setItem(5, new ItemStack(SandStormItems.SPACE_RATION, 32));
+            chestEquip.setItem(6, new ItemStack(SandStormItems.ADRENAL_STIM, 16));
+            chestEquip.setItem(7, new ItemStack(SandStormItems.BIOFOAM_CARTRIDGE, 16));
+            chestEquip.setItem(8, new ItemStack(SandStormBlocks.QUANTUM_SLEEPER_POD, 4));
+            chestEquip.setItem(9, new ItemStack(SandStormBlocks.QUANTUM_NETWORK_CABLE, 64));
+            chestEquip.setChanged();
+        }
+
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 4.3, stationCenter.getZ() + 0.5, "§d§l[LABORATÓRIO DE CLONAGEM QUÂNTICA]");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.95, stationCenter.getZ() + 0.5, "§bRede Neural Quântica & Garantia de Vidas Hardcore");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.6, stationCenter.getZ() + 0.5, "§aCâmara Alfa (2ª Vida) | Câmara Beta (3ª Vida)");
+        spawnHologram(level, stationCenter.getX() + 0.5, baseY + 3.25, stationCenter.getZ() + 0.5, "§eCâmara Gamma (Pronta p/ 4ª Vida)");
+
+        spawnHologram(level, podAlphaPos.getX() + 0.5, baseY + 3.5, podAlphaPos.getZ() + 0.5, "§a§l[CÂMARA ALFA - 2ª VIDA]");
+        spawnHologram(level, podAlphaPos.getX() + 0.5, baseY + 3.2, podAlphaPos.getZ() + 0.5, "§7Clone Ativo & Traje Fused");
+
+        spawnHologram(level, podBetaPos.getX() + 0.5, baseY + 3.5, podBetaPos.getZ() + 0.5, "§b§l[CÂMARA BETA - 3ª VIDA]");
+        spawnHologram(level, podBetaPos.getX() + 0.5, baseY + 3.2, podBetaPos.getZ() + 0.5, "§7Clone Reserva Pronto");
+
+        spawnHologram(level, podGammaPos.getX() + 0.5, baseY + 3.5, podGammaPos.getZ() + 0.5, "§e§l[CÂMARA GAMMA - 4ª VIDA]");
+        spawnHologram(level, podGammaPos.getX() + 0.5, baseY + 3.2, podGammaPos.getZ() + 0.5, "§7Pronta para Gestação");
+
+        spawnHologram(level, chestNutrientsPos.getX() + 0.5, baseY + 2.2, chestNutrientsPos.getZ() + 0.5, "§a[Bio-Nutrientes & Matrizes Quânticas]");
+        spawnHologram(level, chestEquipPos.getX() + 0.5, baseY + 2.2, chestEquipPos.getZ() + 0.5, "§b[Trajes Fused & Equipamentos Reserva]");
+
+        setupReturnPad(level, stationCenter.offset(-8, 1, -6));
     }
 
     public static void buildScavengerVultureShowcase(ServerLevel level, BlockPos stationCenter, ServerPlayer player) {

@@ -25,7 +25,6 @@ public class SpaceSuitArmorModel extends HumanoidModel<HumanoidRenderState> {
                 .texOffs(36, 0).addBox(-3.5f, -6.5f, -5.3f, 7.0f, 4.0f, 2.0f)
                 .texOffs(54, 0).addBox(-4.8f, -3.5f, -4.5f, 2.0f, 2.0f, 4.0f)
                 .texOffs(54, 6).addBox(2.8f, -3.5f, -4.5f, 2.0f, 2.0f, 4.0f)
-                .texOffs(0, 18).addBox(4.2f, -11.0f, -0.5f, 1.0f, 5.0f, 1.0f)
                 .texOffs(36, 6).addBox(-4.5f, -0.5f, -4.5f, 9.0f, 2.0f, 9.0f),
                 PartPose.ZERO);
 
@@ -108,5 +107,15 @@ public class SpaceSuitArmorModel extends HumanoidModel<HumanoidRenderState> {
             }
             default -> {}
         }
+    }
+
+    public void showAllSlots() {
+        this.head.visible = true;
+        this.hat.visible = true;
+        this.body.visible = true;
+        this.rightArm.visible = true;
+        this.leftArm.visible = true;
+        this.rightLeg.visible = true;
+        this.leftLeg.visible = true;
     }
 }

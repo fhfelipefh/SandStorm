@@ -1764,5 +1764,9 @@
   "tooltip.sandstorm.pneumatic_sand_blaster.desc": "Venturi vacuum sand compressor.",
   "tooltip.sandstorm.pneumatic_sand_blaster.damage": "Damage: 10 (Close) to 3.5 (Long)",
   "tooltip.sandstorm.pneumatic_sand_blaster.ammo": "Ammo: Infinite (Sucks ambient sand)",
-  "message.sandstorm.pneumatic_sand_blaster.no_sand": "Insufficient vacuum: no sand nearby."
+  "message.sandstorm.pneumatic_sand_blaster.no_sand": "Insufficient vacuum: no sand nearby.",
+  "message.sandstorm.pod_bio_healing": "§a[Bio-Stasis] Cellular regeneration active...",
+  "message.sandstorm.pod_bio_cleansed": "§b[Bio-Stasis] Toxins & necrosis neutralized!",
+  "message.sandstorm.pod_bio_stable": "§a[Bio-Stasis] Vital signs 100% optimal.",
+  "message.sandstorm.pod_bio_depleted": "§c[Bio-Stasis] Nutrients or power depleted!"
 }

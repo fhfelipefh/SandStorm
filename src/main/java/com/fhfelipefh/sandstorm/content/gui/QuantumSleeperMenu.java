@@ -1,8 +1,10 @@
 package com.fhfelipefh.sandstorm.content.gui;
 
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
+import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,7 +24,7 @@ public class QuantumSleeperMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public QuantumSleeperMenu(int syncId, Inventory playerInventory) {
-        this(SandStormMenus.QUANTUM_SLEEPER_MENU, syncId, playerInventory, null, new SimpleContainer(TOTAL_CONTAINER_SLOTS), new SimpleContainerData(5));
+        this(SandStormMenus.QUANTUM_SLEEPER_MENU, syncId, playerInventory, null, new SimpleContainer(TOTAL_CONTAINER_SLOTS), new SimpleContainerData(7));
     }
 
     public QuantumSleeperMenu(int syncId, Inventory playerInventory, QuantumSleeperPodBlockEntity blockEntity, ContainerData data) {
@@ -36,31 +38,30 @@ public class QuantumSleeperMenu extends AbstractContainerMenu {
         this.container = container;
         this.data = data;
 
-        for (int col = 0; col < 4; ++col) {
-            this.addSlot(new Slot(container, 36 + col, 8 + col * 18, 18));
+        for (int col = 0; col < 9; ++col) {
+            this.addSlot(new Slot(container, col, 27 + col * 18, 102));
         }
-        this.addSlot(new Slot(container, 40, 80, 18));
 
-        this.addSlot(new Slot(container, NUTRIENT_SLOT, 152, 18));
+        for (int i = 9; i < 36; ++i) {
+            this.addSlot(new Slot(container, i, -2000, -2000));
+        }
+
+        this.addSlot(new Slot(container, 36, 12, 80));
+        this.addSlot(new Slot(container, 37, 12, 60));
+        this.addSlot(new Slot(container, 38, 12, 40));
+        this.addSlot(new Slot(container, 39, 12, 20));
+        this.addSlot(new Slot(container, 40, 32, 50));
+
+        this.addSlot(new Slot(container, NUTRIENT_SLOT, 176, 62));
 
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
-                this.addSlot(new Slot(container, col + row * 9, 8 + col * 18, 40 + row * 18));
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 27 + col * 18, 136 + row * 18));
             }
         }
 
         for (int col = 0; col < 9; ++col) {
-            this.addSlot(new Slot(container, 27 + col, 8 + col * 18, 98));
-        }
-
-        for (int row = 0; row < 3; ++row) {
-            for (int col = 0; col < 9; ++col) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 122 + row * 18));
-            }
-        }
-
-        for (int col = 0; col < 9; ++col) {
-            this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 180));
+            this.addSlot(new Slot(playerInventory, col, 27 + col * 18, 196));
         }
 
         this.addDataSlots(data);
@@ -89,10 +90,22 @@ public class QuantumSleeperMenu extends AbstractContainerMenu {
     }
 
     public int getStoredEnergy() {
+        if (this.blockEntity != null) {
+            return this.blockEntity.getStoredEnergy();
+        }
+        if (this.data.getCount() >= 7) {
+            return ((this.data.get(5) & 0xFFFF) << 16) | (this.data.get(0) & 0xFFFF);
+        }
         return this.data.get(0);
     }
 
     public int getMaxEnergy() {
+        if (this.blockEntity != null) {
+            return QuantumSleeperPodBlockEntity.MAX_ENERGY;
+        }
+        if (this.data.getCount() >= 7) {
+            return ((this.data.get(6) & 0xFFFF) << 16) | (this.data.get(1) & 0xFFFF);
+        }
         return this.data.get(1);
     }
 
@@ -135,8 +148,34 @@ public class QuantumSleeperMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (!this.moveItemStackTo(stackInSlot, 0, containerSlots, false)) {
-                    return ItemStack.EMPTY;
+                if (isNutrientItem(stackInSlot)) {
+                    if (!this.moveItemStackTo(stackInSlot, NUTRIENT_SLOT, NUTRIENT_SLOT + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else {
+                    EquipmentSlot type = player.getEquipmentSlotForItem(stackInSlot);
+                    int targetSlot = switch (type) {
+                        case FEET -> 36;
+                        case LEGS -> 37;
+                        case CHEST -> 38;
+                        case HEAD -> 39;
+                        default -> -1;
+                    };
+                    if (targetSlot != -1) {
+                        if (!this.moveItemStackTo(stackInSlot, targetSlot, targetSlot + 1, false)) {
+                            if (!this.moveItemStackTo(stackInSlot, 0, 9, false)) {
+                                return ItemStack.EMPTY;
+                            }
+                        }
+                    } else if (!this.moveItemStackTo(stackInSlot, 0, 9, false)) {
+                        if (index < containerSlots + 27) {
+                            if (!this.moveItemStackTo(stackInSlot, containerSlots + 27, totalSlots, false)) {
+                                return ItemStack.EMPTY;
+                            }
+                        } else if (!this.moveItemStackTo(stackInSlot, containerSlots, containerSlots + 27, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    }
                 }
             }
 
@@ -147,6 +186,13 @@ public class QuantumSleeperMenu extends AbstractContainerMenu {
             }
         }
         return itemStack;
+    }
+
+    private boolean isNutrientItem(ItemStack stack) {
+        return stack.is(SandStormItems.CHITOSAN_EXTRACT)
+                || stack.is(SandStormItems.TREHALOSE_SUGAR)
+                || stack.is(SandStormItems.OSMOLYTE_GLYCEROL)
+                || stack.is(SandStormItems.POTABLE_WATER_BOTTLE);
     }
 
     public QuantumSleeperPodBlockEntity getBlockEntity() {

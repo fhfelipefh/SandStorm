@@ -77,6 +77,7 @@ import com.fhfelipefh.sandstorm.client.renderer.MegastructureConstructorBlockEnt
 import com.fhfelipefh.sandstorm.client.renderer.NaniteFabricatorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.Printer3DBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.QuantumDiskDriveBlockEntityRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.QuantumSleeperPodBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.RappelAnchorBlockEntityRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.RappelHarnessRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.SandstoneCrateBlockEntityRenderer;
@@ -217,6 +218,7 @@ public class SandStormClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(SandStormBlocks.AUTONOMOUS_SONIC_TURRET_BE, AutonomousSonicTurretRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.CRUSHING_SPIKE_GATE_BE, CrushingSpikeGateRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.QUANTUM_DISK_DRIVE_BE, QuantumDiskDriveBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(SandStormBlocks.QUANTUM_SLEEPER_POD_BE, QuantumSleeperPodBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.RAPPEL_ANCHOR_BE, RappelAnchorBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.STORM_WIND_TURBINE_BE, StormWindTurbineBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.VAULT_DOOR_CONTROLLER_BE, VaultDoorControllerBlockEntityRenderer::new);

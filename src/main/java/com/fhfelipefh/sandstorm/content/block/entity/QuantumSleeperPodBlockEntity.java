@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -23,6 +24,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -32,9 +34,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 
 import java.util.Collections;
 import java.util.List;
@@ -58,11 +63,13 @@ public class QuantumSleeperPodBlockEntity extends BlockEntity implements MenuPro
         @Override
         public int get(int index) {
             return switch (index) {
-                case 0 -> storedEnergy;
-                case 1 -> MAX_ENERGY;
+                case 0 -> storedEnergy & 0xFFFF;
+                case 1 -> MAX_ENERGY & 0xFFFF;
                 case 2 -> bioNutrients;
                 case 3 -> hasClone ? 1 : 0;
                 case 4 -> getConnectedPodsCount();
+                case 5 -> (storedEnergy >> 16) & 0xFFFF;
+                case 6 -> (MAX_ENERGY >> 16) & 0xFFFF;
                 default -> 0;
             };
         }
@@ -70,20 +77,25 @@ public class QuantumSleeperPodBlockEntity extends BlockEntity implements MenuPro
         @Override
         public void set(int index, int value) {
             switch (index) {
-                case 0 -> storedEnergy = value;
+                case 0 -> storedEnergy = (storedEnergy & ~0xFFFF) | (value & 0xFFFF);
                 case 2 -> bioNutrients = value;
                 case 3 -> hasClone = value == 1;
+                case 5 -> storedEnergy = (storedEnergy & 0xFFFF) | ((value & 0xFFFF) << 16);
             }
         }
 
         @Override
         public int getCount() {
-            return 5;
+            return 7;
         }
     };
 
+    public QuantumSleeperPodBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
+    }
+
     public QuantumSleeperPodBlockEntity(BlockPos pos, BlockState state) {
-        super(SandStormBlocks.QUANTUM_SLEEPER_POD_BE, pos, state);
+        this(SandStormBlocks.QUANTUM_SLEEPER_POD_BE, pos, state);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, QuantumSleeperPodBlockEntity be) {
@@ -114,11 +126,95 @@ public class QuantumSleeperPodBlockEntity extends BlockEntity implements MenuPro
         boolean occupied = be.hasClone;
         if (state.getValue(QuantumSleeperPodBlock.ACTIVE) != active || state.getValue(QuantumSleeperPodBlock.OCCUPIED) != occupied) {
             level.setBlock(pos, state.setValue(QuantumSleeperPodBlock.ACTIVE, active).setValue(QuantumSleeperPodBlock.OCCUPIED, occupied), 3);
+            BlockPos upperPos = pos.above();
+            BlockState upperState = level.getBlockState(upperPos);
+            if (upperState.is(state.getBlock()) && upperState.getValue(QuantumSleeperPodBlock.HALF) == DoubleBlockHalf.UPPER) {
+                level.setBlock(upperPos, upperState.setValue(QuantumSleeperPodBlock.ACTIVE, active).setValue(QuantumSleeperPodBlock.OCCUPIED, occupied), 3);
+            }
         }
 
-        if (be.tickCounter % 100 == 0 && be.ownerUuid != null && level.getServer() != null) {
+        if (be.tickCounter % 20 == 0 && level.getServer() != null) {
             CloneNetworkSavedData networkData = CloneNetworkSavedData.get(level.getServer());
-            networkData.registerPod(be.ownerUuid, pos, level.dimension().identifier().toString(), be.customPodName, be.hasClone, level.getGameTime());
+            UUID owner = be.ownerUuid != null ? be.ownerUuid : CloneNetworkSavedData.UNASSIGNED_OWNER;
+            networkData.registerPod(owner, pos, level.dimension().identifier().toString(), be.customPodName, be.hasClone, level.getGameTime());
+        }
+
+        double minX = pos.getX() + 0.15;
+        double maxX = pos.getX() + 0.85;
+        double minZ = pos.getZ() + 0.15;
+        double maxZ = pos.getZ() + 0.85;
+        double minY = pos.getY();
+        double maxY = pos.getY() + 2.0;
+
+        AABB chamberAabb = new AABB(minX, minY, minZ, maxX, maxY, maxZ);
+        List<Player> players = level.getEntitiesOfClass(Player.class, chamberAabb);
+        for (Player player : players) {
+            if (!player.isAlive()) {
+                continue;
+            }
+            double px = player.getX();
+            double py = player.getY();
+            double pz = player.getZ();
+            if (px < minX || px > maxX || pz < minZ || pz > maxZ || py < minY - 0.1 || py > maxY) {
+                continue;
+            }
+            boolean hasPoison = player.hasEffect(MobEffects.POISON);
+            boolean hasWither = player.hasEffect(MobEffects.WITHER);
+            boolean needsHealing = player.getHealth() < player.getMaxHealth();
+
+            if (!hasPoison && !hasWither && !needsHealing) {
+                if (be.tickCounter % 40 == 0 && player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.pod_bio_stable"), true);
+                }
+                continue;
+            }
+
+            if (be.storedEnergy < 250 || be.bioNutrients < 1) {
+                if (be.tickCounter % 20 == 0) {
+                    level.playSound(null, pos, SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS, 0.5f, 0.8f);
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.pod_bio_depleted"), true);
+                    }
+                }
+                continue;
+            }
+
+            if (be.tickCounter % 10 == 0) {
+                if (hasPoison || hasWither) {
+                    if (be.bioNutrients >= 3 && be.storedEnergy >= 500) {
+                        be.bioNutrients -= 3;
+                        be.storedEnergy -= 500;
+                        if (hasPoison) {
+                            player.removeEffect(MobEffects.POISON);
+                        }
+                        if (hasWither) {
+                            player.removeEffect(MobEffects.WITHER);
+                        }
+                        level.playSound(null, pos, SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.BLOCKS, 0.7f, 1.4f);
+                        if (level instanceof ServerLevel serverLevel) {
+                            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, player.getX(), player.getY() + 1.0, player.getZ(), 8, 0.3, 0.5, 0.3, 0.05);
+                        }
+                        if (player instanceof ServerPlayer serverPlayer) {
+                            serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.pod_bio_cleansed"), true);
+                        }
+                        be.setChanged();
+                    }
+                }
+
+                if (player.getHealth() < player.getMaxHealth() && be.bioNutrients >= 1 && be.storedEnergy >= 250) {
+                    be.bioNutrients -= 1;
+                    be.storedEnergy -= 250;
+                    player.heal(1.0f);
+                    level.playSound(null, pos, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.4f, 0.7f);
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.GLOW, player.getX(), player.getY() + 0.8, player.getZ(), 5, 0.25, 0.4, 0.25, 0.02);
+                    }
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.pod_bio_healing"), true);
+                    }
+                    be.setChanged();
+                }
+            }
         }
     }
 
@@ -182,11 +278,8 @@ public class QuantumSleeperPodBlockEntity extends BlockEntity implements MenuPro
 
         serverPlayer.getInventory().clearContent();
 
-        BlockPos arrivalPos = targetPos.relative(serverLevel.getBlockState(targetPos).getValue(QuantumSleeperPodBlock.FACING));
-        if (!SpawnSafety.isSafePosition(serverLevel, arrivalPos)) {
-            arrivalPos = targetPos.above();
-        }
-        SpawnSafety.teleportSafely(serverPlayer, arrivalPos);
+        Direction targetFacing = serverLevel.getBlockState(targetPos).getValue(QuantumSleeperPodBlock.FACING);
+        SpawnSafety.teleportToPod(serverPlayer, serverLevel, targetPos, targetFacing);
 
         for (int i = 0; i < 36; i++) {
             serverPlayer.getInventory().setItem(i, targetBe.items.get(i).copy());
@@ -235,9 +328,14 @@ public class QuantumSleeperPodBlockEntity extends BlockEntity implements MenuPro
         if (this.level != null) {
             BlockState state = this.level.getBlockState(this.worldPosition);
             if (state.hasProperty(QuantumSleeperPodBlock.OCCUPIED)) {
-                this.level.setBlock(this.worldPosition, state.setValue(QuantumSleeperPodBlock.OCCUPIED, false), 3);
+                this.level.setBlock(this.worldPosition, state.setValue(QuantumSleeperPodBlock.OCCUPIED, false).setValue(QuantumSleeperPodBlock.OPEN, true), 3);
+                BlockPos upperPos = this.worldPosition.above();
+                BlockState upperState = this.level.getBlockState(upperPos);
+                if (upperState.is(state.getBlock())) {
+                    this.level.setBlock(upperPos, upperState.setValue(QuantumSleeperPodBlock.OCCUPIED, false).setValue(QuantumSleeperPodBlock.OPEN, true), 3);
+                }
             }
-            if (this.level.getServer() != null && this.ownerUuid != null) {
+            if (this.level.getServer() != null) {
                 CloneNetworkSavedData networkData = CloneNetworkSavedData.get(this.level.getServer());
                 networkData.updateCloneStatus(this.ownerUuid, this.worldPosition, this.level.dimension().identifier().toString(), false, this.level.getGameTime());
             }
@@ -262,6 +360,11 @@ public class QuantumSleeperPodBlockEntity extends BlockEntity implements MenuPro
     public void setHasClone(boolean hasClone) {
         this.hasClone = hasClone;
         this.setChanged();
+        if (this.level != null && this.level.getServer() != null) {
+            CloneNetworkSavedData networkData = CloneNetworkSavedData.get(this.level.getServer());
+            UUID owner = this.ownerUuid != null ? this.ownerUuid : CloneNetworkSavedData.UNASSIGNED_OWNER;
+            networkData.registerPod(owner, this.worldPosition, this.level.dimension().identifier().toString(), this.customPodName, this.hasClone, this.level.getGameTime());
+        }
     }
 
     public int getStoredEnergy() {

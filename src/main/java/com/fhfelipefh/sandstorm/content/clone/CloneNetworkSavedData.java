@@ -47,6 +47,8 @@ public class CloneNetworkSavedData extends SavedData {
             DataFixTypes.SAVED_DATA_COMMAND_STORAGE
     );
 
+    public static final UUID UNASSIGNED_OWNER = new UUID(0L, 0L);
+
     private final Map<UUID, List<ClonePodRecord>> playerPods = new HashMap<>();
 
     public CloneNetworkSavedData() {
@@ -76,10 +78,16 @@ public class CloneNetworkSavedData extends SavedData {
         if (owner == null || pos == null || dimensionId == null) {
             return;
         }
+        for (List<ClonePodRecord> records : this.playerPods.values()) {
+            records.removeIf(r -> r.pos().equals(pos) && r.dimensionId().equals(dimensionId));
+        }
         List<ClonePodRecord> records = this.playerPods.computeIfAbsent(owner, k -> new ArrayList<>());
-        records.removeIf(r -> r.pos().equals(pos) && r.dimensionId().equals(dimensionId));
         records.add(new ClonePodRecord(pos, dimensionId, name == null || name.isBlank() ? "Sleeper Pod" : name, hasClone, gameTime));
         this.setDirty();
+    }
+
+    public void registerUnassignedPod(BlockPos pos, String dimensionId, String name, boolean hasClone, long gameTime) {
+        registerPod(UNASSIGNED_OWNER, pos, dimensionId, name, hasClone, gameTime);
     }
 
     public void unregisterPod(BlockPos pos, String dimensionId) {
@@ -98,20 +106,21 @@ public class CloneNetworkSavedData extends SavedData {
     }
 
     public void updateCloneStatus(UUID owner, BlockPos pos, String dimensionId, boolean hasClone, long gameTime) {
-        if (owner == null || pos == null || dimensionId == null) {
+        if (pos == null || dimensionId == null) {
             return;
         }
-        List<ClonePodRecord> records = this.playerPods.get(owner);
-        if (records == null) {
-            return;
-        }
-        for (int i = 0; i < records.size(); i++) {
-            ClonePodRecord record = records.get(i);
-            if (record.pos().equals(pos) && record.dimensionId().equals(dimensionId)) {
-                records.set(i, new ClonePodRecord(pos, dimensionId, record.name(), hasClone, gameTime));
-                this.setDirty();
-                return;
+        boolean modified = false;
+        for (List<ClonePodRecord> records : this.playerPods.values()) {
+            for (int i = 0; i < records.size(); i++) {
+                ClonePodRecord record = records.get(i);
+                if (record.pos().equals(pos) && record.dimensionId().equals(dimensionId)) {
+                    records.set(i, new ClonePodRecord(pos, dimensionId, record.name(), hasClone, gameTime));
+                    modified = true;
+                }
             }
+        }
+        if (modified) {
+            this.setDirty();
         }
     }
 
@@ -124,10 +133,42 @@ public class CloneNetworkSavedData extends SavedData {
     }
 
     public Optional<ClonePodRecord> findNearestReadyPod(UUID owner, BlockPos referencePos, String dimensionId) {
-        if (owner == null || referencePos == null || dimensionId == null) {
+        if (referencePos == null || dimensionId == null) {
             return Optional.empty();
         }
-        List<ClonePodRecord> records = this.playerPods.get(owner);
+        if (owner != null) {
+            Optional<ClonePodRecord> ownerPod = findNearestInList(this.playerPods.get(owner), referencePos, dimensionId);
+            if (ownerPod.isPresent()) {
+                return ownerPod;
+            }
+        }
+        Optional<ClonePodRecord> unassignedPod = findNearestInList(this.playerPods.get(UNASSIGNED_OWNER), referencePos, dimensionId);
+        if (unassignedPod.isPresent()) {
+            return unassignedPod;
+        }
+        ClonePodRecord bestOther = null;
+        double bestDistSq = Double.MAX_VALUE;
+        for (Map.Entry<UUID, List<ClonePodRecord>> entry : this.playerPods.entrySet()) {
+            if (owner != null && entry.getKey().equals(owner)) {
+                continue;
+            }
+            if (entry.getKey().equals(UNASSIGNED_OWNER)) {
+                continue;
+            }
+            for (ClonePodRecord record : entry.getValue()) {
+                if (record.hasClone() && record.dimensionId().equals(dimensionId)) {
+                    double distSq = referencePos.distSqr(record.pos());
+                    if (distSq < bestDistSq) {
+                        bestDistSq = distSq;
+                        bestOther = record;
+                    }
+                }
+            }
+        }
+        return Optional.ofNullable(bestOther);
+    }
+
+    private Optional<ClonePodRecord> findNearestInList(List<ClonePodRecord> records, BlockPos referencePos, String dimensionId) {
         if (records == null || records.isEmpty()) {
             return Optional.empty();
         }
@@ -143,6 +184,41 @@ public class CloneNetworkSavedData extends SavedData {
             }
         }
         return Optional.ofNullable(best);
+    }
+
+    public Optional<ClonePodRecord> findAnyReadyPod(UUID owner) {
+        if (owner != null) {
+            List<ClonePodRecord> records = this.playerPods.get(owner);
+            if (records != null) {
+                for (ClonePodRecord record : records) {
+                    if (record.hasClone()) {
+                        return Optional.of(record);
+                    }
+                }
+            }
+        }
+        List<ClonePodRecord> unassignedRecords = this.playerPods.get(UNASSIGNED_OWNER);
+        if (unassignedRecords != null) {
+            for (ClonePodRecord record : unassignedRecords) {
+                if (record.hasClone()) {
+                    return Optional.of(record);
+                }
+            }
+        }
+        for (Map.Entry<UUID, List<ClonePodRecord>> entry : this.playerPods.entrySet()) {
+            if (owner != null && entry.getKey().equals(owner)) {
+                continue;
+            }
+            if (entry.getKey().equals(UNASSIGNED_OWNER)) {
+                continue;
+            }
+            for (ClonePodRecord record : entry.getValue()) {
+                if (record.hasClone()) {
+                    return Optional.of(record);
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     public Optional<ClonePodRecord> findTargetPodForTransfer(UUID owner, BlockPos currentPos, String dimensionId) {

@@ -10,6 +10,8 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 
+import java.util.Locale;
+
 public final class SandStormWorldHelper {
 
     public static final ResourceKey<NoiseGeneratorSettings> DESERT_PLANET_NOISE =
@@ -27,11 +29,17 @@ public final class SandStormWorldHelper {
         if (level == null) {
             return false;
         }
+        if (ShowcaseAutomation.isShowcaseActive()) {
+            return true;
+        }
         if (level instanceof ServerLevel serverLevel) {
+            MinecraftServer server = serverLevel.getServer();
+            if (server != null && isShowcaseServer(server)) {
+                return true;
+            }
             if (serverLevel.dimension() == Level.OVERWORLD) {
                 return isSandStormGenerator(serverLevel.getChunkSource().getGenerator());
             }
-            MinecraftServer server = serverLevel.getServer();
             if (server != null) {
                 ServerLevel overworld = server.overworld();
                 if (overworld != null) {
@@ -53,9 +61,22 @@ public final class SandStormWorldHelper {
         if (server == null) {
             return false;
         }
+        if (ShowcaseAutomation.isShowcaseActive()) {
+            return true;
+        }
+        if (isShowcaseServer(server)) {
+            return true;
+        }
         ServerLevel overworld = server.overworld();
         if (overworld != null) {
             return isSandStormGenerator(overworld.getChunkSource().getGenerator());
+        }
+        return false;
+    }
+
+    private static boolean isShowcaseServer(MinecraftServer server) {
+        if (server.getWorldData() != null && server.getWorldData().getLevelName() != null) {
+            return server.getWorldData().getLevelName().toLowerCase(Locale.ROOT).contains("showcase");
         }
         return false;
     }

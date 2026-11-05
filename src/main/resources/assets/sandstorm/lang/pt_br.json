@@ -1764,5 +1764,9 @@
   "tooltip.sandstorm.pneumatic_sand_blaster.desc": "Compressor de areia a vácuo Venturi.",
   "tooltip.sandstorm.pneumatic_sand_blaster.damage": "Dano: 10 (Curto) a 3.5 (Longo)",
   "tooltip.sandstorm.pneumatic_sand_blaster.ammo": "Munição: Infinita (Suga areia do solo)",
-  "message.sandstorm.pneumatic_sand_blaster.no_sand": "Vácuo insuficiente: sem areia ao redor."
+  "message.sandstorm.pneumatic_sand_blaster.no_sand": "Vácuo insuficiente: sem areia ao redor.",
+  "message.sandstorm.pod_bio_healing": "§a[Bio-Estase] Regeneração celular ativa...",
+  "message.sandstorm.pod_bio_cleansed": "§b[Bio-Estase] Toxinas e necrose purgadas!",
+  "message.sandstorm.pod_bio_stable": "§a[Bio-Estase] Sinais vitais 100% ótimos.",
+  "message.sandstorm.pod_bio_depleted": "§c[Bio-Estase] Nutrientes ou energia esgotados!"
 }

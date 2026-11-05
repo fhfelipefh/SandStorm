@@ -1,64 +1,20 @@
 {
-  "variants": {
-    "facing=north,active=false,occupied=false": {
-      "model": "sandstorm:block/quantum_sleeper_pod"
+  "multipart": [
+    {
+      "when": { "facing": "north" },
+      "apply": { "model": "sandstorm:block/quantum_sleeper_pod" }
     },
-    "facing=north,active=true,occupied=false": {
-      "model": "sandstorm:block/quantum_sleeper_pod_active"
+    {
+      "when": { "facing": "south" },
+      "apply": { "model": "sandstorm:block/quantum_sleeper_pod", "y": 180 }
     },
-    "facing=north,active=false,occupied=true": {
-      "model": "sandstorm:block/quantum_sleeper_pod_occupied"
+    {
+      "when": { "facing": "west" },
+      "apply": { "model": "sandstorm:block/quantum_sleeper_pod", "y": 270 }
     },
-    "facing=north,active=true,occupied=true": {
-      "model": "sandstorm:block/quantum_sleeper_pod_occupied"
-    },
-    "facing=east,active=false,occupied=false": {
-      "model": "sandstorm:block/quantum_sleeper_pod",
-      "y": 90
-    },
-    "facing=east,active=true,occupied=false": {
-      "model": "sandstorm:block/quantum_sleeper_pod_active",
-      "y": 90
-    },
-    "facing=east,active=false,occupied=true": {
-      "model": "sandstorm:block/quantum_sleeper_pod_occupied",
-      "y": 90
-    },
-    "facing=east,active=true,occupied=true": {
-      "model": "sandstorm:block/quantum_sleeper_pod_occupied",
-      "y": 90
-    },
-    "facing=south,active=false,occupied=false": {
-      "model": "sandstorm:block/quantum_sleeper_pod",
-      "y": 180
-    },
-    "facing=south,active=true,occupied=false": {
-      "model": "sandstorm:block/quantum_sleeper_pod_active",
-      "y": 180
-    },
-    "facing=south,active=false,occupied=true": {
-      "model": "sandstorm:block/quantum_sleeper_pod_occupied",
-      "y": 180
-    },
-    "facing=south,active=true,occupied=true": {
-      "model": "sandstorm:block/quantum_sleeper_pod_occupied",
-      "y": 180
-    },
-    "facing=west,active=false,occupied=false": {
-      "model": "sandstorm:block/quantum_sleeper_pod",
-      "y": 270
-    },
-    "facing=west,active=true,occupied=false": {
-      "model": "sandstorm:block/quantum_sleeper_pod_active",
-      "y": 270
-    },
-    "facing=west,active=false,occupied=true": {
-      "model": "sandstorm:block/quantum_sleeper_pod_occupied",
-      "y": 270
-    },
-    "facing=west,active=true,occupied=true": {
-      "model": "sandstorm:block/quantum_sleeper_pod_occupied",
-      "y": 270
+    {
+      "when": { "facing": "east" },
+      "apply": { "model": "sandstorm:block/quantum_sleeper_pod", "y": 90 }
     }
-  }
+  ]
 }

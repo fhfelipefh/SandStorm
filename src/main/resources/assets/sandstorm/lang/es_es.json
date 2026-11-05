@@ -1764,5 +1764,9 @@
   "tooltip.sandstorm.pneumatic_sand_blaster.desc": "Compresor de arena por vacío Venturi.",
   "tooltip.sandstorm.pneumatic_sand_blaster.damage": "Daño: 10 (Corto) a 3.5 (Largo)",
   "tooltip.sandstorm.pneumatic_sand_blaster.ammo": "Munición: Infinita (Aspira arena del suelo)",
-  "message.sandstorm.pneumatic_sand_blaster.no_sand": "Vacío insuficiente: sin arena alrededor."
+  "message.sandstorm.pneumatic_sand_blaster.no_sand": "Vacío insuficiente: sin arena alrededor.",
+  "message.sandstorm.pod_bio_healing": "§a[Bio-Éstasis] Regeneración celular activa...",
+  "message.sandstorm.pod_bio_cleansed": "§b[Bio-Éstasis] ¡Toxinas y necrosis purgadas!",
+  "message.sandstorm.pod_bio_stable": "§a[Bio-Éstasis] Signos vitales 100% óptimos.",
+  "message.sandstorm.pod_bio_depleted": "§c[Bio-Éstasis] ¡Nutrientes o energía agotados!"
 }

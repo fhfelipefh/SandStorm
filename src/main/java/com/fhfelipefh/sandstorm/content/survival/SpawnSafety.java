@@ -4,9 +4,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Relative;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.Collections;
+import java.util.Set;
 
 public class SpawnSafety {
 
@@ -66,13 +71,32 @@ public class SpawnSafety {
     }
 
     public static void teleportSafely(ServerPlayer player, BlockPos targetPos) {
-        ServerLevel level = player.level();
-        BlockPos safePos = findSafeSpawnPosition(level, targetPos, 5);
-        ensureSafePocket(level, safePos);
-        player.teleportTo(safePos.getX() + 0.5, safePos.getY(), safePos.getZ() + 0.5);
+        teleportSafely(player, player.level(), targetPos);
+    }
+
+    public static void teleportSafely(ServerPlayer player, ServerLevel targetLevel, BlockPos targetPos) {
+        BlockPos safePos = findSafeSpawnPosition(targetLevel, targetPos, 5);
+        ensureSafePocket(targetLevel, safePos);
+        if (player.level() != targetLevel) {
+            Set<Relative> relatives = Collections.emptySet();
+            player.teleportTo(targetLevel, safePos.getX() + 0.5, safePos.getY(), safePos.getZ() + 0.5, relatives, player.getYRot(), player.getXRot(), true);
+        } else {
+            player.teleportTo(safePos.getX() + 0.5, safePos.getY(), safePos.getZ() + 0.5);
+        }
         player.setAirSupply(player.getMaxAirSupply());
         player.heal(player.getMaxHealth());
         player.resetFallDistance();
         player.clearFire();
+    }
+
+    public static void teleportToPod(ServerPlayer player, ServerLevel targetLevel, BlockPos podPos, Direction facing) {
+        float yRot = facing != null ? facing.toYRot() : player.getYRot();
+        Set<Relative> relatives = Collections.emptySet();
+        player.teleportTo(targetLevel, podPos.getX() + 0.5, podPos.getY(), podPos.getZ() + 0.5, relatives, yRot, 0.0f, true);
+        player.setAirSupply(player.getMaxAirSupply());
+        player.heal(player.getMaxHealth());
+        player.resetFallDistance();
+        player.clearFire();
+        player.setDeltaMovement(Vec3.ZERO);
     }
 }
