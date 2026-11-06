@@ -15,6 +15,7 @@ import com.fhfelipefh.sandstorm.client.gui.ChemicalRefineryScreen;
 import com.fhfelipefh.sandstorm.client.gui.CyborgDockingStationScreen;
 import com.fhfelipefh.sandstorm.client.gui.CyborgIncubatorScreen;
 import com.fhfelipefh.sandstorm.client.gui.CyborgTelemetryScreen;
+import com.fhfelipefh.sandstorm.client.gui.CryoRevivalVatScreen;
 import com.fhfelipefh.sandstorm.client.gui.CryogenicAtmosphericChillerScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreBoreholeScreen;
 import com.fhfelipefh.sandstorm.client.gui.DeepCoreDrillScreen;
@@ -209,6 +210,7 @@ public class SandStormClient implements ClientModInitializer {
         MenuScreens.register(SandStormMenus.ELECTRIC_ARC_FURNACE_MENU, ElectricArcFurnaceScreen::new);
         MenuScreens.register(SandStormMenus.ATMOSPHERIC_CARBON_EXTRACTOR_MENU, AtmosphericCarbonExtractorScreen::new);
         MenuScreens.register(SandStormMenus.STELLAR_SINGULARITY_REACTOR_MENU, StellarSingularityReactorScreen::new);
+        MenuScreens.register(SandStormMenus.CRYO_REVIVAL_VAT_MENU, CryoRevivalVatScreen::new);
 
         BlockEntityRendererRegistry.register(SandStormBlocks.PRINTER_3D_BE, Printer3DBlockEntityRenderer::new);
         BlockEntityRendererRegistry.register(SandStormBlocks.NANITE_FABRICATOR_BE, NaniteFabricatorBlockEntityRenderer::new);

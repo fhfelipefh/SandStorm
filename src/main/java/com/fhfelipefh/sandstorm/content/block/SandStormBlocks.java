@@ -1871,6 +1871,7 @@ public class SandStormBlocks {
         FluidStorage.SIDED.registerForBlockEntity(IrrigationPumpBlockEntity::getFluidStorage, IRRIGATION_PUMP_BE);
         FluidStorage.SIDED.registerForBlockEntity(FiberglassChemicalPipeBlockEntity::getFluidStorage, FIBERGLASS_CHEMICAL_PIPE_BE);
         ItemStorage.SIDED.registerForBlockEntity(ContainerStorage::of, CRYO_REVIVAL_VAT_BE);
+        FluidStorage.SIDED.registerForBlockEntity(CryoRevivalVatBlockEntity::getFluidStorage, CRYO_REVIVAL_VAT_BE);
         FluidStorage.SIDED.registerForBlockEntity(SynapticCondenserBlockEntity::getFluidStorage, SYNAPTIC_CONDENSER_BE);
         FluidStorage.SIDED.registerForBlockEntity(XpVacuumBlockEntity::getFluidStorage, XP_VACUUM_BE);
         FluidStorage.SIDED.registerForBlockEntity(SynapticRepairerBlockEntity::getFluidStorage, SYNAPTIC_REPAIRER_BE);

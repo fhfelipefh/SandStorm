@@ -237,6 +237,11 @@ public class SandStormMenus {
         new MenuType<>(StellarSingularityReactorMenu::new, FeatureFlags.VANILLA_SET)
     );
 
+    public static final MenuType<CryoRevivalVatMenu> CRYO_REVIVAL_VAT_MENU = register(
+        "cryo_revival_vat",
+        new MenuType<>(CryoRevivalVatMenu::new, FeatureFlags.VANILLA_SET)
+    );
+
     private static <T extends MenuType<?>> T register(String name, T menuType) {
         return Registry.register(BuiltInRegistries.MENU, SandStormMod.id(name), menuType);
     }

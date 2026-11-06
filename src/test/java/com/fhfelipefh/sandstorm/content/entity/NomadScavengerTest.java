@@ -54,7 +54,6 @@ class NomadScavengerTest {
         holdersField.set(BuiltInRegistries.ITEM, new IdentityHashMap<>());
         holdersField.set(BuiltInRegistries.BLOCK_ENTITY_TYPE, new IdentityHashMap<>());
         holdersField.set(BuiltInRegistries.ENTITY_TYPE, new IdentityHashMap<>());
-        holdersField.set(BuiltInRegistries.MENU, new IdentityHashMap<>());
 
         assertNotNull(SandStormItems.SCRAP_METAL);
 
