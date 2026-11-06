@@ -1,7 +1,12 @@
 package com.fhfelipefh.sandstorm.content.world;
 
-import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.CorrosiveChitinSpikeWallBlock;
+import com.fhfelipefh.sandstorm.content.block.KineticFloorSpikesBlock;
 import com.fhfelipefh.sandstorm.content.block.LegacyRustBlock;
+import com.fhfelipefh.sandstorm.content.block.RetractableSpikeWallBlock;
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.TitaniumSpikeWallBlock;
+import com.fhfelipefh.sandstorm.content.block.entity.SandSuctionQuarryBlockEntity;
 import com.fhfelipefh.sandstorm.content.command.SandstormDebugCommand;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.storage.QuantumDiskStorage;
@@ -12,6 +17,7 @@ import com.mojang.brigadier.tree.CommandNode;
 import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
@@ -20,6 +26,7 @@ import net.minecraft.server.Bootstrap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,6 +34,9 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.List;
 
@@ -235,6 +245,48 @@ class ShowcaseComputerAndBlocksTest {
         StoredItemEntry first = retrieved.get(0);
         assertTrue(first.template().is(SandStormItems.TITANIUM_CHITIN_COMPOSITE));
         assertEquals(1000L, first.count());
+    }
+
+    @Test
+    void shouldEnsureSpikeOrientationAndSalinizedSandIntegrityInShowcase() throws Exception {
+        List<Block> blocks = BuiltInRegistries.BLOCK.stream()
+                .filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(SandStormMod.MOD_ID))
+                .filter(b -> !(b instanceof LegacyRustBlock))
+                .filter(b -> !b.equals(SandStormBlocks.MEGASTRUCTURE_CONSTRUCTOR) && !b.equals(SandStormBlocks.VAULT_DOOR_DUMMY))
+                .sorted(Comparator.comparing(b -> BuiltInRegistries.BLOCK.getKey(b).toString()))
+                .toList();
+
+        int salinizedIndex = blocks.indexOf(SandStormBlocks.SALINIZED_SAND);
+        assertTrue(salinizedIndex >= 0);
+
+        BlockState titaniumState = SandStormBlocks.TITANIUM_SPIKE_WALL.defaultBlockState().setValue(TitaniumSpikeWallBlock.FACING, Direction.UP);
+        assertEquals(Direction.UP, titaniumState.getValue(TitaniumSpikeWallBlock.FACING));
+
+        BlockState chitinState = SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL.defaultBlockState().setValue(CorrosiveChitinSpikeWallBlock.FACING, Direction.UP);
+        assertEquals(Direction.UP, chitinState.getValue(CorrosiveChitinSpikeWallBlock.FACING));
+
+        BlockState retractableState = SandStormBlocks.RETRACTABLE_SPIKE_WALL.defaultBlockState().setValue(RetractableSpikeWallBlock.FACING, Direction.UP).setValue(RetractableSpikeWallBlock.POWERED, true);
+        assertEquals(Direction.UP, retractableState.getValue(RetractableSpikeWallBlock.FACING));
+        assertTrue(retractableState.getValue(RetractableSpikeWallBlock.POWERED));
+
+        BlockState kineticState = SandStormBlocks.KINETIC_FLOOR_SPIKES.defaultBlockState().setValue(KineticFloorSpikesBlock.TRIGGERED, true);
+        assertTrue(kineticState.getValue(KineticFloorSpikesBlock.TRIGGERED));
+
+        assertTrue(SandSuctionQuarryBlockEntity.isExcavatable(SandStormBlocks.SALINIZED_SAND.defaultBlockState()));
+
+        Method isShowcaseWorldMethod = SandSuctionQuarryBlockEntity.class.getDeclaredMethod("isShowcaseWorld", Level.class);
+        assertNotNull(isShowcaseWorldMethod);
+
+        Path sourcePath = Path.of("src", "main", "java", "com", "fhfelipefh", "sandstorm", "content", "world", "ShowcaseAutomation.java");
+        String source = Files.readString(sourcePath);
+        assertTrue(source.contains("TitaniumSpikeWallBlock.FACING, Direction.UP"));
+        assertTrue(source.contains("CorrosiveChitinSpikeWallBlock.FACING, Direction.UP"));
+        assertTrue(source.contains("RetractableSpikeWallBlock.FACING, Direction.UP"));
+        assertTrue(source.contains("quarryBe.setPaused(true)"));
+        assertTrue(source.contains("quarryBe.setRadius(1)"));
+        assertFalse(source.contains("TitaniumSpikeWallBlock.FACING, Direction.SOUTH"));
+        assertFalse(source.contains("CorrosiveChitinSpikeWallBlock.FACING, Direction.SOUTH"));
+        assertFalse(source.contains("RetractableSpikeWallBlock.FACING, Direction.SOUTH"));
     }
 
     @Test

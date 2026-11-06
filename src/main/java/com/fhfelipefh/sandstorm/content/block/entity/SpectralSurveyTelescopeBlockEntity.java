@@ -44,14 +44,16 @@ public class SpectralSurveyTelescopeBlockEntity extends BlockEntity implements M
         @Override
         public int get(int index) {
             return switch (index) {
-                case 0 -> storedEnergy;
-                case 1 -> MAX_ENERGY;
-                case 2 -> activeFilter;
-                case 3 -> celestialTarget;
-                case 4 -> scanProgress;
-                case 5 -> hasSky ? 1 : 0;
-                case 6 -> stormThreat;
-                case 7 -> secondsToStorm;
+                case 0 -> storedEnergy & 0xFFFF;
+                case 1 -> (storedEnergy >> 16) & 0xFFFF;
+                case 2 -> MAX_ENERGY & 0xFFFF;
+                case 3 -> (MAX_ENERGY >> 16) & 0xFFFF;
+                case 4 -> activeFilter;
+                case 5 -> celestialTarget;
+                case 6 -> scanProgress;
+                case 7 -> hasSky ? 1 : 0;
+                case 8 -> stormThreat;
+                case 9 -> secondsToStorm;
                 default -> 0;
             };
         }
@@ -59,19 +61,20 @@ public class SpectralSurveyTelescopeBlockEntity extends BlockEntity implements M
         @Override
         public void set(int index, int value) {
             switch (index) {
-                case 0 -> storedEnergy = value;
-                case 2 -> activeFilter = value;
-                case 3 -> celestialTarget = value;
-                case 4 -> scanProgress = value;
-                case 5 -> hasSky = (value == 1);
-                case 6 -> stormThreat = value;
-                case 7 -> secondsToStorm = value;
+                case 0 -> storedEnergy = (storedEnergy & ~0xFFFF) | (value & 0xFFFF);
+                case 1 -> storedEnergy = (storedEnergy & 0xFFFF) | ((value & 0xFFFF) << 16);
+                case 4 -> activeFilter = value;
+                case 5 -> celestialTarget = value;
+                case 6 -> scanProgress = value;
+                case 7 -> hasSky = (value == 1);
+                case 8 -> stormThreat = value;
+                case 9 -> secondsToStorm = value;
             }
         }
 
         @Override
         public int getCount() {
-            return 8;
+            return 10;
         }
     };
 

@@ -177,6 +177,7 @@ public class ExcavationHiveCatalog {
 
             BlockPos chestPos = origin.offset(rotation.rotateOffset(1, 1, 2, size));
             setSafeChest(level, chestPos, rotation.rotateDirection(Direction.EAST), false, random);
+            postProcessPipes(level, origin, rotation, size);
         }
     }
 
@@ -615,6 +616,7 @@ public class ExcavationHiveCatalog {
 
             BlockPos chestPos = origin.offset(rotation.rotateOffset(1, 1, 2, size));
             setSafeChest(level, chestPos, rotation.rotateDirection(Direction.EAST), false, random);
+            postProcessPipes(level, origin, rotation, size);
         }
     }
 

@@ -86,7 +86,7 @@ public class SpectralSurveyTelescopeScreen extends AbstractContainerScreen<Spect
     @Override
     protected void extractLabels(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
         drawAdaptiveText(extractor, this.title, this.titleLabelX, this.titleLabelY, CHASSIS_WIDTH - 16, 0xFF00E5FF);
-        drawAdaptiveText(extractor, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, CHASSIS_WIDTH - 44, 0xFF78909C);
+        drawAdaptiveText(extractor, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 90, 0xFF78909C);
     }
 
     private void drawAdaptiveText(GuiGraphicsExtractor extractor, Component text, float x, float y, float maxPixelWidth, int color) {
@@ -272,13 +272,23 @@ public class SpectralSurveyTelescopeScreen extends AbstractContainerScreen<Spect
         String targetAbbr = getTargetAbbreviation(this.menu.getCelestialTarget());
         drawAdaptiveText(extractor, Component.literal(targetAbbr), vx + vw - 44, vy + 6, 38, 0xFFE0F7FA);
 
+        boolean sky = this.menu.hasSkyAccess();
+        Component skyHud = sky ? Component.literal("CÉU: ABERTO") : Component.literal("CÉU: BLOQUEADO");
+        int skyColor = sky ? 0xFF00E676 : 0xFFFF5252;
+        drawAdaptiveText(extractor, skyHud, vx + 6, vy + vh - 13, 56, skyColor);
+
         int prog = this.menu.getScanProgress();
-        drawAdaptiveText(extractor, Component.literal(prog + "%"), vx + vw - 30, vy + vh - 12, 26, 0xFF76FF03);
+        drawAdaptiveText(extractor, Component.literal(prog + "%"), vx + vw - 28, vy + vh - 13, 22, 0xFF76FF03);
 
         extractor.fill(vx + 2, vy + vh - 4, vx + vw - 2, vy + vh - 2, 0xFF05080E);
         int barW = (int) ((vw - 4) * (prog / 100.0f));
         if (barW > 0) {
             extractor.fill(vx + 2, vy + vh - 4, vx + 2 + barW, vy + vh - 2, 0xFF00E5FF);
+        }
+
+        if (!sky) {
+            extractor.fill(vx + 1, vy + 1, vx + vw - 1, vy + vh - 5, 0x7702040A);
+            drawAdaptiveText(extractor, Component.literal("! SINAL BLOQUEADO !"), cx - 42, cy - 4, 84, 0xFFFF5252);
         }
     }
 
@@ -304,7 +314,7 @@ public class SpectralSurveyTelescopeScreen extends AbstractContainerScreen<Spect
         extractor.fill(x + 136, y + 52, x + 220, y + 65, 0xFF05080E);
         drawAdaptiveText(extractor, Component.literal("VARREDURA (500 EU)"), x + 139, y + 55, 76, 0xFF00E5FF);
 
-        drawAdaptiveText(extractor, Component.literal("DADOS / DISCO:"), x + 136, y + 92, 58, 0xFF78909C);
+        drawAdaptiveText(extractor, Component.literal("DADOS / DISCO:"), x + 136, y + 91, 58, 0xFF78909C);
     }
 
     private void renderFilterButton(GuiGraphicsExtractor extractor, int bx, int by, int bw, int bh, String label, boolean active, int activeColor, int mx, int my) {
@@ -323,7 +333,7 @@ public class SpectralSurveyTelescopeScreen extends AbstractContainerScreen<Spect
         int y = this.topPos;
 
         int gx = x + 136;
-        int gy = y + 70;
+        int gy = y + 68;
         int gw = 84;
         int gh = 5;
 
@@ -338,17 +348,12 @@ public class SpectralSurveyTelescopeScreen extends AbstractContainerScreen<Spect
         }
 
         String energyLabel = NumberFormat.compact(curE) + " / " + NumberFormat.compact(maxE) + " EU";
-        drawAdaptiveText(extractor, Component.literal(energyLabel), gx, gy + 8, gw, 0xFF78909C);
+        drawAdaptiveText(extractor, Component.literal(energyLabel), gx, gy + 7, gw, 0xFF78909C);
     }
 
     private void renderWeatherTelemetry(GuiGraphicsExtractor extractor) {
         int x = this.leftPos;
         int y = this.topPos;
-
-        boolean sky = this.menu.hasSkyAccess();
-        Component skyText = sky ? Component.literal("CÉU ABERTO (100%)") : Component.literal("CÉU BLOQUEADO");
-        int skyColor = sky ? 0xFF4CAF50 : 0xFFF44336;
-        drawAdaptiveText(extractor, skyText, x + 10, y + 110, 80, 0xFF000000 | skyColor);
 
         int threat = this.menu.getStormThreat();
         int sec = this.menu.getSecondsToStorm();
@@ -364,7 +369,10 @@ public class SpectralSurveyTelescopeScreen extends AbstractContainerScreen<Spect
             weatherText = Component.literal("RADAR: CÉU LIMPO");
             weatherColor = 0xFF80DEEA;
         }
-        drawAdaptiveText(extractor, weatherText, x + 136, y + 110, 84, weatherColor);
+
+        int dotColor = (threat == 2) ? 0xFFFF5252 : ((threat == 1) ? 0xFFFFAB40 : 0xFF00E5FF);
+        extractor.fill(x + 136, y + 114, x + 139, y + 117, dotColor);
+        drawAdaptiveText(extractor, weatherText, x + 142, y + 111, 78, weatherColor);
     }
 
     private void renderObservatoryTooltips(GuiGraphicsExtractor extractor, int mouseX, int mouseY) {
@@ -379,6 +387,7 @@ public class SpectralSurveyTelescopeScreen extends AbstractContainerScreen<Spect
                     Component.literal("§7Mapeamento astronômico de longo alcance."),
                     Component.literal("§fAlvo Atual: §e" + targetName),
                     Component.literal("§fBanda: §b" + filterName),
+                    Component.literal("§fVisão do Céu: " + (this.menu.hasSkyAccess() ? "§aLivre (100%)" : "§cObstruída (0%)")),
                     Component.literal("§fProgresso da Varredura: §a" + this.menu.getScanProgress() + "%")
             );
             extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
@@ -436,7 +445,7 @@ public class SpectralSurveyTelescopeScreen extends AbstractContainerScreen<Spect
             extractor.setComponentTooltipForNextFrame(this.font, tip, mouseX, mouseY);
         }
 
-        if (mouseX >= x + 10 && mouseX <= x + 220 && mouseY >= y + 108 && mouseY <= y + 120) {
+        if (mouseX >= x + 132 && mouseX <= x + 220 && mouseY >= y + 108 && mouseY <= y + 120) {
             int threat = this.menu.getStormThreat();
             Component threatLine = (threat == 2)
                     ? Component.literal("§cTempestade de areia em curso!")

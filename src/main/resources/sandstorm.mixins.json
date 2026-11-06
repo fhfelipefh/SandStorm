@@ -4,6 +4,7 @@
 	"compatibilityLevel": "JAVA_25",
 	"refmap": "sandstorm.refmap.json",
 	"mixins": [
+		"AbstractHorseMixin",
 		"WaterFluidMixin"
 	],
 	"injectors": {

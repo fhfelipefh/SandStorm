@@ -38,7 +38,7 @@ public class SpectralSurveyTelescopeMenu extends AbstractContainerMenu {
     private final SpectralSurveyTelescopeBlockEntity blockEntity;
 
     public SpectralSurveyTelescopeMenu(int syncId, Inventory playerInventory) {
-        this(SandStormMenus.SPECTRAL_SURVEY_TELESCOPE_MENU, syncId, playerInventory, null, new SimpleContainer(1), new SimpleContainerData(8));
+        this(SandStormMenus.SPECTRAL_SURVEY_TELESCOPE_MENU, syncId, playerInventory, null, new SimpleContainer(1), new SimpleContainerData(10));
     }
 
     public SpectralSurveyTelescopeMenu(int syncId, Inventory playerInventory, SpectralSurveyTelescopeBlockEntity blockEntity, ContainerData data) {
@@ -47,7 +47,7 @@ public class SpectralSurveyTelescopeMenu extends AbstractContainerMenu {
 
     public SpectralSurveyTelescopeMenu(MenuType<?> menuType, int syncId, Inventory playerInventory, SpectralSurveyTelescopeBlockEntity blockEntity, Container container, ContainerData data) {
         super(menuType, syncId);
-        checkContainerDataCount(data, 8);
+        checkContainerDataCount(data, 10);
         this.blockEntity = blockEntity;
         this.container = container;
         this.data = data;
@@ -111,34 +111,34 @@ public class SpectralSurveyTelescopeMenu extends AbstractContainerMenu {
     }
 
     public int getStoredEnergy() {
-        return this.data.get(0);
+        return (this.data.get(0) & 0xFFFF) | (this.data.get(1) << 16);
     }
 
     public int getMaxEnergy() {
-        return this.data.get(1);
+        return (this.data.get(2) & 0xFFFF) | (this.data.get(3) << 16);
     }
 
     public int getActiveFilter() {
-        return this.data.get(2);
-    }
-
-    public int getCelestialTarget() {
-        return this.data.get(3);
-    }
-
-    public int getScanProgress() {
         return this.data.get(4);
     }
 
-    public boolean hasSkyAccess() {
-        return this.data.get(5) == 1;
+    public int getCelestialTarget() {
+        return this.data.get(5);
     }
 
-    public int getStormThreat() {
+    public int getScanProgress() {
         return this.data.get(6);
     }
 
+    public boolean hasSkyAccess() {
+        return this.data.get(7) == 1;
+    }
+
+    public int getStormThreat() {
+        return this.data.get(8);
+    }
+
     public int getSecondsToStorm() {
-        return this.data.get(7);
+        return this.data.get(9);
     }
 }

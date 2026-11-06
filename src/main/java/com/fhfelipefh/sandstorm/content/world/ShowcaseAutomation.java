@@ -14,6 +14,7 @@ import com.fhfelipefh.sandstorm.content.block.ElectrifiedSpikeBarrierBlock;
 import com.fhfelipefh.sandstorm.content.block.HeavyKineticPistonBlock;
 import com.fhfelipefh.sandstorm.content.block.HoloLaserTripwireBlock;
 import com.fhfelipefh.sandstorm.content.block.KineticEjectorTrapBlock;
+import com.fhfelipefh.sandstorm.content.block.KineticFloorSpikesBlock;
 import com.fhfelipefh.sandstorm.content.block.KineticRailgunBlock;
 import com.fhfelipefh.sandstorm.content.block.LegacyRustBlock;
 import com.fhfelipefh.sandstorm.content.block.MicroSingularityTrapBlock;
@@ -50,6 +51,7 @@ import com.fhfelipefh.sandstorm.content.block.entity.OrbitalMassDriverBlockEntit
 import com.fhfelipefh.sandstorm.content.block.entity.PlasmaShieldGeneratorBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.QuantumSleeperPodBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.RappelAnchorBlockEntity;
+import com.fhfelipefh.sandstorm.content.block.entity.SandSuctionQuarryBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneCrateBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SandstoneFurnaceBlockEntity;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
@@ -1705,15 +1707,28 @@ public class ShowcaseAutomation {
                 CropBlock cropBlock = (CropBlock) SandStormBlocks.XENO_WHEAT_CROP;
                 level.setBlock(targetPos.above(), cropBlock.getStateForAge(cropBlock.getMaxAge()), 3);
             } else if (targetBlock == SandStormBlocks.CORROSIVE_CHITIN_SPIKE_WALL) {
-                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(CorrosiveChitinSpikeWallBlock.FACING, Direction.SOUTH), 3);
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(CorrosiveChitinSpikeWallBlock.FACING, Direction.UP), 3);
             } else if (targetBlock == SandStormBlocks.RETRACTABLE_SPIKE_WALL) {
-                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(RetractableSpikeWallBlock.FACING, Direction.SOUTH).setValue(RetractableSpikeWallBlock.POWERED, true), 3);
+                level.setBlock(pedestalCenter, Blocks.REDSTONE_BLOCK.defaultBlockState(), 3);
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(RetractableSpikeWallBlock.FACING, Direction.UP).setValue(RetractableSpikeWallBlock.POWERED, true), 3);
             } else if (targetBlock == SandStormBlocks.TITANIUM_SPIKE_WALL) {
-                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(TitaniumSpikeWallBlock.FACING, Direction.SOUTH), 3);
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(TitaniumSpikeWallBlock.FACING, Direction.UP), 3);
+            } else if (targetBlock == SandStormBlocks.KINETIC_FLOOR_SPIKES) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(KineticFloorSpikesBlock.TRIGGERED, true), 3);
             } else if (targetBlock == SandStormBlocks.ELECTRIFIED_SPIKE_BARRIER) {
                 level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(ElectrifiedSpikeBarrierBlock.FACING, Direction.SOUTH).setValue(ElectrifiedSpikeBarrierBlock.POWERED, true), 3);
             } else if (targetBlock == SandStormBlocks.CRUSHING_SPIKE_GATE) {
                 level.setBlock(targetPos, targetBlock.defaultBlockState().setValue(CrushingSpikeGateBlock.FACING, Direction.SOUTH).setValue(CrushingSpikeGateBlock.OPEN, false), 3);
+            } else if (targetBlock == SandStormBlocks.SAND_SUCTION_QUARRY) {
+                level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
+                if (level.getBlockEntity(targetPos) instanceof SandSuctionQuarryBlockEntity quarryBe) {
+                    quarryBe.setPaused(true);
+                    quarryBe.setRadius(1);
+                }
+            } else if (targetBlock == SandStormBlocks.HALOPHYTE_PLANT || targetBlock == SandStormBlocks.HALOPHYTE_SUCCULENT
+                    || targetBlock == SandStormBlocks.ANCIENT_REED_BLOCK || targetBlock == SandStormBlocks.HEAVY_SAP_CACTUS) {
+                level.setBlock(pedestalCenter, SandStormBlocks.SALINIZED_SAND.defaultBlockState(), 3);
+                level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
             } else {
                 level.setBlock(targetPos, targetBlock.defaultBlockState(), 3);
             }

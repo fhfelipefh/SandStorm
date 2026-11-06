@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.content.world.structure;
 
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.SmartFluidPipeBlock;
 import com.fhfelipefh.sandstorm.content.block.entity.SolidStateAccumulatorBlockEntity;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
@@ -108,9 +109,9 @@ public class AncientBunkerGenerator {
         }
 
         level.setBlock(center.offset(-4, 1, 2), SandStormBlocks.GRID_MONITOR_CONSOLE.defaultBlockState(), 3);
-        level.setBlock(center.offset(-4, 2, 1), SandStormBlocks.SMART_FLUID_PIPE.defaultBlockState(), 3);
-        level.setBlock(center.offset(-4, 3, 1), SandStormBlocks.SMART_FLUID_PIPE.defaultBlockState(), 3);
-        level.setBlock(center.offset(-4, 4, 1), SandStormBlocks.SMART_FLUID_PIPE.defaultBlockState(), 3);
+        level.setBlock(center.offset(-4, 2, 1), SandStormBlocks.SMART_FLUID_PIPE.defaultBlockState().setValue(SmartFluidPipeBlock.DOWN, true).setValue(SmartFluidPipeBlock.UP, true), 3);
+        level.setBlock(center.offset(-4, 3, 1), SandStormBlocks.SMART_FLUID_PIPE.defaultBlockState().setValue(SmartFluidPipeBlock.DOWN, true).setValue(SmartFluidPipeBlock.UP, true), 3);
+        level.setBlock(center.offset(-4, 4, 1), SandStormBlocks.SMART_FLUID_PIPE.defaultBlockState().setValue(SmartFluidPipeBlock.DOWN, true), 3);
 
         level.setBlock(center.offset(4, 1, 1), SandStormBlocks.NANITE_FABRICATOR.defaultBlockState(), 3);
         level.setBlock(center.offset(4, 1, 2), SandStormBlocks.PRINTER_3D.defaultBlockState(), 3);

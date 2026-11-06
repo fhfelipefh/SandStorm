@@ -1,12 +1,18 @@
 package com.fhfelipefh.sandstorm.content.world.dungeon;
 
+import com.fhfelipefh.sandstorm.content.block.FiberglassChemicalPipeBlock;
 import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.SmartFluidPipeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+
+import java.util.Map;
 
 public abstract class BaseDungeonComponent implements DungeonComponent {
 
@@ -104,6 +110,69 @@ public abstract class BaseDungeonComponent implements DungeonComponent {
                         }
                     } else {
                         setLocalBlock(level, origin, rotation, lx, ly, lz, size, Blocks.AIR.defaultBlockState());
+                    }
+                }
+            }
+        }
+    }
+
+    public static void postProcessPipes(LevelAccessor level, BlockPos origin, DungeonRotation rotation, int size) {
+        for (int lx = 0; lx < size; lx++) {
+            for (int lz = 0; lz < size; lz++) {
+                for (int ly = size - 1; ly >= 1; ly--) {
+                    BlockPos worldPos = origin.offset(rotation.rotateOffset(lx, ly, lz, size));
+                    BlockState state = level.getBlockState(worldPos);
+                    if (state.getBlock() instanceof FiberglassChemicalPipeBlock || state.getBlock() instanceof SmartFluidPipeBlock) {
+                        int curY = ly - 1;
+                        while (curY >= 1) {
+                            BlockPos belowPos = origin.offset(rotation.rotateOffset(lx, curY, lz, size));
+                            BlockState belowState = level.getBlockState(belowPos);
+                            if (belowState.isAir()) {
+                                level.setBlock(belowPos, state.getBlock().defaultBlockState(), 2);
+                                curY--;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int lx = 0; lx < size; lx++) {
+            for (int lz = 0; lz < size; lz++) {
+                for (int ly = 1; ly < size; ly++) {
+                    BlockPos worldPos = origin.offset(rotation.rotateOffset(lx, ly, lz, size));
+                    BlockState state = level.getBlockState(worldPos);
+                    if (state.getBlock() instanceof FiberglassChemicalPipeBlock) {
+                        BlockState updated = state;
+                        for (Map.Entry<Direction, BooleanProperty> entry : FiberglassChemicalPipeBlock.PROPERTY_BY_DIRECTION.entrySet()) {
+                            Direction dir = entry.getKey();
+                            BooleanProperty prop = entry.getValue();
+                            BlockPos neighborPos = worldPos.relative(dir);
+                            BlockState neighborState = level.getBlockState(neighborPos);
+                            boolean connect = (neighborState.getBlock() instanceof FiberglassChemicalPipeBlock)
+                                    || FiberglassChemicalPipeBlock.canConnect(level, worldPos, dir)
+                                    || (dir == Direction.DOWN && neighborState.isSolid());
+                            updated = updated.setValue(prop, connect);
+                        }
+                        if (updated != state) {
+                            level.setBlock(worldPos, updated, 2);
+                        }
+                    } else if (state.getBlock() instanceof SmartFluidPipeBlock) {
+                        BlockState updated = state;
+                        for (Map.Entry<Direction, BooleanProperty> entry : SmartFluidPipeBlock.PROPERTY_BY_DIRECTION.entrySet()) {
+                            Direction dir = entry.getKey();
+                            BooleanProperty prop = entry.getValue();
+                            BlockPos neighborPos = worldPos.relative(dir);
+                            BlockState neighborState = level.getBlockState(neighborPos);
+                            boolean connect = (neighborState.getBlock() instanceof SmartFluidPipeBlock)
+                                    || (dir == Direction.DOWN && neighborState.isSolid());
+                            updated = updated.setValue(prop, connect);
+                        }
+                        if (updated != state) {
+                            level.setBlock(worldPos, updated, 2);
+                        }
                     }
                 }
             }

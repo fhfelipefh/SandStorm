@@ -107,7 +107,9 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
                 .add(Attributes.ARMOR, 10.0)
                 .add(Attributes.FOLLOW_RANGE, 48.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.6)
-                .add(Attributes.STEP_HEIGHT, 1.25);
+                .add(Attributes.STEP_HEIGHT, 1.25)
+                .add(Attributes.SAFE_FALL_DISTANCE, 12.0)
+                .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0.25);
     }
 
     @Override
@@ -352,6 +354,32 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
     }
 
     @Override
+    public boolean causeFallDamage(double fallDistance, float damageMultiplier, DamageSource damageSource) {
+        if (fallDistance > 1.0) {
+            this.playSound(SoundEvents.HORSE_LAND, 0.4f, 1.0f);
+        }
+        int damage = this.calculateFallDamage(fallDistance, damageMultiplier);
+        if (damage <= 0) {
+            return false;
+        }
+        this.hurt(damageSource, (float) damage);
+        this.propagateFallToPassengers(fallDistance, damageMultiplier, damageSource);
+        this.playBlockFallSound();
+        return true;
+    }
+
+    @Override
+    protected void propagateFallToPassengers(double fallDistance, float damageMultiplier, DamageSource damageSource) {
+        if (this.isVehicle()) {
+            double effectiveDistance = Math.max(0.0, fallDistance - this.getAttributeValue(Attributes.SAFE_FALL_DISTANCE));
+            float riderMultiplier = damageMultiplier * 0.5f;
+            for (Entity passenger : this.getPassengers()) {
+                passenger.causeFallDamage(effectiveDistance, riderMultiplier, damageSource);
+            }
+        }
+    }
+
+    @Override
     public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float amount) {
         if (this.isTame() && (source.is(DamageTypes.CACTUS) || source.is(DamageTypes.SWEET_BERRY_BUSH) || source.is(DamageTypes.STALAGMITE))) {
             return false;
@@ -369,7 +397,16 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
     }
 
     @Override
+    public float getPickRadius() {
+        return 1.25f;
+    }
+
+    @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (hand != InteractionHand.MAIN_HAND && !this.isVehicle()) {
+            return InteractionResult.PASS;
+        }
+
         ItemStack itemStack = player.getItemInHand(hand);
         Level currentLevel = this.level();
 
@@ -394,7 +431,8 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
                     this.setDeactivated(false);
                     this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0);
                     this.setHealth(50.0f);
-                    this.tame(player); this.setOrderedToSit(false);
+                    this.tame(player);
+                    this.setOrderedToSit(false);
                     if (currentLevel instanceof ServerLevel serverLevel) {
                         serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
                                 this.getX(), this.getY() + 1.0, this.getZ(),
@@ -409,6 +447,20 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
         }
 
         if (this.isTame()) {
+            if (!this.isVehicle() && player.isSprinting()) {
+                if (this.isOrderedToSit()) {
+                    this.setOrderedToSit(false);
+                    if (currentLevel instanceof ServerLevel serverLevel) {
+                        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                SandStormSoundEvents.CYBER_COMPANION_SERVO_EXPAND, this.getSoundSource(), 0.9f, 0.85f);
+                    }
+                }
+                if (!currentLevel.isClientSide()) {
+                    player.startRiding(this);
+                }
+                return InteractionResult.SUCCESS;
+            }
+
             if (this.isOwnedBy(player) || player.isCreative()) {
                 if (itemStack.getItem() instanceof CyberSteedUpgradeItem upgradeItem) {
                     if (!currentLevel.isClientSide() && currentLevel instanceof ServerLevel serverLevel) {
@@ -441,72 +493,78 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
                     return InteractionResult.SUCCESS;
                 }
 
-                if (itemStack.is(SandStormItems.SCRAP_METAL)) {
-                    if (this.getHealth() < this.getMaxHealth()) {
-                        this.heal(8.0f);
-                        if (!player.isCreative()) {
-                            itemStack.shrink(1);
-                        }
-                        if (currentLevel instanceof ServerLevel serverLevel) {
-                            serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
-                                    this.getX(), this.getY() + 0.8, this.getZ(),
-                                    15, 0.25, 0.35, 0.25, 0.05);
-                            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
-                                    SoundEvents.ANVIL_USE, this.getSoundSource(), 0.8f, 1.4f);
-                        }
-                        return InteractionResult.SUCCESS;
+                if (itemStack.is(SandStormItems.SCRAP_METAL) && this.getHealth() < this.getMaxHealth()) {
+                    this.heal(8.0f);
+                    if (!player.isCreative()) {
+                        itemStack.shrink(1);
                     }
-                    return InteractionResult.CONSUME;
+                    if (currentLevel instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                                this.getX(), this.getY() + 0.8, this.getZ(),
+                                15, 0.25, 0.35, 0.25, 0.05);
+                        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                SoundEvents.ANVIL_USE, this.getSoundSource(), 0.8f, 1.4f);
+                    }
+                    return InteractionResult.SUCCESS;
                 }
 
                 if (player.isSecondaryUseActive()) {
-                    this.setOrderedToSit(!this.isOrderedToSit());
-                    this.jumping = false;
-                    this.navigation.stop();
-                    this.setTarget(null);
-                    if (currentLevel instanceof ServerLevel serverLevel) {
-                        Component status = this.isOrderedToSit()
-                                ? Component.translatable("message.sandstorm.cyber_steed_standby")
-                                : Component.translatable("message.sandstorm.cyber_steed_active");
-                        if (player instanceof ServerPlayer serverPlayer) {
-                            serverPlayer.sendSystemMessage(status, true);
+                    if (canToggleStandby(player, itemStack)) {
+                        this.setOrderedToSit(!this.isOrderedToSit());
+                        this.jumping = false;
+                        this.navigation.stop();
+                        this.setTarget(null);
+                        if (currentLevel instanceof ServerLevel serverLevel) {
+                            Component status = this.isOrderedToSit()
+                                    ? Component.translatable("message.sandstorm.cyber_steed_standby")
+                                    : Component.translatable("message.sandstorm.cyber_steed_active");
+                            if (player instanceof ServerPlayer serverPlayer) {
+                                serverPlayer.sendSystemMessage(status, true);
+                            }
+                            SoundEvent servoSound = this.isOrderedToSit()
+                                    ? SandStormSoundEvents.CYBER_COMPANION_SERVO_RETRACT
+                                    : SandStormSoundEvents.CYBER_COMPANION_SERVO_EXPAND;
+                            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                    servoSound, this.getSoundSource(), 0.9f, 0.85f);
                         }
-                        SoundEvent servoSound = this.isOrderedToSit()
-                                ? SandStormSoundEvents.CYBER_COMPANION_SERVO_RETRACT
-                                : SandStormSoundEvents.CYBER_COMPANION_SERVO_EXPAND;
-                        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
-                                servoSound, this.getSoundSource(), 0.9f, 0.85f);
+                        return InteractionResult.SUCCESS;
                     }
-                    return InteractionResult.SUCCESS;
                 }
 
-                if (this.isOrderedToSit()) {
-                    if (this.hasCargoPanniers()) {
-                        if (!currentLevel.isClientSide() && player instanceof ServerPlayer serverPlayer) {
-                            serverPlayer.openMenu(new SimpleMenuProvider(
-                                    (syncId, playerInventory, p) -> ChestMenu.threeRows(syncId, playerInventory, this.cargoInventory),
-                                    Component.translatable("container.sandstorm.cyber_steed_cargo")
-                            ));
-                        }
-                    } else {
-                        if (!currentLevel.isClientSide() && player instanceof ServerPlayer serverPlayer) {
-                            serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_steed_no_cargo"), true);
+                if (!this.isVehicle()) {
+                    if (this.isOrderedToSit()) {
+                        this.setOrderedToSit(false);
+                        if (currentLevel instanceof ServerLevel serverLevel) {
+                            serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                    SandStormSoundEvents.CYBER_COMPANION_SERVO_EXPAND, this.getSoundSource(), 0.9f, 0.85f);
                         }
                     }
-                    return InteractionResult.SUCCESS;
-                }
-
-                if (!this.isVehicle() && !this.isOrderedToSit()) {
                     if (!currentLevel.isClientSide()) {
                         player.startRiding(this);
                     }
                     return InteractionResult.SUCCESS;
                 }
-            } else if (itemStack.is(SandStormItems.REPROGRAMMER_TOOL)) {
+            }
+
+            if (itemStack.is(SandStormItems.REPROGRAMMER_TOOL) && !this.isOwnedBy(player) && !player.isCreative()) {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.cyber_steed_already_tamed"), true);
                 }
                 return InteractionResult.FAIL;
+            }
+
+            if (!this.isVehicle()) {
+                if (this.isOrderedToSit()) {
+                    this.setOrderedToSit(false);
+                    if (currentLevel instanceof ServerLevel serverLevel) {
+                        serverLevel.playSound(null, this.getX(), this.getY(), this.getZ(),
+                                SandStormSoundEvents.CYBER_COMPANION_SERVO_EXPAND, this.getSoundSource(), 0.9f, 0.85f);
+                    }
+                }
+                if (!currentLevel.isClientSide()) {
+                    player.startRiding(this);
+                }
+                return InteractionResult.SUCCESS;
             }
         } else {
             if (!itemStack.is(SandStormItems.REPROGRAMMER_TOOL)) {
@@ -522,6 +580,10 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
         }
 
         return super.mobInteract(player, hand);
+    }
+
+    private boolean canToggleStandby(Player player, ItemStack itemStack) {
+        return !player.isSprinting() && (itemStack.isEmpty() || itemStack.is(SandStormItems.REPAIR_TOOL));
     }
 
     private boolean installUpgrade(CyberSteedUpgradeItem.UpgradeType type) {
@@ -705,6 +767,19 @@ public class CyberSteedEntity extends TamableAnimal implements DeactivatableAndr
             this.tickBatteryPack(serverLevel);
             if (this.isTame() && !this.isOrderedToSit() && !this.isDeactivated() && this.onGround() && this.getFirstPassenger() == null) {
                 checkSpikeJump(serverLevel);
+                checkPlayerApproachStabilization();
+            }
+        }
+    }
+
+    private void checkPlayerApproachStabilization() {
+        Player nearby = this.level().getNearestPlayer(this, 5.0);
+        if (nearby != null) {
+            if (this.getTarget() != null) {
+                this.setTarget(null);
+            }
+            if (this.distanceToSqr(nearby) <= 12.25 && this.getNavigation().isInProgress()) {
+                this.getNavigation().stop();
             }
         }
     }

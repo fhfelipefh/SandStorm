@@ -1,7 +1,8 @@
 package com.fhfelipefh.sandstorm.content.world.dungeon;
 
-import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
+import com.fhfelipefh.sandstorm.content.block.QuantumSleeperPodBlock;
 import com.fhfelipefh.sandstorm.content.block.RustingBlock;
+import com.fhfelipefh.sandstorm.content.block.SandStormBlocks;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 import java.util.List;
 import java.util.Map;
@@ -258,11 +260,14 @@ public class MilitaryLabCatalog {
         public void build(ServerLevel level, BlockPos origin, DungeonRotation rotation, RandomSource random, int size) {
             buildMilitaryShell(level, origin, rotation, size, DungeonSocket.CORRIDOR, DungeonSocket.WALL, DungeonSocket.CORRIDOR, DungeonSocket.WALL);
             for (int z = 1; z <= 5; z++) {
+                setLocalBlock(level, origin, rotation, 1, 1, z, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
                 setLocalBlock(level, origin, rotation, 1, 2, z, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
+                setLocalBlock(level, origin, rotation, 5, 1, z, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
                 setLocalBlock(level, origin, rotation, 5, 2, z, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
             }
             setLocalBlock(level, origin, rotation, 1, 1, 3, size, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 1, 4, size, SandStormBlocks.MILITARY_MUNITIONS_CRATE.defaultBlockState());
+            postProcessPipes(level, origin, rotation, size);
         }
     }
 
@@ -447,6 +452,9 @@ public class MilitaryLabCatalog {
             setLocalBlock(level, origin, rotation, 1, 2, 1, size, SandStormBlocks.TACTICAL_RADAR_CONSOLE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 1, 1, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 2, 1, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 1, 2, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 5, 2, 2, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
+            postProcessPipes(level, origin, rotation, size);
         }
     }
 
@@ -605,12 +613,19 @@ public class MilitaryLabCatalog {
         @Override
         public void build(ServerLevel level, BlockPos origin, DungeonRotation rotation, RandomSource random, int size) {
             buildMilitaryShell(level, origin, rotation, size, DungeonSocket.WALL, DungeonSocket.WALL, DungeonSocket.CORRIDOR, DungeonSocket.WALL);
-            setLocalBlock(level, origin, rotation, 2, 1, 2, size, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 4, 1, 2, size, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 2, 2, 2, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
-            setLocalBlock(level, origin, rotation, 4, 2, 2, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
+            setLocalBlock(level, origin, rotation, 1, 1, 2, size, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState().setValue(QuantumSleeperPodBlock.HALF, DoubleBlockHalf.LOWER));
+            setLocalBlock(level, origin, rotation, 1, 2, 2, size, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState().setValue(QuantumSleeperPodBlock.HALF, DoubleBlockHalf.UPPER));
+            setLocalBlock(level, origin, rotation, 5, 1, 2, size, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState().setValue(QuantumSleeperPodBlock.HALF, DoubleBlockHalf.LOWER));
+            setLocalBlock(level, origin, rotation, 5, 2, 2, size, SandStormBlocks.QUANTUM_SLEEPER_POD.defaultBlockState().setValue(QuantumSleeperPodBlock.HALF, DoubleBlockHalf.UPPER));
+
+            for (int x = 2; x <= 4; x++) {
+                setLocalBlock(level, origin, rotation, x, 1, 2, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
+                setLocalBlock(level, origin, rotation, x, 2, 2, size, SandStormBlocks.FIBERGLASS_CHEMICAL_PIPE.defaultBlockState());
+            }
+
             setLocalBlock(level, origin, rotation, 1, 1, 4, size, SandStormBlocks.TACTICAL_RADAR_CONSOLE.defaultBlockState());
             setLocalBlock(level, origin, rotation, 5, 1, 4, size, SandStormBlocks.HAZARD_STRIPE_BLOCK.defaultBlockState().setValue(RustingBlock.RUST, 1));
+            postProcessPipes(level, origin, rotation, size);
         }
     }
 

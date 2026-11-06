@@ -233,8 +233,23 @@ public class SandSuctionQuarryBlockEntity extends BaseMachineBlockEntity {
         }
     }
 
+    private boolean isShowcaseWorld(Level level) {
+        if (level instanceof ServerLevel serverLevel && serverLevel.getServer() != null) {
+            String levelName = serverLevel.getServer().getWorldData().getLevelName();
+            return levelName != null && levelName.toLowerCase().contains("showcase");
+        }
+        return false;
+    }
+
     @Override
     public void serverTick(Level level, BlockPos pos, BlockState state) {
+        if (isShowcaseWorld(level)) {
+            this.paused = true;
+            this.status = 0;
+            updateActiveState(level, pos, state, false);
+            return;
+        }
+
         if (!initializedScan) {
             resetScan();
         }
