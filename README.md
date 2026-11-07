@@ -31,8 +31,16 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
 <!-- ENTITY_GALLERY_START -->
 ## 👾 Entidades & Mobs Cibernéticos
 
-<details>
-<summary><b>Clique para expandir a galeria isométrica de entidades (29 modelos)</b></summary>
+### 🤖 Família de Golems Cibernéticos (5 Variações de Blindagem)
+Construídos com a **Cabeça do Golem Cibernético** sobre blocos de metal correspondentes, cada variação possui parâmetros mecânicos, blindagem e animações dedicadas:
+
+| Golem (Ferro) | Golem (Cobre) | Golem (Ouro) | Golem (Netherite) | Golem (Compósito) |
+| :---: | :---: | :---: | :---: | :---: |
+| <img src="docs/images/entities/cybernetic_golem_iron.gif" width="130" alt="Golem Cibernético (Ferro)"><br><b>Ferro</b> | <img src="docs/images/entities/cybernetic_golem_copper.gif" width="130" alt="Golem Cibernético (Cobre)"><br><b>Cobre</b> | <img src="docs/images/entities/cybernetic_golem_gold.gif" width="130" alt="Golem Cibernético (Ouro)"><br><b>Ouro</b> | <img src="docs/images/entities/cybernetic_golem_netherite.gif" width="130" alt="Golem Cibernético (Netherite)"><br><b>Netherite</b> | <img src="docs/images/entities/cybernetic_golem_composite.gif" width="130" alt="Golem Cibernético (Compósito)"><br><b>Compósito</b> |
+| Defesa Pesada de Base<br><sub>100 HP • 10 Armor</sub> | Condutividade & Pulso<br><sub>85 HP • 7 Armor</sub> | Circuitaria Quântica<br><sub>75 HP • Escudo Iônico</sub> | Blindagem Térmica Anti-Verme<br><sub>200 HP • 20 Armor</sub> | Química Carbono-Titânio<br><sub>110 HP • 12 Armor</sub> |
+
+<details open>
+<summary><b>Clique para expandir / recolher o catálogo completo de entidades (33 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -87,9 +95,31 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
       <sub>Guardião Autônomo & Rastreador</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cybernetic_golem.gif" width="140" alt="Golem Cibernético"><br>
-      <b>Golem Cibernético</b><br>
+      <img src="docs/images/entities/cybernetic_golem_iron.gif" width="140" alt="Golem Cibernético (Ferro)"><br>
+      <b>Golem Cibernético (Ferro)</b><br>
       <sub>Defesa Pesada de Instalações</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/entities/cybernetic_golem_copper.gif" width="140" alt="Golem Cibernético (Cobre)"><br>
+      <b>Golem Cibernético (Cobre)</b><br>
+      <sub>Condutividade & Sobrecarga de Pulso</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/entities/cybernetic_golem_gold.gif" width="140" alt="Golem Cibernético (Ouro)"><br>
+      <b>Golem Cibernético (Ouro)</b><br>
+      <sub>Circuitaria Quântica & Escudo Iônico</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/entities/cybernetic_golem_netherite.gif" width="140" alt="Golem Cibernético (Netherite)"><br>
+      <b>Golem Cibernético (Netherite)</b><br>
+      <sub>Blindagem Térmica Anti-Verme</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/entities/cybernetic_golem_composite.gif" width="140" alt="Golem Cibernético (Compósito)"><br>
+      <b>Golem Cibernético (Compósito)</b><br>
+      <sub>Química de Carbono & Titânio</sub>
     </td>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/sandworm.gif" width="140" alt="Verme da Areia (Sandworm)"><br>
