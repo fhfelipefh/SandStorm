@@ -3,7 +3,6 @@ package com.fhfelipefh.sandstorm.client.renderer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
@@ -39,44 +38,65 @@ public class CyberMoleModel extends EntityModel<CyberMoleRenderState> {
         PartDefinition root = mesh.getRoot();
 
         PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create()
-                .texOffs(0, 0).addBox(-5.0f, -4.0f, -7.0f, 10.0f, 7.0f, 14.0f)
-                .texOffs(0, 21).addBox(-5.2f, -5.5f, -6.5f, 10.4f, 2.0f, 13.0f, new CubeDeformation(0.1f)),
+                .texOffs(0, 0).addBox(-4.0f, -3.0f, -6.0f, 8.0f, 6.0f, 12.0f)
+                .texOffs(0, 19).addBox(-5.0f, -4.5f, -6.5f, 10.0f, 3.0f, 4.0f)
+                .texOffs(0, 27).addBox(-4.5f, -4.2f, -2.5f, 9.0f, 3.0f, 4.0f)
+                .texOffs(0, 35).addBox(-4.0f, -3.8f, 1.5f, 8.0f, 2.0f, 4.0f)
+                .texOffs(0, 42).addBox(4.0f, -1.0f, -4.5f, 2.0f, 3.0f, 9.0f)
+                .texOffs(0, 55).addBox(-6.0f, -1.0f, -4.5f, 2.0f, 3.0f, 9.0f)
+                .texOffs(0, 68).addBox(-3.0f, 2.8f, -5.0f, 6.0f, 1.0f, 10.0f),
                 PartPose.offset(0.0f, 18.0f, 0.0f));
 
         PartDefinition head = body.addOrReplaceChild("head", CubeListBuilder.create()
-                .texOffs(34, 0).addBox(-3.0f, -2.5f, -6.0f, 6.0f, 5.0f, 6.0f)
-                .texOffs(34, 11).addBox(-3.2f, -3.2f, -5.5f, 6.4f, 2.0f, 4.0f, new CubeDeformation(0.08f)),
-                PartPose.offset(0.0f, -0.5f, -7.0f));
+                .texOffs(42, 0).addBox(-2.5f, -2.0f, -5.0f, 5.0f, 4.0f, 5.0f)
+                .texOffs(42, 10).addBox(-3.0f, -2.8f, -4.6f, 6.0f, 2.0f, 4.0f)
+                .texOffs(42, 17).addBox(-2.0f, -1.2f, -5.4f, 4.0f, 1.0f, 1.0f)
+                .texOffs(42, 20).addBox(-2.0f, -2.0f, -6.4f, 4.0f, 4.0f, 2.0f),
+                PartPose.offset(0.0f, -0.5f, -6.0f));
 
         head.addOrReplaceChild("drill", CubeListBuilder.create()
-                .texOffs(48, 21).addBox(-2.0f, -2.0f, -3.0f, 4.0f, 4.0f, 3.0f)
-                .texOffs(50, 28).addBox(-1.5f, -1.5f, -5.0f, 3.0f, 3.0f, 2.0f)
-                .texOffs(52, 33).addBox(-1.0f, -1.0f, -7.0f, 2.0f, 2.0f, 2.0f),
-                PartPose.offset(0.0f, 0.0f, -6.0f));
+                .texOffs(64, 0).addBox(-1.5f, -1.5f, -2.5f, 3.0f, 3.0f, 3.0f)
+                .texOffs(64, 7).addBox(-1.0f, -1.0f, -5.0f, 2.0f, 2.0f, 3.0f)
+                .texOffs(64, 13).addBox(-1.0f, -1.0f, -7.0f, 2.0f, 2.0f, 2.0f)
+                .texOffs(64, 18).addBox(-0.5f, -0.5f, -8.5f, 1.0f, 1.0f, 2.0f),
+                PartPose.offset(0.0f, 0.0f, -6.4f));
 
         body.addOrReplaceChild("left_front_claw", CubeListBuilder.create()
-                .texOffs(0, 36).addBox(-1.0f, -1.0f, -4.0f, 3.0f, 6.0f, 7.0f)
-                .texOffs(20, 36).addBox(-0.5f, 3.0f, -7.0f, 2.0f, 2.0f, 4.0f),
-                PartPose.offset(5.5f, 0.5f, -4.0f));
+                .texOffs(78, 0).addBox(-0.5f, -1.5f, -1.5f, 3.0f, 4.0f, 4.0f)
+                .texOffs(78, 9).addBox(0.4f, -2.4f, -1.2f, 1.0f, 1.0f, 3.0f)
+                .texOffs(78, 14).addBox(0.2f, 1.5f, -4.5f, 4.0f, 3.0f, 5.0f)
+                .texOffs(78, 23).addBox(0.4f, 2.5f, -7.2f, 1.0f, 1.0f, 3.0f)
+                .texOffs(78, 28).addBox(1.6f, 2.4f, -8.0f, 1.0f, 1.0f, 4.0f)
+                .texOffs(78, 34).addBox(2.8f, 2.5f, -7.2f, 1.0f, 1.0f, 3.0f),
+                PartPose.offset(4.8f, 1.0f, -3.5f));
 
         body.addOrReplaceChild("right_front_claw", CubeListBuilder.create()
-                .texOffs(0, 36).mirror().addBox(-2.0f, -1.0f, -4.0f, 3.0f, 6.0f, 7.0f)
-                .texOffs(20, 36).mirror().addBox(-1.5f, 3.0f, -7.0f, 2.0f, 2.0f, 4.0f),
-                PartPose.offset(-5.5f, 0.5f, -4.0f));
+                .texOffs(98, 0).addBox(-2.5f, -1.5f, -1.5f, 3.0f, 4.0f, 4.0f)
+                .texOffs(98, 9).addBox(-1.4f, -2.4f, -1.2f, 1.0f, 1.0f, 3.0f)
+                .texOffs(98, 14).addBox(-4.2f, 1.5f, -4.5f, 4.0f, 3.0f, 5.0f)
+                .texOffs(98, 23).addBox(-1.4f, 2.5f, -7.2f, 1.0f, 1.0f, 3.0f)
+                .texOffs(98, 28).addBox(-2.6f, 2.4f, -8.0f, 1.0f, 1.0f, 4.0f)
+                .texOffs(98, 34).addBox(-3.8f, 2.5f, -7.2f, 1.0f, 1.0f, 3.0f),
+                PartPose.offset(-4.8f, 1.0f, -3.5f));
 
         body.addOrReplaceChild("left_hind_leg", CubeListBuilder.create()
-                .texOffs(32, 36).addBox(-1.0f, -1.0f, -2.5f, 3.0f, 5.0f, 5.0f),
-                PartPose.offset(5.2f, 1.5f, 4.5f));
+                .texOffs(36, 42).addBox(-0.5f, -1.0f, -1.5f, 3.0f, 3.0f, 3.0f)
+                .texOffs(36, 49).addBox(-0.5f, 1.8f, -2.5f, 3.0f, 2.0f, 4.0f),
+                PartPose.offset(4.5f, 2.0f, 4.0f));
 
         body.addOrReplaceChild("right_hind_leg", CubeListBuilder.create()
-                .texOffs(32, 36).mirror().addBox(-2.0f, -1.0f, -2.5f, 3.0f, 5.0f, 5.0f),
-                PartPose.offset(-5.2f, 1.5f, 4.5f));
+                .texOffs(52, 42).addBox(-2.5f, -1.0f, -1.5f, 3.0f, 3.0f, 3.0f)
+                .texOffs(52, 49).addBox(-2.5f, 1.8f, -2.5f, 3.0f, 2.0f, 4.0f),
+                PartPose.offset(-4.5f, 2.0f, 4.0f));
 
         body.addOrReplaceChild("exhaust", CubeListBuilder.create()
-                .texOffs(48, 37).addBox(-2.0f, -2.0f, 0.0f, 4.0f, 3.0f, 3.0f),
-                PartPose.offset(0.0f, -1.0f, 7.0f));
+                .texOffs(68, 42).addBox(-2.0f, -1.0f, 0.0f, 4.0f, 2.0f, 3.0f)
+                .texOffs(68, 48).addBox(0.8f, -2.0f, 0.8f, 1.0f, 1.0f, 2.0f)
+                .texOffs(68, 52).addBox(-1.8f, -2.0f, 0.8f, 1.0f, 1.0f, 2.0f)
+                .texOffs(68, 56).addBox(-0.5f, 0.0f, 2.2f, 1.0f, 1.0f, 3.0f),
+                PartPose.offset(0.0f, -1.0f, 6.0f));
 
-        return LayerDefinition.create(mesh, 64, 64);
+        return LayerDefinition.create(mesh, 128, 128);
     }
 
     @Override
@@ -134,4 +154,3 @@ public class CyberMoleModel extends EntityModel<CyberMoleRenderState> {
         this.rightHindLeg.xRot = Mth.cos(walkPos * 0.6662f) * 1.2f * walkSpeed;
     }
 }
-

@@ -192,7 +192,7 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
   </tr>
   <tr>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cyber_mole.png" width="140" alt="Toupeira Perfuradora Cibernética"><br>
+      <img src="docs/images/entities/cyber_mole.gif" width="140" alt="Toupeira Perfuradora Cibernética"><br>
       <b>Toupeira Perfuradora Cibernética</b><br>
       <sub>Escavação Geológica & Emboscada de Subsolo</sub>
     </td>
