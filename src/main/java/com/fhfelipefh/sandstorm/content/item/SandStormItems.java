@@ -9,10 +9,16 @@ import com.fhfelipefh.sandstorm.content.storage.StorageCartridgeTier;
 import com.fhfelipefh.sandstorm.content.world.biosphere.BiosphereType;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import java.util.List;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
@@ -23,7 +29,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.component.BlockTransformers;
+import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.level.block.Block;
 
 public class SandStormItems {
     public static ResourceKey<Item> itemKey(String path) {
@@ -32,6 +41,53 @@ public class SandStormItems {
 
     public static Item.Properties properties(String path) {
         return new Item.Properties().setId(itemKey(path));
+    }
+
+    private static final TagKey<Item> DEEPSLATE_TOOL_MATERIALS = TagKey.create(Registries.ITEM, SandStormMod.id("deepslate_tool_materials"));
+    public static final ToolMaterial DEEPSLATE_TOOL_MATERIAL = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_DIAMOND_TOOL,
+            1650,
+            9.0f,
+            3.0f,
+            10,
+            DEEPSLATE_TOOL_MATERIALS
+    );
+
+    public static Item.Properties paxel(Item.Properties properties, ToolMaterial material, float attackDamage, float attackSpeed) {
+        HolderGetter<Block> blockLookup = BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.BLOCK);
+        material.applyToolProperties(properties, BlockTags.MINEABLE_WITH_PICKAXE, attackDamage, attackSpeed, 0.0f);
+        Tool tool = new Tool(
+                List.of(
+                        Tool.Rule.deniesDrops(blockLookup.getOrThrow(material.incorrectBlocksForDrops())),
+                        Tool.Rule.minesAndDrops(blockLookup.getOrThrow(BlockTags.MINEABLE_WITH_PICKAXE), material.speed()),
+                        Tool.Rule.minesAndDrops(blockLookup.getOrThrow(BlockTags.MINEABLE_WITH_SHOVEL), material.speed())
+                ),
+                1.0f,
+                1,
+                true
+        );
+        properties.component(DataComponents.TOOL, tool);
+        properties.delayedHolderComponent(DataComponents.BLOCK_TRANSFORMER, BlockTransformers.SHOVEL);
+        return properties;
+    }
+
+    public static Item.Properties multiTool(Item.Properties properties, ToolMaterial material, float attackDamage, float attackSpeed) {
+        HolderGetter<Block> blockLookup = BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.BLOCK);
+        material.applyToolProperties(properties, BlockTags.MINEABLE_WITH_PICKAXE, attackDamage, attackSpeed, 0.0f);
+        Tool tool = new Tool(
+                List.of(
+                        Tool.Rule.deniesDrops(blockLookup.getOrThrow(material.incorrectBlocksForDrops())),
+                        Tool.Rule.minesAndDrops(blockLookup.getOrThrow(BlockTags.MINEABLE_WITH_PICKAXE), material.speed()),
+                        Tool.Rule.minesAndDrops(blockLookup.getOrThrow(BlockTags.MINEABLE_WITH_SHOVEL), material.speed()),
+                        Tool.Rule.minesAndDrops(blockLookup.getOrThrow(BlockTags.MINEABLE_WITH_AXE), material.speed())
+                ),
+                1.0f,
+                1,
+                true
+        );
+        properties.component(DataComponents.TOOL, tool);
+        properties.delayedHolderComponent(DataComponents.BLOCK_TRANSFORMER, BlockTransformers.AXE);
+        return properties;
     }
 
     public static final SpaceRationItem SPACE_RATION = register("space_ration", new SpaceRationItem(properties("space_ration")));
@@ -49,6 +105,10 @@ public class SandStormItems {
     public static final Item SILICON_PICKAXE = register("silicon_pickaxe", new Item(properties("silicon_pickaxe").pickaxe(ToolMaterial.IRON, 1.0f, -2.8f).rarity(Rarity.UNCOMMON)));
     public static final Item SILICON_SHOVEL = register("silicon_shovel", new Item(properties("silicon_shovel").shovel(ToolMaterial.IRON, 1.5f, -3.0f).rarity(Rarity.UNCOMMON)));
     public static final Item SILICON_SWORD = register("silicon_sword", new Item(properties("silicon_sword").sword(ToolMaterial.IRON, 3.0f, -2.4f).rarity(Rarity.UNCOMMON)));
+    public static final Item DEEPSLATE_COMPOSITE_PLATE = register("deepslate_composite_plate", new Item(properties("deepslate_composite_plate").rarity(Rarity.UNCOMMON)));
+    public static final Item DEEPSLATE_PICKAXE = register("deepslate_pickaxe", new Item(properties("deepslate_pickaxe").pickaxe(DEEPSLATE_TOOL_MATERIAL, 1.0f, -2.8f).rarity(Rarity.RARE)));
+    public static final Item DEEPSLATE_PAXEL = register("deepslate_paxel", new Item(paxel(properties("deepslate_paxel"), DEEPSLATE_TOOL_MATERIAL, 1.5f, -3.0f).rarity(Rarity.RARE)));
+    public static final Item DEEPSLATE_MULTITOOL = register("deepslate_multitool", new Item(multiTool(properties("deepslate_multitool"), DEEPSLATE_TOOL_MATERIAL, 4.0f, -3.0f).rarity(Rarity.RARE)));
     public static final Item SILICON_WAFER = register("silicon_wafer", new Item(properties("silicon_wafer")));
     public static final Item MINERAL_SALT = register("mineral_salt", new Item(properties("mineral_salt")));
     public static final PotableWaterBottleItem POTABLE_WATER_BOTTLE = register("potable_water_bottle", new PotableWaterBottleItem(properties("potable_water_bottle")));
@@ -310,6 +370,10 @@ public class SandStormItems {
                         entries.accept(SILICON_PICKAXE);
                         entries.accept(SILICON_SHOVEL);
                         entries.accept(SILICON_SWORD);
+                        entries.accept(DEEPSLATE_COMPOSITE_PLATE);
+                        entries.accept(DEEPSLATE_PICKAXE);
+                        entries.accept(DEEPSLATE_PAXEL);
+                        entries.accept(DEEPSLATE_MULTITOOL);
                         entries.accept(SILICON_WAFER);
                         entries.accept(CIRCUIT_BOARD);
                         entries.accept(NANO_ACTUATOR);

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "sandstorm:deepslate_pickaxe",
+    "sandstorm:silicon_shovel",
+    "sandstorm:electric_component"
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:deepslate_paxel"
+  }
+}
+

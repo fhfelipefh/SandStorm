@@ -2,7 +2,11 @@ package com.fhfelipefh.sandstorm.content.survival;
 
 import com.fhfelipefh.sandstorm.content.block.SandstoneWorkbenchBlock;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.Bootstrap;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
@@ -21,6 +25,15 @@ class TechnologyToolRestrictionHandlerTest {
     static void setup() {
         SharedConstants.tryDetectVersion();
         Bootstrap.bootStrap();
+
+        DataComponentMap defaultComponents = DataComponentMap.builder()
+                .set(DataComponents.MAX_STACK_SIZE, 64)
+                .build();
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (!item.builtInRegistryHolder().areComponentsBound()) {
+                item.builtInRegistryHolder().bindComponents(defaultComponents);
+            }
+        }
     }
 
     @ParameterizedTest
@@ -110,6 +123,9 @@ class TechnologyToolRestrictionHandlerTest {
     @Test
     void shouldAuthorizeSiliconPickaxeForMining() {
         assertTrue(TechnologyToolRestrictionHandler.isAuthorizedMiningTool("sandstorm", "silicon_pickaxe"));
+        assertTrue(TechnologyToolRestrictionHandler.isAuthorizedMiningTool("sandstorm", "deepslate_pickaxe"));
+        assertTrue(TechnologyToolRestrictionHandler.isAuthorizedMiningTool("sandstorm", "deepslate_paxel"));
+        assertTrue(TechnologyToolRestrictionHandler.isAuthorizedMiningTool("sandstorm", "deepslate_multitool"));
         assertFalse(TechnologyToolRestrictionHandler.isAuthorizedMiningTool("minecraft", "iron_pickaxe"));
         assertFalse(TechnologyToolRestrictionHandler.isAuthorizedMiningTool("minecraft", "diamond_pickaxe"));
         assertFalse(TechnologyToolRestrictionHandler.isAuthorizedMiningTool(new ItemStack(Items.IRON_PICKAXE)));

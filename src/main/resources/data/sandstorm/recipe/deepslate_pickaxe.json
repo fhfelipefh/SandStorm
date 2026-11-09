@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "sandstorm:tool_base",
+    "P": "sandstorm:deepslate_composite_plate"
+  },
+  "pattern": [
+    "PPP",
+    " B ",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:deepslate_pickaxe"
+  }
+}
+

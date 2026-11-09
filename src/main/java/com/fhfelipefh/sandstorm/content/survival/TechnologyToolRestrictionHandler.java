@@ -95,7 +95,13 @@ public class TechnologyToolRestrictionHandler {
     }
 
     public static boolean isAuthorizedMiningTool(String namespace, String path) {
-        return "sandstorm".equals(namespace) && "silicon_pickaxe".equals(path);
+        if (!"sandstorm".equals(namespace)) {
+            return false;
+        }
+        return "silicon_pickaxe".equals(path)
+                || "deepslate_pickaxe".equals(path)
+                || "deepslate_paxel".equals(path)
+                || "deepslate_multitool".equals(path);
     }
 
     public static boolean requiresRoboticsToBreak(BlockState state) {
