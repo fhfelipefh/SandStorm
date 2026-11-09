@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": "sandstorm:fiberglass",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "  F",
+    " F ",
+    "S  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "sandstorm:fiberglass_spear"
+  }
+}
+

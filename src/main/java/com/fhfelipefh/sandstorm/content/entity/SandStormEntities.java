@@ -491,6 +491,21 @@ public class SandStormEntities {
                     .build(PARALYTIC_TOXIN_DART_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> FIBERGLASS_SPEAR_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("fiberglass_spear")
+    );
+
+    public static final EntityType<FiberglassSpearEntity> FIBERGLASS_SPEAR = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("fiberglass_spear"),
+            EntityType.Builder.<FiberglassSpearEntity>of(FiberglassSpearEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(FIBERGLASS_SPEAR_KEY)
+    );
+
     public static final ResourceKey<EntityType<?>> MINI_NUKE_PROJECTILE_KEY = ResourceKey.create(
             Registries.ENTITY_TYPE,
             SandStormMod.id("mini_nuke_projectile")

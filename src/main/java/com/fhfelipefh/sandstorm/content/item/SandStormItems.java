@@ -262,6 +262,7 @@ public class SandStormItems {
     public static final Item SYNTHETIC_FIBER = register("synthetic_fiber", new Item(properties("synthetic_fiber")));
     public static final Item FIBERGLASS = register("fiberglass", new Item(properties("fiberglass")));
     public static final Item FIBERGLASS_TURBINE_BLADE = register("fiberglass_turbine_blade", new Item(properties("fiberglass_turbine_blade")));
+    public static final FiberglassSpearItem FIBERGLASS_SPEAR = register("fiberglass_spear", new FiberglassSpearItem(properties("fiberglass_spear").stacksTo(16).rarity(Rarity.UNCOMMON)));
     public static final PneumaticSandBlasterItem PNEUMATIC_SAND_BLASTER = register("pneumatic_sand_blaster", new PneumaticSandBlasterItem(properties("pneumatic_sand_blaster")));
     public static final CompositeRecurveBowItem COMPOSITE_RECURVE_BOW = register("composite_recurve_bow", new CompositeRecurveBowItem(properties("composite_recurve_bow").durability(768).rarity(Rarity.UNCOMMON)));
     public static final SandDepthProbeItem SAND_DEPTH_PROBE = register("sand_depth_probe", new SandDepthProbeItem(properties("sand_depth_probe").durability(384)));
@@ -333,6 +334,7 @@ public class SandStormItems {
                         entries.accept(SYNTHETIC_FIBER);
                         entries.accept(FIBERGLASS);
                         entries.accept(FIBERGLASS_TURBINE_BLADE);
+                        entries.accept(FIBERGLASS_SPEAR);
                         entries.accept(PNEUMATIC_SAND_BLASTER);
                         entries.accept(COMPOSITE_RECURVE_BOW);
                         entries.accept(SAND_DEPTH_PROBE);

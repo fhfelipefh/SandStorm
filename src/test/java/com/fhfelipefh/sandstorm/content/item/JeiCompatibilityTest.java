@@ -149,6 +149,7 @@ class JeiCompatibilityTest {
             "sandstorm:deepslate_pickaxe",
             "sandstorm:deepslate_paxel",
             "sandstorm:deepslate_multitool",
+            "sandstorm:fiberglass_spear",
             "sandstorm:circuit_board",
             "sandstorm:silicon_wafer",
             "sandstorm:nano_actuator",

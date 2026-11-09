@@ -243,6 +243,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.STUN_GRENADE, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SMOKE_GRENADE, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.PARALYTIC_TOXIN_DART, ThrownItemRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.FIBERGLASS_SPEAR, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.MINI_NUKE_PROJECTILE, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDWORM, SandwormRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CARGO_DRONE, CargoDroneRenderer::new);

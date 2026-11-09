@@ -268,5 +268,19 @@
     "sounds": [
       "sandstorm:suit_glider_whoosh"
     ]
+  },
+  "item.fiberglass_spear.throw": {
+    "category": "players",
+    "subtitle": "subtitles.sandstorm.item.fiberglass_spear.throw",
+    "sounds": [
+      "sandstorm:fiberglass_spear_throw"
+    ]
+  },
+  "item.fiberglass_spear.shatter": {
+    "category": "players",
+    "subtitle": "subtitles.sandstorm.item.fiberglass_spear.shatter",
+    "sounds": [
+      "sandstorm:fiberglass_spear_shatter"
+    ]
   }
 }

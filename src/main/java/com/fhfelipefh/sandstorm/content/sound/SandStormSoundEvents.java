@@ -45,6 +45,8 @@ public class SandStormSoundEvents {
     public static final SoundEvent SCAVENGER_VULTURE_TEAR = register("entity.scavenger_vulture.tear");
     public static final SoundEvent SCAVENGER_VULTURE_FLEE = register("entity.scavenger_vulture.flee");
     public static final SoundEvent SUIT_GLIDER_WHOOSH = register("suit.glider.whoosh");
+    public static final SoundEvent FIBERGLASS_SPEAR_THROW = register("item.fiberglass_spear.throw");
+    public static final SoundEvent FIBERGLASS_SPEAR_SHATTER = register("item.fiberglass_spear.shatter");
 
     private static SoundEvent register(String path) {
         Identifier id = SandStormMod.id(path);
