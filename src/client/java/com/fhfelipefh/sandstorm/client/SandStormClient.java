@@ -59,6 +59,8 @@ import com.fhfelipefh.sandstorm.client.mirage.DesertMirageHandler;
 import com.fhfelipefh.sandstorm.client.particle.SandstormParticleHandler;
 import com.fhfelipefh.sandstorm.client.weather.ClientStormTransitionHandler;
 import com.fhfelipefh.sandstorm.client.tooltip.SandStormTechnicalTooltipHandler;
+import com.fhfelipefh.sandstorm.client.gui.SpaceSuitClientTooltip;
+import com.fhfelipefh.sandstorm.client.renderer.AnomalyWaypointRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.AquiferBeetleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.AutonomousSonicTurretRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
@@ -116,6 +118,7 @@ import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.fluid.SandStormFluids;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.item.SpaceSuitItem;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import com.fhfelipefh.sandstorm.content.network.CallGolemPayload;
 import com.fhfelipefh.sandstorm.content.network.EmpDeafenPayload;
@@ -163,6 +166,7 @@ public class SandStormClient implements ClientModInitializer {
         DesertMirageHandler.initialize();
         EmpDeafenClientHandler.initialize();
         SandStormTechnicalTooltipHandler.initialize();
+        SpaceSuitItem.setClientTooltipProvider(SpaceSuitClientTooltip::buildTooltip);
 
         MenuScreens.register(SandStormMenus.PRINTER_3D_MENU, Printer3DScreen::new);
         MenuScreens.register(SandStormMenus.NANITE_FABRICATOR_MENU, NaniteFabricatorScreen::new);
@@ -357,6 +361,7 @@ public class SandStormClient implements ClientModInitializer {
         });
         ClientPlayNetworking.registerGlobalReceiver(SyncAnomalyRadarPayload.TYPE, (payload, context) -> {
             context.client().execute(() -> {
+                AnomalyWaypointRenderer.registerPings(payload.pings(), 30000L);
                 context.client().setScreenAndShow(new AnomalyRadarScreen(payload));
             });
         });
@@ -386,6 +391,7 @@ public class SandStormClient implements ClientModInitializer {
         });
         LevelRenderEvents.COLLECT_SUBMITS.register(ClientUplinkRenderer::render);
         LevelRenderEvents.COLLECT_SUBMITS.register(MultiblockHologramRenderer::render);
+        LevelRenderEvents.COLLECT_SUBMITS.register(AnomalyWaypointRenderer::render);
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             client.execute(() -> {
                 if (client.getSingleplayerServer() != null) {

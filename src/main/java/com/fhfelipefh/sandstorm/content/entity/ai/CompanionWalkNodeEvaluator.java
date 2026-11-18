@@ -8,6 +8,7 @@ import net.minecraft.world.level.pathfinder.PathfindingContext;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 public class CompanionWalkNodeEvaluator extends WalkNodeEvaluator {
+
     @Override
     public PathType getPathTypeOfMob(PathfindingContext context, int x, int y, int z, Mob mob) {
         if (CompanionTrapHelper.isTamedCompanion(mob)) {
@@ -19,6 +20,16 @@ public class CompanionWalkNodeEvaluator extends WalkNodeEvaluator {
             BlockState below = context.getBlockState(pos.below());
             if (CompanionTrapHelper.isTrapOrHazardBlock(below)) {
                 return PathType.DAMAGING;
+            }
+
+            if (state.isAir() && below.isAir()) {
+                int drop = 0;
+                while (drop < 5 && context.getBlockState(pos.below(drop + 1)).isAir()) {
+                    drop++;
+                }
+                if (drop >= 3) {
+                    return PathType.BLOCKED;
+                }
             }
         }
         return super.getPathTypeOfMob(context, x, y, z, mob);
@@ -36,8 +47,17 @@ public class CompanionWalkNodeEvaluator extends WalkNodeEvaluator {
             if (CompanionTrapHelper.isTrapOrHazardBlock(below)) {
                 return PathType.DAMAGING;
             }
+
+            if (state.isAir() && below.isAir()) {
+                int drop = 0;
+                while (drop < 5 && context.getBlockState(pos.below(drop + 1)).isAir()) {
+                    drop++;
+                }
+                if (drop >= 3) {
+                    return PathType.BLOCKED;
+                }
+            }
         }
         return super.getPathType(context, x, y, z);
     }
 }
-

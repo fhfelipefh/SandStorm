@@ -5,7 +5,8 @@
 	"refmap": "sandstorm.refmap.json",
 	"mixins": [
 		"AbstractHorseMixin",
-		"WaterFluidMixin"
+		"WaterFluidMixin",
+		"WolfCompanionSafetyMixin"
 	],
 	"injectors": {
 		"defaultRequire": 0

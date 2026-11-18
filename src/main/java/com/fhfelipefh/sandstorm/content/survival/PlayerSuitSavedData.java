@@ -96,6 +96,11 @@ public class PlayerSuitSavedData extends SavedData {
         return entry;
     }
 
+    public List<String> getUpgrades(UUID playerUuid) {
+        Entry entry = getSuitData(playerUuid);
+        return entry != null ? entry.upgrades() : List.of();
+    }
+
     public boolean hasUpgrade(UUID playerUuid, String upgrade) {
         Entry entry = suitMap.get(playerUuid);
         if (entry != null && entry.upgrades().contains(upgrade)) {

@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.client.gui;
 
+import com.fhfelipefh.sandstorm.client.renderer.AnomalyWaypointRenderer;
 import com.fhfelipefh.sandstorm.content.network.SyncAnomalyRadarPayload;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -22,6 +23,7 @@ public class AnomalyRadarScreen extends Screen {
     public AnomalyRadarScreen(SyncAnomalyRadarPayload payload) {
         super(Component.translatable("gui.sandstorm.radar.title"));
         this.payload = payload;
+        AnomalyWaypointRenderer.registerPings(payload.pings(), 30000L);
     }
 
     @Override
@@ -223,6 +225,7 @@ public class AnomalyRadarScreen extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean isDouble) {
+        AnomalyWaypointRenderer.registerPings(payload.pings(), 30000L);
         int panelWidth = 320;
         int panelHeight = 220;
         int panelLeft = (this.width - panelWidth) / 2;

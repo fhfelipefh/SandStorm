@@ -2,6 +2,28 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.111] - 2026-11-17
+
+### 🎯 Radar MK-II, Preservação de Companheiros, Bio-Armadura & Granada de PEM Automática
+* **Radar MK-II com Waypoints Holográficos (30s)**:
+  * Exibição de waypoints 3D temporários em vermelho no mundo na localização de anomalias detectadas durante 30 segundos após inspeção/clique na interface.
+* **Traje Espacial Bio-Fundido & Inspeção de Módulos**:
+  * Traje espacial com propriedade inquebrável nativa (`DataComponents.UNBREAKABLE`), eliminando redução visual de durabilidade e desgaste da armadura no HUD.
+  * Tooltip com inspeção visual detalhada de todos os módulos de upgrade e chips bio-cibernéticos instalados ao passar o mouse.
+* **Tolerância e Preservação de Companheiros (Cão e Cavalo)**:
+  * Companheiros domesticados nunca atacam uns aos outros (imunidade mútua a fogo amigo).
+  * Golpes acidentais com ferramentas de trabalho (picaretas, pás, machados, enxadas ou mãos) não provocam hostilidade nem causam dano entre pets domesticados.
+* **Sistema Anti-Sufocamento de Cavalos**:
+  * Cavalos detectados em sufocamento contínuo em dunas ou paredes teleportam deterministicamente para áreas abertas e seguras a cada segundo.
+* **Navegação Segura em Penhascos para Lobos**:
+  * Bloqueio de quedas de 3+ blocos na malha de nós de navegação dos lobos para prevenir saltos suicidas em despenhadeiros, aguardando o teletransporte vanilla.
+* **Liberação de Ferramentas Vanilla**:
+  * Removidos bloqueios forçados e mensagens intrusivas na tela ao minerar com ferramentas vanilla. Progressão orientada naturalmente pela superioridade do mod.
+* **Granada de PEM Automática de Emergência**:
+  * Adicionada a Granada de PEM de acionamento automático de emergência: se portada no inventário/hotbar, detona automaticamente ao receber dano de mob hostil, paralisando todas as entidades ao redor (10m) por 15s.
+
+---
+
 ## [1.19.84] - 2026-11-02
 
 ### 🌐 Internacionalização Multilíngue Completa & UX de Missões

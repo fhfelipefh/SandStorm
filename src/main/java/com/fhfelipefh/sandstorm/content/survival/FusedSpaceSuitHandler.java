@@ -30,6 +30,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
@@ -174,6 +175,10 @@ public class FusedSpaceSuitHandler {
         } else {
             SuitSurvivalHandler.getOrCreateSuit(player);
         }
+        PlayerSuitSavedData suitData = PlayerSuitSavedData.get(server);
+        for (String upg : suitData.getUpgrades(player.getUUID())) {
+            player.addTag("sandstorm.upgrade." + upg);
+        }
         enforceFusedSuit(player);
     }
 
@@ -287,8 +292,13 @@ public class FusedSpaceSuitHandler {
                     ItemStack currentStack = player.getItemBySlot(slot);
                     if (!currentStack.isEmpty() && currentStack.getItem() instanceof SpaceSuitItem) {
                         TooltipDisplay td = currentStack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT);
-                        if (td.shows(DataComponents.ENCHANTMENTS)) {
-                            currentStack.set(DataComponents.TOOLTIP_DISPLAY, td.withHidden(DataComponents.ENCHANTMENTS, true));
+                        if (td.shows(DataComponents.ENCHANTMENTS) || td.shows(DataComponents.UNBREAKABLE)) {
+                            currentStack.set(DataComponents.TOOLTIP_DISPLAY, td
+                                    .withHidden(DataComponents.ENCHANTMENTS, true)
+                                    .withHidden(DataComponents.UNBREAKABLE, true));
+                        }
+                        if (!currentStack.has(DataComponents.UNBREAKABLE)) {
+                            currentStack.set(DataComponents.UNBREAKABLE, Unit.INSTANCE);
                         }
                     }
                 }
@@ -322,7 +332,10 @@ public class FusedSpaceSuitHandler {
             });
         }
         stack.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, false);
-        stack.set(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT.withHidden(DataComponents.ENCHANTMENTS, true));
+        stack.set(DataComponents.UNBREAKABLE, Unit.INSTANCE);
+        stack.set(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT
+                .withHidden(DataComponents.ENCHANTMENTS, true)
+                .withHidden(DataComponents.UNBREAKABLE, true));
         return stack;
     }
 

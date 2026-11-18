@@ -126,6 +126,7 @@ public class SandStormItems {
     public static final NutrientBombItem NUTRIENT_BOMB = register("nutrient_bomb", new NutrientBombItem(properties("nutrient_bomb").stacksTo(16)));
     public static final StunGrenadeItem STUN_GRENADE = register("stun_grenade", new StunGrenadeItem(properties("stun_grenade").stacksTo(16).rarity(Rarity.UNCOMMON)));
     public static final SmokeGrenadeItem SMOKE_GRENADE = register("smoke_grenade", new SmokeGrenadeItem(properties("smoke_grenade").stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final AutoEmpGrenadeItem AUTO_EMP_GRENADE = register("auto_emp_grenade", new AutoEmpGrenadeItem(properties("auto_emp_grenade").stacksTo(16).rarity(Rarity.UNCOMMON)));
     public static final TacticalDetonatorItem TACTICAL_DETONATOR = register("tactical_detonator", new TacticalDetonatorItem(properties("tactical_detonator").stacksTo(1).rarity(Rarity.RARE)));
     public static final TrapDisarmerKitItem TRAP_DISARMER_KIT = register("trap_disarmer_kit", new TrapDisarmerKitItem(properties("trap_disarmer_kit").durability(64).rarity(Rarity.UNCOMMON)));
     public static final FilterCartridgeItem FILTER_CARTRIDGE = register("filter_cartridge", new FilterCartridgeItem(properties("filter_cartridge").durability(1000).rarity(Rarity.UNCOMMON)));
@@ -434,6 +435,7 @@ public class SandStormItems {
                         entries.accept(NUTRIENT_BOMB);
                         entries.accept(STUN_GRENADE);
                         entries.accept(SMOKE_GRENADE);
+                        entries.accept(AUTO_EMP_GRENADE);
                         entries.accept(SandStormBlocks.FIBERGLASS_SPIKES);
                         entries.accept(SandStormBlocks.SERRATED_JAW_TRAP);
                         entries.accept(SandStormBlocks.PIEZO_SHOCK_TRAP);

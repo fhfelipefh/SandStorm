@@ -4,14 +4,10 @@ import com.fhfelipefh.sandstorm.content.block.SandstoneFurnaceBlock;
 import com.fhfelipefh.sandstorm.content.entity.ExcavatorVehicleEntity;
 import com.fhfelipefh.sandstorm.content.entity.MegazordEntity;
 import com.fhfelipefh.sandstorm.content.world.SandStormWorldHelper;
-import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +20,9 @@ public class TechnologyToolRestrictionHandler {
 
     public static void initialize() {
         PlayerBlockBreakEvents.BEFORE.register((level, player, pos, state, blockEntity) -> {
+            if (!SandStormWorldHelper.isSandStormWorld(level)) {
+                return true;
+            }
             return canPlayerBreakBlock(player, state);
         });
 
@@ -32,57 +31,15 @@ public class TechnologyToolRestrictionHandler {
                 Block.popResource(level, pos, new ItemStack(Blocks.SAND));
             }
         });
-
-        AttackBlockCallback.EVENT.register((player, level, hand, pos, direction) -> {
-            if (!SandStormWorldHelper.isSandStormWorld(level)) {
-                return InteractionResult.PASS;
-            }
-            BlockState state = level.getBlockState(pos);
-            if (!canPlayerBreakBlock(player, state)) {
-                if (!level.isClientSide()) {
-                    player.sendSystemMessage(
-                            Component.translatable("telemetry.sandstorm.mining_requires_robot")
-                    );
-                }
-                return InteractionResult.FAIL;
-            }
-            return InteractionResult.PASS;
-        });
-
-        UseItemCallback.EVENT.register((player, level, hand) -> {
-            if (!SandStormWorldHelper.isSandStormWorld(level)) {
-                return InteractionResult.PASS;
-            }
-            ItemStack stack = player.getItemInHand(hand);
-            if (isRestrictedVanillaTool(stack.getItem())) {
-                if (!level.isClientSide()) {
-                    player.sendSystemMessage(
-                            Component.translatable("telemetry.sandstorm.tool_restricted")
-                    );
-                }
-                return InteractionResult.FAIL;
-            }
-            return InteractionResult.PASS;
-        });
     }
 
     public static boolean canPlayerBreakBlock(Player player, BlockState state) {
-        if (player == null || player.isCreative() || !SandStormWorldHelper.isSandStormWorld(player.level())) {
+        if (player == null || player.isCreative()) {
             return true;
         }
-
-        ItemStack mainHandItem = player.getMainHandItem();
-        if (isRestrictedVanillaTool(mainHandItem.getItem())) {
-            return false;
+        if (player.level() != null && !SandStormWorldHelper.isSandStormWorld(player.level())) {
+            return true;
         }
-
-        if (requiresRoboticsToBreak(state)) {
-            if (isPilotingMiningRobot(player)) {
-                return true;
-            }
-            return isAuthorizedMiningTool(mainHandItem);
-        }
-
         return true;
     }
 

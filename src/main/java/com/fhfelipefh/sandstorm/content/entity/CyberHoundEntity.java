@@ -390,6 +390,23 @@ public class CyberHoundEntity extends TamableAnimal implements DeactivatableAndr
     }
 
     @Override
+    public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
+        if (target != null && CompanionTrapHelper.isTamedCompanion(target)) {
+            return false;
+        }
+        return super.wantsToAttack(target, owner);
+    }
+
+    @Override
+    public void setTarget(LivingEntity target) {
+        if (target != null && CompanionTrapHelper.isTamedCompanion(target)) {
+            super.setTarget(null);
+            return;
+        }
+        super.setTarget(target);
+    }
+
+    @Override
     public boolean doHurtTarget(ServerLevel serverLevel, Entity target) {
         boolean hurt = super.doHurtTarget(serverLevel, target);
         if (hurt && this.hasClaws() && target instanceof LivingEntity living) {

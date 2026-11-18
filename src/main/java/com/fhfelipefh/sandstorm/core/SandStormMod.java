@@ -37,6 +37,7 @@ import com.fhfelipefh.sandstorm.content.network.SyncUplinkZonePayload;
 import com.fhfelipefh.sandstorm.content.network.TerminalActionPayload;
 import com.fhfelipefh.sandstorm.content.quest.QuestRewardHandler;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
+import com.fhfelipefh.sandstorm.content.entity.ai.CompanionProtectionHandler;
 import com.fhfelipefh.sandstorm.content.survival.BedRestrictionHandler;
 import com.fhfelipefh.sandstorm.content.survival.FusedSpaceSuitHandler;
 import com.fhfelipefh.sandstorm.content.survival.MagicSuppressionHandler;
@@ -168,6 +169,7 @@ public class SandStormMod implements ModInitializer {
         ExhibitionGalleryManager.initialize();
         RecipeUnlockHandler.initialize();
         EmpParalysisHandler.initialize();
+        CompanionProtectionHandler.initialize();
         ServerPlayNetworking.registerGlobalReceiver(
                 FlashlightTogglePayload.TYPE,
                 (payload, context) -> {

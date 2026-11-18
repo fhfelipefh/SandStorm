@@ -63,6 +63,8 @@ public class ExoSuitChipItem extends Item {
             return InteractionResult.FAIL;
         }
 
+        player.addTag("sandstorm.chip." + this.chipType.name().toLowerCase());
+
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARMOR_EQUIP_NETHERITE.value(), SoundSource.PLAYERS, 1.0f, 1.3f);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.NOTE_BLOCK_CHIME.value(), SoundSource.PLAYERS, 0.8f, 1.8f);
 
@@ -96,6 +98,8 @@ public class ExoSuitChipItem extends Item {
                 player.sendSystemMessage(Component.translatable("message.sandstorm.chip_slots_full"));
                 return true;
             }
+
+            player.addTag("sandstorm.chip." + this.chipType.name().toLowerCase());
 
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARMOR_EQUIP_NETHERITE.value(), SoundSource.PLAYERS, 1.0f, 1.3f);
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.NOTE_BLOCK_CHIME.value(), SoundSource.PLAYERS, 0.8f, 1.8f);

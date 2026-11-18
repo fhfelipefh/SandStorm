@@ -74,6 +74,7 @@ public class SuitUpgradeItem extends Item {
 
             boolean installed = data.addUpgrade(serverPlayer.getUUID(), upgradeType.getId());
             if (installed) {
+                serverPlayer.addTag("sandstorm.upgrade." + upgradeType.getId());
                 stack.shrink(1);
                 serverPlayer.sendSystemMessage(Component.translatable("message.sandstorm.suit_upgrade_success", Component.translatable(upgradeType.getTranslationKey())), true);
                 serverLevel.playSound(null, serverPlayer.blockPosition(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0f, 1.5f);
