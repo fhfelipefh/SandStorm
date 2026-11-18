@@ -2,6 +2,29 @@
 
 Todas as alterações notáveis no projeto **SandStorm** serão documentadas neste arquivo.
 
+## [1.19.112] - 2026-11-17
+
+### 🧭 Variações Direcionais e Orientação 3D de Blocos Decorativos e Industriais
+* **Variações Horizontais (North, East, South, West)**:
+  * `sandstone_workbench`: A bancada de trabalho de arenito agora se orienta automaticamente de frente para o jogador na colocação, alinhando suas ferramentas frontais e gavetas.
+  * `tactical_radar_console` & `broken_radar_console`: Consoles de radar militares agora possuem rotação horizontal de 4 faces, permitindo compor pontes de comando e estações de monitoramento.
+  * `military_munitions_crate` & `damaged_munitions_crate`: Caixotes de munição agora giram de acordo com o clique do jogador, alinhando-se a barricadas e arsenais.
+  * `drone_dock` & `assembly_bay`: Plataformas de drones e baias de montagem agora possuem orientação frontal para docagem e lançamento.
+  * `ancient_data_core` & `buried_tech_ruins`: Núcleos de dados ancestrais e ruínas tecnológicas agora se posicionam em qualquer face horizontal ao serem colocados.
+  * `chiseled_cryo_insulation`: Bloco decorativo de isolamento criogênico esculpido com orientação horizontal para detalhes de arquitetura de alta tecnologia.
+  * `cryo_revival_vat`: Tanque de reanimação criogênica agora se volta para o operador ao ser instalado.
+  * `atmospheric_terraformer`: Terraformatador atmosférico agora rotaciona conforme a posição do jogador.
+  * `synaptic_condenser` & `synaptic_repairer`: Condensador sináptico e reparador de chips agora possuem orientação frontal.
+  * `xp_vacuum`: Aspirador quântico de XP agora orienta suas entradas e painéis na direção desejada.
+* **Variações em Eixo 3D (X, Y, Z)**:
+  * `radioactive_waste_barrel`: Barris de rejeitos radioativos agora utilizam o sistema `RotatedPillarBlock`, podendo ser empilhados na vertical ou deitados horizontalmente ao longo dos eixos X e Z.
+  * `neural_overdrive_module`: Módulos de aceleração neural agora podem ser instalados verticalmente ou horizontalmente nas paredes de circuitos de controle.
+  * `seismic_resonance_catalyst`: Catalisador de ressonância sísmica com rotação de pilar nos eixos X, Y e Z.
+  * `wpc_planks`: Tábuas compostas de madeira-plástico (WPC) agora podem ser assentadas nos eixos X, Y ou Z, permitindo criar corredores com veios direcionais.
+  * `lead_shielding_block`: Blocos de blindagem de chumbo agora possuem rotação de eixo para estruturação de vigas e barreiras antirradiação.
+
+---
+
 ## [1.19.111] - 2026-11-17
 
 ### 🎯 Radar MK-II, Preservação de Companheiros, Bio-Armadura & Granada de PEM Automática

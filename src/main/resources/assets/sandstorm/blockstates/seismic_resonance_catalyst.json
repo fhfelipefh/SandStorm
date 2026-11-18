@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
+    "axis=x": {
+      "model": "sandstorm:block/seismic_resonance_catalyst",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
       "model": "sandstorm:block/seismic_resonance_catalyst"
+    },
+    "axis=z": {
+      "model": "sandstorm:block/seismic_resonance_catalyst",
+      "x": 90
     }
   }
 }

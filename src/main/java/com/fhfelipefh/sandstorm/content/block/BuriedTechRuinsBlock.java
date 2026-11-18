@@ -6,10 +6,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BuriedTechRuinsBlock extends Block {
+public class BuriedTechRuinsBlock extends HorizontalFacingBlock {
 
     public BuriedTechRuinsBlock(Properties properties) {
         super(properties);

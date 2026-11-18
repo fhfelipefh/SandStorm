@@ -95,6 +95,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
@@ -280,7 +281,7 @@ public class SandStormBlocks {
                     .sound(SoundType.COPPER)
                     .noOcclusion()));
     public static final Block WPC_PLANKS = register("wpc_planks",
-            new Block(BlockBehaviour.Properties.of()
+            new RotatedPillarBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("wpc_planks")))
                     .mapColor(MapColor.COLOR_BROWN)
                     .strength(2.0f, 3.0f)
@@ -1104,7 +1105,7 @@ public class SandStormBlocks {
                     .sound(SoundType.NETHERITE_BLOCK)
                     .requiresCorrectToolForDrops()));
     public static final Block LEAD_SHIELDING_BLOCK = register("lead_shielding_block",
-            new Block(BlockBehaviour.Properties.of()
+            new RotatedPillarBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("lead_shielding_block")))
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(8.0f, 45.0f)
@@ -1132,7 +1133,7 @@ public class SandStormBlocks {
                     .sound(SoundType.COPPER_GRATE)
                     .requiresCorrectToolForDrops()));
     public static final Block TACTICAL_RADAR_CONSOLE = register("tactical_radar_console",
-            new Block(BlockBehaviour.Properties.of()
+            new HorizontalFacingBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("tactical_radar_console")))
                     .mapColor(MapColor.COLOR_GREEN)
                     .strength(10.0f, 50.0f)
@@ -1140,7 +1141,7 @@ public class SandStormBlocks {
                     .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()));
     public static final Block MILITARY_MUNITIONS_CRATE = register("military_munitions_crate",
-            new Block(BlockBehaviour.Properties.of()
+            new HorizontalFacingBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("military_munitions_crate")))
                     .mapColor(MapColor.COLOR_GREEN)
                     .strength(8.0f, 40.0f)
@@ -1217,14 +1218,14 @@ public class SandStormBlocks {
                     .sound(SoundType.COPPER_GRATE)
                     .requiresCorrectToolForDrops()));
     public static final Block DAMAGED_MUNITIONS_CRATE = register("damaged_munitions_crate",
-            new Block(BlockBehaviour.Properties.of()
+            new HorizontalFacingBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("damaged_munitions_crate")))
                     .mapColor(MapColor.COLOR_GREEN)
                     .strength(5.0f, 20.0f)
                     .sound(SoundType.WOOD)
                     .requiresCorrectToolForDrops()));
     public static final Block BROKEN_RADAR_CONSOLE = register("broken_radar_console",
-            new Block(BlockBehaviour.Properties.of()
+            new HorizontalFacingBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("broken_radar_console")))
                     .mapColor(MapColor.COLOR_GRAY)
                     .strength(6.0f, 30.0f)
@@ -1296,7 +1297,7 @@ public class SandStormBlocks {
                     .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()));
     public static final Block CHISELED_CRYO_INSULATION = register("chiseled_cryo_insulation",
-            new Block(BlockBehaviour.Properties.of()
+            new HorizontalFacingBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("chiseled_cryo_insulation")))
                     .mapColor(MapColor.COLOR_LIGHT_BLUE)
                     .strength(3.5f, 15.0f)

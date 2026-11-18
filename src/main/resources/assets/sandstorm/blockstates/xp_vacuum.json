@@ -1,8 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "sandstorm:block/xp_vacuum"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/xp_vacuum",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/xp_vacuum",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/xp_vacuum",
+      "y": 270
     }
   }
 }
-

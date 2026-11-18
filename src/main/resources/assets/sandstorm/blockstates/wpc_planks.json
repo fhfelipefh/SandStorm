@@ -1,8 +1,16 @@
 {
   "variants": {
-    "": {
+    "axis=x": {
+      "model": "sandstorm:block/wpc_planks",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
       "model": "sandstorm:block/wpc_planks"
+    },
+    "axis=z": {
+      "model": "sandstorm:block/wpc_planks",
+      "x": 90
     }
   }
 }
-

@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
+    "axis=x": {
+      "model": "sandstorm:block/lead_shielding_block",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
       "model": "sandstorm:block/lead_shielding_block"
+    },
+    "axis=z": {
+      "model": "sandstorm:block/lead_shielding_block",
+      "x": 90
     }
   }
 }

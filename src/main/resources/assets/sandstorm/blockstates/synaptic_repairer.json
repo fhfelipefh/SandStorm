@@ -1,8 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "sandstorm:block/synaptic_repairer"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/synaptic_repairer",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/synaptic_repairer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/synaptic_repairer",
+      "y": 270
     }
   }
 }
-

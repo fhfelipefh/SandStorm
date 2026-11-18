@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "sandstorm:block/chiseled_cryo_insulation"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/chiseled_cryo_insulation",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/chiseled_cryo_insulation",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/chiseled_cryo_insulation",
+      "y": 270
     }
   }
 }

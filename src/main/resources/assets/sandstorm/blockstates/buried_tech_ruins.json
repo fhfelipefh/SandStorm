@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "sandstorm:block/buried_tech_ruins"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/buried_tech_ruins",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/buried_tech_ruins",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/buried_tech_ruins",
+      "y": 270
     }
   }
 }

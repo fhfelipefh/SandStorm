@@ -1,8 +1,16 @@
 {
   "variants": {
-    "": {
+    "axis=x": {
+      "model": "sandstorm:block/neural_overdrive_module",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
       "model": "sandstorm:block/neural_overdrive_module"
+    },
+    "axis=z": {
+      "model": "sandstorm:block/neural_overdrive_module",
+      "x": 90
     }
   }
 }
-

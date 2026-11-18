@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "sandstorm:block/ancient_data_core"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/ancient_data_core",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/ancient_data_core",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/ancient_data_core",
+      "y": 270
     }
   }
 }

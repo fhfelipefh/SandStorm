@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "sandstorm:block/atmospheric_terraformer"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/atmospheric_terraformer",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/atmospheric_terraformer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/atmospheric_terraformer",
+      "y": 270
     }
   }
 }

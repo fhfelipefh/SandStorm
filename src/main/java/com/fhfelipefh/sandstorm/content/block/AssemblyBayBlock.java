@@ -9,6 +9,7 @@ import com.fhfelipefh.sandstorm.content.entity.SandStormEntities;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.sound.SandStormSoundEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,12 +19,17 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class AssemblyBayBlock extends Block {
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final long DEFAULT_CAPACITY = 100000L;
     public static final long DEFAULT_TRANSFER_RATE = 1000L;
     public static final long INITIAL_CHARGE = 50000L;
@@ -32,7 +38,18 @@ public class AssemblyBayBlock extends Block {
 
     public AssemblyBayBlock(Properties properties) {
         super(properties);
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
         energyStorage.setStoredEnergy(INITIAL_CHARGE);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     public EnergyStorageComponent getEnergyStorage() {

@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "sandstorm:block/assembly_bay"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/assembly_bay",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/assembly_bay",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/assembly_bay",
+      "y": 270
     }
   }
 }

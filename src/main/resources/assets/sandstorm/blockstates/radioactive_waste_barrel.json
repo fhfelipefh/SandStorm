@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
+    "axis=x": {
+      "model": "sandstorm:block/radioactive_waste_barrel",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
       "model": "sandstorm:block/radioactive_waste_barrel"
+    },
+    "axis=z": {
+      "model": "sandstorm:block/radioactive_waste_barrel",
+      "x": 90
     }
   }
 }

@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "sandstorm:block/tactical_radar_console"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/tactical_radar_console",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/tactical_radar_console",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/tactical_radar_console",
+      "y": 270
     }
   }
 }
