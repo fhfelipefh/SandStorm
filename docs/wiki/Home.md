@@ -8,8 +8,8 @@ Aqui você encontra toda a documentação técnica avançada, lore detalhada, gu
 
 ## 🗺️ Índice da Wiki
 
-* [📜 História e Mecânicas Principais](Mecanicas.md) — Lore do astronauta, sobrevivência planetária, perigo sísmico dos Vermes de Areia e terraformação setorial.
-* [🔬 Máquinas, Instalações e Galeria](Maquinas.md) — Demonstração visual das máquinas, complexos industriais, armamentos de defesa e comandos de debug.
+* [📜 História e Mecânicas Principais](Mecanicas.md) — Lore do astronauta, sobrevivência planetária, perigo sísmico dos Vermes de Areia, terraformação setorial e cidades escavadas nas encostas (Petra).
+* [🔬 Máquinas, Instalações e Galeria](Maquinas.md) — Demonstração visual das máquinas, complexos industriais, armamentos de defesa e comandos de debug e construção.
 * [🗺️ Diagramas de Engenharia e Fluxos](Engenharia.md) — Fluxogramas de energia sem fio (WPT), dessalinização osmótica e bio-farmacologia.
 * [📦 Lista Completa de Itens, Blocos e Entidades](Itens.md) — Tabela com identificadores técnicos, IDs de registro e receitas.
 
@@ -27,6 +27,6 @@ Aqui você encontra toda a documentação técnica avançada, lore detalhada, gu
 | ![Ciborgues Autônomos](../screenshots/autonomous-cyborgs.png) | ![Rede Ferroviária Maglev](../screenshots/maglev-transport.png) |
 | *Unidades robóticas inteligentes gerenciando agricultura e recarga WPT* | *Linhas férreas magnéticas de alta velocidade para tráfego seguro* |
 
-| Projeção Holográfica Multibloco | Fauna Robótica Horizon |
+| Cidades Escavadas nas Encostas (Petra) | Fauna Robótica Horizon |
 |:---:|:---:|
-| Projeção 3D estilo Botania com validação voxel a voxel e progresso | Ecossistema completo: Grazer, Fanghorn, Frostclaw, Glinthawk e Waterwing |
+| Monumentais fachadas Al-Khazneh escavadas em paredões de montanhas, galerias de estátuas, ânforas quebráveis e Sentinela Curador | Ecossistema completo: Grazer, Fanghorn, Frostclaw, Glinthawk, Waterwing, Cyber Mole e Urubu Carniceiro |

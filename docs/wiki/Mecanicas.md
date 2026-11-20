@@ -155,3 +155,46 @@ Sobreviver no deserto toxico requer autonomia alimentar avancada:
   * **Suco Eletrolitico Xeno (`electrolyte_juice`):** Hidratacao instantanea que retarda o esgotamento do traje.
   * **Racao Glaciada Criogenica (`cryo_glazed_ration`):** Alimento denso que arrefece a temperatura interna em tempestades de calor.
   * **Banquete Hidroponico (`hydroponic_feast`):** O prato definitivo do explorador interplanetario, concedendo maxima saturacao e regeneracao continua.
+
+---
+
+### 🏛️ Cidades Escavadas nas Encostas (Homenagem a Petra) & Relíquias Ancestrais
+Nas regiões montanhosas mais remotas e imponentes do planeta desértico encontram-se cidades esculpidas na própria rocha viva das encostas, inspiradas na arquitetura monumental dos Nabateus em Petra:
+
+#### 1. Critérios Geológicos Estritos de Geração (`MountainCliffDetector`)
+A cidade de Petra **nunca** gera em terrenos planos, dunas abertas ou elevações rasas. O gerador de mundo utiliza o detector volumétrico de encostas rochosas:
+* **Paredão Vertical Frontal:** Exige uma face rochosa contínua com no mínimo **27 blocos de largura horizontal transversal** e **30 blocos de altura vertical**.
+* **Maciço Rochoso de Profundidade:** A montanha precisa possuir pelo menos **35 blocos de massa rochosa sólida** para dentro da encosta, garantindo que todo o complexo de câmaras subterrâneas fique 100% encravado dentro da rocha, sem vazamentos para o ar livre.
+* **Área Desobstruída na Base:** O desfiladeiro em frente à fachada precisa conter ar livre para que o explorador contemple a monumentalidade arquitetônica ao se aproximar.
+
+#### 2. Fachada Monumental Estilo Al-Khazneh (O Tesouro)
+A entrada da cidade rupestre é esculpida diretamente na pedra avermelhada:
+* **Dimensões:** 23 blocos de largura por 27 blocos de altura encravados na rocha.
+* **Primeiro Nível:** Pórtico clássico sustentado por 6 colunas colossais de arenito entalhado, capitéis estilizados, arquitrave com friso e frontão triangular com relevos decorativos.
+* **Segundo Nível:** Pavimento superior com tholos central circular sustentado por colunas cilíndricas, ladeado por dois pavilhões com semi-frontões partidos. No topo do tholos repousa a monumental **Grande Urna Cerimonial** esculpida em bloco maciço.
+
+#### 3. Interiores Procedurais em Labirinto (Wave Function Collapse)
+O interior da montanha não é estático; ele é gerado proceduralmente com múltiplos layouts conectados por corredores escavados:
+* **Vestíbulo e Passagem dos Peregrinos:** Corredor de entrada monumental com nichos laterais escavados na pedra.
+* **Grande Salão Colunado:** Salão central de pé direito duplo com fileiras de pilares de sustentação e fendas estreitas no teto que filtram fachos de luz solar natural durante o dia.
+* **Santuário dos Vasos Cerâmicos:** Sala de oferendas repleta de pedestais contendo ânforas de terracota e urnas ancestrais.
+* **Galeria das Estátuas Guardiãs:** Salão cerimonial adornado com esculturas esculpidas em arenito vermelho e amarelo.
+* **Cripta Real & Altar Solar:** Câmara subterrânea profunda contendo sarcófagos pétreos, baús antigos e relíquias raras preservadas há eras.
+
+#### 4. Atmosfera Histórica Realista (Zero Magia & Sem Tochas Contemporâneas)
+Mantendo o compromisso de imersão e plausibilidade científica:
+* **Zero Magia:** Todos os artefatos, estátuas e mecanismos são relíquias puramente arqueológicas e materiais.
+* **Escuridão Total:** Não existem tochas acesas ou iluminação contemporânea na cidade rupestre. A luz solar penetra apenas pela entrada e por fendas geológicas no teto. Nas câmaras profundas, o nível de luz é zero, exigindo lanternas ou módulos de iluminação no traje do astronauta.
+* **Caldeirões Antigos Apagados:** Qualquer ponto cerimonial de fogo possui apenas caldeirões de ferro com carvão mineral frio e cinzas milenares.
+
+#### 5. Blocos de Relíquias e Cerâmica Interativa
+* **Ânfora de Terracota (`sandstorm:terracotta_amphora`):** Vaso tradicional modelado em barro cozido avermelhado com alças laterais simétricas. É um bloco quebrável por impacto: ao ser atingido por flechas, disparos cinéticos, golpes de ferramentas ou quedas livres de alturas elevadas, estilhaça-se com partículas de cerâmica, revelando itens raros ou sucatas preservadas.
+* **Urna Antiga de Argila (`sandstorm:clay_urn`):** Vaso ancestral decorativo de barro poroso selado, ornado com padrões geométricos lineares e textura rústica.
+* **Estátua Guardiã de Arenito (`sandstorm:sandstone_statue`):** Escultura monumental de 2 blocos de altura esculpida em arenito talhado, retratando sentinelas antigas.
+
+#### 6. O Sentinela Curador (`sandstorm:curator_sentinel`)
+Dentro das galerias da cidade escavada opera o **Sentinela Curador**, um autômato ancestral projetado exclusivamente para a preservação e segurança de acervos artísticos:
+* **Comportamento Contemplativo e Pacífico:** O Sentinela Curador é pacífico em relação ao jogador enquanto o ambiente for respeitado. Ele patrulha as galerias, para diante das estátuas e vasos para inspecionar seu estado de conservação, exibindo olhos com iluminação azul ciano calma.
+* **Retaliação Furiosa contra Vandalismo:** Se qualquer jogador ou criatura quebrar ou danificar estátuas, ânforas ou urnas em seu raio sensorial, o Sentinela Curador comuta imediatamente para **modo de fúria**. Seus olhos brilham em vermelho carmesim agressivo e ele persegue o vândalo com velocidade aumentada, desferindo golpes contínuos com suas lâminas mecânicas.
+* **Defesa Ativa contra Robôs Invasores:** O Sentinela Curador identifica outros autômatos hostis ou sucatas desgastadas (`DerelictAutomaton`, `CrawlerDrone`, `DefectiveSentinel`) como invasores contaminantes e os ataca prioritariamente se eles se aproximarem das relíquias da cidade.
+* **Neutralização Tática:** Como qualquer máquina cibernética, o Sentinela Curador é vulnerável a descargas de PEM (`emp_rifle` ou granadas elétricas), paralisando temporariamente seus circuitos de combate.

@@ -83,6 +83,21 @@ Para criadores de conteúdo, desenvolvedores e administradores, o mod inclui com
 | **Fortaleza de Espinhos** | `/sandstorm debug setup spike_fortress` | Perímetro com paredes de titânio, espinhos eletrizados e portões motorizados |
 | **Base Inicial de Sobrevivência** | `/sandstorm debug setup starter_base` | Posto balanceado com filtro de dessalinização, água e energia solar |
 
+### 🏛️ Comandos de Construção Estrutural & Dungeons (`/sandstorm build`)
+
+O comando `/sandstorm build <estrutura>` permite erguer ou escavar imediatamente complexos arquitetônicos, templos e dungeons completas na coordenada atual do jogador:
+
+| Estrutura / Complexo | Comando In-Game | Descrição da Estrutura |
+|---|---|---|
+| **Cidade Rupestre de Petra** | `/sandstorm build petra` | Templo monumental esculpido na encosta com fachada Al-Khazneh (23x27), salão colunado, galerias de estátuas, ânforas quebráveis e Sentinela Curador |
+| **Cofre Criogênico Subglacial** | `/sandstorm build cryo_vault` | Instalação militar subterrânea congelada com reator criogênico, câmaras de estase e permafrost |
+| **Câmara Acoberta Blindada** | `/sandstorm build armored_vault` | Cofre de segurança reforçado com painéis de titânio, comportas 3x3 e baús militares |
+| **Ninho de Escavação de Vermes** | `/sandstorm build excavation_hive` | Complexo de túneis colossais perfurados por vermes de areia com resíduos quitinosos |
+| **Laboratório Militar Avançado** | `/sandstorm build military_lab` | Centro de pesquisa de armamentos, consoles de radar tático e caixas de munição |
+| **Repositório Milenar** | `/sandstorm build millennial_repository` | Arquivo ancestral subterrâneo com núcleos de dados e esquemas esquecidos |
+| **Castelo Colossal no Deserto** | `/sandstorm build colossal_castle` | Fortaleza titânica com muralhas de arenito, torres de vigia e pátio interior |
+| **Bunker Subterrâneo** | `/sandstorm build ancient_bunker` | Instalação hermética de sobrevivência com dutos de ventilação reforçados e portas blindadas |
+
 > **Kits de Demonstração e Equipamentos:** Obtenha conjuntos completos de equipamentos de desenvolvimento com o comando `/sandstorm debug phase all` ou gere instalações prontas para testes com `/sandstorm debug setup <instalação>`.
 
 
@@ -112,3 +127,6 @@ O SandStorm introduz instalações de grande porte que exigem arranjos tridimens
 | **Frostclaw** | Regulação térmica e refrigeração de zonas de calor | Golpes criogênicos, tempestade de gelo localizada | Cápsulas de líquido criogênico, liga de blindagem |
 | **Glinthawk** | Patrulha aérea e reciclagem de detritos | Rasantes de alta precisão, bicadas penetrantes | Lentes ópticas, sensores de voo, pastilhas de silício |
 | **Waterwing** | Exploração de aquíferos e navegação submersa | Nado de alta propulsão e voo anfíbio | Filtros de membrana osmótica, reservas de água potável |
+| **Sentinela Curador** | Preservação e proteção de acervos artísticos e esculturas | Lâminas mecânicas duplas, retaliação a vandalismo, neutralização de autômatos invasores | Sucata metálica nobre, ligas de titânio, circuitos integrados |
+| **Urubu Carniceiro Mecânico** | Patrulha das cordilheiras e ninhos em altitudes elevadas | Voo planado de alta altitude, arremesso de penas de fibra de carbono | Penas de servo de fibra de carbono, sensores ópticos de aviônica |
+| **Toupeira Perfuradora Cibernética** | Escavação rápida e suporte tático no subsolo | Onda de choque sísmica, perfuração contínua de blocos de rocha | Fragmentos piezoelétricos, silício bruto, ligas de sucata |

@@ -109,4 +109,38 @@
 | **Item**     | `hound_dodge_module`   | Propulsor de Evasão Solar | Concede esquiva automática e saltos acrobáticos ao cão |
 | **Item**     | `cyber_hound_spawn_egg`| Ovo de Cão Cibernético | Invoca o Cão Cibernético autônomo |
 | **Bloco**    | `sand_suction_quarry`  | Escavadeira por Sucção de Sedimentos | Vórtice pneumático que escava areia e sedimentos em raio configurável (1-64) |
-| **Item**     | pneumatic_sand_blaster | Lança-Areia Pneumático | Arma de longo alcance early-game (tiros infinitos por sucção de areia, dano 10 a 3.5) |
+| **Item**     | `pneumatic_sand_blaster` | Lança-Areia Pneumático | Arma de longo alcance early-game (tiros infinitos por sucção de areia, dano 10 a 3.5) |
+| **Bloco**    | `terracotta_amphora`   | Ânfora de Terracota | Vaso tradicional de barro com alças, quebrável por impacto físico, projéteis ou queda |
+| **Bloco**    | `clay_urn`             | Urna Antiga de Argila | Vaso cerâmico ancestral decorativo de barro poroso com relevos geométricos |
+| **Bloco**    | `sandstone_statue`     | Estátua Guardiã de Arenito | Escultura monumental de 2 blocos de altura esculpida em arenito talhado |
+| **Entidade** | `curator_sentinel`     | Sentinela Curador | Autômato ancestral protetor de acervos artísticos com combate por lâminas e modo fúria |
+| **Item**     | `curator_sentinel_spawn_egg` | Ovo de Sentinela Curador | Invoca o Sentinela Curador |
+| **Item**     | `fiberglass_spear`     | Lança de Fibra de Vidro | Lança descartável de alto impacto cinético com estilhaçamento sonoro ao impacto |
+| **Item**     | `deepslate_composite_plate` | Placa Composta de Ardósia | Placa estrutural de alta densidade forjada com ardósia profunda do manto |
+| **Item**     | `deepslate_pickaxe`    | Picareta Composta de Ardósia | Picareta reforçada (1650 de durabilidade) e eficiência acelerada no manto |
+| **Item**     | `deepslate_paxel`      | Paxel Composto de Ardósia | Ferramenta multifuncional 3-em-1 (picareta, machado e pá) para escavações |
+| **Item**     | `deepslate_multitool`  | Multiferramenta Composta de Ardósia | Ferramenta universal 4-em-1 (mineração, corte, terraplanagem e combate) |
+| **Item**     | `auto_emp_grenade`     | Granada PEM Automática | Granada tática com disparo automático de pulso eletromagnético contra robôs |
+| **Entidade** | `scavenger_vulture`    | Urubu Carniceiro Mecânico | Drone predador de voo planado em cordilheiras que arremessa penas de carbono |
+| **Item**     | `scavenger_vulture_spawn_egg` | Ovo de Urubu Carniceiro | Invoca o Urubu Carniceiro Mecânico |
+| **Bloco**    | `vulture_nest`         | Ninho de Urubu Mecânico | Ninho em altitudes elevadas contendo sucatas e componentes de aviônica |
+| **Item**     | `carbon_fiber_servo_feather` | Pena Servo de Fibra de Carbono | Pena aerodinâmica reforçada usada em projéteis e asas de drones |
+| **Item**     | `avionics_optical_sensor` | Sensor Óptico de Aviônica | Módulo ocular de precisão e rastreamento térmico aéreo |
+| **Item**     | `suit_glider_module`   | Módulo Planador do Traje | Módulo peitoral que permite planar suavemente em correntes de ar térmicas |
+| **Entidade** | `seismic_scorpion`     | Escorpião Sísmico | Predador aracnídeo subterrâneo com blindagem quitinosa e cauda com ferrão |
+| **Item**     | `seismic_scorpion_spawn_egg` | Ovo de Escorpião Sísmico | Invoca o Escorpião Sísmico |
+| **Item**     | `seismic_scorpion_stinger` | Ferrão do Escorpião Sísmico | Glândula inoculadora de neurotoxina biológica de alta paralisia |
+| **Item**     | `scorpion_chitin_plate`| Placa de Quitina de Escorpião | Placa flexível ultrarresistente para armaduras e reforços térmicos |
+| **Item**     | `paralytic_toxin_dart` | Dardo de Toxina Paralítica | Dardo balístico que imobiliza a locomoção de entidades biológicas |
+| **Item**     | `raw_uranium_concentrate` | Concentrado Bruto de Urânio | Minério radioativo extraído de veios tectônicos no manto profundo |
+| **Item**     | `enriched_uranium_pellet` | Pastilha de Urânio Enriquecido | Combustível físsil para reatores de potência e propulsão atômica |
+| **Item**     | `subcritical_fission_core` | Núcleo de Fissão Subcrítico | Gerador isotópico ultradenso para fontes de energia compactas |
+| **Item**     | `mini_nuke`            | Mini-Ogiva Nuclear | Projétil atômico tático com raio de choque e desintegração local |
+| **Item**     | `mini_nuke_launcher`   | Lança-Mini Ogivas Nucleares | Armamento de artilharia pesada portátil para disparar mini-nukes |
+| **Item**     | `steel_rebar`          | Vergalhão de Aço Estrutural | Viga metálica de alta tração para concreto armado e fundações |
+| **Item**     | `lead_ingot`           | Barra de Chumbo | Metal pesado para blindagem radiológica e amortecimento |
+| **Item**     | `raw_lead`             | Chumbo Bruto | Mineral fóssil denso extraído de profundidades geológicas |
+| **Item**     | `fiberglass`           | Fibra de Vidro Industrial | Compósito polimérico leve, anti-corrosivo e isolante |
+| **Item**     | `fiberglass_turbine_blade` | Pá de Turbina de Fibra de Vidro | Componente eólico resistente a ventos severos de tempestades de areia |
+| **Item**     | `cryo_lance`           | Lança Criogênica | Arma térmica com feixe de congelamento localizado |
+| **Item**     | `cryo_cell_cooler`     | Resfriador de Célula Criogênica | Dissipador térmico para reatores compactos e câmaras de estase |
