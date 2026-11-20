@@ -4,6 +4,8 @@ import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedExcavationHiveDun
 import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedMilitaryLabDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
+import com.fhfelipefh.sandstorm.content.world.dungeon.PetraCliffDungeon;
+import com.fhfelipefh.sandstorm.content.world.dungeon.MountainCliffDetector;
 import com.fhfelipefh.sandstorm.content.world.dungeon.SubglacialCryoVaultDungeon;
 import com.fhfelipefh.sandstorm.content.world.structure.AbandonedOutpostGenerator;
 import com.fhfelipefh.sandstorm.content.world.structure.AncientBunkerGenerator;
@@ -11,6 +13,7 @@ import com.fhfelipefh.sandstorm.content.world.structure.FuelSiloGenerator;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -30,6 +33,7 @@ public class ProceduralRuinsManager {
     public static final int MILITARY_LAB_RARITY = 320;
     public static final int EXCAVATION_HIVE_RARITY = 260;
     public static final int CRYO_VAULT_RARITY = 280;
+    public static final int PETRA_DUNGEON_RARITY = 240;
 
     private record PendingRuin(ServerLevel level, BlockPos origin, int surfaceY, int ruinType, int gridWidth, int gridDepth, int floors) {}
     private static final Queue<PendingRuin> PENDING_RUINS = new ConcurrentLinkedQueue<>();
@@ -59,6 +63,16 @@ public class ProceduralRuinsManager {
             long seed = level.getSeed();
             long hash = hash64(chunkKey ^ seed);
             long roll = Math.abs(hash);
+
+            if (roll % PETRA_DUNGEON_RARITY == 0) {
+                MountainCliffDetector.CliffSite site = MountainCliffDetector.findSuitableCliff(level, chunk, 23, 27, 35, 10);
+                if (site != null) {
+                    level.getServer().execute(() -> {
+                        PENDING_RUINS.add(new PendingRuin(level, site.entranceOrigin(), site.cliffHeight(), 9, 5, 5, site.outwardFacing().get2DDataValue()));
+                    });
+                    return;
+                }
+            }
 
             int surfaceY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, 8, 8);
             if (roll % MILITARY_LAB_RARITY == 0) {
@@ -146,6 +160,9 @@ public class ProceduralRuinsManager {
                         AbandonedExcavationHiveDungeon.generate(ruin.level(), ruin.origin(), ruin.floors(), ruin.gridWidth(), ruin.gridDepth());
                     } else if (ruin.ruinType() == 8) {
                         SubglacialCryoVaultDungeon.generate(ruin.level(), ruin.origin(), ruin.floors(), ruin.gridWidth(), ruin.gridDepth());
+                    } else if (ruin.ruinType() == 9) {
+                        Direction facing = Direction.from2DDataValue(ruin.floors());
+                        PetraCliffDungeon.generate(ruin.level(), ruin.origin(), facing, ruin.gridWidth(), ruin.gridDepth());
                     } else {
                         FuelSiloGenerator.generate(ruin.level(), ruin.origin(), ruin.surfaceY());
                     }
@@ -180,6 +197,10 @@ public class ProceduralRuinsManager {
 
     public static int generateCryoVaultAt(ServerLevel level, BlockPos origin, int floors, int gridWidth, int gridDepth) {
         return SubglacialCryoVaultDungeon.generate(level, origin, floors, gridWidth, gridDepth);
+    }
+
+    public static int generatePetraDungeonAt(ServerLevel level, BlockPos origin) {
+        return PetraCliffDungeon.generate(level, origin);
     }
 
     public static boolean generateFuelSiloAt(ServerLevel level, BlockPos origin, int surfaceY) {

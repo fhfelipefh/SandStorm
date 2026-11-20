@@ -130,6 +130,28 @@ public class SandStormBlocks {
                     .strength(2.0f, 6.0f)
                     .sound(SoundType.STONE)
                     .requiresCorrectToolForDrops()));
+    public static final TerracottaAmphoraBlock TERRACOTTA_AMPHORA = register("terracotta_amphora",
+            new TerracottaAmphoraBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("terracotta_amphora")))
+                    .mapColor(MapColor.TERRACOTTA_ORANGE)
+                    .strength(0.3f)
+                    .sound(SoundType.DECORATED_POT)
+                    .noOcclusion()));
+    public static final ClayUrnBlock CLAY_URN = register("clay_urn",
+            new ClayUrnBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("clay_urn")))
+                    .mapColor(MapColor.TERRACOTTA_RED)
+                    .strength(0.4f)
+                    .sound(SoundType.DECORATED_POT)
+                    .noOcclusion()));
+    public static final SandstoneStatueBlock SANDSTONE_STATUE = register("sandstone_statue",
+            new SandstoneStatueBlock(BlockBehaviour.Properties.of()
+                    .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("sandstone_statue")))
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(1.8f)
+                    .sound(SoundType.STONE)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()));
     public static final InsulatedFurnaceBlock INSULATED_FURNACE = register("insulated_furnace",
             new InsulatedFurnaceBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("insulated_furnace")))

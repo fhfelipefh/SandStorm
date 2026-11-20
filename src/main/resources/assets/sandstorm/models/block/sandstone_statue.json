@@ -1,0 +1,51 @@
+{
+  "ambientocclusion": true,
+  "display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "scale": [0.625, 0.625, 0.625]
+    }
+  },
+  "textures": {
+    "particle": "sandstorm:block/sandstone_statue",
+    "statue": "sandstorm:block/sandstone_statue"
+  },
+  "elements": [
+    {
+      "from": [1, 0, 1],
+      "to": [15, 4, 15],
+      "faces": {
+        "down": {"uv": [1, 1, 15, 15], "texture": "#statue", "cullface": "down"},
+        "up": {"uv": [1, 1, 15, 15], "texture": "#statue"},
+        "north": {"uv": [1, 12, 15, 16], "texture": "#statue"},
+        "south": {"uv": [1, 12, 15, 16], "texture": "#statue"},
+        "west": {"uv": [1, 12, 15, 16], "texture": "#statue"},
+        "east": {"uv": [1, 12, 15, 16], "texture": "#statue"}
+      }
+    },
+    {
+      "from": [3, 4, 3],
+      "to": [13, 10, 13],
+      "faces": {
+        "down": {"uv": [3, 3, 13, 13], "texture": "#statue"},
+        "up": {"uv": [3, 3, 13, 13], "texture": "#statue"},
+        "north": {"uv": [3, 6, 13, 12], "texture": "#statue"},
+        "south": {"uv": [3, 6, 13, 12], "texture": "#statue"},
+        "west": {"uv": [3, 6, 13, 12], "texture": "#statue"},
+        "east": {"uv": [3, 6, 13, 12], "texture": "#statue"}
+      }
+    },
+    {
+      "from": [4, 10, 4],
+      "to": [12, 16, 12],
+      "faces": {
+        "down": {"uv": [4, 4, 12, 12], "texture": "#statue"},
+        "up": {"uv": [4, 4, 12, 12], "texture": "#statue"},
+        "north": {"uv": [4, 0, 12, 6], "texture": "#statue"},
+        "south": {"uv": [4, 0, 12, 6], "texture": "#statue"},
+        "west": {"uv": [4, 0, 12, 6], "texture": "#statue"},
+        "east": {"uv": [4, 0, 12, 6], "texture": "#statue"}
+      }
+    }
+  ]
+}

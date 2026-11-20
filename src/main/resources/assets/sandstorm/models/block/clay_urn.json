@@ -1,0 +1,63 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "scale": [0.625, 0.625, 0.625]
+    }
+  },
+  "textures": {
+    "particle": "sandstorm:block/clay_urn",
+    "urn": "sandstorm:block/clay_urn"
+  },
+  "elements": [
+    {
+      "from": [3, 0, 3],
+      "to": [13, 2, 13],
+      "faces": {
+        "down": {"uv": [3, 3, 13, 13], "texture": "#urn", "cullface": "down"},
+        "up": {"uv": [3, 3, 13, 13], "texture": "#urn"},
+        "north": {"uv": [3, 14, 13, 16], "texture": "#urn"},
+        "south": {"uv": [3, 14, 13, 16], "texture": "#urn"},
+        "west": {"uv": [3, 14, 13, 16], "texture": "#urn"},
+        "east": {"uv": [3, 14, 13, 16], "texture": "#urn"}
+      }
+    },
+    {
+      "from": [2, 2, 2],
+      "to": [14, 12, 14],
+      "faces": {
+        "down": {"uv": [2, 2, 14, 14], "texture": "#urn"},
+        "up": {"uv": [2, 2, 14, 14], "texture": "#urn"},
+        "north": {"uv": [2, 4, 14, 14], "texture": "#urn"},
+        "south": {"uv": [2, 4, 14, 14], "texture": "#urn"},
+        "west": {"uv": [2, 4, 14, 14], "texture": "#urn"},
+        "east": {"uv": [2, 4, 14, 14], "texture": "#urn"}
+      }
+    },
+    {
+      "from": [3, 12, 3],
+      "to": [13, 14, 13],
+      "faces": {
+        "down": {"uv": [3, 3, 13, 13], "texture": "#urn"},
+        "up": {"uv": [3, 3, 13, 13], "texture": "#urn"},
+        "north": {"uv": [3, 2, 13, 4], "texture": "#urn"},
+        "south": {"uv": [3, 2, 13, 4], "texture": "#urn"},
+        "west": {"uv": [3, 2, 13, 4], "texture": "#urn"},
+        "east": {"uv": [3, 2, 13, 4], "texture": "#urn"}
+      }
+    },
+    {
+      "from": [4, 14, 4],
+      "to": [12, 16, 12],
+      "faces": {
+        "down": {"uv": [4, 4, 12, 12], "texture": "#urn"},
+        "up": {"uv": [4, 4, 12, 12], "texture": "#urn"},
+        "north": {"uv": [4, 0, 12, 2], "texture": "#urn"},
+        "south": {"uv": [4, 0, 12, 2], "texture": "#urn"},
+        "west": {"uv": [4, 0, 12, 2], "texture": "#urn"},
+        "east": {"uv": [4, 0, 12, 2], "texture": "#urn"}
+      }
+    }
+  ]
+}

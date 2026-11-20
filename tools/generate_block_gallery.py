@@ -187,6 +187,24 @@ BLOCKS = [
         "name": "Escavadeira por Sucção de Sedimentos",
         "role": "Vórtice Pneumático & Limpeza Geológica",
         "model": "sand_suction_quarry.json"
+    },
+    {
+        "id": "terracotta_amphora",
+        "name": "Ânfora de Terracota",
+        "role": "Relíquia Cerâmica Quebrável & Decorativa",
+        "model": "terracotta_amphora.json"
+    },
+    {
+        "id": "clay_urn",
+        "name": "Urna Antiga de Argila",
+        "role": "Vaso Ancestral de Barro Entalhado",
+        "model": "clay_urn.json"
+    },
+    {
+        "id": "sandstone_statue",
+        "name": "Estátua Guardiã de Arenito",
+        "role": "Escultura Monumental Nabateia",
+        "model": "sandstone_statue.json"
     }
 ]
 

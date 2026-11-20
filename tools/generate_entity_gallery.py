@@ -209,6 +209,13 @@ ENTITIES = [
         "role": "Escavação Geológica & Emboscada de Subsolo",
         "model": "CyberMoleModel.java",
         "texture": "textures/entity/cyber_mole/cyber_mole.png"
+    },
+    {
+        "id": "curator_sentinel",
+        "name": "Sentinela Curador",
+        "role": "Guardião de Relíquias & Antiguidade",
+        "model": "CuratorSentinelModel.java",
+        "texture": "textures/entity/curator_sentinel/curator_sentinel.png"
     }
 ]
 

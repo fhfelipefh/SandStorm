@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sandstorm:block/clay_urn"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/clay_urn",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/clay_urn",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/clay_urn",
+      "y": 270
+    }
+  }
+}

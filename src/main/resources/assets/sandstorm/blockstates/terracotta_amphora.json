@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sandstorm:block/terracotta_amphora"
+    },
+    "facing=east": {
+      "model": "sandstorm:block/terracotta_amphora",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "sandstorm:block/terracotta_amphora",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "sandstorm:block/terracotta_amphora",
+      "y": 270
+    }
+  }
+}

@@ -31,16 +31,8 @@ As galerias abaixo apresentam prévias geradas a partir dos modelos e texturas d
 <!-- ENTITY_GALLERY_START -->
 ## 👾 Entidades & Mobs Cibernéticos
 
-### 🤖 Família de Golems Cibernéticos (5 Variações de Blindagem)
-Construídos com a **Cabeça do Golem Cibernético** sobre blocos de metal correspondentes, cada variação possui parâmetros mecânicos, blindagem e animações dedicadas:
-
-| Golem (Ferro) | Golem (Cobre) | Golem (Ouro) | Golem (Netherite) | Golem (Compósito) |
-| :---: | :---: | :---: | :---: | :---: |
-| <img src="docs/images/entities/cybernetic_golem_iron.gif" width="130" alt="Golem Cibernético (Ferro)"><br><b>Ferro</b> | <img src="docs/images/entities/cybernetic_golem_copper.gif" width="130" alt="Golem Cibernético (Cobre)"><br><b>Cobre</b> | <img src="docs/images/entities/cybernetic_golem_gold.gif" width="130" alt="Golem Cibernético (Ouro)"><br><b>Ouro</b> | <img src="docs/images/entities/cybernetic_golem_netherite.gif" width="130" alt="Golem Cibernético (Netherite)"><br><b>Netherite</b> | <img src="docs/images/entities/cybernetic_golem_composite.gif" width="130" alt="Golem Cibernético (Compósito)"><br><b>Compósito</b> |
-| Defesa Pesada de Base<br><sub>100 HP • 10 Armor</sub> | Condutividade & Pulso<br><sub>85 HP • 7 Armor</sub> | Circuitaria Quântica<br><sub>75 HP • Escudo Iônico</sub> | Blindagem Térmica Anti-Verme<br><sub>200 HP • 20 Armor</sub> | Química Carbono-Titânio<br><sub>110 HP • 12 Armor</sub> |
-
-<details open>
-<summary><b>Clique para expandir / recolher o catálogo completo de entidades (33 modelos)</b></summary>
+<details>
+<summary><b>Clique para expandir a galeria isométrica de entidades (30 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -95,31 +87,9 @@ Construídos com a **Cabeça do Golem Cibernético** sobre blocos de metal corre
       <sub>Guardião Autônomo & Rastreador</sub>
     </td>
     <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cybernetic_golem_iron.gif" width="140" alt="Golem Cibernético (Ferro)"><br>
-      <b>Golem Cibernético (Ferro)</b><br>
+      <img src="docs/images/entities/cybernetic_golem.gif" width="140" alt="Golem Cibernético"><br>
+      <b>Golem Cibernético</b><br>
       <sub>Defesa Pesada de Instalações</sub>
-    </td>
-    <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cybernetic_golem_copper.gif" width="140" alt="Golem Cibernético (Cobre)"><br>
-      <b>Golem Cibernético (Cobre)</b><br>
-      <sub>Condutividade & Sobrecarga de Pulso</sub>
-    </td>
-    <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cybernetic_golem_gold.gif" width="140" alt="Golem Cibernético (Ouro)"><br>
-      <b>Golem Cibernético (Ouro)</b><br>
-      <sub>Circuitaria Quântica & Escudo Iônico</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cybernetic_golem_netherite.gif" width="140" alt="Golem Cibernético (Netherite)"><br>
-      <b>Golem Cibernético (Netherite)</b><br>
-      <sub>Blindagem Térmica Anti-Verme</sub>
-    </td>
-    <td align="center" width="25%" valign="top">
-      <img src="docs/images/entities/cybernetic_golem_composite.gif" width="140" alt="Golem Cibernético (Compósito)"><br>
-      <b>Golem Cibernético (Compósito)</b><br>
-      <sub>Química de Carbono & Titânio</sub>
     </td>
     <td align="center" width="25%" valign="top">
       <img src="docs/images/entities/sandworm.gif" width="140" alt="Verme da Areia (Sandworm)"><br>
@@ -226,7 +196,11 @@ Construídos com a **Cabeça do Golem Cibernético** sobre blocos de metal corre
       <b>Toupeira Perfuradora Cibernética</b><br>
       <sub>Escavação Geológica & Emboscada de Subsolo</sub>
     </td>
-    <td width="25%"></td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/entities/curator_sentinel.png" width="140" alt="Sentinela Curador"><br>
+      <b>Sentinela Curador</b><br>
+      <sub>Guardião de Relíquias & Antiguidade</sub>
+    </td>
     <td width="25%"></td>
     <td width="25%"></td>
   </tr>
@@ -241,7 +215,7 @@ Construídos com a **Cabeça do Golem Cibernético** sobre blocos de metal corre
 ## 🧱 Novos Blocos, Maquinários & Automação
 
 <details>
-<summary><b>Clique para expandir o catálogo de maquinários e blocos (30 modelos)</b></summary>
+<summary><b>Clique para expandir o catálogo de maquinários e blocos (33 modelos)</b></summary>
 <br>
 
 <table width="100%">
@@ -410,6 +384,24 @@ Construídos com a **Cabeça do Golem Cibernético** sobre blocos de metal corre
       <b>Escavadeira por Sucção de Sedimentos</b><br>
       <sub>Vórtice Pneumático & Limpeza Geológica</sub>
     </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/blocks/terracotta_amphora.png" width="140" alt="Ânfora de Terracota"><br>
+      <b>Ânfora de Terracota</b><br>
+      <sub>Relíquia Cerâmica Quebrável & Decorativa</sub>
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/blocks/clay_urn.png" width="140" alt="Urna Antiga de Argila"><br>
+      <b>Urna Antiga de Argila</b><br>
+      <sub>Vaso Ancestral de Barro Entalhado</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="25%" valign="top">
+      <img src="docs/images/blocks/sandstone_statue.png" width="140" alt="Estátua Guardiã de Arenito"><br>
+      <b>Estátua Guardiã de Arenito</b><br>
+      <sub>Escultura Monumental Nabateia</sub>
+    </td>
+    <td width="25%"></td>
     <td width="25%"></td>
     <td width="25%"></td>
   </tr>
@@ -619,6 +611,61 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
 
 </details>
 <!-- WEAPON_GALLERY_END -->
+
+---
+
+## 🏛️ Dungeons & Exploração: Cidade Escavada na Rocha (Homenagem a Petra)
+
+O SandStorm introduz uma grandiosa dungeon ancestral entalhada diretamente no coração de encostas e desfiladeiros montanhosos, prestando tributo à arquitetura monumental nabateia da cidade histórica de Petra (*Al-Khazneh* e *Ad-Deir*):
+
+```
+                        ╔═════════════════════════════════════╗
+                        ║   GRANDE URNA MONUMENTAL DE ROCHA   ║
+                        ╚══════════════════╦══════════════════╝
+                                           ║
+                        ╔══════════════════╩══════════════════╗
+                        ║    THOLOS CENTRAL & FRONTÃO TRIPLO  ║
+                        ╠═════════════════════════════════════╣
+                        ║  6 COLUNAS DE ARENITO & RELIEVOS    ║
+                        ╠═════════════════════════════════════╣
+                        ║      PORTAL GIGANTE DE ENTRADA      ║
+                        ╚══════════════════╦══════════════════╝
+                                           ║
+    ┌──────────────────────────────┬───────╩──────┬──────────────────────────────┐
+    │                              │              │                              │
+┌───┴──────────────┐      ┌────────┴────────┐   ┌─┴───────────────┐     ┌────────┴─────────┐
+│ Galeria Estátuas │◄────►│ Vestíbulo Princ │◄─►│ Salão de Colunas│◄───►│ Cripta Real Nab. │
+└───┬──────────────┘      └────────┬────────┘   └─┬───────────────┘     └────────┬─────────┘
+    │                              │              │                              │
+    ▼                              ▼              ▼                              ▼
+[Sentinelas Curadores]    [Ânforas & Urnas]  [Fissuras de Luz]       [Altar Solar do Oásis]
+```
+
+### ⛰️ Detecção Geológica Rigorosa de Encostas (`MountainCliffDetector`)
+* **Geração Estrita & Sem Paredes Flutuantes**: A dungeon **só é gerada** se o maciço rochoso possuir volume estrito para contê-la:
+  * Largura mínima de **23 blocos**.
+  * Altura vertical da encosta de no mínimo **27 blocos**.
+  * Profundidade para o interior da montanha de no mínimo **35 blocos**.
+  * Cobertura de teto rochoso de segurança (*overburden*) de no mínimo **10 blocos**, garantindo que as galerias jamais vazem para o céu ou criem montanhas ocas e quebradas.
+* **Fachada Monumental em Arenito Vermelho**: Entalhada na rocha viva, contendo colunas com bases e capitéis cinzelados, frontão clássico, nichos com estátuas sagradas, tholos circular no andar superior e a icônica grande urna de pedra no cume.
+
+### 🏺 Relíquias, Vasos de Barro & Esculturas
+* **Ânfora de Terracota (`terracotta_amphora`)**: Vaso cerâmico tradicional com alças arqueadas. Pode ser posicionado decorativamente, quebrado com projéteis (flechas, dardos, tiros), picaretas ou por impacto de queda (se cair de alturas elevadas, espatifa-se no chão).
+* **Urna Antiga de Argila (`clay_urn`)**: Vaso de armazenamento largo de barro com frisos geométricos entalhados.
+* **Estátua Guardiã de Arenito (`sandstone_statue`)**: Escultura ancestral 100% decorativa e imponente, homenageando os guardiões milenares esculpidos na pedra do deserto.
+
+### 🤖 Sentinela Curador (`CuratorSentinelEntity`) - Zero Magia
+* **Segurança de Patrimônio Histórico**: Criado em eras remotas para catalogar e preservar tesouros culturais e obras de arte.
+* **Comportamento Pacífico de Inspeção**: Caminha tranquilamente pela dungeon inspecionando vasos de barro, ânforas e estátuas de arenito.
+* **Defesa Agressiva Contra Vandalismo**:
+  * Se um jogador quebrar qualquer vaso, ânfora ou estátua nas proximidades, o Sentinela Curador emite um alarme sonoro, seu visor óptico muda de ciano para vermelho radiante em modo de emergência, e ele persegue implacavelmente o vândalo.
+  * **Combate a Robôs Invasores**: O Sentinela Curador ataca imediatamente autômatos intrusos (`DerelictAutomaton`, `CrawlerDrone`, `DefectiveSentinel`) que tentarem se aproximar das obras de arte!
+
+### 🌑 Atmosfera & Imersão Hard Sci-Fi
+* **Zero Magia & Zero Tochas Acessas**: Ambiente 100% histórico e realista. Não existem tochas acesas nem brasas ativas. Qualquer vestígio de fogo é composto de caldeirões com carvão fóssil frio.
+* **Escuridão Total (Nível de Luz 0)**: Exige o uso da lanterna tática do traje espacial ou sinalizadores portáteis para exploração.
+* **Feixes Naturais de Luz**: Fissuras no teto cortam a montanha até o céu exterior em salas selecionadas, projetando feixes poéticos de luz solar natural sobre o arenito e as dunas de areia acumuladas no piso.
+* **Comando de Teste/Geração**: `/sandstorm build petra` (constrói instantaneamente a fachada e a dungeon completa no local apontado).
 
 ---
 

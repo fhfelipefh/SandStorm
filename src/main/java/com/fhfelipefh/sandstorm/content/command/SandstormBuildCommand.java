@@ -16,6 +16,7 @@ import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedExcavationHiveDun
 import com.fhfelipefh.sandstorm.content.world.dungeon.AbandonedMilitaryLabDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.AncientBunkerComplexDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.MillennialRepositoryDungeon;
+import com.fhfelipefh.sandstorm.content.world.dungeon.PetraCliffDungeon;
 import com.fhfelipefh.sandstorm.content.world.dungeon.SubglacialCryoVaultDungeon;
 import com.fhfelipefh.sandstorm.content.world.ShowcaseAutomation;
 import com.fhfelipefh.sandstorm.content.world.structure.AncientBunkerGenerator;
@@ -75,10 +76,14 @@ public class SandstormBuildCommand {
             "military_lab",
             "armored_vault",
             "excavation_hive",
-            "cryo_vault"
+            "cryo_vault",
+            "petra"
     );
 
     static {
+        STRUCTURE_MAP.put("petra", "petra");
+        STRUCTURE_MAP.put("petra_dungeon", "petra");
+        STRUCTURE_MAP.put("cliff_dungeon", "petra");
         STRUCTURE_MAP.put("cryo_vault", "cryo_vault");
         STRUCTURE_MAP.put("cryovault", "cryo_vault");
         STRUCTURE_MAP.put("vault_cryo", "cryo_vault");
@@ -637,6 +642,7 @@ public class SandstormBuildCommand {
             case "military_lab" -> AbandonedMilitaryLabDungeon.generate(level, center);
             case "excavation_hive" -> AbandonedExcavationHiveDungeon.generate(level, center);
             case "cryo_vault" -> SubglacialCryoVaultDungeon.generate(level, center);
+            case "petra" -> PetraCliffDungeon.generate(level, center);
             case "armored_vault" -> {
                 ShowcaseAutomation.buildVaultShowcase(level, center);
                 yield 1;

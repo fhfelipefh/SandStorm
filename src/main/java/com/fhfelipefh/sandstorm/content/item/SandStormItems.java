@@ -315,6 +315,7 @@ public class SandStormItems {
     public static final Item AVIONICS_OPTICAL_SENSOR = register("avionics_optical_sensor", new Item(properties("avionics_optical_sensor").rarity(Rarity.RARE)));
     public static final ExoSuitChipItem SUIT_GLIDER_MODULE = register("suit_glider_module", new ExoSuitChipItem(ExoSuitChipComponent.GLIDER_MODULE, properties("suit_glider_module").rarity(Rarity.RARE)));
     public static final SpawnEggItem SCAVENGER_VULTURE_SPAWN_EGG = register("scavenger_vulture_spawn_egg", new SpawnEggItem(properties("scavenger_vulture_spawn_egg").spawnEgg(SandStormEntities.SCAVENGER_VULTURE)));
+    public static final SpawnEggItem CURATOR_SENTINEL_SPAWN_EGG = register("curator_sentinel_spawn_egg", new SpawnEggItem(properties("curator_sentinel_spawn_egg").spawnEgg(SandStormEntities.CURATOR_SENTINEL)));
     public static final Item SALVAGED_POLYMER = register("salvaged_polymer", new Item(properties("salvaged_polymer").rarity(Rarity.COMMON)));
     public static final PortableEnergyPackItem PORTABLE_ENERGY_PACK = register("portable_energy_pack", new PortableEnergyPackItem(properties("portable_energy_pack").rarity(Rarity.UNCOMMON)));
     public static final SuitCapacityExpanderItem SUIT_CAPACITY_EXPANDER = register("suit_capacity_expander", new SuitCapacityExpanderItem(properties("suit_capacity_expander").rarity(Rarity.RARE)));
@@ -391,6 +392,9 @@ public class SandStormItems {
                         entries.accept(ATMOSPHERIC_ANALYZER);
                         entries.accept(SandStormBlocks.SANDSTONE_WORKBENCH);
                         entries.accept(SandStormBlocks.SANDSTONE_CRATE);
+                        entries.accept(SandStormBlocks.TERRACOTTA_AMPHORA);
+                        entries.accept(SandStormBlocks.CLAY_URN);
+                        entries.accept(SandStormBlocks.SANDSTONE_STATUE);
                         entries.accept(MOLECULAR_CARGO_CAPSULE);
                         entries.accept(TRANSPONDER_TAG);
                         entries.accept(SIGNAL_TRACKER);
@@ -725,6 +729,7 @@ public class SandStormItems {
                         entries.accept(AVIONICS_OPTICAL_SENSOR);
                         entries.accept(SUIT_GLIDER_MODULE);
                         entries.accept(SCAVENGER_VULTURE_SPAWN_EGG);
+                        entries.accept(CURATOR_SENTINEL_SPAWN_EGG);
                         entries.accept(SALVAGED_POLYMER);
                         entries.accept(PORTABLE_ENERGY_PACK);
                         entries.accept(SUIT_CAPACITY_EXPANDER);
