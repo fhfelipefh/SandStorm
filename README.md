@@ -614,6 +614,31 @@ A placa militar no estágio final também pode apresentar uma aparência fratura
 
 ---
 
+## 🏛️ Dungeons
+
+<details>
+<summary><b>Clique para expandir a lista de dungeons</b></summary>
+<br>
+
+<table width="100%">
+  <tr>
+    <td align="center" width="25%" valign="top"><b>Megadungeon Oeste</b></td>
+    <td align="center" width="25%" valign="top"><b>Complexo Bunker Leste</b></td>
+    <td align="center" width="25%" valign="top"><b>Repositório Milenar Sul</b></td>
+    <td align="center" width="25%" valign="top"><b>Laboratório Militar Abandonado</b></td>
+  </tr>
+  <tr>
+    <td align="center" width="25%" valign="top"><b>Cofre Criogênico Subglacial</b></td>
+    <td align="center" width="25%" valign="top"><b>Colmeia de Escavação Abandonada</b></td>
+    <td align="center" width="25%" valign="top"><b>Cidadela de Petra</b></td>
+    <td width="25%"></td>
+  </tr>
+</table>
+
+</details>
+
+---
+
 ## 📖 Como Jogar (Wiki)
 
 Acesse a **[Wiki do SandStorm](https://github.com/fhfelipefh/SandStorm/wiki)** para documentação técnica completa:
