@@ -244,6 +244,26 @@ public class TechnicalSpecificationRegistry {
                 .add(Component.translatable("tooltip.sandstorm.tech.function_heavy_plasma"))
                 .build());
 
+        register(SandStormItems.GRAVITON_LAPSE_CANNON, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.range_blocks", 64))
+                .add(Component.translatable("tooltip.sandstorm.tech.function_graviton_lapse"))
+                .build());
+
+        register(SandStormItems.GRAVITON_REVERSAL_CANNON, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.range_blocks", 64))
+                .add(Component.translatable("tooltip.sandstorm.tech.function_graviton_reversal"))
+                .build());
+
+        register(SandStormItems.GRAVITON_VOID_CANNON, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.range_blocks", 80))
+                .add(Component.translatable("tooltip.sandstorm.tech.function_graviton_void"))
+                .build());
+
+        register(SandStormItems.MUGEN_INFINITY_MODULE, TechnicalSpecEntry.builder()
+                .add(Component.translatable("tooltip.sandstorm.tech.slot_suit_chestplate"))
+                .add(Component.translatable("tooltip.sandstorm.tech.desc_mugen_infinity"))
+                .build());
+
         register(SandStormItems.SONIC_CANNON, TechnicalSpecEntry.builder()
                 .add(Component.translatable("tooltip.sandstorm.tech.range_blocks", 16))
                 .add(Component.translatable("tooltip.sandstorm.tech.function_sonic_cannon"))

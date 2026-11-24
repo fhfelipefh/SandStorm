@@ -60,6 +60,10 @@ class ShowcaseItemPavilionArchitectureTest {
         assertTrue(content.contains("MEGAZORD_FLIGHT_MODULE"), "Must include Megazord flight module");
         assertTrue(content.contains("QUANTUM_STORAGE_CARTRIDGE_64K"), "Must include Quantum Cartridges");
         assertTrue(content.contains("WEATHER_RECON_SATELLITE"), "Must include Weather Satellite");
+        assertTrue(content.contains("GRAVITON_LAPSE_CANNON"), "Must include Graviton Lapse Cannon");
+        assertTrue(content.contains("GRAVITON_REVERSAL_CANNON"), "Must include Graviton Reversal Cannon");
+        assertTrue(content.contains("GRAVITON_VOID_CANNON"), "Must include Graviton Void Cannon");
+        assertTrue(content.contains("MUGEN_INFINITY_MODULE"), "Must include Mugen Infinity Module");
     }
 
     @Test

@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 
 import com.fhfelipefh.sandstorm.content.item.HypoInjectorItem;
 import com.fhfelipefh.sandstorm.content.item.SandStormItems;
+import com.fhfelipefh.sandstorm.content.survival.MugenInfinityHandler;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -86,10 +87,21 @@ public class SurvivalHudOverlay implements HudElement {
         FlashlightFocalRenderer.render(extractor, client, screenWidth, screenHeight);
 
         boolean showSuitTelemetry = CLIENT_SUIT.getEquippedArmorCount() > 0;
+        boolean mugenActive = MugenInfinityHandler.isClientMugenActive(client.player.getId());
         int flashMode = FlashlightState.getMode();
         boolean holdsHypo = client.player.getMainHandItem().is(SandStormItems.HYPO_INJECTOR) || client.player.getOffhandItem().is(SandStormItems.HYPO_INJECTOR);
-        if (!showSuitTelemetry && flashMode == FlashlightState.MODE_OFF && !holdsHypo) {
+        if (!showSuitTelemetry && !mugenActive && flashMode == FlashlightState.MODE_OFF && !holdsHypo) {
             return;
+        }
+
+        if (mugenActive) {
+            float impactFlash = MugenInfinityHandler.getClientImpactFlashStrength(client.player.getId());
+            int borderAlpha = (int) (18 + impactFlash * 55);
+            int borderColor = (borderAlpha << 24) | 0x00E5FF;
+            extractor.fill(0, 0, screenWidth, 2, borderColor);
+            extractor.fill(0, screenHeight - 2, screenWidth, screenHeight, borderColor);
+            extractor.fill(0, 0, 2, screenHeight, borderColor);
+            extractor.fill(screenWidth - 2, 0, screenWidth, screenHeight, borderColor);
         }
 
         boolean energyChanged = storedEnergy != lastStoredEnergy || capacity != lastCapacity;
@@ -134,6 +146,11 @@ public class SurvivalHudOverlay implements HudElement {
 
         if (flashMode != FlashlightState.MODE_OFF) {
             maxTextWidth = Math.max(maxTextWidth, client.font.width(getFlashlightComponent(flashMode).getString()));
+        }
+
+        Component mugenComp = mugenActive ? Component.translatable("hud.sandstorm.mugen_active") : Component.empty();
+        if (mugenActive) {
+            maxTextWidth = Math.max(maxTextWidth, client.font.width(mugenComp.getString()));
         }
 
         int margin = 8;
@@ -192,6 +209,10 @@ public class SurvivalHudOverlay implements HudElement {
                 extractor.text(client.font, getFlashlightComponent(flashMode), 0, currentY, getFlashlightColor(flashMode));
                 currentY += 11;
             }
+            if (mugenActive) {
+                extractor.text(client.font, mugenComp, 0, currentY, 0xFF80F4FF);
+                currentY += 11;
+            }
             if (holdsHypo) {
                 extractor.text(client.font, hypoComponent, 0, currentY, hypoColor);
             }
@@ -211,6 +232,10 @@ public class SurvivalHudOverlay implements HudElement {
             }
             if (flashMode != FlashlightState.MODE_OFF) {
                 extractor.text(client.font, getFlashlightComponent(flashMode), renderX, currentY, getFlashlightColor(flashMode));
+                currentY += 11;
+            }
+            if (mugenActive) {
+                extractor.text(client.font, mugenComp, renderX, currentY, 0xFF80F4FF);
                 currentY += 11;
             }
             if (holdsHypo) {

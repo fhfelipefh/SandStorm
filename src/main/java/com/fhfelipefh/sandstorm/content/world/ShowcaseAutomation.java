@@ -1502,6 +1502,33 @@ public class ShowcaseAutomation {
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
                 ItemStack.EMPTY, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
                 new ItemStack(SandStormItems.STUN_GRENADE), new ItemStack(SandStormItems.SMOKE_GRENADE));
+
+        spawnMannequin(level, center.offset(0, 1, -8), "§d§lForma do Vazio & Lapso",
+                new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
+                new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS), new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
+                new ItemStack(SandStormItems.GRAVITON_VOID_CANNON), new ItemStack(SandStormItems.GRAVITON_LAPSE_CANNON));
+
+        spawnMannequin(level, center.offset(4, 1, -8), "§b∞ Mugen & Reversão",
+                new ItemStack(SandStormItems.SPACE_SUIT_HELMET), new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE),
+                new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS), new ItemStack(SandStormItems.SPACE_SUIT_BOOTS),
+                new ItemStack(SandStormItems.GRAVITON_REVERSAL_CANNON), new ItemStack(SandStormItems.MUGEN_INFINITY_MODULE));
+
+        BlockPos gravitonChestPos = center.offset(3, 1, -3);
+        setChestSafe(level, gravitonChestPos, Blocks.CHEST.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST));
+        if (level.getBlockEntity(gravitonChestPos) instanceof ChestBlockEntity gravitonChest) {
+            gravitonChest.setItem(0, new ItemStack(SandStormItems.GRAVITON_LAPSE_CANNON, 1));
+            gravitonChest.setItem(1, new ItemStack(SandStormItems.GRAVITON_REVERSAL_CANNON, 1));
+            gravitonChest.setItem(2, new ItemStack(SandStormItems.GRAVITON_VOID_CANNON, 1));
+            gravitonChest.setItem(3, new ItemStack(SandStormItems.MUGEN_INFINITY_MODULE, 1));
+            gravitonChest.setItem(4, new ItemStack(SandStormItems.TACTICAL_DODGE_MODULE, 1));
+            gravitonChest.setItem(5, new ItemStack(SandStormItems.PORTABLE_ENERGY_PACK, 4));
+            gravitonChest.setItem(6, new ItemStack(SandStormItems.SUIT_CAPACITY_EXPANDER, 4));
+            gravitonChest.setItem(7, new ItemStack(SandStormItems.SPACE_SUIT_HELMET, 1));
+            gravitonChest.setItem(8, new ItemStack(SandStormItems.SPACE_SUIT_CHESTPLATE, 1));
+            gravitonChest.setItem(9, new ItemStack(SandStormItems.SPACE_SUIT_LEGGINGS, 1));
+            gravitonChest.setItem(10, new ItemStack(SandStormItems.SPACE_SUIT_BOOTS, 1));
+        }
+        spawnHologram(level, gravitonChestPos.getX() + 0.5, gravitonChestPos.getY() + 1.5, gravitonChestPos.getZ() + 0.5, "§d§l[Arsenal Gravitacional & Mugen]");
     }
 
     private static void buildTransitTerminal(ServerLevel level, BlockPos center) {
@@ -2480,7 +2507,11 @@ public class ShowcaseAutomation {
                         new ItemStack(SandStormItems.JETBOOT_MODULE, 64),
                         new ItemStack(SandStormItems.GRAVITATIONAL_MAGNET_CHIP, 64),
                         new ItemStack(SandStormItems.OSMOTIC_RECYCLER_MODULE, 64),
-                        new ItemStack(SandStormItems.KINETIC_DEFLECTOR_CHIP, 64)
+                        new ItemStack(SandStormItems.KINETIC_DEFLECTOR_CHIP, 64),
+                        new ItemStack(SandStormItems.TACTICAL_DODGE_MODULE, 64),
+                        new ItemStack(SandStormItems.MUGEN_INFINITY_MODULE, 1),
+                        new ItemStack(SandStormItems.PORTABLE_ENERGY_PACK, 64),
+                        new ItemStack(SandStormItems.SUIT_CAPACITY_EXPANDER, 64)
                 ),
                 true,
                 new ItemStack(SandStormItems.SPACE_SUIT_HELMET),
@@ -2497,7 +2528,11 @@ public class ShowcaseAutomation {
                 List.of(
                         new ItemStack(SandStormItems.VIBRO_CRYSKNIFE, 64),
                         new ItemStack(SandStormItems.PLASMA_RIFLE, 64),
+                        new ItemStack(SandStormItems.HEAVY_PLASMA_CANNON, 64),
                         new ItemStack(SandStormItems.SONIC_CANNON, 64),
+                        new ItemStack(SandStormItems.GRAVITON_LAPSE_CANNON, 1),
+                        new ItemStack(SandStormItems.GRAVITON_REVERSAL_CANNON, 1),
+                        new ItemStack(SandStormItems.GRAVITON_VOID_CANNON, 1),
                         new ItemStack(SandStormItems.EMP_BLASTER, 64),
                         new ItemStack(SandStormItems.COMPOSITE_RECURVE_BOW, 64),
                         new ItemStack(SandStormItems.CRYO_LANCE, 64),
@@ -4402,6 +4437,12 @@ public class ShowcaseAutomation {
             nukeChest.setItem(6, new ItemStack(SandStormItems.PARALYTIC_TOXIN_DART, 16));
             nukeChest.setItem(7, new ItemStack(SandStormItems.SEISMIC_SCORPION_STINGER, 16));
             nukeChest.setItem(8, new ItemStack(SandStormItems.SCORPION_CHITIN_PLATE, 16));
+            nukeChest.setItem(9, new ItemStack(SandStormItems.GRAVITON_LAPSE_CANNON, 1));
+            nukeChest.setItem(10, new ItemStack(SandStormItems.GRAVITON_REVERSAL_CANNON, 1));
+            nukeChest.setItem(11, new ItemStack(SandStormItems.GRAVITON_VOID_CANNON, 1));
+            nukeChest.setItem(12, new ItemStack(SandStormItems.MUGEN_INFINITY_MODULE, 1));
+            nukeChest.setItem(13, new ItemStack(SandStormItems.TACTICAL_DODGE_MODULE, 1));
+            nukeChest.setItem(14, new ItemStack(SandStormItems.PORTABLE_ENERGY_PACK, 4));
         }
 
         BlockPos mannequinPos = new BlockPos(-33, baseY + 1, -110);

@@ -1,0 +1,204 @@
+{
+  "credit": "Made for SandStorm Mod - Void Form Cannon (Purple)",
+  "texture_size": [32, 32],
+  "textures": {
+    "texture": "sandstorm:item/graviton_void_cannon",
+    "particle": "sandstorm:item/graviton_void_cannon"
+  },
+  "elements": [
+    {
+      "name": "void_chassis",
+      "from": [5.8, 4.2, 0.5],
+      "to": [10.2, 9.8, 13.5],
+      "faces": {
+        "north": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "east": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "south": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "west": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "up": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "down": {"uv": [0, 0, 8, 8], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "rear_counterweight",
+      "from": [6.5, 4.8, 13.5],
+      "to": [9.5, 9, 19],
+      "faces": {
+        "north": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "east": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "south": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "west": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "up": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "down": {"uv": [0, 8, 8, 16], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "void_core_chamber",
+      "from": [5.2, 4.6, 2.8],
+      "to": [10.8, 9.4, 8.6],
+      "faces": {
+        "north": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "east": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "south": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "west": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "up": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "down": {"uv": [8, 0, 16, 8], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "lapse_conduit_left",
+      "from": [4.3, 5.8, -4.5],
+      "to": [5.6, 8.2, 4.5],
+      "faces": {
+        "north": {"uv": [8, 0, 9.5, 8], "texture": "#texture"},
+        "east": {"uv": [8, 0, 9.5, 8], "texture": "#texture"},
+        "south": {"uv": [8, 0, 9.5, 8], "texture": "#texture"},
+        "west": {"uv": [8, 0, 9.5, 8], "texture": "#texture"},
+        "up": {"uv": [8, 0, 9.5, 8], "texture": "#texture"},
+        "down": {"uv": [8, 0, 9.5, 8], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "reversal_conduit_right",
+      "from": [10.4, 5.8, -4.5],
+      "to": [11.7, 8.2, 4.5],
+      "faces": {
+        "north": {"uv": [14.5, 0, 16, 8], "texture": "#texture"},
+        "east": {"uv": [14.5, 0, 16, 8], "texture": "#texture"},
+        "south": {"uv": [14.5, 0, 16, 8], "texture": "#texture"},
+        "west": {"uv": [14.5, 0, 16, 8], "texture": "#texture"},
+        "up": {"uv": [14.5, 0, 16, 8], "texture": "#texture"},
+        "down": {"uv": [14.5, 0, 16, 8], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "virtual_mass_barrel",
+      "from": [6.6, 5.6, -7.5],
+      "to": [9.4, 8.4, 0.5],
+      "faces": {
+        "north": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "east": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "south": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "west": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "up": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "down": {"uv": [8, 8, 16, 16], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "void_halo_ring_front",
+      "from": [4.9, 3.9, -7.2],
+      "to": [11.1, 10.1, -5.2],
+      "faces": {
+        "north": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "east": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "south": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "west": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "up": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "down": {"uv": [8, 8, 16, 16], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "void_halo_ring_mid",
+      "from": [5.2, 4.2, -3],
+      "to": [10.8, 9.8, -1],
+      "faces": {
+        "north": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "east": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "south": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "west": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "up": {"uv": [8, 8, 16, 16], "texture": "#texture"},
+        "down": {"uv": [8, 8, 16, 16], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "twin_accelerator_prong_top",
+      "from": [7.1, 8.8, -11.5],
+      "to": [8.9, 10, -7.2],
+      "faces": {
+        "north": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "east": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "south": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "west": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "up": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "down": {"uv": [8, 0, 16, 8], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "twin_accelerator_prong_bottom",
+      "from": [7.1, 4, -11.5],
+      "to": [8.9, 5.2, -7.2],
+      "faces": {
+        "north": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "east": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "south": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "west": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+        "up": {"uv": [8, 0, 16, 8], "texture": "#texture"},
+        "down": {"uv": [0, 0, 8, 8], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "pistol_grip",
+      "from": [7, 0, 9],
+      "to": [9, 5, 11.8],
+      "rotation": {"angle": -16, "axis": "x", "origin": [8, 4.5, 10]},
+      "faces": {
+        "north": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "east": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "south": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "west": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "up": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "down": {"uv": [0, 8, 8, 16], "texture": "#texture"}
+      }
+    },
+    {
+      "name": "tactical_foregrip",
+      "from": [7, 1.2, 1.5],
+      "to": [9, 4.4, 3.6],
+      "faces": {
+        "north": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "east": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "south": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "west": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "up": {"uv": [0, 8, 8, 16], "texture": "#texture"},
+        "down": {"uv": [0, 8, 8, 16], "texture": "#texture"}
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 3.8, -1.5],
+      "scale": [0.85, 0.85, 0.85]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 3.8, -1.5],
+      "scale": [0.85, 0.85, 0.85]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, -8, 4],
+      "translation": [1.5, 3.2, -1.5],
+      "scale": [0.68, 0.68, 0.68]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 8, -4],
+      "translation": [1.5, 3.2, -1.5],
+      "scale": [0.68, 0.68, 0.68]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 3, 0],
+      "scale": [0.55, 0.55, 0.55]
+    },
+    "gui": {
+      "rotation": [15, -45, -5],
+      "translation": [-1.5, 0.5, 0],
+      "scale": [0.52, 0.52, 0.52]
+    },
+    "fixed": {
+      "rotation": [0, 180, 0],
+      "translation": [0, 0, 0],
+      "scale": [1, 1, 1]
+    }
+  }
+}

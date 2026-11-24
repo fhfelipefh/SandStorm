@@ -1,6 +1,9 @@
 package com.fhfelipefh.sandstorm.client;
 
 import com.fhfelipefh.sandstorm.content.item.EmpBlasterItem;
+import com.fhfelipefh.sandstorm.content.item.GravitonLapseCannonItem;
+import com.fhfelipefh.sandstorm.content.item.GravitonReversalCannonItem;
+import com.fhfelipefh.sandstorm.content.item.GravitonVoidCannonItem;
 import com.fhfelipefh.sandstorm.content.item.HeavyPlasmaCannonItem;
 import com.fhfelipefh.sandstorm.content.item.PlasmaRifleItem;
 import com.fhfelipefh.sandstorm.content.item.SonicCannonItem;
@@ -55,6 +58,15 @@ class WeaponPoseTest {
 
         EmpBlasterItem emp = (EmpBlasterItem) unsafe.allocateInstance(EmpBlasterItem.class);
         assertEquals(ItemUseAnimation.CROSSBOW, emp.getUseAnimation(ItemStack.EMPTY));
+
+        GravitonLapseCannonItem lapse = (GravitonLapseCannonItem) unsafe.allocateInstance(GravitonLapseCannonItem.class);
+        assertEquals(ItemUseAnimation.CROSSBOW, lapse.getUseAnimation(ItemStack.EMPTY));
+
+        GravitonReversalCannonItem reversal = (GravitonReversalCannonItem) unsafe.allocateInstance(GravitonReversalCannonItem.class);
+        assertEquals(ItemUseAnimation.CROSSBOW, reversal.getUseAnimation(ItemStack.EMPTY));
+
+        GravitonVoidCannonItem voidCannon = (GravitonVoidCannonItem) unsafe.allocateInstance(GravitonVoidCannonItem.class);
+        assertEquals(ItemUseAnimation.CROSSBOW, voidCannon.getUseAnimation(ItemStack.EMPTY));
     }
 
     @Test
@@ -66,7 +78,15 @@ class WeaponPoseTest {
 
     @Test
     void testWeaponModelsHaveCustomDisplayTransformations() throws IOException {
-        List<String> weapons = List.of("plasma_rifle", "sonic_cannon", "heavy_plasma_cannon", "emp_blaster");
+        List<String> weapons = List.of(
+                "plasma_rifle",
+                "sonic_cannon",
+                "heavy_plasma_cannon",
+                "emp_blaster",
+                "graviton_lapse_cannon",
+                "graviton_reversal_cannon",
+                "graviton_void_cannon"
+        );
         Path modelDir = Path.of("src", "main", "resources", "assets", "sandstorm", "models", "item");
 
         for (String weapon : weapons) {
@@ -79,6 +99,16 @@ class WeaponPoseTest {
                 JsonObject display = json.getAsJsonObject("display");
                 assertTrue(display.has("thirdperson_righthand"), "Must define thirdperson_righthand: " + weapon);
                 assertTrue(display.has("firstperson_righthand"), "Must define firstperson_righthand: " + weapon);
+
+                if (json.has("elements") && !weapon.equals("vibro_crysknife")) {
+                    for (String handKey : List.of("thirdperson_righthand", "thirdperson_lefthand", "firstperson_righthand", "firstperson_lefthand")) {
+                        JsonObject hand = display.getAsJsonObject(handKey);
+                        assertNotNull(hand, "3D firearm must define " + handKey + ": " + weapon);
+                        double yaw = hand.getAsJsonArray("rotation").get(1).getAsDouble();
+                        assertTrue(Math.abs(yaw) < 30.0,
+                                "3D firearm " + weapon + " must point forward in " + handKey + " (yaw=" + yaw + ")");
+                    }
+                }
             }
         }
     }

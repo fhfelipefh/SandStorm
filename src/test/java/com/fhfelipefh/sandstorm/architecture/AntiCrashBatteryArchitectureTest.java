@@ -455,7 +455,7 @@ class AntiCrashBatteryArchitectureTest {
         if ("NutrientBombEntity".equals(entityClass) || "MedBaySeatEntity".equals(entityClass)
                 || "StunGrenadeEntity".equals(entityClass) || "SmokeGrenadeEntity".equals(entityClass)
                 || "ParalyticToxinDartEntity".equals(entityClass) || "FiberglassSpearEntity".equals(entityClass)
-                || "MiniNukeProjectileEntity".equals(entityClass)) {
+                || "MiniNukeProjectileEntity".equals(entityClass) || "GravitonSphereEntity".equals(entityClass)) {
             return false;
         }
         return true;

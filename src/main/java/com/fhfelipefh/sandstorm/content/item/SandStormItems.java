@@ -321,6 +321,10 @@ public class SandStormItems {
     public static final SuitCapacityExpanderItem SUIT_CAPACITY_EXPANDER = register("suit_capacity_expander", new SuitCapacityExpanderItem(properties("suit_capacity_expander").rarity(Rarity.RARE)));
     public static final EnergizedVibroBladeItem ENERGIZED_VIBRO_BLADE = register("energized_vibro_blade", new EnergizedVibroBladeItem(properties("energized_vibro_blade").rarity(Rarity.RARE)));
     public static final ExoSuitChipItem TACTICAL_DODGE_MODULE = register("tactical_dodge_module", new ExoSuitChipItem(ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER, properties("tactical_dodge_module").rarity(Rarity.RARE)));
+    public static final ExoSuitChipItem MUGEN_INFINITY_MODULE = register("mugen_infinity_module", new ExoSuitChipItem(ExoSuitChipComponent.ASYMPTOTIC_INFINITY_BARRIER, properties("mugen_infinity_module").rarity(Rarity.EPIC).stacksTo(1)));
+    public static final GravitonLapseCannonItem GRAVITON_LAPSE_CANNON = register("graviton_lapse_cannon", new GravitonLapseCannonItem(properties("graviton_lapse_cannon")));
+    public static final GravitonReversalCannonItem GRAVITON_REVERSAL_CANNON = register("graviton_reversal_cannon", new GravitonReversalCannonItem(properties("graviton_reversal_cannon")));
+    public static final GravitonVoidCannonItem GRAVITON_VOID_CANNON = register("graviton_void_cannon", new GravitonVoidCannonItem(properties("graviton_void_cannon")));
     public static final HoundDefenseModuleItem HOUND_DEFENSE_MODULE = register("hound_defense_module", new HoundDefenseModuleItem(properties("hound_defense_module").rarity(Rarity.RARE)));
     public static final HoundAttackModuleItem HOUND_ATTACK_MODULE = register("hound_attack_module", new HoundAttackModuleItem(properties("hound_attack_module").rarity(Rarity.RARE)));
     public static final HoundDodgeModuleItem HOUND_DODGE_MODULE = register("hound_dodge_module", new HoundDodgeModuleItem(properties("hound_dodge_module").rarity(Rarity.RARE)));
@@ -735,12 +739,32 @@ public class SandStormItems {
                         entries.accept(SUIT_CAPACITY_EXPANDER);
                         entries.accept(ENERGIZED_VIBRO_BLADE);
                         entries.accept(TACTICAL_DODGE_MODULE);
+                        entries.accept(MUGEN_INFINITY_MODULE);
+                        entries.accept(GRAVITON_LAPSE_CANNON);
+                        entries.accept(GRAVITON_REVERSAL_CANNON);
+                        entries.accept(GRAVITON_VOID_CANNON);
                         entries.accept(HOUND_DEFENSE_MODULE);
                         entries.accept(HOUND_ATTACK_MODULE);
                         entries.accept(HOUND_DODGE_MODULE);
                     })
                     .build()
     );
+
+    public static Item getChipItem(ExoSuitChipComponent chipType) {
+        if (chipType == null) {
+            return null;
+        }
+        return switch (chipType) {
+            case SEISMIC_SONAR -> SEISMIC_SONAR_CHIP;
+            case JETBOOT_THRUSTER -> JETBOOT_MODULE;
+            case GRAVITATIONAL_MAGNET -> GRAVITATIONAL_MAGNET_CHIP;
+            case OSMOTIC_RECYCLER -> OSMOTIC_RECYCLER_MODULE;
+            case KINETIC_DEFLECTOR -> KINETIC_DEFLECTOR_CHIP;
+            case GLIDER_MODULE -> SUIT_GLIDER_MODULE;
+            case EVASIVE_REFLEX_THRUSTER -> TACTICAL_DODGE_MODULE;
+            case ASYMPTOTIC_INFINITY_BARRIER -> MUGEN_INFINITY_MODULE;
+        };
+    }
 
     public static <T extends Item> T register(String path, T item) {
         if (item instanceof BlockItem blockItem) {

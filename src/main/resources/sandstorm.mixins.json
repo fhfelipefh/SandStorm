@@ -5,6 +5,8 @@
 	"refmap": "sandstorm.refmap.json",
 	"mixins": [
 		"AbstractHorseMixin",
+		"MugenEntityMixin",
+		"MugenLivingEntityMixin",
 		"WaterFluidMixin",
 		"WolfCompanionSafetyMixin"
 	],

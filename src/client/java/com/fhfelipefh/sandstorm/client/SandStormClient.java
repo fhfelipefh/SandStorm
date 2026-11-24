@@ -61,6 +61,8 @@ import com.fhfelipefh.sandstorm.client.weather.ClientStormTransitionHandler;
 import com.fhfelipefh.sandstorm.client.tooltip.SandStormTechnicalTooltipHandler;
 import com.fhfelipefh.sandstorm.client.gui.SpaceSuitClientTooltip;
 import com.fhfelipefh.sandstorm.client.renderer.AnomalyWaypointRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.GravitonSphereRenderer;
+import com.fhfelipefh.sandstorm.client.renderer.MugenBarrierRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.AquiferBeetleRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.AutonomousSonicTurretRenderer;
 import com.fhfelipefh.sandstorm.client.renderer.BuilderDroneEntityRenderer;
@@ -125,7 +127,9 @@ import com.fhfelipefh.sandstorm.content.network.CallGolemPayload;
 import com.fhfelipefh.sandstorm.content.network.EmpDeafenPayload;
 import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
 import com.fhfelipefh.sandstorm.content.network.MagneticInterferencePayload;
+import com.fhfelipefh.sandstorm.content.network.MugenStatePayload;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
+import com.fhfelipefh.sandstorm.content.survival.MugenInfinityHandler;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncAnomalyRadarPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncPlayerQuestsPayload;
@@ -250,6 +254,7 @@ public class SandStormClient implements ClientModInitializer {
         EntityRendererRegistry.register(SandStormEntities.PARALYTIC_TOXIN_DART, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.FIBERGLASS_SPEAR, ThrownItemRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.MINI_NUKE_PROJECTILE, ThrownItemRenderer::new);
+        EntityRendererRegistry.register(SandStormEntities.GRAVITON_SPHERE, GravitonSphereRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.SANDWORM, SandwormRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.CARGO_DRONE, CargoDroneRenderer::new);
         EntityRendererRegistry.register(SandStormEntities.EXCAVATOR_VEHICLE, ExcavatorVehicleRenderer::new);
@@ -361,6 +366,11 @@ public class SandStormClient implements ClientModInitializer {
                 EmpDeafenClientHandler.trigger(payload.durationTicks());
             });
         });
+        ClientPlayNetworking.registerGlobalReceiver(MugenStatePayload.TYPE, (payload, context) -> {
+            context.client().execute(() -> {
+                MugenInfinityHandler.updateClientState(payload.entityId(), payload.active(), payload.impactFlash());
+            });
+        });
         ClientPlayNetworking.registerGlobalReceiver(SyncAnomalyRadarPayload.TYPE, (payload, context) -> {
             context.client().execute(() -> {
                 AnomalyWaypointRenderer.registerPings(payload.pings(), 30000L);
@@ -394,6 +404,7 @@ public class SandStormClient implements ClientModInitializer {
         LevelRenderEvents.COLLECT_SUBMITS.register(ClientUplinkRenderer::render);
         LevelRenderEvents.COLLECT_SUBMITS.register(MultiblockHologramRenderer::render);
         LevelRenderEvents.COLLECT_SUBMITS.register(AnomalyWaypointRenderer::render);
+        LevelRenderEvents.COLLECT_SUBMITS.register(MugenBarrierRenderer::render);
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             client.execute(() -> {
                 if (client.getSingleplayerServer() != null) {
@@ -415,6 +426,7 @@ public class SandStormClient implements ClientModInitializer {
         });
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             SandStormClientWorldHelper.setConnectedToSandStorm(false);
+            MugenInfinityHandler.clearClientState();
         });
         FluidRenderingRegistry.register(
                 SandStormFluids.RADIOACTIVE_SLUDGE,

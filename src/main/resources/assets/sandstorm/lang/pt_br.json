@@ -1812,5 +1812,20 @@
   "jei.sandstorm.brackish_extraction.info2": "Após 3 a 6 coletas o bloco se esgota em Sal Mineral. Também pode ser quebrado com as mãos ou pá.",
   "quest.sandstorm.basic_thermal_generator.title": "Gerador Térmico Básico",
   "quest.sandstorm.basic_thermal_generator.task": "Monte com 1 Fornalha, 1 Redstone, 5 Sucatas e 2 Bobinas de Cobre.",
-  "quest.sandstorm.basic_thermal_generator.note": "Sem energia solar? Imprima Bobinas na Impressora 3D e queime carvão ou madeira para gerar WPT!"
+  "quest.sandstorm.basic_thermal_generator.note": "Sem energia solar? Imprima Bobinas na Impressora 3D e queime carvão ou madeira para gerar WPT!",
+  "item.sandstorm.graviton_lapse_cannon": "Canhão de Lapso Gravitacional (Azul)",
+  "item.sandstorm.graviton_reversal_cannon": "Canhão de Reversão Gravitacional (Vermelho)",
+  "item.sandstorm.graviton_void_cannon": "Canhão Forma do Vazio (Roxo)",
+  "item.sandstorm.mugen_infinity_module": "Módulo de Barreira Infinita (Mugen)",
+  "entity.sandstorm.graviton_sphere": "Esfera Gravitacional",
+  "tooltip.sandstorm.graviton_lapse.desc": "Esfera azul que atrai alvos e blocos.",
+  "tooltip.sandstorm.graviton_reversal.desc": "Esfera vermelha que repele e devasta.",
+  "tooltip.sandstorm.graviton_void.desc": "Massa virtual roxa que perfura tudo.",
+  "tooltip.sandstorm.mugen_infinity_module": "Barreira assintótica (ejeta Esquiva).",
+  "tooltip.sandstorm.tech.function_graviton_lapse": "§7✦ Efeito: §bVórtice de atração gravitacional",
+  "tooltip.sandstorm.tech.function_graviton_reversal": "§7✦ Efeito: §cOnda de choque repulsiva",
+  "tooltip.sandstorm.tech.function_graviton_void": "§7✦ Efeito: §dFeixe roxo de massa virtual",
+  "tooltip.sandstorm.tech.desc_mugen_infinity": "§7✦ Efeito: §bImunidade total c/ alto consumo",
+  "message.sandstorm.chip_ejected_incompatible": "§e[Traje] Módulo incompatível ejetado: %s",
+  "hud.sandstorm.mugen_active": "∞ MUGEN ATIVO"
 }

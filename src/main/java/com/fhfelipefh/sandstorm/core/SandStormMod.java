@@ -28,6 +28,7 @@ import com.fhfelipefh.sandstorm.content.network.FlashlightTogglePayload;
 import com.fhfelipefh.sandstorm.content.survival.FlashlightStateServer;
 import com.fhfelipefh.sandstorm.content.network.EmpDeafenPayload;
 import com.fhfelipefh.sandstorm.content.network.MagneticInterferencePayload;
+import com.fhfelipefh.sandstorm.content.network.MugenStatePayload;
 import com.fhfelipefh.sandstorm.content.network.SandstormWeatherPayload;
 import com.fhfelipefh.sandstorm.content.network.SuitSyncPayload;
 import com.fhfelipefh.sandstorm.content.network.SyncAnomalyRadarPayload;
@@ -41,6 +42,7 @@ import com.fhfelipefh.sandstorm.content.entity.ai.CompanionProtectionHandler;
 import com.fhfelipefh.sandstorm.content.survival.BedRestrictionHandler;
 import com.fhfelipefh.sandstorm.content.survival.FusedSpaceSuitHandler;
 import com.fhfelipefh.sandstorm.content.survival.MagicSuppressionHandler;
+import com.fhfelipefh.sandstorm.content.survival.MugenInfinityHandler;
 import com.fhfelipefh.sandstorm.content.survival.MultiplayerSpawnHandler;
 import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
@@ -102,6 +104,10 @@ public class SandStormMod implements ModInitializer {
                 EmpDeafenPayload.TYPE,
                 EmpDeafenPayload.STREAM_CODEC
         );
+        PayloadRegistryHelper.registerClientbound(
+                MugenStatePayload.TYPE,
+                MugenStatePayload.STREAM_CODEC
+        );
         PayloadRegistryHelper.registerServerbound(
                 ClaimQuestRewardPayload.TYPE,
                 ClaimQuestRewardPayload.STREAM_CODEC
@@ -138,6 +144,7 @@ public class SandStormMod implements ModInitializer {
         AutoModeManager.initialize();
         SandStormMenus.initialize();
         SuitSurvivalHandler.initialize();
+        MugenInfinityHandler.initialize();
         TacticalDodgeHandler.initialize();
         VanillaMonsterSuppressionHandler.initialize();
         DesertMobSpawnManager.initialize();

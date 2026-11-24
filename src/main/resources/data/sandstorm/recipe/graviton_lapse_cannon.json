@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "TWT",
+    "ACA",
+    "BPB"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "W": "sandstorm:warden_singularity_core",
+    "A": "sandstorm:nano_actuator",
+    "C": "sandstorm:superconductor_toroid",
+    "B": "sandstorm:circuit_board",
+    "P": "sandstorm:heavy_plasma_cannon"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:graviton_lapse_cannon"
+  }
+}

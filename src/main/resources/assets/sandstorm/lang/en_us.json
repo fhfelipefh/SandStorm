@@ -1812,5 +1812,20 @@
   "jei.sandstorm.brackish_extraction.info2": "Depletes into Mineral Salt after 3-6 uses. Can also be broken by hand or shovel.",
   "quest.sandstorm.basic_thermal_generator.title": "Basic Thermal Generator",
   "quest.sandstorm.basic_thermal_generator.task": "Craft with 1 Furnace, 1 Redstone, 5 Scrap Metal, and 2 Copper Coils.",
-  "quest.sandstorm.basic_thermal_generator.note": "No solar power? Print Copper Coils in the 3D Printer and burn coal or wood for WPT power!"
+  "quest.sandstorm.basic_thermal_generator.note": "No solar power? Print Copper Coils in the 3D Printer and burn coal or wood for WPT power!",
+  "item.sandstorm.graviton_lapse_cannon": "Graviton Lapse Cannon (Blue)",
+  "item.sandstorm.graviton_reversal_cannon": "Graviton Reversal Cannon (Red)",
+  "item.sandstorm.graviton_void_cannon": "Void Form Cannon (Purple)",
+  "item.sandstorm.mugen_infinity_module": "Asymptotic Infinity Module (Mugen)",
+  "entity.sandstorm.graviton_sphere": "Graviton Sphere",
+  "tooltip.sandstorm.graviton_lapse.desc": "Blue sphere pulling mobs and blocks.",
+  "tooltip.sandstorm.graviton_reversal.desc": "Red sphere repelling mobs and blocks.",
+  "tooltip.sandstorm.graviton_void.desc": "Purple virtual mass piercing all.",
+  "tooltip.sandstorm.mugen_infinity_module": "Asymptotic shield (ejects Dodge).",
+  "tooltip.sandstorm.tech.function_graviton_lapse": "§7✦ Effect: §bGravitational pull vortex",
+  "tooltip.sandstorm.tech.function_graviton_reversal": "§7✦ Effect: §cRepulsive shockwave burst",
+  "tooltip.sandstorm.tech.function_graviton_void": "§7✦ Effect: §dPurple virtual mass blast",
+  "tooltip.sandstorm.tech.desc_mugen_infinity": "§7✦ Effect: §bTotal immunity at high power",
+  "message.sandstorm.chip_ejected_incompatible": "§e[Suit] Ejected incompatible module: %s",
+  "hud.sandstorm.mugen_active": "∞ MUGEN ACTIVE"
 }

@@ -534,6 +534,21 @@ public class SandStormEntities {
                     .build(MINI_NUKE_PROJECTILE_KEY)
     );
 
+    public static final ResourceKey<EntityType<?>> GRAVITON_SPHERE_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE,
+            SandStormMod.id("graviton_sphere")
+    );
+
+    public static final EntityType<GravitonSphereEntity> GRAVITON_SPHERE = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE,
+            SandStormMod.id("graviton_sphere"),
+            EntityType.Builder.<GravitonSphereEntity>of(GravitonSphereEntity::new, MobCategory.MISC)
+                    .sized(0.9f, 0.9f)
+                    .clientTrackingRange(10)
+                    .updateInterval(2)
+                    .build(GRAVITON_SPHERE_KEY)
+    );
+
     public static final ResourceKey<EntityType<?>> SCAVENGER_VULTURE_KEY = ResourceKey.create(
             Registries.ENTITY_TYPE,
             SandStormMod.id("scavenger_vulture")

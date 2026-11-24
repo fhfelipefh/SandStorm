@@ -32,6 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -281,55 +282,46 @@ public class FusedSpaceSuitHandler {
         if (player == null || player.isCreative() || player.isSpectator() || !SandStormWorldHelper.isSandStormWorld(player.level())) {
             return;
         }
-        boolean headOk = isMatchingSuitPiece(player.getItemBySlot(EquipmentSlot.HEAD), EquipmentSlot.HEAD);
-        boolean chestOk = isMatchingSuitPiece(player.getItemBySlot(EquipmentSlot.CHEST), EquipmentSlot.CHEST);
-        boolean legsOk = isMatchingSuitPiece(player.getItemBySlot(EquipmentSlot.LEGS), EquipmentSlot.LEGS);
-        boolean feetOk = isMatchingSuitPiece(player.getItemBySlot(EquipmentSlot.FEET), EquipmentSlot.FEET);
-
-        if (headOk && chestOk && legsOk && feetOk) {
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
-                    ItemStack currentStack = player.getItemBySlot(slot);
-                    if (!currentStack.isEmpty() && currentStack.getItem() instanceof SpaceSuitItem) {
-                        TooltipDisplay td = currentStack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT);
-                        if (td.shows(DataComponents.ENCHANTMENTS) || td.shows(DataComponents.UNBREAKABLE)) {
-                            currentStack.set(DataComponents.TOOLTIP_DISPLAY, td
-                                    .withHidden(DataComponents.ENCHANTMENTS, true)
-                                    .withHidden(DataComponents.UNBREAKABLE, true));
-                        }
-                        if (!currentStack.has(DataComponents.UNBREAKABLE)) {
-                            currentStack.set(DataComponents.UNBREAKABLE, Unit.INSTANCE);
-                        }
-                    }
-                }
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
+                sanitizeSuitPiece(player, player.getItemBySlot(slot));
             }
-            return;
         }
-
-        equipFusedSuit(player);
-        removeExtraSuitItemsFromInventory(player);
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            sanitizeSuitPiece(player, player.getInventory().getItem(i));
+        }
     }
 
-    private static void removeExtraSuitItemsFromInventory(ServerPlayer player) {
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            ItemStack stack = player.getInventory().getItem(i);
-            if (!stack.isEmpty() && stack.getItem() instanceof SpaceSuitItem) {
-                EquipmentSlot targetSlot = getSlotForSuitItem(stack.getItem());
-                if (targetSlot != null && !isMatchingSuitPiece(player.getItemBySlot(targetSlot), targetSlot)) {
-                    player.setItemSlot(targetSlot, stack);
-                    player.getInventory().setItem(i, ItemStack.EMPTY);
+    private static void sanitizeSuitPiece(ServerPlayer player, ItemStack stack) {
+        if (stack.isEmpty() || !(stack.getItem() instanceof SpaceSuitItem)) {
+            return;
+        }
+        TooltipDisplay td = stack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT);
+        if (td.shows(DataComponents.ENCHANTMENTS) || td.shows(DataComponents.UNBREAKABLE)) {
+            stack.set(DataComponents.TOOLTIP_DISPLAY, td
+                    .withHidden(DataComponents.ENCHANTMENTS, true)
+                    .withHidden(DataComponents.UNBREAKABLE, true));
+        }
+        if (!stack.has(DataComponents.UNBREAKABLE)) {
+            stack.set(DataComponents.UNBREAKABLE, Unit.INSTANCE);
+        }
+        MinecraftServer server = player.level().getServer();
+        if (server != null) {
+            server.registryAccess().lookup(Registries.ENCHANTMENT).ifPresent(reg -> reg.get(Enchantments.BINDING_CURSE).ifPresent(binding -> {
+                ItemEnchantments enchantments = stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
+                if (enchantments.getLevel(binding) > 0) {
+                    ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(enchantments);
+                    mutable.removeIf(holder -> holder.is(Enchantments.BINDING_CURSE));
+                    stack.set(DataComponents.ENCHANTMENTS, mutable.toImmutable());
                 }
-            }
+            }));
         }
     }
 
     public static ItemStack createFusedPiece(Item item, MinecraftServer server) {
         ItemStack stack = new ItemStack(item);
         if (server != null) {
-            server.registryAccess().lookup(Registries.ENCHANTMENT).ifPresent(reg -> {
-                reg.get(Enchantments.BINDING_CURSE).ifPresent(enchantment -> stack.enchant(enchantment, 1));
-                reg.get(Enchantments.VANISHING_CURSE).ifPresent(enchantment -> stack.enchant(enchantment, 1));
-            });
+            server.registryAccess().lookup(Registries.ENCHANTMENT).ifPresent(reg -> reg.get(Enchantments.VANISHING_CURSE).ifPresent(enchantment -> stack.enchant(enchantment, 1)));
         }
         stack.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, false);
         stack.set(DataComponents.UNBREAKABLE, Unit.INSTANCE);

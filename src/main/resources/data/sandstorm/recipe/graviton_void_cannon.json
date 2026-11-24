@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "TWT",
+    "LSR",
+    "WCW"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "W": "sandstorm:warden_singularity_core",
+    "L": "sandstorm:graviton_lapse_cannon",
+    "S": "sandstorm:subspace_warp_core",
+    "R": "sandstorm:graviton_reversal_cannon",
+    "C": "sandstorm:superconductor_toroid"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:graviton_void_cannon"
+  }
+}

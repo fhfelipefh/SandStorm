@@ -2,18 +2,27 @@ package com.fhfelipefh.sandstorm.content.combat;
 
 import com.fhfelipefh.sandstorm.component.ExoSuitChipComponent;
 import com.fhfelipefh.sandstorm.component.SuitPowerComponent;
+import com.fhfelipefh.sandstorm.content.entity.GravitonSphereEntity;
+import com.fhfelipefh.sandstorm.content.item.GravitonLapseCannonItem;
+import com.fhfelipefh.sandstorm.content.item.GravitonReversalCannonItem;
+import com.fhfelipefh.sandstorm.content.item.GravitonVoidCannonItem;
 import com.fhfelipefh.sandstorm.content.quest.QuestData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRegistry;
+import com.fhfelipefh.sandstorm.content.survival.MugenInfinityHandler;
 import com.fhfelipefh.sandstorm.content.survival.PlayerSuitSavedData;
+import com.fhfelipefh.sandstorm.content.survival.SuitSurvivalHandler;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import org.junit.jupiter.api.Test;
+import sun.misc.Unsafe;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CombatRebalanceAndModulesTest {
@@ -152,6 +161,75 @@ class CombatRebalanceAndModulesTest {
         QuestData armorQuest = QuestRegistry.getQuest("hound_armor_upgrade");
         assertNotNull(armorQuest);
         assertTrue(armorQuest.prerequisiteIds().contains("polymer_recovery"));
+    }
+
+    @Test
+    void testMugenAndEvasionMutualExclusion() {
+        assertEquals(ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER,
+                ExoSuitChipComponent.ASYMPTOTIC_INFINITY_BARRIER.getIncompatibleChip());
+        assertEquals(ExoSuitChipComponent.ASYMPTOTIC_INFINITY_BARRIER,
+                ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER.getIncompatibleChip());
+        assertTrue(ExoSuitChipComponent.ASYMPTOTIC_INFINITY_BARRIER
+                .isIncompatibleWith(ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER));
+        assertNull(ExoSuitChipComponent.GRAVITATIONAL_MAGNET.getIncompatibleChip());
+
+        SuitPowerComponent suit = new SuitPowerComponent();
+        assertTrue(suit.installChip(ExoSuitChipComponent.GRAVITATIONAL_MAGNET));
+        assertTrue(suit.installChip(ExoSuitChipComponent.OSMOTIC_RECYCLER));
+        assertTrue(suit.installChip(ExoSuitChipComponent.SEISMIC_SONAR));
+        assertTrue(suit.installChip(ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER));
+        assertEquals(ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER,
+                suit.findIncompatibleInstalledChip(ExoSuitChipComponent.ASYMPTOTIC_INFINITY_BARRIER));
+
+        assertTrue(suit.installChip(ExoSuitChipComponent.ASYMPTOTIC_INFINITY_BARRIER));
+        assertTrue(suit.hasChip(ExoSuitChipComponent.ASYMPTOTIC_INFINITY_BARRIER));
+        assertFalse(suit.hasChip(ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER));
+        assertEquals(4, suit.getInstalledChips().size());
+
+        assertTrue(suit.installChip(ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER));
+        assertTrue(suit.hasChip(ExoSuitChipComponent.EVASIVE_REFLEX_THRUSTER));
+        assertFalse(suit.hasChip(ExoSuitChipComponent.ASYMPTOTIC_INFINITY_BARRIER));
+    }
+
+    @Test
+    void testMugenEnergyCostAndMissingSuitExposureScaling() {
+        assertTrue(MugenInfinityHandler.PASSIVE_ENERGY_COST_PER_TICK >= 40L);
+        assertEquals(250L, MugenInfinityHandler.calculateDamageBlockCost(0.0f));
+        assertEquals(750L, MugenInfinityHandler.calculateDamageBlockCost(10.0f));
+        assertTrue(MugenInfinityHandler.calculateDamageBlockCost(20.0f)
+                > MugenInfinityHandler.calculateDamageBlockCost(5.0f));
+
+        assertEquals(0, SuitSurvivalHandler.calculateMissingSuitPoisonAmplifier(1));
+        assertEquals(1, SuitSurvivalHandler.calculateMissingSuitPoisonAmplifier(2));
+        assertEquals(2, SuitSurvivalHandler.calculateMissingSuitPoisonAmplifier(3));
+        assertEquals(3, SuitSurvivalHandler.calculateMissingSuitPoisonAmplifier(4));
+
+        assertEquals(0.0f, SuitSurvivalHandler.calculateMissingSuitDirectDamage(0));
+        assertEquals(0.5f, SuitSurvivalHandler.calculateMissingSuitDirectDamage(1));
+        assertEquals(1.0f, SuitSurvivalHandler.calculateMissingSuitDirectDamage(2));
+        assertEquals(1.5f, SuitSurvivalHandler.calculateMissingSuitDirectDamage(3));
+        assertEquals(2.0f, SuitSurvivalHandler.calculateMissingSuitDirectDamage(4));
+
+        assertTrue(GravitonLapseCannonItem.BURST_DAMAGE >= 30.0f);
+        assertTrue(GravitonReversalCannonItem.BLAST_DAMAGE >= 40.0f);
+        assertTrue(GravitonVoidCannonItem.VIRTUAL_MASS_DAMAGE > GravitonReversalCannonItem.BLAST_DAMAGE);
+        assertTrue(GravitonVoidCannonItem.ENERGY_COST > GravitonReversalCannonItem.ENERGY_COST);
+        assertEquals(2, GravitonSphereEntity.MODE_VOID_PURPLE);
+    }
+
+    @Test
+    void testGravitonSphereNullEntityDataSafe() throws Exception {
+        Field f = Unsafe.class.getDeclaredField("theUnsafe");
+        f.setAccessible(true);
+        Unsafe unsafe = (Unsafe) f.get(null);
+        GravitonSphereEntity entity = (GravitonSphereEntity) unsafe.allocateInstance(GravitonSphereEntity.class);
+        assertEquals(GravitonSphereEntity.MODE_BLUE_LAPSE, entity.getSphereMode());
+        assertFalse(entity.isCollapsing());
+        assertTrue(GravitonVoidCannonItem.VIRTUAL_MASS_DAMAGE >= 140.0f);
+        assertTrue(GravitonSphereEntity.isVoidDestructibleSpeed(1.5f));
+        assertTrue(GravitonSphereEntity.isVoidDestructibleSpeed(50.0f));
+        assertTrue(GravitonSphereEntity.isVoidDestructibleSpeed(100.0f));
+        assertFalse(GravitonSphereEntity.isVoidDestructibleSpeed(-1.0f));
     }
 }
 

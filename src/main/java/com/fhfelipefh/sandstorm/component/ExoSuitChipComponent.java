@@ -7,7 +7,8 @@ public enum ExoSuitChipComponent {
     OSMOTIC_RECYCLER("osmotic_recycler_module", "item.sandstorm.osmotic_recycler_module", "tooltip.sandstorm.osmotic_recycler_module"),
     KINETIC_DEFLECTOR("kinetic_deflector_chip", "item.sandstorm.kinetic_deflector_chip", "tooltip.sandstorm.kinetic_deflector_chip"),
     GLIDER_MODULE("suit_glider_module", "item.sandstorm.suit_glider_module", "tooltip.sandstorm.suit_glider_module"),
-    EVASIVE_REFLEX_THRUSTER("tactical_dodge_module", "item.sandstorm.tactical_dodge_module", "tooltip.sandstorm.tactical_dodge_module");
+    EVASIVE_REFLEX_THRUSTER("tactical_dodge_module", "item.sandstorm.tactical_dodge_module", "tooltip.sandstorm.tactical_dodge_module"),
+    ASYMPTOTIC_INFINITY_BARRIER("mugen_infinity_module", "item.sandstorm.mugen_infinity_module", "tooltip.sandstorm.mugen_infinity_module");
 
     private final String id;
     private final String nameKey;
@@ -29,6 +30,20 @@ public enum ExoSuitChipComponent {
 
     public String getTooltipKey() {
         return tooltipKey;
+    }
+
+    public ExoSuitChipComponent getIncompatibleChip() {
+        if (this == ASYMPTOTIC_INFINITY_BARRIER) {
+            return EVASIVE_REFLEX_THRUSTER;
+        }
+        if (this == EVASIVE_REFLEX_THRUSTER) {
+            return ASYMPTOTIC_INFINITY_BARRIER;
+        }
+        return null;
+    }
+
+    public boolean isIncompatibleWith(ExoSuitChipComponent other) {
+        return other != null && getIncompatibleChip() == other;
     }
 }
 

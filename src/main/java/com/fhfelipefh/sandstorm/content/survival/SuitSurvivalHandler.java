@@ -189,6 +189,7 @@ public class SuitSurvivalHandler {
             suit.getThermal().setCurrentTemperature(Math.min(36.6, cur + 0.06));
         }
         handleExoSuitChips(player, suit);
+        MugenInfinityHandler.tickPlayer(player, suit);
         if (insideSaltRoom && player.tickCount % 10 == 0 && suit.getEnergyStorage().getStoredEnergy() < suit.getEnergyStorage().getCapacity()) {
             suit.getEnergyStorage().receiveEnergy(1L);
         }
@@ -281,6 +282,35 @@ public class SuitSurvivalHandler {
             if (player.tickCount % 40 == 0) {
                 player.hurtServer(player.level(), player.damageSources().dryOut(), 1.0f);
             }
+        }
+
+        if (sandStormWorld && !player.isCreative() && !player.isSpectator()) {
+            applyMissingSuitExposure(player, 4 - armorCount);
+        }
+    }
+
+    public static int calculateMissingSuitPoisonAmplifier(int missingPieces) {
+        return Math.max(0, Math.min(3, missingPieces - 1));
+    }
+
+    public static float calculateMissingSuitDirectDamage(int missingPieces) {
+        if (missingPieces <= 0) {
+            return 0.0f;
+        }
+        return 0.5f * missingPieces;
+    }
+
+    public static void applyMissingSuitExposure(ServerPlayer player, int missingPieces) {
+        if (player == null || missingPieces <= 0) {
+            return;
+        }
+        int amplifier = calculateMissingSuitPoisonAmplifier(missingPieces);
+        MobEffectInstance currentPoison = player.getEffect(MobEffects.POISON);
+        if (currentPoison == null || currentPoison.getAmplifier() != amplifier || currentPoison.getDuration() <= 25) {
+            player.addEffect(new MobEffectInstance(MobEffects.POISON, 60, amplifier, false, true, true));
+        }
+        if (player.tickCount % 30 == 0 && player.getHealth() <= 1.0f) {
+            player.hurtServer((ServerLevel) player.level(), player.damageSources().magic(), calculateMissingSuitDirectDamage(missingPieces));
         }
     }
 
@@ -455,6 +485,13 @@ public class SuitSurvivalHandler {
                 suit.getThermal().setCurrentTemperature(37.0);
             }
 
+            for (ExoSuitChipComponent chip : ExoSuitChipComponent.values()) {
+                String chipTag = "sandstorm.chip." + chip.name().toLowerCase();
+                if (player.entityTags().contains(chipTag)) {
+                    suit.installChip(chip);
+                }
+            }
+
             PLAYER_SUIT_MAP.put(uuid, suit);
         }
         return suit;
@@ -533,6 +570,49 @@ public class SuitSurvivalHandler {
                 }
             }
         }
+    }
+
+    public static long getTotalAvailableEnergy(ServerPlayer player) {
+        if (player == null) {
+            return 0L;
+        }
+        SuitPowerComponent suit = getOrCreateSuit(player);
+        long total = suit.getEnergyStorage().getStoredEnergy();
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (!stack.isEmpty() && stack.getItem() instanceof PortableEnergyPackItem) {
+                total += PortableEnergyPackItem.getStoredEnergy(stack);
+            }
+        }
+        return total;
+    }
+
+    public static long drainUpToEnergy(ServerPlayer player, long maxAmount) {
+        if (player == null || maxAmount <= 0L) {
+            return 0L;
+        }
+        SuitPowerComponent suit = getOrCreateSuit(player);
+        long stored = suit.getEnergyStorage().getStoredEnergy();
+        long fromSuit = Math.min(stored, maxAmount);
+        if (fromSuit > 0L) {
+            suit.getEnergyStorage().setStoredEnergy(stored - fromSuit);
+        }
+        long remaining = maxAmount - fromSuit;
+        long totalDrained = fromSuit;
+        if (remaining > 0L) {
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                ItemStack stack = player.getInventory().getItem(i);
+                if (!stack.isEmpty() && stack.getItem() instanceof PortableEnergyPackItem) {
+                    long extracted = PortableEnergyPackItem.extractEnergy(stack, remaining);
+                    totalDrained += extracted;
+                    remaining -= extracted;
+                    if (remaining <= 0L) {
+                        break;
+                    }
+                }
+            }
+        }
+        return totalDrained;
     }
 
     public static boolean consumePlayerEnergy(ServerPlayer player, long amount) {
@@ -750,5 +830,6 @@ public class SuitSurvivalHandler {
         LAST_SYNC_MAP.remove(playerUuid);
         PROPELLANT_TICKS_MAP.remove(playerUuid);
         THERMAL_CACHE_MAP.remove(playerUuid);
+        MugenInfinityHandler.removePlayer(playerUuid);
     }
 }

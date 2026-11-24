@@ -1,5 +1,6 @@
 package com.fhfelipefh.sandstorm.client.gui;
 
+import com.fhfelipefh.sandstorm.content.survival.MugenInfinityHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -53,6 +54,14 @@ public class SpaceSuitClientTooltip {
         }
         if (tags.contains("sandstorm.chip.capacity")) {
             list.add(Component.literal("§e✦ §6Chip Expansor §7(Carga Dobrada)"));
+            hasAnyModule = true;
+        }
+        if (tags.contains("sandstorm.chip.evasive_reflex_thruster")) {
+            list.add(Component.literal("§e✦ §6Esquiva Tática §7(Teleporte)"));
+            hasAnyModule = true;
+        }
+        if (tags.contains("sandstorm.chip.asymptotic_infinity_barrier") || MugenInfinityHandler.isClientMugenActive(player.getId())) {
+            list.add(Component.literal("§b∞ §3Mugen §7(Barreira Assintótica)"));
             hasAnyModule = true;
         }
 

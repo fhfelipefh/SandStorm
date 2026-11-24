@@ -1812,5 +1812,20 @@
   "jei.sandstorm.brackish_extraction.info2": "Se agota en Sal Mineral tras 3-6 usos. También puede romperse con la mano o pala.",
   "quest.sandstorm.basic_thermal_generator.title": "Generador Térmico Básico",
   "quest.sandstorm.basic_thermal_generator.task": "Fabrica con 1 Horno, 1 Redstone, 5 Chatarras y 2 Bobinas de Cobre.",
-  "quest.sandstorm.basic_thermal_generator.note": "¿Sin energía solar? Imprime Bobinas en la Impresora 3D y quema carbón o madera para generar WPT!"
+  "quest.sandstorm.basic_thermal_generator.note": "¿Sin energía solar? Imprime Bobinas en la Impresora 3D y quema carbón o madera para generar WPT!",
+  "item.sandstorm.graviton_lapse_cannon": "Cañón de Lapso Gravitacional (Azul)",
+  "item.sandstorm.graviton_reversal_cannon": "Cañón de Reversión Gravitacional (Rojo)",
+  "item.sandstorm.graviton_void_cannon": "Cañón Forma del Vacío (Púrpura)",
+  "item.sandstorm.mugen_infinity_module": "Módulo de Barrera Infinita (Mugen)",
+  "entity.sandstorm.graviton_sphere": "Esfera Gravitacional",
+  "tooltip.sandstorm.graviton_lapse.desc": "Esfera azul que atrae mobs y bloques.",
+  "tooltip.sandstorm.graviton_reversal.desc": "Esfera roja que repele mobs y bloques.",
+  "tooltip.sandstorm.graviton_void.desc": "Masa virtual púrpura perforante.",
+  "tooltip.sandstorm.mugen_infinity_module": "Barrera asintótica (eyecta Esquiva).",
+  "tooltip.sandstorm.tech.function_graviton_lapse": "§7✦ Efecto: §bVórtice de atracción grav.",
+  "tooltip.sandstorm.tech.function_graviton_reversal": "§7✦ Efecto: §cOnda de choque repulsiva",
+  "tooltip.sandstorm.tech.function_graviton_void": "§7✦ Efecto: §dHaz púrpura de masa virt.",
+  "tooltip.sandstorm.tech.desc_mugen_infinity": "§7✦ Efecto: §bInmunidad total (alto consumo)",
+  "message.sandstorm.chip_ejected_incompatible": "§e[Traje] Módulo incompatible eyectado: %s",
+  "hud.sandstorm.mugen_active": "∞ MUGEN ACTIVO"
 }

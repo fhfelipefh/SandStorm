@@ -142,7 +142,25 @@ public class SuitPowerComponent {
         return installedChips.contains(type);
     }
 
+    public ExoSuitChipComponent findIncompatibleInstalledChip(ExoSuitChipComponent type) {
+        if (type == null) {
+            return null;
+        }
+        ExoSuitChipComponent incompatible = type.getIncompatibleChip();
+        if (incompatible != null && installedChips.contains(incompatible)) {
+            return incompatible;
+        }
+        return null;
+    }
+
     public boolean installChip(ExoSuitChipComponent type) {
+        if (type == null) {
+            return false;
+        }
+        ExoSuitChipComponent incompatible = findIncompatibleInstalledChip(type);
+        if (incompatible != null) {
+            installedChips.remove(incompatible);
+        }
         if (installedChips.size() >= 4) {
             return false;
         }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "TWT",
+    "ACA",
+    "BSB"
+  ],
+  "key": {
+    "T": "sandstorm:titanium_chitin_composite",
+    "W": "sandstorm:warden_singularity_core",
+    "A": "sandstorm:nano_actuator",
+    "C": "sandstorm:subspace_warp_core",
+    "B": "sandstorm:circuit_board",
+    "S": "sandstorm:superconductor_toroid"
+  },
+  "result": {
+    "count": 1,
+    "id": "sandstorm:mugen_infinity_module"
+  }
+}
