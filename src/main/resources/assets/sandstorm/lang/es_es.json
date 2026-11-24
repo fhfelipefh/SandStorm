@@ -1802,5 +1802,15 @@
   "message.sandstorm.pod_bio_healing": "§a[Bio-Éstasis] Regeneración celular activa...",
   "message.sandstorm.pod_bio_cleansed": "§b[Bio-Éstasis] ¡Toxinas y necrosis purgadas!",
   "message.sandstorm.pod_bio_stable": "§a[Bio-Éstasis] Signos vitales 100% óptimos.",
-  "message.sandstorm.pod_bio_depleted": "§c[Bio-Éstasis] ¡Nutrientes o energía agotados!"
+  "message.sandstorm.pod_bio_depleted": "§c[Bio-Éstasis] ¡Nutrientes o energía agotados!",
+  "hud.sandstorm.machine.processing": "%s%% [PROCESANDO]",
+  "hud.sandstorm.machine.idle": "[INACTIVO]",
+  "jei.sandstorm.brackish_extraction": "Extracción de Agua Salobre",
+  "jei.sandstorm.brackish_extraction.hint1": "Usa Frasco Vacío en bloque",
+  "jei.sandstorm.brackish_extraction.hint2": "Acuífero Salobre p/ llenar.",
+  "jei.sandstorm.brackish_extraction.info1": "Coloca o encuentra un Acuífero Salobre y haz clic derecho con un Frasco de Cristal vacío para obtener Agua Salobre.",
+  "jei.sandstorm.brackish_extraction.info2": "Se agota en Sal Mineral tras 3-6 usos. También puede romperse con la mano o pala.",
+  "quest.sandstorm.basic_thermal_generator.title": "Generador Térmico Básico",
+  "quest.sandstorm.basic_thermal_generator.task": "Fabrica con 1 Horno, 1 Redstone, 5 Chatarras y 2 Bobinas de Cobre.",
+  "quest.sandstorm.basic_thermal_generator.note": "¿Sin energía solar? Imprime Bobinas en la Impresora 3D y quema carbón o madera para generar WPT!"
 }

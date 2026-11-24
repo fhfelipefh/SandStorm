@@ -28,7 +28,6 @@ class MineableTagCompletenessArchitectureTest {
     );
 
     private static final Set<String> EXEMPT_BLOCKS = Set.of(
-            "brackish_aquifer",
             "morphing_fluid_transition"
     );
 

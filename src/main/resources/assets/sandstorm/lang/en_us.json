@@ -1802,5 +1802,15 @@
   "message.sandstorm.pod_bio_healing": "§a[Bio-Stasis] Cellular regeneration active...",
   "message.sandstorm.pod_bio_cleansed": "§b[Bio-Stasis] Toxins & necrosis neutralized!",
   "message.sandstorm.pod_bio_stable": "§a[Bio-Stasis] Vital signs 100% optimal.",
-  "message.sandstorm.pod_bio_depleted": "§c[Bio-Stasis] Nutrients or power depleted!"
+  "message.sandstorm.pod_bio_depleted": "§c[Bio-Stasis] Nutrients or power depleted!",
+  "hud.sandstorm.machine.processing": "%s%% [PROCESSING]",
+  "hud.sandstorm.machine.idle": "[IDLE]",
+  "jei.sandstorm.brackish_extraction": "Brackish Water Extraction",
+  "jei.sandstorm.brackish_extraction.hint1": "Use Empty Bottle on block",
+  "jei.sandstorm.brackish_extraction.hint2": "Brackish Aquifer to fill.",
+  "jei.sandstorm.brackish_extraction.info1": "Place or find a Brackish Aquifer block and right-click it with an empty Glass Bottle to obtain a Brackish Water Bottle.",
+  "jei.sandstorm.brackish_extraction.info2": "Depletes into Mineral Salt after 3-6 uses. Can also be broken by hand or shovel.",
+  "quest.sandstorm.basic_thermal_generator.title": "Basic Thermal Generator",
+  "quest.sandstorm.basic_thermal_generator.task": "Craft with 1 Furnace, 1 Redstone, 5 Scrap Metal, and 2 Copper Coils.",
+  "quest.sandstorm.basic_thermal_generator.note": "No solar power? Print Copper Coils in the 3D Printer and burn coal or wood for WPT power!"
 }

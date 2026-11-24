@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "sandstorm:brackish_aquifer",
     "sandstorm:salinized_sand",
     "sandstorm:electrified_sand",
     "sandstorm:xeno_grass_block",

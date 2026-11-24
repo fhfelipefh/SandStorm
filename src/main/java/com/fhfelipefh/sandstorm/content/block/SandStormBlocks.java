@@ -188,7 +188,7 @@ public class SandStormBlocks {
             new BrackishWaterBlock(BlockBehaviour.Properties.of()
                     .setId(ResourceKey.create(Registries.BLOCK, SandStormMod.id("brackish_aquifer")))
                     .mapColor(MapColor.COLOR_BLUE)
-                    .strength(1.5f)
+                    .strength(0.6f)
                     .sound(SoundType.MUD)));
     public static final RadioactiveSludgeBlock RADIOACTIVE_SLUDGE = Registry.register(
             BuiltInRegistries.BLOCK,

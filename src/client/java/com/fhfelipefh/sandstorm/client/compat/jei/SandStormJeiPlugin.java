@@ -1,6 +1,7 @@
 package com.fhfelipefh.sandstorm.client.compat.jei;
 
 import com.fhfelipefh.sandstorm.client.compat.jei.category.AtmosphericCarbonExtractorCategory;
+import com.fhfelipefh.sandstorm.client.compat.jei.category.BrackishExtractionCategory;
 import com.fhfelipefh.sandstorm.client.compat.jei.category.ChemicalRefineryCategory;
 import com.fhfelipefh.sandstorm.client.compat.jei.category.DesalinationFilterCategory;
 import com.fhfelipefh.sandstorm.client.compat.jei.category.DewCondenserCategory;
@@ -29,6 +30,7 @@ import com.fhfelipefh.sandstorm.content.gui.HydroponicChamberMenu;
 import com.fhfelipefh.sandstorm.content.gui.NaniteFabricatorMenu;
 import com.fhfelipefh.sandstorm.content.gui.Printer3DMenu;
 import com.fhfelipefh.sandstorm.content.gui.SandStormMenus;
+import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.recipe.MachineRecipeRegistry;
 import com.fhfelipefh.sandstorm.core.SandStormMod;
 import mezz.jei.api.IModPlugin;
@@ -40,7 +42,12 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
+import java.util.List;
 
 @JeiPlugin
 public class SandStormJeiPlugin implements IModPlugin {
@@ -64,7 +71,8 @@ public class SandStormJeiPlugin implements IModPlugin {
                 new ChemicalRefineryCategory(guiHelper),
                 new HydroponicChamberCategory(guiHelper),
                 new DewCondenserCategory(guiHelper),
-                new MaterialDeconstructorCategory(guiHelper)
+                new MaterialDeconstructorCategory(guiHelper),
+                new BrackishExtractionCategory(guiHelper)
         );
     }
 
@@ -80,6 +88,23 @@ public class SandStormJeiPlugin implements IModPlugin {
         registration.addRecipes(SandStormJeiRecipeTypes.HYDROPONIC_CHAMBER, MachineRecipeRegistry.getRecipes("sandstorm:hydroponic_chamber"));
         registration.addRecipes(SandStormJeiRecipeTypes.DEW_CONDENSER, MachineRecipeRegistry.getRecipes("sandstorm:dew_condenser"));
         registration.addRecipes(SandStormJeiRecipeTypes.MATERIAL_DECONSTRUCTOR, MachineRecipeRegistry.getRecipes("sandstorm:material_deconstructor"));
+        registration.addRecipes(SandStormJeiRecipeTypes.BRACKISH_EXTRACTION, List.of(
+                new BrackishExtractionRecipe(
+                        new ItemStack(Items.GLASS_BOTTLE),
+                        new ItemStack(SandStormBlocks.BRACKISH_AQUIFER),
+                        new ItemStack(SandStormItems.BRACKISH_WATER_BOTTLE)
+                )
+        ));
+        registration.addIngredientInfo(
+                SandStormItems.BRACKISH_WATER_BOTTLE,
+                Component.translatable("jei.sandstorm.brackish_extraction.info1"),
+                Component.translatable("jei.sandstorm.brackish_extraction.info2")
+        );
+        registration.addIngredientInfo(
+                SandStormBlocks.BRACKISH_AQUIFER,
+                Component.translatable("jei.sandstorm.brackish_extraction.info1"),
+                Component.translatable("jei.sandstorm.brackish_extraction.info2")
+        );
     }
 
     @Override
@@ -94,6 +119,8 @@ public class SandStormJeiPlugin implements IModPlugin {
         registration.addCraftingStation(SandStormJeiRecipeTypes.HYDROPONIC_CHAMBER, SandStormBlocks.HYDROPONIC_CHAMBER);
         registration.addCraftingStation(SandStormJeiRecipeTypes.DEW_CONDENSER, SandStormBlocks.DEW_CONDENSER);
         registration.addCraftingStation(SandStormJeiRecipeTypes.MATERIAL_DECONSTRUCTOR, SandStormBlocks.MATERIAL_DECONSTRUCTOR);
+        registration.addCraftingStation(SandStormJeiRecipeTypes.BRACKISH_EXTRACTION, SandStormBlocks.BRACKISH_AQUIFER);
+        registration.addCraftingStation(SandStormJeiRecipeTypes.BRACKISH_EXTRACTION, Items.GLASS_BOTTLE);
 
         registration.addCraftingStation(RecipeTypes.SMELTING, SandStormBlocks.ELECTRIC_ARC_FURNACE);
         registration.addCraftingStation(RecipeTypes.BLASTING, SandStormBlocks.ELECTRIC_ARC_FURNACE);

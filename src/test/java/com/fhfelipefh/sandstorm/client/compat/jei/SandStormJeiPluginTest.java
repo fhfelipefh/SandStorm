@@ -73,4 +73,11 @@ class SandStormJeiPluginTest {
         assertTrue(plugin.getPluginUid().getNamespace().equals("sandstorm"));
         assertTrue(plugin.getPluginUid().getPath().equals("jei_plugin"));
     }
+
+    @Test
+    void brackishExtractionRecipeTypeMustUseSandStormNamespace() {
+        assertNotNull(SandStormJeiRecipeTypes.BRACKISH_EXTRACTION);
+        assertTrue(SandStormJeiRecipeTypes.BRACKISH_EXTRACTION.getUid().getNamespace().equals("sandstorm"));
+        assertTrue(SandStormJeiRecipeTypes.BRACKISH_EXTRACTION.getUid().getPath().equals("brackish_extraction"));
+    }
 }

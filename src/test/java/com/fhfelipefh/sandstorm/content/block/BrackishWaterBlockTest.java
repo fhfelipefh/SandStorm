@@ -54,4 +54,18 @@ class BrackishWaterBlockTest {
             }
         }
     }
+
+    @Test
+    void brackishAquiferShouldBeMineableByShovelAndNotRequireTool() throws Exception {
+        try (InputStream shovelStream = getClass().getResourceAsStream("/data/minecraft/tags/block/mineable/shovel.json")) {
+            assertNotNull(shovelStream);
+            String shovelJson = new String(shovelStream.readAllBytes(), StandardCharsets.UTF_8);
+            assertTrue(shovelJson.contains("sandstorm:brackish_aquifer"));
+        }
+        try (InputStream pickaxeStream = getClass().getResourceAsStream("/data/minecraft/tags/block/mineable/pickaxe.json")) {
+            assertNotNull(pickaxeStream);
+            String pickaxeJson = new String(pickaxeStream.readAllBytes(), StandardCharsets.UTF_8);
+            assertTrue(!pickaxeJson.contains("sandstorm:brackish_aquifer"));
+        }
+    }
 }

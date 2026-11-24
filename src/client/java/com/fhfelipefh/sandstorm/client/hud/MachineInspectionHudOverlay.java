@@ -47,8 +47,8 @@ public class MachineInspectionHudOverlay implements HudElement {
     private void renderMachineHud(GuiGraphicsExtractor extractor, Minecraft client, BaseMachineBlockEntity machine) {
         int screenWidth = extractor.guiWidth();
         int screenHeight = extractor.guiHeight();
-        float scale = Math.min(1.0f, screenWidth / 200.0f);
-        int width = 160;
+        float scale = Math.min(1.0f, screenWidth / 210.0f);
+        int width = 184;
         int height = 36;
         int x = Math.max(4, (int) ((screenWidth / scale - width) / 2));
         int y = Math.max(4, Math.min((int) (12 / scale), (int) (screenHeight / scale - height - 4)));
@@ -60,7 +60,7 @@ public class MachineInspectionHudOverlay implements HudElement {
         extractor.fill(x, y, x + width, y + height, 0xDD0A0E17);
 
         Component title = machine.getBlockState().getBlock().getName();
-        extractor.text(client.font, title, x + 6, y + 4, 0xFF00E5FF);
+        drawFitText(extractor, client, title, x + 6, y + 4, width - 12, 0xFF00E5FF);
 
         int energy = machine.getEnergy();
         int maxEnergy = machine.getMaxEnergy();
@@ -70,14 +70,17 @@ public class MachineInspectionHudOverlay implements HudElement {
         int prog = machine.getProgress();
         int maxProg = machine.getMaxProgress();
         int pct = maxProg > 0 ? (prog * 100 / maxProg) : 0;
-        String statusText = machine.isProcessing() ? pct + "% [PROCESSANDO]" : "[OCIOSO]";
+        Component statusText = machine.isProcessing()
+                ? Component.translatable("hud.sandstorm.machine.processing", pct)
+                : Component.translatable("hud.sandstorm.machine.idle");
         int statusColor = machine.isProcessing() ? 0xFF00E676 : 0xFF78909C;
-        extractor.text(client.font, Component.literal(statusText), x + 6, y + 25, statusColor);
 
-        int barX = x + 104;
+        int barX = x + 128;
         int barY = y + 25;
         int barW = 50;
         int barH = 7;
+        drawFitText(extractor, client, statusText, x + 6, y + 25, barX - (x + 6) - 4, statusColor);
+
         extractor.fill(barX - 1, barY - 1, barX + barW + 1, barY + barH + 1, 0xFF1E293B);
         extractor.fill(barX, barY, barX + barW, barY + barH, 0xFF05080E);
         int fillW = maxProg > 0 ? (prog * barW / maxProg) : 0;
@@ -86,6 +89,20 @@ public class MachineInspectionHudOverlay implements HudElement {
         }
 
         extractor.pose().popMatrix();
+    }
+
+    private void drawFitText(GuiGraphicsExtractor extractor, Minecraft client, Component text, int x, int y, int maxWidth, int color) {
+        int textWidth = client.font.width(text);
+        if (textWidth <= maxWidth || maxWidth <= 0) {
+            extractor.text(client.font, text, x, y, color);
+        } else {
+            float fitScale = (float) maxWidth / (float) textWidth;
+            extractor.pose().pushMatrix();
+            extractor.pose().translate(x, y + (9.0f - 9.0f * fitScale) / 2.0f);
+            extractor.pose().scale(fitScale, fitScale);
+            extractor.text(client.font, text, 0, 0, color);
+            extractor.pose().popMatrix();
+        }
     }
 
     private void renderCondenserHud(GuiGraphicsExtractor extractor, Minecraft client, DewCondenserBlockEntity condenser) {

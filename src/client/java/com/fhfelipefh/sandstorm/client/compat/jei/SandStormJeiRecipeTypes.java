@@ -25,6 +25,8 @@ public final class SandStormJeiRecipeTypes {
             IRecipeType.create(SandStormMod.MOD_ID, "dew_condenser", MachineRecipe.class);
     public static final IRecipeType<MachineRecipe> MATERIAL_DECONSTRUCTOR =
             IRecipeType.create(SandStormMod.MOD_ID, "material_deconstructor", MachineRecipe.class);
+    public static final IRecipeType<BrackishExtractionRecipe> BRACKISH_EXTRACTION =
+            IRecipeType.create(SandStormMod.MOD_ID, "brackish_extraction", BrackishExtractionRecipe.class);
 
     private SandStormJeiRecipeTypes() {
     }
