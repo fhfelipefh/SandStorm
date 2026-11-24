@@ -141,7 +141,7 @@ public class ProceduralRuinsManager {
             }
             int processed = 0;
             Iterator<PendingRuin> it = PENDING_RUINS.iterator();
-            while (it.hasNext() && processed < 4) {
+            while (it.hasNext() && processed < 1) {
                 PendingRuin ruin = it.next();
                 if (ruin.level().isLoaded(ruin.origin())) {
                     it.remove();

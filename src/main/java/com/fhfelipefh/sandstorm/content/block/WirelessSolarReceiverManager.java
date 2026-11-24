@@ -15,13 +15,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.AABB;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WirelessSolarReceiverManager {
+    public record ReceiverEvaluation(double radiusSq, long rate) {}
     private static final Map<ResourceKey<Level>, Map<BlockPos, Integer>> RECEIVER_MAP = new ConcurrentHashMap<>();
+    private static final Map<ResourceKey<Level>, Map<BlockPos, ReceiverEvaluation>> CACHED_RECEIVER_MAP = new ConcurrentHashMap<>();
     private static final WirelessChargerComponent CHARGER_TIER1 = new WirelessChargerComponent(1);
     private static final WirelessChargerComponent CHARGER_TIER2 = new WirelessChargerComponent(2);
     private static final WirelessChargerComponent CHARGER_TIER3 = new WirelessChargerComponent(3);
@@ -51,6 +52,7 @@ public class WirelessSolarReceiverManager {
 
     public static void registerReceiver(ResourceKey<Level> dim, BlockPos pos, int tier) {
         RECEIVER_MAP.computeIfAbsent(dim, k -> new ConcurrentHashMap<>()).put(pos.immutable(), tier);
+        CACHED_RECEIVER_MAP.computeIfAbsent(dim, k -> new ConcurrentHashMap<>()).put(pos.immutable(), new ReceiverEvaluation(0.0, 0L));
     }
 
     public static void unregisterReceiver(ResourceKey<Level> dim, BlockPos pos) {
@@ -58,14 +60,36 @@ public class WirelessSolarReceiverManager {
         if (map != null) {
             map.remove(pos);
         }
+        Map<BlockPos, ReceiverEvaluation> cMap = CACHED_RECEIVER_MAP.get(dim);
+        if (cMap != null) {
+            cMap.remove(pos);
+        }
     }
 
     public static void clear() {
         RECEIVER_MAP.clear();
+        CACHED_RECEIVER_MAP.clear();
     }
 
     public static Map<BlockPos, Integer> getReceivers(ResourceKey<Level> dim) {
         return RECEIVER_MAP.getOrDefault(dim, Map.of());
+    }
+
+    public static long getCachedReceiverChargeAt(ResourceKey<Level> dim, BlockPos pos) {
+        Map<BlockPos, ReceiverEvaluation> cachedMap = CACHED_RECEIVER_MAP.get(dim);
+        if (cachedMap == null || cachedMap.isEmpty()) {
+            return 0L;
+        }
+        long maxCharge = 0L;
+        for (Map.Entry<BlockPos, ReceiverEvaluation> entry : cachedMap.entrySet()) {
+            ReceiverEvaluation eval = entry.getValue();
+            if (eval.radiusSq() > 0 && eval.rate() > maxCharge) {
+                if (pos.distSqr(entry.getKey()) <= eval.radiusSq()) {
+                    maxCharge = eval.rate();
+                }
+            }
+        }
+        return maxCharge;
     }
 
     public static long getPrimaryWptChargeAt(Level level, BlockPos pos) {
@@ -74,6 +98,18 @@ public class WirelessSolarReceiverManager {
         long accumulatorCharge = SolidStateAccumulatorManager.getWptChargeAt(level, pos);
         long exchangerCharge = SupercriticalHeatExchangerManager.getWptChargeAt(level, pos);
         long maxCharge = Math.max(Math.max(thermalCharge, basicThermalCharge), Math.max(accumulatorCharge, exchangerCharge));
+        Map<BlockPos, ReceiverEvaluation> cachedMap = CACHED_RECEIVER_MAP.get(level.dimension());
+        if (cachedMap != null && !cachedMap.isEmpty()) {
+            for (Map.Entry<BlockPos, ReceiverEvaluation> entry : cachedMap.entrySet()) {
+                ReceiverEvaluation eval = entry.getValue();
+                if (eval.radiusSq() > 0 && eval.rate() > maxCharge) {
+                    if (pos.distSqr(entry.getKey()) <= eval.radiusSq()) {
+                        maxCharge = eval.rate();
+                    }
+                }
+            }
+            return maxCharge;
+        }
         Map<BlockPos, Integer> map = RECEIVER_MAP.get(level.dimension());
         if (map == null || map.isEmpty()) {
             return maxCharge;
@@ -151,17 +187,15 @@ public class WirelessSolarReceiverManager {
             double effectiveRadius = charger.calculateEffectiveRadius(canSeeSky, isDay, skyDarken, receiverWeather);
             long transferRatePerTick = charger.calculateTransferRate(canSeeSky, isDay, skyDarken, receiverWeather);
 
+            double radiusSq = effectiveRadius * effectiveRadius;
+            CACHED_RECEIVER_MAP.computeIfAbsent(level.dimension(), k -> new ConcurrentHashMap<>())
+                    .put(pos.immutable(), new ReceiverEvaluation(radiusSq, transferRatePerTick));
+
             if (effectiveRadius <= 0.0 || transferRatePerTick <= 0) {
                 continue;
             }
 
-            AABB searchBox = new AABB(
-                    pos.getX() - effectiveRadius, pos.getY() - effectiveRadius, pos.getZ() - effectiveRadius,
-                    pos.getX() + effectiveRadius + 1, pos.getY() + effectiveRadius + 1, pos.getZ() + effectiveRadius + 1
-            );
-
-            double radiusSq = effectiveRadius * effectiveRadius;
-            for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, searchBox)) {
+            for (ServerPlayer player : level.players()) {
                 if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= radiusSq) {
                     if (SuitSurvivalHandler.countEquippedSuitPieces(player) > 0) {
                         SuitPowerComponent suit = SuitSurvivalHandler.getOrCreateSuit(player);

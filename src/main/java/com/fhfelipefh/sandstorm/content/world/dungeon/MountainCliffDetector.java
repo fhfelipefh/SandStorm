@@ -27,6 +27,9 @@ public class MountainCliffDetector {
 
                 for (Direction testFacing : Direction.Plane.HORIZONTAL) {
                     BlockPos frontCheckPos = centerPos.relative(testFacing, 10);
+                    if (!level.hasChunk(frontCheckPos.getX() >> 4, frontCheckPos.getZ() >> 4)) {
+                        continue;
+                    }
                     int frontSurfaceY = level.getHeight(Heightmap.Types.WORLD_SURFACE, frontCheckPos.getX(), frontCheckPos.getZ());
                     int heightDifference = surfaceY - frontSurfaceY;
 
@@ -43,7 +46,12 @@ public class MountainCliffDetector {
     }
 
     public static boolean validateEncasement(LevelReader level, BlockPos entranceOrigin, Direction outwardFacing, int width, int height, int depth, int minOverburden) {
-        return validateEncasement((x, z) -> level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z), entranceOrigin, outwardFacing, width, height, depth, minOverburden);
+        return validateEncasement((x, z) -> {
+            if (level instanceof ServerLevel sl && !sl.hasChunk(x >> 4, z >> 4)) {
+                return Integer.MIN_VALUE;
+            }
+            return level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
+        }, entranceOrigin, outwardFacing, width, height, depth, minOverburden);
     }
 
     public static boolean validateEncasement(HeightSampler sampler, BlockPos entranceOrigin, Direction outwardFacing, int width, int height, int depth, int minOverburden) {
@@ -61,6 +69,9 @@ public class MountainCliffDetector {
                 BlockPos frontPos = entranceOrigin.relative(lateral, lat).relative(outwardFacing, frontOffset);
                 totalFrontSamples++;
                 int frontHeight = sampler.getHeight(frontPos.getX(), frontPos.getZ());
+                if (frontHeight == Integer.MIN_VALUE) {
+                    return false;
+                }
                 if (frontHeight <= entranceOrigin.getY() + 4) {
                     openFrontAirSamples++;
                 }
@@ -75,7 +86,7 @@ public class MountainCliffDetector {
             for (int dep = 2; dep <= depth; dep += Math.max(1, depth / 6)) {
                 BlockPos interiorSamplePos = entranceOrigin.relative(lateral, lat).relative(inwardFacing, dep);
                 int terrainSurfaceY = sampler.getHeight(interiorSamplePos.getX(), interiorSamplePos.getZ());
-                if (terrainSurfaceY < requiredCeilingY) {
+                if (terrainSurfaceY == Integer.MIN_VALUE || terrainSurfaceY < requiredCeilingY) {
                     return false;
                 }
             }
@@ -84,7 +95,7 @@ public class MountainCliffDetector {
         for (int lat = -halfWidth; lat <= halfWidth; lat += Math.max(1, width / 4)) {
             BlockPos backPos = entranceOrigin.relative(lateral, lat).relative(inwardFacing, depth);
             int backTerrainY = sampler.getHeight(backPos.getX(), backPos.getZ());
-            if (backTerrainY < requiredCeilingY) {
+            if (backTerrainY == Integer.MIN_VALUE || backTerrainY < requiredCeilingY) {
                 return false;
             }
         }
@@ -92,10 +103,12 @@ public class MountainCliffDetector {
         for (int dep = 2; dep <= depth; dep += Math.max(1, depth / 4)) {
             BlockPos leftPos = entranceOrigin.relative(lateral, -halfWidth).relative(inwardFacing, dep);
             BlockPos rightPos = entranceOrigin.relative(lateral, halfWidth).relative(inwardFacing, dep);
-            if (sampler.getHeight(leftPos.getX(), leftPos.getZ()) < requiredCeilingY) {
+            int leftY = sampler.getHeight(leftPos.getX(), leftPos.getZ());
+            int rightY = sampler.getHeight(rightPos.getX(), rightPos.getZ());
+            if (leftY == Integer.MIN_VALUE || leftY < requiredCeilingY) {
                 return false;
             }
-            if (sampler.getHeight(rightPos.getX(), rightPos.getZ()) < requiredCeilingY) {
+            if (rightY == Integer.MIN_VALUE || rightY < requiredCeilingY) {
                 return false;
             }
         }

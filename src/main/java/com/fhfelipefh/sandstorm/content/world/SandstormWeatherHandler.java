@@ -22,6 +22,25 @@ public class SandstormWeatherHandler {
     public static final long NEW_WORLD_GRACE_PERIOD_TICKS = 24000L;
     private static final SandstormWeatherComponent WEATHER = new SandstormWeatherComponent();
     private static long nextSandstormGameTime = NEW_WORLD_GRACE_PERIOD_TICKS;
+    private static ServerLevel cachedLevel;
+    private static SandstormSavedData cachedData;
+
+    public static SandstormSavedData getSavedData(ServerLevel level) {
+        if (level == null) {
+            return null;
+        }
+        if (cachedLevel == level && cachedData != null) {
+            return cachedData;
+        }
+        cachedLevel = level;
+        cachedData = level.getDataStorage().computeIfAbsent(SandstormSavedData.TYPE);
+        return cachedData;
+    }
+
+    public static void clearSavedDataCache() {
+        cachedLevel = null;
+        cachedData = null;
+    }
 
     public static void initialize() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -47,7 +66,10 @@ public class SandstormWeatherHandler {
         WEATHER.tick();
 
         if (level != null) {
-            SandstormSavedData data = level.getDataStorage().computeIfAbsent(SandstormSavedData.TYPE);
+            SandstormSavedData data = getSavedData(level);
+            if (data == null) {
+                return;
+            }
             nextSandstormGameTime = data.getNextSandstormGameTime();
 
             if (!data.isFirstStormTriggered() && gameTime < NEW_WORLD_GRACE_PERIOD_TICKS) {

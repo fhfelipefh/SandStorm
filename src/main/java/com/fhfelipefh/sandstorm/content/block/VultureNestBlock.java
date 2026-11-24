@@ -4,6 +4,7 @@ import com.fhfelipefh.sandstorm.content.item.SandStormItems;
 import com.fhfelipefh.sandstorm.content.quest.PlayerQuestSavedData;
 import com.fhfelipefh.sandstorm.content.quest.QuestData;
 import com.fhfelipefh.sandstorm.content.quest.QuestRegistry;
+import com.fhfelipefh.sandstorm.content.world.DesertMobSpawnManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -59,8 +60,11 @@ public class VultureNestBlock extends Block {
 
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide() && !player.isCreative()) {
-            dropNestLoot(level, pos, player);
+        if (!level.isClientSide()) {
+            DesertMobSpawnManager.unregisterVultureNest(pos);
+            if (!player.isCreative()) {
+                dropNestLoot(level, pos, player);
+            }
         }
         return super.playerWillDestroy(level, pos, state, player);
     }

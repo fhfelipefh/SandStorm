@@ -194,8 +194,24 @@ public class PlayerSuitSavedData extends SavedData {
         return Collections.unmodifiableMap(suitMap);
     }
 
+    private static MinecraftServer cachedServer;
+    private static PlayerSuitSavedData cachedData;
+
     public static PlayerSuitSavedData get(MinecraftServer server) {
-        return server.overworld().getDataStorage().computeIfAbsent(TYPE);
+        if (server == null) {
+            return null;
+        }
+        if (cachedServer == server && cachedData != null) {
+            return cachedData;
+        }
+        cachedServer = server;
+        cachedData = server.overworld().getDataStorage().computeIfAbsent(TYPE);
+        return cachedData;
+    }
+
+    public static void clearCache() {
+        cachedServer = null;
+        cachedData = null;
     }
 
     public static PlayerSuitSavedData get(ServerLevel level) {

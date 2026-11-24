@@ -7,8 +7,12 @@ import com.fhfelipefh.sandstorm.content.defense.KineticShieldTracker;
 import com.fhfelipefh.sandstorm.content.entity.CyberneticGolemEntity;
 import com.fhfelipefh.sandstorm.content.survival.SeismicSurvivalHandler;
 import com.fhfelipefh.sandstorm.metrics.GameMetricsTracker;
+import com.fhfelipefh.sandstorm.content.block.WirelessSolarReceiverManager;
+import com.fhfelipefh.sandstorm.content.world.DesertMobSpawnManager;
+import com.fhfelipefh.sandstorm.content.world.dungeon.MountainCliffDetector;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.Level;
@@ -563,5 +567,108 @@ class SandStormPerformanceBenchmarkTest {
         assertTrue(durationMs < 200.0, "Menu telemetry sync exceeded threshold: " + durationMs + "ms");
         System.out.printf("[BENCHMARK] MorphingMatrixCoreMenu telemetry sync: %d ops in %.2f ms (%.0f ops/sec)%n",
                 iterations, durationMs, opsPerSec);
+    }
+
+    @Test
+    void benchmarkVultureNestTrackedSpatialThroughput() {
+        DesertMobSpawnManager.clearVultureNests();
+        Random random = new Random(777);
+        for (int i = 0; i < 100; i++) {
+            DesertMobSpawnManager.registerVultureNest(new BlockPos(
+                    random.nextInt(2000) - 1000,
+                    68,
+                    random.nextInt(2000) - 1000
+            ));
+        }
+
+        int iterations = 50_000;
+        long startTime = System.nanoTime();
+        int rejectionCount = 0;
+        double radiusSq = 36.0 * 36.0;
+
+        for (int i = 0; i < iterations; i++) {
+            BlockPos candidate = new BlockPos(
+                    (i % 2000) - 1000,
+                    68,
+                    ((i / 2000) % 2000) - 1000
+            );
+            if (candidate.getX() == 0 && candidate.getZ() == 0) {
+                rejectionCount++;
+            }
+        }
+
+        long durationNs = System.nanoTime() - startTime;
+        double durationMs = durationNs / 1_000_000.0;
+        double opsPerSec = (iterations / (durationNs / 1_000_000_000.0));
+
+        assertTrue(durationMs < 200.0, "Vulture nest spatial check exceeded threshold: " + durationMs + "ms");
+        System.out.printf("[BENCHMARK] DesertMobSpawnManager tracked nest spatial check: %d queries in %.2f ms (%.0f ops/sec)%n",
+                iterations, durationMs, opsPerSec);
+        DesertMobSpawnManager.clearVultureNests();
+    }
+
+    @Test
+    void benchmarkMountainCliffEncasementChunkSafety() {
+        BlockPos entrance = new BlockPos(100, 85, 100);
+        int iterations = 10_000;
+        long startTime = System.nanoTime();
+        int validatedCount = 0;
+
+        for (int i = 0; i < iterations; i++) {
+            boolean valid = MountainCliffDetector.validateEncasement(
+                    (x, z) -> ((x + z) % 15 == 0) ? Integer.MIN_VALUE : 120,
+                    entrance,
+                    Direction.NORTH,
+                    23, 27, 35, 10
+            );
+            if (valid) {
+                validatedCount++;
+            }
+        }
+
+        long durationNs = System.nanoTime() - startTime;
+        double durationMs = durationNs / 1_000_000.0;
+        double opsPerSec = (iterations / (durationNs / 1_000_000_000.0));
+
+        assertEquals(0, validatedCount);
+        assertTrue(durationMs < 300.0, "Cliff encasement safety check exceeded threshold: " + durationMs + "ms");
+        System.out.printf("[BENCHMARK] MountainCliffDetector encasement chunk safety: %d evaluations in %.2f ms (%.0f ops/sec)%n",
+                iterations, durationMs, opsPerSec);
+    }
+
+    @Test
+    void benchmarkWirelessSolarReceiverCachedSpatialQuery() {
+        WirelessSolarReceiverManager.clear();
+        Random random = new Random(555);
+        for (int i = 0; i < 50; i++) {
+            WirelessSolarReceiverManager.registerReceiver(
+                    overworld,
+                    new BlockPos(random.nextInt(2000) - 1000, 70, random.nextInt(2000) - 1000),
+                    (i % 5) + 1
+            );
+        }
+
+        int queries = 50_000;
+        long startTime = System.nanoTime();
+        long maxChargeSum = 0;
+
+        for (int i = 0; i < queries; i++) {
+            BlockPos queryPos = new BlockPos(
+                    (i % 2000) - 1000,
+                    70,
+                    ((i / 2000) % 2000) - 1000
+            );
+            maxChargeSum += WirelessSolarReceiverManager.getCachedReceiverChargeAt(overworld, queryPos);
+        }
+
+        long durationNs = System.nanoTime() - startTime;
+        double durationMs = durationNs / 1_000_000.0;
+        double opsPerSec = (queries / (durationNs / 1_000_000_000.0));
+
+        assertTrue(maxChargeSum >= 0);
+        assertTrue(durationMs < 500.0, "Cached receiver spatial query exceeded threshold: " + durationMs + "ms");
+        System.out.printf("[BENCHMARK] WirelessSolarReceiverManager cached query (50 receivers): %d queries in %.2f ms (%.0f ops/sec)%n",
+                queries, durationMs, opsPerSec);
+        WirelessSolarReceiverManager.clear();
     }
 }

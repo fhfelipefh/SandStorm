@@ -52,11 +52,27 @@ public class ProceduralRuinsSavedData extends SavedData {
         }
     }
 
+    private static MinecraftServer cachedServer;
+    private static ProceduralRuinsSavedData cachedData;
+
     public static ProceduralRuinsSavedData get(MinecraftServer server) {
+        if (server == null) {
+            return new ProceduralRuinsSavedData();
+        }
+        if (cachedServer == server && cachedData != null) {
+            return cachedData;
+        }
         ServerLevel overworld = server.overworld();
         if (overworld == null) {
             return new ProceduralRuinsSavedData();
         }
-        return overworld.getDataStorage().computeIfAbsent(TYPE);
+        cachedServer = server;
+        cachedData = overworld.getDataStorage().computeIfAbsent(TYPE);
+        return cachedData;
+    }
+
+    public static void clearCache() {
+        cachedServer = null;
+        cachedData = null;
     }
 }

@@ -50,9 +50,11 @@ import net.minecraft.world.phys.AABB;
 
 public class SuitSurvivalHandler {
     private record LastSyncState(long energy, long capacity, double temperature, int armorCount, int tick) {}
+    private record PlayerThermalCache(BlockPos pos, int tick, boolean sheltered, double localHeatBonus, boolean insideSaltRoom) {}
     private static final Map<UUID, SuitPowerComponent> PLAYER_SUIT_MAP = new ConcurrentHashMap<>();
     private static final Map<UUID, LastSyncState> LAST_SYNC_MAP = new ConcurrentHashMap<>();
     private static final Map<UUID, Integer> PROPELLANT_TICKS_MAP = new ConcurrentHashMap<>();
+    private static final Map<UUID, PlayerThermalCache> THERMAL_CACHE_MAP = new ConcurrentHashMap<>();
     private static MinecraftServer currentServer;
 
     public static void initialize() {
@@ -103,6 +105,7 @@ public class SuitSurvivalHandler {
             }
             PLAYER_SUIT_MAP.clear();
             LAST_SYNC_MAP.clear();
+            THERMAL_CACHE_MAP.clear();
             currentServer = null;
         });
     }
@@ -133,7 +136,26 @@ public class SuitSurvivalHandler {
 
         boolean isOverworld = player.level().dimension() == Level.OVERWORLD;
         BlockPos pos = player.blockPosition();
-        boolean sheltered = ShelterDetectionHelper.isSheltered(player.level(), pos);
+        PlayerThermalCache cachedThermal = THERMAL_CACHE_MAP.get(player.getUUID());
+        boolean recomputeThermal = cachedThermal == null
+                || !pos.equals(cachedThermal.pos())
+                || (player.tickCount - cachedThermal.tick() >= 10);
+
+        boolean sheltered;
+        double localHeatBonus;
+        boolean insideSaltRoom;
+
+        if (recomputeThermal) {
+            sheltered = ShelterDetectionHelper.isSheltered(player.level(), pos);
+            localHeatBonus = calculateLocalHeatSourceBonus((ServerLevel) player.level(), pos);
+            insideSaltRoom = isInsideSaltBrickRoom(player);
+            THERMAL_CACHE_MAP.put(player.getUUID(), new PlayerThermalCache(pos.immutable(), player.tickCount, sheltered, localHeatBonus, insideSaltRoom));
+        } else {
+            sheltered = cachedThermal.sheltered();
+            localHeatBonus = cachedThermal.localHeatBonus();
+            insideSaltRoom = cachedThermal.insideSaltRoom();
+        }
+
         boolean canSeeSky = !sheltered && ((player.tickCount % 10 == 0)
                 ? player.level().canSeeSkyFromBelowWater(pos)
                 : player.level().canSeeSky(pos));
@@ -142,14 +164,12 @@ public class SuitSurvivalHandler {
         boolean underground = (isOverworld && pos.getY() < 50) || sheltered;
 
         double ambientTemperature = calculateAmbientTemperature(player, pos.getY(), canSeeSky, isDay);
-        double localHeatBonus = calculateLocalHeatSourceBonus((ServerLevel) player.level(), pos);
         if (localHeatBonus > 0.0) {
             ambientTemperature = Math.max(ambientTemperature, Math.min(48.0, ambientTemperature + localHeatBonus));
         }
         if (suitData.hasUpgrade(player.getUUID(), "thermal")) {
             ambientTemperature = 37.0 + (ambientTemperature - 37.0) * 0.5;
         }
-        boolean insideSaltRoom = isInsideSaltBrickRoom(player);
         if (insideSaltRoom) {
             ambientTemperature = 22.0 + (ambientTemperature - 22.0) * 0.4;
         }
@@ -729,5 +749,6 @@ public class SuitSurvivalHandler {
         PLAYER_SUIT_MAP.remove(playerUuid);
         LAST_SYNC_MAP.remove(playerUuid);
         PROPELLANT_TICKS_MAP.remove(playerUuid);
+        THERMAL_CACHE_MAP.remove(playerUuid);
     }
 }

@@ -170,11 +170,9 @@ public class DesertPredationHandler {
         }
 
         PathfinderMob victim = null;
-        for (Entity entity : level.getAllEntities()) {
-            if (entity.getUUID().equals(ambush.mobUuid()) && entity instanceof PathfinderMob pMob) {
-                victim = pMob;
-                break;
-            }
+        Entity targetEntity = level.getEntity(ambush.mobUuid());
+        if (targetEntity instanceof PathfinderMob pMob) {
+            victim = pMob;
         }
 
         SandwormEntity worm = SandStormEntities.SANDWORM.create(level, EntitySpawnReason.TRIGGERED);

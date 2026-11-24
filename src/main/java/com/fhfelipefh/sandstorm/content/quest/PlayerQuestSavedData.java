@@ -136,8 +136,24 @@ public class PlayerQuestSavedData extends SavedData {
         return set != null ? Collections.unmodifiableSet(set) : Set.of();
     }
 
+    private static MinecraftServer cachedServer;
+    private static PlayerQuestSavedData cachedData;
+
     public static PlayerQuestSavedData get(MinecraftServer server) {
-        return server.overworld().getDataStorage().computeIfAbsent(TYPE);
+        if (server == null) {
+            return null;
+        }
+        if (cachedServer == server && cachedData != null) {
+            return cachedData;
+        }
+        cachedServer = server;
+        cachedData = server.overworld().getDataStorage().computeIfAbsent(TYPE);
+        return cachedData;
+    }
+
+    public static void clearCache() {
+        cachedServer = null;
+        cachedData = null;
     }
 
     public static PlayerQuestSavedData get(ServerLevel level) {

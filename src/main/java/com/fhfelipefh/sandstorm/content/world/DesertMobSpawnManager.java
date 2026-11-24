@@ -42,10 +42,25 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DesertMobSpawnManager {
     private static final ResourceKey<Biome> SULFUR_CAVES = ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("minecraft", "sulfur_caves"));
+    private static final Set<BlockPos> TRACKED_VULTURE_NESTS = ConcurrentHashMap.newKeySet();
     private static int tickCounter = 0;
+
+    public static void registerVultureNest(BlockPos pos) {
+        TRACKED_VULTURE_NESTS.add(pos.immutable());
+    }
+
+    public static void unregisterVultureNest(BlockPos pos) {
+        TRACKED_VULTURE_NESTS.remove(pos);
+    }
+
+    public static void clearVultureNests() {
+        TRACKED_VULTURE_NESTS.clear();
+    }
 
     public static void initialize() {
         ServerTickEvents.END_SERVER_TICK.register(DesertMobSpawnManager::handleServerTick);
@@ -390,16 +405,20 @@ public class DesertMobSpawnManager {
                 continue;
             }
 
-            AABB box = new AABB(nestPos).inflate(36.0, 16.0, 36.0);
-            List<BlockPos> existing = BlockPos.betweenClosedStream(box)
-                    .filter(p -> level.getBlockState(p).is(SandStormBlocks.VULTURE_NEST))
-                    .map(BlockPos::immutable)
-                    .toList();
-            if (!existing.isEmpty()) {
+            double radiusSq = 36.0 * 36.0;
+            boolean nestNearby = false;
+            for (BlockPos existingPos : TRACKED_VULTURE_NESTS) {
+                if (existingPos.distSqr(nestPos) <= radiusSq) {
+                    nestNearby = true;
+                    break;
+                }
+            }
+            if (nestNearby) {
                 continue;
             }
 
             level.setBlock(nestPos, SandStormBlocks.VULTURE_NEST.defaultBlockState(), 3);
+            registerVultureNest(nestPos);
 
             if (random.nextFloat() < 0.40f) {
                 ScavengerVultureEntity vulture = SandStormEntities.SCAVENGER_VULTURE.create(level, EntitySpawnReason.EVENT);
